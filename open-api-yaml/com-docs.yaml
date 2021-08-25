@@ -1,0 +1,771 @@
+openapi: 3.0.1
+info:
+  title: OpenAPI definition
+  version: v0
+servers:
+- url: http://localhost:8004
+  description: Generated server url
+paths:
+  /v1/sms/send-sms:
+    post:
+      tags:
+      - sms-controller
+      operationId: sendSMS
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SendSMSRequest'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseObject'
+  /v1/otp/send-otp:
+    post:
+      tags:
+      - otp-controller
+      operationId: createCustomerAccount
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SendOtpRequest'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/ApiResponseObject'
+  /v1/notification/push:
+    post:
+      tags:
+      - push-notification-controller
+      operationId: sendSampleNotification
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SendSampleNotificationRequest'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseObject'
+  /v1/insurance/get-insurance:
+    post:
+      tags:
+      - insurance-controller
+      operationId: getDataInsurance
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetInsuranceRequest'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseGetInsuranceResponse'
+  /v1/insurance/create-insurance:
+    post:
+      tags:
+      - insurance-controller
+      operationId: createInsurance
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateInsuranceRequest'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseCreateInsuranceResponse'
+  /v1/insurance/cancel-insurance:
+    post:
+      tags:
+      - insurance-controller
+      operationId: cancelInsurance
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CancelInsuranceRequest'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseCancelInsuranceResponse'
+  /v1/file/upload-document-core:
+    post:
+      tags:
+      - file-controller
+      operationId: uploadCoreDocument
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties:
+                type: string
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/ApiResponseObject'
+  /v1/file/single-public-file:
+    post:
+      tags:
+      - file-controller
+      operationId: uploadSinglePublicFile
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UploadFileRequest'
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseObject'
+  /v1/file/single-file:
+    post:
+      tags:
+      - file-controller
+      operationId: uploadSingleFile
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/UploadFileRequest'
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseObject'
+  /v1/file/multi-file:
+    post:
+      tags:
+      - file-controller
+      operationId: uploadMultiFile
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UploadMultiFileRequest'
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseObject'
+  /v1/file/get-service-token:
+    post:
+      tags:
+      - file-controller
+      operationId: getServiceToken
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseObject'
+  /v1/file/download-file:
+    post:
+      tags:
+      - file-controller
+      operationId: downloadFile
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DownloadFileRequest'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+                format: binary
+  /v1/email/send-mail:
+    post:
+      tags:
+      - mail-controller
+      operationId: sendMail
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SendMailRequest'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseObject'
+  /v1/email/scheduled-mail:
+    post:
+      tags:
+      - mail-controller
+      operationId: scheduleMail
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ScheduleMailRequest'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseObject'
+  /v1/contract/send-letter-otp:
+    post:
+      tags:
+      - contract-controller
+      operationId: sendLetterOTP
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SendLetterOTPRequest'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseMapStringObject'
+  /v1/contract/send-contract-otp:
+    post:
+      tags:
+      - contract-controller
+      operationId: sendContractOTP
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SendContractOTPRequest'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseMapStringObject'
+  /v1/contract/create-token:
+    post:
+      tags:
+      - contract-controller
+      operationId: createToken
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseCreateTokenResponse'
+  /v1/contract/confirm-otp-sign:
+    post:
+      tags:
+      - contract-controller
+      operationId: confirmOPTSign
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ConfirmOTPSignRequest'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseMapStringObject'
+  /v1/contract/admin-sign-contract-automation:
+    post:
+      tags:
+      - contract-controller
+      operationId: signContractAutomation
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminSignContractAutomationRequest'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseString'
+components:
+  schemas:
+    SendSMSRequest:
+      required:
+      - customerId
+      - message
+      - to
+      type: object
+      properties:
+        to:
+          type: string
+        message:
+          type: string
+        customerId:
+          type: string
+    ApiResponseObject:
+      type: object
+      properties:
+        result:
+          type: object
+        errorCode:
+          type: string
+        message:
+          type: object
+        responseCode:
+          type: integer
+          format: int32
+    SendOtpRequest:
+      required:
+      - mobile
+      - otp
+      - provider
+      type: object
+      properties:
+        mobile:
+          type: string
+        provider:
+          type: string
+        otp:
+          type: string
+    SendSampleNotificationRequest:
+      required:
+      - customerId
+      - date
+      - fcmToken
+      - notiBody
+      - notiTitle
+      - notiType
+      type: object
+      properties:
+        customerId:
+          type: string
+        date:
+          type: string
+        fcmToken:
+          type: string
+        notiBody:
+          type: string
+        notiTitle:
+          type: string
+        notiType:
+          type: string
+    GetInsuranceRequest:
+      required:
+      - customerId
+      - insuranceId
+      type: object
+      properties:
+        insuranceId:
+          type: string
+        customerId:
+          type: string
+    ApiResponseGetInsuranceResponse:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/GetInsuranceResponse'
+        errorCode:
+          type: string
+        message:
+          type: object
+        responseCode:
+          type: integer
+          format: int32
+    GetInsuranceResponse:
+      type: object
+      properties:
+        meta:
+          $ref: '#/components/schemas/MetaInsurance'
+        data:
+          type: string
+    MetaInsurance:
+      type: object
+      properties:
+        errCode:
+          type: integer
+          format: int32
+        errMessage:
+          type: string
+    CreateInsuranceRequest:
+      required:
+      - address
+      - amount
+      - customerId
+      - dateOfBirth
+      - loanCode
+      - loanId
+      - mobile
+      - name
+      - nationId
+      type: object
+      properties:
+        amount:
+          type: integer
+          format: int32
+        name:
+          type: string
+        mobile:
+          type: string
+        customerId:
+          type: string
+        nationId:
+          type: string
+        address:
+          type: string
+        loanCode:
+          type: string
+        dateOfBirth:
+          type: string
+        loanId:
+          type: string
+    ApiResponseCreateInsuranceResponse:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/CreateInsuranceResponse'
+        errorCode:
+          type: string
+        message:
+          type: object
+        responseCode:
+          type: integer
+          format: int32
+    CreateInsuranceResponse:
+      type: object
+      properties:
+        meta:
+          $ref: '#/components/schemas/MetaInsurance'
+        data:
+          $ref: '#/components/schemas/DataInsurance'
+    DataInsurance:
+      type: object
+      properties:
+        code:
+          type: string
+        path:
+          type: string
+    CancelInsuranceRequest:
+      required:
+      - customerId
+      - insuranceId
+      type: object
+      properties:
+        insuranceId:
+          type: string
+        customerId:
+          type: string
+    ApiResponseCancelInsuranceResponse:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/CancelInsuranceResponse'
+        errorCode:
+          type: string
+        message:
+          type: object
+        responseCode:
+          type: integer
+          format: int32
+    CancelInsuranceResponse:
+      type: object
+      properties:
+        meta:
+          $ref: '#/components/schemas/MetaInsurance'
+        data:
+          $ref: '#/components/schemas/DataInsurance'
+    UploadFileRequest:
+      required:
+      - customerId
+      - document_type
+      - file
+      type: object
+      properties:
+        document_type:
+          type: string
+        file:
+          type: string
+          format: binary
+        customerId:
+          type: string
+    UploadMultiFileRequest:
+      required:
+      - customerId
+      - document_type
+      - file
+      type: object
+      properties:
+        document_type:
+          type: string
+        file:
+          type: array
+          items:
+            type: string
+            format: binary
+        customerId:
+          type: string
+    DownloadFileRequest:
+      required:
+      - customerId
+      - documentPath
+      type: object
+      properties:
+        documentPath:
+          type: string
+        customerId:
+          type: string
+    SendMailRequest:
+      required:
+      - content
+      - customerId
+      - subject
+      - to
+      type: object
+      properties:
+        customerId:
+          type: string
+        to:
+          type: array
+          items:
+            type: string
+        subject:
+          type: string
+        content:
+          type: string
+    ScheduleMailRequest:
+      required:
+      - content
+      - customerId
+      - scheduleTime
+      - subject
+      - to
+      type: object
+      properties:
+        customerId:
+          type: string
+        to:
+          type: array
+          items:
+            type: string
+        subject:
+          type: string
+        content:
+          type: string
+        scheduleTime:
+          type: string
+        mailFrom:
+          type: string
+    SendLetterOTPRequest:
+      required:
+      - address
+      - customerId
+      - dateOfBirth
+      - documentPath
+      - email
+      - employeeCode
+      - idIssuePlace
+      - mobile
+      - name
+      - nationalId
+      type: object
+      properties:
+        email:
+          type: string
+        dateOfBirth:
+          type: string
+        name:
+          type: string
+        address:
+          type: string
+        mobile:
+          type: string
+        nationalId:
+          type: string
+        customerId:
+          type: string
+        employeeCode:
+          type: string
+        idIssuePlace:
+          type: string
+        documentPath:
+          type: string
+    ApiResponseMapStringObject:
+      type: object
+      properties:
+        result:
+          type: object
+          additionalProperties:
+            type: object
+        errorCode:
+          type: string
+        message:
+          type: object
+        responseCode:
+          type: integer
+          format: int32
+    SendContractOTPRequest:
+      required:
+      - address
+      - customerId
+      - documentPath
+      - email
+      - loanCode
+      - loanId
+      - mobile
+      - name
+      - nationalId
+      type: object
+      properties:
+        email:
+          type: string
+        name:
+          type: string
+        address:
+          type: string
+        mobile:
+          type: string
+        nationalId:
+          type: string
+        customerId:
+          type: string
+        documentPath:
+          type: string
+        loanCode:
+          type: string
+        loanId:
+          type: string
+    ApiResponseCreateTokenResponse:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/CreateTokenResponse'
+        errorCode:
+          type: string
+        message:
+          type: object
+        responseCode:
+          type: integer
+          format: int32
+    CreateTokenResponse:
+      type: object
+      properties:
+        error:
+          type: integer
+          format: int32
+        message:
+          type: string
+        data:
+          $ref: '#/components/schemas/DataCreateToken'
+    DataCreateToken:
+      type: object
+      properties:
+        access:
+          type: object
+          additionalProperties:
+            type: object
+        additional:
+          type: object
+          additionalProperties:
+            type: object
+    ConfirmOTPSignRequest:
+      required:
+      - customerId
+      - idDocument
+      - idRequest
+      - otp
+      type: object
+      properties:
+        customerId:
+          type: string
+        idRequest:
+          type: integer
+          format: int32
+        idDocument:
+          type: integer
+          format: int32
+        otp:
+          maxLength: 6
+          minLength: 6
+          type: string
+    AdminSignContractAutomationRequest:
+      required:
+      - customerId
+      - idDocument
+      - idRequest
+      type: object
+      properties:
+        customerId:
+          type: string
+        idRequest:
+          type: integer
+          format: int32
+        idDocument:
+          type: integer
+          format: int32
+    ApiResponseString:
+      type: object
+      properties:
+        result:
+          type: string
+        errorCode:
+          type: string
+        message:
+          type: object
+        responseCode:
+          type: integer
+          format: int32
+  securitySchemes:
+    Bearer:
+      type: apiKey
+      name: Authorization
+      in: header
+      scheme: bearer
+      bearerFormat: JWT

@@ -1,0 +1,11 @@
+export * from './approvalLetterController.service';
+import { ApprovalLetterControllerService } from './approvalLetterController.service';
+export * from './infoController.service';
+import { InfoControllerService } from './infoController.service';
+export * from './kalapaController.service';
+import { KalapaControllerService } from './kalapaController.service';
+export * from './newsletterController.service';
+import { NewsletterControllerService } from './newsletterController.service';
+export * from './tngController.service';
+import { TngControllerService } from './tngController.service';
+export const APIS = [ApprovalLetterControllerService, InfoControllerService, KalapaControllerService, NewsletterControllerService, TngControllerService];
