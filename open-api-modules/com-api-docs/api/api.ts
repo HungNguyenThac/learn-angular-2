@@ -1,0 +1,15 @@
+export * from './contractController.service';
+import { ContractControllerService } from './contractController.service';
+export * from './fileController.service';
+import { FileControllerService } from './fileController.service';
+export * from './insuranceController.service';
+import { InsuranceControllerService } from './insuranceController.service';
+export * from './mailController.service';
+import { MailControllerService } from './mailController.service';
+export * from './otpController.service';
+import { OtpControllerService } from './otpController.service';
+export * from './pushNotificationController.service';
+import { PushNotificationControllerService } from './pushNotificationController.service';
+export * from './smsController.service';
+import { SmsControllerService } from './smsController.service';
+export const APIS = [ContractControllerService, FileControllerService, InsuranceControllerService, MailControllerService, OtpControllerService, PushNotificationControllerService, SmsControllerService];

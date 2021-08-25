@@ -25,3 +25,15 @@ Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To u
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+
+##Guide
+
+Auto migrate effect
+- ng generate @ngrx/schematics:create-effect-migration
+
+Generate api docs
+- openapi-generator-cli generate -i open-api-yaml/loanapp-docs.yaml -g typescript-angular -o ./open-api-modules/loanapp-api-docs 
+- openapi-generator-cli generate -i open-api-yaml/identity-docs.yaml -g typescript-angular -o ./open-api-modules/identity-api-docs
+- openapi-generator-cli generate -i open-api-yaml/customer-docs.yaml -g typescript-angular -o ./open-api-modules/customer-api-docs
+- openapi-generator-cli generate -i open-api-yaml/com-docs.yaml -g typescript-angular -o ./open-api-modules/com-api-docs
+

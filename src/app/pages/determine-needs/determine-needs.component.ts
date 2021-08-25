@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {FormBuilder, FormGroup} from '@angular/forms';
 
 @Component({
-  selector: 'app-determine-needs',
+  selector: 'determine-needs',
   templateUrl: './determine-needs.component.html',
   styleUrls: ['./determine-needs.component.scss']
 })
@@ -13,7 +13,7 @@ export class DetermineNeedsComponent implements OnInit {
   vehicleOptions = ["Xe Máy", "Ô tô", "Khác"]
   genderStartValue = this.genderOptions[0];
   vehicleStartValue = this.vehicleOptions[0];
-  
+
   infoForm: FormGroup;
   constructor(
     private formBuider: FormBuilder
@@ -30,6 +30,6 @@ export class DetermineNeedsComponent implements OnInit {
   }
 
   onInfoSubmit() {
-    console.log(this.infoForm);  
+    console.log(this.infoForm);
   }
 }

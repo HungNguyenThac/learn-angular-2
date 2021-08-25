@@ -1,0 +1,772 @@
+openapi: 3.0.1
+info:
+  title: OpenAPI definition
+  version: v0
+servers:
+- url: http://localhost:8004
+  description: Generated server url
+paths:
+  /tng/v1/{customerId}/provides-information-salary-receipt-date:
+    post:
+      tags:
+      - tng-controller
+      operationId: checkCustomerInformationSalaryReceiptDate
+      parameters:
+      - name: customerId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseCheckIsPaydayByCustomerIdResponse'
+  /tng/v1/provides-information:
+    post:
+      tags:
+      - tng-controller
+      operationId: providesInformation
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+  /tng/v1/provides-information-test:
+    post:
+      tags:
+      - tng-controller
+      operationId: providesInformationTest
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseObject'
+  /tng/v1/provides-information-salary-receipt-date:
+    post:
+      tags:
+      - tng-controller
+      operationId: providesInformationSalaryReceiptDate
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InformationSalaryReceiptDateRequest'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseObject'
+  /tng/v1/provides-information-salary-receipt-date-via-code-office:
+    post:
+      tags:
+      - tng-controller
+      operationId: providesInformationSalaryReceiptDateByOfficeCode
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InformationSalaryReceiptDateByOfficeCodeRequest'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseObject'
+  /tng/v1/provides-information-of-employees:
+    post:
+      tags:
+      - tng-controller
+      operationId: providesInformationOfEmployees
+      parameters:
+      - name: organizationName
+        in: query
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+  /tng/v1/check-is-employee-at-tng:
+    post:
+      tags:
+      - tng-controller
+      operationId: IsEmployeesWorkingatTNG
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TNGRequest'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseObject'
+  /newsletter/v1/info:
+    post:
+      tags:
+      - newsletter-controller
+      operationId: saveInfo
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewsLetterRequest'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseObject'
+  /kalapa/v1/id_card/plus:
+    post:
+      tags:
+      - kalapa-controller
+      operationId: extractInfo
+      parameters:
+      - name: verify
+        in: query
+        required: true
+        schema:
+          type: boolean
+      - name: authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                image:
+                  type: string
+                  format: binary
+                image_selfie:
+                  type: string
+                  format: binary
+                image_back:
+                  type: string
+                  format: binary
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseKalapaResponse'
+  /info/v1/{customerId}/validate-confirm-information-request:
+    post:
+      tags:
+      - info-controller
+      operationId: validateConfirmInformationRequest
+      parameters:
+      - name: customerId
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ConfirmInformationRequest'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseObject'
+  /info/v1/{customerId}/update:
+    post:
+      tags:
+      - info-controller
+      operationId: putInfo
+      parameters:
+      - name: customerId
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateInfoRequest'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseObject'
+  /info/v1/{customerId}/return-confirm-information:
+    post:
+      tags:
+      - info-controller
+      operationId: returnConfirmInformation
+      parameters:
+      - name: customerId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseObject'
+  /info/v1/{customerId}/confirm-information:
+    post:
+      tags:
+      - info-controller
+      operationId: confirmInformation
+      parameters:
+      - name: customerId
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ConfirmInformationRequest'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseObject'
+  /info/v1/{customerId}/additional-information:
+    post:
+      tags:
+      - info-controller
+      operationId: additionalInformation
+      parameters:
+      - name: customerId
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdditionalInformationRequest'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseObject'
+  /info/v1/{customerId}:
+    get:
+      tags:
+      - info-controller
+      operationId: getInfo
+      parameters:
+      - name: customerId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: category
+        in: query
+        required: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseCustomerInfoResponse'
+  /approval-letter/v1/{customerId}:
+    get:
+      tags:
+      - approval-letter-controller
+      operationId: getListApprovalLetterByCustomerId
+      parameters:
+      - name: customerId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseListApprovalLetter'
+      security:
+      - bearerAuth: []
+  /approval-letter/v1/{customerId}/latest:
+    get:
+      tags:
+      - approval-letter-controller
+      operationId: getApprovalLetterByCustomerId
+      parameters:
+      - name: customerId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseApprovalLetter'
+      security:
+      - bearerAuth: []
+components:
+  schemas:
+    ApiResponseCheckIsPaydayByCustomerIdResponse:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/CheckIsPaydayByCustomerIdResponse'
+        errorCode:
+          type: string
+        message:
+          type: object
+        responseCode:
+          type: integer
+          format: int32
+    CheckIsPaydayByCustomerIdResponse:
+      type: object
+      properties:
+        isPayday:
+          type: string
+        personalData:
+          $ref: '#/components/schemas/PersonalData'
+    PersonalData:
+      type: object
+      properties:
+        firstName:
+          type: string
+        gender:
+          type: string
+        dateOfBirth:
+          type: string
+        identityNumberSix:
+          type: string
+        emailAddress:
+          type: string
+        mobileNumber:
+          type: string
+        addressTwoLine1:
+          type: string
+        addressOneLine1:
+          type: string
+        borrowerDetailTextVariable1:
+          type: string
+        maritalStatus:
+          type: string
+        educationType:
+          type: string
+        coreUserId:
+          type: string
+        idDocumentType:
+          type: string
+        identityNumberOne:
+          type: string
+        idIssuePlace:
+          type: string
+        idIssueDate:
+          type: string
+        idFeatures:
+          type: string
+        idExpiredDate:
+          type: string
+        idOrigin:
+          type: string
+        officeCode:
+          type: string
+        organizationName:
+          type: string
+        officeName:
+          type: string
+        annualIncome:
+          type: number
+          format: float
+        workingDay:
+          type: number
+          format: float
+        borrowerEmploymentHistoryTextVariable1:
+          type: string
+        stepOne:
+          type: string
+        stepTwoIndividual:
+          type: string
+        stepThreeEmployment:
+          type: string
+        paydayLoanStatus:
+          type: string
+        errorGetTngInfo:
+          type: boolean
+        isValidTngInfo:
+          type: boolean
+        collateralDocument:
+          type: string
+        salaryDocument1:
+          type: string
+        salaryDocument2:
+          type: string
+        salaryDocument3:
+          type: string
+        approvalLetterId:
+          type: string
+        frontId:
+          type: string
+        backId:
+          type: string
+        selfie:
+          type: string
+    ApiResponse:
+      type: object
+      properties:
+        result:
+          type: object
+        errorCode:
+          type: string
+        message:
+          type: object
+        responseCode:
+          type: integer
+          format: int32
+    ApiResponseObject:
+      type: object
+      properties:
+        result:
+          type: object
+        errorCode:
+          type: string
+        message:
+          type: object
+        responseCode:
+          type: integer
+          format: int32
+    InformationSalaryReceiptDateRequest:
+      required:
+      - employee_code
+      type: object
+      properties:
+        employee_code:
+          type: string
+    InformationSalaryReceiptDateByOfficeCodeRequest:
+      required:
+      - officeCode
+      type: object
+      properties:
+        officeCode:
+          type: string
+    TNGRequest:
+      required:
+      - employeeCode
+      type: object
+      properties:
+        employeeCode:
+          type: string
+    NewsLetterRequest:
+      required:
+      - email
+      type: object
+      properties:
+        info:
+          type: object
+          additionalProperties:
+            type: string
+        email:
+          type: string
+    ApiResponseKalapaResponse:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/KalapaResponse'
+        errorCode:
+          type: string
+        message:
+          type: object
+        responseCode:
+          type: integer
+          format: int32
+    FraudCheck:
+      type: object
+      properties:
+        facesMatched:
+          type: integer
+          format: int32
+        floatingMark:
+          type: boolean
+        screenPhoto:
+          type: boolean
+        blacklist:
+          type: boolean
+        abnormalText:
+          type: boolean
+        abnormalFace:
+          type: boolean
+        cornerCut:
+          type: boolean
+    IdCardInfo:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        address:
+          type: string
+        dob:
+          type: string
+        home:
+          type: string
+        expiredDate:
+          type: string
+        documentType:
+          type: string
+        dateOfIssue:
+          type: string
+        features:
+          type: string
+        gender:
+          type: string
+        placeOfIssue:
+          type: string
+    KalapaResponse:
+      type: object
+      properties:
+        createdAt:
+          type: string
+        idCardInfo:
+          $ref: '#/components/schemas/IdCardInfo'
+        taxName:
+          type: string
+        verified:
+          type: boolean
+        selfieCheck:
+          $ref: '#/components/schemas/SelfieCheck'
+        fraudCheck:
+          $ref: '#/components/schemas/FraudCheck'
+    SelfieCheck:
+      type: object
+      properties:
+        matched:
+          type: boolean
+        matchingScore:
+          type: integer
+          format: int32
+    ConfirmInformationRequest:
+      required:
+      - addressOneLine1
+      - addressTwoLine1
+      - dateOfBirth
+      - emailAddress
+      - firstName
+      - gender
+      - idIssuePlace
+      - identityNumberOne
+      - identityNumberSix
+      - organizationName
+      type: object
+      properties:
+        firstName:
+          type: string
+        dateOfBirth:
+          type: string
+        gender:
+          type: string
+        identityNumberSix:
+          type: string
+        identityNumberOne:
+          type: string
+        addressTwoLine1:
+          type: string
+        addressOneLine1:
+          type: string
+        emailAddress:
+          type: string
+        organizationName:
+          type: string
+        idIssuePlace:
+          type: string
+        coreUserId:
+          type: string
+    UpdateInfoRequest:
+      type: object
+      properties:
+        info:
+          type: object
+          additionalProperties:
+            type: object
+    AdditionalInformationRequest:
+      required:
+      - borrowerDetailTextVariable1
+      - borrowerEmploymentHistoryTextVariable1
+      - educationType
+      - maritalStatus
+      type: object
+      properties:
+        maritalStatus:
+          type: string
+        educationType:
+          type: string
+        borrowerDetailTextVariable1:
+          type: string
+        borrowerEmploymentHistoryTextVariable1:
+          type: string
+    ApiResponseCustomerInfoResponse:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/CustomerInfoResponse'
+        errorCode:
+          type: string
+        message:
+          type: object
+        responseCode:
+          type: integer
+          format: int32
+    CustomerInfoResponse:
+      type: object
+      properties:
+        personalData:
+          $ref: '#/components/schemas/PersonalData'
+        financialData:
+          $ref: '#/components/schemas/FinancialData'
+        kalapaData:
+          $ref: '#/components/schemas/KalapaResponse'
+        tngData:
+          $ref: '#/components/schemas/TnGInformationResponse'
+    FinancialData:
+      type: object
+      properties:
+        bankName:
+          type: string
+        bankCode:
+          type: string
+        accountNumber:
+          type: string
+    TnGInformationResponse:
+      type: object
+      properties:
+        createdAt:
+          type: string
+        hoDem:
+          type: string
+        ten:
+          type: string
+        maDonVi:
+          type: string
+        tenDonVi:
+          type: string
+        theATM:
+          type: string
+        maNganHang:
+          type: string
+        tenNganHang:
+          type: string
+        thuNhap:
+          type: string
+        soCong:
+          type: string
+        maNS:
+          type: string
+    ApiResponseListApprovalLetter:
+      type: object
+      properties:
+        result:
+          type: array
+          items:
+            $ref: '#/components/schemas/ApprovalLetter'
+        errorCode:
+          type: string
+        message:
+          type: object
+        responseCode:
+          type: integer
+          format: int32
+    ApprovalLetter:
+      type: object
+      properties:
+        id:
+          type: string
+        provider:
+          type: string
+        idRequest:
+          type: integer
+          format: int32
+        idDocument:
+          type: integer
+          format: int32
+        customerId:
+          type: string
+        path:
+          type: string
+        created_at:
+          type: string
+    ApiResponseApprovalLetter:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/ApprovalLetter'
+        errorCode:
+          type: string
+        message:
+          type: object
+        responseCode:
+          type: integer
+          format: int32

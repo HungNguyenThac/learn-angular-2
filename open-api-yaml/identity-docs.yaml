@@ -1,0 +1,310 @@
+openapi: 3.0.1
+info:
+  title: OpenAPI definition
+  version: v0
+servers:
+- url: http://localhost:8004
+  description: Generated server url
+paths:
+  /sign-on/v1/reset-password:
+    post:
+      tags:
+      - sign-on-controller
+      operationId: resetPasswordbyMobileOtp
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateCustomerAccountRequest'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseObject'
+  /sign-on/v1/reset-password-verified-otp:
+    post:
+      tags:
+      - sign-on-controller
+      operationId: resetPasswordVerifiedOtp
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ResetVerifiedPasswordOtpRequest'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseObject'
+  /sign-on/v1/reset-password-otp:
+    post:
+      tags:
+      - sign-on-controller
+      operationId: resetPasswordbyOtp
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ResetPasswordVerifiedAccountRequest'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseObject'
+  /sign-on/v1/mobile-login:
+    post:
+      tags:
+      - sign-on-controller
+      operationId: mobileLogin
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MobileLoginRequest'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseLoginResponse'
+  /sign-on/v1/create-verified-customer-account:
+    post:
+      tags:
+      - sign-on-controller
+      operationId: createVerifiedCustomerAccount
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateVerifiedAccountRequest'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseObject'
+  /sign-on/v1/create-customer-account:
+    post:
+      tags:
+      - sign-on-controller
+      operationId: createCustomerAccount
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateCustomerAccountRequest'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+  /credential/v1/get-token:
+    post:
+      tags:
+      - service-credential-controller
+      operationId: getToken
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetTokenRequest'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseGetTokenResponse'
+  /credential/v1/create:
+    post:
+      tags:
+      - service-credential-controller
+      operationId: createToken
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateProviderAccountRequest'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseObject'
+components:
+  schemas:
+    CreateCustomerAccountRequest:
+      required:
+      - mobile
+      - provider
+      type: object
+      properties:
+        mobile:
+          type: string
+        provider:
+          type: string
+    ApiResponseObject:
+      type: object
+      properties:
+        result:
+          type: object
+        errorCode:
+          type: string
+        message:
+          type: string
+        responseCode:
+          type: integer
+          format: int32
+    ResetVerifiedPasswordOtpRequest:
+      required:
+      - mobile
+      - otp
+      - requestId
+      - signature
+      type: object
+      properties:
+        mobile:
+          type: string
+        signature:
+          type: string
+        requestId:
+          type: string
+        otp:
+          type: string
+    ResetPasswordVerifiedAccountRequest:
+      required:
+      - mobile
+      - otp
+      - password
+      - password_again
+      - requestId
+      - signature
+      type: object
+      properties:
+        mobile:
+          type: string
+        password:
+          type: string
+        password_again:
+          type: string
+        signature:
+          type: string
+        requestId:
+          type: string
+        otp:
+          type: string
+    MobileLoginRequest:
+      required:
+      - mobile
+      - password
+      type: object
+      properties:
+        mobile:
+          type: string
+        password:
+          type: string
+    ApiResponseLoginResponse:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/LoginResponse'
+        errorCode:
+          type: string
+        message:
+          type: string
+        responseCode:
+          type: integer
+          format: int32
+    LoginResponse:
+      type: object
+      properties:
+        customerId:
+          type: string
+        customerMobile:
+          type: string
+        accessToken:
+          type: string
+        passwordHash:
+          type: string
+    CreateVerifiedAccountRequest:
+      required:
+      - mobile
+      - otp
+      - password
+      - requestId
+      - signature
+      type: object
+      properties:
+        mobile:
+          type: string
+        password:
+          type: string
+        signature:
+          type: string
+        requestId:
+          type: string
+        otp:
+          type: string
+    GetTokenRequest:
+      type: object
+      properties:
+        username:
+          type: string
+        secret:
+          type: string
+    ApiResponseGetTokenResponse:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/GetTokenResponse'
+        errorCode:
+          type: string
+        message:
+          type: string
+        responseCode:
+          type: integer
+          format: int32
+    GetTokenResponse:
+      type: object
+      properties:
+        token:
+          type: string
+    CreateProviderAccountRequest:
+      required:
+      - group
+      - secret
+      - username
+      type: object
+      properties:
+        username:
+          type: string
+        secret:
+          type: string
+        group:
+          type: string
+  securitySchemes:
+    Bearer:
+      type: apiKey
+      name: Authorization
+      in: header
+      scheme: bearer
+      bearerFormat: JWT
