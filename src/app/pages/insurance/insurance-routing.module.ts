@@ -1,5 +1,5 @@
 import {Routes} from '@angular/router';
-import {DetermineNeedsComponent} from "../determine-needs/determine-needs.component";
+import {DetermineNeedsComponent} from "./determine-needs/determine-needs.component";
 
 export const InsuranceRoutes: Routes = [
     {
