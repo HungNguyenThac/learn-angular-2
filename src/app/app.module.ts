@@ -47,9 +47,9 @@ const customNotifierOptions: Partial<GlobalConfig> = {
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     AppRoutingModule,
     HttpClientModule,
-    BrowserAnimationsModule,
     MaterialModule,
     FlexLayoutModule,
     ToastrModule.forRoot(customNotifierOptions),
