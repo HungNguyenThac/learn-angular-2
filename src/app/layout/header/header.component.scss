@@ -1,51 +1,76 @@
 @import "../../../assets/styles/variables";
+
 $main-font: 14px;
 body {
   font-family: $sfUiDisplay;
 }
-.header-bg {
+
+#insurance-header {
   background: $monex-gradient-03;
-  position: sticky;
-  top: 0;
-  left: 0;
-  color: white;
-  height: 96px;
-  width: 100vw;
-  overflow: hidden;
-  .header-container {
-    padding: 0 16px;
-    flex-grow: 1;
-    flex-basis: 50%;
-    background: rgba(0, 0, 0, 0.2);
-    box-shadow: inset 0px -1px 0px rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(200px);
-    .button-login,.avatar {
-      height: 32px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: $main-font;
-    }
-    .avatar {
-        width: 32px;
-        background-color: $monex-color-00;
-        border-radius: 50%;
-        margin-right: 6px;
-    }
+  width: 100%;
+}
+
+.header-container {
+  flex-grow: 1;
+  flex-basis: 50%;
+  background: rgba(0, 0, 0, 0.2);
+  box-shadow: inset 0px -1px 0px rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(200px);
+
+  .button-login, .avatar {
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: $main-font;
   }
-  .navigation-bar {
-    padding: 0 16px;
-    flex-grow: 1;
-    flex-basis: 50%;
-    .back {
-      position: absolute;
-    }
-    h2 {
-      color: white;
-      margin: auto;
-      font-weight: 600;
-      font-size: 16px;
-      line-height: 22px;
-    }
+
+  .avatar {
+    width: 32px;
+    background-color: $monex-color-00;
+    border-radius: 50%;
+    color: $white;
+    font-size: 16px;
+  }
+
+  #profile-btn {
+    min-width: 52px;
   }
 }
+
+#insurance-navigation-bar {
+  padding: 4px 16px;
+  background: $monex-gradient-03;
+
+  #insurance-top-navigation {
+    display: flex;
+  }
+
+  h2 {
+    color: white;
+    margin: auto;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 22px;
+  }
+}
+
+.insurance-top-nav-btn {
+  width: 20px;
+  height: 40px;
+  img {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+#insurance-header-content {
+  padding: 8px 0;
+}
+
+@media (max-width: 768px) {
+  #insurance-header-content {
+    padding: 8px 16px;
+  }
+}
+

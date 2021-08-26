@@ -1,0 +1,48 @@
+.container-fluid {
+  height: auto;
+  padding: 0;
+}
+
+.no-padding {
+  padding: 0 !important;
+}
+
+.insurance-container {
+  max-width: 480px;
+  margin-right: auto;
+  margin-left: auto;
+  align-self: center;
+  width: 100%;
+}
+
+#insurance-main {
+  overflow: hidden;
+}
+
+router-outlet ~ * {
+  //position: absolute;
+  //height: 100%;
+  //width: 100%;
+}
+@media (min-width: 1200px) {
+  .container,
+  .container-lg,
+  .container-md,
+  .container-sm,
+  .container-xl {
+    max-width: 1140px;
+  }
+}
+
+@media (max-width: 768px) {
+  #insurance-layout-container {
+    .container {
+      padding: 0;
+    }
+
+    .insurance-container {
+      padding: 0 16px;
+    }
+  }
+}
+

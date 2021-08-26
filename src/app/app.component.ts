@@ -7,6 +7,7 @@ import {MultiLanguageService} from "./share/translate/multiLanguageService";
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
+  title = 'monex-insurance-web-app';
 
   constructor(private multiLanguageService: MultiLanguageService) {
     multiLanguageService.changeLanguage('vi');
