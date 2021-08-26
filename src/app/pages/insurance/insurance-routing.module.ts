@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
 import { DetermineNeedsComponent } from './determine-needs/determine-needs.component';
-import { InsuranceProductsChoicesComponent } from './insurance-products-choices/insurance-products-choices.component';
+import { ChargeInsuranceComponent } from './charge-insurance/charge-insurance.component';
 
 export const InsuranceRoutes: Routes = [
   {
@@ -9,11 +9,18 @@ export const InsuranceRoutes: Routes = [
     children: [
       {
         path: '',
-        component: DetermineNeedsComponent,
-      },
-      {
-        path: 'insurance-choices',
-        component: InsuranceProductsChoicesComponent,
+        children: [
+          {
+            path: '',
+            component: DetermineNeedsComponent,
+            data: { animation: true },
+          },
+          {
+            path: 'charge-insurance',
+            component: ChargeInsuranceComponent,
+            data: { animation: true },
+          },
+        ],
       },
     ],
   },

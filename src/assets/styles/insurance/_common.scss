@@ -1,0 +1,98 @@
+.container-fluid {
+  height: auto;
+  padding: 0;
+}
+
+.no-padding {
+  padding: 0 !important;
+}
+
+.insurance-container {
+  max-width: 480px;
+  margin-right: auto;
+  margin-left: auto;
+  align-self: center;
+  width: 100%;
+}
+
+#insurance-main {
+  overflow: hidden;
+}
+
+router-outlet ~ * {
+  //position: absolute;
+  //height: 100%;
+  //width: 100%;
+}
+@media (min-width: 1200px) {
+  .container,
+  .container-lg,
+  .container-md,
+  .container-sm,
+  .container-xl {
+    max-width: 1140px;
+  }
+}
+
+html,
+body {
+  height: 100%;
+  font-size: 14px;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  font-family: sfPro, "Helvetica Neue", sans-serif;
+}
+
+.ui-button, .ui-stroked-button, .optional-button {
+  height: 48px;
+  font-family: sfPro, "Helvetica Neue", sans-serif;
+  font-weight: normal;
+  font-size: 18px;
+  line-height: 24px;
+  border-radius: 40px !important;
+}
+.ui-button {
+  background-color: $monex-color-00 !important;
+  color: white !important;
+}
+
+.ui-stroked-button {
+  background-color: white !important;
+  color: $monex-color-00 !important;
+  border: 1px solid $monex-color-00 !important;
+}
+
+.optional-button {
+  color: $grey-06;
+  background-color: white !important;
+}
+
+.mat-flat-button.mat-primary.mat-button-disabled, .mat-flat-button.mat-accent.mat-button-disabled, .mat-flat-button.mat-warn.mat-button-disabled, .mat-flat-button.mat-button-disabled.mat-button-disabled, .mat-raised-button.mat-primary.mat-button-disabled, .mat-raised-button.mat-accent.mat-button-disabled, .mat-raised-button.mat-warn.mat-button-disabled, .mat-raised-button.mat-button-disabled.mat-button-disabled, .mat-fab.mat-primary.mat-button-disabled, .mat-fab.mat-accent.mat-button-disabled, .mat-fab.mat-warn.mat-button-disabled, .mat-fab.mat-button-disabled.mat-button-disabled, .mat-mini-fab.mat-primary.mat-button-disabled, .mat-mini-fab.mat-accent.mat-button-disabled, .mat-mini-fab.mat-warn.mat-button-disabled, .mat-mini-fab.mat-button-disabled.mat-button-disabled {
+  color: rgba(0,0,0,.26) !important;
+  background-color: rgba(0,0,0,.12) !important;
+}
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.rq-highlight {
+  color: $system-color-red;
+}
+
+@media (max-width: 768px) {
+  #insurance-layout-container {
+    .container {
+      padding: 0;
+    }
+
+    .insurance-container {
+      padding: 0 16px;
+    }
+  }
+}
+
