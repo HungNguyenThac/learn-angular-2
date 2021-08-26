@@ -20,11 +20,11 @@
 </section>
 <section>
   <div class="main-content">
-    <p>
+    <p style="text-align: center;">
       Vui lòng cho Monex biết thêm về bạn, chúng tôi sẽ gợi ý sản phẩm bảo hiểm
       phù hợp nhất
     </p>
-    <form [formGroup]="infoForm" fxLayout="column" fxLayoutAlign="center center">
+    <form [formGroup]="infoForm" fxLayout="column" fxLayoutAlign="center none">
       <mat-form-field appearance="outline">
         <mat-label>Độ tuổi</mat-label>
         <mat-select name="age" required formControlName="age">
@@ -34,13 +34,15 @@
         </mat-select>
       </mat-form-field>
 
-        <label #genderLabel>Giới Tính</label>
-        <mat-radio-group aria-labelledby="genderLabel" formControlName="gender" [(ngModel)]="genderStartValue" required>
-          <mat-radio-button class="example-radio-button" *ngFor="let genderOption of genderOptions"
+      <div fxLayout="column" fxLayoutAlign="center none">
+        <label #genderLabel class="radio-label">Giới Tính <span class="rq-highlight">*</span></label>
+        <mat-radio-group class="radio-group" aria-labelledby="genderLabel" formControlName="gender" [(ngModel)]="genderStartValue" required>
+          <mat-radio-button class="radio-button" *ngFor="let genderOption of genderOptions"
             [value]="genderOption">
             {{genderOption}}
           </mat-radio-button>
         </mat-radio-group>
+      </div>
 
       <mat-form-field appearance="outline">
         <mat-label>Tính chất công việc</mat-label>
@@ -55,18 +57,47 @@
         </mat-select>
       </mat-form-field>
 
-      <label #vehicleLabel>Phương tiện thường dùng</label>
-        <mat-radio-group aria-labelledby="vehicleLabel" formControlName="vehicle" [(ngModel)]="vehicleStartValue" required>
-          <mat-radio-button class="example-radio-button" *ngFor="let vehicleOption of vehicleOptions"
-            [value]="vehicleOption">
-            {{vehicleOption}}
-          </mat-radio-button>
-        </mat-radio-group>
+        <div fxLayout="column" fxLayoutAlign="center none">
+          <label #vehicleLabel class="radio-label">Phương tiện thường dùng <span class="rq-highlight">*</span></label>
+          <mat-radio-group class="radio-group" aria-labelledby="vehicleLabel" formControlName="vehicle" [(ngModel)]="vehicleStartValue" required>
+            <mat-radio-button class="radio-button" *ngFor="let vehicleOption of vehicleOptions"
+              [value]="vehicleOption">
+              {{vehicleOption}}
+            </mat-radio-button>
+          </mat-radio-group>
+        </div>
+      
+        <mat-form-field appearance="outline">
+          <mat-label>Điều kiện nhà ở</mat-label>
+          <mat-select name="houseCondition" formControlName="houseCondition" required>
+            <h3 fxLayout="row" fxLayoutAlign="center center">Điều kiện nhà ở</h3>
+            <div *ngFor="let houseConditionOption of houseConditionOptions">
+              <mat-option [value]="houseConditionOption">
+                {{ houseConditionOption }}
+              </mat-option>
+              <mat-divider></mat-divider>
+            </div>
+          </mat-select>
+        </mat-form-field>
 
-
-      <button mat-button type="submit" class="ui-button" (click)="onInfoSubmit()">
-        Xem sản phẩm phù hợp
-      </button>
+        <mat-form-field appearance="outline">
+          <mat-label>Tình trạng người phụ thuộc</mat-label>
+          <mat-select name="dependentPerson" formControlName="dependentPerson" required>
+            <h3 fxLayout="row" fxLayoutAlign="center center">Tình trạng người phụ thuộc</h3>
+            <div *ngFor="let dependentPersonOption of dependentPersonOptions">
+              <mat-option [value]="dependentPersonOption">
+                {{ dependentPersonOption }}
+              </mat-option>
+              <mat-divider></mat-divider>
+            </div>
+          </mat-select>
+        </mat-form-field>
     </form>
   </div>
 </section>
+
+  <div class="sticky-bottom" fxLayout="column" fxLayoutAlign="center none">
+    <button mat-raised-button type="submit" class="ui-button" [disabled]="!infoForm.valid" (click)="onInfoSubmit()">
+      Xem sản phẩm phù hợp
+    </button>
+  </div>

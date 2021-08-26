@@ -1,16 +1,20 @@
 @import "../../../../assets/styles/variables";
 section {
-  font-size: 12px;
-  line-height: 16px;
+  font-size: 14px;
+  line-height: 18px;
   color: $grey-10;
 }
 .top-insurance {
   background-color: #f2f9ff;
+  font-size: 12px;
+  line-height: 16px;
+  padding: 16px 0;
   height: 200px;
   overflow: hidden;
   .content {
     max-height: 100%;
-    padding: 16px 0 20px 24px;
+    min-width: 160px;
+    padding: 0 0 0 24px;
     margin-right: -12px;
     .title-content {
       color: $system-color-blue;
@@ -38,19 +42,64 @@ section {
       }
     }
   }
+
+  .big-icon {
+    min-width: 180px;
+    img {
+      position: absolute;
+      top: 95px;
+      right: 0;
+    }
+  }
+}
+
+.main-content, .sticky-bottom {
+  max-width: 360px;
+  margin: auto;
+  padding: 16px;
 }
 
 .main-content {
   margin-top: 8px;
-  padding: 16px;
+  margin-bottom: -5px;
+}
+
+.sticky-bottom {
+  box-shadow: inset 0px 1px 0px #F2F2F7;
+  position: sticky;
+  bottom: 0;
+  background-color: white;
 }
 
 .not-select {
   color: $grey-06;
 }
 
-.select-field {
-  background: #ffffff;
-  border-radius: 16px;
-  padding: 0 0 24px;
+::ng-deep.mat-placeholder-required.mat-form-field-required-marker {
+  color:$red-orange
+}
+
+.mat-form-field {
+  width: 100%;
+  margin-bottom: 3px;
+}
+
+.radio-group {
+  margin: 14px 0 28px;
+}
+
+.radio-button {
+  margin: 0 5px;
+}
+
+::ng-deep .mat-radio-inner-circle {
+  background-color:  $monex-color-00 !important;
+}
+
+::ng-deep.mat-radio-button.mat-accent.mat-radio-checked .mat-radio-outer-circle {
+  border-color: $monex-color-00 !important;
+}
+
+::ng-deep.mat-form-field-appearance-outline.mat-focused .mat-form-field-outline-thick, ::ng-deep.mat-form-field.mat-focused .mat-form-field-label {
+  color: $monex-color-00 !important;
 }
