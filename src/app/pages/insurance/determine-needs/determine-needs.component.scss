@@ -3,12 +3,13 @@ section {
   font-size: 14px;
   line-height: 18px;
   color: $grey-10;
+  overflow: hidden;
 }
 .top-insurance {
   background-color: #f2f9ff;
   font-size: 12px;
-  line-height: 16px;
   padding: 16px 0;
+  line-height: 16px;
   height: 200px;
   overflow: hidden;
   .content {
@@ -44,10 +45,10 @@ section {
   }
 
   .big-icon {
-    min-width: 180px;
+    min-width: 178px;
     img {
-      position: absolute;
-      top: 95px;
+      position: relative;
+      top: 0;
       right: 0;
     }
   }
@@ -56,16 +57,20 @@ section {
 .main-content, .sticky-bottom {
   max-width: 360px;
   margin: auto;
-  padding: 16px;
+  padding: 0 16px;
 }
 
 .main-content {
-  margin-top: 8px;
-  margin-bottom: -5px;
+  margin-top: 24px;
+  .description {
+    margin-bottom: 26px;
+  }
 }
 
 .sticky-bottom {
   box-shadow: inset 0px 1px 0px #F2F2F7;
+  height: 80px;
+  margin-top: 13px;
   position: sticky;
   bottom: 0;
   background-color: white;
@@ -81,25 +86,36 @@ section {
 
 .mat-form-field {
   width: 100%;
-  margin-bottom: 3px;
+  margin-bottom: 26px;
+  &:last-child {
+    margin-bottom: 0;
+  }
 }
 
 .radio-group {
-  margin: 14px 0 28px;
+  margin: 14px 0 32px;
 }
 
 .radio-button {
-  margin: 0 5px;
+  margin-right: 26px;
+  &:first-child {
+    margin-left: 2px;
+  }
 }
 
-::ng-deep .mat-radio-inner-circle {
-  background-color:  $monex-color-00 !important;
+::ng-deep.mat-form-field-appearance-outline .mat-form-field-wrapper {
+  margin: 0 !important;
 }
 
-::ng-deep.mat-radio-button.mat-accent.mat-radio-checked .mat-radio-outer-circle {
-  border-color: $monex-color-00 !important;
+::ng-deep.mat-form-field-wrapper {
+  padding-bottom: 0 !important;
 }
 
-::ng-deep.mat-form-field-appearance-outline.mat-focused .mat-form-field-outline-thick, ::ng-deep.mat-form-field.mat-focused .mat-form-field-label {
-  color: $monex-color-00 !important;
+::ng-deep.mat-form-field, ::ng-deep.mat-form-field-outline,::ng-deep.mat-form-field-infix {
+  height: 48px;
+}
+
+::ng-deep.mat-radio-label-content {
+  padding-left: 6px !important;
+  margin-top: 2px;
 }

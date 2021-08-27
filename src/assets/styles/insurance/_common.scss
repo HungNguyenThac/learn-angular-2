@@ -16,7 +16,7 @@
 }
 
 #insurance-main {
-  overflow: hidden;
+  // overflow: hidden;
 }
 
 router-outlet ~ * {
@@ -31,6 +31,7 @@ router-outlet ~ * {
   .container-sm,
   .container-xl {
     max-width: 1140px;
+    margin: auto;
   }
 }
 
@@ -55,26 +56,17 @@ body {
   line-height: 24px;
   border-radius: 40px !important;
 }
-.ui-button {
-  background-color: $monex-color-00 !important;
-  color: white !important;
-}
 
-.ui-stroked-button {
-  background-color: white !important;
-  color: $monex-color-00 !important;
-  border: 1px solid $monex-color-00 !important;
-}
 
 .optional-button {
   color: $grey-06;
   background-color: white !important;
 }
 
-.mat-flat-button.mat-primary.mat-button-disabled, .mat-flat-button.mat-accent.mat-button-disabled, .mat-flat-button.mat-warn.mat-button-disabled, .mat-flat-button.mat-button-disabled.mat-button-disabled, .mat-raised-button.mat-primary.mat-button-disabled, .mat-raised-button.mat-accent.mat-button-disabled, .mat-raised-button.mat-warn.mat-button-disabled, .mat-raised-button.mat-button-disabled.mat-button-disabled, .mat-fab.mat-primary.mat-button-disabled, .mat-fab.mat-accent.mat-button-disabled, .mat-fab.mat-warn.mat-button-disabled, .mat-fab.mat-button-disabled.mat-button-disabled, .mat-mini-fab.mat-primary.mat-button-disabled, .mat-mini-fab.mat-accent.mat-button-disabled, .mat-mini-fab.mat-warn.mat-button-disabled, .mat-mini-fab.mat-button-disabled.mat-button-disabled {
-  color: rgba(0,0,0,.26) !important;
-  background-color: rgba(0,0,0,.12) !important;
-}
+// .mat-flat-button.mat-primary.mat-button-disabled, .mat-flat-button.mat-accent.mat-button-disabled, .mat-flat-button.mat-warn.mat-button-disabled, .mat-flat-button.mat-button-disabled.mat-button-disabled, .mat-raised-button.mat-primary.mat-button-disabled, .mat-raised-button.mat-accent.mat-button-disabled, .mat-raised-button.mat-warn.mat-button-disabled, .mat-raised-button.mat-button-disabled.mat-button-disabled, .mat-fab.mat-primary.mat-button-disabled, .mat-fab.mat-accent.mat-button-disabled, .mat-fab.mat-warn.mat-button-disabled, .mat-fab.mat-button-disabled.mat-button-disabled, .mat-mini-fab.mat-primary.mat-button-disabled, .mat-mini-fab.mat-accent.mat-button-disabled, .mat-mini-fab.mat-warn.mat-button-disabled, .mat-mini-fab.mat-button-disabled.mat-button-disabled {
+//   color: rgba(0,0,0,.26) !important;
+//   background-color: rgba(0,0,0,.12) !important;
+// }
 a {
   text-decoration: none;
   color: inherit;
