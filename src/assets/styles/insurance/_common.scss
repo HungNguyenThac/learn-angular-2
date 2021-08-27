@@ -1,3 +1,4 @@
+@import "src/assets/styles/variables";
 .container-fluid {
   height: auto;
   padding: 0;
@@ -17,6 +18,7 @@
 
 #insurance-main {
   overflow: hidden;
+  font-family: $sfPro;
 }
 
 router-outlet ~ * {

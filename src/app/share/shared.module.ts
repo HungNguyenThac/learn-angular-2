@@ -1,21 +1,23 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {AccordionAnchorDirective, AccordionDirective, AccordionLinkDirective} from './accordion';
+import {StepProgressBarComponent} from './components/progress-bar/step-progress-bar/step-progress-bar.component';
+import {ConfirmationDialog} from "./components/confirmation-dialog/confirmation-dialog.component";
+import {MaterialModule} from "../modules/material.modules";
 
 
 @NgModule({
   declarations: [
-    AccordionAnchorDirective,
-    AccordionLinkDirective,
-    AccordionDirective,
+    StepProgressBarComponent,
+    ConfirmationDialog
+
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    MaterialModule
   ],
   exports: [
-    AccordionAnchorDirective,
-    AccordionLinkDirective,
-    AccordionDirective,
+    StepProgressBarComponent,
+    ConfirmationDialog
   ]
 })
 export class SharedModule {

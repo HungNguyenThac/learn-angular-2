@@ -5,13 +5,15 @@ import {InsuranceRoutes} from './insurance-routing.module';
 import {RouterModule} from '@angular/router';
 import {DetermineNeedsComponent} from "./determine-needs/determine-needs.component";
 import {MaterialModule} from "../../modules/material.modules";
-import { ChargeInsuranceComponent } from './charge-insurance/charge-insurance.component';
+import {ChargeInsuranceComponent} from './charge-insurance/charge-insurance.component';
+import {ChargeInsuranceFormComponent} from './components/forms/charge-insurance-form/charge-insurance-form.component';
 
 
 @NgModule({
   declarations: [
     DetermineNeedsComponent,
-    ChargeInsuranceComponent
+    ChargeInsuranceComponent,
+    ChargeInsuranceFormComponent
   ],
   imports: [
     MaterialModule,
