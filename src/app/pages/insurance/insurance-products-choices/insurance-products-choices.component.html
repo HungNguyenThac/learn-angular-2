@@ -1,0 +1,37 @@
+<!-- <app-header titleNavigation="Các sản phẩm bảo hiểm"></app-header> -->
+<div class="container">
+    <section>
+        <h2 class="title">Sản phẩm bảo hiểm phù hợp với bạn</h2>
+        <div fxLayout="row wrap" fxLayoutAlign="start none" fxFlexFill fxLayoutGap="10px grid">
+            <mat-card class="card-container" fxFlex="50" fxFlex.gt-sm="25" *ngFor="let card of mainInsuranceCards">
+                <mat-card-content class="card-content">
+                    <div class="card-img">
+                        <img [src]="card.imgSrc"
+                            [alt]="card.title" />
+                    </div>
+                    <mat-card-title>{{card.title}}</mat-card-title>
+                    <mat-card-subtitle>{{card.subtitle}}</mat-card-subtitle>
+                </mat-card-content>
+                <button mat-button class="ui-button card-btn">Mua ngay</button>
+            </mat-card>
+        </div>
+    </section>
+
+    <section>
+        <h2 class="title">Các bảo hiểm phụ trợ</h2>
+        <div fxLayout="row wrap" fxLayoutAlign="start none" fxFlexFill fxLayoutGap="10px grid">
+            <mat-card class="card-container" fxFlex="50" fxFlex.gt-sm="25" *ngFor="let card of subInsuranceCards">
+                <mat-card-content class="card-content">
+                    <div class="card-img">
+                        <img [src]="card.imgSrc"
+                            [alt]="card.title" />
+                    </div>
+                    <mat-card-title>{{card.title}}</mat-card-title>
+                    <mat-card-subtitle>{{card.subtitle}}</mat-card-subtitle>
+                </mat-card-content>
+                <button mat-button class="ui-button card-btn">Mua ngay</button>
+            </mat-card>
+        </div>
+    </section>
+    <footer></footer>
+</div>
