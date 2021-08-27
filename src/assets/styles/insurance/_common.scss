@@ -1,4 +1,3 @@
-@import "src/assets/styles/variables";
 .container-fluid {
   height: auto;
   padding: 0;
@@ -17,7 +16,6 @@
 }
 
 #insurance-main {
-  overflow: hidden;
   font-family: $sfPro;
 }
 
@@ -33,7 +31,49 @@ router-outlet ~ * {
   .container-sm,
   .container-xl {
     max-width: 1140px;
+    margin: auto;
   }
+}
+
+html,
+body {
+  height: 100%;
+  font-size: 14px;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  font-family: sfPro, "Helvetica Neue", sans-serif;
+}
+
+.ui-button, .ui-stroked-button, .optional-button {
+  height: 48px;
+  font-family: sfPro, "Helvetica Neue", sans-serif;
+  font-weight: normal;
+  font-size: 18px;
+  line-height: 24px;
+  border-radius: 40px !important;
+}
+
+
+.optional-button {
+  color: $grey-06;
+  background-color: white !important;
+}
+
+// .mat-flat-button.mat-primary.mat-button-disabled, .mat-flat-button.mat-accent.mat-button-disabled, .mat-flat-button.mat-warn.mat-button-disabled, .mat-flat-button.mat-button-disabled.mat-button-disabled, .mat-raised-button.mat-primary.mat-button-disabled, .mat-raised-button.mat-accent.mat-button-disabled, .mat-raised-button.mat-warn.mat-button-disabled, .mat-raised-button.mat-button-disabled.mat-button-disabled, .mat-fab.mat-primary.mat-button-disabled, .mat-fab.mat-accent.mat-button-disabled, .mat-fab.mat-warn.mat-button-disabled, .mat-fab.mat-button-disabled.mat-button-disabled, .mat-mini-fab.mat-primary.mat-button-disabled, .mat-mini-fab.mat-accent.mat-button-disabled, .mat-mini-fab.mat-warn.mat-button-disabled, .mat-mini-fab.mat-button-disabled.mat-button-disabled {
+//   color: rgba(0,0,0,.26) !important;
+//   background-color: rgba(0,0,0,.12) !important;
+// }
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.rq-highlight {
+  color: $system-color-red;
 }
 
 @media (max-width: 768px) {
