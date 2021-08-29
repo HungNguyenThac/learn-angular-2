@@ -181,6 +181,10 @@
 
 
 @media (max-width: 768px) {
+  .col-md-12 {
+    padding: 0 16px;
+  }
+
   .responsive-form-actions {
     position: fixed;
     bottom: 0;
