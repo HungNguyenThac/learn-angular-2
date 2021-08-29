@@ -10,12 +10,12 @@
         </p>
         <a>
           <span class="link">Các sản phẩm bảo hiểm
-            <img src="../../../../assets/img/icon-right-arrow.svg" alt="next" /></span>
+            <img src="../../../../assets/img/icon/icon-right-arrow.svg" alt="next" /></span>
         </a>
       </div>
-  
+
       <div class="big-icon">
-        <img src="../../../../assets/img/icon-big-shield.svg" alt="Insurance" />
+        <img src="../../../../assets/img/icon/icon-big-shield.svg" alt="Insurance" />
       </div>
     </div>
   </section>
@@ -35,7 +35,7 @@
             </mat-option>
           </mat-select>
         </mat-form-field>
-  
+
         <div class="d-flex flex-column">
           <label #genderLabel class="radio-label">Giới Tính <span class="rq-highlight">*</span></label>
           <mat-radio-group class="radio-group" aria-labelledby="genderLabel" formControlName="gender" [(ngModel)]="genderStartValue" required>
@@ -45,7 +45,7 @@
             </mat-radio-button>
           </mat-radio-group>
         </div>
-  
+
         <mat-form-field appearance="outline">
           <mat-label>Tính chất công việc</mat-label>
           <mat-select name="job" formControlName="job" required>
@@ -58,7 +58,7 @@
             </div>
           </mat-select>
         </mat-form-field>
-  
+
           <div class="d-flex flex-column">
             <label #vehicleLabel class="radio-label">Phương tiện thường dùng <span class="rq-highlight">*</span></label>
             <mat-radio-group class="radio-group" color="primary"  aria-labelledby="vehicleLabel" formControlName="vehicle" [(ngModel)]="vehicleStartValue" required>
@@ -68,7 +68,7 @@
               </mat-radio-button>
             </mat-radio-group>
           </div>
-        
+
           <mat-form-field appearance="outline" color="primary" >
             <mat-label>Điều kiện nhà ở</mat-label>
             <mat-select name="houseCondition" formControlName="houseCondition" required>
@@ -81,7 +81,7 @@
               </div>
             </mat-select>
           </mat-form-field>
-  
+
           <mat-form-field appearance="outline" color="primary" >
             <mat-label>Tình trạng người phụ thuộc</mat-label>
             <mat-select name="dependentPerson" formControlName="dependentPerson" required>
@@ -97,7 +97,7 @@
       </form>
     </div>
   </section>
-  
+
     <div class="sticky-bottom row align-items-center">
       <button mat-raised-button type="submit" class="ui-button" color="primary" [disabled]="!infoForm.valid" (click)="onInfoSubmit()">
         Xem sản phẩm phù hợp

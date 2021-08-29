@@ -9,14 +9,14 @@ import {FormBuilder, FormGroup} from "@angular/forms";
 export class ChargeInsuranceFormComponent implements OnInit {
   chargeInsuranceForm: FormGroup;
 
-  insurancesPackages: [
+  insurancesPackages = [
     {
       id: 1,
-      name: "đấ"
+      name: "Bảo hiểm TNDS bắt buộc (xe trên 50cc)"
     },
     {
       id: 2,
-      name: "vava"
+      name: "Bảo hiểm TNDS bắt buộc (xe trên 1000cc)"
     }
   ];
 

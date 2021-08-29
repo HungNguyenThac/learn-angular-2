@@ -38,12 +38,17 @@ $main-font: 14px;
   }
 }
 
+#logo-monex {
+  height: 28px;
+}
+
 #insurance-navigation-bar {
-  padding: 0 16px;
+  padding: 0;
   background: $monex-gradient-03;
   font-family: $sfPro;
 
   #insurance-top-navigation {
+    padding: 0 16px;
     display: flex;
     height: 48px;
   }
