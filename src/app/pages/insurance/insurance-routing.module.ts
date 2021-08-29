@@ -6,7 +6,6 @@ import { InsuranceProductsChoicesComponent } from './insurance-products-choices/
 export const InsuranceRoutes: Routes = [
   {
     path: '',
-    component: DetermineNeedsComponent,
     children: [
       {
         path: '',

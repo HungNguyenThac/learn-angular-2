@@ -7,6 +7,7 @@ import {DetermineNeedsComponent} from "./determine-needs/determine-needs.compone
 import {MaterialModule} from "../../modules/material.modules";
 import { InsuranceProductsChoicesComponent } from './insurance-products-choices/insurance-products-choices.component';
 import { ChargeInsuranceComponent } from './charge-insurance/charge-insurance.component';
+import {ChargeInsuranceFormComponent} from './components/forms/charge-insurance-form/charge-insurance-form.component';
 
 
 @NgModule({
@@ -14,6 +15,7 @@ import { ChargeInsuranceComponent } from './charge-insurance/charge-insurance.co
     DetermineNeedsComponent,
     InsuranceProductsChoicesComponent,
     ChargeInsuranceComponent,
+    ChargeInsuranceFormComponent
   ],
   imports: [
     MaterialModule,

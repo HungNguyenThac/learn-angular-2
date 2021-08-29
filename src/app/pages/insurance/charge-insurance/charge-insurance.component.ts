@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-charge-insurance',
+  selector: 'charge-insurance',
   templateUrl: './charge-insurance.component.html',
   styleUrls: ['./charge-insurance.component.scss']
 })

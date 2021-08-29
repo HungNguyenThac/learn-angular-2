@@ -26,6 +26,7 @@ import * as identityApiDocs from "../../open-api-modules/identity-api-docs";
 import {config} from "../config";
 import {HttpClient, HttpClientModule} from "@angular/common/http";
 import {BlankComponent} from "./layout/blank/blank.component";
+import {SharedModule} from "./share/shared.module";
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -43,11 +44,11 @@ const customNotifierOptions: Partial<GlobalConfig> = {
     HeaderComponent,
     MainLayoutComponent,
     NotFoundComponent,
-    ConfirmationDialog,
-    BlankComponent
+    BlankComponent,
   ],
   imports: [
     BrowserModule,
+    SharedModule,
     BrowserAnimationsModule,
     AppRoutingModule,
     HttpClientModule,
