@@ -7,9 +7,10 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { LoginComponent } from './login/login.component';
 import { MaterialModule } from 'src/app/modules/material.modules';
+import { SignUpComponent } from './sign-up/sign-up.component';
 
 @NgModule({
-  declarations: [LoginComponent],
+  declarations: [LoginComponent, SignUpComponent],
   imports: [
     MaterialModule,
     CommonModule,
