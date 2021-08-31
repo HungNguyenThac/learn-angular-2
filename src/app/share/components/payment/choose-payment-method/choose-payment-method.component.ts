@@ -1,5 +1,4 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {TranslateService} from '@ngx-translate/core';
 import {GlobalConstants} from "../../../../core/common/global-constants";
 import {MultiLanguageService} from "../../../translate/multiLanguageService";
 
@@ -17,7 +16,7 @@ export class ChoosePaymentMethodComponent implements OnInit {
   activeTab: string = GlobalConstants.PAYMENT_METHOD.TRANSFER;
   activeTabs: any = GlobalConstants.PAYMENT_METHOD;
 
-  constructor(private multiLanguageService: MultiLanguageService, private translate: TranslateService) {
+  constructor(private multiLanguageService: MultiLanguageService) {
     this.multiLanguageService.onSetupMultiLanguage("payment")
   }
 
@@ -27,7 +26,8 @@ export class ChoosePaymentMethodComponent implements OnInit {
 
   switchTab($event) {
     console.log($event)
-    console.log(this.translate.instant('payment.choose_payment_method.card_payment_napas'));}
+    console.log(this.multiLanguageService.instant('payment.choose_payment_method.card_payment_napas'));
+  }
 
   displayConfirmModalEvent($event) {
     console.log($event)

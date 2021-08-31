@@ -15,6 +15,9 @@
       "lock_create_new_session": "Bạn tạm thời bị khóa chức năng do xác thực thất bại quá nhiều lần.",
       "do_not_exist_virtual_account": "Bạn chưa có tài khoản thanh toán. Vui lòng liên hệ tổng đài 1900 234 583 để được hỗ trợ",
       "not_current_loan_repayment_error": "Bạn chưa có lịch sử thanh toán cho khoản vay hiện tại"
+    },
+    "determine_needs": {
+
     }
   }
 }
