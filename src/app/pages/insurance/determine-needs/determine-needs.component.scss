@@ -1,10 +1,14 @@
 @import "../../../../assets/styles/variables";
+@import "src/assets/styles/insurance/insurance";
+@import "src/assets/styles/insurance/insurance-form";
 section {
   font-size: 14px;
   line-height: 18px;
   color: $grey-10;
+  font-family: $sfPro;
   overflow: hidden;
 }
+
 .top-insurance {
   background-color: #f2f9ff;
   font-size: 12px;
@@ -54,12 +58,6 @@ section {
   }
 }
 
-.main-content, .sticky-bottom {
-  max-width: 360px;
-  margin: auto;
-  padding: 0 16px;
-}
-
 .main-content {
   margin-top: 24px;
   .description {
@@ -67,55 +65,42 @@ section {
   }
 }
 
-.sticky-bottom {
-  box-shadow: inset 0px 1px 0px #F2F2F7;
-  height: 80px;
-  margin-top: 13px;
-  position: sticky;
-  bottom: 0;
-  background-color: white;
-}
-
-.not-select {
-  color: $grey-06;
-}
-
-::ng-deep.mat-placeholder-required.mat-form-field-required-marker {
-  color:$red-orange
-}
+// .sticky-bottom {
+//   box-shadow: inset 0px 1px 0px #F2F2F7;
+//   height: 80px;
+//   margin-top: 13px;
+//   position: sticky;
+//   bottom: 0;
+//   background-color: white;
+// }
 
 .mat-form-field {
   width: 100%;
-  margin-bottom: 26px;
-  &:last-child {
-    margin-bottom: 0;
+}
+
+#confirm-info-btn-container {
+  max-width: 480px;
+}
+
+.responsive-form-actions {
+  padding: 16px 0;
+}
+
+@media (max-width: 768px) {
+  .insurance-btn {
+    max-width: 100%;
   }
-}
 
-.radio-group {
-  margin: 14px 0 32px;
-}
-
-.radio-button {
-  margin-right: 26px;
-  &:first-child {
-    margin-left: 2px;
+  #confirm-info-btn-container {
+    max-width: 480px;
+    margin: 0 auto;
   }
-}
 
-::ng-deep.mat-form-field-appearance-outline .mat-form-field-wrapper {
-  margin: 0 !important;
-}
+  .responsive-form-actions {
+    padding: 16px;
+  }
 
-::ng-deep.mat-form-field-wrapper {
-  padding-bottom: 0 !important;
-}
-
-::ng-deep.mat-form-field, ::ng-deep.mat-form-field-outline,::ng-deep.mat-form-field-infix {
-  height: 48px;
-}
-
-::ng-deep.mat-radio-label-content {
-  padding-left: 6px !important;
-  margin-top: 2px;
+  .responsive-form-content {
+    margin-bottom: 67px;
+  }
 }

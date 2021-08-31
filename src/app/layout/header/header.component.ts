@@ -7,7 +7,7 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class HeaderComponent implements OnInit {
   @Input() titleNavigation :string = "Bảo hiểm";
-  logoSrc: string = "assets/img/logo-brand.png";
+  logoSrc: string = "assets/img/monex-logo.svg";
   isLogged:boolean = true;
   isSignUp: boolean = false;
   constructor() { }
