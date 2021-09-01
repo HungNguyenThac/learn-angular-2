@@ -9,9 +9,9 @@
 
   <div id="amount-to-be-paid-content">
     <!-- amountToBePaid -->
-    <div class="pl-payment-content-container">
-      <div class="pl-payment-content-left">
-        <label class="pl-payment-content-label"
+    <div class="payment-content-container">
+      <div class="payment-content-left">
+        <label class="payment-content-label"
         >{{ 'payment.choose_payment_method.amount_to_be_paid' | translate }}
           <img
             [src]="'/assets/img/icon/info.svg'"
@@ -19,14 +19,14 @@
             [matTooltip]="'payment.choose_payment_method.amount_to_be_paid_desc' | translate"
             matTooltipPosition="right"
           /></label>
-        <p class="pl-payment-content-value">
+        <p class="payment-content-value">
           {{ vaInfo?.amountToBePaid }}
         </p>
       </div>
-      <div class="pl-payment-content-right">
+      <div class="payment-content-right">
         <button
           type="button"
-          class="btn-primary"
+          class="insurance-btn btn-primary"
           (click)="copyToClipboard(vaInfo?.amountToBePaid)"
         >{{ 'payment.choose_payment_method.copy' | translate }}
         </button>
@@ -34,32 +34,32 @@
     </div>
 
     <!-- receiverBackCode -->
-    <div class="pl-payment-content-container">
-      <div class="pl-payment-content-left">
-        <label class="pl-payment-content-label">
+    <div class="payment-content-container">
+      <div class="payment-content-left">
+        <label class="payment-content-label">
           {{ 'payment.choose_payment_method.bank_code_receiver' | translate }}
         </label>
-        <p class="pl-payment-content-value">
+        <p class="payment-content-value">
           {{ vaInfo?.bankCode }}
         </p>
       </div>
-      <div class="pl-payment-content-right"></div>
+      <div class="payment-content-right"></div>
     </div>
 
     <!-- receiverAccountNumber -->
-    <div class="pl-payment-content-container">
-      <div class="pl-payment-content-left">
-        <label class="pl-payment-content-label">
+    <div class="payment-content-container">
+      <div class="payment-content-left">
+        <label class="payment-content-label">
           {{ 'payment.choose_payment_method.account_number_receiver' | translate }}
         </label>
-        <p class="pl-payment-content-value">
+        <p class="payment-content-value">
           {{ vaInfo?.accountNumber }}
         </p>
       </div>
-      <div class="pl-payment-content-right">
+      <div class="payment-content-right">
         <button
           type="button"
-          class="btn-primary"
+          class="insurance-btn btn-primary"
           (click)="copyToClipboard(vaInfo?.accountNumber)"
         >
           {{ 'payment.choose_payment_method.copy' | translate }}
@@ -68,9 +68,9 @@
     </div>
 
     <!-- receiverName -->
-    <div class="pl-payment-content-container">
-      <div class="pl-payment-content-left">
-        <label class="pl-payment-content-label"
+    <div class="payment-content-container">
+      <div class="payment-content-left">
+        <label class="payment-content-label"
         >
           {{ 'payment.choose_payment_method.name_receiver' | translate }}
           <img
@@ -79,27 +79,27 @@
             [matTooltip]="'payment.choose_payment_method.name_receiver_desc' | translate"
             matTooltipPosition="right"
           /></label>
-        <p class="pl-payment-content-value">
+        <p class="payment-content-value">
           {{ vaInfo?.accountName }}
         </p>
       </div>
-      <div class="pl-payment-content-right"></div>
+      <div class="payment-content-right"></div>
     </div>
 
     <!-- Transfer content -->
-    <div class="pl-payment-content-container border-bottom-0">
-      <div class="pl-payment-content-left">
-        <label class="pl-payment-content-label pl-required">
+    <div class="payment-content-container border-bottom-0">
+      <div class="payment-content-left">
+        <label class="payment-content-label payment-required">
           {{ 'payment.choose_payment_method.transfer_content' | translate }}
         </label>
-        <p class="pl-payment-content-value">
-          {{ productInfo?.loanCode }}
+        <p class="payment-content-value">
+          {{ productInfo?.message }}
         </p>
       </div>
-      <div class="pl-payment-content-right">
+      <div class="payment-content-right">
         <button
           type="button"
-          class="btn-primary"
+          class="insurance-btn btn-primary"
           (click)="copyToClipboard(productInfo?.message)"
         >
           {{ 'payment.choose_payment_method.copy' | translate }}
@@ -107,7 +107,7 @@
       </div>
     </div>
 
-    <div id="pl-payment-required">
+    <div id="payment-required">
       <p
         [innerHTML]="
             'payment.choose_payment_method.required_name_desc' | translate :{

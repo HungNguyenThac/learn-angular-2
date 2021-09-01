@@ -24,20 +24,20 @@
   </p>
 
   <div id="amount-to-be-paid-content">
-    <div class="pl-payment-content-container">
-      <div class="pl-payment-content-left">
-        <label class="pl-payment-content-label">
+    <div class="payment-content-container">
+      <div class="payment-content-left">
+        <label class="payment-content-label">
           {{ 'payment.choose_payment_method.amount_to_be_paid' | translate }}
         </label>
-        <p class="pl-payment-content-value">
+        <p class="payment-content-value">
           {{ amountToBePaid }}
         </p>
 
-        <p class="pl-payment-content-hint">
+        <p class="payment-content-hint">
           {{ 'payment.choose_payment_method.hint_amount_to_be_paid' | translate }}
         </p>
       </div>
-      <div class="pl-payment-content-right"></div>
+      <div class="payment-content-right"></div>
     </div>
   </div>
 
@@ -45,7 +45,7 @@
     <button
       type="submit"
       id="finalization-btn-submit"
-      class="btn-primary"
+      class="insurance-btn btn-primary"
       [disabled]="disabledBtn"
       (click)="finalization()"
     >

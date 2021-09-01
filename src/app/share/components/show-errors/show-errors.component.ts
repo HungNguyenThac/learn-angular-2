@@ -30,6 +30,9 @@ export class ShowErrorsComponent {
   @Input() private control: AbstractControlDirective | AbstractControl;
 
   shouldShowErrors(): boolean {
+    console.log(this.control &&
+      this.control.errors &&
+      (this.control.dirty || this.control.touched))
     return (
       this.control &&
       this.control.errors &&

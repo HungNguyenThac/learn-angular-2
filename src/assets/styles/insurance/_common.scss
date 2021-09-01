@@ -19,6 +19,26 @@
   font-family: $sfPro;
 }
 
+
+.link-inline-green {
+  font-family: $sfPro;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 18px;
+  letter-spacing: 0.1px;
+  color: $monex-color-00;
+}
+
+.insurance-name-inline {
+  font-family: $sfPro;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 12px;
+  line-height: 16px;
+  color: $system-color-red;
+}
+
 router-outlet ~ * {
   //position: absolute;
   //height: 100%;
