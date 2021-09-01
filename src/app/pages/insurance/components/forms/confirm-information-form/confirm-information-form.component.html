@@ -2,22 +2,24 @@
       #insuranceConfirmInformationFormWrapper>
   <div class="row responsive-form-content">
     <div class="col-md-12 insurance-info-title">
-      <h2>Thông tin ghi trên đăng ký xe</h2>
+      <h2>{{ 'insurance.confirm_information.first_title_info' | translate }}</h2>
     </div>
 
     <div class="col-md-12">
       <mat-form-field appearance="outline" floatLabel="never" class="w-100">
-        <mat-label>Tên chủ xe</mat-label>
-        <input matInput formControlName="vehicleOwnerName" placeholder="Tên chủ xe" required/>
+        <mat-label>{{ 'insurance.confirm_information.vehicle_owner' | translate }}</mat-label>
+        <input matInput formControlName="vehicleOwnerName"
+               [placeholder]="'insurance.confirm_information.vehicle_owner' | translate" required/>
+        <show-errors></show-errors>
         <mat-error *ngIf="!confirmInformationForm.controls['vehicleOwnerName'].valid">
-          Tên chủ xe không được để trống
+
         </mat-error>
       </mat-form-field>
     </div>
 
     <div class="col-md-12">
       <mat-form-field appearance="outline" floatLabel="never" class="w-100">
-        <mat-label>Tỉnh/Thành phố</mat-label>
+        <mat-label>{{ 'insurance.confirm_information.vehicle_province' | translate }}</mat-label>
         <mat-select required formControlName="vehicleProvince">
           <mat-option *ngFor="let provinceOption of provinceOptions" [value]="provinceOption.id">
             {{ provinceOption.name }}
@@ -31,8 +33,9 @@
 
     <div class="col-md-12">
       <mat-form-field appearance="outline" floatLabel="never" class="w-100">
-        <mat-label>Địa chỉ</mat-label>
-        <input matInput formControlName="vehicleAddress" placeholder="Địa chỉ" required/>
+        <mat-label>{{ 'insurance.confirm_information.vehicle_address' | translate }}</mat-label>
+        <input matInput formControlName="vehicleAddress"
+               [placeholder]="'insurance.confirm_information.vehicle_address' | translate" required/>
         <mat-error *ngIf="!confirmInformationForm.controls['vehicleAddress'].valid">
           Địa chỉ không được để trống
         </mat-error>
@@ -41,8 +44,9 @@
 
     <div class="col-md-12">
       <mat-form-field appearance="outline" floatLabel="never" class="w-100">
-        <mat-label>Thời hạn bắt đầu</mat-label>
-        <input matInput formControlName="vehicleStartTime" placeholder="Thời hạn bắt đầu" required/>
+        <mat-label>{{ 'insurance.confirm_information.vehicle_start_time' | translate }}</mat-label>
+        <input matInput formControlName="vehicleStartTime"
+               [placeholder]="'insurance.confirm_information.vehicle_start_time' | translate" required/>
         <mat-error *ngIf="!confirmInformationForm.controls['vehicleStartTime'].valid">
           Thời hạn bắt đầu không được để trống
         </mat-error>
@@ -51,8 +55,9 @@
 
     <div class="col-md-12">
       <mat-form-field appearance="outline" floatLabel="never" class="w-100">
-        <mat-label>Biển kiểm soát</mat-label>
-        <input matInput formControlName="vehicleNumber" placeholder="Biển kiểm soát" required/>
+        <mat-label>{{ 'insurance.confirm_information.vehicle_number' | translate }}</mat-label>
+        <input matInput formControlName="vehicleNumber"
+               [placeholder]="'insurance.confirm_information.vehicle_number' | translate" required/>
         <mat-error *ngIf="!confirmInformationForm.controls['vehicleNumber'].valid">
           Biển kiểm soát không được để trống
         </mat-error>
@@ -61,8 +66,9 @@
 
     <div class="col-md-12">
       <mat-form-field appearance="outline" floatLabel="never" class="w-100">
-        <mat-label>Số máy</mat-label>
-        <input matInput formControlName="machineNumber" placeholder="Số máy"/>
+        <mat-label>{{ 'insurance.confirm_information.machine_number' | translate }}</mat-label>
+        <input matInput formControlName="machineNumber"
+               [placeholder]="'insurance.confirm_information.machine_number' | translate"/>
         <mat-error *ngIf="!confirmInformationForm.controls['machineNumber'].valid">
         </mat-error>
       </mat-form-field>
@@ -70,8 +76,9 @@
 
     <div class="col-md-12">
       <mat-form-field appearance="outline" floatLabel="never" class="w-100">
-        <mat-label>Số khung</mat-label>
-        <input matInput formControlName="frameNumber" placeholder="Số khung"/>
+        <mat-label>{{ 'insurance.confirm_information.frame_number' | translate }}</mat-label>
+        <input matInput formControlName="frameNumber"
+               [placeholder]="'insurance.confirm_information.frame_number' | translate"/>
         <mat-error *ngIf="!confirmInformationForm.controls['frameNumber'].valid">
         </mat-error>
       </mat-form-field>
@@ -79,14 +86,15 @@
 
 
     <div class="col-md-12 insurance-info-title">
-      <h2>Địa chỉ nhận chứng nhận bảo hiểm</h2>
+      <h2>{{ 'insurance.confirm_information.second_title_info' | translate }}</h2>
     </div>
 
 
     <div class="col-md-12">
       <mat-form-field appearance="outline" floatLabel="never" class="w-100">
-        <mat-label>Tên người nhận</mat-label>
-        <input matInput formControlName="receiverName" placeholder="Tên người nhận" required/>
+        <mat-label>{{ 'insurance.confirm_information.receiver_name' | translate }}</mat-label>
+        <input matInput formControlName="receiverName"
+               [placeholder]="'insurance.confirm_information.receiver_name' | translate" required/>
         <mat-error *ngIf="!confirmInformationForm.controls['receiverName'].valid">
           Tên người nhận không được để trống
         </mat-error>
@@ -95,7 +103,7 @@
 
     <div class="col-md-12">
       <mat-form-field appearance="outline" floatLabel="never" class="w-100">
-        <mat-label>Tỉnh/Thành phố</mat-label>
+        <mat-label>{{ 'insurance.confirm_information.receiver_province' | translate }}</mat-label>
         <mat-select required formControlName="receiverProvince">
           <mat-option *ngFor="let provinceOption of provinceOptions" [value]="provinceOption.id">
             {{ provinceOption.name }}
@@ -109,8 +117,9 @@
 
     <div class="col-md-12">
       <mat-form-field appearance="outline" floatLabel="never" class="w-100">
-        <mat-label>Địa chỉ</mat-label>
-        <input matInput formControlName="receiverAddress" placeholder="Địa chỉ" required/>
+        <mat-label>{{ 'insurance.confirm_information.receiver_address' | translate }}</mat-label>
+        <input matInput formControlName="receiverAddress"
+               [placeholder]="'insurance.confirm_information.receiver_address' | translate" required/>
         <mat-error *ngIf="!confirmInformationForm.controls['receiverAddress'].valid">
           Địa chỉ không được để trống
         </mat-error>
@@ -119,8 +128,9 @@
 
     <div class="col-md-12">
       <mat-form-field appearance="outline" floatLabel="never" class="w-100">
-        <mat-label>Email</mat-label>
-        <input matInput formControlName="receiverEmail" placeholder="Email" required/>
+        <mat-label>{{ 'insurance.confirm_information.receiver_email' | translate }}</mat-label>
+        <input matInput formControlName="receiverEmail"
+               [placeholder]="'insurance.confirm_information.receiver_email' | translate" required/>
         <mat-error *ngIf="!confirmInformationForm.controls['receiverEmail'].valid">
           Email không được để trống
         </mat-error>
@@ -129,8 +139,9 @@
 
     <div class="col-md-12">
       <mat-form-field appearance="outline" floatLabel="never" class="w-100">
-        <mat-label>Số điện thoại</mat-label>
-        <input matInput formControlName="receiverPhoneNumber" placeholder="Số điện thoại" required/>
+        <mat-label>{{ 'insurance.confirm_information.receiver_phone_number' | translate }}</mat-label>
+        <input matInput formControlName="receiverPhoneNumber"
+               [placeholder]="'insurance.confirm_information.receiver_phone_number' | translate" required/>
         <mat-error *ngIf="!confirmInformationForm.controls['receiverPhoneNumber'].valid">
           Số điện thoại không được để trống
         </mat-error>
@@ -142,13 +153,11 @@
   <div class="col-md-12 responsive-form-actions">
     <div id="confirm-info-btn-container">
       <mat-checkbox id="insurance-checkbox">
-        <p class="insurance-checkbox-text align-items-center">
-          Tôi đồng ý với các <a class="link-inline-green" href="javascript:void(0)">Điều khoản, Điều kiện và Quy tắc Bảo
-          hiểm</a>
-        </p>
+        <p class="insurance-checkbox-text align-items-center"
+           [innerHTML]="'insurance.confirm_information.confirm_policy' | translate"></p>
       </mat-checkbox>
       <button id="confirm-information-btn" (click)="onSubmit()" mat-raised-button color="primary"
-              class="w-100 insurance-btn btn-primary">Thanh toán ngay
+              class="w-100 insurance-btn btn-primary">{{ 'insurance.confirm_information.payment_btn_text' | translate }}
       </button>
     </div>
   </div>

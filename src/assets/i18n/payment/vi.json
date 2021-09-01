@@ -20,8 +20,8 @@
       "name_receiver": "Tên người nhận",
       "name_receiver_desc": "Đây là tài khoản tất toán của Quý khách do Monex quản lý. Khi Quý khách chuyển khoản tới tài khoản này, hệ thống sẽ ghi nhận vào số tiền hoàn ứng của Quý khách",
       "transfer_content": "Nội dung chuyển khoản",
-      "required_name_desc": "Thiếu thông tin này, Monex sẽ không thể định danh khoản tiền từ <span class='pl-name-inline'>{name}</span>",
-      "confirm_finalization_content": "Quý khách vui lòng chuẩn bị sẵn thông tin thẻ ngân hàng. Phiên thanh toán chỉ có thời hạn {minute} phút"
+      "required_name_desc": "Thiếu thông tin này, Monex sẽ không thể định danh khoản tiền từ <span class='insurance-name-inline'>{{name}}</span>",
+      "confirm_finalization_content": "Quý khách vui lòng chuẩn bị sẵn thông tin thẻ ngân hàng. Phiên thanh toán chỉ có thời hạn {{minute}} phút"
     }
   }
 }
