@@ -1,18 +1,13 @@
 @import "../../../../assets/styles/variables";
-.container {
-  padding: 0;
-  color: $grey-10;
-  font-family: sfPro, "Helvetica Neue", sans-serif;
-  margin: auto;
   section {
     padding: 10px 16px 0 16px;
     box-sizing: border-box;
     margin-top: 24px;
+    font-family: $sfPro, "Helvetica Neue", sans-serif !important;
     &:first-child{
       margin-top: 16px;
     }
   }
-}
 
 .title {
   font-style: normal;
@@ -44,6 +39,7 @@
   min-height: 162px;
   height: calc(100% - 32px);
   box-sizing: border-box;
+  padding: 16px 12px;
   text-align: center;
   border: 2px solid $grey-01;
   border-radius: 8px 8px 0 0;
@@ -57,7 +53,7 @@
       height: auto;
     }
     @include desktop {
-      width: 40%;
+      width: 50%;
       height: auto;
     }
     img {

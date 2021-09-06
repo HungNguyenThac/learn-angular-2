@@ -54,7 +54,11 @@ export class MultiLanguageService {
         });
     }
 
-    public get(key: string) {
-        return this.translateService.get(key);
+    public get(key: string | Array<string>, interpolateParams?: Object) {
+        return this.translateService.get(key, interpolateParams);
+    }
+
+    public instant(key: string | Array<string>, interpolateParams?: Object) {
+      return this.translateService.instant(key, interpolateParams)
     }
 }

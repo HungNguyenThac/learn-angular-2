@@ -1,33 +1,31 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
-// import {AccordionAnchorDirective, AccordionDirective, AccordionLinkDirective} from './accordion';
-import { FormInputComponent } from './components/form-input/form-input.component';
-import { MaterialModule } from '../modules/material.modules';
-import {StepProgressBarComponent} from './components/progress-bar/step-progress-bar/step-progress-bar.component';
-import {ConfirmationDialog} from "./components/confirmation-dialog/confirmation-dialog.component";
+import {MaterialModule} from "./modules/material.modules";
+import {TranslateModule} from "@ngx-translate/core";
 
+import * as fromComponents from './components';
+import * as fromValidators from './validators';
+import * as fromPipes from './pipes';
+import * as fromDirectives from './directives';
 
 @NgModule({
   declarations: [
-    // AccordionAnchorDirective,
-    // AccordionLinkDirective,
-    // AccordionDirective,
-    FormInputComponent,
-    StepProgressBarComponent,
-    ConfirmationDialog
-
+    ...fromComponents.components,
+    ...fromValidators.validators,
+    ...fromDirectives.directives,
+    ...fromPipes.pipes,
   ],
   imports: [
     CommonModule,
-    MaterialModule
+    MaterialModule,
+    TranslateModule
   ],
   exports: [
-    // AccordionAnchorDirective,
-    // AccordionLinkDirective,
-    // AccordionDirective,
-    FormInputComponent,
-    StepProgressBarComponent,
-    ConfirmationDialog
+    MaterialModule,
+    ...fromComponents.components,
+    ...fromValidators.validators,
+    ...fromDirectives.directives,
+    ...fromPipes.pipes,
   ]
 })
 export class SharedModule {

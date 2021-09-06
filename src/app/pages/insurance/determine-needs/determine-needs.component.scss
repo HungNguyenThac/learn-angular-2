@@ -6,7 +6,6 @@ section {
   line-height: 18px;
   color: $grey-10;
   font-family: $sfPro;
-  overflow: hidden;
 }
 
 .top-insurance {
@@ -29,8 +28,10 @@ section {
     h1,
     p {
       color: $monex-color-01;
-      padding: 0;
-      margin: 0;
+      font-style: normal;
+      font-weight: normal;
+      font-size: 12px;
+      line-height: 16px;
     }
     h1 {
       font-size: 32px;
@@ -49,7 +50,7 @@ section {
   }
 
   .big-icon {
-    min-width: 178px;
+    min-width: 188px;
     img {
       position: relative;
       top: 0;
@@ -98,6 +99,7 @@ section {
 
   .responsive-form-actions {
     padding: 16px;
+    max-width: 100vw;
   }
 
   .responsive-form-content {

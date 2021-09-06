@@ -3,6 +3,7 @@ import { DetermineNeedsComponent } from './determine-needs/determine-needs.compo
 import { ChargeInsuranceComponent } from './charge-insurance/charge-insurance.component';
 import { InsuranceProductsChoicesComponent } from './insurance-products-choices/insurance-products-choices.component';
 import {ConfirmInformationComponent} from "./confirm-information/confirm-information.component";
+import {InsurancePaymentComponent} from "./insurance-payment/insurance-payment.component";
 
 export const InsuranceRoutes: Routes = [
   {
@@ -26,6 +27,11 @@ export const InsuranceRoutes: Routes = [
       {
         path: 'insurance-choices',
         component: InsuranceProductsChoicesComponent,
+        data: { animation: true },
+      },
+      {
+        path: 'insurance-payment',
+        component: InsurancePaymentComponent,
         data: { animation: true },
       },
     ],

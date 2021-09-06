@@ -87,6 +87,32 @@
   border-top: 8px solid transparent !important;
 }
 
+::ng-deep .mat-form-field-suffix,
+::ng-deep .mat-form-field-prefix {
+  button {
+    width: 20px !important;
+    height: 20px !important;
+  }
+}
+
+::ng-deep .mat-form-field-prefix {
+  width: 20px !important;
+  height: 20px !important;
+  position: relative;
+  top: 0 !important;
+  margin-right: 8px;
+}
+
+::ng-deep .mat-form-field-suffix {
+  position: relative;
+  button {
+    margin-left: 16px;
+    &:first-child {
+      margin-left: 0;
+    }
+  }
+}
+
 ::ng-deep.mat-form-field-appearance-outline .mat-select-arrow-wrapper {
   transform: inherit !important;
 }

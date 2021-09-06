@@ -38,7 +38,9 @@ export class DetermineNeedsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    for (let index = 16; index <= 65; index++) {
+    const currentDate = new Date()
+    const currentYear = currentDate.getFullYear();
+    for (let index = 1900; index <= currentYear; index++) {
       this.ageOptions.push(index)
     }
   }

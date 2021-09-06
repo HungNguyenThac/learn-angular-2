@@ -1,1 +1,15 @@
-@import "../../../../assets/styles/variables";
+@import "src/app/pages/auth/auth.component.scss";
+
+#get-otp-btn-container {
+  padding: 27px 0;
+}
+
+#insurance-checkbox {
+  margin-bottom: 27px;
+}
+
+.is-focused-input {
+  color: $monex-color-00 !important;
+}
+
+
