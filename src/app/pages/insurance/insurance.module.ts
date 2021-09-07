@@ -11,6 +11,7 @@ import {ConfirmInformationComponent} from './confirm-information/confirm-informa
 import {ConfirmInformationFormComponent} from './components/forms/confirm-information-form/confirm-information-form.component';
 import {InsurancePaymentComponent} from './insurance-payment/insurance-payment.component';
 import {SharedModule} from "../../share/shared.module";
+import {TranslateModule} from "@ngx-translate/core";
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import {SharedModule} from "../../share/shared.module";
   imports: [
     CommonModule,
     RouterModule.forChild(InsuranceRoutes),
-    SharedModule
+    SharedModule,
+    TranslateModule
   ]
 })
 export class InsuranceModule {

@@ -1,6 +1,6 @@
 <div class="switch-tabs d-flex justify-content-between">
   <a
-    class="pl-tab-content text-center align-items-center d-inline-flex justify-content-center"
+    class="payment-tab-content text-center align-items-center d-inline-flex justify-content-center"
     [ngClass]="{ 'tab-content-active': activeTab === activeTabs.CARD }"
     href="javascript:void(0)"
     (click)="switchTab(activeTabs.CARD)"
@@ -21,7 +21,7 @@
     <p>{{ 'payment.choose_payment_method.card_payment' | translate }}</p>
   </a>
   <a
-    class="pl-tab-content text-center align-items-center d-inline-flex justify-content-center"
+    class="payment-tab-content text-center align-items-center d-inline-flex justify-content-center"
     [ngClass]="{ 'tab-content-active': activeTab === activeTabs.TRANSFER }"
     href="javascript:void(0)"
     (click)="switchTab(activeTabs.TRANSFER)"

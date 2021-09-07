@@ -40,13 +40,13 @@
     border: none !important;
   }
 
-  &.btn-disabled {
-    background: $grey-11;
-    color: $grey-12;
+  &:disabled {
+    background: $grey-01;
+    color: $grey-05;
     border: none !important;
   }
 
-  &.btn-disabled:hover {
+  &:disabled:hover {
     cursor: auto;
   }
 }
@@ -55,7 +55,7 @@
   background: $grey-01;
   border: none !important;
   cursor: pointer;
-  color: $grey-08;
+  color: $grey-10;
 
   &:hover,
   &:active,
@@ -64,13 +64,13 @@
     border: none !important;
   }
 
-  &.btn-disabled {
+  &:disabled {
     background: $grey-11;
     color: $grey-12;
     border: none !important;
   }
 
-  &.btn-disabled:hover {
+  &:disabled:hover {
     cursor: auto;
   }
 

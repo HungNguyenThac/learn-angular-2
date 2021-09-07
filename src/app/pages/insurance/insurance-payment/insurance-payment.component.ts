@@ -6,9 +6,18 @@ import {Component, OnInit} from '@angular/core';
   styleUrls: ['./insurance-payment.component.scss']
 })
 export class InsurancePaymentComponent implements OnInit {
-  productInfo: any;
-  userInfo: any;
-  vaInfo: any;
+  productInfo: any = {
+    message: "MXL-012312"
+  };
+  userInfo: any = {
+    firstName: "Tạ Sơn Quỳnh"
+  };
+  vaInfo: any = {
+    accountNumber: "1234567890",
+    amountToBePaid: "66.000 ₫",
+    bankCode: "MSB",
+    accountName: "TA SON QUYNH"
+  };
 
   constructor() {
   }

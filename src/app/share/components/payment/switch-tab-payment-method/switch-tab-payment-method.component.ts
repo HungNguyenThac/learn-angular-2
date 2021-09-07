@@ -1,6 +1,5 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {GlobalConstants} from "../../../../core/common/global-constants";
-import {MultiLanguageService} from "../../../translate/multiLanguageService";
+import {PAYMENT_METHOD} from "../../../../core/common/enum/payment-method";
 
 @Component({
   selector: 'app-switch-tab-payment-method',
@@ -8,10 +7,10 @@ import {MultiLanguageService} from "../../../translate/multiLanguageService";
   styleUrls: ['./switch-tab-payment-method.component.scss']
 })
 export class SwitchTabPaymentMethodComponent implements OnInit {
-  @Input() activeTab: string = GlobalConstants.PAYMENT_METHOD.TRANSFER;
+  @Input() activeTab: PAYMENT_METHOD = PAYMENT_METHOD.TRANSFER;
   @Output() switchTabEvent = new EventEmitter<string>();
 
-  activeTabs: any = GlobalConstants.PAYMENT_METHOD;
+  activeTabs: any = PAYMENT_METHOD;
 
   constructor() {
   }

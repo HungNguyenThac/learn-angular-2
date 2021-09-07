@@ -1,6 +1,6 @@
-<div id="loan-payment-page" class="container-fluid">
-  <div class="container loan-payment-container pl-padding-bottom-default">
-    <div class="payday-loan-container">
+<div id="choose-payment-method" class="container-fluid">
+  <div class="container loan-payment-container">
+    <div class="insurance-container">
       <h2 id="choose-payment-method-title">
         {{ 'payment.choose_payment_method.choose_method' | translate }}
       </h2>
@@ -28,8 +28,8 @@
     </div>
   </div>
 
-  <div class="pl-copied-box" [hidden]="!showCopied">
-    <div class="pl-copied">
+  <div class="payment-copied-box" [hidden]="!showCopied">
+    <div class="payment-copied-text">
       {{ 'payment.choose_payment_method.copied' | translate }}
     </div>
   </div>
