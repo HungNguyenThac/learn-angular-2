@@ -17,8 +17,11 @@
 
 #insurance-main {
   font-family: $sfPro;
+  height: 100%;
+  .ng-trigger {
+    height: 100%;
+  }
 }
-
 
 .link-inline-green {
   font-family: $sfPro;
@@ -68,7 +71,9 @@ body {
   font-family: sfPro, "Helvetica Neue", sans-serif;
 }
 
-.ui-button, .ui-stroked-button, .optional-button {
+.ui-button,
+.ui-stroked-button,
+.optional-button {
   height: 48px;
   font-family: sfPro, "Helvetica Neue", sans-serif;
   font-weight: normal;
@@ -76,7 +81,6 @@ body {
   line-height: 24px;
   border-radius: 40px !important;
 }
-
 
 .optional-button {
   color: $grey-06;
@@ -96,6 +100,15 @@ a {
   color: $system-color-red;
 }
 
+.ng2-pdf-viewer-container {
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
 @media (max-width: 768px) {
   #insurance-layout-container {
     .container {
@@ -107,4 +120,3 @@ a {
     }
   }
 }
-
