@@ -9,6 +9,8 @@ import { CompaniesListComponent } from './companies-list/companies-list.componen
 import { UserInfoFormComponent } from './user-info-form/user-info-form.component';
 import { ApprovalLetterSignComponent } from './approval-letter-sign/approval-letter-sign.component';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
+import { AdditionalUserInfoComponent } from './additional-user-info/additional-user-info.component';
+import { DetailContractSignComponent } from './detail-contract-sign/detail-contract-sign.component';
 
 @NgModule({
   declarations: [
@@ -16,6 +18,8 @@ import { PdfViewerModule } from 'ng2-pdf-viewer';
     CompaniesListComponent,
     UserInfoFormComponent,
     ApprovalLetterSignComponent,
+    AdditionalUserInfoComponent,
+    DetailContractSignComponent,
   ],
   imports: [
     CommonModule,
