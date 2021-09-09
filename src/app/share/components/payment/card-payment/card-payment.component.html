@@ -7,7 +7,7 @@
     <div
       class="d-inline-flex justify-content-center text-center card-method-img-box"
     >
-      <img [src]="'/assets/img/napas.png'" alt="napas" class="card-method-img"/>
+      <img [src]="'/assets/img/insurance/napas.png'" alt="napas" class="card-method-img"/>
     </div>
     <div class="d-inline-flex align-items-center">
       <div id="stick-card"></div>
@@ -15,7 +15,7 @@
     <div
       class="d-inline-flex justify-content-center text-center card-method-img-box"
     >
-      <img [src]="'/assets/img/gpay.png'" alt="gpay" class="card-method-img"/>
+      <img [src]="'/assets/img/insurance/gpay.png'" alt="gpay" class="card-method-img"/>
     </div>
   </div>
 
@@ -30,7 +30,7 @@
           {{ 'payment.choose_payment_method.amount_to_be_paid' | translate }}
         </label>
         <p class="payment-content-value">
-          {{ amountToBePaid }}
+          {{ amountToBePaid | formatPrice}}
         </p>
 
         <p class="payment-content-hint">

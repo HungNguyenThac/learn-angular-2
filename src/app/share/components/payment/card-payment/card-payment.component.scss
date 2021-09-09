@@ -36,7 +36,7 @@
     display: flex;
     align-items: center;
 
-    img {
+    span {
       margin-left: 4px;
       width: 12px;
       height: 12px;
@@ -65,8 +65,9 @@
 }
 
 .payment-content-label.payment-required:after {
-  background: url(/assets/img/icon/mandatory.svg) no-repeat;
-  content: "";
+  content: "*";
+  font-size: 16px;
+  color: $system-color-red;
   line-height: 1em;
   vertical-align: top;
   width: 8px;
