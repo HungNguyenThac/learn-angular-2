@@ -13,12 +13,12 @@
       <div class="payment-content-left">
         <label class="payment-content-label"
         >{{ 'payment.choose_payment_method.amount_to_be_paid' | translate }}
-          <img
-            [src]="'/assets/img/icon/info.svg'"
-            alt="info"
+          <span
+            class="sprite-group-1-info"
             [matTooltip]="'payment.choose_payment_method.amount_to_be_paid_desc' | translate"
-            matTooltipPosition="right"
-          /></label>
+            matTooltipPosition="right">
+          </span>
+        </label>
         <p class="payment-content-value">
           {{ vaInfo?.amountToBePaid }}
         </p>
@@ -73,12 +73,12 @@
         <label class="payment-content-label"
         >
           {{ 'payment.choose_payment_method.name_receiver' | translate }}
-          <img
-            [src]="'/assets/img/icon/info.svg'"
-            alt="info"
+          <span
+            class="sprite-group-1-info"
             [matTooltip]="'payment.choose_payment_method.name_receiver_desc' | translate"
-            matTooltipPosition="right"
-          /></label>
+            matTooltipPosition="right">
+          </span>
+        </label>
         <p class="payment-content-value">
           {{ vaInfo?.accountName }}
         </p>
