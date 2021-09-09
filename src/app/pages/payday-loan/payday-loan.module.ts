@@ -9,13 +9,15 @@ import {VerifyOtpFormComponent} from "./components/verify-otp-form/verify-otp-fo
 import {FormsModule} from "@angular/forms";
 import { SignContractTermsSuccessComponent } from './sign-contract-terms-success/sign-contract-terms-success.component';
 import { ElectronicSigningSuccessComponent } from './components/electronic-signing-success/electronic-signing-success.component';
+import { SignContractSuccessComponent } from './sign-contract-success/sign-contract-success.component';
 
 @NgModule({
   declarations: [
     ContractTermsOfServiceComponent,
     VerifyOtpFormComponent,
     SignContractTermsSuccessComponent,
-    ElectronicSigningSuccessComponent
+    ElectronicSigningSuccessComponent,
+    SignContractSuccessComponent
   ],
   imports: [
     CommonModule,
@@ -27,6 +29,7 @@ import { ElectronicSigningSuccessComponent } from './components/electronic-signi
   exports: [
     ContractTermsOfServiceComponent,
     SignContractTermsSuccessComponent,
+    SignContractSuccessComponent,
     VerifyOtpFormComponent
   ]
 })

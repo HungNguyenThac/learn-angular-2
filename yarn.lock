@@ -123,6 +123,13 @@
     ora "5.4.1"
     rxjs "6.6.7"
 
+"@angular-material-components/moment-adapter@^6.0.0":
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/@angular-material-components/moment-adapter/-/moment-adapter-6.0.0.tgz#fab2a026925b1ecee4f4e2b6b5a8746fd9474490"
+  integrity sha512-YnUfaaYIsK1xeN3D84RGc500ieh7BrgSK1DNh3abneeKGTS9es9FJPkqK3JW9P+8460YQ4hxrMMeerGLG30C5A==
+  dependencies:
+    tslib "^2.1.0"
+
 "@angular/animations@~12.1.2":
   version "12.1.5"
   resolved "https://registry.yarnpkg.com/@angular/animations/-/animations-12.1.5.tgz#97a765f3cef919e54bffe08dfc20000eb9b84cd3"
@@ -216,6 +223,13 @@
   version "12.1.5"
   resolved "https://registry.yarnpkg.com/@angular/forms/-/forms-12.1.5.tgz#c7ca72934e7a3ec22a2f6a9c50480bb71375b2bf"
   integrity sha512-ABfBRCZYVbR5MUkMNrYU/ovCjXtCedk0h4phzCimGl6hBcpbumT9z/3m0TsY9sQnLq0BaCfKNklnHwCuO9mSSg==
+  dependencies:
+    tslib "^2.2.0"
+
+"@angular/material-moment-adapter@^12.2.4":
+  version "12.2.5"
+  resolved "https://registry.yarnpkg.com/@angular/material-moment-adapter/-/material-moment-adapter-12.2.5.tgz#e83a11f8f3c66416d8389770d83585dead11dc0e"
+  integrity sha512-Rm5Ko2l96pnZfnUXZIxMpuspCL/U1obIGlHdNSLzzy+BRwf/ikcCEhWF7PD1BIuPS+5n/AKQZHD7b42kiRW5Jw==
   dependencies:
     tslib "^2.2.0"
 
@@ -5209,6 +5223,14 @@ neo-async@^2.6.2:
   resolved "https://registry.yarnpkg.com/neo-async/-/neo-async-2.6.2.tgz#b4aafb93e3aeb2d8174ca53cf163ab7d7308305f"
   integrity sha512-Yd3UES5mWCSqR+qNT93S3UoYUkqAZ9lLg8a7g9rimsWmYGK8cVToA4/sF3RrshdyV3sAGMXVUmpMYOw+dLpOuw==
 
+ng2-pdf-viewer@^7.0.1:
+  version "7.0.1"
+  resolved "https://registry.yarnpkg.com/ng2-pdf-viewer/-/ng2-pdf-viewer-7.0.1.tgz#c01b9bf731140b974ff4bb965ca014f13d8a8302"
+  integrity sha512-kjjsvHd5t1Ff7ydb3Far3d6cSyw/XJH5KXgcp/0bFzSFBAV2c5aOghxoY/yQVjgG+R6F16nVUh2UrZdngLXLSg==
+  dependencies:
+    pdfjs-dist "~2.7.570"
+    tslib "^2.0.0"
+
 ngrx-store-localstorage@^12.0.1:
   version "12.0.1"
   resolved "https://registry.yarnpkg.com/ngrx-store-localstorage/-/ngrx-store-localstorage-12.0.1.tgz#282683b135011cc643e19ad883f2fb424fc81559"
@@ -5747,6 +5769,11 @@ path-type@^4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/path-type/-/path-type-4.0.0.tgz#84ed01c0a7ba380afe09d90a8c180dcd9d03043b"
   integrity sha512-gDKb8aZMDeD/tZWs9P6+q0J9Mwkdl6xMV8TjnGP3qJVJ06bdMgkbBlLU8IdfOsIsFz2BW1rNVT3XuNEl8zPAvw==
+
+pdfjs-dist@~2.7.570:
+  version "2.7.570"
+  resolved "https://registry.yarnpkg.com/pdfjs-dist/-/pdfjs-dist-2.7.570.tgz#7233241a2437ac22387656099b6e549d032f0b35"
+  integrity sha512-/ZkA1FwkEOyDaq11JhMLazdwQAA0F9uwrP7h/1L9Akt9KWh1G5/tkzS+bPuUELq2s2GDFnaT+kooN/aSjT7DXQ==
 
 performance-now@^2.1.0:
   version "2.1.0"

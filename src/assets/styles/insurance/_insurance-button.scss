@@ -1,7 +1,8 @@
 @import "src/assets/styles/variables";
 
 .insurance-btn {
-  width: 330px;
+  width: 100%;
+  max-width: 330px;
   height: 48px;
   border-radius: 38px;
   font-family: $sfPro;
