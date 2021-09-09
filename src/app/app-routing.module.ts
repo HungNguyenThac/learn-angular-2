@@ -23,6 +23,16 @@ const routes: Routes = [
     component: MainLayoutComponent,
     children: [
       {
+        path: 'hmg',
+        loadChildren: () => import('./pages/hmg/hmg.module').then(m => m.HmgModule)
+      }
+    ]
+  },
+  {
+    path: '',
+    component: MainLayoutComponent,
+    children: [
+      {
         path: 'auth',
         loadChildren: () => import('./pages/auth/auth.module').then(m => m.AuthModule),
       },
