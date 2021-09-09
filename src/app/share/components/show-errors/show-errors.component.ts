@@ -1,38 +1,40 @@
-import { Component, Input } from "@angular/core";
+import {Component, Input} from "@angular/core";
 
-import { AbstractControlDirective, AbstractControl } from "@angular/forms";
+import {AbstractControl, AbstractControlDirective} from "@angular/forms";
 
 @Component({
   selector: "show-errors",
   template: `
-   <div *ngIf="shouldShowErrors()" class="validation-errors">
-     <mat-error class="error-msg">{{getError()}}</mat-error>
-   </div>
- `
+    <div class="mat-form-field-subscript-wrapper validation-errors">
+      <div class="ng-trigger ng-trigger-transitionMessages ng-star-inserted error-msg-box"
+           [ngClass]="{'error-msg-box-active': shouldShowErrors() }">
+        <mat-error class="error-msg" *ngIf="shouldShowErrors()">{{getError()}}</mat-error>
+      </div>
+    </div>
+  `,
+  styleUrls: ['../../../../assets/styles/payday-loan/_validator.scss']
 })
 export class ShowErrorsComponent {
   private static readonly errorMessages: any = {
-    required: (params: any) => "##FIELD## can't be blank",
+    required: (params: any) => "##FIELD## không được để trống",
 
     minlength: (params: any) =>
-      "##FIELD## should be minimum " + params.requiredLength + " characters",
+      "##FIELD## phải có tối thiểu " + params.requiredLength + " ký tự",
 
     maxlength: (params: any) =>
-      "##FIELD## should not be greater then " +
+      "##FIELD## không được lớn hơn " +
       params.requiredLength +
-      " characters",
+      " ký tự",
 
-    pattern: (params: any) => "Should be a valid",
+    pattern: (params: any) => "##FIELD## phải là định dạng hợp lệ",
 
-    email: (params: any) => "Should be vaild email."
+    email: (params: any) => "##FIELD## phải là 1 email hợp lệ."
   };
 
   @Input() private control: AbstractControlDirective | AbstractControl;
+  @Input() private controlLabel: string;
 
   shouldShowErrors(): boolean {
-    console.log(this.control &&
-      this.control.errors &&
-      (this.control.dirty || this.control.touched))
     return (
       this.control &&
       this.control.errors &&
@@ -42,22 +44,29 @@ export class ShowErrorsComponent {
 
   listOfErrors(): string[] {
     return Object.keys(this.control.errors)
-    .map(field =>
-      this.getMessage(field, this.control.errors[field], this.control)
-    );
+      .map(field =>
+        this.getMessage(field, this.control.errors[field], this.control)
+      );
   }
 
   getError(): string {
     var errors = Object.keys(this.control.errors)
-    .map(field =>
-      this.getMessage(field, this.control.errors[field], this.control)
-    );
+      .map(field =>
+        this.getMessage(field, this.control.errors[field], this.control)
+      );
 
     return errors[0];
   }
 
   private getMessage(type: string, params: any, control: any) {
-    var fname = this.getControlName(control);
+
+    let msg: any = ShowErrorsComponent.errorMessages[type](params);
+
+    if (this.controlLabel) {
+      return msg.replace("##FIELD##", this.controlLabel);
+    }
+
+    let fname = this.getControlName(control);
 
     fname = fname
       .replace("_", " ")
@@ -65,8 +74,6 @@ export class ShowErrorsComponent {
       .toLowerCase();
 
     fname = fname.replace(/\b\w/g, l => l.toUpperCase());
-
-    var msg: any = ShowErrorsComponent.errorMessages[type](params);
 
     return msg.replace("##FIELD##", fname);
   }
