@@ -4,6 +4,10 @@
   top: 43px;
   left: -12px;
 
+  &.has-icon-prefix {
+    left: -38px;
+  }
+
   .error-msg-box {
     opacity: 0;
     transform: translateY(-5px);

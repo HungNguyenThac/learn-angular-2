@@ -10,15 +10,17 @@ import { SignUpComponent } from './sign-up/sign-up.component';
 import { MaterialModule } from 'src/app/share/modules/material.modules';
 import { SignInComponent } from './sign-in/sign-in.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
+import {SharedModule} from "../../share/shared.module";
 
 @NgModule({
   declarations: [LoginComponent, SignUpComponent, SignInComponent, ForgotPasswordComponent],
-  imports: [
-    MaterialModule,
-    CommonModule,
-    RouterModule.forChild(AuthRoutes),
-    ReactiveFormsModule,
-    TranslateModule,
-  ],
+    imports: [
+        MaterialModule,
+        CommonModule,
+        RouterModule.forChild(AuthRoutes),
+        ReactiveFormsModule,
+        TranslateModule,
+        SharedModule,
+    ],
 })
 export class AuthModule {}
