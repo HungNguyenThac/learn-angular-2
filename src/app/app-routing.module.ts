@@ -11,6 +11,10 @@ const routes: Routes = [
       {
         path: 'insurance',
         loadChildren: () => import('./pages/insurance/insurance.module').then(m => m.InsuranceModule)
+      },
+      {
+        path: 'payday-loan',
+        loadChildren: () => import('./pages/payday-loan/payday-loan.module').then(m => m.PaydayLoanModule)
       }
     ]
   },

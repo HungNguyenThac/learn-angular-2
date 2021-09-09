@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { FormInputComponent } from './form-input.component';
+import { OtpInputComponent } from './otp-input.component';
 
-describe('FormInputComponent', () => {
-  let component: FormInputComponent;
-  let fixture: ComponentFixture<FormInputComponent>;
+describe('OtpInputComponent', () => {
+  let component: OtpInputComponent;
+  let fixture: ComponentFixture<OtpInputComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ FormInputComponent ]
+      declarations: [ OtpInputComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(FormInputComponent);
+    fixture = TestBed.createComponent(OtpInputComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

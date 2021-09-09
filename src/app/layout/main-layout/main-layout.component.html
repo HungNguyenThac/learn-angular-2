@@ -1,7 +1,7 @@
 <div class="main-layout">
   <app-header fxLayout="column"></app-header>
 
-  <div id="insurance-main">
+  <div id="main-layout-content">
     <div [@routeAnimations]="outlet.isActivated ? outlet.activatedRoute : ''">
       <router-outlet #outlet="outlet"></router-outlet>
     </div>

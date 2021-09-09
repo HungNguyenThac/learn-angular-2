@@ -7,18 +7,21 @@ import * as fromComponents from './components';
 import * as fromValidators from './validators';
 import * as fromPipes from './pipes';
 import * as fromDirectives from './directives';
+import {FormsModule} from "@angular/forms";
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 
 @NgModule({
   declarations: [
     ...fromComponents.components,
     ...fromValidators.validators,
     ...fromDirectives.directives,
-    ...fromPipes.pipes,
+    ...fromPipes.pipes
   ],
   imports: [
     CommonModule,
     MaterialModule,
-    TranslateModule
+    TranslateModule,
+    FormsModule
   ],
   exports: [
     MaterialModule,
@@ -26,6 +29,10 @@ import * as fromDirectives from './directives';
     ...fromValidators.validators,
     ...fromDirectives.directives,
     ...fromPipes.pipes,
+  ],
+  providers: [
+    { provide: MAT_DIALOG_DATA, useValue: {} },
+    { provide: MatDialogRef, useValue: {} }
   ]
 })
 export class SharedModule {
