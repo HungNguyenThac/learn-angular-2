@@ -10,6 +10,9 @@ import {FormsModule} from "@angular/forms";
 import { SignContractTermsSuccessComponent } from './sign-contract-terms-success/sign-contract-terms-success.component';
 import { ElectronicSigningSuccessComponent } from './components/electronic-signing-success/electronic-signing-success.component';
 import { SignContractSuccessComponent } from './sign-contract-success/sign-contract-success.component';
+import { EkycComponent } from './ekyc/ekyc.component';
+import { EkycUploadComponent } from './components/ekyc-upload/ekyc-upload.component';
+import { ImageUploadAreaComponent } from './components/image-upload-area/image-upload-area.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +20,10 @@ import { SignContractSuccessComponent } from './sign-contract-success/sign-contr
     VerifyOtpFormComponent,
     SignContractTermsSuccessComponent,
     ElectronicSigningSuccessComponent,
-    SignContractSuccessComponent
+    SignContractSuccessComponent,
+    EkycComponent,
+    EkycUploadComponent,
+    ImageUploadAreaComponent
   ],
   imports: [
     CommonModule,
@@ -30,7 +36,10 @@ import { SignContractSuccessComponent } from './sign-contract-success/sign-contr
     ContractTermsOfServiceComponent,
     SignContractTermsSuccessComponent,
     SignContractSuccessComponent,
-    VerifyOtpFormComponent
+    VerifyOtpFormComponent,
+    EkycComponent,
+    EkycUploadComponent,
+    ImageUploadAreaComponent
   ]
 })
 export class PaydayLoanModule {
