@@ -1,5 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import {RouterOutlet} from "@angular/router";
+import {Component, OnInit} from '@angular/core';
 import {fadeAnimation} from "../../core/common/animations";
 import {MultiLanguageService} from "../../share/translate/multiLanguageService";
 
@@ -16,6 +15,7 @@ export class MainLayoutComponent implements OnInit {
 
   constructor(private multiLanguageService: MultiLanguageService) {
     this.multiLanguageService.onSetupMultiLanguage("insurance")
+    this.multiLanguageService.onSetupMultiLanguage("payday-loan")
   }
 
   ngOnInit(): void {

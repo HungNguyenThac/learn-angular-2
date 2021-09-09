@@ -1,0 +1,55 @@
+<mat-dialog-content>
+  <div
+    class="prompt-content"
+  >
+    <div [ngClass]="promptContent?.imgBackgroundClass">
+      <div  class="pl-prompt-image" [ngClass]="promptContent?.imgGroupUrl" *ngIf="promptContent?.imgGroupUrl" ></div>
+
+      <img
+        *ngIf="promptContent?.imgUrl"
+        [src]="promptContent?.imgUrl"
+        alt="img"
+        class="pl-prompt-image"
+      />
+    </div>
+
+
+
+    <h2 class="pl-prompt-title" *ngIf="promptContent">
+      {{ promptContent?.title }}
+    </h2>
+
+    <div *ngIf="promptContent" class="pl-prompt-body">
+      <p [innerHTML]="promptContent?.content"></p>
+    </div>
+
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <div
+    class="text-center d-flex pl-prompt-actions"
+    *ngIf="promptContent"
+  >
+    <button
+      type="button"
+      class="pl-prompt-btn btn-secondary "
+      *ngIf="promptContent?.secondaryBtnText"
+      [disabled]="promptContent?.disabledBtn"
+      tabindex="1"
+      (click)="clickSecondary()"
+    >
+      {{ promptContent?.secondaryBtnText }}
+    </button>
+    <button
+      type="button"
+      class="pl-prompt-btn btn-primary"
+      *ngIf="promptContent?.primaryBtnText"
+      [disabled]="promptContent?.disabledBtn"
+      mat-raised-button mat-dialog-close tabindex="-1"
+      (click)="clickPrimary()"
+    >
+      {{ promptContent?.primaryBtnText }}
+    </button>
+  </div>
+</mat-dialog-actions>
