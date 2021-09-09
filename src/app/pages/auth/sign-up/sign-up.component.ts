@@ -19,8 +19,8 @@ export class SignUpComponent implements OnInit {
     private formBuilder: FormBuilder
   ) {
     this.signUpForm = this.formBuilder.group({
-      mobileNumber: ["", [Validators.required, Validators.minLength(10), Validators.maxLength(10), Validators.pattern("^(09|03|07|08|05)([0-9]{8})")]],
-      password: ["", [Validators.required, Validators.minLength(8), Validators.maxLength(50)]],
+      mobileNumber: ["", [Validators.required]],
+      password: ["", [Validators.required]],
       confirmPassword: ["", [Validators.required]],
     })
   }
@@ -30,6 +30,6 @@ export class SignUpComponent implements OnInit {
 
   onSubmit() {
     console.log(this.signUpForm.getRawValue());
-    
+
   }
 }

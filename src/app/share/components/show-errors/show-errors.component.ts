@@ -5,7 +5,7 @@ import {AbstractControl, AbstractControlDirective} from "@angular/forms";
 @Component({
   selector: "show-errors",
   template: `
-    <div class="mat-form-field-subscript-wrapper validation-errors">
+    <div class="mat-form-field-subscript-wrapper validation-errors" [ngClass]="{'has-icon-prefix': isHasIconPrefix()}">
       <div class="ng-trigger ng-trigger-transitionMessages ng-star-inserted error-msg-box"
            [ngClass]="{'error-msg-box-active': shouldShowErrors() }">
         <mat-error class="error-msg" *ngIf="shouldShowErrors()">{{getError()}}</mat-error>
@@ -26,13 +26,18 @@ export class ShowErrorsComponent {
       params.requiredLength +
       " ký tự",
 
-    pattern: (params: any) => "##FIELD## phải là định dạng hợp lệ",
+    pattern: (params: any) => "##FIELD## phải là định dạng hợp lệ.",
 
-    email: (params: any) => "##FIELD## phải là 1 email hợp lệ."
+    email: (params: any) => "##FIELD## phải là 1 email hợp lệ.",
+
+    strongPassword: (params: any) => "##FIELD## không đúng định dạng.",
+
+    phoneNumber: (params: any) => "##FIELD## không đúng định dạng.",
   };
 
   @Input() private control: AbstractControlDirective | AbstractControl;
   @Input() private controlLabel: string;
+  @Input() private hasIconPrefix: boolean = false;
 
   shouldShowErrors(): boolean {
     return (
@@ -40,6 +45,10 @@ export class ShowErrorsComponent {
       this.control.errors &&
       (this.control.dirty || this.control.touched)
     );
+  }
+
+  isHasIconPrefix(): boolean {
+    return this.hasIconPrefix;
   }
 
   listOfErrors(): string[] {

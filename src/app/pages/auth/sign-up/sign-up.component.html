@@ -6,11 +6,16 @@
                     <mat-form-field #mobileNumber appearance="outline" floatLabel="never" class="w-100" (focusout)="isUsernameInputFocus = false">
                         <mat-label>Số điện thoại đăng nhập</mat-label>
                         <div class="username-icon" matPrefix [ngClass]="signUpForm.controls.mobileNumber.value!='' || isUsernameInputFocus ? 'is-focused-icon' : '' "></div>
-                        <input type="text" matInput formControlName="mobileNumber"
+                        <input type="text" matInput formControlName="mobileNumber" phone-number-validate
                             placeholder="Số điện thoại đăng nhập" required (focus)="isUsernameInputFocus = true" [ngClass]="isUsernameInputFocus  ? 'is-focused-input' : '' ">
                             <button type="button" *ngIf="signUpForm.controls.mobileNumber.value" matSuffix mat-icon-button class="support-icon" aria-label="Clear" (click)="signUpForm.controls.mobileNumber.setValue('')" disableRipple="true">
                                 <div class="clear-icon" [ngClass]="{'invisible': !isUsernameInputFocus}"></div>
                               </button>
+
+                        <show-errors [control]="signUpForm.controls['mobileNumber']"
+                                     [controlLabel]="'Số điện thoại'"
+                                     [hasIconPrefix]="true">
+                        </show-errors>
                         <!-- <mat-error *ngIf="signUpForm.controls.mobileNumber.hasError('required')">
                             Số điện thoại không được để trống
                         </mat-error>
@@ -25,13 +30,18 @@
                     <mat-form-field appearance="outline" floatLabel="never" class="w-100">
                         <mat-label>Mật khẩu</mat-label>
                         <div class="password-pre-icon" matPrefix [ngClass]="signUpForm.controls.password.value!='' || isPasswordInputFocus ? 'is-focused-icon' : '' "></div>
-                        <input [type]="isPassVisible ? 'text' : 'password' " matInput formControlName="password" placeholder="Mật khẩu" autocomplete required (focus)="isPasswordInputFocus = true" (blur)="isPasswordInputFocus = false" [ngClass]="isPasswordInputFocus  ? 'is-focused-input' : '' ">
+                        <input [type]="isPassVisible ? 'text' : 'password' " matInput formControlName="password" placeholder="Mật khẩu" autocomplete required strong-password-validate (focus)="isPasswordInputFocus = true" (blur)="isPasswordInputFocus = false" [ngClass]="isPasswordInputFocus  ? 'is-focused-input' : '' ">
                         <button type="button" *ngIf="signUpForm.controls.password.value" matSuffix mat-icon-button aria-label="Clear" (click)="signUpForm.controls.password.setValue('')" disableRipple="true">
                             <div class="clear-icon" [ngClass]="{'invisible': !isPasswordInputFocus}"></div>
                           </button>
                           <button type="button" matSuffix mat-icon-button class="support-icon" (click)="isPassVisible = !isPassVisible">
                             <div class="password-suffix-icon" [ngClass]="[signUpForm.controls.password.value!='' || isPasswordInputFocus ? 'is-focused-icon' : '' , isPassVisible ? 'password-show-icon' : 'password-hide-icon' ]"></div>
                           </button>
+
+                          <show-errors [control]="signUpForm.controls['password']"
+                                       [controlLabel]="'Mật khẩu'"
+                                       [hasIconPrefix]="true">
+                          </show-errors>
                         <!-- <mat-error *ngIf="signUpForm.controls.password.hasError('required')">
                             Mật khẩu không được để trống
                         </mat-error>
@@ -66,7 +76,7 @@
                 </div>
 
                 <div class="col-md-12">
-                    <p class="description">Mật khẩu tối thiểu 8 ký tự bao gồm: chữ cái thường, chữ cái hoa, chữ số và ký tự đặc biệt</p>
+                    <p class="description">Mật khẩu phải gồm ít nhất 6 ký tự, bao gồm ít nhất 1 chữ cái viết hoa, 1 chữ cái viết thường và 1 chữ số!</p>
                 </div>
 
                 <div class="col-md-12">
