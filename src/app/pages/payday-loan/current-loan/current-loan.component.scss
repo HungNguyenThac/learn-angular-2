@@ -5,10 +5,10 @@
   min-height: calc(100vh - 64px);
 }
 
+.current-loan-info-container {
+  padding-left: 0;
+  padding-right: 0;
+}
+
 @media (max-width: 768px) {
-  #payday-loan-layout-container
-  .current-loan-info-container
-  .payday-loan-container {
-    padding: 0;
-  }
 }
