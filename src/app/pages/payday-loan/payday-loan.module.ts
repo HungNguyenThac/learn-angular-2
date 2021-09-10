@@ -13,6 +13,11 @@ import { SignContractSuccessComponent } from './sign-contract-success/sign-contr
 import { EkycComponent } from './ekyc/ekyc.component';
 import { EkycUploadComponent } from './components/ekyc-upload/ekyc-upload.component';
 import { ImageUploadAreaComponent } from './components/image-upload-area/image-upload-area.component';
+import { CurrentLoanComponent } from './current-loan/current-loan.component';
+import { PlCurrentLoanDetailInfoComponent } from './components/pl-current-loan-detail-info/pl-current-loan-detail-info.component';
+import { PlCurrentLoanUserInfoComponent } from './components/pl-current-loan-user-info/pl-current-loan-user-info.component';
+import { PlInlineMessageComponent } from './components/pl-inline-message/pl-inline-message.component';
+import { PlStatusLabelComponent } from './components/pl-status-label/pl-status-label.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +28,12 @@ import { ImageUploadAreaComponent } from './components/image-upload-area/image-u
     SignContractSuccessComponent,
     EkycComponent,
     EkycUploadComponent,
-    ImageUploadAreaComponent
+    ImageUploadAreaComponent,
+    CurrentLoanComponent,
+    PlCurrentLoanDetailInfoComponent,
+    PlCurrentLoanUserInfoComponent,
+    PlInlineMessageComponent,
+    PlStatusLabelComponent
   ],
   imports: [
     CommonModule,
@@ -39,7 +49,12 @@ import { ImageUploadAreaComponent } from './components/image-upload-area/image-u
     VerifyOtpFormComponent,
     EkycComponent,
     EkycUploadComponent,
-    ImageUploadAreaComponent
+    ImageUploadAreaComponent,
+    CurrentLoanComponent,
+    PlCurrentLoanDetailInfoComponent,
+    PlCurrentLoanUserInfoComponent,
+    PlInlineMessageComponent,
+    PlStatusLabelComponent
   ]
 })
 export class PaydayLoanModule {

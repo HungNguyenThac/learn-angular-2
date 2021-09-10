@@ -1,0 +1,14 @@
+@import "src/assets/styles/payday-loan/pl-layout";
+@import "src/assets/styles/variables";
+#current-loan-container {
+  position: relative;
+  min-height: calc(100vh - 64px);
+}
+
+@media (max-width: 768px) {
+  #payday-loan-layout-container
+  .current-loan-info-container
+  .payday-loan-container {
+    padding: 0;
+  }
+}

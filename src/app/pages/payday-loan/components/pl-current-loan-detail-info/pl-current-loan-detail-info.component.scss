@@ -1,0 +1,97 @@
+@import "src/assets/styles/variables";
+
+.current-loan-info-title {
+  width: 100%;
+}
+
+.current-loan-headline {
+  display: flex;
+  align-content: space-between;
+  align-items: center;
+  padding: 0 16px;
+}
+
+.insurance-btn.insurance-btn-sign-contract {
+  max-width: 104px;
+  height: 28px;
+  font-family: $sfPro;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 17px;
+  text-align: center;
+  color: $white;
+  flex: none;
+}
+
+.insurance-btn.insurance-btn-finalization {
+  background-color: $system-color-indigo;
+
+  &:hover,
+  &:focus,
+  &:active {
+    background-color: #8f8dfa;
+  }
+}
+
+#current-loan-amount-container {
+  margin-top: 16px;
+  border-top: 1px solid $grey-02;
+  border-bottom: 1px solid $grey-02;
+
+  .pl-list-item:last-child {
+    border-bottom: 0;
+  }
+}
+
+.current-loan-contract-email {
+  margin-top: 16px;
+  padding: 0 16px;
+}
+
+#current-loan-sign-btn-container {
+  margin-bottom: 20px;
+}
+
+.pl-service-fee-label {
+  display: flex;
+
+  span {
+    margin-left: 8px;
+    width: 16px;
+    height: 16px;
+  }
+}
+
+#sign-contract-btn-submit {
+  place-content: center;
+  margin-top: 16px;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  .insurance-btn {
+    max-width: 143.5px;
+  }
+}
+
+#awaiting-document-btn {
+  place-content: center;
+  margin-top: 16px;
+  display: flex;
+  align-items: center;
+
+  #pl-current-loan-additional-document-btn {
+    max-width: 200px;
+  }
+}
+
+#finalization-btn {
+  place-content: center;
+  margin-top: 16px;
+  display: flex;
+  align-items: center;
+
+  #pl-current-loan-finalization-btn {
+    max-width: 200px;
+  }
+}
