@@ -26,7 +26,6 @@ export class ChoosePaymentMethodComponent implements OnInit {
 
   switchTab($event) {
     this.activeTab = $event
-    console.log(this.multiLanguageService.instant('payment.choose_payment_method.card_payment_napas'));
   }
 
   displayConfirmModalEvent($event) {

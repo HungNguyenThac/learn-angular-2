@@ -1,6 +1,8 @@
 import { Routes } from '@angular/router';
 import {ContractTermsOfServiceComponent} from "./contract-terms-of-service/contract-terms-of-service.component";
+import { SignContractSuccessComponent } from './sign-contract-success/sign-contract-success.component';
 import {SignContractTermsSuccessComponent} from "./sign-contract-terms-success/sign-contract-terms-success.component";
+import {EkycComponent} from "./ekyc/ekyc.component";
 
 export const PaydayLoanRoutes: Routes = [
   {
@@ -14,6 +16,16 @@ export const PaydayLoanRoutes: Routes = [
       {
         path: 'sign-contract-terms-success',
         component: SignContractTermsSuccessComponent,
+        data: { animation: true },
+      },
+      {
+        path: 'sign-contract-success',
+        component: SignContractSuccessComponent,
+        data: { animation: true },
+      },
+      {
+        path: 'ekyc',
+        component: EkycComponent,
         data: { animation: true },
       },
     ],

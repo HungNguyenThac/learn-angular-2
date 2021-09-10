@@ -1,4 +1,5 @@
 @import "src/assets/styles/variables";
+@import "src/assets/styles/insurance/insurance-button";
 .pl-electronic-signing-success-title {
   font-family: $sfPro;
   font-style: normal;
@@ -26,11 +27,6 @@
   .pl-btn {
     max-width: 330px;
   }
-}
-
-.electronic-siging-logo {
-  width: 100px;
-  margin: 0 auto;
 }
 
 .electronic-sign-success-img-container {
@@ -61,6 +57,10 @@
   right: 8px;
   width: 32px;
   height: 32px;
+}
+
+#electronic-signing-success-btn {
+  max-width: 240px;
 }
 
 @media (max-width: 768px) {

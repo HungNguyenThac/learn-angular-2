@@ -133,8 +133,6 @@
       "signed_contract_terms_success": "Đã ký thư chấp thuận",
       "thanks": "Cảm ơn bạn <span class='pl-thank-for-sign'>{{name}}</span> đã lựa chọn Monex",
       "signed_contract_terms_success_text": "Bạn đã hoàn tất yêu cầu kích hoạt tài khoản",
-      "signed_contract_success_text": "Bạn đã ký hoàn tất hợp đồng ứng lương",
-      "signed_contract_success_loan_id": "Mã khoản vay: {{loanId}}",
       "locked_sent_otp": "Đã quá số lần cho phép xác thực OTP, bạn bị tạm khóa chức năng này trong {{minute}} phút. Vui lòng thử lại sau {{unlock_timer}}",
       "over_times_resend_otp": "Đã quá số lần cho gửi lại OTP, bạn bị tạm khóa chức năng này trong {{minute}} phút. Vui lòng thử lại sau {{unlock_timer}}",
       "sent_otp_success": "Mã xác thực 6 chữ số được gửi về {{key}} <span class='pl-text-inline'>{{value}}</span> của bạn. Vui lòng kiểm tra."
@@ -322,31 +320,9 @@
       "see_the_intro": "Xem hướng dẫn",
       "understand": "Đã hiểu",
       "modal_title": "Hướng dẫn ký hợp đồng",
-      "steps_1": {
-        "step_text": "Bước 1",
-        "title": "Kiểm tra hòm thư",
-        "desc": "Kiểm tra email dưới tên Novaon Onsign.</br> Lưu ý: kiểm tra các mục Spam/Quảng cáo.</br>Nhấn vào \"Xem xét tài liệu\""
-      },
-      "steps_2": {
-        "step_text": "Bước 2",
-        "title": "Kiểm tra thông tin hợp đồng",
-        "desc": "Vui lòng kiểm tra kỹ các thông tin trong hợp đồng trước khi ký"
-      },
-      "steps_3": {
-        "step_text": "Bước 3",
-        "title": "Chọn vị trí ký",
-        "desc": "Chọn vị trí ký (bên B). Để xem hết các vị trí cần ký, ấn vào \"Danh sách thứ tự ký\""
-      },
-      "steps_4": {
-        "step_text": "Bước 4",
-        "title": "Ký tên",
-        "desc": "Thực hiện ký. Có 4 cách: Vẽ chữ ký, Tải lên ảnh, Hệ thống (ảnh có sẵn) hoặc Cá nhân (chỉ cần chọn xác nhận, hệ thống sẽ coi đó là chữ ký hợp pháp)"
-      },
-      "steps_5": {
-        "step_text": "Bước 5",
-        "title": "Hoàn tất",
-        "desc": "Ấn áp dụng. Bản sao hợp đồng sẽ được gửi lại cho bạn sau khi tất cả các bên đã ký"
-      },
+      "signed_contract_success_text": "Bạn đã ký hoàn tất hợp đồng ứng lương",
+      "signed_contract_success_loan_id": "Mã khoản vay: {{loanId}}",
+      "thanks": "Cảm ơn bạn <span class='pl-thank-for-sign'>{{name}}</span> đã lựa chọn Monex",
       "agree": "Đồng ý",
       "disagree": "Không đồng ý",
       "prompt_title": "Ký vào tài liệu",
