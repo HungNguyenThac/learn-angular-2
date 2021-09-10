@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-sign-up',
@@ -15,8 +16,19 @@ export class SignUpComponent implements OnInit {
   isPassVisible: boolean = false;
   isConfirmPassVisible: boolean = false;
 
+  ruleAccepted: boolean = false;
+
+  //OTP
+  openOtpConfirm: boolean = false
+  otp: any = [];
+  mobile: string = "";
+  errorText: string = "";
+  errorGetTngInfo: boolean = false;
+  disabledOTP: boolean = false;
+
   constructor(
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private router: Router
   ) {
     this.signUpForm = this.formBuilder.group({
       mobileNumber: ["", [Validators.required, Validators.minLength(10), Validators.maxLength(10), Validators.pattern("^(09|03|07|08|05)([0-9]{8})")]],
@@ -30,6 +42,19 @@ export class SignUpComponent implements OnInit {
 
   onSubmit() {
     console.log(this.signUpForm.getRawValue());
-    
+    this.openOtpConfirm = true
+  }
+
+  onRuleAccepted() {
+    this.ruleAccepted = !this.ruleAccepted
+  }
+
+  //OTP
+  verifyOtp(otp) {
+    console.log(otp);
+  }
+
+  resendOtp() {
+    console.log("resent")
   }
 }
