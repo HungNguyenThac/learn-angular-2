@@ -1,97 +1,260 @@
 <div class="container">
-    <div class="insurance-container">
-        <form [formGroup]="signUpForm" class="form-container">
-            <div class="row">
-                <div class="col-md-12">
-                    <mat-form-field #mobileNumber appearance="outline" floatLabel="never" class="w-100" (focusout)="isUsernameInputFocus = false">
-                        <mat-label>Số điện thoại đăng nhập</mat-label>
-                        <div class="username-icon" matPrefix [ngClass]="signUpForm.controls.mobileNumber.value!='' || isUsernameInputFocus ? 'is-focused-icon' : '' "></div>
-                        <input type="text" matInput formControlName="mobileNumber" phone-number-validate
-                            placeholder="Số điện thoại đăng nhập" required (focus)="isUsernameInputFocus = true" [ngClass]="isUsernameInputFocus  ? 'is-focused-input' : '' ">
-                            <button type="button" *ngIf="signUpForm.controls.mobileNumber.value" matSuffix mat-icon-button class="support-icon" aria-label="Clear" (click)="signUpForm.controls.mobileNumber.setValue('')" disableRipple="true">
-                                <div class="clear-icon" [ngClass]="{'invisible': !isUsernameInputFocus}"></div>
-                              </button>
+  <div class="insurance-container">
+    <form
+      [formGroup]="signUpForm"
+      class="form-container"
+      *ngIf="!openOtpConfirm"
+    >
+      <div class="row">
+        <div class="col-md-12">
+          <mat-form-field
+            #mobileNumber
+            appearance="outline"
+            floatLabel="never"
+            class="w-100"
+            (focusout)="isUsernameInputFocus = false"
+          >
+            <mat-label>Số điện thoại đăng nhập</mat-label>
+            <div
+              class="username-icon"
+              matPrefix
+              [ngClass]="
+                signUpForm.controls.mobileNumber.value != '' ||
+                isUsernameInputFocus
+                  ? 'is-focused-icon'
+                  : ''
+              "
+            ></div>
+            <input
+              type="text"
+              matInput
+              formControlName="mobileNumber"
+              placeholder="Số điện thoại đăng nhập"
+              required
+              (focus)="isUsernameInputFocus = true"
+              [ngClass]="isUsernameInputFocus ? 'is-focused-input' : ''"
+            />
+            <button
+              type="button"
+              tabindex="-1"
+              *ngIf="signUpForm.controls.mobileNumber.value"
+              matSuffix
+              mat-icon-button
+              class="support-icon"
+              aria-label="Clear"
+              (click)="signUpForm.controls.mobileNumber.setValue('')"
+              disableRipple="true"
+            >
+              <div
+                class="clear-icon"
+                [ngClass]="{ invisible: !isUsernameInputFocus }"
+              ></div>
+            </button>
+            <show-errors
+              [control]="signUpForm.controls['mobileNumber']"
+              [controlLabel]="'Số điện thoại'"
+              [hasIconPrefix]="true"
+            >
+            </show-errors>
+          </mat-form-field>
+        </div>
 
-                        <show-errors [control]="signUpForm.controls['mobileNumber']"
-                                     [controlLabel]="'Số điện thoại'"
-                                     [hasIconPrefix]="true">
-                        </show-errors>
-                        <!-- <mat-error *ngIf="signUpForm.controls.mobileNumber.hasError('required')">
-                            Số điện thoại không được để trống
-                        </mat-error>
-                        <mat-error
-                            *ngIf="signUpForm.controls.mobileNumber.hasError('minlength')||signUpForm.controls.mobileNumber.hasError('maxlength')">
-                            Số điện thoại có 10 chữ số!
-                        </mat-error> -->
-                    </mat-form-field>
-                </div>
+        <div class="col-md-12">
+          <mat-form-field appearance="outline" floatLabel="never" class="w-100">
+            <mat-label>Mật khẩu</mat-label>
+            <div
+              class="password-pre-icon"
+              matPrefix
+              [ngClass]="
+                signUpForm.controls.password.value != '' || isPasswordInputFocus
+                  ? 'is-focused-icon'
+                  : ''
+              "
+            ></div>
+            <input
+              [type]="isPassVisible ? 'text' : 'password'"
+              matInput
+              formControlName="password"
+              placeholder="Mật khẩu"
+              autocomplete
+              required
+              (focus)="isPasswordInputFocus = true"
+              (blur)="isPasswordInputFocus = false"
+              [ngClass]="isPasswordInputFocus ? 'is-focused-input' : ''"
+            />
+            <button
+              type="button"
+              tabindex="-1"
+              *ngIf="signUpForm.controls.password.value"
+              matSuffix
+              mat-icon-button
+              aria-label="Clear"
+              (click)="signUpForm.controls.password.setValue('')"
+              disableRipple="true"
+            >
+              <div
+                class="clear-icon"
+                [ngClass]="{ invisible: !isPasswordInputFocus }"
+              ></div>
+            </button>
+            <button
+              type="button"
+              tabindex="-1"
+              matSuffix
+              mat-icon-button
+              class="support-icon"
+              (click)="isPassVisible = !isPassVisible"
+            >
+              <div
+                class="password-suffix-icon"
+                [ngClass]="[
+                  signUpForm.controls.password.value != '' ||
+                  isPasswordInputFocus
+                    ? 'is-focused-icon'
+                    : '',
+                  isPassVisible ? 'password-show-icon' : 'password-hide-icon'
+                ]"
+              ></div>
+            </button>
+            <show-errors
+              [control]="signUpForm.controls['password']"
+              [controlLabel]="'Mật khẩu'"
+              [hasIconPrefix]="true"
+            >
+            </show-errors>
+          </mat-form-field>
+        </div>
 
-                <div class="col-md-12">
-                    <mat-form-field appearance="outline" floatLabel="never" class="w-100">
-                        <mat-label>Mật khẩu</mat-label>
-                        <div class="password-pre-icon" matPrefix [ngClass]="signUpForm.controls.password.value!='' || isPasswordInputFocus ? 'is-focused-icon' : '' "></div>
-                        <input [type]="isPassVisible ? 'text' : 'password' " matInput formControlName="password" placeholder="Mật khẩu" autocomplete required strong-password-validate (focus)="isPasswordInputFocus = true" (blur)="isPasswordInputFocus = false" [ngClass]="isPasswordInputFocus  ? 'is-focused-input' : '' ">
-                        <button type="button" *ngIf="signUpForm.controls.password.value" matSuffix mat-icon-button aria-label="Clear" (click)="signUpForm.controls.password.setValue('')" disableRipple="true">
-                            <div class="clear-icon" [ngClass]="{'invisible': !isPasswordInputFocus}"></div>
-                          </button>
-                          <button type="button" matSuffix mat-icon-button class="support-icon" (click)="isPassVisible = !isPassVisible">
-                            <div class="password-suffix-icon" [ngClass]="[signUpForm.controls.password.value!='' || isPasswordInputFocus ? 'is-focused-icon' : '' , isPassVisible ? 'password-show-icon' : 'password-hide-icon' ]"></div>
-                          </button>
+        <div class="col-md-12">
+          <mat-form-field appearance="outline" floatLabel="never" class="w-100">
+            <mat-label>Nhắc lại mật khẩu</mat-label>
+            <div
+              class="password-pre-icon"
+              matPrefix
+              [ngClass]="
+                signUpForm.controls.confirmPassword.value != '' ||
+                isConfirmPasswordInputFocus
+                  ? 'is-focused-icon'
+                  : ''
+              "
+            ></div>
+            <input
+              [type]="isConfirmPassVisible ? 'text' : 'password'"
+              matInput
+              formControlName="confirmPassword"
+              placeholder="Nhắc lại mật khẩu"
+              autocomplete
+              required
+              (focus)="isConfirmPasswordInputFocus = true"
+              (blur)="isConfirmPasswordInputFocus = false"
+              [ngClass]="isConfirmPasswordInputFocus ? 'is-focused-input' : ''"
+            />
+            <button
+              type="button"
+              tabindex="-1"
+              *ngIf="signUpForm.controls.confirmPassword.value"
+              matSuffix
+              mat-icon-button
+              aria-label="Clear"
+              (click)="signUpForm.controls.confirmPassword.setValue('')"
+              disableRipple="true"
+            >
+              <div
+                class="clear-icon"
+                [ngClass]="{ invisible: !isConfirmPasswordInputFocus }"
+              ></div>
+            </button>
+            <button
+              type="button"
+              tabindex="-1"
+              matSuffix
+              mat-icon-button
+              class="support-icon"
+              (click)="isConfirmPassVisible = !isConfirmPassVisible"
+            >
+              <div
+                class="password-suffix-icon"
+                [ngClass]="[
+                  signUpForm.controls.confirmPassword.value != '' ||
+                  isConfirmPasswordInputFocus
+                    ? 'is-focused-icon'
+                    : '',
+                  isConfirmPassVisible
+                    ? 'password-show-icon'
+                    : 'password-hide-icon'
+                ]"
+              ></div>
+            </button>
+            <show-errors
+              [control]="signUpForm.controls['confirmPassword']"
+              [controlLabel]="'Nhắc lại mật khẩu'"
+              [hasIconPrefix]="true"
+            >
+            </show-errors>
+          </mat-form-field>
+        </div>
 
-                          <show-errors [control]="signUpForm.controls['password']"
-                                       [controlLabel]="'Mật khẩu'"
-                                       [hasIconPrefix]="true">
-                          </show-errors>
-                        <!-- <mat-error *ngIf="signUpForm.controls.password.hasError('required')">
-                            Mật khẩu không được để trống
-                        </mat-error>
-                        <mat-error
-                            *ngIf="signUpForm.controls.password.hasError('minlength')||signUpForm.controls.password.hasError('maxlength')">
-                            Mật khẩu có tối thiểu 8 ký tự và tối đa 50 ký tự
-                        </mat-error> -->
-                    </mat-form-field>
-                </div>
+        <div class="col-md-12">
+          <p class="description">
+            Mật khẩu phải gồm ít nhất 6 ký tự, bao gồm ít nhất 1 chữ cái viết
+            hoa, 1 chữ cái viết thường và 1 chữ số!
+          </p>
+        </div>
 
-                <div class="col-md-12">
-                    <mat-form-field appearance="outline" floatLabel="never" class="w-100">
-                        <mat-label>Nhắc lại mật khẩu</mat-label>
-                        <div class="password-pre-icon" matPrefix [ngClass]="signUpForm.controls.confirmPassword.value!='' || isConfirmPasswordInputFocus ? 'is-focused-icon' : '' "></div>
-                        <input [type]="isConfirmPassVisible ? 'text' : 'password' " matInput formControlName="confirmPassword"
-                            placeholder="Nhắc lại mật khẩu" autocomplete required (focus)="isConfirmPasswordInputFocus = true" (blur)="isConfirmPasswordInputFocus = false" [ngClass]="isConfirmPasswordInputFocus  ? 'is-focused-input' : '' "
-                            >
-                            <button type="button" *ngIf="signUpForm.controls.confirmPassword.value" matSuffix mat-icon-button aria-label="Clear" (click)="signUpForm.controls.confirmPassword.setValue('')" disableRipple="true">
-                                <div class="clear-icon" [ngClass]="{'invisible': !isConfirmPasswordInputFocus}"></div>
-                              </button>
-                              <button type="button" matSuffix mat-icon-button class="support-icon" (click)="isConfirmPassVisible = !isConfirmPassVisible">
-                                <div class="password-suffix-icon" [ngClass]="[signUpForm.controls.confirmPassword.value!='' || isConfirmPasswordInputFocus ? 'is-focused-icon' : '' , isConfirmPassVisible ? 'password-show-icon' : 'password-hide-icon' ]"></div>
-                            </button>
-                        <!-- <mat-error *ngIf="signUpForm.controls.confirmPassword.hasError('required')">
-                            Nhắc lại mật khẩu không được để trống
-                        </mat-error>
-                        <mat-error
-                            *ngIf="signUpForm.controls.confirmPassword.value !== signUpForm.controls.password.value && !signUpForm.controls.confirmPassword.hasError('required')">
-                            Nhắc lại mật khẩu không giống với mật khẩu
-                        </mat-error> -->
-                    </mat-form-field>
-                </div>
+        <div class="col-md-12">
+          <div id="get-otp-btn-container">
+            <mat-checkbox
+              id="insurance-checkbox"
+              [value]="ruleAccepted"
+              (click)="onRuleAccepted()"
+            >
+              <p class="insurance-checkbox-text align-items-center">
+                Tôi đồng ý với
+                <a class="link-inline-green" href="javascript:void(0)"
+                  >điều khoản dịch vụ</a
+                >
+                của Monex
+              </p>
+            </mat-checkbox>
+            <button
+              type="submit"
+              (click)="onSubmit()"
+              (keyup.enter)="onSubmit()"
+              [disabled]="!signUpForm.valid || !ruleAccepted"
+              mat-raised-button
+              color="primary"
+              class="ui-button confirm-btn"
+            >
+              Nhận mã xác thực OTP
+            </button>
+          </div>
+        </div>
+      </div>
+    </form>
 
-                <div class="col-md-12">
-                    <p class="description">Mật khẩu phải gồm ít nhất 6 ký tự, bao gồm ít nhất 1 chữ cái viết hoa, 1 chữ cái viết thường và 1 chữ số!</p>
-                </div>
-
-                <div class="col-md-12">
-                    <div id="get-otp-btn-container">
-                      <mat-checkbox id="insurance-checkbox">
-                        <p class="insurance-checkbox-text align-items-center">
-                          Tôi đồng ý với <a class="link-inline-green" href="javascript:void(0)">điều khoản dịch vụ</a> của Monex
-                        </p>
-                      </mat-checkbox>
-                      <button type="submit" (click)="onSubmit()" [disabled]="!signUpForm.valid" mat-raised-button color="primary"
-                              class="ui-button confirm-btn">Nhận mã xác thực OTP
-                      </button>
-                    </div>
-                  </div>
-            </div>
-        </form>
+    <div *ngIf="openOtpConfirm" class="otp-container">
+      <app-verify-otp-form
+        (verifyOtp)="verifyOtp($event)"
+        (resendOtp)="resendOtp()"
+        [mobile]="mobile"
+        [otpValue]="otp"
+        [showSubmitButton]="false"
+        [errorText]="errorText"
+        [disabled]="disabledOTP"
+      >
+        <p
+          class="pl-space-between-content sent-otp-text"
+          [innerHtml]="
+            'payday_loan.contract_terms_of_service.sent_otp_success'
+              | translate
+                : {
+                    key: 'email',
+                    value: '0367422898'
+                  }
+          "
+          guide
+        ></p>
+      </app-verify-otp-form>
     </div>
+  </div>
 </div>
