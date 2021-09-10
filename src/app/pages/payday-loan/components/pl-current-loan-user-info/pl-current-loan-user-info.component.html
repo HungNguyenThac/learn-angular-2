@@ -1,0 +1,91 @@
+<div class="current-loan-user-info pl-space-between-box">
+  <div class="current-loan-headline">
+    <h2 class="pl-headline current-loan-info-title">
+      {{ "payday_loan.current_loan.user_info" | translate}}
+    </h2>
+  </div>
+  <div id="current-loan-user-info-container">
+    <ul class="pl-list">
+      <li class="pl-list-item">
+        <p class="pl-list-item-label">
+          {{ "payday_loan.current_loan.full_name"| translate }}
+        </p>
+        <p class="pl-list-item-content">
+          {{ userInfo?.fullName }}
+        </p>
+      </li>
+      <li class="pl-list-item">
+        <p class="pl-list-item-label">
+          {{ "payday_loan.current_loan.date_of_birth"| translate }}
+        </p>
+        <p class="pl-list-item-content">
+          {{ userInfo?.dateOfBirth }}
+        </p>
+      </li>
+      <li class="pl-list-item">
+        <p class="pl-list-item-label">
+          {{ "payday_loan.current_loan.sex" | translate}}
+        </p>
+        <p class="pl-list-item-content">
+          {{ userInfo?.gender }}
+        </p>
+      </li>
+      <li class="pl-list-item">
+        <p class="pl-list-item-label">
+          {{ "payday_loan.current_loan.identifier" | translate }}
+        </p>
+        <p class="pl-list-item-content">
+          {{ userInfo?.identityNumberOne }}
+        </p>
+      </li>
+      <li class="pl-list-item">
+        <p class="pl-list-item-label">
+          {{ "payday_loan.current_loan.working_time" | translate }}
+        </p>
+        <p class="pl-list-item-content">
+          {{ userInfo?.workingTime }}
+        </p>
+      </li>
+      <li class="pl-list-item">
+        <p class="pl-list-item-label">
+          {{ "payday_loan.current_loan.total_salary" | translate }}
+        </p>
+        <p class="pl-list-item-content">
+          {{ userInfo?.totalSalary | formatPrice }}
+        </p>
+      </li>
+      <li class="pl-list-item">
+        <p class="pl-list-item-label">
+          {{ "payday_loan.current_loan.email"| translate }}
+        </p>
+        <p class="pl-list-item-content">
+          {{ userInfo?.email }}
+        </p>
+      </li>
+      <li class="pl-list-item">
+        <p class="pl-list-item-label">
+          {{ "payday_loan.current_loan.account_receive_salary" | translate}}
+        </p>
+        <p class="pl-list-item-content">
+          {{ userInfo?.accountReceiveSalary }}
+        </p>
+      </li>
+      <li class="pl-list-item">
+        <p class="pl-list-item-label">
+          {{ "payday_loan.current_loan.bank" | translate }}
+        </p>
+        <p class="pl-list-item-content">
+          {{ userInfo?.bank }}
+        </p>
+      </li>
+      <li class="pl-list-item">
+        <p class="pl-list-item-label">
+          {{ "payday_loan.current_loan.phone_number" | translate }}
+        </p>
+        <p class="pl-list-item-content">
+          {{ userInfo?.phoneNumber }}
+        </p>
+      </li>
+    </ul>
+  </div>
+</div>

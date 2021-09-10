@@ -5,7 +5,7 @@ import {MultiLanguageService} from "../translate/multiLanguageService";
  * Format price
  * Takes a string as a value.
  * Usage:
- *  value | capitalizeFirst
+ *  value | formatPrice
  * Example:
  *  // value.name = 1000000
  *  {{ value.name | formatPrice  }}
@@ -15,13 +15,12 @@ import {MultiLanguageService} from "../translate/multiLanguageService";
   name: 'formatPrice'
 })
 export class FormatPricePipe implements PipeTransform {
-  vndText: string = "VNĐ";
-  // ₫
+  vndText: string = "₫";
   constructor() {
   }
 
   transform(value: any, args: any[]): string {
-    if (value === null) return 'Not assigned';
+    if (value === null) return 'N/A';
     let val = (value / 1).toFixed(0).replace(".", ",");
     return (
       val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + " " + this.vndText
