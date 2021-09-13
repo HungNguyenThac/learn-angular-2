@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 
 @Component({
   selector: 'app-header',
@@ -6,11 +6,19 @@ import { Component, Input, OnInit } from '@angular/core';
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent implements OnInit {
-  @Input() titleNavigation :string = "Bảo hiểm";
+  @Input() titleNavigation: string = "Ứng lương 0% lãi";
   logoSrc: string = "assets/img/monex-logo.svg";
-  isLogged:boolean = true;
+  isLogged: boolean = true;
   isSignUp: boolean = false;
-  constructor() { }
+  showStepProgressBar: boolean = false;
+  showStepNavigation: boolean = true;
+  displayLeftBtn: boolean = true;
+  displayRightBtn: boolean = false;
+  leftBtnIcon: string = "sprite-group-3-icon-back";
+  rightBtnIcon: string = "sprite-group-3-help-white"
+
+  constructor() {
+  }
 
   ngOnInit(): void {
   }

@@ -9,13 +9,15 @@ import * as fromPipes from './pipes';
 import * as fromDirectives from './directives';
 import {FormsModule} from "@angular/forms";
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import { StepNavigationComponent } from './components/progress-bar/step-navigation/step-navigation.component';
 
 @NgModule({
   declarations: [
     ...fromComponents.components,
     ...fromValidators.validators,
     ...fromDirectives.directives,
-    ...fromPipes.pipes
+    ...fromPipes.pipes,
+    StepNavigationComponent
   ],
   imports: [
     CommonModule,
@@ -23,13 +25,14 @@ import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
     TranslateModule,
     FormsModule
   ],
-  exports: [
-    MaterialModule,
-    ...fromComponents.components,
-    ...fromValidators.validators,
-    ...fromDirectives.directives,
-    ...fromPipes.pipes,
-  ],
+    exports: [
+        MaterialModule,
+        ...fromComponents.components,
+        ...fromValidators.validators,
+        ...fromDirectives.directives,
+        ...fromPipes.pipes,
+        StepNavigationComponent,
+    ],
   providers: [
     { provide: MAT_DIALOG_DATA, useValue: {} },
     { provide: MatDialogRef, useValue: {} }

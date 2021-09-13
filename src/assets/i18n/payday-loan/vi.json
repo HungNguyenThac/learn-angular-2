@@ -12,7 +12,8 @@
     "step_2": "Xác nhận thông tin",
     "step_3": "Thông tin bổ sung",
     "step_4": "Chọn số tiền cần vay",
-    "step_5": "Ký hợp đồng và giải ngân",
+    "step_5": "Ký hợp đồng & giải ngân",
+    "step_nav_text": "Bước {{current_step}}/{{total_step}}",
     "over_all_times_type_wrong_otp": "Bạn đã nhập sai OTP quá số lần cho phép, vui lòng gửi lại OTP hoặc nhập lại số điện thoại và thử lại",
     "resent_otp": "Gửi lại mã OTP",
     "eKYC_successful": "eKYC thành công",
@@ -114,11 +115,6 @@
       "guide_sign_contract": "Xem hướng dẫn",
       "return_confirm_information": "Quay lại",
       "return_confirm_information_desc": "Thông tin khai báo không trùng khớp với thông tin mã nhân viên TNG. Vui lòng liên hệ tổng đài <a href='tel:+1900234583' class='payment-result-support-contact'>1900 234 583</a> hoặc nhấn \"Tìm hiểu thêm\" để được hỗ trợ",
-      "gender_options": {
-        "male": "Nam",
-        "female": "Nữ",
-        "other": "Khác"
-      },
       "check_employee_code": "Vui lòng kiểm tra lại mã nhân viên của bạn",
       "employee_code_not_exist": "Mã nhân viên không tồn tại",
       "identity_given_place": "Nơi cấp CMND/CCCD",
@@ -139,11 +135,6 @@
       "locked_sent_otp": "Đã quá số lần cho phép xác thực OTP, bạn bị tạm khóa chức năng này trong {{minute}} phút. Vui lòng thử lại sau {{unlock_timer}}",
       "over_times_resend_otp": "Đã quá số lần cho gửi lại OTP, bạn bị tạm khóa chức năng này trong {{minute}} phút. Vui lòng thử lại sau {{unlock_timer}}",
       "sent_otp_success": "Mã xác thực 6 chữ số được gửi về {{key}} <span class='pl-text-inline'>{{value}}</span> của bạn. Vui lòng kiểm tra."
-    },
-    "electronic_signing": {
-      "title": "Ký hợp đồng điện tử",
-      "signing_guide": "Chạm và giữ để ký",
-      "re_sign": "Ký lại"
     },
     "additional_information": {
       "profile_info": "Thông tin cá nhân",
@@ -196,14 +187,6 @@
       "nested_time": "Khung giờ có thể áp dụng gần nhất: {time}",
       "not_exist_code": "Mã giảm phí không đúng.",
       "voucher_content": "Ưu đãi {percentage} phí khoản vay (Tối đa {max_value})",
-      "voucher_error_default": "Mã ưu đãi không hợp lệ, vui lòng kiểm tra lại",
-      "code_apply_condition": {
-        "condition_1": "Chỉ được sử dụng cho số điện thoại và CMND/CCCD đã dùng để đăng ký.",
-        "condition_2": "Mỗi khách hàng chỉ được áp dụng 1 lần cho khoản ứng lương đầu tiên.",
-        "condition_3": "Dành cho 100 khách hàng áp dụng mã đầu tiên.",
-        "condition_4": "Các khung giờ áp dụng: 6h30 - 8h30, 11h30 - 13h30, 18h - 21h",
-        "condition_5": "Thời hạn áp dụng: 19/07/2021 - 31/08/2021"
-      },
       "salary_example_title": "Ảnh mẫu sao kê lương"
     },
     "current_loan": {
@@ -284,36 +267,6 @@
       "finalization_loan": "Tất toán khoản vay",
       "payment_fee": "Phí thanh toán",
       "payment_fee_description": "Phí thanh toán bằng thẻ nội địa là 1,1% giá trị chuyển khoản + 1.650đ"
-    },
-    "sign_letter": {
-      "modal_title": "Hướng dẫn ký thư chấp thuận",
-      "see_the_intro": "Xem hướng dẫn",
-      "understand": "Đã hiểu",
-      "steps_1": {
-        "step_text": "Bước 1",
-        "title": "Kiểm tra hòm thư",
-        "desc": "Kiểm tra email dưới tên Novaon Onsign.</br> Lưu ý: kiểm tra các mục Spam/Quảng cáo.</br>Nhấn vào \"Xem xét tài liệu\""
-      },
-      "steps_2": {
-        "step_text": "Bước 2",
-        "title": "Kiểm tra thông tin thư chấp thuận",
-        "desc": "Vui lòng kiểm tra kỹ các thông tin trong hợp đồng trước khi ký"
-      },
-      "steps_3": {
-        "step_text": "Bước 3",
-        "title": "Chọn vị trí ký",
-        "desc": "Chọn vị trí ký (bên B). Để xem hết các vị trí cần ký, ấn vào \"Danh sách thứ tự ký\""
-      },
-      "steps_4": {
-        "step_text": "Bước 4",
-        "title": "Ký tên",
-        "desc": "Thực hiện ký. Có 4 cách: Vẽ chữ ký, Tải lên ảnh, Hệ thống (ảnh có sẵn) hoặc Cá nhân (chỉ cần chọn xác nhận, hệ thống sẽ coi đó là chữ ký hợp pháp)"
-      },
-      "steps_5": {
-        "step_text": "Bước 5",
-        "title": "Hoàn tất",
-        "desc": "Ấn áp dụng. Bản sao thư chấp thuận sẽ được gửi lại cho bạn sau khi tất cả các bên đã ký"
-      }
     },
     "sign_contract": {
       "title": "Hợp đồng ứng lương 24h",
