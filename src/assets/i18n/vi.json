@@ -75,8 +75,25 @@
     "have_error": "Có lỗi xảy ra"
   },
   "page_title": {
-    "home": "Trang chủ",
-    "choose_payment_method":  "Chọn hình thức thanh toán",
+    "payday_loan": "Tiện ích ứng lương 24h",
+    "payday_loan_sign_in": "Đăng nhập",
+    "payday_loan_sign_up": "Đăng ký",
+    "payday_loan_sign_up_success": "Đăng ký tài khoản thành công",
+    "payday_loan_forgot_password": "Khôi phục mật khẩu",
+    "payday_loan_forgot_pass_success": "Khôi phục mật khẩu thành công",
+    "eKYC": "Định danh điện tử",
+    "confirm_information": "Xác nhận thông tin",
+    "contract_term_of_service": "Ký thư chấp thuận",
+    "pl_sign_contract_terms_success": "Ký thư chấp thuận thành công",
+    "additional_information": "Thông tin bổ sung",
+    "choose_amount_to_borrow": "Chọn số tiền cần vay",
+    "sign_contract": "Ký hợp đồng",
+    "pl_sign_contract_success": "Ký hợp đồng ứng lương thành công",
+    "payment_result": "Kết quả thanh toán",
+    "current_loan": "Khoản vay hiện tại",
+    "loan_payment": "Chi tiết tất toán khoản vay",
+    "choose_payment_method": "Chọn hình thức thanh toán",
+    "additional_document": "Bổ sung tài liệu",
     "not_found": "404"
   }
 }

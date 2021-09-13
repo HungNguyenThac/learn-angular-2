@@ -8,30 +8,14 @@ const routes: Routes = [
     path: '',
     component: MainLayoutComponent,
     children: [
+      // {
+      //   path: 'insurance',
+      //   loadChildren: () => import('./pages/insurance/insurance.module').then(m => m.InsuranceModule)
+      // },
       {
-        path: 'insurance',
-        loadChildren: () => import('./pages/insurance/insurance.module').then(m => m.InsuranceModule)
-      },
-      {
-        path: 'payday-loan',
+        path: '',
         loadChildren: () => import('./pages/payday-loan/payday-loan.module').then(m => m.PaydayLoanModule)
-      }
-    ]
-  },
-  {
-    path: '',
-    component: MainLayoutComponent,
-    children: [
-      {
-        path: 'hmg',
-        loadChildren: () => import('./pages/hmg/hmg.module').then(m => m.HmgModule)
-      }
-    ]
-  },
-  {
-    path: '',
-    component: MainLayoutComponent,
-    children: [
+      },
       {
         path: 'auth',
         loadChildren: () => import('./pages/auth/auth.module').then(m => m.AuthModule),
