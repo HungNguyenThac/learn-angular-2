@@ -83,3 +83,12 @@
 #insurance-checkbox {
   margin-bottom: 27px;
 }
+
+
+#main-layout-content {
+  font-family: $sfPro;
+  //height: 100%;
+  .ng-trigger {
+    height: 100%;
+  }
+}

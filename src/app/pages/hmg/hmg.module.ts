@@ -11,6 +11,9 @@ import { ApprovalLetterSignComponent } from './approval-letter-sign/approval-let
 import { PdfViewerModule } from 'ng2-pdf-viewer';
 import { AdditionalUserInfoComponent } from './additional-user-info/additional-user-info.component';
 import { DetailContractSignComponent } from './detail-contract-sign/detail-contract-sign.component';
+import { LoanDeterminationComponent } from './loan-determination/loan-determination.component';
+import { PaydayLoanModule } from '../payday-loan/payday-loan.module';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   declarations: [
@@ -20,12 +23,15 @@ import { DetailContractSignComponent } from './detail-contract-sign/detail-contr
     ApprovalLetterSignComponent,
     AdditionalUserInfoComponent,
     DetailContractSignComponent,
+    LoanDeterminationComponent,
   ],
   imports: [
     CommonModule,
     RouterModule.forChild(HmgRoutes),
     SharedModule,
     PdfViewerModule,
+    PaydayLoanModule,
+    TranslateModule,
   ]
 })
 export class HmgModule {
