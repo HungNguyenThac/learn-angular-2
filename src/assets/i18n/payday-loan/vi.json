@@ -80,9 +80,12 @@
       "front_identity_card_img": "Mặt trước",
       "back_identity_card_img": "Mặt sau",
       "selfie_img": "Ảnh chân dung",
+      "collateral_hind": "Giấy tờ đăng ký xe máy chính chủ",
+      "collateral_img": "Tài liệu chứng minh tài sản đảm bảo",
       "upload_selfie_img": "Tải lên ảnh chụp chân dung (Selfie)",
       "upload_front_identity_card_img": "Tải lên ảnh mặt trước CMND/CCCD",
       "upload_back_identity_card_img": "Tải lên ảnh mặt sau CMND/CCCD",
+      "upload_collateral_img": "Tải lên tài liệu chứng minh tài sản đảm bảo",
       "ekyc_failed_title": "eKYC KHÔNG thành công",
       "ekyc_failed_content": "Dữ liệu bạn tải lên KHÔNG PHÙ HỢP với điều kiện của chúng tôi."
     },

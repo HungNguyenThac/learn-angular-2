@@ -4,6 +4,7 @@ import { ApprovalLetterSignComponent } from './approval-letter-sign/approval-let
 import { CompaniesListComponent } from './companies-list/companies-list.component';
 import { DetailContractSignComponent } from './detail-contract-sign/detail-contract-sign.component';
 import { IntroduceComponent } from './introduce/introduce.component';
+import { LoanDeterminationComponent } from './loan-determination/loan-determination.component';
 import { UserInfoFormComponent } from './user-info-form/user-info-form.component';
 
 export const HmgRoutes: Routes = [
@@ -43,6 +44,11 @@ export const HmgRoutes: Routes = [
       {
         path: 'detail-contract',
         component: DetailContractSignComponent,
+        data: { animation: true },
+      },
+      {
+        path: 'loan-determination',
+        component: LoanDeterminationComponent,
         data: { animation: true },
       },
     ],
