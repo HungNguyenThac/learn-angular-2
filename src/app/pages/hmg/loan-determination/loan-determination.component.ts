@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 
 @Component({
@@ -6,7 +6,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
   templateUrl: './loan-determination.component.html',
   styleUrls: ['./loan-determination.component.scss']
 })
-export class LoanDeterminationComponent implements OnInit {
+export class LoanDeterminationComponent implements OnInit, AfterViewInit {
   loanDeteminationForm: FormGroup;
   maxAmount: number = 13;
   minAmount: number = 0;
@@ -35,16 +35,20 @@ export class LoanDeterminationComponent implements OnInit {
   }
   
   ngOnInit(): void {
+  }
+
+  ngAfterViewInit() {
     this.loanDeteminationForm.controls["loanAmount"].setValue(this.minAmount + this.step)
   }
 
   resultCollateral(result) {
     this.loanDeteminationForm.controls["collateralDocument"].setValue(result.file);
     this.collateralImgSrc = result.imgSrc;
+    console.log("ok");
+    
   }
 
   onSubmit() {
     console.log(this.loanDeteminationForm.getRawValue());
-    
   }
 }
