@@ -1,11 +1,17 @@
 export * from './approvalLetterController.service';
 import { ApprovalLetterControllerService } from './approvalLetterController.service';
+export * from './companyController.service';
+import { CompanyControllerService } from './companyController.service';
 export * from './infoController.service';
 import { InfoControllerService } from './infoController.service';
 export * from './kalapaController.service';
 import { KalapaControllerService } from './kalapaController.service';
+export * from './kalapaV2Controller.service';
+import { KalapaV2ControllerService } from './kalapaV2Controller.service';
 export * from './newsletterController.service';
 import { NewsletterControllerService } from './newsletterController.service';
+export * from './notificationController.service';
+import { NotificationControllerService } from './notificationController.service';
 export * from './tngController.service';
 import { TngControllerService } from './tngController.service';
-export const APIS = [ApprovalLetterControllerService, InfoControllerService, KalapaControllerService, NewsletterControllerService, TngControllerService];
+export const APIS = [ApprovalLetterControllerService, CompanyControllerService, InfoControllerService, KalapaControllerService, KalapaV2ControllerService, NewsletterControllerService, NotificationControllerService, TngControllerService];

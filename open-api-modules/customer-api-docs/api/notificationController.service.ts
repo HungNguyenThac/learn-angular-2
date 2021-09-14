@@ -17,8 +17,7 @@ import { HttpClient, HttpHeaders, HttpParams,
 import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
-import { ApiResponseString } from '../model/models';
-import { CoreDisburseRequest } from '../model/models';
+import { ApiResponseBoolean } from '../model/models';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
 import { Configuration }                                     from '../configuration';
@@ -28,7 +27,7 @@ import { Configuration }                                     from '../configurat
 @Injectable({
   providedIn: 'root'
 })
-export class DisburseControllerService {
+export class NotificationControllerService {
 
     protected basePath = 'http://localhost:8004';
     public defaultHeaders = new HttpHeaders();
@@ -86,16 +85,26 @@ export class DisburseControllerService {
     }
 
     /**
-     * @param coreDisburseRequest
+     * @param customerId
+     * @param loanCode
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public createAccount(coreDisburseRequest: CoreDisburseRequest, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseString>;
-    public createAccount(coreDisburseRequest: CoreDisburseRequest, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseString>>;
-    public createAccount(coreDisburseRequest: CoreDisburseRequest, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseString>>;
-    public createAccount(coreDisburseRequest: CoreDisburseRequest, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
-        if (coreDisburseRequest === null || coreDisburseRequest === undefined) {
-            throw new Error('Required parameter coreDisburseRequest was null or undefined when calling createAccount.');
+    public notifyCustomerHasInRepaymentLoan(customerId: string, loanCode: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseBoolean>;
+    public notifyCustomerHasInRepaymentLoan(customerId: string, loanCode: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseBoolean>>;
+    public notifyCustomerHasInRepaymentLoan(customerId: string, loanCode: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseBoolean>>;
+    public notifyCustomerHasInRepaymentLoan(customerId: string, loanCode: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
+        if (customerId === null || customerId === undefined) {
+            throw new Error('Required parameter customerId was null or undefined when calling notifyCustomerHasInRepaymentLoan.');
+        }
+        if (loanCode === null || loanCode === undefined) {
+            throw new Error('Required parameter loanCode was null or undefined when calling notifyCustomerHasInRepaymentLoan.');
+        }
+
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+        if (loanCode !== undefined && loanCode !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>loanCode, 'loanCode');
         }
 
         let headers = this.defaultHeaders;
@@ -113,23 +122,15 @@ export class DisburseControllerService {
         }
 
 
-        // to determine the Content-Type header
-        const consumes: string[] = [
-            'application/json'
-        ];
-        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
-        if (httpContentTypeSelected !== undefined) {
-            headers = headers.set('Content-Type', httpContentTypeSelected);
-        }
-
         let responseType_: 'text' | 'json' = 'json';
         if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
             responseType_ = 'text';
         }
 
-        return this.httpClient.post<ApiResponseString>(`${this.configuration.basePath}/disburse/create-disburse-event`,
-            coreDisburseRequest,
+        return this.httpClient.post<ApiResponseBoolean>(`${this.configuration.basePath}/notification/v1/${encodeURIComponent(String(customerId))}/notify-in-repayment-loan`,
+            null,
             {
+                params: localVarQueryParameters,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,

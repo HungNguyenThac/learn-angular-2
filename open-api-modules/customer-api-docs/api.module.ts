@@ -3,9 +3,12 @@ import { Configuration } from './configuration';
 import { HttpClient } from '@angular/common/http';
 
 import { ApprovalLetterControllerService } from './api/approvalLetterController.service';
+import { CompanyControllerService } from './api/companyController.service';
 import { InfoControllerService } from './api/infoController.service';
 import { KalapaControllerService } from './api/kalapaController.service';
+import { KalapaV2ControllerService } from './api/kalapaV2Controller.service';
 import { NewsletterControllerService } from './api/newsletterController.service';
+import { NotificationControllerService } from './api/notificationController.service';
 import { TngControllerService } from './api/tngController.service';
 
 @NgModule({

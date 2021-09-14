@@ -17,8 +17,8 @@ import { HttpClient, HttpHeaders, HttpParams,
 import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
-import { ApiResponseString } from '../model/models';
-import { CoreDisburseRequest } from '../model/models';
+import { ApiResponseKalapaResponse } from '../model/models';
+import { InlineObject2 } from '../model/models';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
 import { Configuration }                                     from '../configuration';
@@ -28,7 +28,7 @@ import { Configuration }                                     from '../configurat
 @Injectable({
   providedIn: 'root'
 })
-export class DisburseControllerService {
+export class KalapaV2ControllerService {
 
     protected basePath = 'http://localhost:8004';
     public defaultHeaders = new HttpHeaders();
@@ -86,16 +86,29 @@ export class DisburseControllerService {
     }
 
     /**
-     * @param coreDisburseRequest
+     * @param customerId
+     * @param verify
+     * @param skipValidate
+     * @param inlineObject2
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public createAccount(coreDisburseRequest: CoreDisburseRequest, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseString>;
-    public createAccount(coreDisburseRequest: CoreDisburseRequest, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseString>>;
-    public createAccount(coreDisburseRequest: CoreDisburseRequest, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseString>>;
-    public createAccount(coreDisburseRequest: CoreDisburseRequest, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
-        if (coreDisburseRequest === null || coreDisburseRequest === undefined) {
-            throw new Error('Required parameter coreDisburseRequest was null or undefined when calling createAccount.');
+    public extractInfo(customerId: string, verify?: boolean, skipValidate?: boolean, inlineObject2?: InlineObject2, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseKalapaResponse>;
+    public extractInfo(customerId: string, verify?: boolean, skipValidate?: boolean, inlineObject2?: InlineObject2, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseKalapaResponse>>;
+    public extractInfo(customerId: string, verify?: boolean, skipValidate?: boolean, inlineObject2?: InlineObject2, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseKalapaResponse>>;
+    public extractInfo(customerId: string, verify?: boolean, skipValidate?: boolean, inlineObject2?: InlineObject2, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
+        if (customerId === null || customerId === undefined) {
+            throw new Error('Required parameter customerId was null or undefined when calling extractInfo.');
+        }
+
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+        if (verify !== undefined && verify !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>verify, 'verify');
+        }
+        if (skipValidate !== undefined && skipValidate !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>skipValidate, 'skipValidate');
         }
 
         let headers = this.defaultHeaders;
@@ -127,9 +140,10 @@ export class DisburseControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.post<ApiResponseString>(`${this.configuration.basePath}/disburse/create-disburse-event`,
-            coreDisburseRequest,
+        return this.httpClient.post<ApiResponseKalapaResponse>(`${this.configuration.basePath}/kalapa/v2/${encodeURIComponent(String(customerId))}/id_card/plus`,
+            inlineObject2,
             {
+                params: localVarQueryParameters,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
