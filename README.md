@@ -36,4 +36,4 @@ Generate api docs
 - openapi-generator-cli generate -i open-api-yaml/identity-docs.yaml -g typescript-angular -o ./open-api-modules/identity-api-docs
 - openapi-generator-cli generate -i open-api-yaml/customer-docs.yaml -g typescript-angular -o ./open-api-modules/customer-api-docs
 - openapi-generator-cli generate -i open-api-yaml/com-docs.yaml -g typescript-angular -o ./open-api-modules/com-api-docs
-
+- openapi-generator-cli generate -i open-api-yaml/core-docs.yaml -g typescript-angular -o ./open-api-modules/core-api-docs
