@@ -17,10 +17,8 @@ import { HttpClient, HttpHeaders, HttpParams,
 import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
-import { ApiResponseListTemplateNotificationEntity } from '../model/models';
-import { ApiResponseString } from '../model/models';
-import { CreateTemplateNotificationRequest } from '../model/models';
-import { SendTemplateRequest } from '../model/models';
+import { ApiResponseCompanyInfo } from '../model/models';
+import { ApiResponseListCompanyInfo } from '../model/models';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
 import { Configuration }                                     from '../configuration';
@@ -30,7 +28,7 @@ import { Configuration }                                     from '../configurat
 @Injectable({
   providedIn: 'root'
 })
-export class TemplateNotificationControllerService {
+export class CompanyControllerService {
 
     protected basePath = 'http://localhost:8004';
     public defaultHeaders = new HttpHeaders();
@@ -50,6 +48,19 @@ export class TemplateNotificationControllerService {
         this.encoder = this.configuration.encoder || new CustomHttpParameterCodec();
     }
 
+    /**
+     * @param consumes string[] mime-types
+     * @return true: consumes contains 'multipart/form-data', false: otherwise
+     */
+    private canConsumeForm(consumes: string[]): boolean {
+        const form = 'multipart/form-data';
+        for (const consume of consumes) {
+            if (form === consume) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     private addToHttpParams(httpParams: HttpParams, value: any, key?: string): HttpParams {
         if (typeof value === "object" && value instanceof Date === false) {
@@ -88,16 +99,24 @@ export class TemplateNotificationControllerService {
     }
 
     /**
-     * @param createTemplateNotificationRequest
+     * @param name
+     * @param groupName
+     * @param avatar
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public create(createTemplateNotificationRequest: CreateTemplateNotificationRequest, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseString>;
-    public create(createTemplateNotificationRequest: CreateTemplateNotificationRequest, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseString>>;
-    public create(createTemplateNotificationRequest: CreateTemplateNotificationRequest, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseString>>;
-    public create(createTemplateNotificationRequest: CreateTemplateNotificationRequest, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
-        if (createTemplateNotificationRequest === null || createTemplateNotificationRequest === undefined) {
-            throw new Error('Required parameter createTemplateNotificationRequest was null or undefined when calling create.');
+    public createCompany(name: string, groupName: string, avatar: Blob, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<ApiResponseCompanyInfo>;
+    public createCompany(name: string, groupName: string, avatar: Blob, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<ApiResponseCompanyInfo>>;
+    public createCompany(name: string, groupName: string, avatar: Blob, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<ApiResponseCompanyInfo>>;
+    public createCompany(name: string, groupName: string, avatar: Blob, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
+        if (name === null || name === undefined) {
+            throw new Error('Required parameter name was null or undefined when calling createCompany.');
+        }
+        if (groupName === null || groupName === undefined) {
+            throw new Error('Required parameter groupName was null or undefined when calling createCompany.');
+        }
+        if (avatar === null || avatar === undefined) {
+            throw new Error('Required parameter avatar was null or undefined when calling createCompany.');
         }
 
         let headers = this.defaultHeaders;
@@ -106,7 +125,7 @@ export class TemplateNotificationControllerService {
         if (httpHeaderAcceptSelected === undefined) {
             // to determine the Accept header
             const httpHeaderAccepts: string[] = [
-                '*/*'
+                'application/json'
             ];
             httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
         }
@@ -114,23 +133,30 @@ export class TemplateNotificationControllerService {
             headers = headers.set('Accept', httpHeaderAcceptSelected);
         }
 
-
         // to determine the Content-Type header
         const consumes: string[] = [
-            'application/json'
+            'multipart/form-data'
         ];
-        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
-        if (httpContentTypeSelected !== undefined) {
-            headers = headers.set('Content-Type', httpContentTypeSelected);
+
+        const canConsumeForm = this.canConsumeForm(consumes);
+
+        let localVarFormParams: { append(param: string, value: any): any; };
+        let localVarUseForm = false;
+        let localVarConvertFormParamsToString = false;
+        if (localVarUseForm) {
+            localVarFormParams = new FormData();
+        } else {
+            localVarFormParams = new HttpParams({encoder: this.encoder});
         }
+
 
         let responseType_: 'text' | 'json' = 'json';
         if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
             responseType_ = 'text';
         }
 
-        return this.httpClient.post<ApiResponseString>(`${this.configuration.basePath}/v1/template-notification/create`,
-            createTemplateNotificationRequest,
+        return this.httpClient.post<ApiResponseCompanyInfo>(`${this.configuration.basePath}/company/v1/add`,
+            localVarConvertFormParamsToString ? localVarFormParams.toString() : localVarFormParams,
             {
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
@@ -142,13 +168,17 @@ export class TemplateNotificationControllerService {
     }
 
     /**
+     * @param id
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getTemplate(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseListTemplateNotificationEntity>;
-    public getTemplate(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseListTemplateNotificationEntity>>;
-    public getTemplate(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseListTemplateNotificationEntity>>;
-    public getTemplate(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
+    public getCompanyById(id: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseCompanyInfo>;
+    public getCompanyById(id: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseCompanyInfo>>;
+    public getCompanyById(id: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseCompanyInfo>>;
+    public getCompanyById(id: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
+        if (id === null || id === undefined) {
+            throw new Error('Required parameter id was null or undefined when calling getCompanyById.');
+        }
 
         let headers = this.defaultHeaders;
 
@@ -170,7 +200,7 @@ export class TemplateNotificationControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.get<ApiResponseListTemplateNotificationEntity>(`${this.configuration.basePath}/v1/template-notification/get-templates`,
+        return this.httpClient.get<ApiResponseCompanyInfo>(`${this.configuration.basePath}/company/v1/${encodeURIComponent(String(id))}`,
             {
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
@@ -182,16 +212,19 @@ export class TemplateNotificationControllerService {
     }
 
     /**
-     * @param sendTemplateRequest
+     * @param groupName
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public sendTemplate(sendTemplateRequest: SendTemplateRequest, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseString>;
-    public sendTemplate(sendTemplateRequest: SendTemplateRequest, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseString>>;
-    public sendTemplate(sendTemplateRequest: SendTemplateRequest, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseString>>;
-    public sendTemplate(sendTemplateRequest: SendTemplateRequest, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
-        if (sendTemplateRequest === null || sendTemplateRequest === undefined) {
-            throw new Error('Required parameter sendTemplateRequest was null or undefined when calling sendTemplate.');
+    public getListCompany(groupName?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseListCompanyInfo>;
+    public getListCompany(groupName?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseListCompanyInfo>>;
+    public getListCompany(groupName?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseListCompanyInfo>>;
+    public getListCompany(groupName?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
+
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+        if (groupName !== undefined && groupName !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>groupName, 'groupName');
         }
 
         let headers = this.defaultHeaders;
@@ -209,23 +242,14 @@ export class TemplateNotificationControllerService {
         }
 
 
-        // to determine the Content-Type header
-        const consumes: string[] = [
-            'application/json'
-        ];
-        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
-        if (httpContentTypeSelected !== undefined) {
-            headers = headers.set('Content-Type', httpContentTypeSelected);
-        }
-
         let responseType_: 'text' | 'json' = 'json';
         if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
             responseType_ = 'text';
         }
 
-        return this.httpClient.post<ApiResponseString>(`${this.configuration.basePath}/v1/template-notification/send-template`,
-            sendTemplateRequest,
+        return this.httpClient.get<ApiResponseListCompanyInfo>(`${this.configuration.basePath}/company/v1/get-list`,
             {
+                params: localVarQueryParameters,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,

@@ -24,6 +24,7 @@ export interface PersonalData {
     maritalStatus?: string;
     educationType?: string;
     coreUserId?: string;
+    note?: string;
     idDocumentType?: string;
     identityNumberOne?: string;
     idIssuePlace?: string;
@@ -31,6 +32,7 @@ export interface PersonalData {
     idFeatures?: string;
     idExpiredDate?: string;
     idOrigin?: string;
+    companyId?: string;
     officeCode?: string;
     organizationName?: string;
     officeName?: string;
@@ -51,5 +53,7 @@ export interface PersonalData {
     frontId?: string;
     backId?: string;
     selfie?: string;
+    frontIdTwo?: string;
+    backIdTwo?: string;
 }
 

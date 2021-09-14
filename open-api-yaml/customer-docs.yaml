@@ -138,6 +138,29 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ApiResponseObject'
+  /notification/v1/{customerId}/notify-in-repayment-loan:
+    post:
+      tags:
+      - notification-controller
+      operationId: notifyCustomerHasInRepaymentLoan
+      parameters:
+      - name: customerId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: loanCode
+        in: query
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseBoolean'
   /newsletter/v1/info:
     post:
       tags:
@@ -156,11 +179,56 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ApiResponseObject'
+  /kalapa/v2/{customerId}/id_card/plus:
+    post:
+      tags:
+      - kalapa-v-2-controller
+      operationId: extractInfo
+      parameters:
+      - name: verify
+        in: query
+        required: false
+        schema:
+          type: boolean
+          default: false
+      - name: skipValidate
+        in: query
+        required: false
+        schema:
+          type: boolean
+          default: false
+      - name: customerId
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                image:
+                  type: string
+                  format: binary
+                image_selfie:
+                  type: string
+                  format: binary
+                image_back:
+                  type: string
+                  format: binary
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseKalapaResponse'
   /kalapa/v1/id_card/plus:
     post:
       tags:
       - kalapa-controller
-      operationId: extractInfo
+      operationId: extractInfo_1
       parameters:
       - name: verify
         in: query
@@ -284,6 +352,30 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ApiResponseObject'
+  /info/v1/{customerId}/choose-company:
+    post:
+      tags:
+      - info-controller
+      operationId: chooseCompany
+      parameters:
+      - name: customerId
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChooseCompanyRequest'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseObject'
   /info/v1/{customerId}/additional-information:
     post:
       tags:
@@ -308,6 +400,25 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ApiResponseObject'
+  /company/v1/add:
+    post:
+      tags:
+      - company-controller
+      operationId: createCompany
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CompanyRequest'
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseCompanyInfo'
+      security:
+      - bearerAuth: []
   /info/v1/{customerId}:
     get:
       tags:
@@ -331,6 +442,46 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ApiResponseCustomerInfoResponse'
+  /company/v1/{id}:
+    get:
+      tags:
+      - company-controller
+      operationId: getCompanyById
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseCompanyInfo'
+      security:
+      - bearerAuth: []
+  /company/v1/get-list:
+    get:
+      tags:
+      - company-controller
+      operationId: getListCompany
+      parameters:
+      - name: groupName
+        in: query
+        required: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseListCompanyInfo'
+      security:
+      - bearerAuth: []
   /approval-letter/v1/{customerId}:
     get:
       tags:
@@ -419,6 +570,8 @@ components:
           type: string
         coreUserId:
           type: string
+        note:
+          type: string
         idDocumentType:
           type: string
         identityNumberOne:
@@ -432,6 +585,8 @@ components:
         idExpiredDate:
           type: string
         idOrigin:
+          type: string
+        companyId:
           type: string
         officeCode:
           type: string
@@ -474,6 +629,10 @@ components:
         backId:
           type: string
         selfie:
+          type: string
+        frontIdTwo:
+          type: string
+        backIdTwo:
           type: string
     ApiResponse:
       type: object
@@ -520,6 +679,18 @@ components:
       properties:
         employeeCode:
           type: string
+    ApiResponseBoolean:
+      type: object
+      properties:
+        result:
+          type: boolean
+        errorCode:
+          type: string
+        message:
+          type: object
+        responseCode:
+          type: integer
+          format: int32
     NewsLetterRequest:
       required:
       - email
@@ -652,6 +823,13 @@ components:
           type: object
           additionalProperties:
             type: object
+    ChooseCompanyRequest:
+      required:
+      - companyId
+      type: object
+      properties:
+        companyId:
+          type: string
     AdditionalInformationRequest:
       required:
       - borrowerDetailTextVariable1
@@ -667,6 +845,47 @@ components:
         borrowerDetailTextVariable1:
           type: string
         borrowerEmploymentHistoryTextVariable1:
+          type: string
+    CompanyRequest:
+      required:
+      - avatar
+      - groupName
+      - name
+      type: object
+      properties:
+        name:
+          type: string
+        groupName:
+          type: string
+        avatar:
+          type: string
+          format: binary
+    ApiResponseCompanyInfo:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/CompanyInfo'
+        errorCode:
+          type: string
+        message:
+          type: object
+        responseCode:
+          type: integer
+          format: int32
+    CompanyInfo:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        groupName:
+          type: string
+        avatar:
+          type: string
+        createdBy:
+          type: string
+        createdAt:
           type: string
     ApiResponseCustomerInfoResponse:
       type: object
@@ -725,6 +944,20 @@ components:
           type: string
         maNS:
           type: string
+    ApiResponseListCompanyInfo:
+      type: object
+      properties:
+        result:
+          type: array
+          items:
+            $ref: '#/components/schemas/CompanyInfo'
+        errorCode:
+          type: string
+        message:
+          type: object
+        responseCode:
+          type: integer
+          format: int32
     ApiResponseListApprovalLetter:
       type: object
       properties:
@@ -770,3 +1003,10 @@ components:
         responseCode:
           type: integer
           format: int32
+  securitySchemes:
+    Bearer:
+      type: apiKey
+      name: Authorization
+      in: header
+      scheme: bearer
+      bearerFormat: JWT
