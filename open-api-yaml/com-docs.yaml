@@ -6,6 +6,42 @@ servers:
 - url: http://localhost:8004
   description: Generated server url
 paths:
+  /v1/template-notification/send-template:
+    post:
+      tags:
+      - template-notification-controller
+      operationId: sendTemplate
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SendTemplateRequest'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseString'
+  /v1/template-notification/create:
+    post:
+      tags:
+      - template-notification-controller
+      operationId: create
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateTemplateNotificationRequest'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseString'
   /v1/sms/send-sms:
     post:
       tags:
@@ -42,6 +78,42 @@ paths:
             application/json;charset=UTF-8:
               schema:
                 $ref: '#/components/schemas/ApiResponseObject'
+  /v1/notification/update-fcm-token:
+    post:
+      tags:
+      - push-notification-controller
+      operationId: updateFcmToken
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateFcmTokenRequest'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseString'
+  /v1/notification/seen-notification:
+    post:
+      tags:
+      - push-notification-controller
+      operationId: seenNotification
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SeenNotificationRequest'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseString'
   /v1/notification/push:
     post:
       tags:
@@ -59,7 +131,7 @@ paths:
           content:
             '*/*':
               schema:
-                $ref: '#/components/schemas/ApiResponseObject'
+                $ref: '#/components/schemas/ApiResponseString'
   /v1/insurance/get-insurance:
     post:
       tags:
@@ -336,8 +408,93 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiResponseString'
+  /v1/template-notification/get-templates:
+    get:
+      tags:
+      - template-notification-controller
+      operationId: getTemplate
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseListTemplateNotificationEntity'
+  /v1/notification/get-notification-customer/{customerId}:
+    get:
+      tags:
+      - push-notification-controller
+      operationId: getNotification
+      parameters:
+      - name: customerId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseListTransactionNotificationEntity'
 components:
   schemas:
+    SendTemplateRequest:
+      required:
+      - customerId
+      - templateName
+      type: object
+      properties:
+        templateName:
+          type: string
+        customerId:
+          type: string
+    ApiResponseString:
+      type: object
+      properties:
+        result:
+          type: string
+        errorCode:
+          type: string
+        message:
+          type: object
+        responseCode:
+          type: integer
+          format: int32
+    ContentNotificationRequest:
+      required:
+      - content
+      - type
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - EMAIL
+          - SMS
+          - NOTIFICATION
+        content:
+          type: string
+        title:
+          type: string
+        isActive:
+          type: boolean
+    CreateTemplateNotificationRequest:
+      required:
+      - description
+      - listContent
+      - nameTemplate
+      type: object
+      properties:
+        nameTemplate:
+          type: string
+        listContent:
+          type: array
+          items:
+            $ref: '#/components/schemas/ContentNotificationRequest'
+        description:
+          type: string
     SendSMSRequest:
       required:
       - customerId
@@ -376,27 +533,38 @@ components:
           type: string
         otp:
           type: string
-    SendSampleNotificationRequest:
+    UpdateFcmTokenRequest:
       required:
       - customerId
-      - date
       - fcmToken
-      - notiBody
-      - notiTitle
-      - notiType
       type: object
       properties:
         customerId:
           type: string
-        date:
-          type: string
         fcmToken:
           type: string
-        notiBody:
+    SeenNotificationRequest:
+      required:
+      - customerId
+      - notificationId
+      type: object
+      properties:
+        customerId:
           type: string
-        notiTitle:
+        notificationId:
           type: string
-        notiType:
+    SendSampleNotificationRequest:
+      required:
+      - content
+      - customerId
+      - title
+      type: object
+      properties:
+        customerId:
+          type: string
+        content:
+          type: string
+        title:
           type: string
     GetInsuranceRequest:
       required:
@@ -750,11 +918,13 @@ components:
         idDocument:
           type: integer
           format: int32
-    ApiResponseString:
+    ApiResponseListTemplateNotificationEntity:
       type: object
       properties:
         result:
-          type: string
+          type: array
+          items:
+            $ref: '#/components/schemas/TemplateNotificationEntity'
         errorCode:
           type: string
         message:
@@ -762,6 +932,71 @@ components:
         responseCode:
           type: integer
           format: int32
+    ContentNotification:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - EMAIL
+          - SMS
+          - NOTIFICATION
+        content:
+          type: string
+        title:
+          type: string
+        isActive:
+          type: boolean
+    TemplateNotificationEntity:
+      type: object
+      properties:
+        id:
+          type: string
+        nameTemplate:
+          type: string
+        listContent:
+          type: array
+          items:
+            $ref: '#/components/schemas/ContentNotification'
+        description:
+          type: string
+    ApiResponseListTransactionNotificationEntity:
+      type: object
+      properties:
+        result:
+          type: array
+          items:
+            $ref: '#/components/schemas/TransactionNotificationEntity'
+        errorCode:
+          type: string
+        message:
+          type: object
+        responseCode:
+          type: integer
+          format: int32
+    TransactionNotificationEntity:
+      type: object
+      properties:
+        id:
+          type: string
+        customerId:
+          type: string
+        content:
+          type: string
+        title:
+          type: string
+        type:
+          type: string
+          enum:
+          - EMAIL
+          - SMS
+          - NOTIFICATION
+        provider:
+          type: string
+        isSeen:
+          type: string
+        date:
+          type: string
   securitySchemes:
     Bearer:
       type: apiKey

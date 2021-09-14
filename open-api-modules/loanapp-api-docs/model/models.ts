@@ -12,5 +12,6 @@ export * from './createVoucherRequest';
 export * from './promotionEvent';
 export * from './updateLoanRequest';
 export * from './updateLoanStatusRequest';
+export * from './updatePromotionEventRequest';
 export * from './voucher';
 export * from './voucherTransaction';

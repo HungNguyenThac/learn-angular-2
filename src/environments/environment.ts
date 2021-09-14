@@ -6,4 +6,5 @@ export const environment = {
   CUSTOMER_API_PATH: '/customer',
   COM_API_PATH: '/com',
   LOANAPP_API_PATH: '/loanapp',
+  CORE_API_PATH: '/core',
 };

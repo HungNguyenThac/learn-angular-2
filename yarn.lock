@@ -1372,18 +1372,18 @@
     consola "^2.15.0"
     node-fetch "^2.6.1"
 
-"@openapitools/openapi-generator-cli@2.3.9":
-  version "2.3.9"
-  resolved "https://registry.yarnpkg.com/@openapitools/openapi-generator-cli/-/openapi-generator-cli-2.3.9.tgz#8ab0d9c3212c88e7914d20f30e334cdbd7a529c3"
-  integrity sha512-qU0ympYlYhPQW7dF8oz924UysutmczfZfotNmgbUEWVu6u55tYmRWwc6ORJaC7jD7nvs2I7XBajKGxYTDgq7IA==
+"@openapitools/openapi-generator-cli@^2.4.2":
+  version "2.4.2"
+  resolved "https://registry.yarnpkg.com/@openapitools/openapi-generator-cli/-/openapi-generator-cli-2.4.2.tgz#88eaf1d091e00318d24fbb109251e912018e85a4"
+  integrity sha512-9BgGoIDzFK3QPiVbkMa6RJOjo+0hphILvhBBbFXZKvoCFyYlnBKlAAnpyjpySJL2YHkzlZX8Yu5O8lYkh+waAw==
   dependencies:
     "@nestjs/common" "7.6.18"
     "@nestjs/core" "7.6.18"
     "@nuxtjs/opencollective" "0.3.2"
     chalk "4.1.2"
-    commander "6.2.1"
+    commander "8.2.0"
     compare-versions "3.6.0"
-    concurrently "6.2.0"
+    concurrently "6.2.1"
     console.table "0.10.0"
     fs-extra "10.0.0"
     glob "7.1.6"
@@ -2459,10 +2459,10 @@ combined-stream@^1.0.6, combined-stream@~1.0.6:
   dependencies:
     delayed-stream "~1.0.0"
 
-commander@6.2.1:
-  version "6.2.1"
-  resolved "https://registry.yarnpkg.com/commander/-/commander-6.2.1.tgz#0792eb682dfbc325999bb2b84fddddba110ac73c"
-  integrity sha512-U7VdrJFnJgo4xjrHpTzu0yrHPGImdsmD95ZlgYSEajAn2JKzDhDTPG9kBTefmObL2w/ngeZnilk+OV9CG3d7UA==
+commander@8.2.0:
+  version "8.2.0"
+  resolved "https://registry.yarnpkg.com/commander/-/commander-8.2.0.tgz#37fe2bde301d87d47a53adeff8b5915db1381ca8"
+  integrity sha512-LLKxDvHeL91/8MIyTAD5BFMNtoIwztGPMiM/7Bl8rIPmHCZXRxmSWr91h57dpOpnQ6jIUqEWdXE/uBYMfiVZDA==
 
 commander@^2.20.0:
   version "2.20.3"
@@ -2514,10 +2514,10 @@ concat-map@0.0.1:
   resolved "https://registry.yarnpkg.com/concat-map/-/concat-map-0.0.1.tgz#d8a96bd77fd68df7793a73036a3ba0d5405d477b"
   integrity sha1-2Klr13/Wjfd5OnMDajug1UBdR3s=
 
-concurrently@6.2.0:
-  version "6.2.0"
-  resolved "https://registry.yarnpkg.com/concurrently/-/concurrently-6.2.0.tgz#587e2cb8afca7234172d8ea55176088632c4c56d"
-  integrity sha512-v9I4Y3wFoXCSY2L73yYgwA9ESrQMpRn80jMcqMgHx720Hecz2GZAvTI6bREVST6lkddNypDKRN22qhK0X8Y00g==
+concurrently@6.2.1:
+  version "6.2.1"
+  resolved "https://registry.yarnpkg.com/concurrently/-/concurrently-6.2.1.tgz#d880fc1d77559084732fa514092a3d5109a0d5bf"
+  integrity sha512-emgwhH+ezkuYKSHZQ+AkgEpoUZZlbpPVYCVv7YZx0r+T7fny1H03r2nYRebpi2DudHR4n1Rgbo2YTxKOxVJ4+g==
   dependencies:
     chalk "^4.1.0"
     date-fns "^2.16.1"

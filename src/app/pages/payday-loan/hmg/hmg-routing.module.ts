@@ -43,7 +43,7 @@ export const HmgRoutes: Routes = [
         data: {animation: true},
       },
       {
-        path: 'current-loan',
+        path: 'current-loan/:status',
         component: CurrentLoanComponent,
         data: {animation: true},
       },
