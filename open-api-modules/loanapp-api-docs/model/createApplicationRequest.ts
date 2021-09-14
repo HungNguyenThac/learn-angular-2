@@ -16,6 +16,7 @@ export interface CreateApplicationRequest {
     coreToken: string;
     customerId: string;
     expectedAmount: number;
+    purpose?: string;
     voucherTransaction?: VoucherTransaction;
 }
 

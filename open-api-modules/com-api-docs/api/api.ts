@@ -12,4 +12,6 @@ export * from './pushNotificationController.service';
 import { PushNotificationControllerService } from './pushNotificationController.service';
 export * from './smsController.service';
 import { SmsControllerService } from './smsController.service';
-export const APIS = [ContractControllerService, FileControllerService, InsuranceControllerService, MailControllerService, OtpControllerService, PushNotificationControllerService, SmsControllerService];
+export * from './templateNotificationController.service';
+import { TemplateNotificationControllerService } from './templateNotificationController.service';
+export const APIS = [ContractControllerService, FileControllerService, InsuranceControllerService, MailControllerService, OtpControllerService, PushNotificationControllerService, SmsControllerService, TemplateNotificationControllerService];

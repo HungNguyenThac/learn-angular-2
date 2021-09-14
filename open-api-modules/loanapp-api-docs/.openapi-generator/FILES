@@ -25,6 +25,7 @@ model/models.ts
 model/promotionEvent.ts
 model/updateLoanRequest.ts
 model/updateLoanStatusRequest.ts
+model/updatePromotionEventRequest.ts
 model/voucher.ts
 model/voucherTransaction.ts
 variables.ts

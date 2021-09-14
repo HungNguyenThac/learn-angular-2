@@ -13,10 +13,7 @@
 
 export interface SendSampleNotificationRequest { 
     customerId: string;
-    date: string;
-    fcmToken: string;
-    notiBody: string;
-    notiTitle: string;
-    notiType: string;
+    content: string;
+    title: string;
 }
 
