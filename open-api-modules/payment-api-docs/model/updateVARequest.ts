@@ -11,14 +11,11 @@
  */
 
 
-export interface CompanyInfo { 
-    id?: string;
-    name?: string;
-    groupName?: string;
-    avatar?: string;
-    createdBy?: string;
-    updatedBy?: string;
-    createdAt?: string;
-    updatedAt?: string;
+export interface UpdateVARequest { 
+    customerId?: string;
+    numberOfTransfer?: number;
+    maxAmount?: number;
+    minAmount?: number;
+    equalAmount?: number;
 }
 

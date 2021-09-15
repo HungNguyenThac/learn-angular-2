@@ -5,6 +5,7 @@ import * as comApiDocs from "../../../../open-api-modules/com-api-docs";
 import * as customerApiDocs from "../../../../open-api-modules/customer-api-docs";
 import * as identityApiDocs from "../../../../open-api-modules/identity-api-docs";
 import * as coreApiDocs from "../../../../open-api-modules/core-api-docs";
+import * as paymentApiDocs from "../../../../open-api-modules/payment-api-docs";
 import {environment} from "../../../environments/environment";
 
 @NgModule({
@@ -35,6 +36,11 @@ import {environment} from "../../../environments/environment";
     coreApiDocs.ApiModule.forRoot(() => {
       return new loanappApiDocs.Configuration({
         basePath: environment.API_BASE_URL + environment.CORE_API_PATH,
+      });
+    }),
+    paymentApiDocs.ApiModule.forRoot(() => {
+      return new paymentApiDocs.Configuration({
+        basePath: environment.API_BASE_URL + environment.PAYMENT_API_PATH,
       });
     }),
   ]
