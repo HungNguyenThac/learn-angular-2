@@ -6,6 +6,50 @@ servers:
 - url: http://localhost:8004
   description: Generated server url
 paths:
+  /company/v1/{id}:
+    get:
+      tags:
+      - company-controller
+      operationId: getCompanyById
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseCompanyInfo'
+      security:
+      - bearerAuth: []
+    put:
+      tags:
+      - company-controller
+      operationId: updateCompany
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CompanyRequest'
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseCompanyInfo'
+      security:
+      - bearerAuth: []
   /tng/v1/{customerId}/provides-information-salary-receipt-date:
     post:
       tags:
@@ -442,26 +486,6 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ApiResponseCustomerInfoResponse'
-  /company/v1/{id}:
-    get:
-      tags:
-      - company-controller
-      operationId: getCompanyById
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          description: OK
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/ApiResponseCompanyInfo'
-      security:
-      - bearerAuth: []
   /company/v1/get-list:
     get:
       tags:
@@ -524,6 +548,51 @@ paths:
       - bearerAuth: []
 components:
   schemas:
+    CompanyRequest:
+      required:
+      - avatar
+      - groupName
+      - name
+      type: object
+      properties:
+        name:
+          type: string
+        groupName:
+          type: string
+        avatar:
+          type: string
+          format: binary
+    ApiResponseCompanyInfo:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/CompanyInfo'
+        errorCode:
+          type: string
+        message:
+          type: object
+        responseCode:
+          type: integer
+          format: int32
+    CompanyInfo:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        groupName:
+          type: string
+        avatar:
+          type: string
+        createdBy:
+          type: string
+        updatedBy:
+          type: string
+        createdAt:
+          type: string
+        updatedAt:
+          type: string
     ApiResponseCheckIsPaydayByCustomerIdResponse:
       type: object
       properties:
@@ -845,47 +914,6 @@ components:
         borrowerDetailTextVariable1:
           type: string
         borrowerEmploymentHistoryTextVariable1:
-          type: string
-    CompanyRequest:
-      required:
-      - avatar
-      - groupName
-      - name
-      type: object
-      properties:
-        name:
-          type: string
-        groupName:
-          type: string
-        avatar:
-          type: string
-          format: binary
-    ApiResponseCompanyInfo:
-      type: object
-      properties:
-        result:
-          $ref: '#/components/schemas/CompanyInfo'
-        errorCode:
-          type: string
-        message:
-          type: object
-        responseCode:
-          type: integer
-          format: int32
-    CompanyInfo:
-      type: object
-      properties:
-        id:
-          type: string
-        name:
-          type: string
-        groupName:
-          type: string
-        avatar:
-          type: string
-        createdBy:
-          type: string
-        createdAt:
           type: string
     ApiResponseCustomerInfoResponse:
       type: object

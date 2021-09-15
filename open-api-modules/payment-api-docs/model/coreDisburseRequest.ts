@@ -11,14 +11,14 @@
  */
 
 
-export interface CompanyInfo { 
-    id?: string;
-    name?: string;
-    groupName?: string;
-    avatar?: string;
-    createdBy?: string;
-    updatedBy?: string;
-    createdAt?: string;
-    updatedAt?: string;
+export interface CoreDisburseRequest { 
+    epayCustomerId?: string;
+    epayLoanId?: string;
+    core_loan_uuid?: string;
+    benefit_account_no?: string;
+    benefit_bank_code?: string;
+    benefit_account_name?: string;
+    amount?: number;
+    transaction_note?: string;
 }
 

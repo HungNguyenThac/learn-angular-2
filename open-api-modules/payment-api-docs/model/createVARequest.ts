@@ -11,14 +11,8 @@
  */
 
 
-export interface CompanyInfo { 
-    id?: string;
-    name?: string;
-    groupName?: string;
-    avatar?: string;
-    createdBy?: string;
-    updatedBy?: string;
-    createdAt?: string;
-    updatedAt?: string;
+export interface CreateVARequest { 
+    customerId: string;
+    accountName: string;
 }
 
