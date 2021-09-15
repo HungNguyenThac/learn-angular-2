@@ -38,3 +38,16 @@ Generate api docs
 - openapi-generator-cli generate -i open-api-yaml/com-docs.yaml -g typescript-angular -o ./open-api-modules/com-api-docs
 - openapi-generator-cli generate -i open-api-yaml/core-docs.yaml -g typescript-angular -o ./open-api-modules/core-api-docs
 - openapi-generator-cli generate -i open-api-yaml/payment-docs.yaml -g typescript-angular -o ./open-api-modules/payment-api-docs
+
+##Note
+Reference https://github.com/OpenAPITools/openapi-generator/issues/10182
+- Version 5.2.1 is error while generating. use 5.2.0
+```
+{
+  "$schema": "node_modules/@openapitools/openapi-generator-cli/config.schema.json",
+  "spaces": 2,
+  "generator-cli": {
+    "version": "5.2.0"
+  }
+}
+```
