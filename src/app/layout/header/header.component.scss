@@ -2,6 +2,10 @@
 
 $main-font: 14px;
 
+header {
+  z-index: 99999;
+}
+
 #insurance-header {
   background: $monex-gradient-03;
   font-family: $sfPro;
