@@ -14,6 +14,7 @@ import { SharedModule } from 'src/app/share/shared.module';
 import { PaydayLoanModule } from '../payday-loan/payday-loan.module';
 import { SignUpSuccessComponent } from './sign-up-success/sign-up-success.component';
 import { ResetPasswordSuccessComponent } from './reset-password-success/reset-password-success.component';
+import { PlAuthSuccessComponent } from './components/pl-auth-success/pl-auth-success.component';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import { ResetPasswordSuccessComponent } from './reset-password-success/reset-pa
     ForgotPasswordComponent,
     SignUpSuccessComponent,
     ResetPasswordSuccessComponent,
+    PlAuthSuccessComponent,
   ],
   imports: [
     MaterialModule,
