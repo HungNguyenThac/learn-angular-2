@@ -15,6 +15,7 @@ import {TranslateHttpLoader} from "@ngx-translate/http-loader";
 import {GlobalConfig} from "ngx-toastr/toastr/toastr-config";
 import {_providers} from "./providers";
 import {MomentModule} from "ngx-moment";
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json?cacheBuster=' + new Date().toISOString().replace(/\.|:|-/g, ''));
@@ -40,7 +41,8 @@ const customNotifierOptions: Partial<GlobalConfig> = {
         deps: [HttpClient],
       },
     }),
-    MomentModule
+    MomentModule,
+    BrowserAnimationsModule
   ],
   providers: [_providers],
   declarations: [],

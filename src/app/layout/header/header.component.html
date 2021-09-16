@@ -34,13 +34,13 @@
       <div id="insurance-navigation-bar">
         <div class="container no-padding insurance-navigation-bar-container">
           <!-- Top navigation -->
-          <div id="insurance-top-navigation">
+          <div id="insurance-top-navigation" class="justify-content-between">
             <button mat-icon-button class="no-padding insurance-top-nav-btn">
               <span [ngClass]="leftBtnIcon" *ngIf="displayLeftBtn"></span>
             </button>
 
             <!-- Stepper navigation -->
-            <app-step-navigation *ngIf="showStepNavigation; else showTitle"></app-step-navigation>
+            <app-step-navigation *ngIf="showStepNavigation; else showTitle" class="w-100"></app-step-navigation>
             <ng-template #showTitle> <h2>{{ titleNavigation }}</h2></ng-template>
 
             <button mat-icon-button class="no-padding insurance-top-nav-btn">

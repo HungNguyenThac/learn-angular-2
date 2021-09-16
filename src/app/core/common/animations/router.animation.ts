@@ -1,4 +1,4 @@
-import {animate, query, style, transition, trigger} from "@angular/animations";
+import {animate, query, state, style, transition, trigger} from "@angular/animations";
 
 export const fadeAnimation =
   trigger('routeAnimations', [
@@ -19,6 +19,14 @@ export const fadeAnimation =
         ':enter',
         [style({ opacity: 0 }), animate('0.3s', style({ opacity: 1 }))],
         { optional: true }
-      )
+      ),
+      state('in', style({
+        transform: 'translate3d(0, 0, 0)'
+      })),
+      state('out', style({
+        transform: 'translate3d(100%, 0, 0)'
+      })),
+      transition('in => out', animate('400ms ease-in-out')),
+      transition('out => in', animate('400ms ease-in-out'))
     ])
   ]);

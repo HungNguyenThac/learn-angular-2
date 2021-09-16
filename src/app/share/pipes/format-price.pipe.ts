@@ -1,5 +1,4 @@
 import {Pipe, PipeTransform} from '@angular/core';
-import {MultiLanguageService} from "../translate/multiLanguageService";
 
 /*
  * Format price
@@ -7,8 +6,8 @@ import {MultiLanguageService} from "../translate/multiLanguageService";
  * Usage:
  *  value | formatPrice
  * Example:
- *  // value.name = 1000000
- *  {{ value.name | formatPrice  }}
+ *  // value.price = 1000000
+ *  {{ value.price | formatPrice  }}
  *  formats to: 1,000,000 đ
 */
 @Pipe({

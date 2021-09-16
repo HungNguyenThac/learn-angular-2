@@ -1,5 +1,5 @@
 export const environment = {
-  PRODUCTION: true,
+  PRODUCTION: false,
 
   API_BASE_URL: 'https://api-staging.epay.vn',
   IDENTITY_API_PATH: '/identity',

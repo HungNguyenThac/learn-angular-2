@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {fadeAnimation} from "../../core/common/animations";
+import {fadeAnimation} from "../../core/common/animations/router.animation";
 import {MultiLanguageService} from "../../share/translate/multiLanguageService";
 
 @Component({

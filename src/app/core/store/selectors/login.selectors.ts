@@ -33,3 +33,8 @@ export const getLoginProgressState = createSelector(
     fromFeature.getCoreState,
     (state: fromFeature.State) => state.login ? state.login.loginProcess : ''
 );
+
+export const getCoreTokenState = createSelector(
+  fromFeature.getCoreState,
+  (state: fromFeature.State) => state.login ? state.login.coreToken : ''
+);

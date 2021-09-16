@@ -30,25 +30,15 @@ export class SignInComponent implements OnInit {
     this.error$ = store.select(fromStore.getLoginErrorState);
 
     this.signInForm = this.formBuilder.group({
-      mobileNumber: [
-        '',
-        [
-          Validators.required,
-        ],
-      ],
-      password: [
-        '',
-        [
-          Validators.required,
-        ],
-      ],
+      mobileNumber: [''],
+      password: [''],
     });
   }
 
   ngOnInit(): void {
     this.store.dispatch(new fromActions.Logout(null));
     this.store.dispatch(new fromActions.SigninError(null));
-    
+
     this.error$.subscribe((error) => {
       console.log('error', error);
       if (error != null) {
@@ -59,7 +49,7 @@ export class SignInComponent implements OnInit {
 
   onSubmit() {
     console.log(this.signInForm.getRawValue());
-    if (!this.signInForm.valid) {
+    if (this.signInForm.invalid) {
       return;
     }
     const username = this.signInForm.controls.mobileNumber.value;
@@ -67,6 +57,6 @@ export class SignInComponent implements OnInit {
 
     this.store.dispatch(new fromActions.Signin({ username, password }));
 
-    
+
   }
 }
