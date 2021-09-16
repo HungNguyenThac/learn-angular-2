@@ -34,17 +34,12 @@ export class SignInComponent implements OnInit {
         '',
         [
           Validators.required,
-          Validators.minLength(10),
-          Validators.maxLength(10),
-          Validators.pattern('^(09|03|07|08|05)([0-9]{8})'),
         ],
       ],
       password: [
         '',
         [
           Validators.required,
-          Validators.minLength(8),
-          Validators.maxLength(50),
         ],
       ],
     });

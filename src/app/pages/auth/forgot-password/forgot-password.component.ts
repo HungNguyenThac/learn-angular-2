@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-forgot-password',
@@ -20,13 +20,25 @@ export class ForgotPasswordComponent implements OnInit {
   errorGetTngInfo: boolean = false;
   disabledOTP: boolean = false;
 
+  matchValues(
+    matchTo: string // name of the control to match to
+  ): (AbstractControl) => ValidationErrors | null {
+    return (control: AbstractControl): ValidationErrors | null => {
+      return !!control.parent &&
+        !!control.parent.value &&
+        control.value === control.parent.controls[matchTo].value
+        ? null
+        : { isMatching: false };
+    };
+  }
+
   constructor(
     private formBuilder: FormBuilder
   ) {
     this.passwordForgotForm = this.formBuilder.group({
       mobileNumber: ["", [Validators.required]],
       password: ["", [Validators.required]],
-      confirmPassword: ["", [Validators.required]],
+      confirmPassword: ["", [Validators.required], this.matchValues('password')],
     })
   }
 

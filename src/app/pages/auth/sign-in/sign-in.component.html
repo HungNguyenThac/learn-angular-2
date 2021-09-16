@@ -27,12 +27,12 @@
 
                 <div class="col-md-12" id="password-field">
                     <mat-form-field appearance="outline" floatLabel="never" class="w-100">
-                        <mat-label>{{ 'payday_loan.auth.new_password' | translate }}</mat-label>
+                        <mat-label>{{ 'payday_loan.auth.password' | translate }}</mat-label>
                         <div class="password-pre-icon" matPrefix
                             [ngClass]="signInForm.controls.password.value!='' || isPasswordInputFocus ? 'is-focused-icon' : '' ">
                         </div>
                         <input [type]="isPassVisible ? 'text' : 'password' " matInput formControlName="password"
-                        [placeholder]= '"payday_loan.auth.new_password" | translate' autocomplete required strong-password-validate (focus)="isPasswordInputFocus = true"
+                        [placeholder]= '"payday_loan.auth.password" | translate' autocomplete required strong-password-validate (focus)="isPasswordInputFocus = true"
                             (blur)="isPasswordInputFocus = false"
                             [ngClass]="isPasswordInputFocus  ? 'is-focused-input' : '' ">
                         <button type="button" *ngIf="signInForm.controls.password.value" matSuffix mat-icon-button

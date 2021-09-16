@@ -1,11 +1,25 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
+import {
+  AbstractControl,
+  FormBuilder,
+  FormGroup,
+  ValidationErrors,
+  Validators,
+} from '@angular/forms';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
+import { ApiResponseObject } from 'open-api-modules/com-api-docs';
+import {
+  CreateCustomerAccountRequest,
+  CreateVerifiedAccountRequest,
+  SignOnControllerService,
+} from 'open-api-modules/identity-api-docs';
 
 @Component({
   selector: 'app-sign-up',
   templateUrl: './sign-up.component.html',
-  styleUrls: ['./sign-up.component.scss']
+  styleUrls: ['./sign-up.component.scss'],
 })
 export class SignUpComponent implements OnInit {
   signUpForm: FormGroup;
@@ -19,12 +33,15 @@ export class SignUpComponent implements OnInit {
   ruleAccepted: boolean = false;
 
   //OTP
-  openOtpConfirm: boolean = false
+  openOtpConfirm: boolean = false;
   otp: any = [];
-  mobile: string = "";
-  errorText: string = "";
+  mobile: string = '';
+  errorText: string = '';
   errorGetTngInfo: boolean = false;
   disabledOTP: boolean = false;
+
+  //
+  createCustomerAccountRequestResult: any;
 
   matchValues(
     matchTo: string // name of the control to match to
@@ -36,37 +53,84 @@ export class SignUpComponent implements OnInit {
         ? null
         : { isMatching: false };
     };
-}
+  }
 
   constructor(
     private formBuilder: FormBuilder,
-    private router: Router
+    private router: Router,
+    private signOnControllerService: SignOnControllerService,
+    private notifier: ToastrService
   ) {
     this.signUpForm = this.formBuilder.group({
-      mobileNumber: ["", [Validators.required, Validators.minLength(10), Validators.maxLength(10), Validators.pattern("^(09|03|07|08|05)([0-9]{8})")]],
-      password: ["", [Validators.required, Validators.minLength(8), Validators.maxLength(50)]],
-      confirmPassword: ["", [Validators.required, this.matchValues('password'), Validators.minLength(8), Validators.maxLength(50)]],
-    })
+      mobileNumber: ['', [Validators.required]],
+      password: ['', [Validators.required]],
+      confirmPassword: [
+        '',
+        [Validators.required, this.matchValues('password')],
+      ],
+    });
   }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   onSubmit() {
-    console.log(this.signUpForm.getRawValue());
-    this.openOtpConfirm = true
+    if (!this.signUpForm.valid || !this.ruleAccepted) return;
+    this.getOtp();
+  }
+
+  getOtp() {
+    const createCustomerAccountRequest: CreateCustomerAccountRequest = {
+      mobile: this.signUpForm.controls.mobileNumber.value,
+      provider: 'cmc',
+    };
+    this.signOnControllerService
+      .createCustomerAccount(createCustomerAccountRequest)
+      .subscribe((data: ApiResponseObject) => {
+        if (data.errorCode != null) {
+          return this.notifier.error(String(data?.message));
+        }
+
+        this.createCustomerAccountRequestResult = data.result;
+
+        if (this.openOtpConfirm === false) {
+          this.openOtpConfirm = true;
+        }
+      });
   }
 
   onRuleAccepted() {
-    this.ruleAccepted = !this.ruleAccepted
+    this.ruleAccepted = !this.ruleAccepted;
   }
 
   //OTP
   verifyOtp(otp) {
     console.log(otp);
+    const requestId = this.createCustomerAccountRequestResult.requestId;
+    const signature = this.createCustomerAccountRequestResult.signature;
+    const createVerifiedAccountRequest: CreateVerifiedAccountRequest = {
+      mobile: this.signUpForm.controls.mobileNumber.value,
+      password: this.signUpForm.controls.password.value,
+      signature: signature,
+      requestId: requestId,
+      otp: otp,
+    };
+    this.signOnControllerService
+      .createVerifiedCustomerAccount(createVerifiedAccountRequest)
+      .subscribe((result) => {
+        if (result.errorCode != null) {
+          return this.notifier.error(`data.message`);
+        }
+        console.log('create Verified success');
+        this.redirectToSignUpSuccessPage();
+      });
   }
 
   resendOtp() {
-    console.log("resent")
+    console.log('resent');
+    this.getOtp();
+  }
+
+  redirectToSignUpSuccessPage() {
+    this.router.navigateByUrl('/auth/sign-up-success');
   }
 }
