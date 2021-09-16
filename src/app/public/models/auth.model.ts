@@ -4,3 +4,10 @@ export interface Auth {
   customerId?: string;
   exp?: number;
 }
+
+// export interface Auth {
+//   accessToken?: string;
+//   passwordHash?: string;
+//   customerId?: string;
+//   customerMobile?: string;
+// }

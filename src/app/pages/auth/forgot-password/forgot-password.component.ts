@@ -24,7 +24,7 @@ export class ForgotPasswordComponent implements OnInit {
     private formBuilder: FormBuilder
   ) {
     this.passwordForgotForm = this.formBuilder.group({
-      mobileNumber: ["", [Validators.required, Validators.minLength(10), Validators.maxLength(10), Validators.pattern("^(09|03|07|08|05)([0-9]{8})")]],
+      mobileNumber: ["", [Validators.required]],
       password: ["", [Validators.required]],
       confirmPassword: ["", [Validators.required]],
     })
@@ -40,6 +40,7 @@ export class ForgotPasswordComponent implements OnInit {
 
   onSubmit() {
     console.log(this.passwordForgotForm.getRawValue());
+    this.ruleAccepted = false
     this.changePasswordForm = false
   }
 

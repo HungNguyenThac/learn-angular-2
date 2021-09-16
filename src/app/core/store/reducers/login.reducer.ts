@@ -28,9 +28,9 @@ class LoginActions {
 
     success() {
         if (!this.action.payload || !this.action.payload.responseCode || this.action.payload.responseCode !== 200) return this.state;
-        const decodedResult: Token = jwt_decode(this.action.payload.result?.token);
+        const decodedResult: Token = jwt_decode(this.action.payload.result?.accessToken);
         const payload: Auth = {
-            token: this.action.payload.result?.token,
+            token: this.action.payload.result?.accessToken,
             exp: decodedResult.exp,
             customerId: decodedResult.sub,
             authorities: decodedResult.authorities,
@@ -45,7 +45,7 @@ class LoginActions {
     }
 
     error() {
-        const payload: HttpErrorResponse = this.action.payload;
+        const payload = this.action.payload;
         return {...this.state, loginError: payload};
     }
 

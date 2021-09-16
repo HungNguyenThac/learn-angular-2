@@ -64,7 +64,7 @@
       "confirm_policy": "Tôi đồng ý với các <span><a href='https://monex.vn/dieu-khoan-su-dung.html' target='blank' rel='noopener' class='pl-text-sent-confirm-policy-inline'>Điều khoản, điều kiện</a></span> và <span><a href='https://monex.vn/chinh-sach-quyen-rieng-tu.html' target='blank' rel='noopener' class='pl-text-sent-confirm-policy-inline'>Chính sách bảo mật</a></span> của Monex",
       "terms_of_use": "Điều khoản, điều kiện",
       "policy": "Chính sách bảo mật",
-      "strong_password": "Mật khẩu phải gồm ít nhất 6 ký tự, bao gồm ít nhất 1 chữ cái viết hoa, 1 chữ cái viết thường và 1 chữ số!",
+      "strong_password": "Mật khẩu phải gồm ít nhất 8 ký tự, bao gồm ít nhất 1 chữ cái viết hoa, 1 chữ cái viết thường và 1 chữ số!",
       "forgot_password": "Khôi phục mật khẩu",
       "forgot_password_text": "Quên mật khẩu",
       "register_successfully": "Đăng ký thành công",
