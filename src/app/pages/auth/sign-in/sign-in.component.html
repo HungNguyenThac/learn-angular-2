@@ -1,21 +1,21 @@
 <div class="container">
     <div class="insurance-container">
         <div class="text-center logo">
-            <img src="assets/img/Monex Logo.svg" alt="monex">
+            <img src="assets/img/icon/group-3/svg/monex-logo.svg" alt="monex">
         </div>
         <form [formGroup]="signInForm" class="form-container">
             <div class="row">
                 <div class="col-md-12">
                     <mat-form-field #mobileNumber appearance="outline" floatLabel="never" class="w-100">
-                        <mat-label>Số điện thoại đăng nhập</mat-label>
+                        <mat-label>{{ 'payday_loan.auth.phone_number_login' | translate }}</mat-label>
                         <div class="username-icon" matPrefix
                             [ngClass]="signInForm.controls.mobileNumber.value!='' || isUsernameInputFocus ? 'is-focused-icon' : '' ">
                         </div>
-                        <input type="text" matInput formControlName="mobileNumber" placeholder="Số điện thoại đăng nhập"
+                        <input type="text" matInput formControlName="mobileNumber" [placeholder]="'payday_loan.auth.phone_number_login' | translate "
                             required phone-number-validate (focus)="isUsernameInputFocus = true" (blur)="isUsernameInputFocus = false"
                             [ngClass]="isUsernameInputFocus  ? 'is-focused-input' : '' ">
                         <button type="button" *ngIf="signInForm.controls.mobileNumber.value" matSuffix mat-icon-button
-                            class="support-icon" aria-label="Clear"
+                            class="support-icon" aria-label="Clear" tabindex="-1"
                             (click)="signInForm.controls.mobileNumber.setValue('')" disableRipple="true">
                             <div class="clear-icon" [ngClass]="{'invisible': !isUsernameInputFocus}"></div>
                         </button>
@@ -27,12 +27,12 @@
 
                 <div class="col-md-12" id="password-field">
                     <mat-form-field appearance="outline" floatLabel="never" class="w-100">
-                        <mat-label>Mật khẩu</mat-label>
+                        <mat-label>{{ 'payday_loan.auth.new_password' | translate }}</mat-label>
                         <div class="password-pre-icon" matPrefix
                             [ngClass]="signInForm.controls.password.value!='' || isPasswordInputFocus ? 'is-focused-icon' : '' ">
                         </div>
                         <input [type]="isPassVisible ? 'text' : 'password' " matInput formControlName="password"
-                            placeholder="Mật khẩu" autocomplete required strong-password-validate (focus)="isPasswordInputFocus = true"
+                        [placeholder]= '"payday_loan.auth.new_password" | translate' autocomplete required strong-password-validate (focus)="isPasswordInputFocus = true"
                             (blur)="isPasswordInputFocus = false"
                             [ngClass]="isPasswordInputFocus  ? 'is-focused-input' : '' ">
                         <button type="button" *ngIf="signInForm.controls.password.value" matSuffix mat-icon-button
@@ -49,17 +49,16 @@
                         </show-errors>
                     </mat-form-field>
                     <div class="forgot-password-text">
-                        <a class="link-inline-green" [routerLink]="['/auth/forgot-password']">Quên mật khẩu</a>
+                        <a class="link-inline-green" [routerLink]="['/auth/forgot-password']">{{ 'payday_loan.auth.forgot_password_text' | translate }}</a>
                     </div>
                 </div>
 
                 <div class="col-md-12">
                     <div class="action-container">
-                        <button (click)="onSubmit()" mat-flat-button color="primary" class="ui-button login-btn">Đăng
-                            nhập
+                        <button (click)="onSubmit()" mat-flat-button color="primary" class="ui-button login-btn">{{ 'payday_loan.auth.login' | translate }}
                         </button>
                         <p>
-                            Bạn chưa có tài khoản? <a class="link-inline-green" [routerLink]="['/auth/sign-up']">Đăng ký ngay</a>
+                            {{ 'payday_loan.auth.have_not_account' | translate }} <a class="link-inline-green" [routerLink]="['/auth/sign-up']">{{ 'payday_loan.auth.register_now' | translate }}</a>
                         </p>
                     </div>
                 </div>

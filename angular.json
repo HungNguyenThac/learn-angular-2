@@ -36,6 +36,7 @@
             "styles": [
               "src/assets/styles/theme.scss",
               "./node_modules/bootstrap/dist/css/bootstrap.min.css",
+              "./node_modules/ngx-toastr/toastr.css",
               "src/assets/styles/main.scss"
             ],
             "scripts": []
