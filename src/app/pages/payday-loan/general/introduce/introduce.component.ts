@@ -16,6 +16,6 @@ export class IntroduceComponent implements OnInit {
   }
 
   start() {
-    this.router.navigateByUrl('/hmg/companies');
+    this.router.navigateByUrl('/auth/sign-in').then(r => {});
   }
 }

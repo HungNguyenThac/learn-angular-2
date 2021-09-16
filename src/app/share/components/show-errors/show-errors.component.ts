@@ -30,7 +30,7 @@ export class ShowErrorsComponent {
 
     email: (params: any) => "##FIELD## phải là 1 email hợp lệ.",
 
-    strongPassword: (params: any) => "##FIELD## không đúng định dạng.",
+    strongPassword: (params: any) => "##FIELD## phải gồm ít nhất 6 ký tự, bao gồm ít nhất 1 chữ cái viết hoa, 1 chữ cái viết thường và 1 chữ số!.",
 
     phoneNumber: (params: any) => "##FIELD## không đúng định dạng.",
   };

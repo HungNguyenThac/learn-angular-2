@@ -2,30 +2,68 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { of } from 'rxjs/observable/of';
-import { catchError, map, switchMap, tap } from 'rxjs/operators';
+import { map, switchMap, tap } from 'rxjs/operators';
 import * as fromActions from '../actions';
-import { Auth, LoginForm } from '../../../public/models';
+import { LoginForm } from '../../../public/models';
 import { SignOnControllerService } from '../../../../../open-api-modules/identity-api-docs';
-import { InfoControllerService } from 'open-api-modules/customer-api-docs';
+import {
+  ApiResponseCustomerInfoResponse,
+  CustomerInfoResponse,
+  InfoControllerService,
+} from 'open-api-modules/customer-api-docs';
 import {
   LoginControllerService,
   LoginInput,
 } from 'open-api-modules/core-api-docs';
+import {
+  ApiResponseObject,
+  ApplicationControllerService,
+} from '../../../../../open-api-modules/loanapp-api-docs';
+import { Store } from '@ngrx/store';
+import * as fromStore from '../index';
+import { Observable } from 'rxjs';
+import formatSlug from './../../../core/utils/format-slug';
+import { PAYDAY_LOAN_STATUS } from '../../common/enum/payday-loan';
 
 @Injectable()
 export class LoginEffects {
   loginInput: LoginInput;
   loginPayload: any;
 
+  public coreToken$: Observable<any>;
+  coreToken: string;
+
+  public customerId$: Observable<any>;
+  customerId: string;
+
+  public customerInfo$: Observable<any>;
+  customerInfo: CustomerInfoResponse;
+
   constructor(
     private actions$: Actions,
+    private store$: Store<fromStore.State>,
     private router: Router,
     private location: Location,
     private signOnService: SignOnControllerService,
     private infoService: InfoControllerService,
-    private loginService: LoginControllerService
-  ) {}
+    private loginService: LoginControllerService,
+    private applicationControllerService: ApplicationControllerService
+  ) {
+    this.coreToken$ = store$.select(fromStore.getCoreTokenState);
+    this.coreToken$.subscribe((token) => {
+      this.coreToken = token;
+    });
+
+    this.customerId$ = store$.select(fromStore.getCustomerIdState);
+    this.customerId$.subscribe((customer_id) => {
+      this.customerId = customer_id;
+    });
+
+    this.customerInfo$ = store$.select(fromStore.getCustomerInfoState);
+    this.customerInfo$.subscribe((customerInfo) => {
+      this.customerInfo = customerInfo;
+    });
+  }
 
   loginSingin$ = createEffect(() =>
     this.actions$.pipe(
@@ -42,7 +80,7 @@ export class LoginEffects {
             map((result) => {
               this.loginInput = login;
               this.loginPayload = result;
-              if (result.result === null) {
+              if (!result || result.responseCode !== 200) {
                 return new fromActions.SigninError(result.message);
               }
               return new fromActions.SigninSuccess(result);
@@ -59,16 +97,83 @@ export class LoginEffects {
         tap(() => {
           this.infoService
             .getInfo(this.loginPayload.result.customerId)
-            .subscribe((result) => {
-              if (result.result.personalData.stepOne === 'DONE') {
-                this.loginService.login(this.loginInput).subscribe((result) => {
-                  console.log('data:', result);
-                });
+            .subscribe((result: ApiResponseCustomerInfoResponse) => {
+              if (!result || result.responseCode !== 200) return;
+
+              this.store$.dispatch(
+                new fromActions.SetCustomerInfo(result.result)
+              );
+
+              if (result.result.personalData.stepOne !== 'DONE') {
+                this._redirectToCurrentPage().then(r => {});
               }
+
+              this.store$.dispatch(new fromActions.SigninCore(this.loginInput));
             });
-          return this.router.navigate(['hmg/introduce']);
         })
       ),
     { dispatch: false }
   );
+
+  loginSinginCore$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(fromActions.LOGIN_SIGNIN_CORE),
+      map((action: fromActions.SigninCore) => action.payload),
+      switchMap((login: LoginForm) => {
+        const { username, password } = login;
+        return this.loginService
+          .login({
+            username: username,
+            password: password,
+          })
+          .pipe(
+            map((result) => {
+              const coreResponse = JSON.parse(JSON.stringify(result));
+              if (!coreResponse || coreResponse.code !== 200) {
+                return new fromActions.SigninCoreError(coreResponse.message);
+              }
+              return new fromActions.SigninCoreSuccess(coreResponse);
+            })
+          );
+      })
+    )
+  );
+
+  loginSinginCoreSuccess$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(fromActions.LOGIN_SIGNIN_CORE_SUCCESS),
+        tap(() => {
+          this.applicationControllerService
+            .getActivePaydayLoan(this.customerId, this.coreToken)
+            .subscribe((result: ApiResponseObject) => {
+              if (!result || result.responseCode !== 200) return;
+
+              //TODO wait loanapp-svc append model to get status
+              return this.router.navigate([
+                'hmg/current-loan',
+                formatSlug(PAYDAY_LOAN_STATUS.UNKNOWN_STATUS),
+              ]);
+            });
+        })
+      ),
+    { dispatch: false }
+  );
+
+  loginSinginCoreError$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(fromActions.LOGIN_SIGNIN_CORE_ERROR),
+        tap(() => {
+          this._redirectToCurrentPage().then(r => {});
+        })
+      ),
+    { dispatch: false }
+  );
+
+  private _redirectToCurrentPage() {
+    if (!this.customerInfo.personalData.companyId)
+      return this.router.navigate(['companies']);
+    return this.router.navigate(['ekyc']);
+  }
 }

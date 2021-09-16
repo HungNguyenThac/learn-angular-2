@@ -11,10 +11,6 @@ export const AuthRoutes: Routes = [
         path: '',
         children: [
             {
-                path: 'login',
-                component: LoginComponent
-            },
-            {
                 path: 'sign-up',
                 component: SignUpComponent
             },

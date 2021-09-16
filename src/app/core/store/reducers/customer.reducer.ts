@@ -1,66 +1,86 @@
 import * as fromActions from '../actions';
-import {HttpErrorResponse} from "@angular/common/http";
-import {Customer} from "../../../public/models";
+import { HttpErrorResponse } from '@angular/common/http';
+import { CustomerInfoResponse } from '../../../../../open-api-modules/customer-api-docs';
 
 export interface CustomerState {
-    customerInfo: any;
-    loginError: HttpErrorResponse;
+  customerInfo: CustomerInfoResponse;
+  getCustomerError: HttpErrorResponse;
 }
 
 export const CUSTOMER_INITIAL_STATE: CustomerState = {
-    customerInfo: null,
-    loginError: null
-}
+  customerInfo: null,
+  getCustomerError: null,
+};
 
 class CustomerActions {
+  constructor(
+    private state: CustomerState,
+    private action: fromActions.CustomerActions
+  ) {}
 
-    constructor(private state: CustomerState, private action: fromActions.CustomerActions) {
-    }
+  getCustomerInfo() {
+    const payload = this.action.payload;
 
-    getCustomerInfo() {
-        const payload = this.action.payload;
+    return { ...this.state };
+  }
 
-        return {...this.state};
+  setCustomerInfo() {
+    const payload = this.action.payload;
 
-    }
+    return { ...this.state, customerInfo: payload };
+  }
 
-    getCustomerInfoSuccess() {
-        if (!this.action.payload || !this.action.payload.responseCode || this.action.payload.responseCode !== 200) return this.state;
-        const payload: Customer = this.action.payload.result;
-        return {
-            ...this.state,
-            customerInfo: payload,
-            loginProcess: null,
-            loginError: null
-        }
+  resetCustomerInfo() {
+    return { ...this.state, customerInfo: null };
+  }
 
-    }
+  getCustomerInfoSuccess() {
+    const payload = this.action.payload;
 
-    getCustomerInfoError() {
-        const payload: HttpErrorResponse = this.action.payload;
-        return {...this.state, loginError: payload};
-    }
+    if (!payload || !payload.responseCode || payload.responseCode !== 200)
+      return this.state;
+    return {
+      ...this.state,
+      customerInfo: payload.result,
+      getCustomerError: null,
+    };
+  }
+
+  getCustomerInfoError() {
+    const payload = this.action.payload;
+    return { ...this.state, getCustomerError: payload };
+  }
 }
 
-export function customerReducer(state: CustomerState = CUSTOMER_INITIAL_STATE, action: fromActions.CustomerActions): CustomerState {
+export function customerReducer(
+  state: CustomerState = CUSTOMER_INITIAL_STATE,
+  action: fromActions.CustomerActions
+): CustomerState {
+  const customerActions: CustomerActions = new CustomerActions(state, action);
 
-    const customerActions: CustomerActions = new CustomerActions(state, action);
-
-    switch (action.type) {
-        case fromActions.GET_CUSTOMER_INFO: {
-            return customerActions.getCustomerInfo();
-        }
-
-        case fromActions.GET_CUSTOMER_INFO_SUCCESS: {
-            return customerActions.getCustomerInfoSuccess();
-        }
-
-        case fromActions.GET_CUSTOMER_INFO_ERROR: {
-            return customerActions.getCustomerInfoError();
-        }
-
-        default: {
-            return state;
-        }
+  switch (action.type) {
+    case fromActions.GET_CUSTOMER_INFO: {
+      return customerActions.getCustomerInfo();
     }
+
+    case fromActions.GET_CUSTOMER_INFO_SUCCESS: {
+      return customerActions.getCustomerInfoSuccess();
+    }
+
+    case fromActions.GET_CUSTOMER_INFO_ERROR: {
+      return customerActions.getCustomerInfoError();
+    }
+
+    case fromActions.SET_CUSTOMER_INFO: {
+      return customerActions.setCustomerInfo();
+    }
+
+    case fromActions.RESET_CUSTOMER_INFO: {
+      return customerActions.resetCustomerInfo();
+    }
+
+    default: {
+      return state;
+    }
+  }
 }

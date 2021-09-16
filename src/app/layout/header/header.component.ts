@@ -13,7 +13,7 @@ export class HeaderComponent implements OnInit {
   showStepProgressBar: boolean = false;
   showStepNavigation: boolean = true;
   displayLeftBtn: boolean = true;
-  displayRightBtn: boolean = false;
+  displayRightBtn: boolean = true;
   leftBtnIcon: string = "sprite-group-3-icon-back";
   rightBtnIcon: string = "sprite-group-3-help-white"
 
