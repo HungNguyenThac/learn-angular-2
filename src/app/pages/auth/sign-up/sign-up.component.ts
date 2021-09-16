@@ -118,7 +118,7 @@ export class SignUpComponent implements OnInit {
       .createVerifiedCustomerAccount(createVerifiedAccountRequest)
       .subscribe((result) => {
         if (result.errorCode != null) {
-          return this.notifier.error(`data.message`);
+          return this.notifier.error(result.message);
         }
         console.log('create Verified success');
         this.redirectToSignUpSuccessPage();

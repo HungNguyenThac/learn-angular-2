@@ -1,6 +1,7 @@
 import {Routes} from '@angular/router';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { LoginComponent } from './login/login.component';
+import { ResetPasswordSuccessComponent } from './reset-password-success/reset-password-success.component';
 import { SignInComponent } from './sign-in/sign-in.component';
 import { SignUpSuccessComponent } from './sign-up-success/sign-up-success.component';
 import { SignUpComponent } from './sign-up/sign-up.component';
@@ -30,6 +31,10 @@ export const AuthRoutes: Routes = [
             {
                 path: 'sign-up-success',
                 component: SignUpSuccessComponent
+            },
+            {
+                path: 'reset-password-success',
+                component: ResetPasswordSuccessComponent
             },
         ]
     }
