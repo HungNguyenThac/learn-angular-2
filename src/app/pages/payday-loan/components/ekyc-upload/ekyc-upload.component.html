@@ -1,4 +1,4 @@
-<form class="pl-space-between-box">
+<form [formGroup]="ekycForm" class="pl-space-between-box" #ekycFormWrapper>
   <div class="container-fluid">
     <div class="container ekyc-upload-container pl-padding-bottom-default">
       <div class="">
@@ -10,13 +10,18 @@
             [imageSrc]="frontID"
             [initValue]="initValue?.frontID"
             [placeholderImageSrc]="'sprite-group-3-placeholder-icon'"
-            [filledTitle]="'payday_loan.ekyc.front_identity_card_img'| translate"
-            [uploadTitle]="'payday_loan.ekyc.upload_front_identity_card_img'| translate"
+            [filledTitle]="
+              'payday_loan.ekyc.front_identity_card_img' | translate
+            "
+            [uploadTitle]="
+              'payday_loan.ekyc.upload_front_identity_card_img' | translate
+            "
             [required]="true"
             [isManualUploadFile]="true"
             [rules]="'required|size:20000|mimes:image/*'"
             [acceptFileType]="'image/*'"
-            (receiveResult)="resultFrontIdCard($event)">
+            (receiveResult)="resultFrontIdCard($event)"
+          >
           </image-upload-area>
 
           <!--   Back    -->
@@ -26,13 +31,18 @@
             [imageSrc]="backID"
             [initValue]="initValue?.backID"
             [placeholderImageSrc]="'sprite-group-3-id-card-back'"
-            [filledTitle]="'payday_loan.ekyc.back_identity_card_img'| translate"
-            [uploadTitle]="'payday_loan.ekyc.upload_back_identity_card_img'| translate"
+            [filledTitle]="
+              'payday_loan.ekyc.back_identity_card_img' | translate
+            "
+            [uploadTitle]="
+              'payday_loan.ekyc.upload_back_identity_card_img' | translate
+            "
             [required]="true"
             [isManualUploadFile]="true"
             [rules]="'required|size:20000|mimes:image/*'"
             [acceptFileType]="'image/*'"
-            (receiveResult)="resultBackIdCard($event)">
+            (receiveResult)="resultBackIdCard($event)"
+          >
           </image-upload-area>
 
           <!--   Selfie    -->
@@ -42,18 +52,21 @@
             [imageSrc]="selfie"
             [initValue]="initValue?.selfie"
             [placeholderImageSrc]="'sprite-group-3-selfie'"
-            [filledTitle]="'payday_loan.ekyc.selfie_img'| translate"
-            [uploadTitle]="'payday_loan.ekyc.upload_selfie_img'| translate"
+            [filledTitle]="'payday_loan.ekyc.selfie_img' | translate"
+            [uploadTitle]="'payday_loan.ekyc.upload_selfie_img' | translate"
             [required]="true"
             [isManualUploadFile]="true"
             [rules]="'required|size:20000|mimes:image/*'"
             [acceptFileType]="'image/*'"
-            (receiveResult)="resultSelfie($event)">
+            (receiveResult)="resultSelfie($event)"
+          >
           </image-upload-area>
         </div>
         <div class="text-center pl-space-between-box">
           <button
             type="submit"
+            [disabled]="disabledBtn"
+            (click)="onSubmit()"
             id="ekyc-btn-submit"
             class="insurance-btn btn-primary ekyc-submit-btn"
           >

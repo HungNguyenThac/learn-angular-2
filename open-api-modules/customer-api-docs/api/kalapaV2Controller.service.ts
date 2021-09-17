@@ -18,7 +18,6 @@ import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
 import { ApiResponseKalapaResponse } from '../model/models';
-import { InlineObject2 } from '../model/models';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
 import { Configuration }                                     from '../configuration';
@@ -48,6 +47,19 @@ export class KalapaV2ControllerService {
         this.encoder = this.configuration.encoder || new CustomHttpParameterCodec();
     }
 
+    /**
+     * @param consumes string[] mime-types
+     * @return true: consumes contains 'multipart/form-data', false: otherwise
+     */
+    private canConsumeForm(consumes: string[]): boolean {
+        const form = 'multipart/form-data';
+        for (const consume of consumes) {
+            if (form === consume) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     private addToHttpParams(httpParams: HttpParams, value: any, key?: string): HttpParams {
         if (typeof value === "object" && value instanceof Date === false) {
@@ -87,18 +99,29 @@ export class KalapaV2ControllerService {
 
     /**
      * @param customerId 
+     * @param image 
+     * @param imageSelfie 
+     * @param imageBack 
      * @param verify 
      * @param skipValidate 
-     * @param inlineObject2 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public extractInfo(customerId: string, verify?: boolean, skipValidate?: boolean, inlineObject2?: InlineObject2, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseKalapaResponse>;
-    public extractInfo(customerId: string, verify?: boolean, skipValidate?: boolean, inlineObject2?: InlineObject2, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseKalapaResponse>>;
-    public extractInfo(customerId: string, verify?: boolean, skipValidate?: boolean, inlineObject2?: InlineObject2, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseKalapaResponse>>;
-    public extractInfo(customerId: string, verify?: boolean, skipValidate?: boolean, inlineObject2?: InlineObject2, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
+    public extractInfo(customerId: string, image: Blob, imageSelfie: Blob, imageBack: Blob, verify?: boolean, skipValidate?: boolean, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<ApiResponseKalapaResponse>;
+    public extractInfo(customerId: string, image: Blob, imageSelfie: Blob, imageBack: Blob, verify?: boolean, skipValidate?: boolean, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<ApiResponseKalapaResponse>>;
+    public extractInfo(customerId: string, image: Blob, imageSelfie: Blob, imageBack: Blob, verify?: boolean, skipValidate?: boolean, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<ApiResponseKalapaResponse>>;
+    public extractInfo(customerId: string, image: Blob, imageSelfie: Blob, imageBack: Blob, verify?: boolean, skipValidate?: boolean, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
         if (customerId === null || customerId === undefined) {
             throw new Error('Required parameter customerId was null or undefined when calling extractInfo.');
+        }
+        if (image === null || image === undefined) {
+            throw new Error('Required parameter image was null or undefined when calling extractInfo.');
+        }
+        if (imageSelfie === null || imageSelfie === undefined) {
+            throw new Error('Required parameter imageSelfie was null or undefined when calling extractInfo.');
+        }
+        if (imageBack === null || imageBack === undefined) {
+            throw new Error('Required parameter imageBack was null or undefined when calling extractInfo.');
         }
 
         let queryParameters = new HttpParams({encoder: this.encoder});
@@ -117,7 +140,7 @@ export class KalapaV2ControllerService {
         if (httpHeaderAcceptSelected === undefined) {
             // to determine the Accept header
             const httpHeaderAccepts: string[] = [
-                '*/*'
+                'application/json'
             ];
             httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
         }
@@ -125,14 +148,39 @@ export class KalapaV2ControllerService {
             headers = headers.set('Accept', httpHeaderAcceptSelected);
         }
 
-
         // to determine the Content-Type header
         const consumes: string[] = [
-            'application/json'
+            'multipart/form-data'
         ];
-        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
-        if (httpContentTypeSelected !== undefined) {
-            headers = headers.set('Content-Type', httpContentTypeSelected);
+
+        const canConsumeForm = this.canConsumeForm(consumes);
+
+        let formParams: { append(param: string, value: any): any; };
+        let useForm = false;
+        let convertFormParamsToString = false;
+        // use FormData to transmit files using content-type "multipart/form-data"
+        // see https://stackoverflow.com/questions/4007969/application-x-www-form-urlencoded-or-multipart-form-data
+        useForm = canConsumeForm;
+        // use FormData to transmit files using content-type "multipart/form-data"
+        // see https://stackoverflow.com/questions/4007969/application-x-www-form-urlencoded-or-multipart-form-data
+        useForm = canConsumeForm;
+        // use FormData to transmit files using content-type "multipart/form-data"
+        // see https://stackoverflow.com/questions/4007969/application-x-www-form-urlencoded-or-multipart-form-data
+        useForm = canConsumeForm;
+        if (useForm) {
+            formParams = new FormData();
+        } else {
+            formParams = new HttpParams({encoder: this.encoder});
+        }
+
+        if (image !== undefined) {
+            formParams = formParams.append('image', <any>image) as any || formParams;
+        }
+        if (imageSelfie !== undefined) {
+            formParams = formParams.append('image_selfie', <any>imageSelfie) as any || formParams;
+        }
+        if (imageBack !== undefined) {
+            formParams = formParams.append('image_back', <any>imageBack) as any || formParams;
         }
 
         let responseType_: 'text' | 'json' = 'json';
@@ -141,7 +189,7 @@ export class KalapaV2ControllerService {
         }
 
         return this.httpClient.post<ApiResponseKalapaResponse>(`${this.configuration.basePath}/kalapa/v2/${encodeURIComponent(String(customerId))}/id_card/plus`,
-            inlineObject2,
+            convertFormParamsToString ? formParams.toString() : formParams,
             {
                 params: queryParameters,
                 responseType: <any>responseType_,

@@ -4,7 +4,7 @@ $spaceBetweenContent: 24px;
 $spaceWithFooter: 56px;
 
 ::ng-deep .custom-dialog-container {
-  mat-dialog-container {
+  .mat-dialog-container {
     padding: 0;
     border-radius: 12px;
     overflow: inherit;
@@ -13,6 +13,10 @@ $spaceWithFooter: 56px;
     padding: 0;
     margin: 0;
   }
+}
+
+.mat-dialog-container {
+  border-radius: 12px !important;
 }
 
 .pl-sign-contract-prompt-image {
