@@ -1,4 +1,20 @@
 @import "../../../../../assets/styles/variables";
+
+::ng-deep .custom-dialog-container {
+  overflow: hidden;
+
+  .mat-dialog-container {
+    padding: 0;
+    border-radius: 12px;
+    overflow: inherit;
+  }
+  .mat-dialog-content {
+    padding: 0;
+    margin: 0;
+    min-width: 300px;
+  }
+}
+
 .mat-dialog-actions {
   padding: 0;
 }
@@ -43,10 +59,12 @@
   background-color: $grey-01 !important;
   gap: 1px;
   width: 100%;
+  font-family: $sfPro;
 }
 
 .pl-prompt-btn {
   width: 100%;
+  font-family: $sfPro;
 }
 
 .prompt-dialog {
@@ -75,7 +93,6 @@
   min-height: 48px;
   background: $white;
   box-shadow: inset 0px 1px 0px $grey-01;
-
 
   &[type="button"]:not(:disabled),
   &[type="reset"]:not(:disabled),

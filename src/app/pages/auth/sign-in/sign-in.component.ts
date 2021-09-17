@@ -1,6 +1,5 @@
-import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { ToastrService } from 'ngx-toastr';
@@ -56,7 +55,5 @@ export class SignInComponent implements OnInit {
     const password = this.signInForm.controls.password.value;
 
     this.store.dispatch(new fromActions.Signin({ username, password }));
-
-
   }
 }
