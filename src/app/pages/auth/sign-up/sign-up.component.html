@@ -19,7 +19,7 @@
               disableRipple="true">
               <div class="clear-icon" [ngClass]="{ invisible: !isUsernameInputFocus }"></div>
             </button>
-            <show-errors [control]="signUpForm.controls['mobileNumber']" [controlLabel]="'Số điện thoại'"
+            <show-errors [control]="signUpForm.controls['mobileNumber']" [controlLabel]="'payday_loan.auth.phone_number_login' | translate"
               [hasIconPrefix]="true">
             </show-errors>
           </mat-form-field>
@@ -50,7 +50,7 @@
                   isPassVisible ? 'password-show-icon' : 'password-hide-icon'
                 ]"></div>
             </button>
-            <show-errors [control]="signUpForm.controls['password']" [controlLabel]="'Mật khẩu'" [hasIconPrefix]="true">
+            <show-errors [control]="signUpForm.controls['password']" [controlLabel]="'payday_loan.auth.password' | translate" [hasIconPrefix]="true">
             </show-errors>
           </mat-form-field>
         </div>
@@ -85,7 +85,7 @@
                     : 'password-hide-icon'
                 ]"></div>
             </button>
-            <show-errors [control]="signUpForm.controls['confirmPassword']" [controlLabel]="'Nhắc lại mật khẩu'"
+            <show-errors [control]="signUpForm.controls['confirmPassword']" [controlLabel]="'payday_loan.auth.repeat_password'"
               [hasIconPrefix]="true">
             </show-errors>
           </mat-form-field>
