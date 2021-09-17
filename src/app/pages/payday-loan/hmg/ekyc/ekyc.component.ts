@@ -1,17 +1,33 @@
 import { Component, OnInit } from '@angular/core';
+import * as fromStore from './../../../../core/store';
+import * as fromActions from './../../../../core/store';
+import { MultiLanguageService } from '../../../../share/translate/multiLanguageService';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs/Observable';
+import * as fromSelectors from '../../../../core/store/selectors';
 
 @Component({
   selector: 'ekyc',
   templateUrl: './ekyc.component.html',
-  styleUrls: ['./ekyc.component.scss']
+  styleUrls: ['./ekyc.component.scss'],
 })
 export class EkycComponent implements OnInit {
   customerInfo: any;
+  customerId: string;
+  customerId$: Observable<string>;
 
-  constructor() { }
+  constructor(
+    private multiLanguageService: MultiLanguageService,
+    private store: Store<fromStore.State>
+  ) {
+    this.customerId$ = store.select(fromSelectors.getCustomerIdState);
 
-  ngOnInit(): void {
+    this.customerId$.subscribe((customerId) => {
+      this.customerId = customerId;
+    });
   }
+
+  ngOnInit(): void {}
 
   async redirectToConfirmInformationPage() {
     // if (
@@ -27,29 +43,53 @@ export class EkycComponent implements OnInit {
   }
 
   async completeEkyc(ekycCompleteData) {
-    // if (!ekycCompleteData || !ekycCompleteData.idCardInfo) {
-    //   this.showError({
-    //     content: this.$t("common.unknown_error")
-    //   });
-    //   return;
-    // }
-    //
-    // let ekycInfo = this.bindEkycData(ekycCompleteData.idCardInfo);
-    // this.setEkycInfo(ekycInfo);
-    //
-    // await this.getVirtualAccount(this.customerId, ekycInfo.name);
-    //
+    if (!ekycCompleteData || !ekycCompleteData.idCardInfo) {
+      this.notificationEkycError();
+      return;
+    }
+
+    let ekycInfo = ekycCompleteData.idCardInfo;
+    this.store.dispatch(new fromActions.SetEkycInfo(ekycInfo));
+
+    await this.getVirtualAccount(this.customerId, ekycInfo.name);
+
     // if (
     //   this.currentCustomerStatus &&
     //   PAYDAY_LOAN_UI_STATUS_ORDER_NUMBER[this.currentCustomerStatus] <
-    //   PAYDAY_LOAN_UI_STATUS_ORDER_NUMBER.NOT_COMPLETE_FILL_EKYC_YET
+    //     PAYDAY_LOAN_UI_STATUS_ORDER_NUMBER.NOT_COMPLETE_FILL_EKYC_YET
     // ) {
     //   await this.setCustomerStatus(
     //     PAYDAY_LOAN_UI_STATUS.NOT_COMPLETE_FILL_EKYC_YET
     //   );
     // }
-    //
-    // await this.showModal({ type: MODAL_TYPE.PL_SUCCESS });
+
+    this.notificationEkycSuccess();
+  }
+
+  notificationEkycError() {
+    this.store.dispatch(
+      new fromActions.ShowErrorModal({
+        title: this.multiLanguageService.instant('common.notification'),
+        content: this.multiLanguageService.instant(
+          'common.something_went_wrong'
+        ),
+        primaryBtnText: this.multiLanguageService.instant('common.confirm'),
+      })
+    );
+  }
+
+  notificationEkycSuccess() {
+    this.store.dispatch(
+      new fromActions.ShowErrorModal({
+        title: this.multiLanguageService.instant(
+          'payday_loan.ekyc.eKYC_successful'
+        ),
+        content: this.multiLanguageService.instant(
+          'payday_loan.ekyc.eKYC_successful_content'
+        ),
+        primaryBtnText: this.multiLanguageService.instant('common.confirm'),
+      })
+    );
   }
 
   async createVirtualAccount(customerId, accountName) {
@@ -81,22 +121,6 @@ export class EkycComponent implements OnInit {
     // }
     //
     // return null;
-  }
-
-  bindEkycData(idCardInfo) {
-    return {
-      name: idCardInfo.name || "",
-      dob: idCardInfo.dob || "",
-      id_address: idCardInfo.address || "",
-      id_origin: idCardInfo.home || "",
-      gender: idCardInfo.gender || "",
-      id_number: idCardInfo.id || "",
-      dateOfIssue: idCardInfo.dateOfIssue || "",
-      placeOfIssue: idCardInfo.placeOfIssue || "",
-      documentType: idCardInfo.documentType || "",
-      features: idCardInfo.features || "",
-      expiredDate: idCardInfo.expiredDate || ""
-    };
   }
 
   async getCustomerInfo() {

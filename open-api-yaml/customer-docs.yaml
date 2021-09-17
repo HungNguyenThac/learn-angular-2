@@ -248,24 +248,14 @@ paths:
           type: string
       requestBody:
         content:
-          application/json:
+          multipart/form-data:
             schema:
-              type: object
-              properties:
-                image:
-                  type: string
-                  format: binary
-                image_selfie:
-                  type: string
-                  format: binary
-                image_back:
-                  type: string
-                  format: binary
+              $ref: '#/components/schemas/KalapaRequest'
       responses:
         "200":
           description: OK
           content:
-            '*/*':
+            application/json:
               schema:
                 $ref: '#/components/schemas/ApiResponseKalapaResponse'
   /kalapa/v1/id_card/plus:
@@ -276,34 +266,20 @@ paths:
       parameters:
       - name: verify
         in: query
-        required: true
+        required: false
         schema:
           type: boolean
-      - name: authorization
-        in: header
-        required: true
-        schema:
-          type: string
+          default: false
       requestBody:
         content:
-          application/json:
+          multipart/form-data:
             schema:
-              type: object
-              properties:
-                image:
-                  type: string
-                  format: binary
-                image_selfie:
-                  type: string
-                  format: binary
-                image_back:
-                  type: string
-                  format: binary
+              $ref: '#/components/schemas/KalapaRequest'
       responses:
         "200":
           description: OK
           content:
-            '*/*':
+            application/json:
               schema:
                 $ref: '#/components/schemas/ApiResponseKalapaResponse'
   /info/v1/{customerId}/validate-confirm-information-request:
@@ -771,6 +747,22 @@ components:
             type: string
         email:
           type: string
+    KalapaRequest:
+      required:
+      - image
+      - image_back
+      - image_selfie
+      type: object
+      properties:
+        image:
+          type: string
+          format: binary
+        image_selfie:
+          type: string
+          format: binary
+        image_back:
+          type: string
+          format: binary
     ApiResponseKalapaResponse:
       type: object
       properties:

@@ -16,8 +16,6 @@
     "step_nav_text": "Bước {{current_step}}/{{total_step}}",
     "over_all_times_type_wrong_otp": "Bạn đã nhập sai OTP quá số lần cho phép, vui lòng gửi lại OTP hoặc nhập lại số điện thoại và thử lại",
     "resent_otp": "Gửi lại mã OTP",
-    "eKYC_successful": "eKYC thành công",
-    "eKYC_successful_content": "Chúc mừng bạn đã hoàn thành eKYC. Dữ liệu bạn tải lên phù hợp với điều kiện của chúng tôi.",
     "in_progress": "Thông tin của bạn đang được xử lý",
     "wait_a_minute": "Quá trình sẽ mất khoảng một vài giây, vui lòng không thoát ứng dụng",
     "provider_info": "Cung cấp bởi Monex.vn và công ty TNHH Tân Trường Thanh </br> HOTLINE : 1900234583",
@@ -89,7 +87,9 @@
       "upload_back_identity_card_img": "Tải lên ảnh mặt sau CMND/CCCD",
       "upload_collateral_img": "Tải lên tài liệu chứng minh tài sản đảm bảo",
       "ekyc_failed_title": "eKYC KHÔNG thành công",
-      "ekyc_failed_content": "Dữ liệu bạn tải lên KHÔNG PHÙ HỢP với điều kiện của chúng tôi."
+      "ekyc_failed_content": "Dữ liệu bạn tải lên KHÔNG PHÙ HỢP với điều kiện của chúng tôi.",
+      "eKYC_successful": "eKYC thành công",
+      "eKYC_successful_content": "Chúc mừng bạn đã hoàn thành eKYC. Dữ liệu bạn tải lên phù hợp với điều kiện của chúng tôi."
     },
     "confirm_information": {
       "full_name": "Họ và tên",
