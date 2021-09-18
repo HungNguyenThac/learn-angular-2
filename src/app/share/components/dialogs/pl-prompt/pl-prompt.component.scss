@@ -17,6 +17,7 @@
 
 .mat-dialog-actions {
   padding: 0;
+  margin-bottom: 0 !important;
 }
 
 .pl-prompt-title {
@@ -55,6 +56,7 @@
   background-color: $white !important;
   border-radius: 16px;
   font-family: $sfPro;
+  max-width: 320px;
 }
 .pl-prompt-actions {
   margin-top: 16px;

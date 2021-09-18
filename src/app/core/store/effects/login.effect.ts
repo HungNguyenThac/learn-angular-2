@@ -69,6 +69,19 @@ export class LoginEffects {
     });
   }
 
+  logoutSignOut$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(fromActions.LOGIN_SIGN_OUT),
+        tap(() => {
+          this.notificationService.destroyAllDialog();
+          this.store$.dispatch(new fromActions.ResetCustomerInfo({}));
+          this.store$.dispatch(new fromActions.ResetEkycInfo({}));
+        })
+      ),
+    { dispatch: false }
+  );
+
   loginSingin$ = createEffect(() =>
     this.actions$.pipe(
       ofType(fromActions.LOGIN_SIGNIN),
@@ -167,7 +180,12 @@ export class LoginEffects {
           this.applicationControllerService
             .getActivePaydayLoan(this.customerId, this.coreToken)
             .subscribe((result: ApiResponseObject) => {
-              if (!result || result.responseCode !== 200) return;
+              if (!result || result.responseCode !== 200) {
+                if (this.customerInfo.personalData.companyId) {
+                  return this.router.navigateByUrl('hmg/ekyc');
+                }
+                return this.router.navigateByUrl('companies');
+              }
 
               //TODO wait loanapp-svc append model to get status
               return this.router.navigate([

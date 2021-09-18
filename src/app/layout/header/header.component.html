@@ -16,14 +16,13 @@
               </ng-template>
               <div *ngIf="isLogged; else Login">
                 <button id="profile-btn" mat-button [matMenuTriggerFor]="menu" class="no-padding">
-                  <div fxLayout="row" fxLayoutAlign="space-between center">
+                  <div class="d-flex flex-row text-center justify-content-between align-items-center">
                     <div class="avatar">Q</div>
                     <div class="sprite-group-1-icon-down"></div>
                   </div>
                 </button>
                 <mat-menu #menu="matMenu">
-                  <button mat-menu-item>Profile</button>
-                  <button mat-menu-item>Logout</button>
+                  <button mat-menu-item (click)="logout()" >{{'auth.logout' | translate}}</button>
                 </mat-menu>
               </div>
             </div>
@@ -41,7 +40,7 @@
 
             <!-- Stepper navigation -->
             <app-step-navigation *ngIf="showStepNavigation; else showTitle" class="w-100"></app-step-navigation>
-            <ng-template #showTitle> <h2>{{ titleNavigation }}</h2></ng-template>
+            <ng-template #showTitle><h2>{{ titleNavigation }}</h2></ng-template>
 
             <button mat-icon-button class="no-padding insurance-top-nav-btn">
               <span [ngClass]="rightBtnIcon" *ngIf="displayRightBtn"></span>

@@ -11,12 +11,6 @@ paths:
       tags:
       - gpay-virtual-account-controller
       operationId: updateVirtualAccount
-      parameters:
-      - name: Authorization
-        in: header
-        required: true
-        schema:
-          type: string
       requestBody:
         content:
           application/json:
@@ -29,18 +23,30 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ApiResponse'
+                $ref: '#/components/schemas/ApiResponseGpayVAResponse'
+  /v1/virtual-account/gpay/create-payment-order:
+    post:
+      tags:
+      - gpay-virtual-account-controller
+      operationId: createPaymentOrder
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateRepaymentOrderRequest'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseString'
   /v1/virtual-account/gpay/create:
     post:
       tags:
       - gpay-virtual-account-controller
       operationId: createVirtualAccount
-      parameters:
-      - name: Authorization
-        in: header
-        required: true
-        schema:
-          type: string
       requestBody:
         content:
           application/json:
@@ -53,7 +59,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ApiResponse'
+                $ref: '#/components/schemas/ApiResponseVirtualAccount'
   /v1/repayment/gpay/webhook:
     post:
       tags:
@@ -71,18 +77,12 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ApiResponse'
+                $ref: '#/components/schemas/ApiResponseString'
   /v1/repayment/gpay/paydayloan-tng:
     post:
       tags:
       - repayment-controller
       operationId: gpayRepaymentPaydayLoanTNG
-      parameters:
-      - name: Authorization
-        in: header
-        required: true
-        schema:
-          type: string
       requestBody:
         content:
           application/json:
@@ -95,18 +95,12 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ApiResponse'
+                $ref: '#/components/schemas/ApiResponseGpayRepaymentResponse'
   /v1/repayment/gpay/insurance:
     post:
       tags:
       - repayment-controller
       operationId: gpayRepaymentInsuranceOrder
-      parameters:
-      - name: Authorization
-        in: header
-        required: true
-        schema:
-          type: string
       requestBody:
         content:
           application/json:
@@ -119,18 +113,12 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ApiResponse'
+                $ref: '#/components/schemas/ApiResponseGpayRepaymentResponse'
   /v1/repayment/gpay/delete-token:
     post:
       tags:
       - repayment-controller
       operationId: gpayRepaymentCallback
-      parameters:
-      - name: Authorization
-        in: header
-        required: true
-        schema:
-          type: string
       requestBody:
         content:
           application/json:
@@ -143,18 +131,12 @@ paths:
           content:
             '*/*':
               schema:
-                $ref: '#/components/schemas/ApiResponse'
+                $ref: '#/components/schemas/ApiResponseGpayDeleteTokenResponse'
   /v1/disburse/gpay:
     post:
       tags:
       - disburse-controller
       operationId: disburse
-      parameters:
-      - name: Authorization
-        in: header
-        required: true
-        schema:
-          type: string
       requestBody:
         content:
           application/json:
@@ -167,18 +149,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ApiResponse'
+                $ref: '#/components/schemas/ApiResponseString'
   /v1/virtual-account/gpay/{customerId}/repayment-transaction:
     get:
       tags:
       - gpay-virtual-account-controller
       operationId: getRepaymentTransactionVirtualAccount
       parameters:
-      - name: Authorization
-        in: header
-        required: true
-        schema:
-          type: string
       - name: customerId
         in: path
         required: true
@@ -195,18 +172,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ApiResponse'
+                $ref: '#/components/schemas/ApiResponseListRepaymentTransaction'
   /v1/virtual-account/gpay/{customerId}:
     get:
       tags:
       - gpay-virtual-account-controller
       operationId: getVirtualAccount
       parameters:
-      - name: Authorization
-        in: header
-        required: true
-        schema:
-          type: string
       - name: customerId
         in: path
         required: true
@@ -218,25 +190,19 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ApiResponse'
+                $ref: '#/components/schemas/ApiResponseVirtualAccount'
   /v1/virtual-account/gpay/access-token:
     get:
       tags:
       - gpay-virtual-account-controller
       operationId: createAccessToken
-      parameters:
-      - name: Authorization
-        in: header
-        required: true
-        schema:
-          type: string
       responses:
         "200":
           description: OK
           content:
             '*/*':
               schema:
-                $ref: '#/components/schemas/ApiResponse'
+                $ref: '#/components/schemas/ApiResponseString'
   /payment/v1/check-connection:
     get:
       tags:
@@ -268,11 +234,85 @@ components:
         equalAmount:
           type: integer
           format: int32
-    ApiResponse:
+    ApiResponseGpayVAResponse:
       type: object
       properties:
         result:
-          type: object
+          $ref: '#/components/schemas/GpayVAResponse'
+        errorCode:
+          type: string
+        message:
+          type: string
+        responseCode:
+          type: integer
+          format: int32
+    GpayVAResponse:
+      type: object
+      properties:
+        meta:
+          $ref: '#/components/schemas/Meta'
+        response:
+          $ref: '#/components/schemas/Response'
+    Meta:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        msg:
+          type: string
+        internal_msg:
+          type: string
+    Response:
+      type: object
+      properties:
+        account_number:
+          type: string
+        account_name:
+          type: string
+        status:
+          type: string
+        start_at:
+          type: string
+        expire_at:
+          type: string
+        balance:
+          type: integer
+          format: int32
+        account_type:
+          type: string
+        number_of_transfer:
+          type: integer
+          format: int32
+        max_amount:
+          type: integer
+          format: int32
+        min_amount:
+          type: integer
+          format: int32
+        equal_amount:
+          type: integer
+          format: int32
+        signature:
+          type: string
+    CreateRepaymentOrderRequest:
+      required:
+      - applicationId
+      - applicationType
+      - customerId
+      type: object
+      properties:
+        customerId:
+          type: string
+        applicationId:
+          type: string
+        applicationType:
+          type: string
+    ApiResponseString:
+      type: object
+      properties:
+        result:
+          type: string
         errorCode:
           type: string
         message:
@@ -290,6 +330,52 @@ components:
           type: string
         accountName:
           type: string
+    ApiResponseVirtualAccount:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/VirtualAccount'
+        errorCode:
+          type: string
+        message:
+          type: string
+        responseCode:
+          type: integer
+          format: int32
+    VirtualAccount:
+      type: object
+      properties:
+        id:
+          type: string
+        customerId:
+          type: string
+        accountNumber:
+          type: string
+        accountName:
+          type: string
+        bankCode:
+          type: string
+        startAt:
+          type: string
+        expireAt:
+          type: string
+        balance:
+          type: integer
+          format: int32
+        accountType:
+          type: string
+        numberOfTransfer:
+          type: integer
+          format: int32
+        maxAmount:
+          type: integer
+          format: int32
+        minAmount:
+          type: integer
+          format: int32
+        equalAmount:
+          type: integer
+          format: int32
     GpayRepaymentWebhook:
       type: object
       properties:
@@ -318,12 +404,54 @@ components:
           type: string
         callBackType:
           type: string
+    ApiResponseGpayRepaymentResponse:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/GpayRepaymentResponse'
+        errorCode:
+          type: string
+        message:
+          type: string
+        responseCode:
+          type: integer
+          format: int32
+    GpayRepaymentResponse:
+      type: object
+      properties:
+        return_message:
+          type: string
+        return_code:
+          type: integer
+          format: int32
+        order_url:
+          type: string
     DeleteTokenRequest:
       type: object
       properties:
         customerId:
           type: string
         token_id:
+          type: string
+    ApiResponseGpayDeleteTokenResponse:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/GpayDeleteTokenResponse'
+        errorCode:
+          type: string
+        message:
+          type: string
+        responseCode:
+          type: integer
+          format: int32
+    GpayDeleteTokenResponse:
+      type: object
+      properties:
+        return_code:
+          type: integer
+          format: int32
+        return_message:
           type: string
     CoreDisburseRequest:
       type: object
@@ -345,11 +473,13 @@ components:
           format: int64
         transaction_note:
           type: string
-    ApiResponseString:
+    ApiResponseListRepaymentTransaction:
       type: object
       properties:
         result:
-          type: string
+          type: array
+          items:
+            $ref: '#/components/schemas/RepaymentTransaction'
         errorCode:
           type: string
         message:
@@ -357,6 +487,33 @@ components:
         responseCode:
           type: integer
           format: int32
+    RepaymentTransaction:
+      type: object
+      properties:
+        id:
+          type: string
+        applicationId:
+          type: string
+        customerId:
+          type: string
+        applicationType:
+          type: string
+        providerTransactionId:
+          type: string
+        amount:
+          type: integer
+          format: int32
+        paymentFee:
+          type: integer
+          format: int32
+        status:
+          type: string
+        provider:
+          type: string
+        createdAt:
+          type: string
+        updatedAt:
+          type: string
   securitySchemes:
     Bearer:
       type: apiKey
