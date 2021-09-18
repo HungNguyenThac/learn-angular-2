@@ -30,7 +30,6 @@ export class SignInComponent implements OnInit {
 
   ngOnInit(): void {
     this.store.dispatch(new fromActions.Logout(null));
-    this.store.dispatch(new fromActions.SigninError(null));
   }
 
   onSubmit() {

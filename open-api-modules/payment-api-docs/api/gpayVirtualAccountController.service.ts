@@ -17,7 +17,11 @@ import { HttpClient, HttpHeaders, HttpParams,
 import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
-import { ApiResponse } from '../model/models';
+import { ApiResponseGpayVAResponse } from '../model/models';
+import { ApiResponseListRepaymentTransaction } from '../model/models';
+import { ApiResponseString } from '../model/models';
+import { ApiResponseVirtualAccount } from '../model/models';
+import { CreateRepaymentOrderRequest } from '../model/models';
 import { CreateVARequest } from '../model/models';
 import { UpdateVARequest } from '../model/models';
 
@@ -87,22 +91,15 @@ export class GpayVirtualAccountControllerService {
     }
 
     /**
-     * @param authorization 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public createAccessToken(authorization: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponse>;
-    public createAccessToken(authorization: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponse>>;
-    public createAccessToken(authorization: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponse>>;
-    public createAccessToken(authorization: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
-        if (authorization === null || authorization === undefined) {
-            throw new Error('Required parameter authorization was null or undefined when calling createAccessToken.');
-        }
+    public createAccessToken(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseString>;
+    public createAccessToken(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseString>>;
+    public createAccessToken(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseString>>;
+    public createAccessToken(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
 
         let headers = this.defaultHeaders;
-        if (authorization !== undefined && authorization !== null) {
-            headers = headers.set('Authorization', String(authorization));
-        }
 
         let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
         if (httpHeaderAcceptSelected === undefined) {
@@ -122,7 +119,7 @@ export class GpayVirtualAccountControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.get<ApiResponse>(`${this.configuration.basePath}/v1/virtual-account/gpay/access-token`,
+        return this.httpClient.get<ApiResponseString>(`${this.configuration.basePath}/v1/virtual-account/gpay/access-token`,
             {
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
@@ -134,26 +131,19 @@ export class GpayVirtualAccountControllerService {
     }
 
     /**
-     * @param authorization 
-     * @param createVARequest 
+     * @param createRepaymentOrderRequest 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public createVirtualAccount(authorization: string, createVARequest: CreateVARequest, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<ApiResponse>;
-    public createVirtualAccount(authorization: string, createVARequest: CreateVARequest, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<ApiResponse>>;
-    public createVirtualAccount(authorization: string, createVARequest: CreateVARequest, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<ApiResponse>>;
-    public createVirtualAccount(authorization: string, createVARequest: CreateVARequest, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
-        if (authorization === null || authorization === undefined) {
-            throw new Error('Required parameter authorization was null or undefined when calling createVirtualAccount.');
-        }
-        if (createVARequest === null || createVARequest === undefined) {
-            throw new Error('Required parameter createVARequest was null or undefined when calling createVirtualAccount.');
+    public createPaymentOrder(createRepaymentOrderRequest: CreateRepaymentOrderRequest, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<ApiResponseString>;
+    public createPaymentOrder(createRepaymentOrderRequest: CreateRepaymentOrderRequest, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<ApiResponseString>>;
+    public createPaymentOrder(createRepaymentOrderRequest: CreateRepaymentOrderRequest, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<ApiResponseString>>;
+    public createPaymentOrder(createRepaymentOrderRequest: CreateRepaymentOrderRequest, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
+        if (createRepaymentOrderRequest === null || createRepaymentOrderRequest === undefined) {
+            throw new Error('Required parameter createRepaymentOrderRequest was null or undefined when calling createPaymentOrder.');
         }
 
         let headers = this.defaultHeaders;
-        if (authorization !== undefined && authorization !== null) {
-            headers = headers.set('Authorization', String(authorization));
-        }
 
         let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
         if (httpHeaderAcceptSelected === undefined) {
@@ -182,7 +172,61 @@ export class GpayVirtualAccountControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.post<ApiResponse>(`${this.configuration.basePath}/v1/virtual-account/gpay/create`,
+        return this.httpClient.post<ApiResponseString>(`${this.configuration.basePath}/v1/virtual-account/gpay/create-payment-order`,
+            createRepaymentOrderRequest,
+            {
+                responseType: <any>responseType_,
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * @param createVARequest 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public createVirtualAccount(createVARequest: CreateVARequest, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<ApiResponseVirtualAccount>;
+    public createVirtualAccount(createVARequest: CreateVARequest, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<ApiResponseVirtualAccount>>;
+    public createVirtualAccount(createVARequest: CreateVARequest, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<ApiResponseVirtualAccount>>;
+    public createVirtualAccount(createVARequest: CreateVARequest, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
+        if (createVARequest === null || createVARequest === undefined) {
+            throw new Error('Required parameter createVARequest was null or undefined when calling createVirtualAccount.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (httpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'application/json'
+            ];
+            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
+        if (httpHeaderAcceptSelected !== undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'application/json'
+        ];
+        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
+        if (httpContentTypeSelected !== undefined) {
+            headers = headers.set('Content-Type', httpContentTypeSelected);
+        }
+
+        let responseType_: 'text' | 'json' = 'json';
+        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+            responseType_ = 'text';
+        }
+
+        return this.httpClient.post<ApiResponseVirtualAccount>(`${this.configuration.basePath}/v1/virtual-account/gpay/create`,
             createVARequest,
             {
                 responseType: <any>responseType_,
@@ -195,19 +239,15 @@ export class GpayVirtualAccountControllerService {
     }
 
     /**
-     * @param authorization 
      * @param customerId 
      * @param loanId 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getRepaymentTransactionVirtualAccount(authorization: string, customerId: string, loanId: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<ApiResponse>;
-    public getRepaymentTransactionVirtualAccount(authorization: string, customerId: string, loanId: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<ApiResponse>>;
-    public getRepaymentTransactionVirtualAccount(authorization: string, customerId: string, loanId: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<ApiResponse>>;
-    public getRepaymentTransactionVirtualAccount(authorization: string, customerId: string, loanId: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
-        if (authorization === null || authorization === undefined) {
-            throw new Error('Required parameter authorization was null or undefined when calling getRepaymentTransactionVirtualAccount.');
-        }
+    public getRepaymentTransactionVirtualAccount(customerId: string, loanId: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<ApiResponseListRepaymentTransaction>;
+    public getRepaymentTransactionVirtualAccount(customerId: string, loanId: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<ApiResponseListRepaymentTransaction>>;
+    public getRepaymentTransactionVirtualAccount(customerId: string, loanId: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<ApiResponseListRepaymentTransaction>>;
+    public getRepaymentTransactionVirtualAccount(customerId: string, loanId: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
         if (customerId === null || customerId === undefined) {
             throw new Error('Required parameter customerId was null or undefined when calling getRepaymentTransactionVirtualAccount.');
         }
@@ -222,9 +262,6 @@ export class GpayVirtualAccountControllerService {
         }
 
         let headers = this.defaultHeaders;
-        if (authorization !== undefined && authorization !== null) {
-            headers = headers.set('Authorization', String(authorization));
-        }
 
         let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
         if (httpHeaderAcceptSelected === undefined) {
@@ -244,7 +281,7 @@ export class GpayVirtualAccountControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.get<ApiResponse>(`${this.configuration.basePath}/v1/virtual-account/gpay/${encodeURIComponent(String(customerId))}/repayment-transaction`,
+        return this.httpClient.get<ApiResponseListRepaymentTransaction>(`${this.configuration.basePath}/v1/virtual-account/gpay/${encodeURIComponent(String(customerId))}/repayment-transaction`,
             {
                 params: queryParameters,
                 responseType: <any>responseType_,
@@ -257,26 +294,19 @@ export class GpayVirtualAccountControllerService {
     }
 
     /**
-     * @param authorization 
      * @param customerId 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getVirtualAccount(authorization: string, customerId: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<ApiResponse>;
-    public getVirtualAccount(authorization: string, customerId: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<ApiResponse>>;
-    public getVirtualAccount(authorization: string, customerId: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<ApiResponse>>;
-    public getVirtualAccount(authorization: string, customerId: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
-        if (authorization === null || authorization === undefined) {
-            throw new Error('Required parameter authorization was null or undefined when calling getVirtualAccount.');
-        }
+    public getVirtualAccount(customerId: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<ApiResponseVirtualAccount>;
+    public getVirtualAccount(customerId: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<ApiResponseVirtualAccount>>;
+    public getVirtualAccount(customerId: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<ApiResponseVirtualAccount>>;
+    public getVirtualAccount(customerId: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
         if (customerId === null || customerId === undefined) {
             throw new Error('Required parameter customerId was null or undefined when calling getVirtualAccount.');
         }
 
         let headers = this.defaultHeaders;
-        if (authorization !== undefined && authorization !== null) {
-            headers = headers.set('Authorization', String(authorization));
-        }
 
         let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
         if (httpHeaderAcceptSelected === undefined) {
@@ -296,7 +326,7 @@ export class GpayVirtualAccountControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.get<ApiResponse>(`${this.configuration.basePath}/v1/virtual-account/gpay/${encodeURIComponent(String(customerId))}`,
+        return this.httpClient.get<ApiResponseVirtualAccount>(`${this.configuration.basePath}/v1/virtual-account/gpay/${encodeURIComponent(String(customerId))}`,
             {
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
@@ -308,26 +338,19 @@ export class GpayVirtualAccountControllerService {
     }
 
     /**
-     * @param authorization 
      * @param updateVARequest 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public updateVirtualAccount(authorization: string, updateVARequest: UpdateVARequest, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<ApiResponse>;
-    public updateVirtualAccount(authorization: string, updateVARequest: UpdateVARequest, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<ApiResponse>>;
-    public updateVirtualAccount(authorization: string, updateVARequest: UpdateVARequest, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<ApiResponse>>;
-    public updateVirtualAccount(authorization: string, updateVARequest: UpdateVARequest, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
-        if (authorization === null || authorization === undefined) {
-            throw new Error('Required parameter authorization was null or undefined when calling updateVirtualAccount.');
-        }
+    public updateVirtualAccount(updateVARequest: UpdateVARequest, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<ApiResponseGpayVAResponse>;
+    public updateVirtualAccount(updateVARequest: UpdateVARequest, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<ApiResponseGpayVAResponse>>;
+    public updateVirtualAccount(updateVARequest: UpdateVARequest, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<ApiResponseGpayVAResponse>>;
+    public updateVirtualAccount(updateVARequest: UpdateVARequest, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
         if (updateVARequest === null || updateVARequest === undefined) {
             throw new Error('Required parameter updateVARequest was null or undefined when calling updateVirtualAccount.');
         }
 
         let headers = this.defaultHeaders;
-        if (authorization !== undefined && authorization !== null) {
-            headers = headers.set('Authorization', String(authorization));
-        }
 
         let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
         if (httpHeaderAcceptSelected === undefined) {
@@ -356,7 +379,7 @@ export class GpayVirtualAccountControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.post<ApiResponse>(`${this.configuration.basePath}/v1/virtual-account/gpay/update`,
+        return this.httpClient.post<ApiResponseGpayVAResponse>(`${this.configuration.basePath}/v1/virtual-account/gpay/update`,
             updateVARequest,
             {
                 responseType: <any>responseType_,

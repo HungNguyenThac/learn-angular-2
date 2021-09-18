@@ -17,7 +17,9 @@ import { HttpClient, HttpHeaders, HttpParams,
 import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
-import { ApiResponse } from '../model/models';
+import { ApiResponseGpayDeleteTokenResponse } from '../model/models';
+import { ApiResponseGpayRepaymentResponse } from '../model/models';
+import { ApiResponseString } from '../model/models';
 import { DeleteTokenRequest } from '../model/models';
 import { GpayRepaymentWebhook } from '../model/models';
 import { RepaymentRequest } from '../model/models';
@@ -88,26 +90,19 @@ export class RepaymentControllerService {
     }
 
     /**
-     * @param authorization 
      * @param deleteTokenRequest 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public gpayRepaymentCallback(authorization: string, deleteTokenRequest: DeleteTokenRequest, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponse>;
-    public gpayRepaymentCallback(authorization: string, deleteTokenRequest: DeleteTokenRequest, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponse>>;
-    public gpayRepaymentCallback(authorization: string, deleteTokenRequest: DeleteTokenRequest, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponse>>;
-    public gpayRepaymentCallback(authorization: string, deleteTokenRequest: DeleteTokenRequest, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
-        if (authorization === null || authorization === undefined) {
-            throw new Error('Required parameter authorization was null or undefined when calling gpayRepaymentCallback.');
-        }
+    public gpayRepaymentCallback(deleteTokenRequest: DeleteTokenRequest, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseGpayDeleteTokenResponse>;
+    public gpayRepaymentCallback(deleteTokenRequest: DeleteTokenRequest, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseGpayDeleteTokenResponse>>;
+    public gpayRepaymentCallback(deleteTokenRequest: DeleteTokenRequest, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseGpayDeleteTokenResponse>>;
+    public gpayRepaymentCallback(deleteTokenRequest: DeleteTokenRequest, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
         if (deleteTokenRequest === null || deleteTokenRequest === undefined) {
             throw new Error('Required parameter deleteTokenRequest was null or undefined when calling gpayRepaymentCallback.');
         }
 
         let headers = this.defaultHeaders;
-        if (authorization !== undefined && authorization !== null) {
-            headers = headers.set('Authorization', String(authorization));
-        }
 
         let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
         if (httpHeaderAcceptSelected === undefined) {
@@ -136,7 +131,7 @@ export class RepaymentControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.post<ApiResponse>(`${this.configuration.basePath}/v1/repayment/gpay/delete-token`,
+        return this.httpClient.post<ApiResponseGpayDeleteTokenResponse>(`${this.configuration.basePath}/v1/repayment/gpay/delete-token`,
             deleteTokenRequest,
             {
                 responseType: <any>responseType_,
@@ -149,26 +144,19 @@ export class RepaymentControllerService {
     }
 
     /**
-     * @param authorization 
      * @param repaymentRequest 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public gpayRepaymentInsuranceOrder(authorization: string, repaymentRequest: RepaymentRequest, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<ApiResponse>;
-    public gpayRepaymentInsuranceOrder(authorization: string, repaymentRequest: RepaymentRequest, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<ApiResponse>>;
-    public gpayRepaymentInsuranceOrder(authorization: string, repaymentRequest: RepaymentRequest, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<ApiResponse>>;
-    public gpayRepaymentInsuranceOrder(authorization: string, repaymentRequest: RepaymentRequest, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
-        if (authorization === null || authorization === undefined) {
-            throw new Error('Required parameter authorization was null or undefined when calling gpayRepaymentInsuranceOrder.');
-        }
+    public gpayRepaymentInsuranceOrder(repaymentRequest: RepaymentRequest, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<ApiResponseGpayRepaymentResponse>;
+    public gpayRepaymentInsuranceOrder(repaymentRequest: RepaymentRequest, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<ApiResponseGpayRepaymentResponse>>;
+    public gpayRepaymentInsuranceOrder(repaymentRequest: RepaymentRequest, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<ApiResponseGpayRepaymentResponse>>;
+    public gpayRepaymentInsuranceOrder(repaymentRequest: RepaymentRequest, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
         if (repaymentRequest === null || repaymentRequest === undefined) {
             throw new Error('Required parameter repaymentRequest was null or undefined when calling gpayRepaymentInsuranceOrder.');
         }
 
         let headers = this.defaultHeaders;
-        if (authorization !== undefined && authorization !== null) {
-            headers = headers.set('Authorization', String(authorization));
-        }
 
         let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
         if (httpHeaderAcceptSelected === undefined) {
@@ -197,7 +185,7 @@ export class RepaymentControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.post<ApiResponse>(`${this.configuration.basePath}/v1/repayment/gpay/insurance`,
+        return this.httpClient.post<ApiResponseGpayRepaymentResponse>(`${this.configuration.basePath}/v1/repayment/gpay/insurance`,
             repaymentRequest,
             {
                 responseType: <any>responseType_,
@@ -210,26 +198,19 @@ export class RepaymentControllerService {
     }
 
     /**
-     * @param authorization 
      * @param repaymentRequest 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public gpayRepaymentPaydayLoanTNG(authorization: string, repaymentRequest: RepaymentRequest, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<ApiResponse>;
-    public gpayRepaymentPaydayLoanTNG(authorization: string, repaymentRequest: RepaymentRequest, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<ApiResponse>>;
-    public gpayRepaymentPaydayLoanTNG(authorization: string, repaymentRequest: RepaymentRequest, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<ApiResponse>>;
-    public gpayRepaymentPaydayLoanTNG(authorization: string, repaymentRequest: RepaymentRequest, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
-        if (authorization === null || authorization === undefined) {
-            throw new Error('Required parameter authorization was null or undefined when calling gpayRepaymentPaydayLoanTNG.');
-        }
+    public gpayRepaymentPaydayLoanTNG(repaymentRequest: RepaymentRequest, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<ApiResponseGpayRepaymentResponse>;
+    public gpayRepaymentPaydayLoanTNG(repaymentRequest: RepaymentRequest, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<ApiResponseGpayRepaymentResponse>>;
+    public gpayRepaymentPaydayLoanTNG(repaymentRequest: RepaymentRequest, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<ApiResponseGpayRepaymentResponse>>;
+    public gpayRepaymentPaydayLoanTNG(repaymentRequest: RepaymentRequest, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
         if (repaymentRequest === null || repaymentRequest === undefined) {
             throw new Error('Required parameter repaymentRequest was null or undefined when calling gpayRepaymentPaydayLoanTNG.');
         }
 
         let headers = this.defaultHeaders;
-        if (authorization !== undefined && authorization !== null) {
-            headers = headers.set('Authorization', String(authorization));
-        }
 
         let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
         if (httpHeaderAcceptSelected === undefined) {
@@ -258,7 +239,7 @@ export class RepaymentControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.post<ApiResponse>(`${this.configuration.basePath}/v1/repayment/gpay/paydayloan-tng`,
+        return this.httpClient.post<ApiResponseGpayRepaymentResponse>(`${this.configuration.basePath}/v1/repayment/gpay/paydayloan-tng`,
             repaymentRequest,
             {
                 responseType: <any>responseType_,
@@ -275,9 +256,9 @@ export class RepaymentControllerService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public gpayRepaymentWebhook(gpayRepaymentWebhook: GpayRepaymentWebhook, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<ApiResponse>;
-    public gpayRepaymentWebhook(gpayRepaymentWebhook: GpayRepaymentWebhook, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<ApiResponse>>;
-    public gpayRepaymentWebhook(gpayRepaymentWebhook: GpayRepaymentWebhook, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<ApiResponse>>;
+    public gpayRepaymentWebhook(gpayRepaymentWebhook: GpayRepaymentWebhook, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<ApiResponseString>;
+    public gpayRepaymentWebhook(gpayRepaymentWebhook: GpayRepaymentWebhook, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<ApiResponseString>>;
+    public gpayRepaymentWebhook(gpayRepaymentWebhook: GpayRepaymentWebhook, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<ApiResponseString>>;
     public gpayRepaymentWebhook(gpayRepaymentWebhook: GpayRepaymentWebhook, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
         if (gpayRepaymentWebhook === null || gpayRepaymentWebhook === undefined) {
             throw new Error('Required parameter gpayRepaymentWebhook was null or undefined when calling gpayRepaymentWebhook.');
@@ -312,7 +293,7 @@ export class RepaymentControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.post<ApiResponse>(`${this.configuration.basePath}/v1/repayment/gpay/webhook`,
+        return this.httpClient.post<ApiResponseString>(`${this.configuration.basePath}/v1/repayment/gpay/webhook`,
             gpayRepaymentWebhook,
             {
                 responseType: <any>responseType_,

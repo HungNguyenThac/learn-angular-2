@@ -17,7 +17,7 @@ import { HttpClient, HttpHeaders, HttpParams,
 import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
-import { ApiResponse } from '../model/models';
+import { ApiResponseString } from '../model/models';
 import { CoreDisburseRequest } from '../model/models';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
@@ -86,26 +86,19 @@ export class DisburseControllerService {
     }
 
     /**
-     * @param authorization 
      * @param coreDisburseRequest 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public disburse(authorization: string, coreDisburseRequest: CoreDisburseRequest, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<ApiResponse>;
-    public disburse(authorization: string, coreDisburseRequest: CoreDisburseRequest, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<ApiResponse>>;
-    public disburse(authorization: string, coreDisburseRequest: CoreDisburseRequest, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<ApiResponse>>;
-    public disburse(authorization: string, coreDisburseRequest: CoreDisburseRequest, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
-        if (authorization === null || authorization === undefined) {
-            throw new Error('Required parameter authorization was null or undefined when calling disburse.');
-        }
+    public disburse(coreDisburseRequest: CoreDisburseRequest, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<ApiResponseString>;
+    public disburse(coreDisburseRequest: CoreDisburseRequest, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<ApiResponseString>>;
+    public disburse(coreDisburseRequest: CoreDisburseRequest, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<ApiResponseString>>;
+    public disburse(coreDisburseRequest: CoreDisburseRequest, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
         if (coreDisburseRequest === null || coreDisburseRequest === undefined) {
             throw new Error('Required parameter coreDisburseRequest was null or undefined when calling disburse.');
         }
 
         let headers = this.defaultHeaders;
-        if (authorization !== undefined && authorization !== null) {
-            headers = headers.set('Authorization', String(authorization));
-        }
 
         let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
         if (httpHeaderAcceptSelected === undefined) {
@@ -134,7 +127,7 @@ export class DisburseControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.post<ApiResponse>(`${this.configuration.basePath}/v1/disburse/gpay`,
+        return this.httpClient.post<ApiResponseString>(`${this.configuration.basePath}/v1/disburse/gpay`,
             coreDisburseRequest,
             {
                 responseType: <any>responseType_,
