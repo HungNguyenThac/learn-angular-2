@@ -140,6 +140,8 @@
     "additional_information": {
       "profile_info": "Thông tin cá nhân",
       "economic_info": "Thông tin tài chính",
+      "salary_info_title": "Thông tin lương",
+      "salary_choose": "Chọn khoảng lương",
       "salary_info": "Thông tin sao kê lương",
       "salary_info_desc": "Bao gồm sao kê <span class='pl-inline-salary-hint'>2 tháng lương gần nhất</span> và <span class='pl-inline-salary-hint'>tháng lương đầu tiên</span> khi bắt đầu làm việc tại TNG",
       "salary_info_example": "Xem ảnh mẫu sao kê lương",

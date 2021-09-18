@@ -31,6 +31,9 @@
     b {
       font-weight: 600;
     }
+    .required {
+      color: #ff3b30 !important;
+    }
   }
 }
 
@@ -43,3 +46,21 @@
   padding: 0;
 }
 
+.value {
+  font-weight: normal;
+  font-size: 12px;
+  line-height: 14px;
+  color: $grey-08;
+  margin-bottom: 24px;
+}
+
+#salary-amount-value {
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 18px;
+  color: $monex-color-00;
+}
+
+#salary-amount {
+  margin-bottom: 10px;
+}
