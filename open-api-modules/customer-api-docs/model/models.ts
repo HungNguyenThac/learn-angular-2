@@ -1,4 +1,5 @@
 export * from './additionalInformationRequest';
+export * from './additionalInformationV2Request';
 export * from './apiResponse';
 export * from './apiResponseApprovalLetter';
 export * from './apiResponseBoolean';
@@ -14,6 +15,7 @@ export * from './checkIsPaydayByCustomerIdResponse';
 export * from './chooseCompanyRequest';
 export * from './companyInfo';
 export * from './confirmInformationRequest';
+export * from './confirmInformationV2Request';
 export * from './customerInfoResponse';
 export * from './financialData';
 export * from './fraudCheck';

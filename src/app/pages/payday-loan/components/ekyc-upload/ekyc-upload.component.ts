@@ -1,4 +1,11 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+} from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MultiLanguageService } from '../../../../share/translate/multiLanguageService';
 import { Subscription } from 'rxjs';
@@ -11,13 +18,14 @@ import {
 } from '../../../../../../open-api-modules/customer-api-docs';
 import { Observable } from 'rxjs/Observable';
 import * as fromSelectors from '../../../../core/store/selectors';
+import { NotificationService } from '../../../../core/services/notification.service';
 
 @Component({
   selector: 'ekyc-upload',
   templateUrl: './ekyc-upload.component.html',
   styleUrls: ['./ekyc-upload.component.scss'],
 })
-export class EkycUploadComponent implements OnInit {
+export class EkycUploadComponent implements OnInit, AfterViewInit {
   ekycForm: FormGroup;
 
   customerId: string;
@@ -73,7 +81,8 @@ export class EkycUploadComponent implements OnInit {
     private formBuilder: FormBuilder,
     private multiLanguageService: MultiLanguageService,
     private store: Store<fromStore.State>,
-    private kalapaV2Service: KalapaV2ControllerService
+    private kalapaV2Service: KalapaV2ControllerService,
+    private notificationService: NotificationService
   ) {
     this.customerId$ = store.select(fromSelectors.getCustomerIdState);
 
@@ -131,6 +140,7 @@ export class EkycUploadComponent implements OnInit {
     )
       return;
 
+    this.notificationService.showLoading(null);
     this.kalapaV2Service
       .extractInfo(
         this.customerId,
@@ -140,44 +150,44 @@ export class EkycUploadComponent implements OnInit {
         false,
         false
       )
-      .subscribe((ekycResponse: ApiResponseKalapaResponse) => {
-        if (!ekycResponse.result || ekycResponse.responseCode !== 200) {
-          this.handleEkycError(ekycResponse);
-        }
+      .subscribe(
+        (ekycResponse: ApiResponseKalapaResponse) => {
+          if (!ekycResponse.result || ekycResponse.responseCode !== 200) {
+            this.handleEkycError(ekycResponse);
+          }
 
-        this.completeEkyc.emit({
-          result: ekycResponse.result,
-          params: this.params,
-        });
-      });
+          this.completeEkyc.emit({
+            result: ekycResponse.result,
+            params: this.params,
+          });
+        },
+        (error) => {},
+        () => {
+          this.notificationService.hideLoading();
+        }
+      );
   }
 
   handleEkycError(ekycInfo) {
     this.resetParams();
     if (ekycInfo.responseCode !== 200) {
-      this.store.dispatch(
-        new fromActions.ShowErrorModal({
-          title: this.multiLanguageService.instant(
-            'payday_loan.ekyc.ekyc_failed_title'
-          ),
-          content: this.multiLanguageService.instant(
-            'payday_loan.ekyc.ekyc_failed_content'
-          ),
-          primaryBtnText: this.multiLanguageService.instant('common.confirm'),
-        })
-      );
+      this.notificationService.openErrorModal({
+        title: this.multiLanguageService.instant(
+          'payday_loan.ekyc.ekyc_failed_title'
+        ),
+        content: this.multiLanguageService.instant(
+          'payday_loan.ekyc.ekyc_failed_content'
+        ),
+        primaryBtnText: this.multiLanguageService.instant('common.confirm'),
+      });
       return;
     }
 
-    this.store.dispatch(
-      new fromActions.ShowErrorModal({
-        title: this.multiLanguageService.instant('common.notification'),
-        content: this.multiLanguageService.instant(
-          'common.something_went_wrong'
-        ),
-        primaryBtnText: this.multiLanguageService.instant('common.confirm'),
-      })
-    );
+    this.notificationService.openErrorModal({
+      title: this.multiLanguageService.instant('common.notification'),
+      content: this.multiLanguageService.instant('common.something_went_wrong'),
+      primaryBtnText: this.multiLanguageService.instant('common.confirm'),
+    });
   }
 
   resetParams() {
@@ -190,4 +200,6 @@ export class EkycUploadComponent implements OnInit {
     this.backID = null;
     this.selfie = null;
   }
+
+  ngAfterViewInit(): void {}
 }

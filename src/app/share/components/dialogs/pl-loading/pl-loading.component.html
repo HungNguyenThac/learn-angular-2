@@ -1,1 +1,20 @@
-<p>pl-loading works!</p>
+<mat-dialog-content>
+  <div class="prompt-content">
+    <div class="text-center">
+      <video width="56" height="56" autoplay loop muted>
+        <source src="assets/img/payday-loan/gif/monex-loading.webm" type="video/webm" />
+        <source src="assets/img/payday-loan/gif/monex-loading.mp4" type="video/mp4" />
+        <source src="assets/img/payday-loan/gif/monex-loading.ogg" type="video/ogg" />
+        Your browser does not support the video tag.
+      </video>
+    </div>
+
+    <h2 class="pl-prompt-title" *ngIf="promptContent">
+      {{ promptContent?.title }}
+    </h2>
+
+    <div *ngIf="promptContent" class="pl-prompt-body">
+      <p [innerHTML]="promptContent?.content"></p>
+    </div>
+  </div>
+</mat-dialog-content>

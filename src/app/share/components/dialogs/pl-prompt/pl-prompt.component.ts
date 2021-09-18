@@ -12,7 +12,10 @@ export class PlPromptComponent implements OnInit {
     content: "",
     secondaryBtnText: "",
     primaryBtnText: "",
-    disabledBtn: false
+    disabledBtn: false,
+    imgGroupUrl: null,
+    imgUrl: null,
+    imgBackgroundClass: null
   };
 
   constructor(@Inject(MAT_DIALOG_DATA) private data: any,
