@@ -12,11 +12,13 @@
         <section>
             <div class="col-md-12">
                 <div class="d-flex flex-wrap align-items-stretch card-box">
-                    <div class="col-6 col-md-4 card-list" *ngFor="let card of companiesList">
-                        <div class="card-container">
-                            <div class="card-content">
-                                <div [class]="card.brand" class="card-img"></div>
-                                <div class="card-title">{{ card.name }}</div>
+                    <div class="col-6 col-md-4 card-list" *ngFor="let company of companiesList">
+                        <div class="choose-company" (click)="chooseCompany(company.id)">
+                            <div class="card-container">
+                                <div class="card-content">
+                                    <img class="card-img" [src]="company.avatar">
+                                    <div class="card-title">{{ company.name }}</div>
+                                </div>
                             </div>
                         </div>
                     </div>

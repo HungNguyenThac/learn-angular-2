@@ -52,6 +52,10 @@
   height: 64px;
 }
 
+.choose-company {
+  cursor: pointer;
+}
+
 @media (max-width: 320px) {
     .card-title {
         padding: 0 4px;
