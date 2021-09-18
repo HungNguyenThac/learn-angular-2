@@ -28,6 +28,7 @@
   text-align: center;
   padding: 0 16px;
   color: $grey-10;
+  font-family: $sfPro;
 }
 
 .pl-prompt-image {
@@ -45,6 +46,7 @@
   letter-spacing: 0.1px;
   padding: 0 16px;
   color: $grey-08;
+  font-family: $sfPro;
 }
 
 .prompt-content {
@@ -52,6 +54,7 @@
   overflow: hidden;
   background-color: $white !important;
   border-radius: 16px;
+  font-family: $sfPro;
 }
 .pl-prompt-actions {
   margin-top: 16px;

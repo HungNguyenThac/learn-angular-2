@@ -6,6 +6,7 @@ api/api.ts
 api/approvalLetterController.service.ts
 api/companyController.service.ts
 api/infoController.service.ts
+api/infoV2Controller.service.ts
 api/kalapaController.service.ts
 api/kalapaV2Controller.service.ts
 api/newsletterController.service.ts
@@ -16,6 +17,7 @@ encoder.ts
 git_push.sh
 index.ts
 model/additionalInformationRequest.ts
+model/additionalInformationV2Request.ts
 model/apiResponse.ts
 model/apiResponseApprovalLetter.ts
 model/apiResponseBoolean.ts
@@ -31,6 +33,7 @@ model/checkIsPaydayByCustomerIdResponse.ts
 model/chooseCompanyRequest.ts
 model/companyInfo.ts
 model/confirmInformationRequest.ts
+model/confirmInformationV2Request.ts
 model/customerInfoResponse.ts
 model/financialData.ts
 model/fraudCheck.ts

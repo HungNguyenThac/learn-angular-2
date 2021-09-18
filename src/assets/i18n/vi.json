@@ -58,7 +58,9 @@
     "something_went_wrong": "Có lỗi xảy ra, vui lòng thử lại sau",
     "forbidden": "Bạn không có quyền sử dụng chức năng này. Vui lòng đăng nhập lại",
     "network_error": "Mất kết nối. Vui lòng kiểm tra kết nối mạng và thử lại",
-    "maintain_text": "Hệ thống đang tạm dừng để nâng cấp tính năng mới. Rất xin lỗi vì đã làm phiền. Monex xin chân thành cảm ơn!"
+    "maintain_text": "Hệ thống đang tạm dừng để nâng cấp tính năng mới. Rất xin lỗi vì đã làm phiền. Monex xin chân thành cảm ơn!",
+    "loading_title": "Thông tin của bạn đang được xử lý",
+    "loading_content": "Quá trình sẽ mất khoảng một vài giây, vui lòng không thoát ứng dụng"
   },
   "auth": {
     "username": "Số điện thoại",

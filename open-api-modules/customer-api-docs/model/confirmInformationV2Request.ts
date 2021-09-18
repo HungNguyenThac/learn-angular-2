@@ -11,16 +11,16 @@
  */
 
 
-export interface ApprovalLetter { 
-    id?: string;
-    provider?: string;
-    idRequest?: number;
-    idDocument?: number;
-    customerId?: string;
-    path?: string;
-    customerSignDone?: boolean;
-    created_at?: string;
-    updatedAt?: string;
-    updatedBy?: string;
+export interface ConfirmInformationV2Request { 
+    firstName: string;
+    dateOfBirth: string;
+    gender: string;
+    identityNumberSix: string;
+    identityNumberOne: string;
+    addressTwoLine1: string;
+    addressOneLine1: string;
+    emailAddress: string;
+    idIssuePlace: string;
+    coreUserId?: string;
 }
 

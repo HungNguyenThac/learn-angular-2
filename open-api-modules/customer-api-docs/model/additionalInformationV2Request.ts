@@ -11,16 +11,11 @@
  */
 
 
-export interface ApprovalLetter { 
-    id?: string;
-    provider?: string;
-    idRequest?: number;
-    idDocument?: number;
-    customerId?: string;
-    path?: string;
-    customerSignDone?: boolean;
-    created_at?: string;
-    updatedAt?: string;
-    updatedBy?: string;
+export interface AdditionalInformationV2Request { 
+    maritalStatus: string;
+    educationType: string;
+    borrowerDetailTextVariable1: string;
+    borrowerEmploymentHistoryTextVariable1: string;
+    annualIncome: number;
 }
 
