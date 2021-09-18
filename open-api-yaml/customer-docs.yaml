@@ -282,6 +282,78 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiResponseKalapaResponse'
+  /info/v2/{customerId}/validate-confirm-information-request:
+    post:
+      tags:
+      - info-v-2-controller
+      operationId: validateConfirmInformationRequestV2
+      parameters:
+      - name: customerId
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ConfirmInformationV2Request'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseObject'
+  /info/v2/{customerId}/confirm-information:
+    post:
+      tags:
+      - info-v-2-controller
+      operationId: confirmInformationV2
+      parameters:
+      - name: customerId
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ConfirmInformationV2Request'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseObject'
+  /info/v2/{customerId}/additional-information:
+    post:
+      tags:
+      - info-v-2-controller
+      operationId: additionalInformationV2
+      parameters:
+      - name: customerId
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdditionalInformationV2Request'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseObject'
   /info/v1/{customerId}/validate-confirm-information-request:
     post:
       tags:
@@ -841,6 +913,61 @@ components:
         matchingScore:
           type: integer
           format: int32
+    ConfirmInformationV2Request:
+      required:
+      - addressOneLine1
+      - addressTwoLine1
+      - dateOfBirth
+      - emailAddress
+      - firstName
+      - gender
+      - idIssuePlace
+      - identityNumberOne
+      - identityNumberSix
+      type: object
+      properties:
+        firstName:
+          type: string
+        dateOfBirth:
+          type: string
+        gender:
+          type: string
+        identityNumberSix:
+          type: string
+        identityNumberOne:
+          type: string
+        addressTwoLine1:
+          type: string
+        addressOneLine1:
+          type: string
+        emailAddress:
+          type: string
+        idIssuePlace:
+          type: string
+        coreUserId:
+          type: string
+    AdditionalInformationV2Request:
+      required:
+      - annualIncome
+      - borrowerDetailTextVariable1
+      - borrowerEmploymentHistoryTextVariable1
+      - educationType
+      - maritalStatus
+      type: object
+      properties:
+        maritalStatus:
+          type: string
+        educationType:
+          type: string
+        borrowerDetailTextVariable1:
+          type: string
+        borrowerEmploymentHistoryTextVariable1:
+          type: string
+        annualIncome:
+          maximum: 100000000
+          minimum: 1000000
+          type: integer
+          format: int32
     ConfirmInformationRequest:
       required:
       - addressOneLine1
@@ -1009,7 +1136,13 @@ components:
           type: string
         path:
           type: string
+        customerSignDone:
+          type: boolean
         created_at:
+          type: string
+        updatedAt:
+          type: string
+        updatedBy:
           type: string
     ApiResponseApprovalLetter:
       type: object

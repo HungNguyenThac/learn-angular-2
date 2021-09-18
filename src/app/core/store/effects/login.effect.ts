@@ -24,6 +24,8 @@ import * as fromStore from '../index';
 import { Observable } from 'rxjs';
 import formatSlug from './../../../core/utils/format-slug';
 import { PAYDAY_LOAN_STATUS } from '../../common/enum/payday-loan';
+import { NotificationService } from '../../services/notification.service';
+import { MultiLanguageService } from '../../../share/translate/multiLanguageService';
 
 @Injectable()
 export class LoginEffects {
@@ -47,7 +49,9 @@ export class LoginEffects {
     private signOnService: SignOnControllerService,
     private infoService: InfoControllerService,
     private loginService: LoginControllerService,
-    private applicationControllerService: ApplicationControllerService
+    private applicationControllerService: ApplicationControllerService,
+    private notificationService: NotificationService,
+    private multiLanguageService: MultiLanguageService
   ) {
     this.coreToken$ = store$.select(fromStore.getCoreTokenState);
     this.coreToken$.subscribe((token) => {
@@ -105,11 +109,27 @@ export class LoginEffects {
               );
 
               if (result.result.personalData.stepOne !== 'DONE') {
-                this._redirectToCurrentPage().then(r => {});
+                this._redirectToCurrentPage().then((r) => {});
               }
 
               this.store$.dispatch(new fromActions.SigninCore(this.loginInput));
             });
+        })
+      ),
+    { dispatch: false }
+  );
+
+  loginSigninError$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(fromActions.LOGIN_SIGNIN_ERROR),
+        map((action: fromActions.SigninError) => action.payload),
+        tap((error: any) => {
+          this.notificationService.openErrorModal({
+            title: this.multiLanguageService.instant('common.notification'),
+            content: error,
+            primaryBtnText: this.multiLanguageService.instant('common.confirm'),
+          });
         })
       ),
     { dispatch: false }
@@ -165,7 +185,7 @@ export class LoginEffects {
       this.actions$.pipe(
         ofType(fromActions.LOGIN_SIGNIN_CORE_ERROR),
         tap(() => {
-          this._redirectToCurrentPage().then(r => {});
+          this._redirectToCurrentPage().then((r) => {});
         })
       ),
     { dispatch: false }

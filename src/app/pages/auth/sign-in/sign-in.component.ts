@@ -2,8 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { ToastrService } from 'ngx-toastr';
-import { Observable } from 'rxjs';
 import * as fromStore from './../../../core/store';
 import * as fromActions from './../../../core/store';
 
@@ -13,7 +11,6 @@ import * as fromActions from './../../../core/store';
   styleUrls: ['./sign-in.component.scss'],
 })
 export class SignInComponent implements OnInit {
-  public error$: Observable<any>;
   signInForm: FormGroup;
   isUsernameInputFocus: boolean = false;
   isPasswordInputFocus: boolean = false;
@@ -23,11 +20,8 @@ export class SignInComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
-    private store: Store<fromStore.State>,
-    private notifier: ToastrService
+    private store: Store<fromStore.State>
   ) {
-    this.error$ = store.select(fromStore.getLoginErrorState);
-
     this.signInForm = this.formBuilder.group({
       mobileNumber: [''],
       password: [''],
@@ -37,20 +31,13 @@ export class SignInComponent implements OnInit {
   ngOnInit(): void {
     this.store.dispatch(new fromActions.Logout(null));
     this.store.dispatch(new fromActions.SigninError(null));
-
-    this.error$.subscribe((error) => {
-      console.log('error', error);
-      if (error != null) {
-        this.notifier.error(error);
-      }
-    });
   }
 
   onSubmit() {
-    console.log(this.signInForm.getRawValue());
     if (this.signInForm.invalid) {
       return;
     }
+
     const username = this.signInForm.controls.mobileNumber.value;
     const password = this.signInForm.controls.password.value;
 

@@ -5,6 +5,7 @@ import { MultiLanguageService } from '../../../../share/translate/multiLanguageS
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import * as fromSelectors from '../../../../core/store/selectors';
+import { NotificationService } from '../../../../core/services/notification.service';
 
 @Component({
   selector: 'ekyc',
@@ -18,7 +19,8 @@ export class EkycComponent implements OnInit {
 
   constructor(
     private multiLanguageService: MultiLanguageService,
-    private store: Store<fromStore.State>
+    private store: Store<fromStore.State>,
+    private notificationService: NotificationService
   ) {
     this.customerId$ = store.select(fromSelectors.getCustomerIdState);
 
@@ -48,6 +50,8 @@ export class EkycComponent implements OnInit {
       return;
     }
 
+    console.log('aaaaaaaaaaaaaa completeEkyc')
+
     let ekycInfo = ekycCompleteData.idCardInfo;
     this.store.dispatch(new fromActions.SetEkycInfo(ekycInfo));
 
@@ -67,29 +71,23 @@ export class EkycComponent implements OnInit {
   }
 
   notificationEkycError() {
-    this.store.dispatch(
-      new fromActions.ShowErrorModal({
-        title: this.multiLanguageService.instant('common.notification'),
-        content: this.multiLanguageService.instant(
-          'common.something_went_wrong'
-        ),
-        primaryBtnText: this.multiLanguageService.instant('common.confirm'),
-      })
-    );
+    this.notificationService.openErrorModal({
+      title: this.multiLanguageService.instant('common.notification'),
+      content: this.multiLanguageService.instant('common.something_went_wrong'),
+      primaryBtnText: this.multiLanguageService.instant('common.confirm'),
+    });
   }
 
   notificationEkycSuccess() {
-    this.store.dispatch(
-      new fromActions.ShowErrorModal({
-        title: this.multiLanguageService.instant(
-          'payday_loan.ekyc.eKYC_successful'
-        ),
-        content: this.multiLanguageService.instant(
-          'payday_loan.ekyc.eKYC_successful_content'
-        ),
-        primaryBtnText: this.multiLanguageService.instant('common.confirm'),
-      })
-    );
+    this.notificationService.openErrorModal({
+      title: this.multiLanguageService.instant(
+        'payday_loan.ekyc.eKYC_successful'
+      ),
+      content: this.multiLanguageService.instant(
+        'payday_loan.ekyc.eKYC_successful_content'
+      ),
+      primaryBtnText: this.multiLanguageService.instant('common.confirm'),
+    });
   }
 
   async createVirtualAccount(customerId, accountName) {
