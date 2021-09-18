@@ -15,6 +15,7 @@ import { ERROR_CODE } from '../../../../core/common/enum/payday-loan';
 import { InfoControllerService } from '../../../../../../open-api-modules/customer-api-docs';
 import { GlobalConstants } from '../../../../core/common/global-constants';
 import { Router } from '@angular/router';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'ekyc',
@@ -32,7 +33,8 @@ export class EkycComponent implements OnInit {
     private notificationService: NotificationService,
     private infoControllerService: InfoControllerService,
     private router: Router,
-    private gpayVirtualAccountControllerService: GpayVirtualAccountControllerService
+    private gpayVirtualAccountControllerService: GpayVirtualAccountControllerService,
+    private titleService: Title
   ) {
     this.customerId$ = store.select(fromSelectors.getCustomerIdState);
 
@@ -42,6 +44,7 @@ export class EkycComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.titleService.setTitle('Định danh điện tử - Monex');
     this.getCustomerInfo();
   }
 

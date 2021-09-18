@@ -2,6 +2,7 @@ import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
 import { GlobalConstants } from '../../../core/common/global-constants';
 import * as moment from 'moment';
 import { Router } from '@angular/router';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-reset-password-success',
@@ -15,9 +16,11 @@ export class ResetPasswordSuccessComponent
     GlobalConstants.PL_VALUE_DEFAULT.REDIRECT_TO_SIGN_IN_COUNTDOWN_TIME;
   intervalTime: any;
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private titleService: Title) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.titleService.setTitle('Quên mật khẩu thành công - Monex');
+  }
 
   ngAfterViewInit(): void {
     this.countdownTimer(this.countdownTime);
