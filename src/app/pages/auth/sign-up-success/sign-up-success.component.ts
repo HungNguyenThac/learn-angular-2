@@ -20,7 +20,7 @@ export class SignUpSuccessComponent
   constructor(private router: Router, private titleService: Title) {}
 
   ngOnInit(): void {
-    this.titleService.setTitle('Đăng ký thành công - Monex');
+    this.titleService.setTitle('Đăng ký thành công'  + " - " + GlobalConstants.PL_VALUE_DEFAULT.PROJECT_NAME);
   }
 
   ngAfterViewInit(): void {

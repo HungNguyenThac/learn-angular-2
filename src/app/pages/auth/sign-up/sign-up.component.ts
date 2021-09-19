@@ -16,6 +16,7 @@ import {
   SignOnControllerService,
 } from 'open-api-modules/identity-api-docs';
 import {Title} from "@angular/platform-browser";
+import {GlobalConstants} from "../../../core/common/global-constants";
 
 @Component({
   selector: 'app-sign-up',
@@ -74,7 +75,7 @@ export class SignUpComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.titleService.setTitle('Đăng ký - Monex');
+    this.titleService.setTitle('Đăng ký'  + " - " + GlobalConstants.PL_VALUE_DEFAULT.PROJECT_NAME);
   }
 
   onSubmit() {

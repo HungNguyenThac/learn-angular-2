@@ -19,7 +19,7 @@ export class ResetPasswordSuccessComponent
   constructor(private router: Router, private titleService: Title) {}
 
   ngOnInit(): void {
-    this.titleService.setTitle('Quên mật khẩu thành công - Monex');
+    this.titleService.setTitle('Quên mật khẩu thành công'  + " - " + GlobalConstants.PL_VALUE_DEFAULT.PROJECT_NAME);
   }
 
   ngAfterViewInit(): void {
