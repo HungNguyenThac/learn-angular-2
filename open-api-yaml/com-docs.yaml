@@ -6,6 +6,24 @@ servers:
 - url: http://localhost:8004
   description: Generated server url
 paths:
+  /v1/template-notification/update-active:
+    post:
+      tags:
+      - template-notification-controller
+      operationId: updateStatus
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateTemplateStatusRequest'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseString'
   /v1/template-notification/send-template:
     post:
       tags:
@@ -34,6 +52,24 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/CreateTemplateNotificationRequest'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseString'
+  /v1/template-notification/add-content:
+    post:
+      tags:
+      - template-notification-controller
+      operationId: addTContent
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddContentRequest'
         required: true
       responses:
         "200":
@@ -372,6 +408,24 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ApiResponseCreateTokenResponse'
+  /v1/contract/create-letter:
+    post:
+      tags:
+      - contract-controller
+      operationId: createLetter
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateLetterRequest'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseCreateLetterResponse'
   /v1/contract/confirm-otp-sign:
     post:
       tags:
@@ -440,16 +494,20 @@ paths:
                 $ref: '#/components/schemas/ApiResponseListTransactionNotificationEntity'
 components:
   schemas:
-    SendTemplateRequest:
+    UpdateTemplateStatusRequest:
       required:
-      - customerId
-      - templateName
+      - nameTemplate
+      - type
       type: object
       properties:
-        templateName:
+        nameTemplate:
           type: string
-        customerId:
+        type:
           type: string
+          enum:
+          - EMAIL
+          - SMS
+          - NOTIFICATION
     ApiResponseString:
       type: object
       properties:
@@ -462,6 +520,18 @@ components:
         responseCode:
           type: integer
           format: int32
+    SendTemplateRequest:
+      required:
+      - customerId
+      - templateName
+      type: object
+      properties:
+        templateName:
+          type: string
+        customerId:
+          type: string
+        amount:
+          type: string
     ContentNotificationRequest:
       required:
       - content
@@ -495,6 +565,28 @@ components:
             $ref: '#/components/schemas/ContentNotificationRequest'
         description:
           type: string
+    AddContentRequest:
+      required:
+      - content
+      - isActive
+      - nameTemplate
+      - type
+      type: object
+      properties:
+        nameTemplate:
+          type: string
+        type:
+          type: string
+          enum:
+          - EMAIL
+          - SMS
+          - NOTIFICATION
+        content:
+          type: string
+        title:
+          type: string
+        isActive:
+          type: boolean
     SendSMSRequest:
       required:
       - customerId
@@ -883,6 +975,47 @@ components:
           type: object
           additionalProperties:
             type: object
+    CreateLetterRequest:
+      required:
+      - customerId
+      - dateOfBirth
+      - employeeCode
+      - idIssuePlace
+      - name
+      - nationalId
+      type: object
+      properties:
+        dateOfBirth:
+          type: string
+        name:
+          type: string
+        nationalId:
+          type: string
+        customerId:
+          type: string
+        employeeCode:
+          type: string
+        idIssuePlace:
+          type: string
+    ApiResponseCreateLetterResponse:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/CreateLetterResponse'
+        errorCode:
+          type: string
+        message:
+          type: object
+        responseCode:
+          type: integer
+          format: int32
+    CreateLetterResponse:
+      type: object
+      properties:
+        customerId:
+          type: string
+        documentPath:
+          type: string
     ConfirmOTPSignRequest:
       required:
       - customerId

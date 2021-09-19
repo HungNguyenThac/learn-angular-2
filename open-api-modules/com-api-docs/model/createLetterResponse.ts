@@ -11,9 +11,8 @@
  */
 
 
-export interface SendTemplateRequest { 
-    templateName: string;
-    customerId: string;
-    amount?: string;
+export interface CreateLetterResponse { 
+    customerId?: string;
+    documentPath?: string;
 }
 

@@ -11,10 +11,12 @@
  */
 
 
-export interface ApiResponse { 
-    result?: object;
-    errorCode?: string;
-    message?: object;
-    responseCode?: number;
+export interface CreateLetterRequest { 
+    dateOfBirth: string;
+    name: string;
+    nationalId: string;
+    customerId: string;
+    employeeCode: string;
+    idIssuePlace: string;
 }
 

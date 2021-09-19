@@ -3,6 +3,11 @@ import { GlobalConstants } from '../../../core/common/global-constants';
 import { Router } from '@angular/router';
 import * as moment from 'moment';
 import { Title } from '@angular/platform-browser';
+import { Store } from '@ngrx/store';
+import * as fromActions from '../../../core/store';
+import * as fromStore from '../../../core/store';
+import { Observable } from 'rxjs';
+import * as fromSelectors from '../../../core/store/selectors';
 
 @Component({
   selector: 'app-sign-up-success',
@@ -12,19 +17,51 @@ import { Title } from '@angular/platform-browser';
 export class SignUpSuccessComponent
   implements OnInit, AfterViewInit, OnDestroy
 {
-  signUpSuccessBodyText: string = '';
+  private customerMobile$: Observable<string>;
+
+  customerMobile: string = '';
+
+  get signUpSuccessBodyText(): string {
+    return `Chúc mừng số điện thoại <span class='pl-text-sent-confirm-policy-inline'>${
+      this.customerMobile || ''
+    }</span> đã tạo tài khoản thành công. Đăng nhập để sử dụng dịch vụ`;
+  }
   countdownTime: number =
     GlobalConstants.PL_VALUE_DEFAULT.REDIRECT_TO_SIGN_IN_COUNTDOWN_TIME;
   intervalTime: any;
 
-  constructor(private router: Router, private titleService: Title) {}
+  constructor(
+    private router: Router,
+    private titleService: Title,
+    private store: Store<fromStore.State>
+  ) {
+    this.customerMobile$ = store.select(fromSelectors.getCustomerMobileState);
+    this.customerMobile$.subscribe((customerMobile) => {
+      this.customerMobile = customerMobile;
+    });
+  }
 
   ngOnInit(): void {
-    this.titleService.setTitle('Đăng ký thành công'  + " - " + GlobalConstants.PL_VALUE_DEFAULT.PROJECT_NAME);
+    this.titleService.setTitle(
+      'Đăng ký thành công' +
+        ' - ' +
+        GlobalConstants.PL_VALUE_DEFAULT.PROJECT_NAME
+    );
+    this.initHeaderInfo();
+    this.resetSession();
   }
 
   ngAfterViewInit(): void {
     this.countdownTimer(this.countdownTime);
+  }
+
+  initHeaderInfo() {
+    this.store.dispatch(new fromActions.ResetPaydayLoanInfo());
+    this.store.dispatch(new fromActions.SetShowNavigationBar(false));
+  }
+
+  resetSession() {
+    this.store.dispatch(new fromActions.Logout());
   }
 
   btnClick() {

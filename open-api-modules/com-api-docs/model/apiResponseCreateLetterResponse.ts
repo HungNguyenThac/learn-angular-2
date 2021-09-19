@@ -9,11 +9,11 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { SignWithOTPResponse } from './signWithOTPResponse';
+import { CreateLetterResponse } from './createLetterResponse';
 
 
-export interface ApiResponseSignWithOTPResponse { 
-    result?: SignWithOTPResponse;
+export interface ApiResponseCreateLetterResponse { 
+    result?: CreateLetterResponse;
     errorCode?: string;
     message?: object;
     responseCode?: number;

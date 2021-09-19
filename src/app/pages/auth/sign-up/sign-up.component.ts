@@ -1,5 +1,4 @@
-import { HttpErrorResponse } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import {
   AbstractControl,
   FormBuilder,
@@ -15,15 +14,19 @@ import {
   CreateVerifiedAccountRequest,
   SignOnControllerService,
 } from 'open-api-modules/identity-api-docs';
-import {Title} from "@angular/platform-browser";
-import {GlobalConstants} from "../../../core/common/global-constants";
+import { Title } from '@angular/platform-browser';
+import { GlobalConstants } from '../../../core/common/global-constants';
+import * as fromActions from '../../../core/store';
+import * as fromStore from '../../../core/store';
+import { Store } from '@ngrx/store';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-sign-up',
   templateUrl: './sign-up.component.html',
   styleUrls: ['./sign-up.component.scss'],
 })
-export class SignUpComponent implements OnInit {
+export class SignUpComponent implements OnInit, OnDestroy {
   signUpForm: FormGroup;
   isUsernameInputFocus: boolean = false;
   isPasswordInputFocus: boolean = false;
@@ -42,8 +45,9 @@ export class SignUpComponent implements OnInit {
   errorGetTngInfo: boolean = false;
   disabledOTP: boolean = false;
 
-  //
   createCustomerAccountRequestResult: any;
+
+  subManager = new Subscription();
 
   matchValues(
     matchTo: string // name of the control to match to
@@ -62,7 +66,8 @@ export class SignUpComponent implements OnInit {
     private router: Router,
     private signOnControllerService: SignOnControllerService,
     private notifier: ToastrService,
-    private titleService: Title
+    private titleService: Title,
+    private store: Store<fromStore.State>
   ) {
     this.signUpForm = this.formBuilder.group({
       mobileNumber: ['', [Validators.required]],
@@ -74,12 +79,36 @@ export class SignUpComponent implements OnInit {
     });
   }
 
+  ngOnDestroy(): void {
+    this.subManager.unsubscribe();
+  }
+
   ngOnInit(): void {
-    this.titleService.setTitle('Đăng ký'  + " - " + GlobalConstants.PL_VALUE_DEFAULT.PROJECT_NAME);
+    this.titleService.setTitle(
+      'Đăng ký' + ' - ' + GlobalConstants.PL_VALUE_DEFAULT.PROJECT_NAME
+    );
+    this.initHeaderInfo();
+    this.resetSession();
+  }
+
+  initHeaderInfo() {
+    this.store.dispatch(new fromActions.ResetPaydayLoanInfo());
+    this.store.dispatch(new fromActions.SetNavigationTitle('Đăng ký'));
+    this.store.dispatch(new fromActions.SetShowLeftBtn(true));
+    this.store.dispatch(new fromActions.SetShowRightBtn(true));
+  }
+
+  resetSession() {
+    this.store.dispatch(new fromActions.Logout());
   }
 
   onSubmit() {
     if (!this.signUpForm.valid || !this.ruleAccepted) return;
+    this.store.dispatch(
+      new fromActions.SetCustomerMobile(
+        this.signUpForm.controls.mobileNumber.value
+      )
+    );
     this.getOtp();
   }
 
@@ -88,19 +117,21 @@ export class SignUpComponent implements OnInit {
       mobile: this.signUpForm.controls.mobileNumber.value,
       provider: 'cmc',
     };
-    this.signOnControllerService
-      .createCustomerAccount(createCustomerAccountRequest)
-      .subscribe((data: ApiResponseObject) => {
-        if (data.errorCode != null) {
-          return this.notifier.error(String(data?.message));
-        }
+    this.subManager.add(
+      this.signOnControllerService
+        .createCustomerAccount(createCustomerAccountRequest)
+        .subscribe((data: ApiResponseObject) => {
+          if (data.errorCode != null) {
+            return this.notifier.error(String(data?.message));
+          }
 
-        this.createCustomerAccountRequestResult = data.result;
+          this.createCustomerAccountRequestResult = data.result;
 
-        if (this.openOtpConfirm === false) {
-          this.openOtpConfirm = true;
-        }
-      });
+          if (this.openOtpConfirm === false) {
+            this.openOtpConfirm = true;
+          }
+        })
+    );
   }
 
   onRuleAccepted() {
@@ -119,15 +150,17 @@ export class SignUpComponent implements OnInit {
       requestId: requestId,
       otp: otp,
     };
-    this.signOnControllerService
-      .createVerifiedCustomerAccount(createVerifiedAccountRequest)
-      .subscribe((result) => {
-        if (result.errorCode != null) {
-          return this.notifier.error(result.message);
-        }
-        console.log('create Verified success');
-        this.redirectToSignUpSuccessPage();
-      });
+    this.subManager.add(
+      this.signOnControllerService
+        .createVerifiedCustomerAccount(createVerifiedAccountRequest)
+        .subscribe((result) => {
+          if (result.errorCode != null) {
+            return this.notifier.error(result.message);
+          }
+          console.log('create Verified success');
+          this.redirectToSignUpSuccessPage();
+        })
+    );
   }
 
   resendOtp() {

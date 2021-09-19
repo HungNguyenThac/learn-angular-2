@@ -3,6 +3,9 @@ import { GlobalConstants } from '../../../core/common/global-constants';
 import * as moment from 'moment';
 import { Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
+import { Store } from '@ngrx/store';
+import * as fromActions from '../../../core/store';
+import * as fromStore from '../../../core/store';
 
 @Component({
   selector: 'app-reset-password-success',
@@ -16,14 +19,33 @@ export class ResetPasswordSuccessComponent
     GlobalConstants.PL_VALUE_DEFAULT.REDIRECT_TO_SIGN_IN_COUNTDOWN_TIME;
   intervalTime: any;
 
-  constructor(private router: Router, private titleService: Title) {}
+  constructor(
+    private router: Router,
+    private titleService: Title,
+    private store: Store<fromStore.State>
+  ) {}
 
   ngOnInit(): void {
-    this.titleService.setTitle('Quên mật khẩu thành công'  + " - " + GlobalConstants.PL_VALUE_DEFAULT.PROJECT_NAME);
+    this.titleService.setTitle(
+      'Quên mật khẩu thành công' +
+        ' - ' +
+        GlobalConstants.PL_VALUE_DEFAULT.PROJECT_NAME
+    );
+    this.initHeaderInfo();
+    this.resetSession();
   }
 
   ngAfterViewInit(): void {
     this.countdownTimer(this.countdownTime);
+  }
+
+  initHeaderInfo() {
+    this.store.dispatch(new fromActions.ResetPaydayLoanInfo());
+    this.store.dispatch(new fromActions.SetShowNavigationBar(false));
+  }
+
+  resetSession() {
+    this.store.dispatch(new fromActions.Logout());
   }
 
   btnClick() {

@@ -17,6 +17,7 @@ import {
 } from 'open-api-modules/core-api-docs';
 import {
   ApiResponseObject,
+  ApiResponsePaydayLoan,
   ApplicationControllerService,
 } from '../../../../../open-api-modules/loanapp-api-docs';
 import { Store } from '@ngrx/store';
@@ -75,8 +76,7 @@ export class LoginEffects {
         ofType(fromActions.LOGIN_SIGN_OUT),
         tap(() => {
           this.notificationService.destroyAllDialog();
-          this.store$.dispatch(new fromActions.ResetCustomerInfo({}));
-          this.store$.dispatch(new fromActions.ResetEkycInfo({}));
+          this.store$.dispatch(new fromActions.ResetCustomerInfo());
         })
       ),
     { dispatch: false }
@@ -178,8 +178,8 @@ export class LoginEffects {
         ofType(fromActions.LOGIN_SIGNIN_CORE_SUCCESS),
         tap(() => {
           this.applicationControllerService
-            .getActivePaydayLoan(this.customerId, this.coreToken)
-            .subscribe((result: ApiResponseObject) => {
+            .getActiveLoan(this.customerId, this.coreToken)
+            .subscribe((result: ApiResponsePaydayLoan) => {
               if (!result || result.responseCode !== 200) {
                 if (this.customerInfo.personalData.companyId) {
                   return this.router.navigateByUrl('hmg/ekyc');
@@ -187,10 +187,11 @@ export class LoginEffects {
                 return this.router.navigateByUrl('companies');
               }
 
-              //TODO wait loanapp-svc append model to get status
               return this.router.navigate([
                 'hmg/current-loan',
-                formatSlug(PAYDAY_LOAN_STATUS.UNKNOWN_STATUS),
+                formatSlug(
+                  result.result.status || PAYDAY_LOAN_STATUS.UNKNOWN_STATUS
+                ),
               ]);
             });
         })

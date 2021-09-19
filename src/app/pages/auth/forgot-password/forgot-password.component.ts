@@ -17,6 +17,10 @@ import {
 } from 'open-api-modules/identity-api-docs';
 import { Title } from '@angular/platform-browser';
 import { GlobalConstants } from 'src/app/core/common/global-constants';
+import * as fromActions from '../../../core/store';
+import * as fromStore from '../../../core/store';
+import { Store } from '@ngrx/store';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-forgot-password',
@@ -39,6 +43,8 @@ export class ForgotPasswordComponent implements OnInit {
   //
   resetPasswordbyMobileOtpResult: any;
 
+  subManager = new Subscription();
+
   matchValues(
     matchTo: string // name of the control to match to
   ): (AbstractControl) => ValidationErrors | null {
@@ -56,7 +62,8 @@ export class ForgotPasswordComponent implements OnInit {
     private router: Router,
     private signOnControllerService: SignOnControllerService,
     private notifier: ToastrService,
-    private titleService: Title
+    private titleService: Title,
+    private store: Store<fromStore.State>
   ) {
     this.passwordForgotForm = this.formBuilder.group({
       mobileNumber: ['', [Validators.required]],
@@ -69,7 +76,27 @@ export class ForgotPasswordComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.titleService.setTitle('Quên mật khẩu'  + " - " + GlobalConstants.PL_VALUE_DEFAULT.PROJECT_NAME);
+    this.titleService.setTitle(
+      'Quên mật khẩu' + ' - ' + GlobalConstants.PL_VALUE_DEFAULT.PROJECT_NAME
+    );
+
+    this.initHeaderInfo();
+    this.resetSession();
+  }
+
+  ngOnDestroy(): void {
+    this.subManager.unsubscribe();
+  }
+
+  initHeaderInfo() {
+    this.store.dispatch(new fromActions.ResetPaydayLoanInfo());
+    this.store.dispatch(new fromActions.SetNavigationTitle('Quên mật khẩu'));
+    this.store.dispatch(new fromActions.SetShowLeftBtn(true));
+    this.store.dispatch(new fromActions.SetShowRightBtn(true));
+  }
+
+  resetSession() {
+    this.store.dispatch(new fromActions.Logout());
   }
 
   getOtp() {
@@ -77,15 +104,18 @@ export class ForgotPasswordComponent implements OnInit {
       mobile: this.passwordForgotForm.controls.mobileNumber.value,
       provider: 'cmc',
     };
-    this.signOnControllerService
-      .resetPasswordbyMobileOtp(createCustomerAccountRequest)
-      .subscribe((data) => {
-        if (data.errorCode != null) {
-          return this.notifier.error(String(data?.message));
-        }
 
-        this.resetPasswordbyMobileOtpResult = data.result;
-      });
+    this.subManager.add(
+      this.signOnControllerService
+        .resetPasswordbyMobileOtp(createCustomerAccountRequest)
+        .subscribe((data) => {
+          if (data.errorCode != null) {
+            return this.notifier.error(String(data?.message));
+          }
+
+          this.resetPasswordbyMobileOtpResult = data.result;
+        })
+    );
   }
 
   onOpenOtpConfirm() {
@@ -110,6 +140,7 @@ export class ForgotPasswordComponent implements OnInit {
         password: this.passwordForgotForm.controls.password.value,
         password_again: this.passwordForgotForm.controls.confirmPassword.value,
       };
+    this.subManager.add(
     this.signOnControllerService
       .resetPasswordbyOtp(resetPasswordVerifiedAccountRequest)
       .subscribe((result) => {
@@ -119,7 +150,7 @@ export class ForgotPasswordComponent implements OnInit {
 
         console.log('reset password Verified success');
         this.redirectToResetPasswordSuccessPage();
-      });
+      }));
   }
 
   onRuleAccepted() {
@@ -137,6 +168,7 @@ export class ForgotPasswordComponent implements OnInit {
       requestId: requestId,
       otp: otp,
     };
+    this.subManager.add(
     this.signOnControllerService
       .resetPasswordVerifiedOtp(resetVerifiedPasswordOtpRequest)
       .subscribe((result) => {
@@ -148,7 +180,7 @@ export class ForgotPasswordComponent implements OnInit {
         this.otp = otp;
         this.openOtpConfirm = false;
         this.changePasswordForm = true;
-      });
+      }));
   }
 
   resendOtp() {

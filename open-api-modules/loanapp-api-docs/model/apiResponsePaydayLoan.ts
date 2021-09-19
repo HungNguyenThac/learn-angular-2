@@ -9,11 +9,13 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { PaydayLoan } from './paydayLoan';
 
 
-export interface SendTemplateRequest { 
-    templateName: string;
-    customerId: string;
-    amount?: string;
+export interface ApiResponsePaydayLoan { 
+    result?: PaydayLoan;
+    errorCode?: string;
+    message?: object;
+    responseCode?: number;
 }
 

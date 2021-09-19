@@ -33,7 +33,7 @@ export class SetCustomerInfo implements Action {
 export class ResetCustomerInfo implements Action {
   readonly type = RESET_CUSTOMER_INFO;
 
-  constructor(public payload: any) {}
+  constructor(public payload?: any) {}
 }
 
 export type CustomerActions =

@@ -12,7 +12,7 @@ export class MultiLanguageService {
   constructor(
     private cookieService: CookieService,
     private translateService: TranslateService,
-    private http: HttpClient,
+    private http: HttpClient
   ) {
   }
 
@@ -37,7 +37,7 @@ export class MultiLanguageService {
   }
 
   public onSetupMultiLanguage(prefixName: string) {
-    this._getLanguage().subscribe(value => {
+    this._getLanguage().subscribe((value) => {
       const language = value.language;
       this.translateService.use(language).subscribe((value) => {
         this.loadTranslations(language, prefixName);
@@ -50,16 +50,24 @@ export class MultiLanguageService {
   }
 
   private loadTranslations(locale: string, prefixName: string) {
-    return this.http.get(`${this._translationsUrl}/${prefixName}/${locale}.json`).subscribe((data: any) => {
-      this.translateService.setTranslation(locale, data, true);
-    });
+    let cacheBuster = new Date().toISOString().replace(/\\.|:|-/g, '');
+    return this.http
+      .get(
+        `${this._translationsUrl}/${prefixName}/${locale}.json?cacheBuster=${cacheBuster}`
+      )
+      .subscribe((data: any) => {
+        this.translateService.setTranslation(locale, data, true);
+      });
   }
 
-  public get(key: string | Array<string>, interpolateParams?: Object): Observable<string | any> {
+  public get(
+    key: string | Array<string>,
+    interpolateParams?: Object
+  ): Observable<string | any> {
     return this.translateService.get(key, interpolateParams);
   }
 
   public instant(key: string | Array<string>, interpolateParams?: Object) {
-    return this.translateService.instant(key, interpolateParams)
+    return this.translateService.instant(key, interpolateParams);
   }
 }

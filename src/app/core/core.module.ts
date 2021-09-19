@@ -16,7 +16,6 @@ import { GlobalConfig } from 'ngx-toastr/toastr/toastr-config';
 import { _providers } from './providers';
 import { MomentModule } from 'ngx-moment';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { LayoutModule } from '../layout/layout.module';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(
@@ -47,7 +46,7 @@ const customNotifierOptions: Partial<GlobalConfig> = {
       },
     }),
     MomentModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
   ],
   providers: [_providers],
   declarations: [],

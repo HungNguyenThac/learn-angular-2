@@ -19,7 +19,7 @@ export const LOGIN_INITIAL_STATE: LoginState = {
   loginError: null,
   coreToken: null,
   password: null,
-  customerMobile: null
+  customerMobile: null,
 };
 
 class LoginActions {
@@ -69,17 +69,16 @@ class LoginActions {
 
   logout() {
     return {
+      ...this.state,
       authorization: null,
       loginProcess: null,
       loginError: null,
       coreToken: null,
       password: null,
-      customerMobile: null
     };
   }
 
   signinCore() {
-    const payload = this.action.payload;
     return { ...this.state, loginProcess: 'Proccess login core...' };
   }
 
@@ -100,6 +99,15 @@ class LoginActions {
       ...this.state,
       coreToken: payload.result?.access_token,
       loginProcess: 'Login core success',
+    };
+  }
+
+  setCustomerMobile() {
+    const payload = this.action.payload;
+
+    return {
+      ...this.state,
+      customerMobile: payload,
     };
   }
 }
@@ -137,6 +145,10 @@ export function loginReducer(
 
     case actions.LOGIN_SIGNIN_CORE_ERROR: {
       return loginActions.signinCoreError();
+    }
+
+    case actions.SET_CUSTOMER_MOBILE: {
+      return loginActions.setCustomerMobile();
     }
 
     default: {

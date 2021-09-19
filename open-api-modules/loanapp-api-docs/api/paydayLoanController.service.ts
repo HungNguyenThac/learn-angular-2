@@ -17,8 +17,10 @@ import { HttpClient, HttpHeaders, HttpParams,
 import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
-import { ApiResponse } from '../model/models';
-import { ApiResponseObject } from '../model/models';
+import { ApiResponseApplyResponse } from '../model/models';
+import { ApiResponseListPaydayLoan } from '../model/models';
+import { ApiResponsePaydayLoan } from '../model/models';
+import { ApiResponseString } from '../model/models';
 import { CreateApplicationRequest } from '../model/models';
 import { UpdateLoanRequest } from '../model/models';
 import { UpdateLoanStatusRequest } from '../model/models';
@@ -94,9 +96,9 @@ export class PaydayLoanControllerService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public changeLoanStatus(loanId: string, updateLoanStatusRequest: UpdateLoanStatusRequest, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseObject>;
-    public changeLoanStatus(loanId: string, updateLoanStatusRequest: UpdateLoanStatusRequest, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseObject>>;
-    public changeLoanStatus(loanId: string, updateLoanStatusRequest: UpdateLoanStatusRequest, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseObject>>;
+    public changeLoanStatus(loanId: string, updateLoanStatusRequest: UpdateLoanStatusRequest, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseString>;
+    public changeLoanStatus(loanId: string, updateLoanStatusRequest: UpdateLoanStatusRequest, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseString>>;
+    public changeLoanStatus(loanId: string, updateLoanStatusRequest: UpdateLoanStatusRequest, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseString>>;
     public changeLoanStatus(loanId: string, updateLoanStatusRequest: UpdateLoanStatusRequest, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
         if (loanId === null || loanId === undefined) {
             throw new Error('Required parameter loanId was null or undefined when calling changeLoanStatus.');
@@ -134,8 +136,52 @@ export class PaydayLoanControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.post<ApiResponseObject>(`${this.configuration.basePath}/v1/payday/${encodeURIComponent(String(loanId))}/change-status`,
+        return this.httpClient.post<ApiResponseString>(`${this.configuration.basePath}/v1/${encodeURIComponent(String(loanId))}/change-status`,
             updateLoanStatusRequest,
+            {
+                responseType: <any>responseType_,
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * @param loanId 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public changeLoanStatus1(loanId: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponsePaydayLoan>;
+    public changeLoanStatus1(loanId: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponsePaydayLoan>>;
+    public changeLoanStatus1(loanId: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponsePaydayLoan>>;
+    public changeLoanStatus1(loanId: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
+        if (loanId === null || loanId === undefined) {
+            throw new Error('Required parameter loanId was null or undefined when calling changeLoanStatus1.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (httpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                '*/*'
+            ];
+            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
+        if (httpHeaderAcceptSelected !== undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+
+        let responseType_: 'text' | 'json' = 'json';
+        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+            responseType_ = 'text';
+        }
+
+        return this.httpClient.get<ApiResponsePaydayLoan>(`${this.configuration.basePath}/v1/${encodeURIComponent(String(loanId))}`,
             {
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
@@ -151,12 +197,12 @@ export class PaydayLoanControllerService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public createAccount(createApplicationRequest: CreateApplicationRequest, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponse>;
-    public createAccount(createApplicationRequest: CreateApplicationRequest, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponse>>;
-    public createAccount(createApplicationRequest: CreateApplicationRequest, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponse>>;
-    public createAccount(createApplicationRequest: CreateApplicationRequest, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
+    public createLoan(createApplicationRequest: CreateApplicationRequest, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseApplyResponse>;
+    public createLoan(createApplicationRequest: CreateApplicationRequest, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseApplyResponse>>;
+    public createLoan(createApplicationRequest: CreateApplicationRequest, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseApplyResponse>>;
+    public createLoan(createApplicationRequest: CreateApplicationRequest, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
         if (createApplicationRequest === null || createApplicationRequest === undefined) {
-            throw new Error('Required parameter createApplicationRequest was null or undefined when calling createAccount.');
+            throw new Error('Required parameter createApplicationRequest was null or undefined when calling createLoan.');
         }
 
         let headers = this.defaultHeaders;
@@ -188,7 +234,7 @@ export class PaydayLoanControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.post<ApiResponse>(`${this.configuration.basePath}/v1/payday/create-application`,
+        return this.httpClient.post<ApiResponseApplyResponse>(`${this.configuration.basePath}/v1/create-application`,
             createApplicationRequest,
             {
                 responseType: <any>responseType_,
@@ -205,12 +251,12 @@ export class PaydayLoanControllerService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getActivePaydayLoan1(customerId: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseObject>;
-    public getActivePaydayLoan1(customerId: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseObject>>;
-    public getActivePaydayLoan1(customerId: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseObject>>;
-    public getActivePaydayLoan1(customerId: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
+    public getActivePaydayLoan(customerId: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponsePaydayLoan>;
+    public getActivePaydayLoan(customerId: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponsePaydayLoan>>;
+    public getActivePaydayLoan(customerId: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponsePaydayLoan>>;
+    public getActivePaydayLoan(customerId: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
         if (customerId === null || customerId === undefined) {
-            throw new Error('Required parameter customerId was null or undefined when calling getActivePaydayLoan1.');
+            throw new Error('Required parameter customerId was null or undefined when calling getActivePaydayLoan.');
         }
 
         let headers = this.defaultHeaders;
@@ -233,7 +279,7 @@ export class PaydayLoanControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.get<ApiResponseObject>(`${this.configuration.basePath}/v1/payday/${encodeURIComponent(String(customerId))}/get-active-loan`,
+        return this.httpClient.get<ApiResponsePaydayLoan>(`${this.configuration.basePath}/v1/${encodeURIComponent(String(customerId))}/get-active-loan`,
             {
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
@@ -250,9 +296,9 @@ export class PaydayLoanControllerService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getLoan(customerId: string, loanId: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseObject>;
-    public getLoan(customerId: string, loanId: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseObject>>;
-    public getLoan(customerId: string, loanId: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseObject>>;
+    public getLoan(customerId: string, loanId: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponsePaydayLoan>;
+    public getLoan(customerId: string, loanId: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponsePaydayLoan>>;
+    public getLoan(customerId: string, loanId: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponsePaydayLoan>>;
     public getLoan(customerId: string, loanId: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
         if (customerId === null || customerId === undefined) {
             throw new Error('Required parameter customerId was null or undefined when calling getLoan.');
@@ -287,7 +333,7 @@ export class PaydayLoanControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.get<ApiResponseObject>(`${this.configuration.basePath}/v1/payday/${encodeURIComponent(String(customerId))}/get-loan`,
+        return this.httpClient.get<ApiResponsePaydayLoan>(`${this.configuration.basePath}/v1/${encodeURIComponent(String(customerId))}/get-loan`,
             {
                 params: queryParameters,
                 responseType: <any>responseType_,
@@ -304,9 +350,9 @@ export class PaydayLoanControllerService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getLoanByStatus(status: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseObject>;
-    public getLoanByStatus(status: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseObject>>;
-    public getLoanByStatus(status: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseObject>>;
+    public getLoanByStatus(status: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseListPaydayLoan>;
+    public getLoanByStatus(status: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseListPaydayLoan>>;
+    public getLoanByStatus(status: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseListPaydayLoan>>;
     public getLoanByStatus(status: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
         if (status === null || status === undefined) {
             throw new Error('Required parameter status was null or undefined when calling getLoanByStatus.');
@@ -338,7 +384,7 @@ export class PaydayLoanControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.get<ApiResponseObject>(`${this.configuration.basePath}/v1/payday/status`,
+        return this.httpClient.get<ApiResponseListPaydayLoan>(`${this.configuration.basePath}/v1/status`,
             {
                 params: queryParameters,
                 responseType: <any>responseType_,
@@ -378,7 +424,7 @@ export class PaydayLoanControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.post<any>(`${this.configuration.basePath}/v1/payday/get-service-token`,
+        return this.httpClient.post<any>(`${this.configuration.basePath}/v1/get-service-token`,
             null,
             {
                 responseType: <any>responseType_,
@@ -394,9 +440,9 @@ export class PaydayLoanControllerService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public notifyBeforeGetSalary(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseObject>;
-    public notifyBeforeGetSalary(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseObject>>;
-    public notifyBeforeGetSalary(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseObject>>;
+    public notifyBeforeGetSalary(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseString>;
+    public notifyBeforeGetSalary(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseString>>;
+    public notifyBeforeGetSalary(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseString>>;
     public notifyBeforeGetSalary(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
 
         let headers = this.defaultHeaders;
@@ -419,7 +465,7 @@ export class PaydayLoanControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.post<ApiResponseObject>(`${this.configuration.basePath}/v1/payday/cronjob/notify-before-get-salary`,
+        return this.httpClient.post<ApiResponseString>(`${this.configuration.basePath}/v1/cronjob/notify-before-get-salary`,
             null,
             {
                 responseType: <any>responseType_,
@@ -435,9 +481,9 @@ export class PaydayLoanControllerService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public notifyInRepaymentLoan(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseObject>;
-    public notifyInRepaymentLoan(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseObject>>;
-    public notifyInRepaymentLoan(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseObject>>;
+    public notifyInRepaymentLoan(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseString>;
+    public notifyInRepaymentLoan(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseString>>;
+    public notifyInRepaymentLoan(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseString>>;
     public notifyInRepaymentLoan(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
 
         let headers = this.defaultHeaders;
@@ -460,7 +506,48 @@ export class PaydayLoanControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.post<ApiResponseObject>(`${this.configuration.basePath}/v1/payday/cronjob/notify-loan-inrepayment`,
+        return this.httpClient.post<ApiResponseString>(`${this.configuration.basePath}/v1/cronjob/notify-loan-inrepayment`,
+            null,
+            {
+                responseType: <any>responseType_,
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public setLoanOverdue(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseString>;
+    public setLoanOverdue(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseString>>;
+    public setLoanOverdue(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseString>>;
+    public setLoanOverdue(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
+
+        let headers = this.defaultHeaders;
+
+        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (httpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                '*/*'
+            ];
+            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
+        if (httpHeaderAcceptSelected !== undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+
+        let responseType_: 'text' | 'json' = 'json';
+        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+            responseType_ = 'text';
+        }
+
+        return this.httpClient.post<ApiResponseString>(`${this.configuration.basePath}/v1/cronjob/overdue`,
             null,
             {
                 responseType: <any>responseType_,
@@ -478,9 +565,9 @@ export class PaydayLoanControllerService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public updateInfo(loanId: string, updateLoanRequest: UpdateLoanRequest, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseObject>;
-    public updateInfo(loanId: string, updateLoanRequest: UpdateLoanRequest, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseObject>>;
-    public updateInfo(loanId: string, updateLoanRequest: UpdateLoanRequest, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseObject>>;
+    public updateInfo(loanId: string, updateLoanRequest: UpdateLoanRequest, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseString>;
+    public updateInfo(loanId: string, updateLoanRequest: UpdateLoanRequest, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseString>>;
+    public updateInfo(loanId: string, updateLoanRequest: UpdateLoanRequest, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseString>>;
     public updateInfo(loanId: string, updateLoanRequest: UpdateLoanRequest, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
         if (loanId === null || loanId === undefined) {
             throw new Error('Required parameter loanId was null or undefined when calling updateInfo.');
@@ -518,7 +605,7 @@ export class PaydayLoanControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.post<ApiResponseObject>(`${this.configuration.basePath}/v1/payday/${encodeURIComponent(String(loanId))}/update-loan`,
+        return this.httpClient.post<ApiResponseString>(`${this.configuration.basePath}/v1/${encodeURIComponent(String(loanId))}/update-loan`,
             updateLoanRequest,
             {
                 responseType: <any>responseType_,
@@ -534,9 +621,9 @@ export class PaydayLoanControllerService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public withdraw(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseObject>;
-    public withdraw(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseObject>>;
-    public withdraw(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseObject>>;
+    public withdraw(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseString>;
+    public withdraw(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseString>>;
+    public withdraw(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseString>>;
     public withdraw(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
 
         let headers = this.defaultHeaders;
@@ -559,7 +646,7 @@ export class PaydayLoanControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.post<ApiResponseObject>(`${this.configuration.basePath}/v1/payday/cronjob/withdraw-loan`,
+        return this.httpClient.post<ApiResponseString>(`${this.configuration.basePath}/v1/cronjob/withdraw-loan`,
             null,
             {
                 responseType: <any>responseType_,

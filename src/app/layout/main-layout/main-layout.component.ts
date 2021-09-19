@@ -14,8 +14,7 @@ import {MultiLanguageService} from "../../share/translate/multiLanguageService";
 export class MainLayoutComponent implements OnInit {
 
   constructor(private multiLanguageService: MultiLanguageService) {
-    this.multiLanguageService.onSetupMultiLanguage("insurance")
-    this.multiLanguageService.onSetupMultiLanguage("payday-loan")
+
   }
 
   ngOnInit(): void {

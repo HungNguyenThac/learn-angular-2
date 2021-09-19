@@ -9,11 +9,13 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { ApplyResponse } from './applyResponse';
 
 
-export interface SendTemplateRequest { 
-    templateName: string;
-    customerId: string;
-    amount?: string;
+export interface ApiResponseApplyResponse { 
+    result?: ApplyResponse;
+    errorCode?: string;
+    message?: object;
+    responseCode?: number;
 }
 

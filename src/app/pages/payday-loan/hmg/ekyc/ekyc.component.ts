@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import * as fromStore from './../../../../core/store';
 import * as fromActions from './../../../../core/store';
 import { MultiLanguageService } from '../../../../share/translate/multiLanguageService';
@@ -11,21 +11,27 @@ import {
   GpayVirtualAccountControllerService,
 } from '../../../../../../open-api-modules/payment-api-docs';
 import changeAlias from '../../../../core/utils/no-accent-vietnamese';
-import { ERROR_CODE } from '../../../../core/common/enum/payday-loan';
+import {
+  ERROR_CODE,
+  PL_STEP_NAVIGATION,
+} from '../../../../core/common/enum/payday-loan';
 import { InfoControllerService } from '../../../../../../open-api-modules/customer-api-docs';
 import { GlobalConstants } from '../../../../core/common/global-constants';
 import { Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'ekyc',
   templateUrl: './ekyc.component.html',
   styleUrls: ['./ekyc.component.scss'],
 })
-export class EkycComponent implements OnInit {
+export class EkycComponent implements OnInit, OnDestroy {
   customerInfo: any;
   customerId: string;
   customerId$: Observable<string>;
+
+  subManager = new Subscription();
 
   constructor(
     private multiLanguageService: MultiLanguageService,
@@ -38,15 +44,37 @@ export class EkycComponent implements OnInit {
   ) {
     this.customerId$ = store.select(fromSelectors.getCustomerIdState);
 
-    this.customerId$.subscribe((customerId) => {
-      this.customerId = customerId;
-    });
+    this.subManager.add(
+      this.customerId$.subscribe((customerId) => {
+        this.customerId = customerId;
+      })
+    );
   }
 
   ngOnInit(): void {
-    this.titleService.setTitle('Định danh điện tử'  + " - " + GlobalConstants.PL_VALUE_DEFAULT.PROJECT_NAME);
+    this.titleService.setTitle(
+      'Định danh điện tử' +
+        ' - ' +
+        GlobalConstants.PL_VALUE_DEFAULT.PROJECT_NAME
+    );
+    this.initHeaderInfo();
     this.getCustomerInfo();
+  }
 
+  ngOnDestroy(): void {
+    this.subManager.unsubscribe();
+  }
+
+  initHeaderInfo() {
+    this.store.dispatch(new fromActions.ResetEkycInfo());
+    this.store.dispatch(new fromActions.ResetPaydayLoanInfo());
+    this.store.dispatch(
+      new fromActions.SetStepNavigationInfo(
+        PL_STEP_NAVIGATION.ELECTRONIC_IDENTIFIERS
+      )
+    );
+    this.store.dispatch(new fromActions.SetShowLeftBtn(true));
+    this.store.dispatch(new fromActions.SetShowRightBtn(true));
   }
 
   redirectToConfirmInformationPage() {
@@ -96,74 +124,80 @@ export class EkycComponent implements OnInit {
   }
 
   createVirtualAccount(customerId, accountName) {
-    this.gpayVirtualAccountControllerService
-      .createVirtualAccount({
-        customerId: customerId,
-        accountName: changeAlias(accountName),
-      })
-      .subscribe((response: ApiResponseVirtualAccount) => {
-        if (response.result && response.responseCode === 200) {
-          return response.result;
-        }
+    this.subManager.add(
+      this.gpayVirtualAccountControllerService
+        .createVirtualAccount({
+          customerId: customerId,
+          accountName: changeAlias(accountName),
+        })
+        .subscribe((response: ApiResponseVirtualAccount) => {
+          if (response.result && response.responseCode === 200) {
+            return response.result;
+          }
 
-        this.showErrorModal();
-      });
+          this.showErrorModal();
+        })
+    );
   }
 
   getVirtualAccount(customerId, accountName) {
-    this.gpayVirtualAccountControllerService
-      .getVirtualAccount(customerId)
-      .subscribe((response: ApiResponseVirtualAccount) => {
-        if (response.result && response.responseCode === 200) {
-          return response.result;
-        }
+    this.subManager.add(
+      this.gpayVirtualAccountControllerService
+        .getVirtualAccount(customerId)
+        .subscribe((response: ApiResponseVirtualAccount) => {
+          if (response.result && response.responseCode === 200) {
+            return response.result;
+          }
 
-        if (response.errorCode === ERROR_CODE.DO_NOT_EXIST_VIRTUAL_ACCOUNT) {
-          return this.createVirtualAccount(customerId, accountName);
-        }
+          if (response.errorCode === ERROR_CODE.DO_NOT_EXIST_VIRTUAL_ACCOUNT) {
+            return this.createVirtualAccount(customerId, accountName);
+          }
 
-        this.showErrorModal();
-        return null;
-      });
+          this.showErrorModal();
+          return null;
+        })
+    );
   }
 
   getCustomerInfo() {
-    this.infoControllerService
-      .getInfo(this.customerId, null)
-      .subscribe((response) => {
-        if (
-          response.responseCode !== 200 ||
-          !response.result ||
-          !response.result.personalData
-        ) {
-          this.showErrorModal();
-          return null;
-        }
-
-        let customerInfoData = response.result.personalData;
-
-        if (response.result.kalapaData) {
-          if (!response.result.kalapaData.createdAt) {
-            customerInfoData.frontId = null;
-            customerInfoData.backId = null;
-            customerInfoData.selfie = null;
-            this.customerInfo = customerInfoData;
-            return;
+    this.subManager.add(
+      this.infoControllerService
+        .getInfo(this.customerId, null)
+        .subscribe((response) => {
+          if (
+            response.responseCode !== 200 ||
+            !response.result ||
+            !response.result.personalData
+          ) {
+            this.showErrorModal();
+            return null;
           }
 
-          let ekycExpiredAt =
-            GlobalConstants.PL_VALUE_DEFAULT.UNIX_TIMESTAMP_SAVE_EKYC_INFO +
-            new Date(response.result.kalapaData.createdAt).getTime();
-          if (new Date().getTime() > ekycExpiredAt) {
-            customerInfoData.frontId = null;
-            customerInfoData.backId = null;
-            customerInfoData.selfie = null;
-            this.customerInfo = customerInfoData;
-            return;
-          }
-        }
+          let customerInfoData = response.result.personalData;
 
-        this.redirectToConfirmInformationPage();
-      });
+          if (response.result.kalapaData) {
+            if (!response.result.kalapaData.createdAt) {
+              customerInfoData.frontId = null;
+              customerInfoData.backId = null;
+              customerInfoData.selfie = null;
+              this.customerInfo = customerInfoData;
+              return;
+            }
+
+            let ekycExpiredAt =
+              GlobalConstants.PL_VALUE_DEFAULT.UNIX_TIMESTAMP_SAVE_EKYC_INFO +
+              new Date(response.result.kalapaData.createdAt).getTime();
+            if (new Date().getTime() > ekycExpiredAt) {
+              customerInfoData.frontId = null;
+              customerInfoData.backId = null;
+              customerInfoData.selfie = null;
+              this.customerInfo = customerInfoData;
+              return;
+            }
+          }
+
+          this.redirectToConfirmInformationPage();
+        })
+    );
   }
 }
