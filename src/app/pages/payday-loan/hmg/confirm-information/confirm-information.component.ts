@@ -142,9 +142,7 @@ export class ConfirmInformationComponent
       this.infoV2ControllerService
         .validateConfirmInformationRequestV2(this.customerId, {
           firstName: this.infoForm.controls['name'].value,
-          dateOfBirth: this.formatTime(
-            this.infoForm.controls['dateOfBirth'].value
-          ),
+          dateOfBirth: this.formatTime(this.infoForm.controls['dateOfBirth'].value),
           gender: this.infoForm.controls['gender'].value,
           identityNumberSix: this.infoForm.controls['email'].value,
           identityNumberOne: this.infoForm.controls['identityNumberOne'].value,
@@ -157,9 +155,10 @@ export class ConfirmInformationComponent
           if (!result || result.responseCode !== 200) {
             const message = this.multiLanguageService.instant(
               'payday_loan.error_code.' + result.errorCode.toLowerCase()
-            );
-            this.notificationService.hideLoading();
-            return this.showError('common.error', message);
+              );
+              this.notificationService.hideLoading();
+              this.showError('common.error', message);
+              return
           }
           this.confirmInfomationCustomer();
         })
@@ -224,15 +223,14 @@ export class ConfirmInformationComponent
         this.bindingConfirmInfomationRequest()
       )
       .subscribe((result: ApiResponseObject) => {
+        this.notificationService.hideLoading();
         if (!result || result.responseCode !== 200) {
           const message = this.multiLanguageService.instant(
             'payday_loan.error_code.' + result.errorCode.toLowerCase()
           );
-          this.notificationService.hideLoading();
           return this.showError('common.error', message);
         }
         // success redirect to additional information
-        this.notificationService.hideLoading();
         this.router.navigateByUrl('/hmg/additional-information');
       });
   }

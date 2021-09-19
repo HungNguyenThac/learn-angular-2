@@ -1,27 +1,20 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-<<<<<<< HEAD
-import { ApiResponseListCompanyInfo, CompanyControllerService, InfoControllerService } from 'open-api-modules/customer-api-docs';
-=======
 import { ToastrService } from 'ngx-toastr';
 import {
   ApiResponseListCompanyInfo,
   CompanyControllerService,
   InfoControllerService,
 } from 'open-api-modules/customer-api-docs';
->>>>>>> fd6de93c2e9fa438aae77f6fb44541e716c52192
 import { ApplicationControllerService } from 'open-api-modules/loanapp-api-docs';
 import { Observable, Subscription } from 'rxjs';
 import { PAYDAY_LOAN_STATUS } from 'src/app/core/common/enum/payday-loan';
 import { NotificationService } from 'src/app/core/services/notification.service';
 import * as fromStore from 'src/app/core/store/index';
 import formatSlug from 'src/app/core/utils/format-slug';
-<<<<<<< HEAD
 import { MultiLanguageService } from 'src/app/share/translate/multiLanguageService';
-=======
 import { Title } from '@angular/platform-browser';
->>>>>>> fd6de93c2e9fa438aae77f6fb44541e716c52192
 
 @Component({
   selector: 'app-companies-list',
@@ -69,11 +62,7 @@ export class CompaniesListComponent implements OnInit {
 
     this.infoControllerService.getInfo(this.customerId).subscribe((result) => {
       if (!result || result.responseCode !== 200) {
-<<<<<<< HEAD
         return this.showError('common.error','common.something_went_wrong')
-=======
-        return this.notifier.error(String(result?.message));
->>>>>>> fd6de93c2e9fa438aae77f6fb44541e716c52192
       }
 
       if (result.result.personalData.companyId) {
@@ -92,23 +81,8 @@ export class CompaniesListComponent implements OnInit {
         );
       }
 
-<<<<<<< HEAD
       if(!result.result.personalData.companyId) {
         this.getListCompany()
-=======
-      if (!result.result.personalData.companyId) {
-        this.subManager.add(
-          this.companyControllerService
-            .getListCompany('HMG')
-            .subscribe((result: ApiResponseListCompanyInfo) => {
-              if (!result || result.responseCode !== 200) {
-                return this.notifier.error(String(result?.message));
-              }
-              console.log('list company:', result?.result);
-              this.companiesList = result.result;
-            })
-        );
->>>>>>> fd6de93c2e9fa438aae77f6fb44541e716c52192
       }
     });
   }
@@ -125,7 +99,6 @@ export class CompaniesListComponent implements OnInit {
   }
 
   chooseCompany(companyId) {
-<<<<<<< HEAD
     console.log("company id", companyId);
     this.infoControllerService.chooseCompany(this.customerId, {companyId}).subscribe((result)=>{
       if (!result || result.responseCode !== 200) {
@@ -147,16 +120,4 @@ export class CompaniesListComponent implements OnInit {
     })
   }
 
-=======
-    console.log('company id', companyId);
-    this.infoControllerService
-      .chooseCompany(this.customerId, { companyId })
-      .subscribe((result) => {
-        if (!result || result.responseCode !== 200) {
-          return this.notifier.error(String(result?.message));
-        }
-        return this.router.navigateByUrl('/hmg/ekyc');
-      });
-  }
->>>>>>> fd6de93c2e9fa438aae77f6fb44541e716c52192
 }

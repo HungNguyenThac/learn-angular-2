@@ -53,20 +53,7 @@ export class AdditionalInformationComponent
     ],
   };
 
-  borrowerEmploymentAverageWage = {
-    fieldName: 'Khoảng lương trung bình',
-    options: [
-      'Dưới 10 triệu',
-      '10  - dưới 15 triệu',
-      '15  - dưới 20 triệu',
-      '20  - dưới 30 triệu',
-      '30  - dưới 50 triệu',
-      '50  - dưới 100 triệu',
-      'Trên 100 triệu',
-    ],
-  };
-
-  maxAmount: number = 13;
+  maxAmount: number = 100;
   minAmount: number = 0;
   step: number = 1;
 
@@ -114,10 +101,10 @@ export class AdditionalInformationComponent
         console.log('coreToken', coreToken);
       })
     );
+    this.notificationService.showLoading(null);
   }
 
   ngAfterViewInit(): void {
-    this.notificationService.showLoading(null);
     // set default value for borrowerEmploymentAverageWage
     this.additionalInfoForm.controls['borrowerEmploymentAverageWage'].setValue(
       this.minAmount + this.step
@@ -157,7 +144,7 @@ export class AdditionalInformationComponent
   onSubmit() {
     if (!this.additionalInfoForm.valid) return;
     // maping for request api additional Infomation
-    const additionalInformationRequest: AdditionalInformationV2Request = {
+    const additionalInformationV2Request: AdditionalInformationV2Request = {
       maritalStatus: this.additionalInfoForm.controls.maritalStatus.value,
       educationType: this.additionalInfoForm.controls.educationType.value,
       borrowerDetailTextVariable1:
@@ -166,22 +153,27 @@ export class AdditionalInformationComponent
       this.additionalInfoForm.controls.borrowerEmploymentHistoryTextVariable1
       .value,
       annualIncome:
-      this.additionalInfoForm.controls.borrowerEmploymentAverageWage.value*10^6,
+      Number(this.additionalInfoForm.controls.borrowerEmploymentAverageWage.value)*1000000,
     };
-    console.log("additionalInformationRequest",additionalInformationRequest)
+    console.log("additionalInformationRequest",additionalInformationV2Request)
+
     this.notificationService.showLoading(null);
     // call api additional Infomation
     this.subManager.add(
       this.infoV2ControllerService
-        .additionalInformationV2(this.customerId, additionalInformationRequest)
+        .additionalInformationV2(this.customerId, additionalInformationV2Request)
         .subscribe((result: ApiResponseObject) => {
           //throw error
           this.notificationService.hideLoading();
           if (!result || result.responseCode !== 200) {
-            const message = this.multiLanguageService.instant(
-              'payday_loan.error_code.' + result.errorCode.toLowerCase()
-            );
-            return this.showError('common.error', message);
+            if (result?.errorCode != null) {
+              const message = this.multiLanguageService.instant(
+                'payday_loan.error_code.' + result?.errorCode.toLowerCase()
+              );
+              return this.showError('common.error', message);
+            } else {
+              return this.showError('common.error','common.something_went_wrong')
+            }
           }
           // redirect to loan detemination
           this.router.navigateByUrl('hmg/loan-determination');
@@ -195,5 +187,20 @@ export class AdditionalInformationComponent
       content: this.multiLanguageService.instant(content),
       primaryBtnText: this.multiLanguageService.instant('common.confirm'),
     });
+  }
+
+  test() {
+    const additionalInformationV2Request: AdditionalInformationV2Request = {
+      maritalStatus: this.additionalInfoForm.controls.maritalStatus.value,
+      educationType: this.additionalInfoForm.controls.educationType.value,
+      borrowerDetailTextVariable1:
+      this.additionalInfoForm.controls.borrowerDetailTextVariable1.value,
+      borrowerEmploymentHistoryTextVariable1:
+      this.additionalInfoForm.controls.borrowerEmploymentHistoryTextVariable1
+      .value,
+      annualIncome:
+      Number(this.additionalInfoForm.controls.borrowerEmploymentAverageWage.value)*1000000,
+    };
+    console.log("additionalInformationRequest",additionalInformationV2Request)
   }
 }

@@ -31,9 +31,6 @@
     b {
       font-weight: 600;
     }
-    .required {
-      color: #ff3b30 !important;
-    }
   }
 }
 
@@ -63,4 +60,8 @@
 
 #salary-amount {
   margin-bottom: 10px;
+}
+
+.required {
+  color: #ff3b30 !important;
 }
