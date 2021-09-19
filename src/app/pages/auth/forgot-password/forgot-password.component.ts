@@ -16,6 +16,7 @@ import {
   SignOnControllerService,
 } from 'open-api-modules/identity-api-docs';
 import { Title } from '@angular/platform-browser';
+import { GlobalConstants } from 'src/app/core/common/global-constants';
 
 @Component({
   selector: 'app-forgot-password',
@@ -68,7 +69,7 @@ export class ForgotPasswordComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.titleService.setTitle('Quên mật khẩu - Monex');
+    this.titleService.setTitle('Quên mật khẩu'  + " - " + GlobalConstants.PL_VALUE_DEFAULT.PROJECT_NAME);
   }
 
   getOtp() {

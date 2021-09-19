@@ -5,6 +5,7 @@ import { Store } from '@ngrx/store';
 import * as fromStore from './../../../core/store';
 import * as fromActions from './../../../core/store';
 import { Title } from '@angular/platform-browser';
+import {GlobalConstants} from "../../../core/common/global-constants";
 
 @Component({
   selector: 'app-sign-in',
@@ -31,7 +32,7 @@ export class SignInComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.titleService.setTitle('Đăng nhập - Monex');
+    this.titleService.setTitle('Đăng nhập'  + " - " + GlobalConstants.PL_VALUE_DEFAULT.PROJECT_NAME);
     this.store.dispatch(new fromActions.Logout(null));
   }
 

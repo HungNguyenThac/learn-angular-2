@@ -44,8 +44,9 @@ export class EkycComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.titleService.setTitle('Định danh điện tử - Monex');
+    this.titleService.setTitle('Định danh điện tử'  + " - " + GlobalConstants.PL_VALUE_DEFAULT.PROJECT_NAME);
     this.getCustomerInfo();
+
   }
 
   redirectToConfirmInformationPage() {

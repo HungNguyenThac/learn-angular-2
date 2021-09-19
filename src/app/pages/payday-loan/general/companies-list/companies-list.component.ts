@@ -13,6 +13,7 @@ import { PAYDAY_LOAN_STATUS } from 'src/app/core/common/enum/payday-loan';
 import * as fromStore from 'src/app/core/store/index';
 import formatSlug from 'src/app/core/utils/format-slug';
 import { Title } from '@angular/platform-browser';
+import {GlobalConstants} from "../../../../core/common/global-constants";
 
 @Component({
   selector: 'app-companies-list',
@@ -42,7 +43,7 @@ export class CompaniesListComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.titleService.setTitle('Chọn công ty - Monex');
+    this.titleService.setTitle('Chọn công ty'  + " - " + GlobalConstants.PL_VALUE_DEFAULT.PROJECT_NAME);
     this.subManager.add(
       this.customerId$.subscribe((id) => {
         this.customerId = id;
