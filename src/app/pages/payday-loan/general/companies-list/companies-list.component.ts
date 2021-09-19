@@ -1,9 +1,8 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { ToastrService } from 'ngx-toastr';
 import {
-  ApiResponseCustomerInfoResponse,
   ApiResponseListCompanyInfo,
   CompanyControllerService,
   InfoControllerService,
@@ -11,32 +10,33 @@ import {
 import { ApplicationControllerService } from 'open-api-modules/loanapp-api-docs';
 import { Observable, Subscription } from 'rxjs';
 import { PAYDAY_LOAN_STATUS } from 'src/app/core/common/enum/payday-loan';
-import * as fromStore from 'src/app/core/store';
-import * as fromActions from '../../../../core/store';
+import { NotificationService } from 'src/app/core/services/notification.service';
+import * as fromStore from 'src/app/core/store/index';
 import formatSlug from 'src/app/core/utils/format-slug';
+import { MultiLanguageService } from 'src/app/share/translate/multiLanguageService';
 import { Title } from '@angular/platform-browser';
-import { GlobalConstants } from '../../../../core/common/global-constants';
+import {GlobalConstants} from "../../../../core/common/global-constants";
 
 @Component({
   selector: 'app-companies-list',
   templateUrl: './companies-list.component.html',
   styleUrls: ['./companies-list.component.scss'],
 })
-export class CompaniesListComponent implements OnInit, OnDestroy {
-  public customerId$: Observable<any>;
-  public coreToken$: Observable<any>;
-
+export class CompaniesListComponent implements OnInit {
   companiesList = [];
-  customerId: string;
-  coreToken: string;
 
+  public customerId$: Observable<any>;
+  customerId: string;
+  public coreToken$: Observable<any>;
+  coreToken: string;
   subManager = new Subscription();
 
   constructor(
     private store: Store<fromStore.State>,
-    private notifier: ToastrService,
     private router: Router,
     private infoControllerService: InfoControllerService,
+    private notificationService:NotificationService,
+    private multiLanguageService: MultiLanguageService,
     private applicationControllerService: ApplicationControllerService,
     private companyControllerService: CompanyControllerService,
     private titleService: Title
@@ -46,93 +46,79 @@ export class CompaniesListComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.titleService.setTitle(
-      'Chọn công ty' + ' - ' + GlobalConstants.PL_VALUE_DEFAULT.PROJECT_NAME
-    );
-    this.initHeaderInfo();
-
+    this.titleService.setTitle('Chọn công ty'  + " - " + GlobalConstants.PL_VALUE_DEFAULT.PROJECT_NAME);
     this.subManager.add(
       this.customerId$.subscribe((id) => {
         this.customerId = id;
+        console.log('customer id', id);
       })
     );
 
     this.subManager.add(
       this.coreToken$.subscribe((coreToken) => {
         this.coreToken = coreToken;
+        console.log('coreToken', coreToken);
       })
     );
 
-    this.getCustomerInfo();
+    this.infoControllerService.getInfo(this.customerId).subscribe((result) => {
+      if (!result || result.responseCode !== 200) {
+        return this.showError('common.error','common.something_went_wrong')
+      }
+
+      if (result.result.personalData.companyId) {
+        this.subManager.add(
+          this.applicationControllerService
+            .getActivePaydayLoan(this.customerId, this.coreToken)
+            .subscribe((result) => {
+              if (!result || result.responseCode !== 200) {
+                return this.router.navigateByUrl('/hmg/ekyc');
+              }
+              return this.router.navigate([
+                'hmg/current-loan',
+                formatSlug(PAYDAY_LOAN_STATUS.UNKNOWN_STATUS),
+              ]);
+            })
+        );
+      }
+
+      if(!result.result.personalData.companyId) {
+        this.getListCompany()
+      }
+    });
   }
 
-  getCustomerInfo() {
+  getListCompany() {
     this.subManager.add(
-      this.infoControllerService
-        .getInfo(this.customerId)
-        .subscribe((result: ApiResponseCustomerInfoResponse) => {
-          if (!result || result.responseCode !== 200) {
-            return this.notifier.error(String(result?.message));
-          }
-
-          if (result.result.personalData.companyId) {
-            return this.getActiveLoan();
-          }
-
-          this.getHMGCompanies();
-        })
-    );
-  }
-
-  getActiveLoan() {
-    this.subManager.add(
-      this.applicationControllerService
-        .getActiveLoan(this.customerId, this.coreToken)
-        .subscribe((result) => {
-          if (!result || result.responseCode !== 200) {
-            return this.router.navigateByUrl('/hmg/ekyc');
-          }
-          return this.router.navigate([
-            'hmg/current-loan',
-            formatSlug(
-              result.result?.status || PAYDAY_LOAN_STATUS.UNKNOWN_STATUS
-            ),
-          ]);
-        })
-    );
-  }
-
-  getHMGCompanies() {
-    this.subManager.add(
-      this.companyControllerService
-        .getListCompany('HMG')
-        .subscribe((result: ApiResponseListCompanyInfo) => {
-          if (!result || result.responseCode !== 200) {
-            return this.notifier.error(String(result?.message));
-          }
-          this.companiesList = result.result;
-        })
+      this.companyControllerService.getListCompany("HMG").subscribe((result: ApiResponseListCompanyInfo)=> {
+        if (!result || result.responseCode !== 200) {
+          return this.showError('common.error','common.something_went_wrong')
+        }
+        this.companiesList = result.result
+      })
     );
   }
 
   chooseCompany(companyId) {
-    this.infoControllerService
-      .chooseCompany(this.customerId, { companyId })
-      .subscribe((result) => {
-        if (!result || result.responseCode !== 200) {
-          return this.notifier.error(String(result?.message));
-        }
-        return this.router.navigateByUrl('/hmg/ekyc');
-      });
+    console.log("company id", companyId);
+    this.infoControllerService.chooseCompany(this.customerId, {companyId}).subscribe((result)=>{
+      if (!result || result.responseCode !== 200) {
+        return this.showError('common.error','common.something_went_wrong')
+      }
+      return this.router.navigateByUrl('/hmg/ekyc')
+    })
   }
 
-  initHeaderInfo() {
-    this.store.dispatch(new fromActions.ResetPaydayLoanInfo());
-    this.store.dispatch(new fromActions.SetNavigationTitle('Ứng lương 0% lãi'));
-    this.store.dispatch(new fromActions.SetShowLeftBtn(true));
+  showError(title: string, content: string) {
+    return this.notificationService.openErrorModal({
+      title: this.multiLanguageService.instant(
+        title
+      ),
+      content: this.multiLanguageService.instant(
+        content
+      ),
+      primaryBtnText: this.multiLanguageService.instant('common.confirm'),
+    })
   }
 
-  ngOnDestroy(): void {
-    this.subManager.unsubscribe();
-  }
 }
