@@ -1,11 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import * as fromStore from './../../../core/store';
 import * as fromActions from './../../../core/store';
 import { Title } from '@angular/platform-browser';
-import {GlobalConstants} from "../../../core/common/global-constants";
+import { GlobalConstants } from '../../../core/common/global-constants';
 
 @Component({
   selector: 'app-sign-in',
@@ -32,8 +32,11 @@ export class SignInComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.titleService.setTitle('Đăng nhập'  + " - " + GlobalConstants.PL_VALUE_DEFAULT.PROJECT_NAME);
-    this.store.dispatch(new fromActions.Logout(null));
+    this.titleService.setTitle(
+      'Đăng nhập' + ' - ' + GlobalConstants.PL_VALUE_DEFAULT.PROJECT_NAME
+    );
+    this.resetSession();
+    this.initHeaderInfo();
   }
 
   onSubmit() {
@@ -45,5 +48,16 @@ export class SignInComponent implements OnInit {
     const password = this.signInForm.controls.password.value;
 
     this.store.dispatch(new fromActions.Signin({ username, password }));
+  }
+
+  initHeaderInfo() {
+    this.store.dispatch(new fromActions.ResetPaydayLoanInfo());
+    this.store.dispatch(new fromActions.SetNavigationTitle('Đăng nhập'));
+    this.store.dispatch(new fromActions.SetShowLeftBtn(true));
+    this.store.dispatch(new fromActions.SetShowRightBtn(true));
+  }
+
+  resetSession() {
+    this.store.dispatch(new fromActions.Logout());
   }
 }

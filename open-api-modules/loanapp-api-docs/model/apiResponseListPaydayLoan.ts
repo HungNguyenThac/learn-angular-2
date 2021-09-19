@@ -9,11 +9,13 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { PaydayLoan } from './paydayLoan';
 
 
-export interface SignWithOTPResponse { 
-    idRequest?: number;
-    idDocument?: number;
-    customerId?: string;
+export interface ApiResponseListPaydayLoan { 
+    result?: Array<PaydayLoan>;
+    errorCode?: string;
+    message?: object;
+    responseCode?: number;
 }
 

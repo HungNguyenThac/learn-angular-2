@@ -1,4 +1,5 @@
 .gitignore
+.openapi-generator-ignore
 README.md
 api.module.ts
 api/api.ts
@@ -14,9 +15,11 @@ configuration.ts
 encoder.ts
 git_push.sh
 index.ts
+model/addContentRequest.ts
 model/adminSignContractAutomationRequest.ts
 model/apiResponseCancelInsuranceResponse.ts
 model/apiResponseCreateInsuranceResponse.ts
+model/apiResponseCreateLetterResponse.ts
 model/apiResponseCreateTokenResponse.ts
 model/apiResponseGetInsuranceResponse.ts
 model/apiResponseListTemplateNotificationEntity.ts
@@ -31,6 +34,8 @@ model/contentNotification.ts
 model/contentNotificationRequest.ts
 model/createInsuranceRequest.ts
 model/createInsuranceResponse.ts
+model/createLetterRequest.ts
+model/createLetterResponse.ts
 model/createTemplateNotificationRequest.ts
 model/createTokenResponse.ts
 model/dataCreateToken.ts
@@ -52,6 +57,7 @@ model/sendTemplateRequest.ts
 model/templateNotificationEntity.ts
 model/transactionNotificationEntity.ts
 model/updateFcmTokenRequest.ts
+model/updateTemplateStatusRequest.ts
 model/uploadFileRequest.ts
 model/uploadMultiFileRequest.ts
 variables.ts

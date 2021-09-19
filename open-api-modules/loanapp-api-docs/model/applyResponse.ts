@@ -11,9 +11,14 @@
  */
 
 
-export interface SendTemplateRequest { 
-    templateName: string;
-    customerId: string;
-    amount?: string;
+export interface ApplyResponse { 
+    code?: string;
+    status?: string;
+    message?: string;
+    loanUuid?: string;
+    loanAmount?: string;
+    loanTenure?: string;
+    epayCustomerId?: string;
+    epayLoanId?: string;
 }
 

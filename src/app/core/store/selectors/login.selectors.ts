@@ -19,6 +19,11 @@ export const getCustomerIdState = createSelector(
     (state: fromFeature.State) => state.login ? state.login.authorization?.customerId : ''
 );
 
+export const getCustomerMobileState = createSelector(
+  fromFeature.getCoreState,
+  (state: fromFeature.State) => state.login ? state.login.customerMobile : ''
+);
+
 export const getAuthoritiesUserState = createSelector(
     fromFeature.getCoreState,
     (state: fromFeature.State) => state.login ? state.login.authorization?.authorities : []
