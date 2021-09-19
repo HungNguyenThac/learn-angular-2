@@ -15,6 +15,7 @@ import {
   CreateVerifiedAccountRequest,
   SignOnControllerService,
 } from 'open-api-modules/identity-api-docs';
+import {Title} from "@angular/platform-browser";
 
 @Component({
   selector: 'app-sign-up',
@@ -59,7 +60,8 @@ export class SignUpComponent implements OnInit {
     private formBuilder: FormBuilder,
     private router: Router,
     private signOnControllerService: SignOnControllerService,
-    private notifier: ToastrService
+    private notifier: ToastrService,
+    private titleService: Title
   ) {
     this.signUpForm = this.formBuilder.group({
       mobileNumber: ['', [Validators.required]],
@@ -71,7 +73,9 @@ export class SignUpComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.titleService.setTitle('Đăng ký - Monex');
+  }
 
   onSubmit() {
     if (!this.signUpForm.valid || !this.ruleAccepted) return;

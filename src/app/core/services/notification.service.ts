@@ -1,10 +1,9 @@
-import { Injectable } from '@angular/core';
+import { Injectable, ViewChild } from '@angular/core';
 import { PlPromptComponent } from '../../share/components';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import { Prompt } from '../../public/models/prompt.model';
 import { PlLoadingComponent } from '../../share/components/dialogs/pl-loading/pl-loading.component';
-import { MultiLanguageService } from '../../share/translate/multiLanguageService';
 import { PlLoading } from 'src/app/public/models/plloading.model';
 
 @Injectable({
@@ -15,7 +14,8 @@ export class NotificationService {
 
   constructor(
     private dialog: MatDialog,
-    private multiLanguageService: MultiLanguageService
+    private loadingDialogRef: MatDialogRef<PlLoadingComponent>,
+    private promptDialogRef: MatDialogRef<PlPromptComponent>
   ) {}
 
   openErrorModal(payload: Prompt) {
@@ -27,15 +27,16 @@ export class NotificationService {
   }
 
   openPrompt(payload: Prompt, imgUrl: string) {
-    const dialogRef = this.dialog.open(PlPromptComponent, {
+    this.promptDialogRef = this.dialog.open(PlPromptComponent, {
       panelClass: 'custom-dialog-container',
       height: 'auto',
       minHeight: '194px',
+      maxWidth: '330px',
       data: {
-        imgBackgroundClass: payload.imgBackgroundClass
-          ? payload.imgBackgroundClass + ' text-center'
+        imgBackgroundClass: payload?.imgBackgroundClass
+          ? payload?.imgBackgroundClass + ' text-center'
           : 'text-center',
-        imgUrl: !payload.imgGroupUrl ? payload?.imgUrl || imgUrl : null,
+        imgUrl: !payload?.imgGroupUrl ? payload?.imgUrl || imgUrl : null,
         imgGroupUrl: payload?.imgGroupUrl || null,
         title: payload?.title,
         content: payload?.content,
@@ -45,18 +46,19 @@ export class NotificationService {
     });
 
     this.subManager.add(
-      dialogRef.afterClosed().subscribe((confirmed: boolean) => {
+      this.promptDialogRef.afterClosed().subscribe((confirmed: boolean) => {
         console.log(confirmed);
         this.subManager.unsubscribe();
       })
     );
   }
 
-  showLoading(payload: PlLoading) {
-    const dialogRef = this.dialog.open(PlLoadingComponent, {
+  showLoading(payload?: PlLoading) {
+    this.loadingDialogRef = this.dialog.open(PlLoadingComponent, {
       panelClass: 'custom-dialog-container',
       height: 'auto',
       minHeight: '194px',
+      maxWidth: '290px',
       data: {
         title: payload?.title || 'Thông tin của bạn đang được xử lý',
         content:
@@ -66,7 +68,7 @@ export class NotificationService {
     });
 
     this.subManager.add(
-      dialogRef.afterClosed().subscribe((confirmed: boolean) => {
+      this.loadingDialogRef.afterClosed().subscribe((confirmed: boolean) => {
         console.log(confirmed);
         this.subManager.unsubscribe();
       })
@@ -74,10 +76,15 @@ export class NotificationService {
   }
 
   destroyAllDialog() {
+    console.log('destroyAllDialog');
     this.dialog.closeAll();
   }
 
+  hidePrompt() {
+    this.promptDialogRef.close('hidePrompt');
+  }
+
   hideLoading() {
-    this.destroyAllDialog()
+    this.loadingDialogRef.close('hideLoading');
   }
 }

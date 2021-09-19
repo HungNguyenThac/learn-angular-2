@@ -1,31 +1,36 @@
-import {NgModule, Optional, SkipSelf} from "@angular/core";
-import {CommonModule} from "@angular/common";
+import { NgModule, Optional, SkipSelf } from '@angular/core';
+import { CommonModule } from '@angular/common';
 
-import {CoreStoreModule} from "./store";
+import { CoreStoreModule } from './store';
 
-import {throwIfAlreadyLoaded} from "./common/module-import-guard";
+import { throwIfAlreadyLoaded } from './common/module-import-guard';
 
 // interceptors
-import {HttpClient, HttpClientModule} from "@angular/common/http";
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 
-import {SharedModule} from "../share/shared.module";
-import {ToastrModule} from "ngx-toastr";
-import {TranslateLoader, TranslateModule} from "@ngx-translate/core";
-import {TranslateHttpLoader} from "@ngx-translate/http-loader";
-import {GlobalConfig} from "ngx-toastr/toastr/toastr-config";
-import {_providers} from "./providers";
-import {MomentModule} from "ngx-moment";
-import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
+import { SharedModule } from '../share/shared.module';
+import { ToastrModule } from 'ngx-toastr';
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { GlobalConfig } from 'ngx-toastr/toastr/toastr-config';
+import { _providers } from './providers';
+import { MomentModule } from 'ngx-moment';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { LayoutModule } from '../layout/layout.module';
 
 export function HttpLoaderFactory(http: HttpClient) {
-  return new TranslateHttpLoader(http, './assets/i18n/', '.json?cacheBuster=' + new Date().toISOString().replace(/\.|:|-/g, ''));
+  return new TranslateHttpLoader(
+    http,
+    './assets/i18n/',
+    '.json?cacheBuster=' + new Date().toISOString().replace(/\.|:|-/g, '')
+  );
 }
 
 const customNotifierOptions: Partial<GlobalConfig> = {
   positionClass: 'toast-bottom-left',
-  maxOpened: 3,                               // max toasts opened
-  autoDismiss: true                           // dismiss current toast when max is reached
-}
+  maxOpened: 3, // max toasts opened
+  autoDismiss: true, // dismiss current toast when max is reached
+};
 
 @NgModule({
   imports: [
@@ -46,7 +51,7 @@ const customNotifierOptions: Partial<GlobalConfig> = {
   ],
   providers: [_providers],
   declarations: [],
-  exports: []
+  exports: [],
 })
 export class CoreModule {
   constructor(@Optional() @SkipSelf() parentModule: CoreModule) {

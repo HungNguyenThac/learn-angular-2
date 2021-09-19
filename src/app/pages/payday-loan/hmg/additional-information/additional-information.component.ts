@@ -128,13 +128,13 @@ export class AdditionalInformationComponent
       this.infoControllerService
         .getInfo(this.customerId)
         .subscribe((result: ApiResponseCustomerInfoResponse) => {
+          this.notificationService.hideLoading();
           if (!result || result.responseCode !== 200) {
             return this.showError(
               'common.error',
               'common.something_went_wrong'
             );
           }
-          this.notificationService.hideLoading();
           this.customerInfo = result.result;
           this.additionalInfoForm.patchValue({
             maritalStatus: this.customerInfo.personalData.maritalStatus,
@@ -156,26 +156,27 @@ export class AdditionalInformationComponent
 
   onSubmit() {
     if (!this.additionalInfoForm.valid) return;
-    this.notificationService.showLoading(null);
     // maping for request api additional Infomation
     const additionalInformationRequest: AdditionalInformationV2Request = {
       maritalStatus: this.additionalInfoForm.controls.maritalStatus.value,
       educationType: this.additionalInfoForm.controls.educationType.value,
       borrowerDetailTextVariable1:
-        this.additionalInfoForm.controls.borrowerDetailTextVariable1.value,
+      this.additionalInfoForm.controls.borrowerDetailTextVariable1.value,
       borrowerEmploymentHistoryTextVariable1:
-        this.additionalInfoForm.controls.borrowerEmploymentHistoryTextVariable1
-          .value,
+      this.additionalInfoForm.controls.borrowerEmploymentHistoryTextVariable1
+      .value,
       annualIncome:
-        this.additionalInfoForm.controls.borrowerEmploymentAverageWage.value,
+      this.additionalInfoForm.controls.borrowerEmploymentAverageWage.value*10^6,
     };
-
+    console.log("additionalInformationRequest",additionalInformationRequest)
+    this.notificationService.showLoading(null);
     // call api additional Infomation
     this.subManager.add(
       this.infoV2ControllerService
         .additionalInformationV2(this.customerId, additionalInformationRequest)
         .subscribe((result: ApiResponseObject) => {
           //throw error
+          this.notificationService.hideLoading();
           if (!result || result.responseCode !== 200) {
             const message = this.multiLanguageService.instant(
               'payday_loan.error_code.' + result.errorCode.toLowerCase()
@@ -183,14 +184,12 @@ export class AdditionalInformationComponent
             return this.showError('common.error', message);
           }
           // redirect to loan detemination
-          this.notificationService.hideLoading();
           this.router.navigateByUrl('hmg/loan-determination');
         })
     );
   }
 
   showError(title: string, content: string) {
-    this.notificationService.hideLoading();
     return this.notificationService.openErrorModal({
       title: this.multiLanguageService.instant(title),
       content: this.multiLanguageService.instant(content),

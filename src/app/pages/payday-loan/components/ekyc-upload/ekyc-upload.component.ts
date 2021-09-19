@@ -140,7 +140,7 @@ export class EkycUploadComponent implements OnInit, AfterViewInit {
     )
       return;
 
-    this.notificationService.showLoading(null);
+    this.notificationService.showLoading();
     this.kalapaV2Service
       .extractInfo(
         this.customerId,
@@ -161,7 +161,9 @@ export class EkycUploadComponent implements OnInit, AfterViewInit {
             params: this.params,
           });
         },
-        (error) => {},
+        (error) => {
+          console.log('onSubmit error');
+        },
         () => {
           this.notificationService.hideLoading();
         }

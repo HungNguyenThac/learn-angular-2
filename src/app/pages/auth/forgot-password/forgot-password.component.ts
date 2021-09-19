@@ -15,6 +15,7 @@ import {
   ResetVerifiedPasswordOtpRequest,
   SignOnControllerService,
 } from 'open-api-modules/identity-api-docs';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-forgot-password',
@@ -53,7 +54,8 @@ export class ForgotPasswordComponent implements OnInit {
     private formBuilder: FormBuilder,
     private router: Router,
     private signOnControllerService: SignOnControllerService,
-    private notifier: ToastrService
+    private notifier: ToastrService,
+    private titleService: Title
   ) {
     this.passwordForgotForm = this.formBuilder.group({
       mobileNumber: ['', [Validators.required]],
@@ -65,7 +67,9 @@ export class ForgotPasswordComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.titleService.setTitle('Quên mật khẩu - Monex');
+  }
 
   getOtp() {
     const createCustomerAccountRequest: CreateCustomerAccountRequest = {
@@ -78,7 +82,7 @@ export class ForgotPasswordComponent implements OnInit {
         if (data.errorCode != null) {
           return this.notifier.error(String(data?.message));
         }
-        
+
         this.resetPasswordbyMobileOtpResult = data.result;
       });
   }
@@ -86,9 +90,9 @@ export class ForgotPasswordComponent implements OnInit {
   onOpenOtpConfirm() {
     if (!this.passwordForgotForm.controls.mobileNumber.valid) return;
     this.openOtpConfirm = true;
-    console.log("open otp",this.passwordForgotForm.getRawValue());
+    console.log('open otp', this.passwordForgotForm.getRawValue());
     this.getOtp();
-    this.mobile = this.passwordForgotForm.controls.mobileNumber.value
+    this.mobile = this.passwordForgotForm.controls.mobileNumber.value;
   }
 
   onSubmit() {
@@ -138,7 +142,7 @@ export class ForgotPasswordComponent implements OnInit {
         if (result.errorCode != null) {
           return this.notifier.error(result.message);
         }
-        console.log("confirm otp",this.passwordForgotForm.getRawValue());
+        console.log('confirm otp', this.passwordForgotForm.getRawValue());
         console.log('confirm otp success');
         this.otp = otp;
         this.openOtpConfirm = false;

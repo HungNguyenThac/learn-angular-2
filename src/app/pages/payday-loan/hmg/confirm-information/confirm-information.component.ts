@@ -69,7 +69,7 @@ export class ConfirmInformationComponent
     private multiLanguageService: MultiLanguageService,
     private borrowerControllerService: BorrowerControllerService,
     private formBuilder: FormBuilder
-  ) {
+    ) {
     this.infoForm = this.formBuilder.group({
       name: [''],
       dateOfBirth: [''],
@@ -87,9 +87,7 @@ export class ConfirmInformationComponent
   }
 
   ngOnInit(): void {
-    const currentDate = new Date();
-    const currentYear = currentDate.getFullYear();
-
+    this.notificationService.showLoading(null);
     //get customer id, password & core token from store
     this.subManager.add(
       this.customerId$.subscribe((id) => {
@@ -97,14 +95,12 @@ export class ConfirmInformationComponent
         console.log('customer id', id);
       })
     );
-
     this.subManager.add(
       this.password$.subscribe((password) => {
         this.password = password;
         console.log('customer password', password);
       })
     );
-
     this.subManager.add(
       this.coreToken$.subscribe((coreToken) => {
         this.coreToken = coreToken;
@@ -114,20 +110,17 @@ export class ConfirmInformationComponent
   }
 
   ngAfterViewInit() {
-    this.notificationService.showLoading(null);
     this.infoControllerService
       .getInfo(this.customerId)
       .subscribe((result: ApiResponseCustomerInfoResponse) => {
+        this.notificationService.hideLoading();
         if (!result || result.responseCode !== 200) {
           return this.showError('common.error', 'common.something_went_wrong');
         }
-        this.notificationService.hideLoading();
         this.customerInfo = result.result;
         this.infoForm.patchValue({
           name: this.customerInfo.personalData.firstName,
-          dateOfBirth: moment(
-            this.customerInfo.personalData.dateOfBirth
-          ).toISOString(),
+          dateOfBirth: moment(this.customerInfo.personalData.dateOfBirth).toISOString(),
           gender: this.customerInfo.personalData.gender,
           identityNumberOne: this.customerInfo.personalData.identityNumberOne,
           idIssuePlace: this.customerInfo.personalData.idIssuePlace,
@@ -165,6 +158,7 @@ export class ConfirmInformationComponent
             const message = this.multiLanguageService.instant(
               'payday_loan.error_code.' + result.errorCode.toLowerCase()
             );
+            this.notificationService.hideLoading();
             return this.showError('common.error', message);
           }
           this.confirmInfomationCustomer();
@@ -215,6 +209,7 @@ export class ConfirmInformationComponent
           const message = this.multiLanguageService.instant(
             'payday_loan.error_code.' + result.errorCode.toLowerCase()
           );
+          this.notificationService.hideLoading();
           return this.showError('common.error', message);
         }
         this.coreUserId = result.result['userId'];
@@ -233,6 +228,7 @@ export class ConfirmInformationComponent
           const message = this.multiLanguageService.instant(
             'payday_loan.error_code.' + result.errorCode.toLowerCase()
           );
+          this.notificationService.hideLoading();
           return this.showError('common.error', message);
         }
         // success redirect to additional information
@@ -242,7 +238,6 @@ export class ConfirmInformationComponent
   }
 
   showError(title: string, content: string) {
-    this.notificationService.hideLoading();
     return this.notificationService.openErrorModal({
       title: this.multiLanguageService.instant(title),
       content: this.multiLanguageService.instant(content),

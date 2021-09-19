@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import * as fromStore from './../../../core/store';
 import * as fromActions from './../../../core/store';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-sign-in',
@@ -20,7 +21,8 @@ export class SignInComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
-    private store: Store<fromStore.State>
+    private store: Store<fromStore.State>,
+    private titleService: Title
   ) {
     this.signInForm = this.formBuilder.group({
       mobileNumber: [''],
@@ -29,8 +31,8 @@ export class SignInComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.titleService.setTitle('Đăng nhập - Monex');
     this.store.dispatch(new fromActions.Logout(null));
-    this.store.dispatch(new fromActions.SigninError(null));
   }
 
   onSubmit() {

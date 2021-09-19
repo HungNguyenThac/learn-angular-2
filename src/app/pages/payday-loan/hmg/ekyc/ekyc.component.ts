@@ -6,6 +6,16 @@ import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import * as fromSelectors from '../../../../core/store/selectors';
 import { NotificationService } from '../../../../core/services/notification.service';
+import {
+  ApiResponseVirtualAccount,
+  GpayVirtualAccountControllerService,
+} from '../../../../../../open-api-modules/payment-api-docs';
+import changeAlias from '../../../../core/utils/no-accent-vietnamese';
+import { ERROR_CODE } from '../../../../core/common/enum/payday-loan';
+import { InfoControllerService } from '../../../../../../open-api-modules/customer-api-docs';
+import { GlobalConstants } from '../../../../core/common/global-constants';
+import { Router } from '@angular/router';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'ekyc',
@@ -20,7 +30,11 @@ export class EkycComponent implements OnInit {
   constructor(
     private multiLanguageService: MultiLanguageService,
     private store: Store<fromStore.State>,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private infoControllerService: InfoControllerService,
+    private router: Router,
+    private gpayVirtualAccountControllerService: GpayVirtualAccountControllerService,
+    private titleService: Title
   ) {
     this.customerId$ = store.select(fromSelectors.getCustomerIdState);
 
@@ -29,51 +43,41 @@ export class EkycComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {}
-
-  async redirectToConfirmInformationPage() {
-    // if (
-    //   this.currentCustomerStatus &&
-    //   PAYDAY_LOAN_UI_STATUS_ORDER_NUMBER[this.currentCustomerStatus] <
-    //   PAYDAY_LOAN_UI_STATUS_ORDER_NUMBER.NOT_COMPLETE_FILL_EKYC_YET
-    // ) {
-    //   this.setCustomerStatus(
-    //     PAYDAY_LOAN_UI_STATUS.NOT_COMPLETE_FILL_EKYC_YET
-    //   );
-    // }
-    // await this.$router.push({ name: "PlConfirmInformation" });
+  ngOnInit(): void {
+    this.titleService.setTitle('Định danh điện tử - Monex');
+    this.getCustomerInfo();
   }
 
-  async completeEkyc(ekycCompleteData) {
-    if (!ekycCompleteData || !ekycCompleteData.idCardInfo) {
-      this.notificationEkycError();
+  redirectToConfirmInformationPage() {
+    this.router.navigateByUrl('hmg/confirm-information').then((r) => {});
+  }
+
+  completeEkyc(ekycCompleteData) {
+    if (
+      !ekycCompleteData ||
+      !ekycCompleteData.result ||
+      !ekycCompleteData.result.idCardInfo
+    ) {
+      this.showErrorModal();
       return;
     }
 
-    console.log('aaaaaaaaaaaaaa completeEkyc')
-
-    let ekycInfo = ekycCompleteData.idCardInfo;
+    let ekycInfo = ekycCompleteData.result.idCardInfo;
     this.store.dispatch(new fromActions.SetEkycInfo(ekycInfo));
 
-    await this.getVirtualAccount(this.customerId, ekycInfo.name);
-
-    // if (
-    //   this.currentCustomerStatus &&
-    //   PAYDAY_LOAN_UI_STATUS_ORDER_NUMBER[this.currentCustomerStatus] <
-    //     PAYDAY_LOAN_UI_STATUS_ORDER_NUMBER.NOT_COMPLETE_FILL_EKYC_YET
-    // ) {
-    //   await this.setCustomerStatus(
-    //     PAYDAY_LOAN_UI_STATUS.NOT_COMPLETE_FILL_EKYC_YET
-    //   );
-    // }
+    this.getVirtualAccount(this.customerId, ekycInfo.name);
 
     this.notificationEkycSuccess();
+
+    this.redirectToConfirmInformationPage();
   }
 
-  notificationEkycError() {
+  showErrorModal(title?, content?) {
     this.notificationService.openErrorModal({
-      title: this.multiLanguageService.instant('common.notification'),
-      content: this.multiLanguageService.instant('common.something_went_wrong'),
+      title: title || this.multiLanguageService.instant('common.notification'),
+      content:
+        content ||
+        this.multiLanguageService.instant('common.something_went_wrong'),
       primaryBtnText: this.multiLanguageService.instant('common.confirm'),
     });
   }
@@ -90,70 +94,75 @@ export class EkycComponent implements OnInit {
     });
   }
 
-  async createVirtualAccount(customerId, accountName) {
-    // return await PaymentService.createVA(
-    //   {
-    //     customerId: customerId,
-    //     accountName: changeAlias(accountName)
-    //   },
-    //   { showModalResponseError: false, showModalResponseCodeError: false }
-    // );
+  createVirtualAccount(customerId, accountName) {
+    this.gpayVirtualAccountControllerService
+      .createVirtualAccount({
+        customerId: customerId,
+        accountName: changeAlias(accountName),
+      })
+      .subscribe((response: ApiResponseVirtualAccount) => {
+        if (response.result && response.responseCode === 200) {
+          return response.result;
+        }
+
+        this.showErrorModal();
+      });
   }
 
-  async getVirtualAccount(customerId, accountName) {
-    // const response = await PaymentService.getVA(
-    //   {
-    //     customerId: customerId
-    //   },
-    //   { showModalResponseError: false, showModalResponseCodeError: false }
-    // );
-    // if (!response) {
-    //   return null;
-    // }
-    // if (response.result && response.responseCode === 200) {
-    //   return response.result;
-    // }
-    //
-    // if (response.errorCode === ERROR_CODE.DO_NOT_EXIST_VIRTUAL_ACCOUNT) {
-    //   return await this.createVirtualAccount(customerId, accountName);
-    // }
-    //
-    // return null;
+  getVirtualAccount(customerId, accountName) {
+    this.gpayVirtualAccountControllerService
+      .getVirtualAccount(customerId)
+      .subscribe((response: ApiResponseVirtualAccount) => {
+        if (response.result && response.responseCode === 200) {
+          return response.result;
+        }
+
+        if (response.errorCode === ERROR_CODE.DO_NOT_EXIST_VIRTUAL_ACCOUNT) {
+          return this.createVirtualAccount(customerId, accountName);
+        }
+
+        this.showErrorModal();
+        return null;
+      });
   }
 
-  async getCustomerInfo() {
-    // const response = await CustomerService.getById(this.customerId, {
-    //   showLoader: false
-    // });
-    // if (response.responseCode == 200) {
-    //   if (!response.result || !response.result.personalData) {
-    //     return null;
-    //   }
-    //   let customerInfoData = response.result.personalData;
-    //
-    //   if (response.result.kalapaData) {
-    //     if (!response.result.kalapaData.createdAt) {
-    //       customerInfoData.frontId = null;
-    //       customerInfoData.backId = null;
-    //       customerInfoData.selfie = null;
-    //       this.customerInfo = customerInfoData;
-    //       return;
-    //     }
-    //
-    //     let ekycExpiredAt =
-    //       PL_VALUE_DEFAULT.UNIX_TIMESTAMP_SAVE_EKYC_INFO +
-    //       new Date(response.result.kalapaData.createdAt).getTime();
-    //     if (new Date().getTime() > ekycExpiredAt) {
-    //       customerInfoData.frontId = null;
-    //       customerInfoData.backId = null;
-    //       customerInfoData.selfie = null;
-    //       this.customerInfo = customerInfoData;
-    //       return;
-    //     }
-    //   }
-    //
-    //   await this.redirectToConfirmInformationPage();
-    //   // await this.downloadEkycImages();
-    // }
+  getCustomerInfo() {
+    this.infoControllerService
+      .getInfo(this.customerId, null)
+      .subscribe((response) => {
+        if (
+          response.responseCode !== 200 ||
+          !response.result ||
+          !response.result.personalData
+        ) {
+          this.showErrorModal();
+          return null;
+        }
+
+        let customerInfoData = response.result.personalData;
+
+        if (response.result.kalapaData) {
+          if (!response.result.kalapaData.createdAt) {
+            customerInfoData.frontId = null;
+            customerInfoData.backId = null;
+            customerInfoData.selfie = null;
+            this.customerInfo = customerInfoData;
+            return;
+          }
+
+          let ekycExpiredAt =
+            GlobalConstants.PL_VALUE_DEFAULT.UNIX_TIMESTAMP_SAVE_EKYC_INFO +
+            new Date(response.result.kalapaData.createdAt).getTime();
+          if (new Date().getTime() > ekycExpiredAt) {
+            customerInfoData.frontId = null;
+            customerInfoData.backId = null;
+            customerInfoData.selfie = null;
+            this.customerInfo = customerInfoData;
+            return;
+          }
+        }
+
+        this.redirectToConfirmInformationPage();
+      });
   }
 }
