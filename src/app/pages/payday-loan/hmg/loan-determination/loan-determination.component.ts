@@ -239,6 +239,25 @@ export class LoanDeterminationComponent
   }
 
   openDialogVoucherList() {
+    this.listVoucher = [
+      {
+          "id": "694e0ac1-4ca1-40af-827c-216a0371a1b5",
+          "promotionEventId": "ba756283-8a14-4d73-8756-f909d09792e5",
+          "code": "TNG50",
+          "maxValue": 50000,
+          "percentage": 0.5,
+          "maxAmount": 500,
+          "remainAmount": 460,
+          "activedTime": [
+              "6.5-8.5",
+              "11.5-13.5",
+              "18-21",
+              "0-24"
+          ],
+          "description": "<ul><li>Chỉ được sử dụng cho số điện thoại v&agrave; CMND/CCCD đ&atilde; d&ugrave;ng để đăng k&yacute;.</li><li>Mỗi kh&aacute;ch h&agrave;ng chỉ được &aacute;p dụng 1 lần cho khoản ứng lương đầu ti&ecirc;n.</li><li>Gi&aacute; trị ưu đ&atilde;i tối đa 50.000đ D&agrave;nh cho 100 kh&aacute;ch h&agrave;ng &aacute;p dụng m&atilde; đầu ti&ecirc;n.</li><li>C&aacute;c khung giờ &aacute;p dụng: 6h30 - 8h30, 11h30 - 13h30, 18h - 21h</li><li>Thời hạn &aacute;p dụng: 19/07/2021 - 31/08/2021</li></ul>",
+          "createdAt": "2021-07-15T23:46:51.985"
+      }
+  ]
     const dialogRef = this.dialog.open(PlVoucherListComponent,{
       width: "320px",
       autoFocus: false,
