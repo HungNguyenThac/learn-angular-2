@@ -9,7 +9,6 @@ import * as fromPipes from './pipes';
 import * as fromDirectives from './directives';
 import { FormsModule } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { PlLoadingComponent } from './components/dialogs/pl-loading/pl-loading.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +16,6 @@ import { PlLoadingComponent } from './components/dialogs/pl-loading/pl-loading.c
     ...fromValidators.validators,
     ...fromDirectives.directives,
     ...fromPipes.pipes,
-    PlLoadingComponent,
   ],
   imports: [CommonModule, MaterialModule, TranslateModule, FormsModule],
   exports: [

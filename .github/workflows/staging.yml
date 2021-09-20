@@ -1,0 +1,50 @@
+name: Build & Deploy Staging
+
+on:
+  push:
+    branches: [ release ]
+
+jobs:
+  build-container:
+    name: Build and Publish to Azure Container Registry
+    runs-on: ubuntu-latest
+    env:
+      SVC_NAME: webapp-hmg-svc
+      ACR_NAME: epayprodregistry.azurecr.io
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: Azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+      - uses: Azure/get-keyvault-secrets@v1.2
+        with:
+          keyvault: "monex-kv"
+          secrets: 'ACR-USERNAME, ACR-PASSWORD'
+        id: getAzSecret
+
+      - name: Azure Container Registry Login
+        uses: Azure/docker-login@v1
+        with:
+          login-server: epayprodregistry.azurecr.io
+          username: ${{ steps.getAzSecret.outputs.ACR-USERNAME }}
+          password: ${{ steps.getAzSecret.outputs.ACR-PASSWORD }}
+
+      - name: Bump version
+        uses: anothrNick/github-tag-action@1.26.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          WITH_V: true
+          DEFAULT_BUMP: patch
+          RELEASE_BRANCHES: release
+
+      - shell: bash
+        run: echo "TAG=$(git describe --tags `git rev-list --tags --max-count=1`)" >> $GITHUB_ENV
+
+      - name: Build Container image
+        run: docker build -t ${ACR_NAME}/${SVC_NAME}:${{ env.TAG }} .
+
+      - name: Publish Docker image
+        run: docker push ${ACR_NAME}/${SVC_NAME}:${{ env.TAG }}
+

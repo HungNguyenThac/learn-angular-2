@@ -26,7 +26,7 @@ export class NotificationService {
     this.openPrompt(payload, 'assets/img/payday-loan/success-prompt-icon.png');
   }
 
-  openPrompt(payload: Prompt, imgUrl: string) {
+  openPrompt(payload: Prompt, imgUrl?: string) {
     this.promptDialogRef = this.dialog.open(PlPromptComponent, {
       panelClass: 'custom-dialog-container',
       height: 'auto',

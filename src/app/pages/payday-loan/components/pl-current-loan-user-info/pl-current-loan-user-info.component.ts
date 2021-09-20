@@ -1,4 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
+import {CustomerInfoResponse} from "../../../../../../open-api-modules/customer-api-docs";
 
 @Component({
   selector: 'pl-current-loan-user-info',
@@ -6,7 +7,7 @@ import {Component, Input, OnInit} from '@angular/core';
   styleUrls: ['./pl-current-loan-user-info.component.scss']
 })
 export class PlCurrentLoanUserInfoComponent implements OnInit {
-  @Input() userInfo: any;
+  @Input() userInfo: CustomerInfoResponse;
   constructor() { }
 
   ngOnInit(): void {

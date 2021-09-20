@@ -25,7 +25,7 @@ module.exports = function (config) {
       suppressAll: true // removes the duplicated traces
     },
     coverageReporter: {
-      dir: require('path').join(__dirname, './coverage/monex-insurance-web-app'),
+      dir: require('path').join(__dirname, './coverage/monex-webapp-hmg'),
       subdir: '.',
       reporters: [
         { type: 'html' },

@@ -68,13 +68,15 @@ export class EkycComponent implements OnInit, OnDestroy {
   initHeaderInfo() {
     this.store.dispatch(new fromActions.ResetEkycInfo());
     this.store.dispatch(new fromActions.ResetPaydayLoanInfo());
+    this.store.dispatch(new fromActions.SetShowLeftBtn(true));
+    this.store.dispatch(new fromActions.SetShowRightBtn(true));
+    this.store.dispatch(new fromActions.SetShowProfileBtn(true));
+    this.store.dispatch(new fromActions.SetShowStepNavigation(true));
     this.store.dispatch(
       new fromActions.SetStepNavigationInfo(
         PL_STEP_NAVIGATION.ELECTRONIC_IDENTIFIERS
       )
     );
-    this.store.dispatch(new fromActions.SetShowLeftBtn(true));
-    this.store.dispatch(new fromActions.SetShowRightBtn(true));
   }
 
   redirectToConfirmInformationPage() {
@@ -124,46 +126,62 @@ export class EkycComponent implements OnInit, OnDestroy {
   }
 
   createVirtualAccount(customerId, accountName) {
+    this.notificationService.showLoading();
     this.subManager.add(
       this.gpayVirtualAccountControllerService
         .createVirtualAccount({
           customerId: customerId,
           accountName: changeAlias(accountName),
         })
-        .subscribe((response: ApiResponseVirtualAccount) => {
-          if (response.result && response.responseCode === 200) {
-            return response.result;
-          }
+        .subscribe(
+          (response: ApiResponseVirtualAccount) => {
+            if (response.result && response.responseCode === 200) {
+              return response.result;
+            }
 
-          this.showErrorModal();
-        })
+            this.showErrorModal();
+          },
+          (error) => {},
+          () => {
+            this.notificationService.hideLoading();
+          }
+        )
     );
   }
 
   getVirtualAccount(customerId, accountName) {
+    this.notificationService.showLoading();
     this.subManager.add(
       this.gpayVirtualAccountControllerService
         .getVirtualAccount(customerId)
-        .subscribe((response: ApiResponseVirtualAccount) => {
-          if (response.result && response.responseCode === 200) {
-            return response.result;
-          }
+        .subscribe(
+          (response: ApiResponseVirtualAccount) => {
+            if (response.result && response.responseCode === 200) {
+              return response.result;
+            }
 
-          if (response.errorCode === ERROR_CODE.DO_NOT_EXIST_VIRTUAL_ACCOUNT) {
-            return this.createVirtualAccount(customerId, accountName);
-          }
+            if (
+              response.errorCode === ERROR_CODE.DO_NOT_EXIST_VIRTUAL_ACCOUNT
+            ) {
+              return this.createVirtualAccount(customerId, accountName);
+            }
 
-          this.showErrorModal();
-          return null;
-        })
+            this.showErrorModal();
+            return null;
+          },
+          (error) => {},
+          () => {
+            this.notificationService.hideLoading();
+          }
+        )
     );
   }
 
   getCustomerInfo() {
+    this.notificationService.showLoading();
     this.subManager.add(
-      this.infoControllerService
-        .getInfo(this.customerId, null)
-        .subscribe((response) => {
+      this.infoControllerService.getInfo(this.customerId, null).subscribe(
+        (response) => {
           if (
             response.responseCode !== 200 ||
             !response.result ||
@@ -197,7 +215,12 @@ export class EkycComponent implements OnInit, OnDestroy {
           }
 
           this.redirectToConfirmInformationPage();
-        })
+        },
+        (error) => {},
+        () => {
+          this.notificationService.hideLoading();
+        }
+      )
     );
   }
 }

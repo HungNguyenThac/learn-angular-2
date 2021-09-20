@@ -15,6 +15,8 @@ import { PlInlineMessageComponent } from './components/pl-inline-message/pl-inli
 import { PlStatusLabelComponent } from './components/pl-status-label/pl-status-label.component';
 import { PlIntroduceComponent } from './components/pl-introduce/pl-introduce.component';
 import { PlProviderComponent } from './components/pl-provider/pl-provider.component';
+import { ChatBoxComponent } from './components/chat-box/chat-box.component';
+import { DetailLoanPaymentComponent } from './components/detail-loan-payment/detail-loan-payment.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +29,9 @@ import { PlProviderComponent } from './components/pl-provider/pl-provider.compon
     PlInlineMessageComponent,
     PlStatusLabelComponent,
     PlIntroduceComponent,
-    PlProviderComponent
+    PlProviderComponent,
+    ChatBoxComponent,
+    DetailLoanPaymentComponent,
   ],
   imports: [
     CommonModule,
@@ -46,7 +50,9 @@ import { PlProviderComponent } from './components/pl-provider/pl-provider.compon
     PlInlineMessageComponent,
     PlStatusLabelComponent,
     PlIntroduceComponent,
-    PlProviderComponent
+    PlProviderComponent,
+    ChatBoxComponent,
+    DetailLoanPaymentComponent
   ]
 })
 export class PaydayLoanModule {

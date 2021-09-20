@@ -1,8 +1,10 @@
 @import "src/assets/styles/variables";
 
 #step-navigation-container {
-    padding-left: 16px;
-    width: 100%;
+  padding-left: 16px;
+  width: 100%;
+  text-align: center;
+
   p {
     font-size: 12px;
     line-height: 14px;
@@ -19,10 +21,16 @@
 }
 
 .help {
-    background: transparent;
-    position: absolute;
-    right: 16px;
-    width: 20px;
-    height: 20px;
-    line-height: 0;
+  background: transparent;
+  position: absolute;
+  right: 16px;
+  width: 20px;
+  height: 20px;
+  line-height: 0;
+}
+
+@media (max-width: 768px) {
+  #step-navigation-container {
+    text-align: left;
+  }
 }
