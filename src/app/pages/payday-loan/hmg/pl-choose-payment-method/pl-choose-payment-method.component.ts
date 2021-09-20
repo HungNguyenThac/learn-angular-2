@@ -27,8 +27,12 @@ import {
 import { PaymentProductInfo } from '../../../../public/models/payment-product-info.model';
 import { PaymentUserInfo } from '../../../../public/models/payment-user-info.model';
 import { PaymentVirtualAccount } from '../../../../public/models/payment-virtual-account.model';
-import { ERROR_CODE } from '../../../../core/common/enum/payday-loan';
+import {
+  ERROR_CODE,
+  PAYDAY_LOAN_STATUS,
+} from '../../../../core/common/enum/payday-loan';
 import changeAlias from '../../../../core/utils/no-accent-vietnamese';
+import formatSlug from '../../../../core/utils/format-slug';
 
 @Component({
   selector: 'pl-choose-payment-method',
@@ -135,6 +139,9 @@ export class PlChoosePaymentMethodComponent implements OnInit {
     );
   }
   finalization() {
+
+    //TODO Init repayment gpay HMG
+
     // PaymentService.initRepaymentGpay(
     //   this.customerId,
     //   this.currentLoan.loanId,
@@ -164,14 +171,14 @@ export class PlChoosePaymentMethodComponent implements OnInit {
               latePenaltyPayment: response.result.latePenaltyPayment || 0,
             };
 
-            // if (this.currentLoan.status !== PAYDAY_LOAN_STATUS.IN_REPAYMENT) {
-            //   return this.router.navigate([
-            //     'hmg/current-loan',
-            //     formatSlug(
-            //       this.currentLoan.status || PAYDAY_LOAN_STATUS.UNKNOWN_STATUS
-            //     ),
-            //   ]);
-            // }
+            if (response.result.status !== PAYDAY_LOAN_STATUS.IN_REPAYMENT) {
+              return this.router.navigate([
+                'hmg/current-loan',
+                formatSlug(
+                  response.result.status || PAYDAY_LOAN_STATUS.UNKNOWN_STATUS
+                ),
+              ]);
+            }
 
             this.getVirtualAccount(this.customerId, this.userInfo.fullName);
 
