@@ -9,6 +9,8 @@ import { PlPromptComponent } from './dialogs/pl-prompt/pl-prompt.component';
 import { OtpInputComponent } from './inputs/otp-input/otp-input.component';
 import { SingleOtpInputComponent } from './inputs/single-otp-input/single-otp-input.component';
 import { StepNavigationComponent } from './progress-bar/step-navigation/step-navigation.component';
+import { PlLoadingComponent } from './dialogs/pl-loading/pl-loading.component';
+import { GuideTransferPaymentDialogComponent } from './payment/guide-transfer-payment-dialog/guide-transfer-payment-dialog.component';
 
 export const components: any[] = [
   StepProgressBarComponent,
@@ -22,6 +24,8 @@ export const components: any[] = [
   SingleOtpInputComponent,
   PlPromptComponent,
   StepNavigationComponent,
+  PlLoadingComponent,
+  GuideTransferPaymentDialogComponent,
 ];
 
 export * from './progress-bar/step-progress-bar/step-progress-bar.component';
@@ -35,3 +39,5 @@ export * from './dialogs/pl-prompt/pl-prompt.component';
 export * from './inputs/otp-input/otp-input.component';
 export * from './inputs/single-otp-input/single-otp-input.component';
 export * from './progress-bar/step-navigation/step-navigation.component';
+export * from './dialogs/pl-loading/pl-loading.component';
+export * from './payment/guide-transfer-payment-dialog/guide-transfer-payment-dialog.component';

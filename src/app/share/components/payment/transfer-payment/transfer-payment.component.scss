@@ -127,7 +127,13 @@
   }
 }
 
+.btn-actions {
+  margin-top: 12px;
 
+  .insurance-btn {
+    max-width: 273px;
+  }
+}
 
 @media (max-width: 768px) {
   .card-method-img-box {

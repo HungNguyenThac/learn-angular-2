@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import * as fromStore from '../../core/store';
 import * as fromActions from '../../core/store';
@@ -7,21 +7,6 @@ import * as fromSelectors from '../../core/store/selectors';
 import { Observable } from 'rxjs/Observable';
 import { CustomerInfoResponse } from '../../../../open-api-modules/customer-api-docs';
 import { Subscription } from 'rxjs';
-import { StepNavigationInfo } from '../../public/models/step-navigation.model';
-import {
-  displayLeftBtn,
-  displayNavigationBar,
-  displayProfileBtn,
-  displayRightBtn,
-  displayStepNavigation,
-  displayStepProgressBar,
-  getNavigationTitle,
-  getStepNavigationInfo,
-} from '../../core/store';
-import {
-  PAYDAY_LOAN_STEP,
-  PAYDAY_LOAN_STEP_TITLE,
-} from '../../core/common/enum/payday-loan';
 
 @Component({
   selector: 'app-header',
@@ -36,7 +21,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
   showLeftBtn$: Observable<boolean>;
   showRightBtn$: Observable<boolean>;
   navigationTitle$: Observable<string>;
-  stepNavigationInfo$: Observable<StepNavigationInfo>;
   showNavigationBar$: Observable<boolean>;
 
   customerInfo: CustomerInfoResponse = null;
@@ -52,11 +36,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
   leftBtnIcon: string = 'sprite-group-3-icon-back';
   rightBtnIcon: string = 'sprite-group-3-help-white';
   titleNavigation: string = 'Ứng lương 0% lãi';
-  stepNavigationInfo: StepNavigationInfo = {
-    currentStep: PAYDAY_LOAN_STEP.ELECTRONIC_IDENTIFIERS,
-    lastStep: PAYDAY_LOAN_STEP.CONTRACT_SIGNING,
-    stepTitle: PAYDAY_LOAN_STEP_TITLE.ELECTRONIC_IDENTIFIERS,
-  };
 
   subManager = new Subscription();
 
@@ -85,9 +64,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
       fromSelectors.displayNavigationBar
     );
     this.navigationTitle$ = this.store.select(fromSelectors.getNavigationTitle);
-    this.stepNavigationInfo$ = this.store.select(
-      fromSelectors.getStepNavigationInfo
-    );
 
     this.subManager.add(
       this.customerInfo$.subscribe((customerInfo: CustomerInfoResponse) => {
@@ -136,14 +112,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
         this.titleNavigation = navigationTitle;
       })
     );
+  }
 
-    this.subManager.add(
-      this.stepNavigationInfo$.subscribe(
-        (stepNavigationInfo: StepNavigationInfo) => {
-          this.stepNavigationInfo = stepNavigationInfo;
-        }
-      )
-    );
+  backToPrevPage() {
+    this.store.dispatch(new fromActions.Back());
   }
 
   logout() {

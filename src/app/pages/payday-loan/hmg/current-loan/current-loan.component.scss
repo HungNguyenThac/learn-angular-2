@@ -1,5 +1,6 @@
-@import "../../../../../assets/styles/payday-loan/pl-layout";
-@import "../../../../../assets/styles/variables";
+@import "src/assets/styles/payday-loan/pl-layout";
+@import "src/assets/styles/variables";
+
 #current-loan-container {
   position: relative;
   min-height: calc(100vh - 64px);

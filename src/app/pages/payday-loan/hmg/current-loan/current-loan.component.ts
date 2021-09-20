@@ -1,183 +1,250 @@
-import {Component, OnInit} from '@angular/core';
-import {MultiLanguageService} from "../../../../share/translate/multiLanguageService";
-import {GPAY_RESULT_STATUS, PAYDAY_LOAN_STATUS, REPAYMENT_STATUS} from "../../../../core/common/enum/payday-loan";
-import * as moment from "moment";
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { MultiLanguageService } from '../../../../share/translate/multiLanguageService';
+import {
+  GPAY_RESULT_STATUS,
+  PAYDAY_LOAN_STATUS,
+  REPAYMENT_STATUS,
+} from '../../../../core/common/enum/payday-loan';
+import * as moment from 'moment';
+import {
+  ApiResponseCustomerInfoResponse,
+  CustomerInfoResponse,
+  InfoControllerService,
+} from '../../../../../../open-api-modules/customer-api-docs';
+import {
+  ApiResponsePaydayLoan,
+  ApplicationControllerService,
+  ContractControllerService,
+  PaydayLoan,
+} from '../../../../../../open-api-modules/loanapp-api-docs';
+import { Params, Router } from '@angular/router';
+import * as fromActions from '../../../../core/store';
+import * as fromStore from '../../../../core/store';
+import { Store } from '@ngrx/store';
+import { NotificationService } from '../../../../core/services/notification.service';
+import { Observable } from 'rxjs/Observable';
+import * as fromSelectors from '../../../../core/store/selectors';
+import { Subscription } from 'rxjs';
+import formatSlug from 'src/app/core/utils/format-slug';
+import { environment } from '../../../../../environments/environment';
+import { Title } from '@angular/platform-browser';
+import { GlobalConstants } from '../../../../core/common/global-constants';
 
 @Component({
   selector: 'pl-current-loan',
   templateUrl: './current-loan.component.html',
-  styleUrls: ['./current-loan.component.scss']
+  styleUrls: ['./current-loan.component.scss'],
 })
-export class CurrentLoanComponent implements OnInit {
-  currentLoan: any = {
-    id: null,
-    expectedAmount: null,
-    loanCode: null,
-    disbursementDate: null,
-    loanStatus: null,
-    totalServiceFees: 0,
-    repaymentStatus: null,
-    getSalaryAt: null
-  };
+export class CurrentLoanComponent implements OnInit, OnDestroy {
+  currentLoan: PaydayLoan = {};
+  userInfo: CustomerInfoResponse = {};
 
   contractInfo: any = {
-    status: null
+    status: null,
   };
 
-  userInfo: any = {
-    fullName: null,
-    dateOfBirth: null,
-    gender: null,
-    identityNumberOne: null,
-    workingTime: null,
-    totalSalary: null,
-    email: null,
-    accountReceiveSalary: null,
-    bank: null,
-    phoneNumber: null
-  };
+  customerId$: Observable<string>;
+  customerId: string;
 
-  constructor(private multiLanguageService: MultiLanguageService) {
+  coreToken$: Observable<string>;
+  coreToken: string;
+
+  routerParams$: Observable<Params>;
+  routerParams: Params;
+
+  subManager = new Subscription();
+
+  currentLoanStatus: string;
+
+  constructor(
+    private multiLanguageService: MultiLanguageService,
+    private router: Router,
+    private store: Store<fromStore.State>,
+    private notificationService: NotificationService,
+    private applicationControllerService: ApplicationControllerService,
+    private contractControllerService: ContractControllerService,
+    private infoControllerService: InfoControllerService,
+    private titleService: Title
+  ) {
+    this._initSubscribeState();
+  }
+
+  ngOnDestroy(): void {
+    this.subManager.unsubscribe();
   }
 
   ngOnInit(): void {
+    this.initPageTitle(this.routerParams.status);
+    this.initHeaderInfo();
+    this.initInfo();
   }
+
+  private _initSubscribeState() {
+    this.customerId$ = this.store.select(fromSelectors.getCustomerIdState);
+    this.coreToken$ = this.store.select(fromSelectors.getCoreTokenState);
+    this.routerParams$ = this.store.select(fromSelectors.getRouterParams);
+
+    this.subManager.add(
+      this.customerId$.subscribe((customerId) => {
+        this.customerId = customerId;
+      })
+    );
+
+    this.subManager.add(
+      this.coreToken$.subscribe((coreToken) => {
+        this.coreToken = coreToken;
+      })
+    );
+
+    this.subManager.add(
+      this.routerParams$.subscribe((routerParams) => {
+        this.routerParams = routerParams;
+      })
+    );
+  }
+
+  initHeaderInfo() {
+    this.store.dispatch(new fromActions.ResetPaydayLoanInfo());
+    this.store.dispatch(new fromActions.SetShowLeftBtn(false));
+    this.store.dispatch(new fromActions.SetShowRightBtn(true));
+    this.store.dispatch(new fromActions.SetShowProfileBtn(true));
+    this.store.dispatch(new fromActions.SetShowStepNavigation(false));
+  }
+
   viewContract() {
-    // this.$router.push({ name: "PlSignContract" });
+    this.router.navigateByUrl('hmg/sign-contract');
   }
 
   finalization() {
-    // this.$router.push({ name: "PlLoanPayment" });
+    this.router.navigateByUrl('hmg/loan-payment');
   }
 
   initPageTitle(status) {
     let pageTitle = this.getPageTitle(status);
-    window.document.title =
-      pageTitle + " - " + this.multiLanguageService.instant("common.project_name");
+    this.titleService.setTitle(
+      pageTitle + ' - ' + GlobalConstants.PL_VALUE_DEFAULT.PROJECT_NAME
+    );
   }
 
-  async initInfo() {
+  initInfo() {
     // if (this.isChooseAmountSuccess) {
-    //   this.showLoading({
-    //     content: {
-    //       title: this.multiLanguageService.instant("payday_loan.in_progress"),
-    //       content: this.multiLanguageService.instant("payday_loan.wait_a_minute")
-    //     }
-    //   });
+    //   this.notificationService.showLoading();
     //   setTimeout(async () => {
-    //     this.hideLoading();
-    //     this.resetChooseAmountSuccess();
+    //     this.notificationService.hideLoading();
+    //     // this.resetChooseAmountSuccess();
     //     await this.getActiveLoan(false, true);
     //     await this.getContractCurrentLoan(false, true);
     //   }, 5000);
     //   return;
     // }
-    await this.getActiveLoan();
-    await this.getContractCurrentLoan();
+    this.getActiveLoan();
+    this.getContractCurrentLoan();
   }
 
-  async getContractCurrentLoan(showLoading = true, otherLoader = false) {
-    // if (!this.currentLoan.id || !this.customerId) return;
-    // const response = await LoanService.getContract(
-    //   { loanId: this.currentLoan.id, customerId: this.customerId },
-    //   {
-    //     showModalResponseCodeError: false,
-    //     showLoader: showLoading,
-    //     otherLoader: otherLoader
-    //   }
-    // );
-    // if (response.responseCode == 200) {
-    //   let contractInfo = response.result;
-    //   this.contractInfo.status = contractInfo.status;
-    // }
+  getContractCurrentLoan(showLoading = true) {
+    if (!this.currentLoan.id || !this.customerId) return;
+
+    if (showLoading) {
+      this.notificationService.showLoading();
+    }
+    this.subManager.add(
+      this.contractControllerService
+        .getContract(this.currentLoan.id, this.customerId)
+        .subscribe(
+          (response) => {
+            this.notificationService.hideLoading();
+            if (response.responseCode == 200) {
+              this.contractInfo.status = response.result['status'];
+            }
+          },
+          (error) => {},
+          () => {
+            this.notificationService.hideLoading();
+          }
+        )
+    );
   }
 
-  async getActiveLoan(showLoading = true, otherLoader = false) {
-    // const response = await LoanService.getActiveLoan(
-    //   this.customerId,
-    //   this.coreToken,
-    //   {
-    //     showModalResponseCodeError: false,
-    //     showLoader: showLoading,
-    //     otherLoader: otherLoader
-    //   }
-    // );
-    // if (response.errorCode) {
-    //   return this.handleGetActiveLoanError(response);
-    // }
-    // if (response.responseCode == 200) {
-    //   let loanInfo = response.result;
-    //
-    //   if (
-    //     this.countdownTimeStatus &&
-    //     loanInfo.status !== PAYDAY_LOAN_STATUS.IN_REPAYMENT
-    //   ) {
-    //     this.showModalCloseWebsiteCountdown();
-    //     return;
-    //   }
-    //
-    //   if (
-    //     this.currentCloseWebsiteStatus &&
-    //     loanInfo.status !== PAYDAY_LOAN_STATUS.IN_REPAYMENT
-    //   ) {
-    //     this.showModalCloseWebsite();
-    //     return;
-    //   }
-    //   this.currentLoan.id = loanInfo.id;
-    //   this.currentLoan.loanCode = loanInfo.loanCode;
-    //   this.currentLoan.expectedAmount = loanInfo.expectedAmount || 0;
-    //   // this.currentLoan.getSalaryAt = this.formatGetSalaryDate(
-    //   //     loanInfo.getSalaryAt
-    //   // );
-    //   this.currentLoan.loanStatus = loanInfo.status;
-    //   this.currentLoan.totalServiceFees = loanInfo.totalServiceFees || 0;
-    //   this.currentLoan.repaymentStatus = loanInfo.repaymentStatus;
-    //   this.setPaymentStatus(loanInfo.repaymentStatus);
-    //   if (
-    //     this.$route.params.status !==
-    //     formatSlug(loanInfo.status || PAYDAY_LOAN_STATUS.UNKNOWN_STATUS)
-    //   ) {
-    //     await this.$router.replace({
-    //       name: "PlCurrentLoan",
-    //       params: {
-    //         status: formatSlug(
-    //           loanInfo.status || PAYDAY_LOAN_STATUS.UNKNOWN_STATUS
-    //         )
-    //       }
-    //     });
-    //     this.initPageTitle(
-    //       loanInfo.status || PAYDAY_LOAN_STATUS.UNKNOWN_STATUS
-    //     );
-    //   }
-    // }
-    await this.getUserInfo();
+  getActiveLoan(showLoading = true) {
+    if (showLoading) {
+      this.notificationService.showLoading();
+    }
+    this.subManager.add(
+      this.applicationControllerService
+        .getActiveLoan(this.customerId, this.coreToken)
+        .subscribe(
+          (response: ApiResponsePaydayLoan) => {
+            this.notificationService.hideLoading();
+            if (response.errorCode || response.responseCode != 200) {
+              return this.handleGetActiveLoanError(response);
+            }
+            this.currentLoan = response.result;
+            this.displayPageTitle();
+            this.getUserInfo();
+          },
+          (error) => {},
+          () => {
+            this.notificationService.hideLoading();
+          }
+        )
+    );
+  }
+
+  displayPageTitle() {
+    if (
+      this.routerParams['status'] !==
+      formatSlug(this.currentLoan.status || PAYDAY_LOAN_STATUS.UNKNOWN_STATUS)
+    ) {
+      this.initPageTitle(
+        this.currentLoan.status || PAYDAY_LOAN_STATUS.UNKNOWN_STATUS
+      );
+
+      this.router.navigate([
+        'hmg/current-loan',
+        formatSlug(
+          this.currentLoan.status || PAYDAY_LOAN_STATUS.UNKNOWN_STATUS
+        ),
+      ]);
+    }
   }
 
   formatGetSalaryDate(value) {
     return value
-      ? moment(new Date(value), "DD/MM/YYYY HH:mm:ss")
-        .add(1, "day")
-        .format("DD/MM/YYYY HH:mm:ss")
-      : "N/A";
+      ? moment(new Date(value), 'DD/MM/YYYY HH:mm:ss')
+          .add(1, 'day')
+          .format('DD/MM/YYYY HH:mm:ss')
+      : 'N/A';
   }
 
-  async getUserInfo() {
-    // const response = await CustomerService.getById(this.customerId);
-    //
-    // if (response.responseCode == 200) {
-    //   let info = response.result;
-    //   this.userInfo.fullName = info.personalData.firstName;
-    //   this.userInfo.dateOfBirth = info.personalData.dateOfBirth;
-    //   this.userInfo.gender = info.personalData.gender;
-    //   this.userInfo.identityNumberOne = info.personalData.identityNumberOne;
-    //   this.userInfo.workingTime =
-    //     info.personalData.borrowerEmploymentHistoryTextVariable1;
-    //   this.userInfo.totalSalary = info.personalData.annualIncome;
-    //   this.userInfo.email = info.personalData.identityNumberSix;
-    //   this.userInfo.phoneNumber = info.personalData.mobileNumber;
-    //   this.userInfo.accountReceiveSalary = info.financialData.accountNumber;
-    //   this.userInfo.bank = info.financialData.bankCode;
-    // }
+  getUserInfo() {
+    this.notificationService.showLoading();
+    this.subManager.add(
+      this.infoControllerService.getInfo(this.customerId).subscribe(
+        (response: ApiResponseCustomerInfoResponse) => {
+          if (response.responseCode !== 200) {
+            this.showErrorModal();
+          }
+          this.userInfo = response.result;
+        },
+        (error) => {},
+        () => {
+          this.notificationService.hideLoading();
+        }
+      )
+    );
+  }
+
+  showErrorModal(title?, content?) {
+    this.notificationService.openErrorModal({
+      title: environment.PRODUCTION
+        ? this.multiLanguageService.instant('common.notification')
+        : title || this.multiLanguageService.instant('common.notification'),
+      content: environment.PRODUCTION
+        ? this.multiLanguageService.instant('common.something_went_wrong')
+        : content ||
+          this.multiLanguageService.instant('common.something_went_wrong'),
+      primaryBtnText: this.multiLanguageService.instant('common.confirm'),
+    });
   }
 
   getPageTitle(status) {
@@ -213,26 +280,15 @@ export class CurrentLoanComponent implements OnInit {
   }
 
   getStatusFromSlug(value) {
-    return value ? value.toUpperCase()?.replace(/-/g, "_") : null;
+    return value ? value.toUpperCase()?.replace(/-/g, '_') : null;
   }
 
   handleGetActiveLoanError(response) {
-    if (response.errorCode === "DO_NOT_ACTIVE_LOAN_ERROR") {
-      // this.createNewPaydayLoan();
+    if (response.errorCode === 'DO_NOT_ACTIVE_LOAN_ERROR') {
+      this.router.navigateByUrl('companies');
       return;
     }
 
-    // this.showError({
-    //   title:
-    //     Configuration.value('VUE_APP_PRODUCTION') === "true"
-    //       ? this.multiLanguageService.instant("common.error")
-    //       : response.errorCode,
-    //   content:
-    //     response.message === "Network Error"
-    //       ? this.multiLanguageService.instant("common.network_error")
-    //       : Configuration.value('VUE_APP_PRODUCTION') === "true"
-    //         ? this.multiLanguageService.instant("common.something_went_wrong")
-    //         : response.message
-    // });
+    this.showErrorModal(response.errorCode, response.message);
   }
 }

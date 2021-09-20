@@ -169,6 +169,13 @@
   }
 }
 
+.notification-info-img {
+  .pl-prompt-image {
+    width: 32px;
+    height: 32px;
+  }
+}
+
 @media (max-width: 768px) {
   .pl-prompt-btn {
     max-width: 271px;

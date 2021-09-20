@@ -16,6 +16,7 @@ export class PlLoadingComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) private data: any,
     private dialogRef: MatDialogRef<PlLoadingComponent>
   ) {
+    dialogRef.disableClose = true;
     if (data) {
       this.promptContent = data;
     }

@@ -12,11 +12,12 @@ import { fadeAnimation } from './core/common/animations/router.animation';
   ],
 })
 export class AppComponent {
-  title = 'monex-insurance-web-app';
+  title = 'monex-webapp-hmg';
 
   constructor(private multiLanguageService: MultiLanguageService) {
     multiLanguageService.changeLanguage('vi');
     this.multiLanguageService.onSetupMultiLanguage('insurance');
     this.multiLanguageService.onSetupMultiLanguage('payday-loan');
+    this.multiLanguageService.onSetupMultiLanguage("payment")
   }
 }

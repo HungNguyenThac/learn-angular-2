@@ -36,7 +36,7 @@ export class PlCurrentLoanDetailInfoComponent implements OnInit {
         };
       }
     }
-    switch (this.currentLoan.loanStatus) {
+    switch (this.currentLoan.status) {
       case PAYDAY_LOAN_STATUS.DOCUMENTATION_COMPLETE:
       case PAYDAY_LOAN_STATUS.DOCUMENT_AWAITING:
       case PAYDAY_LOAN_STATUS.INITIALIZED:
@@ -44,7 +44,7 @@ export class PlCurrentLoanDetailInfoComponent implements OnInit {
       case PAYDAY_LOAN_STATUS.AUCTION:
         return {
           label: this.multiLanguageService.instant(
-            `payday_loan.current_loan.status.${this.currentLoan.loanStatus.toLowerCase()}`
+            `payday_loan.current_loan.status.${this.currentLoan.status.toLowerCase()}`
           ),
           labelStatus: PL_LABEL_STATUS.PENDING
         };
@@ -52,7 +52,7 @@ export class PlCurrentLoanDetailInfoComponent implements OnInit {
       case PAYDAY_LOAN_STATUS.CONTRACT_ACCEPTED:
         return {
           label: this.multiLanguageService.instant(
-            `payday_loan.current_loan.status.${this.currentLoan.loanStatus.toLowerCase()}`
+            `payday_loan.current_loan.status.${this.currentLoan.status.toLowerCase()}`
           ),
           labelStatus: PL_LABEL_STATUS.SUCCESS
         };
@@ -60,20 +60,20 @@ export class PlCurrentLoanDetailInfoComponent implements OnInit {
       case PAYDAY_LOAN_STATUS.WITHDRAW:
         return {
           label: this.multiLanguageService.instant(
-            `payday_loan.current_loan.status.${this.currentLoan.loanStatus.toLowerCase()}`
+            `payday_loan.current_loan.status.${this.currentLoan.status.toLowerCase()}`
           ),
           labelStatus: PL_LABEL_STATUS.REJECT
         };
       case PAYDAY_LOAN_STATUS.AWAITING_DISBURSEMENT:
         return {
           label: this.multiLanguageService.instant(
-            `payday_loan.current_loan.status.${this.currentLoan.loanStatus.toLowerCase()}`
+            `payday_loan.current_loan.status.${this.currentLoan.status.toLowerCase()}`
           ),
           labelStatus: PL_LABEL_STATUS.DISBURSEMENT
         };
       default:
         return {
-          label: this.currentLoan.loanStatus,
+          label: this.currentLoan.status,
           labelStatus: PL_LABEL_STATUS.REJECT
         };
     }
@@ -81,7 +81,7 @@ export class PlCurrentLoanDetailInfoComponent implements OnInit {
 
   get showMessageGuideSignContract() {
     return (
-      this.currentLoan.loanStatus === PAYDAY_LOAN_STATUS.FUNDED &&
+      this.currentLoan.status === PAYDAY_LOAN_STATUS.FUNDED &&
       (!this.contractInfo.status ||
         this.contractInfo.status === SIGN_STATUS.ACCEPTED ||
         this.contractInfo.status === SIGN_STATUS.AWAITING_BORROWER_SIGNATURE)
@@ -90,24 +90,24 @@ export class PlCurrentLoanDetailInfoComponent implements OnInit {
 
   get showMessageWaitingEpaySignature() {
     return (
-      this.currentLoan.loanStatus === PAYDAY_LOAN_STATUS.FUNDED &&
+      this.currentLoan.status === PAYDAY_LOAN_STATUS.FUNDED &&
       this.contractInfo.status === SIGN_STATUS.AWAITING_EPAY_SIGNATURE
     );
   }
 
   get showMessageGuideCompleteContract() {
     return (
-      this.currentLoan.loanStatus ===
+      this.currentLoan.status ===
       PAYDAY_LOAN_STATUS.DOCUMENTATION_COMPLETE ||
-      this.currentLoan.loanStatus === PAYDAY_LOAN_STATUS.DOCUMENT_AWAITING ||
-      this.currentLoan.loanStatus === PAYDAY_LOAN_STATUS.FUNDED ||
-      this.currentLoan.loanStatus === PAYDAY_LOAN_STATUS.INITIALIZED
+      this.currentLoan.status === PAYDAY_LOAN_STATUS.DOCUMENT_AWAITING ||
+      this.currentLoan.status === PAYDAY_LOAN_STATUS.FUNDED ||
+      this.currentLoan.status === PAYDAY_LOAN_STATUS.INITIALIZED
     );
   }
 
   get showMessagePaymentProcessing() {
     return (
-      this.currentLoan.loanStatus === PAYDAY_LOAN_STATUS.IN_REPAYMENT &&
+      this.currentLoan.status === PAYDAY_LOAN_STATUS.IN_REPAYMENT &&
       (this.paymentStatus === GPAY_RESULT_STATUS.ORDER_PENDING ||
         this.paymentStatus === GPAY_RESULT_STATUS.ORDER_VERIFYING ||
         this.paymentStatus === GPAY_RESULT_STATUS.ORDER_PROCESSING)

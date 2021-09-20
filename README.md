@@ -1,6 +1,9 @@
 # MonexInsuranceWebApp
 
+##Requirement
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 12.1.2.
+
+Node v12
 
 ## Development server
 
