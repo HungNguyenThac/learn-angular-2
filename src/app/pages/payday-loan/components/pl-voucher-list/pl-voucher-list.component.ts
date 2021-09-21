@@ -1,4 +1,4 @@
-import { Component, Inject, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Voucher } from 'open-api-modules/loanapp-api-docs';
 
@@ -10,7 +10,6 @@ import { Voucher } from 'open-api-modules/loanapp-api-docs';
 export class PlVoucherListComponent implements OnInit {
   panelOpenState = false;
   voucherListArray: Array<Voucher>;
-  @Input() vouchercode;
 
   constructor(
     public dialogRef: MatDialogRef<PlVoucherListComponent>,
@@ -20,4 +19,8 @@ export class PlVoucherListComponent implements OnInit {
   }
 
   ngOnInit(): void {}
+
+  voucherApply(voucherChoose: Voucher) {
+    this.dialogRef.close(voucherChoose)
+  }
 }

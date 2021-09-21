@@ -51,7 +51,7 @@
                   <p class="amount-detail-label">{{ 'payday_loan.choose_amount.expected_amount' | translate }}</p>
                   <p id="choose-amount-number">
                     {{
-                      formatMillionPrice(loanDeteminationForm.controls["loanAmount"].value) | formatPrice
+                      loanAmountFormatMillionPrice() | formatPrice
                     }}
                   </p>
                 </div>
@@ -60,7 +60,7 @@
                   <p class="amount-detail-label">{{ 'payday_loan.choose_amount.service_price' | translate }}</p>
                   <p class="amount-detail-value">
                     {{
-                      loanFee() | formatPrice
+                      originalLoanFee() | formatPrice
                     }}
                   </p>
                 </div>
@@ -68,8 +68,8 @@
                 <div class="loan-detail-item loan-row">
                   <p class="amount-detail-label">{{ 'payday_loan.choose_amount.discount_number' | translate }}</p>
                   <p class="amount-detail-value">
-                    {{
-                      formatMillionPrice(loanDeteminationForm.controls["loanAmount"].value) | formatPrice
+                    -{{
+                      discount | formatPrice
                     }}
                   </p>
                 </div>
@@ -78,7 +78,7 @@
                   <p class="amount-detail-label">{{ 'payday_loan.choose_amount.total_price' | translate }}</p>
                   <p class="amount-detail-value" id="total-fee">
                     {{
-                      formatMillionPrice(loanDeteminationForm.controls["loanAmount"].value) | formatPrice
+                      loanFeeTotal() | formatPrice
                     }}
                   </p>
                 </div>
@@ -114,26 +114,23 @@
                     'payday_loan.choose_amount.enter_discount_code' | translate
                   "
                 />
-                <span matSuffix class="voucher-suffix" *ngIf="loanDeteminationForm.controls.voucherCode.value ==='' ">
+                <button matSuffix class="voucher-suffix" *ngIf="loanDeteminationForm.controls.voucherCode.value ==='' || !isCorrectedVoucherApplied && !voucherShowError" (click)="checkVoucherApplied()">
                   {{
                     "payday_loan.choose_amount.apply" | translate
                   }}
-                </span>
-                <span matSuffix class="voucher-suffix" *ngIf="loanDeteminationForm.controls.voucherCode.value !=='' && loanDeteminationForm.controls.voucherCode.valid ">
+                </button>
+                <span matSuffix class="voucher-suffix" *ngIf="loanDeteminationForm.controls.voucherCode.value !=='' && isCorrectedVoucherApplied ">
                   {{
                     "payday_loan.choose_amount.applied" | translate
                   }}
                 </span>
-                <button type="button" tabindex="-1" *ngIf="loanDeteminationForm.controls.voucherCode.value && loanDeteminationForm.controls.voucherCode.valid" matSuffix
+                <button type="button" tabindex="-1" *ngIf="loanDeteminationForm.controls.voucherCode.value && voucherShowError" matSuffix
                             mat-icon-button aria-label="Clear"
                             (click)="loanDeteminationForm.controls.voucherCode.setValue('')" disableRipple="true">
                             <div class="clear-icon"></div>
                         </button>
-                <mat-errors *ngIf="!loanDeteminationForm.controls.voucherCode.valid">
-                  {{'payday_loan.choose_amount.codes_has_run_out' | translate}}
-                </mat-errors>
-                <mat-errors *ngIf="!loanDeteminationForm.controls.voucherCode.valid">
-                  Mã ưu đãi chỉ áp dụng trong các khung giờ: {{voucherApplyTime}}
+                <mat-errors *ngIf="voucherShowError && loanDeteminationForm.controls.voucherCode.value">
+                  {{voucherShowError}}
                 </mat-errors>
               </mat-form-field>
               <div class="text-center">
