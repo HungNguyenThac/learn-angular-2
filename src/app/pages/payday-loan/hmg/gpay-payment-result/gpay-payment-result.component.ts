@@ -51,7 +51,7 @@ export class GpayPaymentResultComponent implements OnInit, OnDestroy {
   initHeaderInfo() {
     this.store.dispatch(new fromActions.ResetPaydayLoanInfo());
     this.store.dispatch(new fromActions.SetShowLeftBtn(true));
-    this.store.dispatch(new fromActions.SetShowRightBtn(true));
+    this.store.dispatch(new fromActions.SetShowRightBtn(false));
     this.store.dispatch(new fromActions.SetShowProfileBtn(true));
     this.store.dispatch(new fromActions.SetShowStepNavigation(false));
   }
@@ -85,7 +85,7 @@ export class GpayPaymentResultComponent implements OnInit, OnDestroy {
 
   checkResultData() {
     if (!this.routerQueryParams.data || !this.routerQueryParams.hmac) {
-      this.router.navigateByUrl('introduce');
+      this.router.navigateByUrl('');
       return;
     }
     let dataDecodedBase64 = base64.decode(this.routerQueryParams.data);
@@ -96,7 +96,7 @@ export class GpayPaymentResultComponent implements OnInit, OnDestroy {
       ]);
     }
     if (dataDecodedBase64.status === GPAY_RESULT_STATUS.ORDER_SUCCESS) {
-      return this.router.navigateByUrl('introduce');
+      return this.router.navigateByUrl('');
     }
 
     this.router.navigate([

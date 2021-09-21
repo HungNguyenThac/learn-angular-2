@@ -50,6 +50,7 @@ router-outlet ~ * {
   height: 100%;
   width: 100%;
 }
+
 @media (min-width: 1200px) {
   .container,
   .container-lg,
@@ -105,12 +106,19 @@ a {
 }
 
 .ng2-pdf-viewer-container {
+  //overflow-x: inherit !important;
   &::-webkit-scrollbar {
-    display: none;
+    display: none !important;
   }
+  -ms-overflow-style: none !important;
+  scrollbar-width: none !important;
+}
 
-  -ms-overflow-style: none;
-  scrollbar-width: none;
+pdf-viewer {
+  display: block;
+  height: 100vh;
+  //position: relative;
+  //z-index: 0;
 }
 
 @media (max-width: 768px) {

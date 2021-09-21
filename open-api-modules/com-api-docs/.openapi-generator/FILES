@@ -9,6 +9,7 @@ api/insuranceController.service.ts
 api/mailController.service.ts
 api/otpController.service.ts
 api/pushNotificationController.service.ts
+api/signingPositionController.service.ts
 api/smsController.service.ts
 api/templateNotificationController.service.ts
 configuration.ts
@@ -24,8 +25,9 @@ model/apiResponseCreateTokenResponse.ts
 model/apiResponseGetInsuranceResponse.ts
 model/apiResponseListTemplateNotificationEntity.ts
 model/apiResponseListTransactionNotificationEntity.ts
-model/apiResponseMapStringObject.ts
 model/apiResponseObject.ts
+model/apiResponseSignOTPResponseOnSign.ts
+model/apiResponseSignWithOTPResponse.ts
 model/apiResponseString.ts
 model/cancelInsuranceRequest.ts
 model/cancelInsuranceResponse.ts
@@ -34,9 +36,9 @@ model/contentNotification.ts
 model/contentNotificationRequest.ts
 model/createInsuranceRequest.ts
 model/createInsuranceResponse.ts
-model/createLetterHMGRequest.ts
 model/createLetterRequest.ts
 model/createLetterResponse.ts
+model/createSigningPositionRequest.ts
 model/createTemplateNotificationRequest.ts
 model/createTokenResponse.ts
 model/dataCreateToken.ts
@@ -49,13 +51,15 @@ model/models.ts
 model/scheduleMailRequest.ts
 model/seenNotificationRequest.ts
 model/sendContractOTPRequest.ts
-model/sendLetterOTPHMGRequest.ts
 model/sendLetterOTPRequest.ts
 model/sendMailRequest.ts
 model/sendOtpRequest.ts
 model/sendSMSRequest.ts
 model/sendSampleNotificationRequest.ts
 model/sendTemplateRequest.ts
+model/signOTPResponseOnSign.ts
+model/signWithOTPResponse.ts
+model/signingPosition.ts
 model/templateNotificationEntity.ts
 model/transactionNotificationEntity.ts
 model/updateFcmTokenRequest.ts

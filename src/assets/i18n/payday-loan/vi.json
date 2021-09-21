@@ -33,7 +33,7 @@
       "sent_otp_success": "Mã xác thực 6 chữ số được gửi về số điện thoại <span class='pl-text-inline'>{phone}</span> của bạn. Vui lòng kiểm tra.",
       "send_otp_after": "Gửi lại mã sau",
       "over_times_resend_otp": "Đã quá số lần cho phép gửi lại mã OTP, vui lòng nhập lại số điện thoại và thử lại",
-      "n_type_wrong_otp": "Mã OTP không chính xác, còn lại {remaining} lần thử",
+      "n_type_wrong_otp": "Mã OTP không chính xác, còn lại {{remaining}} lần thử",
       "over_all_times_type_wrong_otp": "Bạn đã nhập sai OTP quá số lần cho phép, vui lòng gửi lại OTP hoặc nhập lại số điện thoại và thử lại",
       "resent_otp": "Gửi lại mã OTP"
     },
@@ -48,7 +48,7 @@
       "sent_otp_success": "Mã xác thực 6 chữ số được gửi về số điện thoại <span class='pl-text-inline'>{phone}</span> của bạn. Vui lòng kiểm tra.",
       "send_otp_after": "Gửi lại mã sau",
       "over_times_resend_otp": "Đã quá số lần cho phép gửi lại mã OTP, vui lòng nhập lại số điện thoại và thử lại",
-      "n_type_wrong_otp": "Mã OTP không chính xác, còn lại {remaining} lần thử",
+      "n_type_wrong_otp": "Mã OTP không chính xác, còn lại {{remaining}} lần thử",
       "over_all_times_type_wrong_otp": "Bạn đã nhập sai OTP quá số lần cho phép, vui lòng gửi lại OTP hoặc nhập lại số điện thoại và thử lại",
       "resent_otp": "Gửi lại mã OTP",
       "login": "Đăng nhập",
@@ -195,7 +195,7 @@
     "current_loan": {
       "current_loan_info": "Thông tin ứng lương",
       "sign_contract": "Ký hợp đồng",
-      "awaiting_borrow_sign_contract": "Bạn đã được duyệt hồ sơ vay. Vui lòng nhấn 'Xem hợp đồng' để xem hợp đồng ứng lương hoàn thiện phiên ký phía người vay.",
+      "awaiting_borrow_sign_contract": "Yêu cầu ứng lương của bạn đã được phê duyệt thành công. Vui lòng kiểm tra và ký hợp đồng ứng lương để được giải ngân ngay lập tức.",
       "awaiting_epay_sign_contract": "Bạn hoàn thành phiên ký. Vui lòng đợi Monex hoàn thiện hợp đồng",
       "please_wait_approval": "Khoản vay đang trong quá trình xét duyệt. Quý khách vui lòng đợi thông báo gửi về qua tin nhắn/email để hoàn thành thủ tục ứng lương",
       "payment_processing": "Hệ thống đang xử lí giao dịch tất toán, vui lòng chờ trong giây lát.",
@@ -234,7 +234,8 @@
         "in_repayment": "Trong hạn",
         "rejected": "Đã từ chối",
         "withdraw": "Rút hồ sơ",
-        "contract_accepted": "Hợp đồng được chấp nhận",
+        "contract_awaiting": "Chờ Epay ký",
+        "contract_accepted": "Ký hoàn thành",
         "contract_rejected": "Từ chối hợp đồng",
         "awaiting_disbursement": "Chờ giải ngân",
         "disbursed": "Giải ngân",
@@ -352,7 +353,9 @@
       "not_current_loan_repayment_error": "Bạn chưa có lịch sử thanh toán cho khoản vay hiện tại",
       "missing_anual_income": "Thiếu thông tin lương",
       "company_not_exist": "Công ty không tồn tại",
-      "approval_letter_not_exist": "Thư chấp thuận không tồn tại"
+      "approval_letter_not_exist": "Thư chấp thuận không tồn tại",
+      "do_not_active_loan_error": "Không tồn tại khoản vay nào",
+      "not_found_session": "Không tồn tại phiên ký"
     },
     "introduce": {
       "product": "Sản phẩm",

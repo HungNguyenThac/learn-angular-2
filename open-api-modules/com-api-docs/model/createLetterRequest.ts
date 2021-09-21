@@ -16,7 +16,7 @@ export interface CreateLetterRequest {
     name: string;
     nationalId: string;
     customerId: string;
-    employeeCode: string;
+    employeeCode?: string;
     idIssuePlace: string;
 }
 

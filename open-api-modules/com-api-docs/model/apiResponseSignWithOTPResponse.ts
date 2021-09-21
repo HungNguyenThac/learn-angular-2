@@ -9,13 +9,13 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { SignWithOTPResponse } from './signWithOTPResponse';
 
 
-export interface CreateLetterHMGRequest { 
-    dateOfBirth: string;
-    name: string;
-    nationalId: string;
-    customerId: string;
-    idIssuePlace: string;
+export interface ApiResponseSignWithOTPResponse { 
+    result?: SignWithOTPResponse;
+    errorCode?: string;
+    message?: object;
+    responseCode?: number;
 }
 

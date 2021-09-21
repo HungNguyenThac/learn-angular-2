@@ -2,12 +2,17 @@
   <div *ngIf="!isSentOtpOnsign; else isntSentOtpOnsign">
     <div class="container-fluid pl-pdf-document-container">
       <div class="container sign-contract-terms-pdf-document">
-        <pdf-viewer
-          [src]="linkPdf"
-          [autoresize]="true"
-          [original-size]="false"
-          [fit-to-page]="false"
-        ></pdf-viewer>
+        <mat-drawer-container>
+          <mat-drawer-content>
+            <pdf-viewer
+              [src]="linkPdf"
+              [autoresize]="true"
+              [original-size]="false"
+              [fit-to-page]="true"
+              [render-text]="true"
+            ></pdf-viewer>
+          </mat-drawer-content>
+        </mat-drawer-container>
       </div>
     </div>
     <div
@@ -43,7 +48,7 @@
               class="pl-space-between-content sent-otp-text"
               [innerHtml]="'payday_loan.contract_terms_of_service.sent_otp_success' | translate : {
                     key: 'email',
-                    value: userInfo?.emailAddress
+                    value: userInfo?.personalData?.emailAddress
                   }" guide>
             </p>
           </app-verify-otp-form>

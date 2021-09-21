@@ -23,6 +23,7 @@ import { ApiResponseString } from '../model/models';
 import { ApiResponseVirtualAccount } from '../model/models';
 import { CreateRepaymentOrderRequest } from '../model/models';
 import { CreateVARequest } from '../model/models';
+import { GpayChangeBalanceWebhook } from '../model/models';
 import { UpdateVARequest } from '../model/models';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
@@ -131,16 +132,70 @@ export class GpayVirtualAccountControllerService {
     }
 
     /**
+     * @param gpayChangeBalanceWebhook 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public createPaymentOrder(gpayChangeBalanceWebhook: GpayChangeBalanceWebhook, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<ApiResponseString>;
+    public createPaymentOrder(gpayChangeBalanceWebhook: GpayChangeBalanceWebhook, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<ApiResponseString>>;
+    public createPaymentOrder(gpayChangeBalanceWebhook: GpayChangeBalanceWebhook, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<ApiResponseString>>;
+    public createPaymentOrder(gpayChangeBalanceWebhook: GpayChangeBalanceWebhook, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
+        if (gpayChangeBalanceWebhook === null || gpayChangeBalanceWebhook === undefined) {
+            throw new Error('Required parameter gpayChangeBalanceWebhook was null or undefined when calling createPaymentOrder.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (httpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'application/json'
+            ];
+            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
+        if (httpHeaderAcceptSelected !== undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'application/json'
+        ];
+        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
+        if (httpContentTypeSelected !== undefined) {
+            headers = headers.set('Content-Type', httpContentTypeSelected);
+        }
+
+        let responseType_: 'text' | 'json' = 'json';
+        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+            responseType_ = 'text';
+        }
+
+        return this.httpClient.post<ApiResponseString>(`${this.configuration.basePath}/v1/virtual-account/gpay/payment-order`,
+            gpayChangeBalanceWebhook,
+            {
+                responseType: <any>responseType_,
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
      * @param createRepaymentOrderRequest 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public createPaymentOrder(createRepaymentOrderRequest: CreateRepaymentOrderRequest, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<ApiResponseString>;
-    public createPaymentOrder(createRepaymentOrderRequest: CreateRepaymentOrderRequest, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<ApiResponseString>>;
-    public createPaymentOrder(createRepaymentOrderRequest: CreateRepaymentOrderRequest, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<ApiResponseString>>;
-    public createPaymentOrder(createRepaymentOrderRequest: CreateRepaymentOrderRequest, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
+    public createPaymentOrder1(createRepaymentOrderRequest: CreateRepaymentOrderRequest, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<ApiResponseString>;
+    public createPaymentOrder1(createRepaymentOrderRequest: CreateRepaymentOrderRequest, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<ApiResponseString>>;
+    public createPaymentOrder1(createRepaymentOrderRequest: CreateRepaymentOrderRequest, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<ApiResponseString>>;
+    public createPaymentOrder1(createRepaymentOrderRequest: CreateRepaymentOrderRequest, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
         if (createRepaymentOrderRequest === null || createRepaymentOrderRequest === undefined) {
-            throw new Error('Required parameter createRepaymentOrderRequest was null or undefined when calling createPaymentOrder.');
+            throw new Error('Required parameter createRepaymentOrderRequest was null or undefined when calling createPaymentOrder1.');
         }
 
         let headers = this.defaultHeaders;

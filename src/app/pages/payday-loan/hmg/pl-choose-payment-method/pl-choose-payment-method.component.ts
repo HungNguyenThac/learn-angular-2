@@ -20,9 +20,11 @@ import {
 } from '../../../../../../open-api-modules/customer-api-docs';
 import { environment } from '../../../../../environments/environment';
 import {
+  ApiResponseGpayRepaymentResponse,
   ApiResponseListRepaymentTransaction,
   ApiResponseVirtualAccount,
   GpayVirtualAccountControllerService,
+  RepaymentControllerService,
 } from '../../../../../../open-api-modules/payment-api-docs';
 import { PaymentProductInfo } from '../../../../public/models/payment-product-info.model';
 import { PaymentUserInfo } from '../../../../public/models/payment-user-info.model';
@@ -42,6 +44,7 @@ import formatSlug from '../../../../core/utils/format-slug';
 export class PlChoosePaymentMethodComponent implements OnInit {
   currentLoan: PaymentProductInfo = {
     id: '',
+    code: '',
     message: '',
     expectedAmount: 0,
     latePenaltyPayment: 0,
@@ -72,7 +75,8 @@ export class PlChoosePaymentMethodComponent implements OnInit {
     private multiLanguageService: MultiLanguageService,
     private gpayVirtualAccountControllerService: GpayVirtualAccountControllerService,
     private applicationControllerService: ApplicationControllerService,
-    private infoControllerService: InfoControllerService
+    private infoControllerService: InfoControllerService,
+    private repaymentControllerService: RepaymentControllerService
   ) {
     this._initSubscribeState();
   }
@@ -109,7 +113,7 @@ export class PlChoosePaymentMethodComponent implements OnInit {
   initHeaderInfo() {
     this.store.dispatch(new fromActions.ResetPaydayLoanInfo());
     this.store.dispatch(new fromActions.SetShowLeftBtn(true));
-    this.store.dispatch(new fromActions.SetShowRightBtn(true));
+    this.store.dispatch(new fromActions.SetShowRightBtn(false));
     this.store.dispatch(new fromActions.SetShowProfileBtn(true));
     this.store.dispatch(new fromActions.SetShowStepNavigation(false));
   }
@@ -138,17 +142,20 @@ export class PlChoosePaymentMethodComponent implements OnInit {
         )
     );
   }
+
   finalization() {
-
-    //TODO Init repayment gpay HMG
-
-    // PaymentService.initRepaymentGpay(
-    //   this.customerId,
-    //   this.currentLoan.loanId,
-    //   this.currentLoan.loanCode
-    // );
-    // if (!response || !response.result || !response.result.order_url) return;
-    // window.location.href = response.result.order_url;
+    this.subManager.add(
+      this.repaymentControllerService
+        .gpayRepaymentPaydayLoanHmg({
+          customerId: this.customerId,
+          applicationId: this.currentLoan.id,
+        })
+        .subscribe((response: ApiResponseGpayRepaymentResponse) => {
+          if (!response || !response.result || !response.result.order_url)
+            return;
+          window.location.href = response.result.order_url;
+        })
+    );
   }
 
   getActiveLoan() {
@@ -167,6 +174,7 @@ export class PlChoosePaymentMethodComponent implements OnInit {
             this.currentLoan = {
               id: response.result.id,
               message: response.result.loanCode,
+              code: response.result.loanCode,
               expectedAmount: response.result.expectedAmount || 0,
               latePenaltyPayment: response.result.latePenaltyPayment || 0,
             };
@@ -278,7 +286,7 @@ export class PlChoosePaymentMethodComponent implements OnInit {
   }
 
   handleGetActiveLoanError(response: ApiResponsePaydayLoan) {
-    if (response.errorCode === 'DO_NOT_ACTIVE_LOAN_ERROR') {
+    if (response.errorCode === ERROR_CODE.DO_NOT_ACTIVE_LOAN_ERROR) {
       this.router.navigateByUrl('companies');
       return;
     }

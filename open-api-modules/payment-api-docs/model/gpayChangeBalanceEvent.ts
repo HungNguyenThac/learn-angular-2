@@ -9,12 +9,16 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { GpayChangeBalanceWebhook } from './gpayChangeBalanceWebhook';
 
 
-export interface ApiResponseMapStringObject { 
-    result?: { [key: string]: object; };
-    errorCode?: string;
-    message?: object;
-    responseCode?: number;
+export interface GpayChangeBalanceEvent { 
+    source?: string;
+    version?: number;
+    id?: string;
+    request?: GpayChangeBalanceWebhook;
+    provider?: string;
+    api_source?: string;
+    actions?: string;
 }
 

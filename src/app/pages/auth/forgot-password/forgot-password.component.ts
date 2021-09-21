@@ -92,7 +92,7 @@ export class ForgotPasswordComponent implements OnInit {
     this.store.dispatch(new fromActions.ResetPaydayLoanInfo());
     this.store.dispatch(new fromActions.SetNavigationTitle('Quên mật khẩu'));
     this.store.dispatch(new fromActions.SetShowLeftBtn(true));
-    this.store.dispatch(new fromActions.SetShowRightBtn(true));
+    this.store.dispatch(new fromActions.SetShowRightBtn(false));
   }
 
   resetSession() {

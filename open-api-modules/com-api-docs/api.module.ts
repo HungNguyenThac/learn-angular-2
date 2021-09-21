@@ -8,6 +8,7 @@ import { InsuranceControllerService } from './api/insuranceController.service';
 import { MailControllerService } from './api/mailController.service';
 import { OtpControllerService } from './api/otpController.service';
 import { PushNotificationControllerService } from './api/pushNotificationController.service';
+import { SigningPositionControllerService } from './api/signingPositionController.service';
 import { SmsControllerService } from './api/smsController.service';
 import { TemplateNotificationControllerService } from './api/templateNotificationController.service';
 

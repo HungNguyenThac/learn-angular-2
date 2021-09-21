@@ -51,7 +51,6 @@ export class DetailLoanPaymentComponent implements OnInit {
       case PAYDAY_LOAN_STATUS.DOCUMENTATION_COMPLETE:
       case PAYDAY_LOAN_STATUS.DOCUMENT_AWAITING:
       case PAYDAY_LOAN_STATUS.INITIALIZED:
-      case PAYDAY_LOAN_STATUS.FUNDED:
       case PAYDAY_LOAN_STATUS.AUCTION:
         return {
           label: this.multiLanguageService.instant(
@@ -59,7 +58,9 @@ export class DetailLoanPaymentComponent implements OnInit {
           ),
           labelStatus: PL_LABEL_STATUS.PENDING,
         };
+      case PAYDAY_LOAN_STATUS.FUNDED:
       case PAYDAY_LOAN_STATUS.IN_REPAYMENT:
+      case PAYDAY_LOAN_STATUS.CONTRACT_AWAITING:
       case PAYDAY_LOAN_STATUS.CONTRACT_ACCEPTED:
         return {
           label: this.multiLanguageService.instant(

@@ -25,7 +25,7 @@ import { MultiLanguageService } from '../../../../share/translate/multiLanguageS
 import { environment } from '../../../../../environments/environment';
 import { Title } from '@angular/platform-browser';
 import { GlobalConstants } from '../../../../core/common/global-constants';
-import { PAYDAY_LOAN_STATUS } from '../../../../core/common/enum/payday-loan';
+import {ERROR_CODE, PAYDAY_LOAN_STATUS} from '../../../../core/common/enum/payday-loan';
 import formatSlug from '../../../../core/utils/format-slug';
 
 @Component({
@@ -77,7 +77,7 @@ export class LoanPaymentComponent implements OnInit, OnDestroy {
   initHeaderInfo() {
     this.store.dispatch(new fromActions.ResetPaydayLoanInfo());
     this.store.dispatch(new fromActions.SetShowLeftBtn(true));
-    this.store.dispatch(new fromActions.SetShowRightBtn(true));
+    this.store.dispatch(new fromActions.SetShowRightBtn(false));
     this.store.dispatch(new fromActions.SetShowProfileBtn(true));
     this.store.dispatch(new fromActions.SetShowStepNavigation(false));
   }
@@ -177,7 +177,7 @@ export class LoanPaymentComponent implements OnInit, OnDestroy {
   }
 
   handleGetActiveLoanError(response: ApiResponsePaydayLoan) {
-    if (response.errorCode === 'DO_NOT_ACTIVE_LOAN_ERROR') {
+    if (response.errorCode === ERROR_CODE.DO_NOT_ACTIVE_LOAN_ERROR) {
       this.router.navigateByUrl('companies');
       return;
     }

@@ -46,3 +46,19 @@ export const getStepNavigationInfo = createSelector(
   fromFeature.getCoreState,
   (state: fromFeature.State) => state.paydayLoan.stepNavigationInfo
 );
+
+export const isSignContractTermsSuccess = createSelector(
+  fromFeature.getCoreState,
+  (state: fromFeature.State) => state.paydayLoan.signContractTermsSuccess
+);
+
+export const isSignContractSuccess = createSelector(
+  fromFeature.getCoreState,
+  (state: fromFeature.State) => state.paydayLoan.signContractSuccess
+);
+
+
+export const isSentOtpOnsign = createSelector(
+  fromFeature.getCoreState,
+  (state: fromFeature.State) => state.paydayLoan.isSentOtpOnsign
+);

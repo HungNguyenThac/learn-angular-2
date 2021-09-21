@@ -17,6 +17,9 @@ export interface PaydayLoanState {
   navigationTitle: string;
   stepNavigationInfo: StepNavigationInfo;
   showNavigationBar: boolean;
+  signContractTermsSuccess: boolean;
+  signContractSuccess: boolean;
+  isSentOtpOnsign: boolean;
 }
 
 export const PAYDAY_LOAN_INITIAL_STATE: PaydayLoanState = {
@@ -33,6 +36,9 @@ export const PAYDAY_LOAN_INITIAL_STATE: PaydayLoanState = {
     stepTitle: PAYDAY_LOAN_STEP_TITLE.ELECTRONIC_IDENTIFIERS,
   },
   showNavigationBar: true,
+  signContractTermsSuccess: false,
+  signContractSuccess: false,
+  isSentOtpOnsign: false,
 };
 
 class PaydayLoanActions {
@@ -70,7 +76,7 @@ class PaydayLoanActions {
       ...this.state,
       stepNavigationInfo: {
         currentStep: PAYDAY_LOAN_STEP[step],
-        lastStep: PAYDAY_LOAN_STEP[step],
+        lastStep: PAYDAY_LOAN_STEP.CONTRACT_SIGNING,
         stepTitle: PAYDAY_LOAN_STEP_TITLE[step],
       },
     };
@@ -129,7 +135,7 @@ class PaydayLoanActions {
         lastStep: PAYDAY_LOAN_STEP.CONTRACT_SIGNING,
         stepTitle: PAYDAY_LOAN_STEP_TITLE.ELECTRONIC_IDENTIFIERS,
       },
-      showNavigationBar: true
+      showNavigationBar: true,
     };
   }
 
@@ -137,6 +143,24 @@ class PaydayLoanActions {
     const payload = this.action.payload;
 
     return { ...this.state, showNavigationBar: payload };
+  }
+
+  setSignContractTermsSuccess() {
+    const payload = this.action.payload;
+
+    return { ...this.state, signContractTermsSuccess: payload };
+  }
+
+  setSignContractSuccess() {
+    const payload = this.action.payload;
+
+    return { ...this.state, signContractSuccess: payload };
+  }
+
+  setSentOtpOnsignStatus() {
+    const payload = this.action.payload;
+
+    return { ...this.state, isSentOtpOnsign: payload };
   }
 }
 
@@ -176,6 +200,12 @@ export function paydayLoanReducer(
       return paydayLoanActions.resetPaydayLoanInfo();
     case fromActions.SET_SHOW_NAVIGATION_BAR:
       return paydayLoanActions.setShowNavigationBar();
+    case fromActions.SET_SIGN_CONTRACT_SUCCESS:
+      return paydayLoanActions.setSignContractSuccess();
+    case fromActions.SET_SIGN_CONTRACT_TERMS_SUCCESS:
+      return paydayLoanActions.setSignContractTermsSuccess();
+    case fromActions.SET_SENT_OTP_ONSIGN_STATUS:
+      return paydayLoanActions.setSentOtpOnsignStatus();
     default: {
       return state;
     }

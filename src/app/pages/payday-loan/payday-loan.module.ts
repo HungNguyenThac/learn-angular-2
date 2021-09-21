@@ -1,11 +1,11 @@
-import {NgModule} from '@angular/core';
-import {CommonModule} from '@angular/common';
-import {RouterModule} from "@angular/router";
-import {SharedModule} from "../../share/shared.module";
-import {TranslateModule} from "@ngx-translate/core";
-import {PaydayLoanRoutes} from "./payday-loan-routing.module";
-import {FormsModule} from "@angular/forms";
-import {VerifyOtpFormComponent} from "./components/verify-otp-form/verify-otp-form.component";
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
+import { SharedModule } from '../../share/shared.module';
+import { TranslateModule } from '@ngx-translate/core';
+import { PaydayLoanRoutes } from './payday-loan-routing.module';
+import { FormsModule } from '@angular/forms';
+import { VerifyOtpFormComponent } from './components/verify-otp-form/verify-otp-form.component';
 import { ElectronicSigningSuccessComponent } from './components/electronic-signing-success/electronic-signing-success.component';
 import { EkycUploadComponent } from './components/ekyc-upload/ekyc-upload.component';
 import { ImageUploadAreaComponent } from './components/image-upload-area/image-upload-area.component';
@@ -38,7 +38,7 @@ import { DetailLoanPaymentComponent } from './components/detail-loan-payment/det
     RouterModule.forChild(PaydayLoanRoutes),
     SharedModule,
     TranslateModule,
-    FormsModule
+    FormsModule,
   ],
   exports: [
     VerifyOtpFormComponent,
@@ -52,8 +52,7 @@ import { DetailLoanPaymentComponent } from './components/detail-loan-payment/det
     PlIntroduceComponent,
     PlProviderComponent,
     ChatBoxComponent,
-    DetailLoanPaymentComponent
-  ]
+    DetailLoanPaymentComponent,
+  ],
 })
-export class PaydayLoanModule {
-}
+export class PaydayLoanModule {}
