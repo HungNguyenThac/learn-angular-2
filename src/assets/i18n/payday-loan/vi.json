@@ -220,8 +220,10 @@
       "phone_number": "Số điện thoại",
       "finalization": "Tất toán",
       "disbursement_date": "Ngày giải ngân",
-      "settlement_date": "Hạn tất toán",
+      "settlement_date": "Hạn thanh toán",
       "settlement_date_text": "Vào ngày TNG trả lương của kỳ lương hiện tại",
+      "punish_start_time": "Phí trả chậm được tính kể từ",
+      "punish_start_time_text": "00h Ngày {start_time}",
       "service_fee_description": "Phí dịch vụ là phí Monex thu trên mỗi khoản vay giúp chúng tôi mang dịch vụ Ứng lương 24h đến với bạn được tốt nhất.",
       "view_contract": "Xem hợp đồng",
       "see_the_intro": "Xem hướng dẫn",
@@ -334,7 +336,7 @@
       "name_receiver_desc": "Đây là tài khoản tất toán của Quý khách do Monex quản lý. Khi Quý khách chuyển khoản tới tài khoản này, hệ thống sẽ ghi nhận vào số tiền hoàn ứng của Quý khách",
       "transfer_content": "Nội dung chuyển khoản",
       "required_name_desc": "Thiếu thông tin này, Monex sẽ không thể định danh khoản tiền từ <span class='pl-name-inline'>{name}</span>",
-      "confirm_finalization_content": "Quý khách vui lòng chuẩn bị sẵn thông tin thẻ ngân hàng. Phiên thanh toán chỉ có thời hạn {minute} phút"
+      "confirm_finalization_content": "Quý khách vui lòng chuẩn bị sẵn thông tin thẻ ngân hàng. Phiên thanh toán chỉ có thời hạn {{minute}} phút"
     },
     "error_code": {
       "account_not_exist": "Số điện thoại hoặc mật khẩu không chính xác!",
@@ -350,7 +352,10 @@
       "session_sign_already_exist": "Phiên ký đã tồn tại. Vui lòng thử lại sau",
       "lock_create_new_session": "Bạn tạm thời bị khóa chức năng do xác thực thất bại quá nhiều lần.",
       "do_not_exist_virtual_account": "Bạn chưa có tài khoản thanh toán. Vui lòng liên hệ tổng đài 1900 234 583 để được hỗ trợ",
-      "not_current_loan_repayment_error": "Bạn chưa có lịch sử thanh toán cho khoản vay hiện tại"
+      "not_current_loan_repayment_error": "Bạn chưa có lịch sử thanh toán cho khoản vay hiện tại",
+      "missing_anual_income": "Thiếu thông tin lương",
+      "company_not_exist": "Công ty không tồn tại",
+      "approval_letter_not_exist": "Thư chấp thuận không tồn tại"
     },
     "introduce": {
       "product": "Sản phẩm",

@@ -73,6 +73,28 @@ export enum ERROR_CODE {
   LOCK_CREATE_NEW_SESSION = 'LOCK_CREATE_NEW_SESSION',
   DO_NOT_EXIST_VIRTUAL_ACCOUNT = 'DO_NOT_EXIST_VIRTUAL_ACCOUNT',
   NOT_CURRENT_LOAN_REPAYMENT_ERROR = 'NOT_CURRENT_LOAN_REPAYMENT_ERROR',
+  MISSING_ANUAL_INCOME = 'MISSING_ANUAL_INCOME',
+  COMPANY_NOT_EXIST = 'COMPANY_NOT_EXIST',
+  APPROVAL_LETTER_NOT_EXIST = 'APPROVAL_LETTER_NOT_EXIST'
+}
+
+export enum ERROR_CODE_KEY {
+  ACCOUNT_EXISTED = 'payday_loan.error_code.account_existed',
+  EMAIL_ALREADY_EXISTS = 'payday_loan.error_code.email_already_exists',
+  ACCOUNT_NOT_EXIST = 'payday_loan.error_code.account_not_exist',
+  MISS_PARAM = 'payday_loan.error_code.miss_param',
+  DATA_ERROR = 'payday_loan.error_code.data_error',
+  WRONG_PASSWORD = 'payday_loan.error_code.wrong_password',
+  OTP_EXPIRE_TIME = 'payday_loan.error_code.otp_expire_time',
+  OTP_INVALID = 'payday_loan.error_code.otp_invalid',
+  OTP_CONFIRM_MAXIMUM = 'payday_loan.error_code.otp_confirm_maximum',
+  SESSION_SIGN_ALREADY_EXIST = 'payday_loan.error_code.session_sign_already_exist',
+  LOCK_CREATE_NEW_SESSION = 'payday_loan.error_code.lock_create_new_session',
+  DO_NOT_EXIST_VIRTUAL_ACCOUNT = 'payday_loan.error_code.do_not_exist_virtual_account',
+  NOT_CURRENT_LOAN_REPAYMENT_ERROR = 'payday_loan.error_code.not_current_loan_repayment_error',
+  MISSING_ANUAL_INCOME = 'payday_loan.error_code.missing_anual_income',
+  COMPANY_NOT_EXIST = 'payday_loan.error_code.company_not_exist',
+  APPROVAL_LETTER_NOT_EXIST = 'payday_loan.error_code.approval_letter_not_exist',
 }
 
 export enum SIGN_STATUS {

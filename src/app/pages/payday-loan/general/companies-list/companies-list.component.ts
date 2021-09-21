@@ -7,7 +7,10 @@ import {
   CompanyControllerService,
   InfoControllerService,
 } from 'open-api-modules/customer-api-docs';
-import { ApplicationControllerService } from 'open-api-modules/loanapp-api-docs';
+import {
+  ApiResponsePaydayLoan,
+  ApplicationControllerService,
+} from 'open-api-modules/loanapp-api-docs';
 import { Observable, Subscription } from 'rxjs';
 import { PAYDAY_LOAN_STATUS } from 'src/app/core/common/enum/payday-loan';
 import { NotificationService } from 'src/app/core/services/notification.service';
@@ -71,6 +74,8 @@ export class CompaniesListComponent implements OnInit, OnDestroy {
     this.store.dispatch(new fromActions.ResetPaydayLoanInfo());
     this.store.dispatch(new fromActions.SetNavigationTitle('Ứng lương 0% lãi'));
     this.store.dispatch(new fromActions.SetShowLeftBtn(true));
+    this.store.dispatch(new fromActions.SetShowProfileBtn(true));
+    this.store.dispatch(new fromActions.SetShowProfileBtn(true));
   }
 
   getCustomerInfo() {
@@ -98,13 +103,15 @@ export class CompaniesListComponent implements OnInit, OnDestroy {
     this.subManager.add(
       this.applicationControllerService
         .getActiveLoan(this.customerId, this.coreToken)
-        .subscribe((result) => {
+        .subscribe((result: ApiResponsePaydayLoan) => {
           if (!result || result.responseCode !== 200) {
             return this.router.navigateByUrl('/hmg/ekyc');
           }
           return this.router.navigate([
             'hmg/current-loan',
-            formatSlug(PAYDAY_LOAN_STATUS.UNKNOWN_STATUS),
+            formatSlug(
+              result.result.status || PAYDAY_LOAN_STATUS.UNKNOWN_STATUS
+            ),
           ]);
         })
     );
@@ -127,15 +134,19 @@ export class CompaniesListComponent implements OnInit, OnDestroy {
   }
 
   chooseCompany(companyId) {
-    console.log('company id', companyId);
-    this.infoControllerService
-      .chooseCompany(this.customerId, { companyId })
-      .subscribe((result) => {
-        if (!result || result.responseCode !== 200) {
-          return this.showError('common.error', 'common.something_went_wrong');
-        }
-        return this.router.navigateByUrl('/hmg/ekyc');
-      });
+    this.subManager.add(
+      this.infoControllerService
+        .chooseCompany(this.customerId, { companyId })
+        .subscribe((result) => {
+          if (!result || result.responseCode !== 200) {
+            return this.showError(
+              'common.error',
+              'common.something_went_wrong'
+            );
+          }
+          return this.router.navigateByUrl('/hmg/ekyc');
+        })
+    );
   }
 
   showError(title: string, content: string) {

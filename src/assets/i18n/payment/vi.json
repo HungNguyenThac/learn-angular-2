@@ -22,6 +22,18 @@
       "transfer_content": "Nội dung chuyển khoản",
       "required_name_desc": "Thiếu thông tin này, Monex sẽ không thể định danh khoản tiền từ <span class='insurance-name-inline'>{{name}}</span>",
       "confirm_finalization_content": "Quý khách vui lòng chuẩn bị sẵn thông tin thẻ ngân hàng. Phiên thanh toán chỉ có thời hạn {{minute}} phút"
+    },
+    "guide_transfer": {
+      "title": "Hướng dẫn thanh toán/ tất toán",
+      "step": "Bước {{step}}",
+      "step_1": "Đăng nhập ứng dụng Internet Banking của Quý khách, chọn chuyển tiền nhanh 24/7",
+      "step_2": "Chuyển khoản tới tài khoản <span class='pl-thank-for-sign'>{{account_name}}</span> <span class='pl-thank-for-sign'>{{account_number}}</span> tại Ngân hàng TMCP Hàng Hải Việt Nam (MSB)",
+      "step_3": "Nhập số tiền cần chuyển (số tiền hoàn ứng)",
+      "step_4": "Chuyển khoản thành công - Monex ghi nhận giao dịch của Quý khách",
+      "copy_account_number": "Sao chép STK",
+      "copied": "Đã sao chép",
+      "copy_amount": "Sao chép số tiền",
+      "understand": "Đã hiểu"
     }
   }
 }

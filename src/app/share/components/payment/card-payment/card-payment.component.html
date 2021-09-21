@@ -30,7 +30,7 @@
           {{ 'payment.choose_payment_method.amount_to_be_paid' | translate }}
         </label>
         <p class="payment-content-value">
-          {{ amountToBePaid | formatPrice}}
+          {{ amountToBePaid | formatPrice: null}}
         </p>
 
         <p class="payment-content-hint">
@@ -41,16 +41,17 @@
     </div>
   </div>
 
-  <div class="btn-actions text-center">
-    <button
-      type="submit"
-      id="finalization-btn-submit"
-      class="insurance-btn btn-primary"
-      [disabled]="disabledBtn"
-      (click)="finalization()"
-    >
-      {{ 'payment.choose_payment_method.payment' | translate }}
-      <span class="pl-countdown-time" *ngIf="disabledBtn">( {{ countdownTime }}s )</span>
-    </button>
-  </div>
+</div>
+
+<div class="btn-actions text-center">
+  <button
+    type="submit"
+    id="finalization-btn-submit"
+    class="insurance-btn btn-primary"
+    [disabled]="disabledBtn"
+    (click)="finalization()"
+  >
+    {{ 'payment.choose_payment_method.payment' | translate }}
+    <span class="pl-countdown-time" *ngIf="disabledBtn">( {{ countdownTime }}s )</span>
+  </button>
 </div>

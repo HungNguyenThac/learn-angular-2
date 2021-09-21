@@ -23,8 +23,10 @@ import { ApiResponseCreateTokenResponse } from '../model/models';
 import { ApiResponseMapStringObject } from '../model/models';
 import { ApiResponseString } from '../model/models';
 import { ConfirmOTPSignRequest } from '../model/models';
+import { CreateLetterHMGRequest } from '../model/models';
 import { CreateLetterRequest } from '../model/models';
 import { SendContractOTPRequest } from '../model/models';
+import { SendLetterOTPHMGRequest } from '../model/models';
 import { SendLetterOTPRequest } from '../model/models';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
@@ -201,6 +203,60 @@ export class ContractControllerService {
     }
 
     /**
+     * @param createLetterHMGRequest 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public createLetterHMG(createLetterHMGRequest: CreateLetterHMGRequest, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<ApiResponseCreateLetterResponse>;
+    public createLetterHMG(createLetterHMGRequest: CreateLetterHMGRequest, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<ApiResponseCreateLetterResponse>>;
+    public createLetterHMG(createLetterHMGRequest: CreateLetterHMGRequest, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<ApiResponseCreateLetterResponse>>;
+    public createLetterHMG(createLetterHMGRequest: CreateLetterHMGRequest, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
+        if (createLetterHMGRequest === null || createLetterHMGRequest === undefined) {
+            throw new Error('Required parameter createLetterHMGRequest was null or undefined when calling createLetterHMG.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (httpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'application/json'
+            ];
+            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
+        if (httpHeaderAcceptSelected !== undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'application/json'
+        ];
+        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
+        if (httpContentTypeSelected !== undefined) {
+            headers = headers.set('Content-Type', httpContentTypeSelected);
+        }
+
+        let responseType_: 'text' | 'json' = 'json';
+        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+            responseType_ = 'text';
+        }
+
+        return this.httpClient.post<ApiResponseCreateLetterResponse>(`${this.configuration.basePath}/v1/contract/create-letter-hmg`,
+            createLetterHMGRequest,
+            {
+                responseType: <any>responseType_,
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -339,6 +395,60 @@ export class ContractControllerService {
 
         return this.httpClient.post<ApiResponseMapStringObject>(`${this.configuration.basePath}/v1/contract/send-letter-otp`,
             sendLetterOTPRequest,
+            {
+                responseType: <any>responseType_,
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * @param sendLetterOTPHMGRequest 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public sendLetterOTPHMG(sendLetterOTPHMGRequest: SendLetterOTPHMGRequest, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<ApiResponseMapStringObject>;
+    public sendLetterOTPHMG(sendLetterOTPHMGRequest: SendLetterOTPHMGRequest, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<ApiResponseMapStringObject>>;
+    public sendLetterOTPHMG(sendLetterOTPHMGRequest: SendLetterOTPHMGRequest, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<ApiResponseMapStringObject>>;
+    public sendLetterOTPHMG(sendLetterOTPHMGRequest: SendLetterOTPHMGRequest, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
+        if (sendLetterOTPHMGRequest === null || sendLetterOTPHMGRequest === undefined) {
+            throw new Error('Required parameter sendLetterOTPHMGRequest was null or undefined when calling sendLetterOTPHMG.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (httpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'application/json'
+            ];
+            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
+        if (httpHeaderAcceptSelected !== undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'application/json'
+        ];
+        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
+        if (httpContentTypeSelected !== undefined) {
+            headers = headers.set('Content-Type', httpContentTypeSelected);
+        }
+
+        let responseType_: 'text' | 'json' = 'json';
+        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+            responseType_ = 'text';
+        }
+
+        return this.httpClient.post<ApiResponseMapStringObject>(`${this.configuration.basePath}/v1/contract/send-letter-otp-hmg`,
+            sendLetterOTPHMGRequest,
             {
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,

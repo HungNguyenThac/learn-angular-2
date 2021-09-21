@@ -8,6 +8,7 @@ import { NotFoundComponent } from '../pages/errors/not-found/not-found.component
 import { MainLayoutComponent } from './main-layout/main-layout.component';
 import { HeaderComponent } from './header/header.component';
 import {AppRoutingModule} from "../app-routing.module";
+import {PaydayLoanModule} from "../pages/payday-loan/payday-loan.module";
 
 @NgModule({
   declarations: [
@@ -22,6 +23,7 @@ import {AppRoutingModule} from "../app-routing.module";
     SharedModule,
     TranslateModule,
     AppRoutingModule,
+    PaydayLoanModule,
   ],
 })
 export class LayoutModule {}

@@ -1,4 +1,4 @@
-import { Injectable, ViewChild } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { PlPromptComponent } from '../../share/components';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
@@ -26,7 +26,7 @@ export class NotificationService {
     this.openPrompt(payload, 'assets/img/payday-loan/success-prompt-icon.png');
   }
 
-  openPrompt(payload: Prompt, imgUrl: string) {
+  openPrompt(payload: Prompt, imgUrl?: string) {
     this.promptDialogRef = this.dialog.open(PlPromptComponent, {
       panelClass: 'custom-dialog-container',
       height: 'auto',
@@ -55,7 +55,9 @@ export class NotificationService {
 
   showLoading(payload?: PlLoading) {
     this.loadingDialogRef = this.dialog.open(PlLoadingComponent, {
-      panelClass: 'custom-dialog-container',
+      panelClass: payload?.showContent
+        ? 'custom-dialog-container'
+        : 'hide-content-dialog',
       height: 'auto',
       minHeight: '194px',
       maxWidth: '290px',
@@ -64,6 +66,7 @@ export class NotificationService {
         content:
           payload?.content ||
           'Quá trình sẽ mất khoảng một vài giây, vui lòng không thoát ứng dụng',
+        showContent: payload?.showContent,
       },
     });
 

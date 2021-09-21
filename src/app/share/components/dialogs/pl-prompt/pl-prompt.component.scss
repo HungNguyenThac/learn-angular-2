@@ -7,7 +7,9 @@
     padding: 0;
     border-radius: 12px;
     overflow: inherit;
+    box-shadow: none;
   }
+
   .mat-dialog-content {
     padding: 0;
     margin: 0;
@@ -58,6 +60,7 @@
   font-family: $sfPro;
   max-width: 320px;
 }
+
 .pl-prompt-actions {
   margin-top: 16px;
   display: flex;
@@ -166,6 +169,13 @@
 
   &:not(:disabled):not(.disabled):active:focus {
     box-shadow: inset 0px 1px 0px $grey-01;
+  }
+}
+
+.notification-info-img {
+  .pl-prompt-image {
+    width: 32px;
+    height: 32px;
   }
 }
 

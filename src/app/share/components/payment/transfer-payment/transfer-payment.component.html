@@ -20,16 +20,16 @@
           </span>
         </label>
         <p class="payment-content-value">
-          {{ vaInfo?.amountToBePaid }}
+          {{ amountToBePaid | formatPrice: null}}
         </p>
       </div>
       <div class="payment-content-right">
-        <button
-          type="button"
-          class="insurance-btn btn-primary"
-          (click)="copyToClipboard(vaInfo?.amountToBePaid)"
-        >{{ 'payment.choose_payment_method.copy' | translate }}
-        </button>
+        <!--        <button-->
+        <!--          type="button"-->
+        <!--          class="insurance-btn btn-primary"-->
+        <!--          (click)="copyToClipboardNumber(vaInfo?.amountToBePaid)"-->
+        <!--        >{{ 'payment.choose_payment_method.copy' | translate }}-->
+        <!--        </button>-->
       </div>
     </div>
 
@@ -57,13 +57,13 @@
         </p>
       </div>
       <div class="payment-content-right">
-        <button
-          type="button"
-          class="insurance-btn btn-primary"
-          (click)="copyToClipboard(vaInfo?.accountNumber)"
-        >
-          {{ 'payment.choose_payment_method.copy' | translate }}
-        </button>
+        <!--        <button-->
+        <!--          type="button"-->
+        <!--          class="insurance-btn btn-primary"-->
+        <!--          (click)="copyToClipboard(vaInfo?.accountNumber)"-->
+        <!--        >-->
+        <!--          {{ 'payment.choose_payment_method.copy' | translate }}-->
+        <!--        </button>-->
       </div>
     </div>
 
@@ -87,34 +87,46 @@
     </div>
 
     <!-- Transfer content -->
-    <div class="payment-content-container border-bottom-0">
-      <div class="payment-content-left">
-        <label class="payment-content-label payment-required">
-          {{ 'payment.choose_payment_method.transfer_content' | translate }}
-        </label>
-        <p class="payment-content-value">
-          {{ productInfo?.message }}
-        </p>
-      </div>
-      <div class="payment-content-right">
-        <button
-          type="button"
-          class="insurance-btn btn-primary"
-          (click)="copyToClipboard(productInfo?.message)"
-        >
-          {{ 'payment.choose_payment_method.copy' | translate }}
-        </button>
-      </div>
-    </div>
+    <!--    <div class="payment-content-container border-bottom-0">-->
+    <!--      <div class="payment-content-left">-->
+    <!--        <label class="payment-content-label payment-required">-->
+    <!--          {{ 'payment.choose_payment_method.transfer_content' | translate }}-->
+    <!--        </label>-->
+    <!--        <p class="payment-content-value">-->
+    <!--          {{ productInfo?.message }}-->
+    <!--        </p>-->
+    <!--      </div>-->
+    <!--      <div class="payment-content-right">-->
+    <!--        <button-->
+    <!--          type="button"-->
+    <!--          class="insurance-btn btn-primary"-->
+    <!--          (click)="copyToClipboard(productInfo?.message)"-->
+    <!--        >-->
+    <!--          {{ 'payment.choose_payment_method.copy' | translate }}-->
+    <!--        </button>-->
+    <!--      </div>-->
+    <!--    </div>-->
 
-    <div id="payment-required">
-      <p
-        [innerHTML]="
-            'payment.choose_payment_method.required_name_desc' | translate :{
-              name: userInfo?.firstName
-            }
-          ">
-      </p>
-    </div>
+    <!--    <div id="payment-required">-->
+    <!--      <p-->
+    <!--        [innerHTML]="-->
+    <!--            'payment.choose_payment_method.required_name_desc' | translate :{-->
+    <!--              name: userInfo?.fullName-->
+    <!--            }-->
+    <!--          ">-->
+    <!--      </p>-->
+    <!--    </div>-->
   </div>
 </div>
+
+<div class="btn-actions text-center">
+  <button
+    type="button"
+    id="transfer-btn-submit"
+    class="insurance-btn btn-primary"
+    (click)="displayGuideDialog()"
+  >
+    {{ 'payment.choose_payment_method.payment' | translate }}
+  </button>
+</div>
+

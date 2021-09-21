@@ -17,6 +17,7 @@ $spaceWithFooter: 56px;
 
 .mat-dialog-container {
   border-radius: 12px !important;
+  box-shadow: none;
 }
 
 .pl-sign-contract-prompt-image {
@@ -221,4 +222,10 @@ input.pl-text-otp {
       }
     }
   }
+}
+.pl-divider {
+  width: 100%;
+  height: 0.5px;
+  margin: 16px 0;
+  background: $grey-02;
 }

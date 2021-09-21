@@ -49,7 +49,11 @@
         <div class="container no-padding insurance-navigation-bar-container">
           <!-- Top navigation -->
           <div id="insurance-top-navigation" class="justify-content-between">
-            <button mat-icon-button class="no-padding insurance-top-nav-btn">
+            <button
+              mat-icon-button
+              class="no-padding insurance-top-nav-btn"
+              (click)="backToPrevPage()"
+            >
               <span [ngClass]="leftBtnIcon" *ngIf="displayLeftBtn"></span>
             </button>
 

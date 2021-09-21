@@ -16,7 +16,6 @@ import {
   LoginInput,
 } from 'open-api-modules/core-api-docs';
 import {
-  ApiResponseObject,
   ApiResponsePaydayLoan,
   ApplicationControllerService,
 } from '../../../../../open-api-modules/loanapp-api-docs';
@@ -24,7 +23,10 @@ import { Store } from '@ngrx/store';
 import * as fromStore from '../index';
 import { Observable } from 'rxjs';
 import formatSlug from './../../../core/utils/format-slug';
-import { PAYDAY_LOAN_STATUS } from '../../common/enum/payday-loan';
+import {
+  ERROR_CODE_KEY,
+  PAYDAY_LOAN_STATUS,
+} from '../../common/enum/payday-loan';
 import { NotificationService } from '../../services/notification.service';
 import { MultiLanguageService } from '../../../share/translate/multiLanguageService';
 
@@ -77,6 +79,7 @@ export class LoginEffects {
         tap(() => {
           this.notificationService.destroyAllDialog();
           this.store$.dispatch(new fromActions.ResetCustomerInfo());
+          this.store$.dispatch(new fromActions.SetShowProfileBtn(false));
         })
       ),
     { dispatch: false }
@@ -88,6 +91,7 @@ export class LoginEffects {
       map((action: fromActions.Signin) => action.payload),
       switchMap((login: LoginForm) => {
         const { username, password } = login;
+        this.notificationService.showLoading();
         return this.signOnService
           .mobileLogin({
             mobile: username,
@@ -95,10 +99,11 @@ export class LoginEffects {
           })
           .pipe(
             map((result) => {
+              this.notificationService.hideLoading();
               this.loginInput = login;
               this.loginPayload = result;
               if (!result || result.responseCode !== 200) {
-                return new fromActions.SigninError(result.message);
+                return new fromActions.SigninError(result.errorCode);
               }
               return new fromActions.SigninSuccess(result);
             })
@@ -112,21 +117,30 @@ export class LoginEffects {
       this.actions$.pipe(
         ofType(fromActions.LOGIN_SIGNIN_SUCCESS),
         tap(() => {
+          this.notificationService.showLoading();
           this.infoService
             .getInfo(this.loginPayload.result.customerId)
-            .subscribe((result: ApiResponseCustomerInfoResponse) => {
-              if (!result || result.responseCode !== 200) return;
+            .subscribe(
+              (result: ApiResponseCustomerInfoResponse) => {
+                if (!result || result.responseCode !== 200) return;
 
-              this.store$.dispatch(
-                new fromActions.SetCustomerInfo(result.result)
-              );
+                this.store$.dispatch(
+                  new fromActions.SetCustomerInfo(result.result)
+                );
 
-              if (result.result.personalData.stepOne !== 'DONE') {
-                this._redirectToCurrentPage().then((r) => {});
+                if (result.result.personalData.stepOne !== 'DONE') {
+                  this._redirectToNextPage().then((r) => {});
+                }
+
+                this.store$.dispatch(
+                  new fromActions.SigninCore(this.loginInput)
+                );
+              },
+              (error) => {},
+              () => {
+                this.notificationService.hideLoading();
               }
-
-              this.store$.dispatch(new fromActions.SigninCore(this.loginInput));
-            });
+            );
         })
       ),
     { dispatch: false }
@@ -137,10 +151,14 @@ export class LoginEffects {
       this.actions$.pipe(
         ofType(fromActions.LOGIN_SIGNIN_ERROR),
         map((action: fromActions.SigninError) => action.payload),
-        tap((error: any) => {
+        tap((errorCode: any) => {
           this.notificationService.openErrorModal({
             title: this.multiLanguageService.instant('common.notification'),
-            content: error,
+            content: errorCode
+              ? this.multiLanguageService.instant(ERROR_CODE_KEY[errorCode])
+              : this.multiLanguageService.instant(
+                  'common.something_went_wrong'
+                ),
             primaryBtnText: this.multiLanguageService.instant('common.confirm'),
           });
         })
@@ -177,23 +195,27 @@ export class LoginEffects {
       this.actions$.pipe(
         ofType(fromActions.LOGIN_SIGNIN_CORE_SUCCESS),
         tap(() => {
+          this.notificationService.showLoading();
           this.applicationControllerService
             .getActiveLoan(this.customerId, this.coreToken)
-            .subscribe((result: ApiResponsePaydayLoan) => {
-              if (!result || result.responseCode !== 200) {
-                if (this.customerInfo.personalData.companyId) {
-                  return this.router.navigateByUrl('hmg/ekyc');
+            .subscribe(
+              (result: ApiResponsePaydayLoan) => {
+                if (!result || result.responseCode !== 200) {
+                  return this._redirectToNextPage();
                 }
-                return this.router.navigateByUrl('companies');
-              }
 
-              return this.router.navigate([
-                'hmg/current-loan',
-                formatSlug(
-                  result.result.status || PAYDAY_LOAN_STATUS.UNKNOWN_STATUS
-                ),
-              ]);
-            });
+                return this.router.navigate([
+                  'hmg/current-loan',
+                  formatSlug(
+                    result.result.status || PAYDAY_LOAN_STATUS.UNKNOWN_STATUS
+                  ),
+                ]);
+              },
+              (e) => {},
+              () => {
+                this.notificationService.hideLoading();
+              }
+            );
         })
       ),
     { dispatch: false }
@@ -204,15 +226,15 @@ export class LoginEffects {
       this.actions$.pipe(
         ofType(fromActions.LOGIN_SIGNIN_CORE_ERROR),
         tap(() => {
-          this._redirectToCurrentPage().then((r) => {});
+          this._redirectToNextPage().then((r) => {});
         })
       ),
     { dispatch: false }
   );
 
-  private _redirectToCurrentPage() {
+  private _redirectToNextPage() {
     if (!this.customerInfo.personalData.companyId)
       return this.router.navigate(['companies']);
-    return this.router.navigate(['ekyc']);
+    return this.router.navigate(['hmg/ekyc']);
   }
 }

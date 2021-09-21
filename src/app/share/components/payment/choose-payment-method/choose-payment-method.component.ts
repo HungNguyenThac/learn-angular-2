@@ -1,35 +1,49 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {MultiLanguageService} from "../../../translate/multiLanguageService";
-import {PAYMENT_METHOD} from "../../../../core/common/enum/payment-method";
+import { Component, Input, OnInit } from '@angular/core';
+import { MultiLanguageService } from '../../../translate/multiLanguageService';
+import { PAYMENT_METHOD } from '../../../../core/common/enum/payment-method';
+import { PaymentProductInfo } from '../../../../public/models/payment-product-info.model';
+import { PaymentUserInfo } from '../../../../public/models/payment-user-info.model';
+import { PaymentVirtualAccount } from '../../../../public/models/payment-virtual-account.model';
+import { NotificationService } from '../../../../core/services/notification.service';
 
 @Component({
   selector: 'app-choose-payment-method',
   templateUrl: './choose-payment-method.component.html',
-  styleUrls: ['./choose-payment-method.component.scss']
+  styleUrls: ['./choose-payment-method.component.scss'],
 })
 export class ChoosePaymentMethodComponent implements OnInit {
-  @Input() productInfo: any;
-  @Input() userInfo: any;
-  @Input() vaInfo: any;
+  @Input() productInfo: PaymentProductInfo;
+  @Input() userInfo: PaymentUserInfo;
+  @Input() vaInfo: PaymentVirtualAccount;
   disabledCardPayment: boolean = false;
   showCopied: boolean = false;
   activeTab: PAYMENT_METHOD = PAYMENT_METHOD.TRANSFER;
   activeTabs: any = PAYMENT_METHOD;
 
-  constructor(private multiLanguageService: MultiLanguageService) {
-    this.multiLanguageService.onSetupMultiLanguage("payment")
-  }
+  constructor(
+    private multiLanguageService: MultiLanguageService,
+    private notificationService: NotificationService
+  ) {}
 
-
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   switchTab($event) {
-    this.activeTab = $event
+    this.activeTab = $event;
   }
 
   displayConfirmModalEvent($event) {
-    console.log($event)
+    this.notificationService.openPrompt({
+      imgUrl: "assets/img/icon/group-3/svg/info.svg",
+      imgBackgroundClass: "notification-info-img",
+      title: this.multiLanguageService.instant('common.notification'),
+      content: this.multiLanguageService.instant(
+        'payment.choose_payment_method.confirm_finalization_content',
+        { minute: 10 }
+      ),
+      primaryBtnText: this.multiLanguageService.instant(
+        'payment.guide_transfer.understand'
+      ),
+    });
   }
 
   displayCopied($event) {
@@ -38,6 +52,4 @@ export class ChoosePaymentMethodComponent implements OnInit {
       this.showCopied = false;
     }, 3000);
   }
-
-
 }

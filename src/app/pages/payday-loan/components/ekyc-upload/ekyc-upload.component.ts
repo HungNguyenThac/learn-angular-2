@@ -11,7 +11,6 @@ import { MultiLanguageService } from '../../../../share/translate/multiLanguageS
 import { Subscription } from 'rxjs';
 import { Store } from '@ngrx/store';
 import * as fromStore from './../../../../core/store';
-import * as fromActions from './../../../../core/store';
 import {
   ApiResponseKalapaResponse,
   KalapaV2ControllerService,
@@ -86,9 +85,11 @@ export class EkycUploadComponent implements OnInit, AfterViewInit {
   ) {
     this.customerId$ = store.select(fromSelectors.getCustomerIdState);
 
-    this.customerId$.subscribe((customerId) => {
-      this.customerId = customerId;
-    });
+    this.subManager.add(
+      this.customerId$.subscribe((customerId) => {
+        this.customerId = customerId;
+      })
+    );
   }
 
   ngOnDestroy(): void {
@@ -140,34 +141,36 @@ export class EkycUploadComponent implements OnInit, AfterViewInit {
     )
       return;
 
-    this.notificationService.showLoading();
-    this.kalapaV2Service
-      .extractInfo(
-        this.customerId,
-        this.params.frontIdentityCardImg,
-        this.params.selfieImg,
-        this.params.backIdentityCardImg,
-        false,
-        false
-      )
-      .subscribe(
-        (ekycResponse: ApiResponseKalapaResponse) => {
-          if (!ekycResponse.result || ekycResponse.responseCode !== 200) {
-            this.handleEkycError(ekycResponse);
-          }
+    this.notificationService.showLoading({ showContent: true });
+    this.subManager.add(
+      this.kalapaV2Service
+        .extractInfo(
+          this.customerId,
+          this.params.frontIdentityCardImg,
+          this.params.selfieImg,
+          this.params.backIdentityCardImg,
+          false,
+          false
+        )
+        .subscribe(
+          (ekycResponse: ApiResponseKalapaResponse) => {
+            if (!ekycResponse.result || ekycResponse.responseCode !== 200) {
+              this.handleEkycError(ekycResponse);
+            }
 
-          this.completeEkyc.emit({
-            result: ekycResponse.result,
-            params: this.params,
-          });
-        },
-        (error) => {
-          console.log('onSubmit error');
-        },
-        () => {
-          this.notificationService.hideLoading();
-        }
-      );
+            this.completeEkyc.emit({
+              result: ekycResponse.result,
+              params: this.params,
+            });
+          },
+          (error) => {
+            console.log('onSubmit error');
+          },
+          () => {
+            this.notificationService.hideLoading();
+          }
+        )
+    );
   }
 
   handleEkycError(ekycInfo) {
