@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import {
   ERROR_CODE,
+  ERROR_CODE_KEY,
   PL_STEP_NAVIGATION,
 } from 'src/app/core/common/enum/payday-loan';
 import { MultiLanguageService } from '../../../../share/translate/multiLanguageService';
@@ -23,6 +24,7 @@ import { Store } from '@ngrx/store';
 import { NotificationService } from '../../../../core/services/notification.service';
 import {
   ApiResponseCreateLetterResponse,
+  ApiResponseSignWithOTPResponse,
   ContractControllerService,
   FileControllerService,
 } from '../../../../../../open-api-modules/com-api-docs';
@@ -40,7 +42,7 @@ export class SignContractTermsOfServiceComponent implements OnInit, OnDestroy {
   @ViewChild(PdfViewerComponent, { static: false })
   private pdfComponent: PdfViewerComponent;
 
-  linkPdf: string = '../assets/img/hmg/hop-dong-test.pdf';
+  linkPdf: any = null;
   userInfo: CustomerInfoResponse = {};
   page: number = 1;
   responsive: boolean = false;
@@ -55,6 +57,13 @@ export class SignContractTermsOfServiceComponent implements OnInit, OnDestroy {
 
   customerId: string;
   customerId$: Observable<string>;
+
+  customerMobile$: Observable<string>;
+
+  isSignContractTermsSuccess$: Observable<boolean>;
+  isSignContractTermsSuccess: boolean;
+
+  isSentOtpOnsign$: Observable<boolean>;
 
   subManager = new Subscription();
 
@@ -74,24 +83,63 @@ export class SignContractTermsOfServiceComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.onResponsiveInverted();
     window.addEventListener('resize', this.onResponsiveInverted);
-    this._initSubscribeState();
     this.initHeaderInfo();
+    this._initSubscribeState();
+    this.initInfo();
   }
 
   private _initSubscribeState() {
+    this.customerMobile$ = this.store.select(
+      fromSelectors.getCustomerMobileState
+    );
     this.customerId$ = this.store.select(fromSelectors.getCustomerIdState);
+    this.isSentOtpOnsign$ = this.store.select(fromSelectors.isSentOtpOnsign);
+
+    this.isSignContractTermsSuccess$ = this.store.select(
+      fromSelectors.isSignContractTermsSuccess
+    );
 
     this.subManager.add(
       this.customerId$.subscribe((customerId) => {
         this.customerId = customerId;
       })
     );
+
+    this.subManager.add(
+      this.customerMobile$.subscribe((customerMobile) => {
+        this.mobile = customerMobile;
+      })
+    );
+
+    this.subManager.add(
+      this.isSentOtpOnsign$.subscribe((isSentOtpOnsign) => {
+        this.isSentOtpOnsign = isSentOtpOnsign;
+      })
+    );
+
+    this.subManager.add(
+      this.isSignContractTermsSuccess$.subscribe(
+        (isSignContractTermsSuccess) => {
+          this.isSignContractTermsSuccess = isSignContractTermsSuccess;
+
+          if (this.isSignContractTermsSuccess) {
+            return this.router.navigateByUrl('hmg/sign-contract-terms-success');
+          }
+        }
+      )
+    );
+
+    if (this.isSignContractTermsSuccess) {
+      this.router.navigateByUrl('hmg/sign-contract-terms-success');
+    }
+
+    this.store.dispatch(new fromActions.SetShowLeftBtn(this.isSentOtpOnsign));
   }
 
   initHeaderInfo() {
     this.store.dispatch(new fromActions.ResetPaydayLoanInfo());
     this.store.dispatch(new fromActions.SetShowLeftBtn(false));
-    this.store.dispatch(new fromActions.SetShowRightBtn(true));
+    this.store.dispatch(new fromActions.SetShowRightBtn(false));
     this.store.dispatch(new fromActions.SetShowProfileBtn(true));
     this.store.dispatch(new fromActions.SetShowStepNavigation(true));
     this.store.dispatch(
@@ -103,6 +151,10 @@ export class SignContractTermsOfServiceComponent implements OnInit, OnDestroy {
 
   get showSignContractTermsBtn() {
     return this.contractInfo && this.contractInfo.path;
+  }
+
+  initInfo() {
+    this.getContract();
   }
 
   openDialogPrompt() {
@@ -140,20 +192,19 @@ export class SignContractTermsOfServiceComponent implements OnInit, OnDestroy {
 
   sendLetterOtp() {
     let params = this.buildParamsSendLetterOtp();
-    this.notificationService.showLoading();
-    this.contractControllerService.sendLetterOTPHMG(params).subscribe(
-      (response) => {
+    this.contractControllerService.sendLetterOTPHMG('HMG', params).subscribe(
+      (response: ApiResponseSignWithOTPResponse) => {
         if (response && response.responseCode === 200) {
-          this.notificationService.hideLoading();
-          //TODO return model HIEUKM
           this.disabledOTP = false;
           this.idRequest = response.result.idRequest;
           this.idDocument = response.result.idDocument;
-          // this.setSentOtpOnsignStatus(true);
+          this.store.dispatch(new fromActions.SetSentOtpOnsignStatus(true));
+          this.store.dispatch(new fromActions.SetShowLeftBtn(true));
           return;
         }
         if (response.errorCode === ERROR_CODE.SESSION_SIGN_ALREADY_EXIST) {
           this.getLatestApprovalLetter();
+          return;
         }
 
         if (response.errorCode === ERROR_CODE.LOCK_CREATE_NEW_SESSION) {
@@ -169,9 +220,7 @@ export class SignContractTermsOfServiceComponent implements OnInit, OnDestroy {
         );
       },
       (error) => {},
-      () => {
-        this.notificationService.hideLoading();
-      }
+      () => {}
     );
   }
 
@@ -196,22 +245,12 @@ export class SignContractTermsOfServiceComponent implements OnInit, OnDestroy {
   /**
    * get Contract
    */
-  getContract(showLoading = true) {
-    this.getUserInfo(showLoading);
-
+  getContract() {
+    this.getUserInfo();
     this.getLatestApprovalLetter();
-
-    if (this.contractInfo && this.contractInfo.path && !this.isSentOtpOnsign) {
-      this.downloadFile(this.contractInfo.path);
-    }
-
-    if (!this.contractInfo) {
-      this.createApprovalLetter();
-    }
   }
 
   downloadFile(documentPath) {
-    this.notificationService.hideLoading();
     this.subManager.add(
       this.fileControllerService
         .downloadFile({
@@ -220,44 +259,25 @@ export class SignContractTermsOfServiceComponent implements OnInit, OnDestroy {
         })
         .subscribe(
           (response) => {
-            this.notificationService.hideLoading();
             this.linkPdf = window.URL.createObjectURL(new Blob([response]));
           },
           (error) => {},
-          () => {
-            this.notificationService.hideLoading();
-          }
+          () => {}
         )
     );
   }
 
-  /**
-   * Get user info
-   * @returns {Promise<{}|null>}
-   */
-  getUserInfo(showLoading = true) {
-    if (showLoading) {
-      this.notificationService.showLoading();
-    }
+  getUserInfo() {
     this.subManager.add(
       this.infoControllerService.getInfo(this.customerId).subscribe(
         (response: ApiResponseCustomerInfoResponse) => {
-          if (showLoading) {
-            this.notificationService.hideLoading();
-          }
           if (response.responseCode !== 200) {
             return this.showErrorModal();
           }
           this.userInfo = response.result;
-          // this.setCustomerName(this.userInfo?.personalData?.firstName);
-          return this.userInfo;
         },
         (error) => {},
-        () => {
-          if (showLoading) {
-            this.notificationService.hideLoading();
-          }
-        }
+        () => {}
       )
     );
   }
@@ -272,11 +292,10 @@ export class SignContractTermsOfServiceComponent implements OnInit, OnDestroy {
     });
   }
 
-  async createApprovalLetter() {
-    this.notificationService.showLoading();
+  createApprovalLetter() {
     this.subManager.add(
       this.contractControllerService
-        .createLetterHMG({
+        .createLetterHMG('HMG', {
           name: this.userInfo.personalData?.firstName,
           dateOfBirth: this.userInfo.personalData?.dateOfBirth,
           nationalId: this.userInfo.personalData?.identityNumberOne,
@@ -285,7 +304,6 @@ export class SignContractTermsOfServiceComponent implements OnInit, OnDestroy {
         })
         .subscribe(
           (response: ApiResponseCreateLetterResponse) => {
-            this.notificationService.hideLoading();
             if (
               !response ||
               !response.result ||
@@ -303,49 +321,65 @@ export class SignContractTermsOfServiceComponent implements OnInit, OnDestroy {
             }
           },
           (error) => {},
-          () => {
-            this.notificationService.hideLoading();
-          }
+          () => {}
         )
     );
   }
 
   getLatestApprovalLetter() {
-    this.notificationService.showLoading();
     this.subManager.add(
       this.approvalLetterControllerService
         .getApprovalLetterByCustomerId(this.customerId)
         .subscribe(
           (response: ApiResponseApprovalLetter) => {
-            this.notificationService.hideLoading();
             if (response.responseCode == 200) {
+              if (response.result.customerSignDone) {
+                return this.router.navigateByUrl('hmg/loan-determination');
+              }
               this.idRequest = response.result.idRequest;
               this.idDocument = response.result.idDocument;
               this.contractInfo = response.result;
               this.disabledOTP = false;
-              // this.setSentOtpOnsignStatus(true);
+
+              if (
+                this.contractInfo &&
+                this.contractInfo.path &&
+                !this.isSentOtpOnsign
+              ) {
+                this.downloadFile(this.contractInfo.path);
+              }
+              if (
+                this.contractInfo &&
+                this.contractInfo.idRequest &&
+                this.contractInfo.idDocument
+              ) {
+                this.disabledOTP = false;
+                this.store.dispatch(
+                  new fromActions.SetSentOtpOnsignStatus(true)
+                );
+                this.store.dispatch(new fromActions.SetShowLeftBtn(true));
+                return;
+              }
               return;
             }
             this.contractInfo = null;
+            this.createApprovalLetter();
           },
           (error) => {},
-          () => {
-            this.notificationService.hideLoading();
-          }
+          () => {}
         )
     );
   }
 
-  async resendOtp() {
+  resendOtp() {
     this.errorText = null;
-    await this.sendLetterOtp();
+    this.sendLetterOtp();
   }
 
   verifyOtp(otp) {
     this.errorText = null;
     this.otp = otp.split('');
 
-    this.notificationService.showLoading();
     this.subManager.add(
       this.contractControllerService
         .confirmOPTSign({
@@ -354,20 +388,15 @@ export class SignContractTermsOfServiceComponent implements OnInit, OnDestroy {
           idRequest: this.idRequest,
           idDocument: this.idDocument,
         })
-        .subscribe(
-          (response) => {
-            this.notificationService.hideLoading();
-            if (!response || response.responseCode !== 200) {
-              this.handleErrorVerifyOtp(response);
-            }
-            // this.setSignedContractTermsStatus(true);
-            this.router.navigateByUrl('sign-contract-terms-success');
-          },
-          (error) => {},
-          () => {
-            this.notificationService.hideLoading();
+        .subscribe((response) => {
+          if (!response || response.responseCode !== 200) {
+            return this.handleErrorVerifyOtp(response);
           }
-        )
+          this.store.dispatch(
+            new fromActions.SetSignContractTermsSuccess(true)
+          );
+          this.router.navigateByUrl('hmg/sign-contract-terms-success');
+        })
     );
   }
 
@@ -406,15 +435,20 @@ export class SignContractTermsOfServiceComponent implements OnInit, OnDestroy {
       case ERROR_CODE.OTP_CONFIRM_MAXIMUM:
         this.disabledOTP = true;
         this.errorText = this.multiLanguageService.instant(
-          `payday_loan.error_code.` + response.errorCode.toLowerCase()
+          ERROR_CODE_KEY[response.errorCode]
         );
 
-        this.showErrorModal(
-          null,
-          this.multiLanguageService.instant(
-            'payday_loan.error_code.otp_confirm_maximum'
-          )
+        this.showErrorModal(null, this.errorText);
+        break;
+      case ERROR_CODE.NOT_FOUND_SESSION:
+        this.disabledOTP = true;
+        this.errorText = this.multiLanguageService.instant(
+          ERROR_CODE_KEY[response.errorCode]
         );
+
+        this.showErrorModal(null, this.errorText);
+        this.store.dispatch(new fromActions.SetSentOtpOnsignStatus(false));
+        this.getLatestApprovalLetter();
         break;
       default:
         break;
@@ -440,6 +474,7 @@ export class SignContractTermsOfServiceComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     window.removeEventListener('resize', this.onResponsiveInverted);
+    this.store.dispatch(new fromActions.SetSentOtpOnsignStatus(false));
     this.subManager.unsubscribe();
   }
 }

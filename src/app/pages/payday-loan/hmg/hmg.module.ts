@@ -20,6 +20,7 @@ import { CurrentLoanComponent } from './current-loan/current-loan.component';
 import { LoanPaymentComponent } from './loan-payment/loan-payment.component';
 import { PlChoosePaymentMethodComponent } from './pl-choose-payment-method/pl-choose-payment-method.component';
 import { GpayPaymentResultComponent } from './gpay-payment-result/gpay-payment-result.component';
+import { SignContractComponent } from './sign-contract/sign-contract.component';
 
 @NgModule({
   declarations: [
@@ -36,6 +37,7 @@ import { GpayPaymentResultComponent } from './gpay-payment-result/gpay-payment-r
     LoanPaymentComponent,
     PlChoosePaymentMethodComponent,
     GpayPaymentResultComponent,
+    SignContractComponent,
   ],
   imports: [
     CommonModule,

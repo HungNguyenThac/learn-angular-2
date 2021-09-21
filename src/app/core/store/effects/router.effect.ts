@@ -7,15 +7,31 @@ import * as RouterActions from '../actions/router.actions';
 
 import { map, tap } from 'rxjs/operators';
 import { NotificationService } from '../../services/notification.service';
+import { Store } from '@ngrx/store';
+import * as fromStore from '../index';
+import * as fromSelectors from '../selectors';
+import { Observable } from 'rxjs/Observable';
+import * as fromActions from '../actions';
+import formatSlug from '../../utils/format-slug';
+import { PAYDAY_LOAN_STATUS } from '../../common/enum/payday-loan';
 
 @Injectable()
 export class RouterEffects {
+  isSentOtpOnsign$: Observable<boolean>;
+  isSentOtpOnsign: boolean;
+
   constructor(
     private actions$: Actions,
     private router: Router,
     private location: Location,
-    private notificationService: NotificationService
-  ) {}
+    private notificationService: NotificationService,
+    private store$: Store<fromStore.State>
+  ) {
+    this.isSentOtpOnsign$ = this.store$.select(fromSelectors.isSentOtpOnsign);
+    this.isSentOtpOnsign$.subscribe((isSentOtpOnsign) => {
+      this.isSentOtpOnsign = isSentOtpOnsign;
+    });
+  }
 
   navigate$ = createEffect(
     () =>
@@ -43,6 +59,67 @@ export class RouterEffects {
       this.actions$.pipe(
         ofType(RouterActions.FORWARD),
         tap(() => this.location.forward())
+      ),
+    { dispatch: false }
+  );
+
+  navigateClickToBackBtn$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(RouterActions.CLICK_BACK_BTN),
+        tap(() => {
+          switch (this.router.url) {
+            case '/auth/sign-in': {
+              this.router.navigateByUrl('');
+              break;
+            }
+            case '/auth/sign-up': {
+              this.router.navigateByUrl('/auth/sign-in');
+              break;
+            }
+            case '/auth/forgot-password': {
+              this.router.navigateByUrl('/auth/sign-in');
+              break;
+            }
+            case '/hmg/additional-information': {
+              this.router.navigateByUrl('/hmg/confirm-information');
+              break;
+            }
+            case '/hmg/sign-contract-terms-of-service': {
+              if (this.isSentOtpOnsign) {
+                return this.store$.dispatch(
+                  new fromActions.SetSentOtpOnsignStatus(false)
+                );
+              }
+              this.router.navigateByUrl('/hmg/additional-information');
+              break;
+            }
+            case '/hmg/sign-contract': {
+              if (this.isSentOtpOnsign) {
+                return this.store$.dispatch(
+                  new fromActions.SetSentOtpOnsignStatus(false)
+                );
+              }
+              this.router.navigate([
+                'hmg/current-loan',
+                formatSlug(PAYDAY_LOAN_STATUS.UNKNOWN_STATUS),
+              ]);
+              break;
+            }
+            case '/hmg/loan-payment': {
+              this.router.navigate([
+                'hmg/current-loan',
+                formatSlug(PAYDAY_LOAN_STATUS.UNKNOWN_STATUS),
+              ]);
+              break;
+            }
+            case '/hmg/choose-payment-method':
+              this.router.navigateByUrl('/hmg/loan-payment');
+              break;
+            default:
+              break;
+          }
+        })
       ),
     { dispatch: false }
   );

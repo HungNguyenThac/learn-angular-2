@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MultiLanguageService } from '../../../../share/translate/multiLanguageService';
 import {
+  ERROR_CODE,
   GPAY_RESULT_STATUS,
   PAYDAY_LOAN_STATUS,
   REPAYMENT_STATUS,
@@ -38,10 +39,6 @@ import { GlobalConstants } from '../../../../core/common/global-constants';
 export class CurrentLoanComponent implements OnInit, OnDestroy {
   currentLoan: PaydayLoan = {};
   userInfo: CustomerInfoResponse = {};
-
-  contractInfo: any = {
-    status: null,
-  };
 
   customerId$: Observable<string>;
   customerId: string;
@@ -106,7 +103,7 @@ export class CurrentLoanComponent implements OnInit, OnDestroy {
   initHeaderInfo() {
     this.store.dispatch(new fromActions.ResetPaydayLoanInfo());
     this.store.dispatch(new fromActions.SetShowLeftBtn(false));
-    this.store.dispatch(new fromActions.SetShowRightBtn(true));
+    this.store.dispatch(new fromActions.SetShowRightBtn(false));
     this.store.dispatch(new fromActions.SetShowProfileBtn(true));
     this.store.dispatch(new fromActions.SetShowStepNavigation(false));
   }
@@ -138,32 +135,32 @@ export class CurrentLoanComponent implements OnInit, OnDestroy {
     //   return;
     // }
     this.getActiveLoan();
-    this.getContractCurrentLoan();
+    // this.getContractCurrentLoan();
   }
 
-  getContractCurrentLoan(showLoading = true) {
-    if (!this.currentLoan.id || !this.customerId) return;
-
-    if (showLoading) {
-      this.notificationService.showLoading();
-    }
-    this.subManager.add(
-      this.contractControllerService
-        .getContract(this.currentLoan.id, this.customerId)
-        .subscribe(
-          (response) => {
-            this.notificationService.hideLoading();
-            if (response.responseCode == 200) {
-              this.contractInfo.status = response.result['status'];
-            }
-          },
-          (error) => {},
-          () => {
-            this.notificationService.hideLoading();
-          }
-        )
-    );
-  }
+  // getContractCurrentLoan(showLoading = true) {
+  //   if (!this.currentLoan.id || !this.customerId) return;
+  //
+  //   if (showLoading) {
+  //     this.notificationService.showLoading();
+  //   }
+  //   this.subManager.add(
+  //     this.contractControllerService
+  //       .getContract(this.currentLoan.id, this.customerId)
+  //       .subscribe(
+  //         (response) => {
+  //           this.notificationService.hideLoading();
+  //           if (response.responseCode == 200) {
+  //             this.contractInfo.status = response.result['status'];
+  //           }
+  //         },
+  //         (error) => {},
+  //         () => {
+  //           this.notificationService.hideLoading();
+  //         }
+  //       )
+  //   );
+  // }
 
   getActiveLoan(showLoading = true) {
     if (showLoading) {
@@ -284,7 +281,7 @@ export class CurrentLoanComponent implements OnInit, OnDestroy {
   }
 
   handleGetActiveLoanError(response) {
-    if (response.errorCode === 'DO_NOT_ACTIVE_LOAN_ERROR') {
+    if (response.errorCode === ERROR_CODE.DO_NOT_ACTIVE_LOAN_ERROR) {
       this.router.navigateByUrl('companies');
       return;
     }

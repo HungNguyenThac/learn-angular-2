@@ -18,7 +18,7 @@ import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
 import { ApiResponseString } from '../model/models';
-import { GpayChangeBalanceEvent } from '../model/models';
+import { CreateSigningPositionRequest } from '../model/models';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
 import { Configuration }                                     from '../configuration';
@@ -28,7 +28,7 @@ import { Configuration }                                     from '../configurat
 @Injectable({
   providedIn: 'root'
 })
-export class CheckConnectControllerService {
+export class SigningPositionControllerService {
 
     protected basePath = 'http://localhost:8004';
     public defaultHeaders = new HttpHeaders();
@@ -86,16 +86,16 @@ export class CheckConnectControllerService {
     }
 
     /**
-     * @param gpayChangeBalanceEvent 
+     * @param id 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public testVaWebhook(gpayChangeBalanceEvent: GpayChangeBalanceEvent, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined}): Observable<any>;
-    public testVaWebhook(gpayChangeBalanceEvent: GpayChangeBalanceEvent, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined}): Observable<HttpResponse<any>>;
-    public testVaWebhook(gpayChangeBalanceEvent: GpayChangeBalanceEvent, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined}): Observable<HttpEvent<any>>;
-    public testVaWebhook(gpayChangeBalanceEvent: GpayChangeBalanceEvent, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: undefined}): Observable<any> {
-        if (gpayChangeBalanceEvent === null || gpayChangeBalanceEvent === undefined) {
-            throw new Error('Required parameter gpayChangeBalanceEvent was null or undefined when calling testVaWebhook.');
+    public _delete(id: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseString>;
+    public _delete(id: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseString>>;
+    public _delete(id: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseString>>;
+    public _delete(id: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
+        if (id === null || id === undefined) {
+            throw new Error('Required parameter id was null or undefined when calling _delete.');
         }
 
         let headers = this.defaultHeaders;
@@ -104,6 +104,52 @@ export class CheckConnectControllerService {
         if (httpHeaderAcceptSelected === undefined) {
             // to determine the Accept header
             const httpHeaderAccepts: string[] = [
+                '*/*'
+            ];
+            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
+        if (httpHeaderAcceptSelected !== undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+
+        let responseType_: 'text' | 'json' = 'json';
+        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+            responseType_ = 'text';
+        }
+
+        return this.httpClient.post<ApiResponseString>(`${this.configuration.basePath}/v1/signing-position/delete/${encodeURIComponent(String(id))}`,
+            null,
+            {
+                responseType: <any>responseType_,
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * @param createSigningPositionRequest 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public create1(createSigningPositionRequest: CreateSigningPositionRequest, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseString>;
+    public create1(createSigningPositionRequest: CreateSigningPositionRequest, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseString>>;
+    public create1(createSigningPositionRequest: CreateSigningPositionRequest, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseString>>;
+    public create1(createSigningPositionRequest: CreateSigningPositionRequest, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
+        if (createSigningPositionRequest === null || createSigningPositionRequest === undefined) {
+            throw new Error('Required parameter createSigningPositionRequest was null or undefined when calling create1.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (httpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                '*/*'
             ];
             httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
         }
@@ -126,48 +172,8 @@ export class CheckConnectControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.post<any>(`${this.configuration.basePath}/v1/test-va-webhook`,
-            gpayChangeBalanceEvent,
-            {
-                responseType: <any>responseType_,
-                withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress
-            }
-        );
-    }
-
-    /**
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public verifyAccount(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseString>;
-    public verifyAccount(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseString>>;
-    public verifyAccount(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseString>>;
-    public verifyAccount(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
-
-        let headers = this.defaultHeaders;
-
-        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-        if (httpHeaderAcceptSelected === undefined) {
-            // to determine the Accept header
-            const httpHeaderAccepts: string[] = [
-                '*/*'
-            ];
-            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        }
-        if (httpHeaderAcceptSelected !== undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
-        }
-
-
-        let responseType_: 'text' | 'json' = 'json';
-        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
-            responseType_ = 'text';
-        }
-
-        return this.httpClient.get<ApiResponseString>(`${this.configuration.basePath}/v1/check-connection`,
+        return this.httpClient.post<ApiResponseString>(`${this.configuration.basePath}/v1/signing-position/create`,
+            createSigningPositionRequest,
             {
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,

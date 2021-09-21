@@ -20,6 +20,8 @@ model/coreDisburseRequest.ts
 model/createRepaymentOrderRequest.ts
 model/createVARequest.ts
 model/deleteTokenRequest.ts
+model/gpayChangeBalanceEvent.ts
+model/gpayChangeBalanceWebhook.ts
 model/gpayDeleteTokenResponse.ts
 model/gpayRepaymentResponse.ts
 model/gpayRepaymentWebhook.ts

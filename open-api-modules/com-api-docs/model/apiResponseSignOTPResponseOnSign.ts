@@ -9,17 +9,13 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { SignOTPResponseOnSign } from './signOTPResponseOnSign';
 
 
-export interface SendLetterOTPHMGRequest { 
-    email: string;
-    dateOfBirth: string;
-    name: string;
-    address: string;
-    mobile: string;
-    nationalId: string;
-    customerId: string;
-    idIssuePlace: string;
-    documentPath: string;
+export interface ApiResponseSignOTPResponseOnSign { 
+    result?: SignOTPResponseOnSign;
+    errorCode?: string;
+    message?: object;
+    responseCode?: number;
 }
 

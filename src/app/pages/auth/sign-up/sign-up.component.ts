@@ -95,7 +95,7 @@ export class SignUpComponent implements OnInit, OnDestroy {
     this.store.dispatch(new fromActions.ResetPaydayLoanInfo());
     this.store.dispatch(new fromActions.SetNavigationTitle('Đăng ký'));
     this.store.dispatch(new fromActions.SetShowLeftBtn(true));
-    this.store.dispatch(new fromActions.SetShowRightBtn(true));
+    this.store.dispatch(new fromActions.SetShowRightBtn(false));
   }
 
   resetSession() {

@@ -115,7 +115,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   backToPrevPage() {
-    this.store.dispatch(new fromActions.Back());
+    this.store.dispatch(new fromActions.ClickBackBtn());
   }
 
   logout() {

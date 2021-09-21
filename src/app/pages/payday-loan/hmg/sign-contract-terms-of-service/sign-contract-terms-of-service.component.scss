@@ -68,8 +68,10 @@
 .sign-contract-terms-pdf-document {
   padding-top: 40px;
   padding-bottom: 40px;
+  position: relative;
   //min-height: calc(100vh - 120px);
 }
+
 .pl-pdf-document-container {
   background: #999999;
 }
@@ -107,6 +109,8 @@
   box-shadow: inset 0px -1px 0px rgba(0, 0, 0, 0.05);
   display: flex;
   place-content: center;
+  z-index: 2;
+
   .pl-btn-sign-contract-terms-mobile {
     margin: auto 0;
     font-family: $sfPro;

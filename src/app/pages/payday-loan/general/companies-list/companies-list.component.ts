@@ -73,8 +73,7 @@ export class CompaniesListComponent implements OnInit, OnDestroy {
   initHeaderInfo() {
     this.store.dispatch(new fromActions.ResetPaydayLoanInfo());
     this.store.dispatch(new fromActions.SetNavigationTitle('Ứng lương 0% lãi'));
-    this.store.dispatch(new fromActions.SetShowLeftBtn(true));
-    this.store.dispatch(new fromActions.SetShowProfileBtn(true));
+    this.store.dispatch(new fromActions.SetShowLeftBtn(false));
     this.store.dispatch(new fromActions.SetShowProfileBtn(true));
   }
 

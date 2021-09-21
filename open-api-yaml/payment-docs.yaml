@@ -24,11 +24,29 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiResponseGpayVAResponse'
-  /v1/virtual-account/gpay/create-payment-order:
+  /v1/virtual-account/gpay/payment-order:
     post:
       tags:
       - gpay-virtual-account-controller
       operationId: createPaymentOrder
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GpayChangeBalanceWebhook'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseString'
+  /v1/virtual-account/gpay/create-payment-order:
+    post:
+      tags:
+      - gpay-virtual-account-controller
+      operationId: createPaymentOrder_1
       requestBody:
         content:
           application/json:
@@ -60,6 +78,20 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiResponseVirtualAccount'
+  /v1/test-va-webhook:
+    post:
+      tags:
+      - check-connect-controller
+      operationId: testVaWebhook
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GpayChangeBalanceEvent'
+        required: true
+      responses:
+        "200":
+          description: OK
   /v1/repayment/gpay/webhook:
     post:
       tags:
@@ -83,6 +115,24 @@ paths:
       tags:
       - repayment-controller
       operationId: gpayRepaymentPaydayLoanTNG
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RepaymentRequest'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseGpayRepaymentResponse'
+  /v1/repayment/gpay/paydayloan-hmg:
+    post:
+      tags:
+      - repayment-controller
+      operationId: gpayRepaymentPaydayLoanHmg
       requestBody:
         content:
           application/json:
@@ -203,7 +253,7 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ApiResponseString'
-  /payment/v1/check-connection:
+  /v1/check-connection:
     get:
       tags:
       - check-connect-controller
@@ -295,18 +345,22 @@ components:
           format: int32
         signature:
           type: string
-    CreateRepaymentOrderRequest:
-      required:
-      - applicationId
-      - applicationType
-      - customerId
+    GpayChangeBalanceWebhook:
       type: object
       properties:
-        customerId:
+        gpay_trans_id:
           type: string
-        applicationId:
+        bank_trace_id:
           type: string
-        applicationType:
+        bank_transaction_id:
+          type: string
+        account_number:
+          type: string
+        amount:
+          type: string
+        message:
+          type: string
+        action:
           type: string
     ApiResponseString:
       type: object
@@ -320,6 +374,19 @@ components:
         responseCode:
           type: integer
           format: int32
+    CreateRepaymentOrderRequest:
+      required:
+      - applicationId
+      - applicationType
+      - customerId
+      type: object
+      properties:
+        customerId:
+          type: string
+        applicationId:
+          type: string
+        applicationType:
+          type: string
     CreateVARequest:
       required:
       - accountName
@@ -376,6 +443,24 @@ components:
         equalAmount:
           type: integer
           format: int32
+    GpayChangeBalanceEvent:
+      type: object
+      properties:
+        source:
+          type: string
+        version:
+          type: integer
+          format: int32
+        id:
+          type: string
+        request:
+          $ref: '#/components/schemas/GpayChangeBalanceWebhook'
+        provider:
+          type: string
+        api_source:
+          type: string
+        actions:
+          type: string
     GpayRepaymentWebhook:
       type: object
       properties:

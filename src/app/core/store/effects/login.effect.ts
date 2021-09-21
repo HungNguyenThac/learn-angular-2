@@ -29,6 +29,7 @@ import {
 } from '../../common/enum/payday-loan';
 import { NotificationService } from '../../services/notification.service';
 import { MultiLanguageService } from '../../../share/translate/multiLanguageService';
+import {SetSignContractTermsSuccess} from "../actions";
 
 @Injectable()
 export class LoginEffects {
@@ -80,6 +81,9 @@ export class LoginEffects {
           this.notificationService.destroyAllDialog();
           this.store$.dispatch(new fromActions.ResetCustomerInfo());
           this.store$.dispatch(new fromActions.SetShowProfileBtn(false));
+          this.store$.dispatch(new fromActions.SetSentOtpOnsignStatus(false));
+          this.store$.dispatch(new fromActions.SetSignContractTermsSuccess(false));
+          this.store$.dispatch(new fromActions.SetSignContractSuccess(false));
         })
       ),
     { dispatch: false }

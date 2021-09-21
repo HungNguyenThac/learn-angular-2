@@ -68,8 +68,8 @@ export class EkycComponent implements OnInit, OnDestroy {
   initHeaderInfo() {
     this.store.dispatch(new fromActions.ResetEkycInfo());
     this.store.dispatch(new fromActions.ResetPaydayLoanInfo());
-    this.store.dispatch(new fromActions.SetShowLeftBtn(true));
-    this.store.dispatch(new fromActions.SetShowRightBtn(true));
+    this.store.dispatch(new fromActions.SetShowLeftBtn(false));
+    this.store.dispatch(new fromActions.SetShowRightBtn(false));
     this.store.dispatch(new fromActions.SetShowProfileBtn(true));
     this.store.dispatch(new fromActions.SetShowStepNavigation(true));
     this.store.dispatch(

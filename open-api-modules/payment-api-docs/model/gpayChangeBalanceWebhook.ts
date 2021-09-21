@@ -11,16 +11,13 @@
  */
 
 
-export interface SendLetterOTPRequest { 
-    email: string;
-    dateOfBirth: string;
-    name: string;
-    address: string;
-    mobile: string;
-    nationalId: string;
-    customerId: string;
-    employeeCode?: string;
-    idIssuePlace: string;
-    documentPath: string;
+export interface GpayChangeBalanceWebhook { 
+    gpay_trans_id?: string;
+    bank_trace_id?: string;
+    bank_transaction_id?: string;
+    account_number?: string;
+    amount?: string;
+    message?: string;
+    action?: string;
 }
 

@@ -8,6 +8,8 @@ export * from './coreDisburseRequest';
 export * from './createRepaymentOrderRequest';
 export * from './createVARequest';
 export * from './deleteTokenRequest';
+export * from './gpayChangeBalanceEvent';
+export * from './gpayChangeBalanceWebhook';
 export * from './gpayDeleteTokenResponse';
 export * from './gpayRepaymentResponse';
 export * from './gpayRepaymentWebhook';

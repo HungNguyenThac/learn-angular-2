@@ -11,16 +11,10 @@
  */
 
 
-export interface SendLetterOTPRequest { 
-    email: string;
-    dateOfBirth: string;
-    name: string;
-    address: string;
-    mobile: string;
-    nationalId: string;
-    customerId: string;
-    employeeCode?: string;
-    idIssuePlace: string;
-    documentPath: string;
+export interface SignWithOTPResponse { 
+    idRequest?: number;
+    idDocument?: number;
+    customerId?: string;
+    unLockTime?: string;
 }
 

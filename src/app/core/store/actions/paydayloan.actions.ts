@@ -15,6 +15,11 @@ export const SET_NAVIGATION_TITLE = '[Header] Set navigation title';
 export const RESET_NAVIGATION_TITLE = '[Header] Reset navigation title';
 export const SET_SHOW_NAVIGATION_BAR = '[Header] Set show navigation bar';
 export const RESET_PAYDAY_LOAN_INFO = '[PaydayLoan] Reset payday loan info';
+export const SET_SIGN_CONTRACT_TERMS_SUCCESS =
+  '[PaydayLoan] Set sign contract term success';
+export const SET_SIGN_CONTRACT_SUCCESS =
+  '[PaydayLoan] Set sign contract success';
+export const SET_SENT_OTP_ONSIGN_STATUS = '[PaydayLoan] Set sent otp status';
 
 export class SetEkycInfo implements Action {
   readonly type = SET_EKYC_INFO;
@@ -94,6 +99,24 @@ export class SetShowNavigationBar implements Action {
   constructor(public payload: boolean) {}
 }
 
+export class SetSignContractSuccess implements Action {
+  readonly type = SET_SIGN_CONTRACT_SUCCESS;
+
+  constructor(public payload: boolean) {}
+}
+
+export class SetSignContractTermsSuccess implements Action {
+  readonly type = SET_SIGN_CONTRACT_TERMS_SUCCESS;
+
+  constructor(public payload: boolean) {}
+}
+
+export class SetSentOtpOnsignStatus implements Action {
+  readonly type = SET_SENT_OTP_ONSIGN_STATUS;
+
+  constructor(public payload: boolean) {}
+}
+
 export type PaydayLoanActions =
   | SetEkycInfo
   | ResetEkycInfo
@@ -107,4 +130,7 @@ export type PaydayLoanActions =
   | SetStepNavigationInfo
   | ResetStepNavigationInfo
   | ResetPaydayLoanInfo
-  | SetShowNavigationBar;
+  | SetShowNavigationBar
+  | SetSignContractSuccess
+  | SetSignContractTermsSuccess
+  | SetSentOtpOnsignStatus;
