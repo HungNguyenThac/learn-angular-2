@@ -269,6 +269,14 @@ export class LoanDeterminationComponent
     });
   }
 
+  formatMillionPrice(price) {
+    return price * 1000000
+  }
+
+  loanFee() {
+    return this.loanDeteminationForm.controls["loanAmount"].value*1000000*0.02
+  }
+
   showError(title: string, content: string) {
     return this.notificationService.openErrorModal({
       title: this.multiLanguageService.instant(title),
