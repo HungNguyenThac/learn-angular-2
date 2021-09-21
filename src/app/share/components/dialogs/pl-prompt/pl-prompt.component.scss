@@ -7,7 +7,9 @@
     padding: 0;
     border-radius: 12px;
     overflow: inherit;
+    box-shadow: none;
   }
+
   .mat-dialog-content {
     padding: 0;
     margin: 0;
@@ -58,6 +60,7 @@
   font-family: $sfPro;
   max-width: 320px;
 }
+
 .pl-prompt-actions {
   margin-top: 16px;
   display: flex;

@@ -1,31 +1,9 @@
 <div id="pl-sign-contract-terms-terms-container" class="container-fluid">
   <div *ngIf="!isSentOtpOnsign; else isntSentOtpOnsign">
-<!--    <div-->
-<!--      class="container-fluid pl-sign-contract-terms-top-navbar"-->
-<!--      *ngIf="!responsive"-->
-<!--    >-->
-<!--      <div class="container pl-sign-contract-terms-top-navbar-container">-->
-<!--        <h2 class="sign-contract-terms-title">-->
-<!--          {{ 'payday_loan.contract_terms_of_service.title' | translate }}-->
-<!--        </h2>-->
-<!--        <button-->
-<!--          type="button"-->
-<!--          id="pl-sign-contract-terms-top-btn"-->
-<!--          class="insurance-btn btn-primary pl-btn-sign-contract-terms"-->
-<!--          (click)="signContract()"-->
-<!--          *ngIf="showSignContractTermsBtn"-->
-<!--        >-->
-<!--          <div class="d-inline-flex align-items-center">-->
-<!--            <span class="sprite-group-3-sign-contract-icon sign-contract-terms-icon"></span>-->
-<!--            <span>{{ 'payday_loan.contract_terms_of_service.button_text' | translate }}</span>-->
-<!--          </div>-->
-<!--        </button>-->
-<!--      </div>-->
-<!--    </div>-->
     <div class="container-fluid pl-pdf-document-container">
       <div class="container sign-contract-terms-pdf-document">
         <pdf-viewer
-          [src]="detailContractFile"
+          [src]="linkPdf"
           [autoresize]="true"
           [original-size]="false"
           [fit-to-page]="false"

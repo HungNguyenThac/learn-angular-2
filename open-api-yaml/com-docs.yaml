@@ -378,6 +378,24 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiResponseMapStringObject'
+  /v1/contract/send-letter-otp-hmg:
+    post:
+      tags:
+      - contract-controller
+      operationId: sendLetterOTPHMG
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SendLetterOTPHMGRequest'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseMapStringObject'
   /v1/contract/send-contract-otp:
     post:
       tags:
@@ -418,6 +436,24 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/CreateLetterRequest'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseCreateLetterResponse'
+  /v1/contract/create-letter-hmg:
+    post:
+      tags:
+      - contract-controller
+      operationId: createLetterHMG
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateLetterHMGRequest'
         required: true
       responses:
         "200":
@@ -911,6 +947,37 @@ components:
         responseCode:
           type: integer
           format: int32
+    SendLetterOTPHMGRequest:
+      required:
+      - address
+      - customerId
+      - dateOfBirth
+      - documentPath
+      - email
+      - idIssuePlace
+      - mobile
+      - name
+      - nationalId
+      type: object
+      properties:
+        email:
+          type: string
+        dateOfBirth:
+          type: string
+        name:
+          type: string
+        address:
+          type: string
+        mobile:
+          type: string
+        nationalId:
+          type: string
+        customerId:
+          type: string
+        idIssuePlace:
+          type: string
+        documentPath:
+          type: string
     SendContractOTPRequest:
       required:
       - address
@@ -1015,6 +1082,25 @@ components:
         customerId:
           type: string
         documentPath:
+          type: string
+    CreateLetterHMGRequest:
+      required:
+      - customerId
+      - dateOfBirth
+      - idIssuePlace
+      - name
+      - nationalId
+      type: object
+      properties:
+        dateOfBirth:
+          type: string
+        name:
+          type: string
+        nationalId:
+          type: string
+        customerId:
+          type: string
+        idIssuePlace:
           type: string
     ConfirmOTPSignRequest:
       required:

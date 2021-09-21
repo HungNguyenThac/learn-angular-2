@@ -1,18 +1,19 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {MultiLanguageService} from '../../../../share/translate/multiLanguageService';
-import {Store} from '@ngrx/store';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { MultiLanguageService } from '../../../../share/translate/multiLanguageService';
+import { Store } from '@ngrx/store';
 import * as fromStore from '../../../../core/store';
-import {NotificationService} from '../../../../core/services/notification.service';
-import {Params, Router} from '@angular/router';
+import * as fromActions from '../../../../core/store';
+import { NotificationService } from '../../../../core/services/notification.service';
+import { Params, Router } from '@angular/router';
 import * as fromSelectors from '../../../../core/store/selectors';
-import {Observable} from 'rxjs/Observable';
-import {Subscription} from 'rxjs';
+import { Observable } from 'rxjs/Observable';
+import { Subscription } from 'rxjs';
 import formatSlug from '../../../../core/utils/format-slug';
 import {
   GPAY_RESULT_STATUS,
   PAYDAY_LOAN_STATUS,
 } from '../../../../core/common/enum/payday-loan';
-import {RepaymentControllerService} from '../../../../../../open-api-modules/payment-api-docs';
+import { RepaymentControllerService } from '../../../../../../open-api-modules/payment-api-docs';
 import base64 from 'base-64';
 
 @Component({
@@ -37,12 +38,22 @@ export class GpayPaymentResultComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.initHeaderInfo();
+
     this.notificationService.showLoading();
     setTimeout(() => {
       this.callWebHookRepayment();
       this.notificationService.hideLoading();
-      this.checkResultData();
+      this.checkResultData().then((r) => {});
     }, 5000);
+  }
+
+  initHeaderInfo() {
+    this.store.dispatch(new fromActions.ResetPaydayLoanInfo());
+    this.store.dispatch(new fromActions.SetShowLeftBtn(true));
+    this.store.dispatch(new fromActions.SetShowRightBtn(true));
+    this.store.dispatch(new fromActions.SetShowProfileBtn(true));
+    this.store.dispatch(new fromActions.SetShowStepNavigation(false));
   }
 
   private _initSubscribeState() {
