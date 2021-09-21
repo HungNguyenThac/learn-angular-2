@@ -162,8 +162,11 @@
       "hint_statement_photo_1": "Tháng lương gần nhất"
     },
     "choose_amount": {
+      "choose_amount_title": "Chọn số tiền cần ứng",
       "expected_amount": "Khoản vay mong muốn",
-      "service_price": "Phí dịch vụ:",
+      "service_price": "Phí dịch vụ",
+      "discount_number": "Ưu đãi phí",
+      "total_price": "Phí phải trả",
       "guaranteed_assets": "Tài sản đảm bảo",
       "collateral_document": "Tải lên tài liệu chứng minh tài sản đảm bảo",
       "hint_collateral_document": "Giấy tờ đăng ký xe máy chính chủ",
