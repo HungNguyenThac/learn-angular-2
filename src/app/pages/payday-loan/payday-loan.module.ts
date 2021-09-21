@@ -15,6 +15,7 @@ import { PlInlineMessageComponent } from './components/pl-inline-message/pl-inli
 import { PlStatusLabelComponent } from './components/pl-status-label/pl-status-label.component';
 import { PlIntroduceComponent } from './components/pl-introduce/pl-introduce.component';
 import { PlProviderComponent } from './components/pl-provider/pl-provider.component';
+import { PlVoucherListComponent } from './components/pl-voucher-list/pl-voucher-list.component';
 import { ChatBoxComponent } from './components/chat-box/chat-box.component';
 import { DetailLoanPaymentComponent } from './components/detail-loan-payment/detail-loan-payment.component';
 
@@ -30,6 +31,7 @@ import { DetailLoanPaymentComponent } from './components/detail-loan-payment/det
     PlStatusLabelComponent,
     PlIntroduceComponent,
     PlProviderComponent,
+    PlVoucherListComponent,
     ChatBoxComponent,
     DetailLoanPaymentComponent,
   ],
@@ -51,6 +53,7 @@ import { DetailLoanPaymentComponent } from './components/detail-loan-payment/det
     PlStatusLabelComponent,
     PlIntroduceComponent,
     PlProviderComponent,
+    PlVoucherListComponent,
     ChatBoxComponent,
     DetailLoanPaymentComponent
   ]

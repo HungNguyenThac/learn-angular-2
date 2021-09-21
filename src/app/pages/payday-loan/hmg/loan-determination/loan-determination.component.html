@@ -5,31 +5,24 @@
         <form [formGroup]="loanDeteminationForm" class="form-container">
           <div class="row responsive-form-content">
             <div class="col-md-12">
-              <h2>Chọn số tiền cần ứng</h2>
+              <h2>{{ 'payday_loan.choose_amount.choose_amount_title' | translate }}</h2>
             </div>
 
             <div class="col-md-12 loan-row">
-              <label id="loan-amount"
-                >Khoản vay mong muốn <span class="required">*</span>
+              <label id="loan-amount">{{ 'payday_loan.choose_amount.expected_amount' | translate }} <span
+                  class="required">*</span>
               </label>
               <p class="choose-amount-value">
                 {{
-                  loanDeteminationForm.controls["loanAmount"].value || minAmount
+                loanDeteminationForm.controls["loanAmount"].value || minAmount
                 }}
                 Triệu
               </p>
             </div>
 
             <div class="col-md-12 slider">
-              <mat-slider
-                color="primary"
-                formControlName="loanAmount"
-                class="w-100"
-                [max]="maxAmount"
-                [min]="minAmount"
-                [step]="step"
-                aria-labelledby="loan-amount"
-              >
+              <mat-slider color="primary" formControlName="loanAmount" class="w-100" [max]="maxAmount" [min]="minAmount"
+                [step]="step" aria-labelledby="loan-amount">
               </mat-slider>
             </div>
 
@@ -39,12 +32,8 @@
             </div>
 
             <div class="col-md-12">
-              <mat-form-field
-                appearance="outline"
-                floatLabel="never"
-                class="w-100"
-              >
-                <mat-label>{{ loanPurpose.fieldName }}</mat-label>
+              <mat-form-field appearance="outline" floatLabel="never" class="w-100">
+                <mat-label>{{ 'payday_loan.choose_amount.loan_purpose' | translate }}</mat-label>
                 <mat-select formControlName="loanPurpose">
                   <div *ngFor="let option of loanPurpose.options">
                     <mat-option [value]="option">
@@ -59,103 +48,118 @@
             <div class="col-md-12">
               <div class="loan-detail-container">
                 <div class="loan-detail-item loan-row">
-                  <p class="amount-detail-label">Khoản vay mong muốn</p>
+                  <p class="amount-detail-label">{{ 'payday_loan.choose_amount.expected_amount' | translate }}</p>
                   <p id="choose-amount-number">
                     {{
-                      loanDeteminationForm.controls["loanAmount"].value *
-                        1000000 | formatPrice
+                      loanAmountFormatMillionPrice() | formatPrice
                     }}
                   </p>
                 </div>
                 <mat-divider></mat-divider>
                 <div class="loan-detail-item loan-row">
-                  <p class="amount-detail-label">Phí dịch vụ</p>
+                  <p class="amount-detail-label">{{ 'payday_loan.choose_amount.service_price' | translate }}</p>
                   <p class="amount-detail-value">
                     {{
-                      loanDeteminationForm.controls["loanAmount"].value *
-                        1000000 | formatPrice
+                      originalLoanFee() | formatPrice
                     }}
                   </p>
                 </div>
                 <mat-divider></mat-divider>
                 <div class="loan-detail-item loan-row">
-                  <p class="amount-detail-label">Ưu đãi phí</p>
+                  <p class="amount-detail-label">{{ 'payday_loan.choose_amount.discount_number' | translate }}</p>
                   <p class="amount-detail-value">
-                    {{
-                      loanDeteminationForm.controls["loanAmount"].value *
-                        1000000 | formatPrice
+                    -{{
+                      discount | formatPrice
                     }}
                   </p>
                 </div>
                 <mat-divider></mat-divider>
                 <div class="loan-detail-item loan-row">
-                  <p class="amount-detail-label">Phí phải trả</p>
+                  <p class="amount-detail-label">{{ 'payday_loan.choose_amount.total_price' | translate }}</p>
                   <p class="amount-detail-value" id="total-fee">
                     {{
-                      loanDeteminationForm.controls["loanAmount"].value *
-                        1000000 | formatPrice
+                      loanFeeTotal() | formatPrice
                     }}
                   </p>
                 </div>
                 <mat-divider></mat-divider>
                 <div class="loan-detail-note">
-                  <svg
-                    width="14"
-                    height="14"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
+                  <svg width="14" height="14" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path
                       d="M7 .333a6.668 6.668 0 110 13.335A6.668 6.668 0 017 .333zm-.003 5.5a.667.667 0 00-.662.59l-.004.077.002 3.668.005.078a.667.667 0 001.324 0l.005-.079L7.664 6.5l-.004-.078a.667.667 0 00-.663-.589zM7 3.333a.834.834 0 100 1.67.834.834 0 000-1.67z"
-                      fill="#007AFF"
-                    />
+                      fill="#007AFF" />
                   </svg>
                   <p>
-                    Khoản vay của bạn cần được thanh toán ở lần nhận lương sắp
-                    tới.
+                    {{ 'payday_loan.choose_amount.info' | translate }}
                   </p>
                 </div>
               </div>
             </div>
 
             <div class="col-md-12">
-              <h2>Tài sản đảm bảo</h2>
+              <mat-form-field
+                appearance="outline"
+                floatLabel="never"
+                class="w-100"
+              >
+                <mat-label>{{
+                  "payday_loan.choose_amount.enter_discount_code" | translate
+                }}</mat-label>
+                <input
+                  matInput
+                  disabled
+                  formControlName="voucherCode"
+                  autocomplete="false"
+                  [placeholder]="
+                    'payday_loan.choose_amount.enter_discount_code' | translate
+                  "
+                />
+                <button matSuffix class="voucher-suffix" *ngIf="loanDeteminationForm.controls.voucherCode.value ==='' || !isCorrectedVoucherApplied && !voucherShowError" (click)="checkVoucherApplied()">
+                  {{
+                    "payday_loan.choose_amount.apply" | translate
+                  }}
+                </button>
+                <span matSuffix class="voucher-suffix" *ngIf="loanDeteminationForm.controls.voucherCode.value !=='' && isCorrectedVoucherApplied ">
+                  {{
+                    "payday_loan.choose_amount.applied" | translate
+                  }}
+                </span>
+                <button type="button" tabindex="-1" *ngIf="loanDeteminationForm.controls.voucherCode.value && voucherShowError" matSuffix
+                            mat-icon-button aria-label="Clear"
+                            (click)="loanDeteminationForm.controls.voucherCode.setValue('')" disableRipple="true">
+                            <div class="clear-icon"></div>
+                        </button>
+                <mat-errors *ngIf="voucherShowError && loanDeteminationForm.controls.voucherCode.value">
+                  {{voucherShowError}}
+                </mat-errors>
+              </mat-form-field>
+              <div class="text-center">
+                <button mat-button type="button" id="voucher-choose-btn" (click)="openDialogVoucherList()">{{'payday_loan.choose_amount.choose_voucher' | translate}}</button>
+              </div>
+            </div>
+
+            <div class="col-md-12">
+              <h2>{{ 'payday_loan.choose_amount.guaranteed_assets' | translate }}</h2>
             </div>
 
             <div class="col-md-12">
               <div class="collateral-document-upload">
-                <image-upload-area
-                  id="collateralDocument"
-                  name="collateralDocument"
-                  [imageSrc]="collateralImgSrc"
+                <image-upload-area id="collateralDocument" name="collateralDocument" [imageSrc]="collateralImgSrc"
                   [placeholderImageSrc]="'sprite-group-3-uploadimage'"
-                  [filledTitle]="'payday_loan.ekyc.collateral_img' | translate"
-                  [uploadTitle]="
+                  [filledTitle]="'payday_loan.ekyc.collateral_img' | translate" [uploadTitle]="
                     'payday_loan.ekyc.upload_collateral_img' | translate
-                  "
-                  [uploadHint]="'payday_loan.ekyc.collateral_hind' | translate"
-                  [required]="true"
-                  [isManualUploadFile]="true"
-                  [rules]="'required|size:20000|mimes:image/*'"
-                  [acceptFileType]="'image/*'"
-                  (receiveResult)="resultCollateral($event)"
-                >
+                  " [uploadHint]="'payday_loan.ekyc.collateral_hind' | translate" [required]="true"
+                  [isManualUploadFile]="true" [rules]="'required|size:20000|mimes:image/*'" [acceptFileType]="'image/*'"
+                  (receiveResult)="resultCollateral($event)">
                 </image-upload-area>
               </div>
             </div>
 
             <div class="col-md-12">
               <div class="text-center btn-container">
-                <button
-                  mat-raised-button
-                  type="submit"
-                  class="ui-button w-100"
-                  id="loan-detemination-form-confirm-btn"
-                  color="primary"
-                  [disabled]="!loanDeteminationForm.valid"
-                  (click)="onSubmit()"
-                >
-                  Xác nhận
+                <button mat-raised-button type="submit" class="ui-button w-100" id="loan-detemination-form-confirm-btn"
+                  color="primary" [disabled]="!loanDeteminationForm.valid" (click)="onSubmit()">
+                  {{ "common.confirm" | translate }}
                 </button>
               </div>
             </div>

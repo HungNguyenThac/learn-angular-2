@@ -131,7 +131,7 @@ export class AdditionalInformationComponent
             borrowerEmploymentHistoryTextVariable1:
               this.customerInfo.personalData
                 .borrowerEmploymentHistoryTextVariable1,
-            // borrowerEmploymentAverageWage: this.customerInfo.personalData.borrowerEmploymentAverageWage,
+            borrowerEmploymentAverageWage: this.customerInfo.personalData.annualIncome,
           });
         })
     );
@@ -187,20 +187,5 @@ export class AdditionalInformationComponent
       content: this.multiLanguageService.instant(content),
       primaryBtnText: this.multiLanguageService.instant('common.confirm'),
     });
-  }
-
-  test() {
-    const additionalInformationV2Request: AdditionalInformationV2Request = {
-      maritalStatus: this.additionalInfoForm.controls.maritalStatus.value,
-      educationType: this.additionalInfoForm.controls.educationType.value,
-      borrowerDetailTextVariable1:
-      this.additionalInfoForm.controls.borrowerDetailTextVariable1.value,
-      borrowerEmploymentHistoryTextVariable1:
-      this.additionalInfoForm.controls.borrowerEmploymentHistoryTextVariable1
-      .value,
-      annualIncome:
-      Number(this.additionalInfoForm.controls.borrowerEmploymentAverageWage.value)*1000000,
-    };
-    console.log("additionalInformationRequest",additionalInformationV2Request)
   }
 }
