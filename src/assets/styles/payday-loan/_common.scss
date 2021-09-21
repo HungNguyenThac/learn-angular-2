@@ -204,3 +204,21 @@ input.pl-text-otp {
   margin: 0;
   color: $grey-10;
 }
+
+.mat-expansion-panel-content {
+  .mat-expansion-panel-body {
+    padding: 0;
+    ul {
+      list-style: initial;
+      padding: 12px;
+      margin-top: -24px;
+      li {
+        margin-left: 8px;
+        font-weight: normal;
+        font-size: 14px;
+        line-height: 18px;
+        color: #636366;
+      }
+    }
+  }
+}
