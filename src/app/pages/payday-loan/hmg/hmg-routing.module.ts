@@ -4,7 +4,7 @@ import { SignContractSuccessComponent } from './sign-contract-success/sign-contr
 import { EkycComponent } from './ekyc/ekyc.component';
 import { CurrentLoanComponent } from './current-loan/current-loan.component';
 import { SignContractTermsSuccessComponent } from './sign-contract-terms-success/sign-contract-terms-success.component';
-import { ContractTermsOfServiceComponent } from './contract-terms-of-service/contract-terms-of-service.component';
+import { SignContractTermsOfServiceComponent } from './sign-contract-terms-of-service/sign-contract-terms-of-service.component';
 import { ConfirmInformationComponent } from './confirm-information/confirm-information.component';
 import { AdditionalInformationComponent } from './additional-information/additional-information.component';
 import { PlChoosePaymentMethodComponent } from './pl-choose-payment-method/pl-choose-payment-method.component';
@@ -26,8 +26,8 @@ export const HmgRoutes: Routes = [
         data: { animation: true },
       },
       {
-        path: 'contract-terms-of-service',
-        component: ContractTermsOfServiceComponent,
+        path: 'sign-contract-terms-of-service',
+        component: SignContractTermsOfServiceComponent,
         data: { animation: true },
       },
       {

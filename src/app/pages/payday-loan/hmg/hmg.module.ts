@@ -13,7 +13,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { AdditionalInformationComponent } from './additional-information/additional-information.component';
 import { ConfirmInformationComponent } from './confirm-information/confirm-information.component';
 import { EkycComponent } from './ekyc/ekyc.component';
-import { ContractTermsOfServiceComponent } from './contract-terms-of-service/contract-terms-of-service.component';
+import { SignContractTermsOfServiceComponent } from './sign-contract-terms-of-service/sign-contract-terms-of-service.component';
 import { SignContractSuccessComponent } from './sign-contract-success/sign-contract-success.component';
 import { SignContractTermsSuccessComponent } from './sign-contract-terms-success/sign-contract-terms-success.component';
 import { CurrentLoanComponent } from './current-loan/current-loan.component';
@@ -29,7 +29,7 @@ import { GpayPaymentResultComponent } from './gpay-payment-result/gpay-payment-r
     AdditionalInformationComponent,
     ConfirmInformationComponent,
     EkycComponent,
-    ContractTermsOfServiceComponent,
+    SignContractTermsOfServiceComponent,
     SignContractSuccessComponent,
     SignContractTermsSuccessComponent,
     CurrentLoanComponent,

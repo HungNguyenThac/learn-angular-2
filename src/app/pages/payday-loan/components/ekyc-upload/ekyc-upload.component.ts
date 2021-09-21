@@ -141,7 +141,7 @@ export class EkycUploadComponent implements OnInit, AfterViewInit {
     )
       return;
 
-    this.notificationService.showLoading();
+    this.notificationService.showLoading({ showContent: true });
     this.subManager.add(
       this.kalapaV2Service
         .extractInfo(

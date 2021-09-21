@@ -1,5 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import {PlLoading} from "../../../../public/models/plloading.model";
 
 @Component({
   selector: 'app-pl-loading',
@@ -7,13 +8,14 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
   styleUrls: ['./pl-loading.component.scss'],
 })
 export class PlLoadingComponent implements OnInit {
-  promptContent: any = {
+  promptContent: PlLoading = {
     title: '',
-    content: ''
+    content: '',
+    showContent: false
   };
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) private data: any,
+    @Inject(MAT_DIALOG_DATA) private data: PlLoading,
     private dialogRef: MatDialogRef<PlLoadingComponent>
   ) {
     dialogRef.disableClose = true;

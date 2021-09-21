@@ -34,6 +34,7 @@ model/contentNotification.ts
 model/contentNotificationRequest.ts
 model/createInsuranceRequest.ts
 model/createInsuranceResponse.ts
+model/createLetterHMGRequest.ts
 model/createLetterRequest.ts
 model/createLetterResponse.ts
 model/createTemplateNotificationRequest.ts
@@ -48,6 +49,7 @@ model/models.ts
 model/scheduleMailRequest.ts
 model/seenNotificationRequest.ts
 model/sendContractOTPRequest.ts
+model/sendLetterOTPHMGRequest.ts
 model/sendLetterOTPRequest.ts
 model/sendMailRequest.ts
 model/sendOtpRequest.ts
