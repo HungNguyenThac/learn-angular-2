@@ -2,6 +2,7 @@
 $font-path: "../fonts/";
 $assert-path: "../../";
 $sfUiDisplay: "sfUiDisplay";
+$sfPro: "sfPro";
 
 $monex-gradient-01: linear-gradient($bright-turquoise, $jade);
 $monex-gradient-02: radial-gradient($arapawa, $black-rock);
@@ -12,18 +13,18 @@ $monex-gradient-03: radial-gradient(
 );
 
 $grey-00: $white-lilac;
-$grey-01: $athens-gray;
+$grey-01: $white-lilac;
 $grey-02: $athens-gray-2;
 $grey-03: $mischka;
 $grey-04: $french-grey;
 $grey-05: $bombay;
 $grey-06: $manatee;
-$grey-07: $mid-grey;
-$grey-08: $abbey;
-$grey-09: $shark;
-$grey-10: $shark-2;
-$grey-11: $alto;
-$grey-12: $gallery;
+$grey-07: $jumbo;
+$grey-08: $mid-grey;
+$grey-09: $abbey;
+$grey-10: $tuna;
+$grey-11: $shark;
+$grey-12: $shark-2;
 $grey-13: $whisper;
 
 $monex-color-00: $jungle-green;
@@ -56,6 +57,16 @@ $dim-color-indigo: $rose-white;
 $dim-color-purple: $twilight-blue;
 $dim-color-pink: $quarter-pearl-lusta;
 
+$dim-light-red: $chablis;
+$dim-light-orange: $bridal-health;
+$dim-light-yellow: $quarter-pearl-lusta;
+$dim-light-green: $hint-of-green;
+$dim-light-teal: $twilight-blue;
+$dim-light-blue: $alice-blue;
+$dim-light-indigo: $alice-blue-2;
+$dim-light-purple: $white-pointer;
+$dim-light-pink: $lavender-blush;
+
 $web-bg-color: #0d0c81;
 
 $pl-transition-drop-timing: cubic-bezier(0.55, 0, 0.55, 0.2);
@@ -68,3 +79,17 @@ $pl-transition-stand-duration: 0.4s;
 $pl-transition-stand: $pl-transition-stand-duration $pl-transition-stand-timing;
 $pl-checkbox-size: 20px;
 $pl-checkbox-touch-size: 48px;
+
+$tablet-width: 768px;
+$desktop-width: 1024px;
+@mixin tablet {
+  @media (min-width: #{$tablet-width}) and (max-width: #{$desktop-width - 1px}) {
+    @content;
+  }
+}
+
+@mixin desktop {
+  @media (min-width: #{$desktop-width}) {
+    @content;
+  }
+}

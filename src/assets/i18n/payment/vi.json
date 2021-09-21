@@ -1,0 +1,27 @@
+{
+  "payment" : {
+    "choose_payment_method": {
+      "title": "Chọn hình thức thanh toán",
+      "choose_method": "Chọn một trong hai hình thức thanh toán sau",
+      "card_payment": "Thanh toán thẻ",
+      "transfer": "Chuyển khoản",
+      "card_payment_napas": "Thanh toán nhanh với NAPAS sẽ được thực hiện qua cổng thanh toán Gpay",
+      "amount_to_be_paid": "Số tiền cần thanh toán",
+      "amount_to_be_paid_desc": "Đã bao gồm phí trung gian thanh toán: 3.500 ₫ / mỗi lần giao dịch",
+      "hint_amount_to_be_paid": "Phí Thanh Toán = (giá trị khoản vay x 1.1%) + 1650 VNĐ",
+      "payment": "Thanh toán",
+      "bank_transfer": "Chuyển khoản ngân hàng",
+      "guide_bank_transfer": "Thanh toán bằng cách chuyển khoản trực tiếp đến tài khoản của Monex với thông tin như sau:",
+      "amount_need_transfer": "Số tiền cần chuyển",
+      "bank_code_receiver": "Ngân hàng thụ hưởng",
+      "account_number_receiver": "Số tài khoản",
+      "copy": "Sao chép",
+      "copied": "Đã sao chép",
+      "name_receiver": "Tên người nhận",
+      "name_receiver_desc": "Đây là tài khoản tất toán của Quý khách do Monex quản lý. Khi Quý khách chuyển khoản tới tài khoản này, hệ thống sẽ ghi nhận vào số tiền hoàn ứng của Quý khách",
+      "transfer_content": "Nội dung chuyển khoản",
+      "required_name_desc": "Thiếu thông tin này, Monex sẽ không thể định danh khoản tiền từ <span class='insurance-name-inline'>{{name}}</span>",
+      "confirm_finalization_content": "Quý khách vui lòng chuẩn bị sẵn thông tin thẻ ngân hàng. Phiên thanh toán chỉ có thời hạn {{minute}} phút"
+    }
+  }
+}

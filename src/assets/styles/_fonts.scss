@@ -1,11 +1,5 @@
 @import "variables";
 @font-face {
-  font-family: sfPro;
-  src: local("sfPro"),
-    url("#{$font-path}/SFProDisplay-Regular.ttf") format("truetype");
-}
-
-@font-face {
   font-family: montserratPegular;
   src: local("montserratPegular"),
     url("#{$font-path}/Montserrat-Regular.ttf") format("truetype");
@@ -82,3 +76,94 @@
   src: local("sfUiDisplay 900"),
     url("#{$font-path}/sf-ui-display-black-900.woff") format("woff");
 }
+
+
+@font-face {
+  font-family: sfPro;
+  font-style: normal;
+  font-weight: normal;
+  src: local("sfPro regular"),
+  url("#{$font-path}/SF-Pro-Display-Regular.otf") format("opentype");
+}
+
+
+@font-face {
+  font-family: sfPro;
+  font-style: normal;
+  font-weight: 100;
+  src: local("sfPro 100"),
+  url("#{$font-path}/SF-Pro-Display-Regular.otf") format("opentype");
+}
+
+@font-face {
+  font-family: sfPro;
+  font-style: normal;
+  font-weight: 200;
+  src: local("sfPro 200"),
+  url("#{$font-path}/SF-Pro-Display-Regular.otf") format("opentype");
+}
+
+@font-face {
+  font-family: sfPro;
+  font-style: normal;
+  font-weight: 300;
+  src: local("sfPro 300"),
+  url("#{$font-path}/SF-Pro-Display-Regular.otf") format("opentype");
+}
+
+@font-face {
+  font-family: sfPro;
+  font-style: normal;
+  font-weight: 400;
+  src: local("sfPro 400"),
+  url("#{$font-path}/SF-Pro-Display-Regular.otf") format("opentype");
+}
+
+@font-face {
+  font-family: sfPro;
+  font-style: normal;
+  font-weight: 500;
+  src: local("sfPro 500"),
+  url("#{$font-path}/SF-Pro-Display-Medium.otf") format("opentype");
+}
+
+@font-face {
+  font-family: sfPro;
+  font-style: normal;
+  font-weight: 600;
+  src: local("sfPro 600"),
+  url("#{$font-path}/SF-Pro-Display-Semibold.otf") format("opentype");
+}
+
+@font-face {
+  font-family: sfPro;
+  font-style: normal;
+  font-weight: 700;
+  src: local("sfPro 700"),
+  url("#{$font-path}/SF-Pro-Display-Bold.otf") format("opentype");
+}
+
+@font-face {
+  font-family: sfPro;
+  font-style: normal;
+  font-weight: 800;
+  src: local("sfPro 800"),
+  url("#{$font-path}/SF-Pro-Display-Bold.otf") format("opentype");
+}
+
+@font-face {
+  font-family: sfPro;
+  font-style: normal;
+  font-weight: 900;
+  src: local("sfUiDisplay 900"),
+  url("#{$font-path}/SF-Pro-Display-Bold.otf") format("opentype");
+}
+
+@font-face {
+  font-family: sfPro;
+  font-style: normal;
+  font-weight: bold;
+  src: local("sfUiDisplay bold"),
+  url("#{$font-path}/SF-Pro-Display-Bold.otf") format("opentype");
+}
+

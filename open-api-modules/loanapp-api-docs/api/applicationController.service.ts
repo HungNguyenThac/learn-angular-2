@@ -17,7 +17,8 @@ import { HttpClient, HttpHeaders, HttpParams,
 import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
-import { ApiResponseObject } from '../model/models';
+import { ApiResponseListPaydayLoan } from '../model/models';
+import { ApiResponsePaydayLoan } from '../model/models';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
 import { Configuration }                                     from '../configuration';
@@ -85,24 +86,20 @@ export class ApplicationControllerService {
     }
 
     /**
-     * @param authorization 
      * @param customerId 
      * @param coreToken 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getActivePaydayLoan(authorization: string, customerId: string, coreToken: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseObject>;
-    public getActivePaydayLoan(authorization: string, customerId: string, coreToken: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseObject>>;
-    public getActivePaydayLoan(authorization: string, customerId: string, coreToken: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseObject>>;
-    public getActivePaydayLoan(authorization: string, customerId: string, coreToken: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
-        if (authorization === null || authorization === undefined) {
-            throw new Error('Required parameter authorization was null or undefined when calling getActivePaydayLoan.');
-        }
+    public getActiveLoan(customerId: string, coreToken: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponsePaydayLoan>;
+    public getActiveLoan(customerId: string, coreToken: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponsePaydayLoan>>;
+    public getActiveLoan(customerId: string, coreToken: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponsePaydayLoan>>;
+    public getActiveLoan(customerId: string, coreToken: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
         if (customerId === null || customerId === undefined) {
-            throw new Error('Required parameter customerId was null or undefined when calling getActivePaydayLoan.');
+            throw new Error('Required parameter customerId was null or undefined when calling getActiveLoan.');
         }
         if (coreToken === null || coreToken === undefined) {
-            throw new Error('Required parameter coreToken was null or undefined when calling getActivePaydayLoan.');
+            throw new Error('Required parameter coreToken was null or undefined when calling getActiveLoan.');
         }
 
         let queryParameters = new HttpParams({encoder: this.encoder});
@@ -112,9 +109,6 @@ export class ApplicationControllerService {
         }
 
         let headers = this.defaultHeaders;
-        if (authorization !== undefined && authorization !== null) {
-            headers = headers.set('Authorization', String(authorization));
-        }
 
         let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
         if (httpHeaderAcceptSelected === undefined) {
@@ -134,9 +128,53 @@ export class ApplicationControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.get<ApiResponseObject>(`${this.configuration.basePath}/v1/${encodeURIComponent(String(customerId))}/active-loan`,
+        return this.httpClient.get<ApiResponsePaydayLoan>(`${this.configuration.basePath}/v1/${encodeURIComponent(String(customerId))}/active-loan`,
             {
                 params: queryParameters,
+                responseType: <any>responseType_,
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * @param customerId 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getAllPaydayLoan(customerId: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseListPaydayLoan>;
+    public getAllPaydayLoan(customerId: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseListPaydayLoan>>;
+    public getAllPaydayLoan(customerId: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseListPaydayLoan>>;
+    public getAllPaydayLoan(customerId: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
+        if (customerId === null || customerId === undefined) {
+            throw new Error('Required parameter customerId was null or undefined when calling getAllPaydayLoan.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (httpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                '*/*'
+            ];
+            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
+        if (httpHeaderAcceptSelected !== undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+
+        let responseType_: 'text' | 'json' = 'json';
+        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+            responseType_ = 'text';
+        }
+
+        return this.httpClient.get<ApiResponseListPaydayLoan>(`${this.configuration.basePath}/v1/${encodeURIComponent(String(customerId))}/all-loan`,
+            {
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,

@@ -1,0 +1,28 @@
+<div class="container-fluid">
+  <div class="insurance-container">
+    <!-- Intro -->
+    <pl-introduce></pl-introduce>
+
+    <section>
+      <div class="content">
+        <p>{{"payday_loan.five_steps" | translate}}</p>
+        <ol>
+          <li><span class="prefix">1</span>{{"payday_loan.step_1" | translate}}</li>
+          <li><span class="prefix">2</span>{{"payday_loan.step_2" | translate}}</li>
+          <li><span class="prefix">3</span>{{"payday_loan.step_3" | translate}}</li>
+          <li><span class="prefix">4</span>{{"payday_loan.step_4" | translate}}</li>
+          <li><span class="prefix">5</span>{{"payday_loan.step_5" | translate}}</li>
+        </ol>
+      </div>
+    </section>
+    <section>
+      <div class="col-md-12 responsive-form-actions">
+        <div id="start-now-btn-container">
+          <button mat-raised-button type="submit" class="w-100 ui-button" color="primary" (click)="start()">
+            {{"payday_loan.start_now" | translate}}
+          </button>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>

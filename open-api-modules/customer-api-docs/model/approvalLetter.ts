@@ -18,6 +18,9 @@ export interface ApprovalLetter {
     idDocument?: number;
     customerId?: string;
     path?: string;
+    customerSignDone?: boolean;
     created_at?: string;
+    updatedAt?: string;
+    updatedBy?: string;
 }
 

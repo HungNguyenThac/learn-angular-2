@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import {RouterOutlet} from "@angular/router";
-import {fadeAnimation} from "../../core/common/animations";
+import {Component, OnInit} from '@angular/core';
+import {fadeAnimation} from "../../core/common/animations/router.animation";
+import {MultiLanguageService} from "../../share/translate/multiLanguageService";
 
 @Component({
   selector: 'app-main-layout',
@@ -13,7 +13,9 @@ import {fadeAnimation} from "../../core/common/animations";
 })
 export class MainLayoutComponent implements OnInit {
 
-  constructor() { }
+  constructor(private multiLanguageService: MultiLanguageService) {
+
+  }
 
   ngOnInit(): void {
   }

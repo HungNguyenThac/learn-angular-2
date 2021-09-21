@@ -1,16 +1,24 @@
 @import "../../../../assets/styles/variables";
+@import "src/assets/styles/insurance/insurance";
+@import "src/assets/styles/insurance/insurance-form";
 section {
-  font-size: 12px;
-  line-height: 16px;
+  font-size: 14px;
+  line-height: 18px;
   color: $grey-10;
+  font-family: $sfPro;
 }
+
 .top-insurance {
   background-color: #f2f9ff;
+  font-size: 12px;
+  padding: 16px 0;
+  line-height: 16px;
   height: 200px;
   overflow: hidden;
   .content {
     max-height: 100%;
-    padding: 16px 0 20px 24px;
+    min-width: 160px;
+    padding: 0 0 0 24px;
     margin-right: -12px;
     .title-content {
       color: $system-color-blue;
@@ -20,8 +28,10 @@ section {
     h1,
     p {
       color: $monex-color-01;
-      padding: 0;
-      margin: 0;
+      font-style: normal;
+      font-weight: normal;
+      font-size: 12px;
+      line-height: 16px;
     }
     h1 {
       font-size: 32px;
@@ -38,19 +48,61 @@ section {
       }
     }
   }
+
+  .big-icon {
+    min-width: 188px;
+    img {
+      position: relative;
+      top: 0;
+      right: 0;
+    }
+  }
 }
 
 .main-content {
-  margin-top: 8px;
-  padding: 16px;
+  margin-top: 24px;
+  .description {
+    margin-bottom: 26px;
+  }
 }
 
-.not-select {
-  color: $grey-06;
+// .sticky-bottom {
+//   box-shadow: inset 0px 1px 0px #F2F2F7;
+//   height: 80px;
+//   margin-top: 13px;
+//   position: sticky;
+//   bottom: 0;
+//   background-color: white;
+// }
+
+.mat-form-field {
+  width: 100%;
 }
 
-.select-field {
-  background: #ffffff;
-  border-radius: 16px;
-  padding: 0 0 24px;
+#confirm-info-btn-container {
+  max-width: 480px;
+}
+
+.responsive-form-actions {
+  padding: 16px 0;
+}
+
+@media (max-width: 768px) {
+  .insurance-btn {
+    max-width: 100%;
+  }
+
+  #confirm-info-btn-container {
+    max-width: 480px;
+    margin: 0 auto;
+  }
+
+  .responsive-form-actions {
+    padding: 16px;
+    max-width: 100vw;
+  }
+
+  .responsive-form-content {
+    margin-bottom: 67px;
+  }
 }

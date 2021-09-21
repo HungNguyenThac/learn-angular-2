@@ -3,29 +3,41 @@
     <header>
       <div id="insurance-header">
         <div class="header-container">
-          <div class="container no-padding  justify-content-center">
+          <div class="container no-padding justify-content-center">
             <div
               id="insurance-header-content"
               class="d-flex justify-content-between align-items-center"
             >
-              <div>
-                <a><img [src]="logoSrc" alt="logo-monex"/></a>
-              </div>
-              <ng-template #Login>
-                <button mat-flat-button class="ui-button button-login">
-                  Đăng nhập
-                </button>
-              </ng-template>
-              <div *ngIf="isLogged; else Login">
-                <button id="profile-btn" mat-button [matMenuTriggerFor]="menu" class="no-padding">
-                  <div fxLayout="row" fxLayoutAlign="space-between center">
+              <a><img [src]="logoSrc" alt="logo-monex" id="logo-monex" /></a>
+              <!--              <ng-template #Login>-->
+              <!--                <button mat-flat-button class="ui-button button-login">-->
+              <!--                  {{ "auth.login" | translate }}-->
+              <!--                </button>-->
+              <!--              </ng-template>-->
+              <div *ngIf="showProfileBtn">
+                <button
+                  id="profile-btn"
+                  mat-button
+                  [matMenuTriggerFor]="menu"
+                  class="no-padding"
+                >
+                  <div
+                    class="
+                      d-flex
+                      flex-row
+                      text-center
+                      justify-content-between
+                      align-items-center
+                    "
+                  >
                     <div class="avatar">Q</div>
-                    <img src="assets/img/icon-down.svg" alt="show"/>
+                    <div class="sprite-group-1-icon-down"></div>
                   </div>
                 </button>
                 <mat-menu #menu="matMenu">
-                  <button mat-menu-item>Profile</button>
-                  <button mat-menu-item>Logout</button>
+                  <button mat-menu-item (click)="logout()">
+                    {{ "auth.logout" | translate }}
+                  </button>
                 </mat-menu>
               </div>
             </div>
@@ -33,24 +45,34 @@
         </div>
       </div>
 
-      <div id="insurance-navigation-bar">
+      <div id="insurance-navigation-bar" *ngIf="showNavigationBar">
         <div class="container no-padding insurance-navigation-bar-container">
           <!-- Top navigation -->
-          <div id="insurance-top-navigation">
+          <div id="insurance-top-navigation" class="justify-content-between">
             <button mat-icon-button class="no-padding insurance-top-nav-btn">
-              <img src="assets/img/icon-back.svg" alt="left"/>
-            </button>
-            <h2>{{ titleNavigation }}</h2>
-            <button mat-icon-button class="no-padding insurance-top-nav-btn">
-              <img src="assets/img/icon-back.svg" alt="right"/>
+              <span [ngClass]="leftBtnIcon" *ngIf="displayLeftBtn"></span>
             </button>
 
-            <!-- Stepper progress bar-->
+            <!-- Stepper navigation -->
+            <app-step-navigation
+              *ngIf="showStepNavigation; else showTitle"
+              class="w-100"
+            ></app-step-navigation>
+            <ng-template #showTitle
+              ><h2>{{ titleNavigation }}</h2></ng-template
+            >
+
+            <button mat-icon-button class="no-padding insurance-top-nav-btn">
+              <span [ngClass]="rightBtnIcon" *ngIf="displayRightBtn"></span>
+            </button>
           </div>
+
+          <!-- Stepper progress bar-->
+          <app-step-progress-bar
+            *ngIf="showStepProgressBar"
+          ></app-step-progress-bar>
         </div>
       </div>
-
     </header>
   </div>
-
 </header>

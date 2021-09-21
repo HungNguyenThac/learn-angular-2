@@ -7,26 +7,42 @@ import {FormBuilder, FormGroup} from '@angular/forms';
   styleUrls: ['./determine-needs.component.scss']
 })
 export class DetermineNeedsComponent implements OnInit {
-  ageOptions = ["Từ 16 tuổi đến 19 tuổi", "Từ 20 tuổi đến 29 tuổi","Từ 30 tuổi đến 39 tuổi", "Từ 40 tuổi đến 49 tuổi", "Từ 50 tuổi đến 59 tuổi"]
-  jobOptions = ["Công việc văn phòng", "Tự do", "Kinh doanh", "Công nhân"]
+  ageOptions: number[] = []
+  jobOptions = ["Làm việc văn phòng", "Hay di chuyển", "Công nhân"]
   genderOptions = ["Nam", "Nữ"]
   vehicleOptions = ["Xe Máy", "Ô tô", "Khác"]
+  houseConditionOptions = ["Sở hữu nhà riêng", "Thuê nhà", "Sống cùng bố mẹ", "Khác"]
+  dependentPersonOptions = ["Không có người phụ thuộc", "Người thân cao tuổi", "Dự định có con", "Đã có con"]
   genderStartValue = this.genderOptions[0];
   vehicleStartValue = this.vehicleOptions[0];
 
   infoForm: FormGroup;
   constructor(
-    private formBuider: FormBuilder
+    private formBuilder: FormBuilder
   ) {
-    this.infoForm =  this.formBuider.group({
+    this.infoForm =  this.formBuilder.group({
       age: [""],
       gender: [""],
       job: [""],
       vehicle: [""],
+      houseCondition: [""],
+      dependentPerson: [""]
     })
   }
 
+  dependInfo = {
+    label: "Tình trạng người phụ thuộc",
+    hint: "",
+    options: ["Có", "Không"],
+    formControlName: "depend"
+  }
+
   ngOnInit(): void {
+    const currentDate = new Date()
+    const currentYear = currentDate.getFullYear();
+    for (let index = 1900; index <= currentYear; index++) {
+      this.ageOptions.push(index)
+    }
   }
 
   onInfoSubmit() {

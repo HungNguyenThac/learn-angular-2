@@ -1,12 +1,14 @@
 @import "../../../assets/styles/variables";
 
 $main-font: 14px;
-body {
-  font-family: $sfUiDisplay;
+
+header {
+  z-index: 1;
 }
 
 #insurance-header {
   background: $monex-gradient-03;
+  font-family: $sfPro;
   width: 100%;
 }
 
@@ -16,6 +18,7 @@ body {
   background: rgba(0, 0, 0, 0.2);
   box-shadow: inset 0px -1px 0px rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(200px);
+  font-family: $sfPro;
 
   .button-login, .avatar {
     height: 32px;
@@ -23,6 +26,7 @@ body {
     align-items: center;
     justify-content: center;
     font-size: $main-font;
+    font-family: $sfPro;
   }
 
   .avatar {
@@ -38,12 +42,19 @@ body {
   }
 }
 
+#logo-monex {
+  height: 28px;
+}
+
 #insurance-navigation-bar {
-  padding: 4px 16px;
+  padding: 0;
   background: $monex-gradient-03;
+  font-family: $sfPro;
 
   #insurance-top-navigation {
+    padding: 0 16px;
     display: flex;
+    height: 48px;
   }
 
   h2 {
@@ -56,9 +67,9 @@ body {
 }
 
 .insurance-top-nav-btn {
-  width: 20px;
-  height: 40px;
-  img {
+  width: auto;
+  height: 100%;
+  span {
     width: 20px;
     height: 20px;
   }

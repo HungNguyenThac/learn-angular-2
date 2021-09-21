@@ -1,0 +1,28 @@
+@import "src/assets/styles/variables";
+
+#step-navigation-container {
+    padding-left: 16px;
+    width: 100%;
+  p {
+    font-size: 12px;
+    line-height: 14px;
+    text-transform: uppercase;
+    color: $monex-color-00;
+  }
+
+  h3 {
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 24px;
+    color: white;
+  }
+}
+
+.help {
+    background: transparent;
+    position: absolute;
+    right: 16px;
+    width: 20px;
+    height: 20px;
+    line-height: 0;
+}
