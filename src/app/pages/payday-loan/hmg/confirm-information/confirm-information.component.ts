@@ -15,7 +15,6 @@ import { Store } from '@ngrx/store';
 import * as fromStore from 'src/app/core/store/index';
 import {
   ApiResponseCustomerInfoResponse,
-  ConfirmInformationRequest,
   ConfirmInformationV2Request,
   CustomerInfoResponse,
   InfoControllerService,
@@ -29,6 +28,10 @@ import {
   BorrowerStepOneInput,
 } from 'open-api-modules/core-api-docs';
 import * as moment from 'moment';
+import { GlobalConstants } from '../../../../core/common/global-constants';
+import { Title } from '@angular/platform-browser';
+import * as fromActions from '../../../../core/store';
+import { PL_STEP_NAVIGATION } from '../../../../core/common/enum/payday-loan';
 
 @Component({
   selector: 'app-confirm-information',
@@ -68,8 +71,9 @@ export class ConfirmInformationComponent
     private notificationService: NotificationService,
     private multiLanguageService: MultiLanguageService,
     private borrowerControllerService: BorrowerControllerService,
-    private formBuilder: FormBuilder
-    ) {
+    private formBuilder: FormBuilder,
+    private titleService: Title
+  ) {
     this.infoForm = this.formBuilder.group({
       name: [''],
       dateOfBirth: [''],
@@ -107,6 +111,13 @@ export class ConfirmInformationComponent
         console.log('coreToken', coreToken);
       })
     );
+
+    this.titleService.setTitle(
+      'Xác nhận thông tin' +
+        ' - ' +
+        GlobalConstants.PL_VALUE_DEFAULT.PROJECT_NAME
+    );
+    this.initHeaderInfo();
   }
 
   ngAfterViewInit() {
@@ -120,7 +131,9 @@ export class ConfirmInformationComponent
         this.customerInfo = result.result;
         this.infoForm.patchValue({
           name: this.customerInfo.personalData.firstName,
-          dateOfBirth: moment(this.customerInfo.personalData.dateOfBirth).toISOString(),
+          dateOfBirth: moment(
+            this.customerInfo.personalData.dateOfBirth
+          ).toISOString(),
           gender: this.customerInfo.personalData.gender,
           identityNumberOne: this.customerInfo.personalData.identityNumberOne,
           idIssuePlace: this.customerInfo.personalData.idIssuePlace,
@@ -135,6 +148,19 @@ export class ConfirmInformationComponent
     this.subManager.unsubscribe();
   }
 
+  initHeaderInfo() {
+    this.store.dispatch(new fromActions.ResetPaydayLoanInfo());
+    this.store.dispatch(new fromActions.SetShowLeftBtn(false));
+    this.store.dispatch(new fromActions.SetShowRightBtn(false));
+    this.store.dispatch(new fromActions.SetShowProfileBtn(true));
+    this.store.dispatch(new fromActions.SetShowStepNavigation(true));
+    this.store.dispatch(
+      new fromActions.SetStepNavigationInfo(
+        PL_STEP_NAVIGATION.CONFIRM_INFORMATION
+      )
+    );
+  }
+
   onInfoSubmit() {
     if (!this.infoForm.valid) return;
     this.notificationService.showLoading(null);
@@ -142,7 +168,9 @@ export class ConfirmInformationComponent
       this.infoV2ControllerService
         .validateConfirmInformationRequestV2(this.customerId, {
           firstName: this.infoForm.controls['name'].value,
-          dateOfBirth: this.formatTime(this.infoForm.controls['dateOfBirth'].value),
+          dateOfBirth: this.formatTime(
+            this.infoForm.controls['dateOfBirth'].value
+          ),
           gender: this.infoForm.controls['gender'].value,
           identityNumberSix: this.infoForm.controls['email'].value,
           identityNumberOne: this.infoForm.controls['identityNumberOne'].value,
@@ -155,10 +183,10 @@ export class ConfirmInformationComponent
           if (!result || result.responseCode !== 200) {
             const message = this.multiLanguageService.instant(
               'payday_loan.error_code.' + result.errorCode.toLowerCase()
-              );
-              this.notificationService.hideLoading();
-              this.showError('common.error', message);
-              return
+            );
+            this.notificationService.hideLoading();
+            this.showError('common.error', message);
+            return;
           }
           this.confirmInfomationCustomer();
         })
