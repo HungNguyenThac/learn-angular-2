@@ -1,3 +1,5 @@
+import { CreateLetterRequest } from './../../../../../../open-api-modules/com-api-docs/model/createLetterRequest';
+import { ContractControllerService } from './../../../../../../open-api-modules/com-api-docs/api/contractController.service';
 import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
 import {
   DateAdapter,
@@ -8,7 +10,7 @@ import {
   MAT_MOMENT_DATE_FORMATS,
   MomentDateAdapter,
 } from '@angular/material-moment-adapter';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, RequiredValidator, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
 import { Store } from '@ngrx/store';
@@ -48,9 +50,9 @@ import { PL_STEP_NAVIGATION } from '../../../../core/common/enum/payday-loan';
   ],
 })
 export class ConfirmInformationComponent
-  implements OnInit, AfterViewInit, OnDestroy
-{
+  implements OnInit, AfterViewInit, OnDestroy {
   infoForm: FormGroup;
+  name: any;
 
   genderOptions = ['Nam', 'Nữ'];
   customerInfo: CustomerInfoResponse;
@@ -71,6 +73,7 @@ export class ConfirmInformationComponent
     private notificationService: NotificationService,
     private multiLanguageService: MultiLanguageService,
     private borrowerControllerService: BorrowerControllerService,
+    private contractControllerService: ContractControllerService,
     private formBuilder: FormBuilder,
     private titleService: Title
   ) {
@@ -114,8 +117,8 @@ export class ConfirmInformationComponent
 
     this.titleService.setTitle(
       'Xác nhận thông tin' +
-        ' - ' +
-        GlobalConstants.PL_VALUE_DEFAULT.PROJECT_NAME
+      ' - ' +
+      GlobalConstants.PL_VALUE_DEFAULT.PROJECT_NAME
     );
     this.initHeaderInfo();
   }
@@ -251,15 +254,33 @@ export class ConfirmInformationComponent
         this.bindingConfirmInfomationRequest()
       )
       .subscribe((result: ApiResponseObject) => {
-        this.notificationService.hideLoading();
         if (!result || result.responseCode !== 200) {
+          this.notificationService.hideLoading();
           const message = this.multiLanguageService.instant(
             'payday_loan.error_code.' + result.errorCode.toLowerCase()
           );
           return this.showError('common.error', message);
         }
-        // success redirect to additional information
-        this.router.navigateByUrl('/hmg/additional-information');
+
+        //success call Api create letter com svc
+        const createLetterRequest: CreateLetterRequest = {
+          dateOfBirth: this.customerInfo.personalData.dateOfBirth,
+          name: this.customerInfo.personalData.firstName,
+          nationalId: this.customerId,
+          customerId: this.customerId,
+          idIssuePlace: this.customerInfo.personalData.idIssuePlace,
+        }
+        this.contractControllerService.createLetterHMG('HMG', createLetterRequest).subscribe((result) => {
+          this.notificationService.hideLoading();
+          if (!result || result.responseCode !== 200) {
+            const message = this.multiLanguageService.instant(
+              'payday_loan.error_code.' + result.errorCode.toLowerCase()
+            );
+            return this.showError('common.error', message);
+          }
+          // redirect to additional information
+          this.router.navigateByUrl('/hmg/additional-information');
+        })
       });
   }
 
@@ -277,4 +298,5 @@ export class ConfirmInformationComponent
       'DD/MM/YYYY'
     );
   }
+
 }

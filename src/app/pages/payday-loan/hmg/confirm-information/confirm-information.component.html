@@ -20,6 +20,7 @@
                     'payday_loan.confirm_information.type_full_name' | translate
                   "
                   required
+                  maxlength="255"
                 />
                 <show-errors
                   [control]="infoForm.controls['name']"
@@ -107,6 +108,7 @@
                       | translate
                   "
                   required
+                  maxlength="20"
                 />
                 <show-errors
                   [control]="infoForm.controls['identityNumberOne']"
@@ -137,6 +139,7 @@
                       | translate
                   "
                   required
+                  maxlength="256"
                 />
                 <show-errors
                   [control]="infoForm.controls['idIssuePlace']"
@@ -167,6 +170,7 @@
                       | translate
                   "
                   required
+                  maxlength="256"
                 />
                 <show-errors
                   [control]="infoForm.controls['permanentAddress']"
@@ -197,6 +201,7 @@
                       | translate
                   "
                   required
+                  maxlength="1000"
                 />
                 <show-errors
                   [control]="infoForm.controls['currentAddress']"
@@ -225,6 +230,7 @@
                     'payday_loan.confirm_information.type_email' | translate
                   "
                   required
+                  maxlength="255"
                 />
                 <show-errors
                   [control]="infoForm.controls['email']"
