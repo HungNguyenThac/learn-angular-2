@@ -8,7 +8,6 @@ import { Voucher } from 'open-api-modules/loanapp-api-docs';
   styleUrls: ['./pl-voucher-list.component.scss'],
 })
 export class PlVoucherListComponent implements OnInit {
-  panelOpenState = false;
   voucherListArray: Array<Voucher>;
 
   constructor(

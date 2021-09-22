@@ -108,7 +108,7 @@
 }
 
 .collateral-document-upload {
-  margin-bottom: 24px;
+  margin-bottom: 8px;
 }
 
 .btn-container {
@@ -154,15 +154,23 @@
   top: -1px !important;
 }
 
+.clear-btn {
+  top: -8px;
+}
+
 .voucher-suffix {
   font-weight: 600;
   font-size: 16px;
   line-height: 22px;
   text-align: right;
   color: #007aff;
-  position: relative;
-  top: -7px;
-  cursor: pointer;
+  position: absolute;
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%);
+  width: auto;
+  min-width: unset;
+  padding: 0;
 }
 
 #voucher-choose-btn {
@@ -171,6 +179,18 @@
   line-height: 18px;
   text-align: center;
   margin-bottom: 24px;
-  color: #007AFF;
+  color: #007aff;
 }
 
+.img-hint {
+  margin-bottom: 24px;
+  padding: 0 8px;
+}
+
+#illustrating-img-note {
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 22px;
+  color: #007aff;
+  margin-left: 8px;
+}
