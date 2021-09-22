@@ -9,10 +9,13 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { DocumentSigningLocationEntity } from './documentSigningLocationEntity';
 
 
-export interface SigningPosition { 
-    xposition?: number;
-    yposition?: number;
+export interface ApiResponseListDocumentSigningLocationEntity { 
+    result?: Array<DocumentSigningLocationEntity>;
+    errorCode?: string;
+    message?: object;
+    responseCode?: number;
 }
 

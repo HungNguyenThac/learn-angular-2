@@ -11,7 +11,7 @@
  */
 
 
-export interface SigningPosition { 
+export interface SigningPositionRequest { 
     xposition?: number;
     yposition?: number;
 }

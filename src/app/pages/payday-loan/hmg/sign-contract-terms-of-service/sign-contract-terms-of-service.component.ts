@@ -295,7 +295,7 @@ export class SignContractTermsOfServiceComponent implements OnInit, OnDestroy {
   createApprovalLetter() {
     this.subManager.add(
       this.contractControllerService
-        .createLetterHMG('HMG', {
+        .createLetter('HMG', {
           name: this.userInfo.personalData?.firstName,
           dateOfBirth: this.userInfo.personalData?.dateOfBirth,
           nationalId: this.userInfo.personalData?.identityNumberOne,
@@ -392,6 +392,12 @@ export class SignContractTermsOfServiceComponent implements OnInit, OnDestroy {
           if (!response || response.responseCode !== 200) {
             return this.handleErrorVerifyOtp(response);
           }
+
+          this.infoControllerService.customerSignDone(this.customerId, {
+            idDocument: this.idDocument,
+            idRequest: this.idRequest,
+          });
+
           this.store.dispatch(
             new fromActions.SetSignContractTermsSuccess(true)
           );

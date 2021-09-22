@@ -466,7 +466,7 @@ paths:
     post:
       tags:
       - contract-controller
-      operationId: createLetterHMG
+      operationId: createLetter
       parameters:
       - name: companyName
         in: path
@@ -506,7 +506,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ApiResponseSignOTPResponseOnSign'
+                $ref: '#/components/schemas/ApiResponseConfirmOTPResponse'
   /v1/contract/admin-sign-contract-automation:
     post:
       tags:
@@ -537,6 +537,18 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ApiResponseListTemplateNotificationEntity'
+  /v1/signing-position/get-all:
+    get:
+      tags:
+      - signing-position-controller
+      operationId: getAllSigningPositions
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseListDocumentSigningLocationEntity'
   /v1/notification/get-notification-customer/{customerId}:
     get:
       tags:
@@ -679,6 +691,7 @@ components:
       required:
       - companyName
       - documentType
+      - page
       - positionBorrower
       type: object
       properties:
@@ -689,22 +702,22 @@ components:
           enum:
           - HMG
           - TNG
-        positionBorrower:
-          $ref: '#/components/schemas/SigningPosition'
-        positionInvestor:
-          $ref: '#/components/schemas/SigningPosition'
-        positionEpay:
-          $ref: '#/components/schemas/SigningPosition'
-    SigningPosition:
-      type: object
-      properties:
         page:
           type: integer
           format: int32
-        yposition:
+        positionBorrower:
+          $ref: '#/components/schemas/SigningPositionRequest'
+        positionInvestor:
+          $ref: '#/components/schemas/SigningPositionRequest'
+        positionEpay:
+          $ref: '#/components/schemas/SigningPositionRequest'
+    SigningPositionRequest:
+      type: object
+      properties:
+        xposition:
           type: integer
           format: int32
-        xposition:
+        yposition:
           type: integer
           format: int32
     SendOtpRequest:
@@ -1140,11 +1153,11 @@ components:
           maxLength: 6
           minLength: 6
           type: string
-    ApiResponseSignOTPResponseOnSign:
+    ApiResponseConfirmOTPResponse:
       type: object
       properties:
         result:
-          $ref: '#/components/schemas/SignOTPResponseOnSign'
+          $ref: '#/components/schemas/ConfirmOTPResponse'
         errorCode:
           type: string
         message:
@@ -1152,16 +1165,16 @@ components:
         responseCode:
           type: integer
           format: int32
-    SignOTPResponseOnSign:
+    ConfirmOTPResponse:
       type: object
       properties:
-        error:
+        customerId:
+          type: string
+        documentPath:
+          type: string
+        remainingRequests:
           type: integer
           format: int32
-        message:
-          type: string
-        data:
-          type: object
     AdminSignContractAutomationRequest:
       required:
       - customerId
@@ -1219,6 +1232,50 @@ components:
             $ref: '#/components/schemas/ContentNotification'
         description:
           type: string
+    ApiResponseListDocumentSigningLocationEntity:
+      type: object
+      properties:
+        result:
+          type: array
+          items:
+            $ref: '#/components/schemas/DocumentSigningLocationEntity'
+        errorCode:
+          type: string
+        message:
+          type: object
+        responseCode:
+          type: integer
+          format: int32
+    DocumentSigningLocationEntity:
+      type: object
+      properties:
+        id:
+          type: string
+        companyName:
+          type: string
+          enum:
+          - HMG
+          - TNG
+        documentType:
+          type: string
+        page:
+          type: integer
+          format: int32
+        positionBorrower:
+          $ref: '#/components/schemas/SigningPosition'
+        positionInvestor:
+          $ref: '#/components/schemas/SigningPosition'
+        positionEpay:
+          $ref: '#/components/schemas/SigningPosition'
+    SigningPosition:
+      type: object
+      properties:
+        xposition:
+          type: integer
+          format: int32
+        yposition:
+          type: integer
+          format: int32
     ApiResponseListTransactionNotificationEntity:
       type: object
       properties:

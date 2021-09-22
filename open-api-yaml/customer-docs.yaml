@@ -6,26 +6,7 @@ servers:
 - url: http://localhost:8004
   description: Generated server url
 paths:
-  /company/v1/{id}:
-    get:
-      tags:
-      - company-controller
-      operationId: getCompanyById
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          description: OK
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/ApiResponseCompanyInfo'
-      security:
-      - bearerAuth: []
+  /company/v1/update-company/{id}:
     put:
       tags:
       - company-controller
@@ -40,7 +21,7 @@ paths:
         content:
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/CompanyRequest'
+              $ref: '#/components/schemas/UpdateCompanyRequest'
       responses:
         "200":
           description: OK
@@ -48,8 +29,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiResponseCompanyInfo'
-      security:
-      - bearerAuth: []
   /tng/v1/{customerId}/provides-information-salary-receipt-date:
     post:
       tags:
@@ -420,6 +399,54 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ApiResponseObject'
+  /info/v1/{customerId}/request-get-tng-data:
+    post:
+      tags:
+      - info-controller
+      operationId: requestGetTngData
+      parameters:
+      - name: customerId
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetTngDataRequest'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseObject'
+  /info/v1/{customerId}/customer-sign-done:
+    post:
+      tags:
+      - info-controller
+      operationId: customerSignDone
+      parameters:
+      - name: customerId
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomerSignDoneRequest'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseObject'
   /info/v1/{customerId}/confirm-information:
     post:
       tags:
@@ -534,6 +561,26 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ApiResponseCustomerInfoResponse'
+  /company/v1/{id}:
+    get:
+      tags:
+      - company-controller
+      operationId: getCompanyById
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseCompanyInfo'
+      security:
+      - bearerAuth: []
   /company/v1/get-list:
     get:
       tags:
@@ -596,20 +643,26 @@ paths:
       - bearerAuth: []
 components:
   schemas:
-    CompanyRequest:
-      required:
-      - avatar
-      - groupName
-      - name
+    UpdateCompanyRequest:
       type: object
       properties:
         name:
           type: string
         groupName:
           type: string
+        code:
+          type: string
         avatar:
           type: string
           format: binary
+        createdBy:
+          type: string
+        taxCode:
+          type: string
+        owner:
+          type: string
+        address:
+          type: string
     ApiResponseCompanyInfo:
       type: object
       properties:
@@ -630,6 +683,14 @@ components:
         name:
           type: string
         groupName:
+          type: string
+        code:
+          type: string
+        taxCode:
+          type: string
+        owner:
+          type: string
+        address:
           type: string
         avatar:
           type: string
@@ -1011,6 +1072,25 @@ components:
           type: object
           additionalProperties:
             type: object
+    GetTngDataRequest:
+      required:
+      - documentPath
+      type: object
+      properties:
+        documentPath:
+          type: string
+    CustomerSignDoneRequest:
+      required:
+      - idDocument
+      - idRequest
+      type: object
+      properties:
+        idRequest:
+          type: integer
+          format: int32
+        idDocument:
+          type: integer
+          format: int32
     ChooseCompanyRequest:
       required:
       - companyId
@@ -1033,6 +1113,37 @@ components:
         borrowerDetailTextVariable1:
           type: string
         borrowerEmploymentHistoryTextVariable1:
+          type: string
+    CompanyRequest:
+      required:
+      - groupName
+      - name
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        groupName:
+          type: string
+        avatar:
+          type: string
+          format: binary
+        taxCode:
+          type: string
+        owner:
+          type: string
+        address:
+          type: string
+        createdBy:
+          type: string
+        updatedBy:
+          type: string
+        createdAt:
+          type: string
+        updatedAt:
+          type: string
+        code:
           type: string
     ApiResponseCustomerInfoResponse:
       type: object
