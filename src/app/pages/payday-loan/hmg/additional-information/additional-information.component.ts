@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
@@ -26,8 +26,7 @@ import { PL_STEP_NAVIGATION } from '../../../../core/common/enum/payday-loan';
   styleUrls: ['./additional-information.component.scss'],
 })
 export class AdditionalInformationComponent
-  implements OnInit, AfterViewInit, OnDestroy
-{
+  implements OnInit, AfterViewInit, OnDestroy {
   additionalInfoForm: FormGroup;
   //hardcode
   maritalStatus = {
@@ -56,9 +55,9 @@ export class AdditionalInformationComponent
     ],
   };
 
-  maxAmount: number = 100;
-  minAmount: number = 0;
-  step: number = 1;
+  maxAmount: number = 500000000;
+  minAmount: number = 4000000;
+  step: number = 1000000;
 
   customerInfo: CustomerInfoResponse;
   public customerId$: Observable<any>;
@@ -75,6 +74,7 @@ export class AdditionalInformationComponent
     private infoV2ControllerService: InfoV2ControllerService,
     private notificationService: NotificationService,
     private multiLanguageService: MultiLanguageService,
+    private cdr: ChangeDetectorRef,
     private titleService: Title
   ) {
     this.additionalInfoForm = this.fb.group({
@@ -108,8 +108,8 @@ export class AdditionalInformationComponent
 
     this.titleService.setTitle(
       'Bổ sung thông tin' +
-        ' - ' +
-        GlobalConstants.PL_VALUE_DEFAULT.PROJECT_NAME
+      ' - ' +
+      GlobalConstants.PL_VALUE_DEFAULT.PROJECT_NAME
     );
     this.initHeaderInfo();
 
@@ -119,9 +119,8 @@ export class AdditionalInformationComponent
   ngAfterViewInit(): void {
     // set default value for borrowerEmploymentAverageWage
     this.additionalInfoForm.controls['borrowerEmploymentAverageWage'].setValue(
-      this.minAmount + this.step
+      this.minAmount
     );
-
     //get customer info data
     this.subManager.add(
       this.infoControllerService
@@ -134,7 +133,9 @@ export class AdditionalInformationComponent
               'common.something_went_wrong'
             );
           }
+          
           this.customerInfo = result.result;
+          console.log("customerInfo",this.customerInfo);
           this.additionalInfoForm.patchValue({
             maritalStatus: this.customerInfo.personalData.maritalStatus,
             educationType: this.customerInfo.personalData.educationType,
@@ -148,6 +149,7 @@ export class AdditionalInformationComponent
           });
         })
     );
+    this.cdr.detectChanges();
   }
 
   ngOnDestroy(): void {
@@ -178,10 +180,7 @@ export class AdditionalInformationComponent
       borrowerEmploymentHistoryTextVariable1:
         this.additionalInfoForm.controls.borrowerEmploymentHistoryTextVariable1
           .value,
-      annualIncome:
-        Number(
-          this.additionalInfoForm.controls.borrowerEmploymentAverageWage.value
-        ) * 1000000,
+      annualIncome: this.additionalInfoForm.controls.borrowerEmploymentAverageWage.value,
     };
     console.log('additionalInformationRequest', additionalInformationV2Request);
 
@@ -210,7 +209,7 @@ export class AdditionalInformationComponent
             }
           }
           // redirect to loan detemination
-          this.router.navigateByUrl('hmg/loan-determination');
+          this.router.navigateByUrl('hmg/sign-contract-terms-of-service');
         })
     );
   }
@@ -221,5 +220,9 @@ export class AdditionalInformationComponent
       content: this.multiLanguageService.instant(content),
       primaryBtnText: this.multiLanguageService.instant('common.confirm'),
     });
+  }
+
+  onValueChange(event) {
+    this.additionalInfoForm.controls.borrowerEmploymentAverageWage.setValue(event.value)
   }
 }
