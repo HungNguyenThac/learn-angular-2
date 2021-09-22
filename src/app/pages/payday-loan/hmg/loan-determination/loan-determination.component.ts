@@ -156,7 +156,7 @@ export class LoanDeterminationComponent
             );
           }
           this.customerInfo = result.result;
-          this.getLoanMaxAmount() 
+          this.getLoanMaxAmount()
           this.checkLoanExisted();
         })
     );
@@ -198,7 +198,7 @@ export class LoanDeterminationComponent
   }
 
   bindingCollateralDocument() {
-    if (this.customerInfo?.personalData.collateralDocument === null)
+    if (!this.customerInfo?.personalData || !this.customerInfo?.personalData.collateralDocument)
       return this.notificationService.hideLoading();
 
     const downloadFileRequest: DownloadFileRequest = {
@@ -483,7 +483,7 @@ export class LoanDeterminationComponent
         this.maxAmount = salary * 0.8
         break;
     }
-    
+
     //rounding max loan amount to 0.5 nearest
     this.maxAmount/=1000000
     this.maxAmount = Math.round(this.maxAmount*2)/2

@@ -358,7 +358,8 @@
       "company_not_exist": "Công ty không tồn tại",
       "approval_letter_not_exist": "Thư chấp thuận không tồn tại",
       "do_not_active_loan_error": "Không tồn tại khoản vay nào",
-      "not_found_session": "Không tồn tại phiên ký"
+      "not_found_session": "Không tồn tại phiên ký",
+      "internal_server_error": "Có lỗi xảy ra, vui lòng thử lại sau"
     },
     "introduce": {
       "product": "Sản phẩm",
