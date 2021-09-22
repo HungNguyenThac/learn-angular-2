@@ -175,6 +175,7 @@ export class CurrentLoanComponent implements OnInit, OnDestroy {
             if (response.errorCode || response.responseCode != 200) {
               return this.handleGetActiveLoanError(response);
             }
+            this.store.dispatch(new fromActions.SetHasActiveLoanStatus(true));
             this.currentLoan = response.result;
             this.displayPageTitle();
             this.getUserInfo();
@@ -282,6 +283,7 @@ export class CurrentLoanComponent implements OnInit, OnDestroy {
 
   handleGetActiveLoanError(response) {
     if (response.errorCode === ERROR_CODE.DO_NOT_ACTIVE_LOAN_ERROR) {
+      this.store.dispatch(new fromActions.SetHasActiveLoanStatus(false));
       this.router.navigateByUrl('companies');
       return;
     }

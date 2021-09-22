@@ -78,6 +78,7 @@ export class PlChoosePaymentMethodComponent implements OnInit {
     private infoControllerService: InfoControllerService,
     private repaymentControllerService: RepaymentControllerService
   ) {
+    this.initHeaderInfo();
     this._initSubscribeState();
   }
 
@@ -87,7 +88,6 @@ export class PlChoosePaymentMethodComponent implements OnInit {
         ' - ' +
         GlobalConstants.PL_VALUE_DEFAULT.PROJECT_NAME
     );
-    this.initHeaderInfo();
 
     this.notificationService.showLoading();
     this.getUserInfo();
@@ -287,6 +287,7 @@ export class PlChoosePaymentMethodComponent implements OnInit {
 
   handleGetActiveLoanError(response: ApiResponsePaydayLoan) {
     if (response.errorCode === ERROR_CODE.DO_NOT_ACTIVE_LOAN_ERROR) {
+      this.store.dispatch(new fromActions.SetHasActiveLoanStatus(false))
       this.router.navigateByUrl('companies');
       return;
     }
