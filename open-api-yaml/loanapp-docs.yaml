@@ -406,7 +406,7 @@ paths:
           content:
             '*/*':
               schema:
-                $ref: '#/components/schemas/ApiResponseObject'
+                $ref: '#/components/schemas/ApiResponseContract'
 components:
   schemas:
     UpdateLoanRequest:
@@ -715,11 +715,11 @@ components:
           type: string
         expiredAt:
           type: string
-    ApiResponseObject:
+    ApiResponseContract:
       type: object
       properties:
         result:
-          type: object
+          $ref: '#/components/schemas/Contract'
         errorCode:
           type: string
         message:
@@ -727,6 +727,27 @@ components:
         responseCode:
           type: integer
           format: int32
+    Contract:
+      type: object
+      properties:
+        id:
+          type: string
+        status:
+          type: string
+        type:
+          type: string
+        loanId:
+          type: string
+        idRequest:
+          type: integer
+          format: int32
+        idDocument:
+          type: integer
+          format: int32
+        path:
+          type: string
+        createdAt:
+          type: string
   securitySchemes:
     Bearer:
       type: apiKey

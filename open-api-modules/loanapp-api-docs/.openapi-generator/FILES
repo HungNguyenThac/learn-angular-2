@@ -1,4 +1,5 @@
 .gitignore
+.openapi-generator-ignore
 README.md
 api.module.ts
 api/api.ts
@@ -11,16 +12,17 @@ encoder.ts
 git_push.sh
 index.ts
 model/apiResponseApplyResponse.ts
+model/apiResponseContract.ts
 model/apiResponseListPaydayLoan.ts
 model/apiResponseListPromotionEvent.ts
 model/apiResponseListVoucher.ts
-model/apiResponseObject.ts
 model/apiResponsePaydayLoan.ts
 model/apiResponseString.ts
 model/apiResponseVoucher.ts
 model/apiResponseVoucherTransaction.ts
 model/applyResponse.ts
 model/checkValidVoucherRequest.ts
+model/contract.ts
 model/createApplicationRequest.ts
 model/createPromotionEventRequest.ts
 model/createVoucherRequest.ts

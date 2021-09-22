@@ -3,6 +3,10 @@ $spaceBetweenBox: 40px;
 $spaceBetweenContent: 24px;
 $spaceWithFooter: 56px;
 
+.modal-open {
+  overflow-y: hidden;
+}
+
 ::ng-deep .custom-dialog-container {
   .mat-dialog-container {
     padding: 0;
