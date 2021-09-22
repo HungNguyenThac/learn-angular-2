@@ -8,6 +8,8 @@ jobs:
   build-container:
     name: Build and Publish to Azure Container Registry
     runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.setVersion.outputs.version }}
     env:
       SVC_NAME: webapp-hmg-svc
       ACR_NAME: epayprodregistry.azurecr.io
@@ -47,4 +49,8 @@ jobs:
 
       - name: Publish Docker image
         run: docker push ${ACR_NAME}/${SVC_NAME}:${{ env.TAG }}
+
+      - name: Set version staging
+        id: setVersion
+        run: echo "::set-output name=version::${{ env.TAG }}"
 
