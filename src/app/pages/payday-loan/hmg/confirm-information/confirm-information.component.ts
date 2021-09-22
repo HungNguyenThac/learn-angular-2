@@ -270,7 +270,7 @@ export class ConfirmInformationComponent
           customerId: this.customerId,
           idIssuePlace: this.customerInfo.personalData.idIssuePlace,
         }
-        this.contractControllerService.createLetterHMG('HMG', createLetterRequest).subscribe((result) => {
+        this.contractControllerService.createLetter('HMG', createLetterRequest).subscribe((result) => {
           this.notificationService.hideLoading();
           if (!result || result.responseCode !== 200) {
             const message = this.multiLanguageService.instant(

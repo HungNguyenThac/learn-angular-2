@@ -11,8 +11,13 @@ import { PaymentUserInfo } from '../../../../public/models/payment-user-info.mod
 import { PaymentProductInfo } from '../../../../public/models/payment-product-info.model';
 import { MatDialog } from '@angular/material/dialog';
 import { GuideTransferPaymentDialogComponent } from '../guide-transfer-payment-dialog/guide-transfer-payment-dialog.component';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { GlobalConstants } from '../../../../core/common/global-constants';
+import { GpayVirtualAccountControllerService } from '../../../../../../open-api-modules/payment-api-docs';
+import * as fromSelectors from '../../../../core/store/selectors';
+import { Store } from '@ngrx/store';
+import * as fromStore from '../../../../core/store';
+import { environment } from '../../../../../environments/environment';
 
 @Component({
   selector: 'app-transfer-payment',
@@ -24,6 +29,8 @@ export class TransferPaymentComponent implements OnInit, OnDestroy {
   @Input() userInfo: PaymentUserInfo;
   @Input() vaInfo: PaymentVirtualAccount;
   @Output() copiedEvent = new EventEmitter<string>();
+  customerId$: Observable<any>;
+  customerId: string;
 
   get amountToBePaid() {
     return (
@@ -36,7 +43,19 @@ export class TransferPaymentComponent implements OnInit, OnDestroy {
 
   subManager = new Subscription();
 
-  constructor(private dialog: MatDialog) {}
+  constructor(
+    private dialog: MatDialog,
+    private gpayVirtualAccountControllerService: GpayVirtualAccountControllerService,
+    private store: Store<fromStore.State>
+  ) {
+    this.customerId$ = store.select(fromSelectors.getCustomerIdState);
+
+    this.subManager.add(
+      this.customerId$.subscribe((customerId) => {
+        this.customerId = customerId;
+      })
+    );
+  }
 
   ngOnInit(): void {}
 
@@ -51,6 +70,12 @@ export class TransferPaymentComponent implements OnInit, OnDestroy {
   }
 
   displayGuideDialog() {
+    this.gpayVirtualAccountControllerService.createPaymentOrder1({
+      customerId: this.customerId,
+      applicationId: this.productInfo.id,
+      applicationType: environment.PAYMENT_ORDER_NAME,
+    });
+
     const dialogRef = this.dialog.open(GuideTransferPaymentDialogComponent, {
       panelClass: 'custom-dialog-container',
       height: 'auto',
