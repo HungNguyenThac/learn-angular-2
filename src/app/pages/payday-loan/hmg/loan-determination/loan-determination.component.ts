@@ -239,18 +239,30 @@ export class LoanDeterminationComponent
     this.paydayLoanControllerService
       .createLoan(createApplicationRequest)
       .subscribe((result: ApiResponseApplyResponse) => {
-        this.notificationService.hideLoading();
         if (!result || result.responseCode !== 200) {
+          this.notificationService.hideLoading();
           const message = this.multiLanguageService.instant(
             'payday_loan.error_code.' + result.errorCode.toLowerCase()
           );
           return this.showError('common.error', message);
         }
+        const loanStatus = result.result.status
 
-        return this.router.navigate([
-          'hmg/current-loan',
-          formatSlug(result.result.status || PAYDAY_LOAN_STATUS.UNKNOWN_STATUS),
-        ]);
+        //call api com svc upload document vehicle registration
+        this.fileControllerService.uploadSingleFile("VEHICLE_REGISTRATION", this.collateralImgSrc, this.customerId).subscribe((result) => {
+          this.notificationService.hideLoading();
+          if (!result || result.responseCode !== 200) {
+            const message = this.multiLanguageService.instant(
+              'payday_loan.error_code.' + result.errorCode.toLowerCase()
+            );
+            return this.showError('common.error', message);
+          }
+
+          return this.router.navigate([
+            'hmg/current-loan',
+            formatSlug(loanStatus || PAYDAY_LOAN_STATUS.UNKNOWN_STATUS),
+          ]);
+        })
       });
   }
 
@@ -461,33 +473,35 @@ export class LoanDeterminationComponent
   getLoanMaxAmount() {
     const d = new Date()
     const currentDate = d.getDate()
+    let maxAmountCalc = this.maxAmount
     const salary = this.customerInfo.personalData.annualIncome
     switch (currentDate) {
       case 15:
       case 16:
-        this.maxAmount = salary * 0.5
+        maxAmountCalc = salary * 0.5
         break;
       case 17:
       case 18:
-        this.maxAmount = salary * 0.575
+        maxAmountCalc = salary * 0.575
         break;
       case 19:
       case 20:
-        this.maxAmount = salary * 0.65
+        maxAmountCalc = salary * 0.65
         break;
       case 21:
       case 22:
-        this.maxAmount = salary * 0.725
+        maxAmountCalc = salary * 0.725
         break;
       default:
-        this.maxAmount = salary * 0.8
+        maxAmountCalc = salary * 0.8
         break;
-    }
-    
-    //rounding max loan amount to 0.5 nearest
-    this.maxAmount/=1000000
-    this.maxAmount = Math.round(this.maxAmount*2)/2
-    this.maxAmount*=1000000
+      }
+      
+      //rounding max loan amount to 0.5 nearest
+      maxAmountCalc/=1000000
+      maxAmountCalc = Math.round(maxAmountCalc*2)/2
+      maxAmountCalc*=1000000
+      this.maxAmount = maxAmountCalc
   }
 
   clearVoucherInput() {
