@@ -5,7 +5,7 @@ import {
   OnDestroy,
   OnInit,
 } from '@angular/core';
-import { FormBuilder, FormGroup, RequiredValidator } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import * as fromStore from 'src/app/core/store/index';
@@ -51,7 +51,8 @@ import { IllustratingImgDialogComponent } from '../../components/illustrating-im
   styleUrls: ['./loan-determination.component.scss'],
 })
 export class LoanDeterminationComponent
-  implements OnInit, AfterViewInit, OnDestroy {
+  implements OnInit, AfterViewInit, OnDestroy
+{
   loanDeteminationForm: FormGroup;
   maxAmount: number;
   minAmount: number = 2000000;
@@ -107,41 +108,24 @@ export class LoanDeterminationComponent
       collateralDocument: [''],
       voucherCode: [''],
     });
-
-    this.customerId$ = store.select(fromStore.getCustomerIdState);
-    this.coreToken$ = store.select(fromStore.getCoreTokenState);
+    this.initHeaderInfo();
+    this._initSubscribeState();
   }
 
   ngOnInit(): void {
     this.notificationService.showLoading(null);
     //get customer id, password & core token from store
-    this.subManager.add(
-      this.customerId$.subscribe((id) => {
-        this.customerId = id;
-        console.log('customer id', id);
-      })
-    );
-    this.subManager.add(
-      this.coreToken$.subscribe((coreToken) => {
-        this.coreToken = coreToken;
-        console.log('coreToken', coreToken);
-      })
-    );
 
     this.titleService.setTitle(
-      'Bổ sung thông tin' +
-      ' - ' +
-      GlobalConstants.PL_VALUE_DEFAULT.PROJECT_NAME
+      'Chọn số tiền cần ứng' +
+        ' - ' +
+        GlobalConstants.PL_VALUE_DEFAULT.PROJECT_NAME
     );
-    this.initHeaderInfo();
-
     this.getVoucherList();
   }
 
   ngAfterViewInit() {
-    this.loanDeteminationForm.controls['loanAmount'].setValue(
-      this.minAmount
-    );
+    this.loanDeteminationForm.controls['loanAmount'].setValue(this.minAmount);
 
     //get customer info
     this.subManager.add(
@@ -156,7 +140,7 @@ export class LoanDeterminationComponent
             );
           }
           this.customerInfo = result.result;
-          this.getLoanMaxAmount()
+          this.getLoanMaxAmount();
           this.checkLoanExisted();
         })
     );
@@ -165,6 +149,23 @@ export class LoanDeterminationComponent
 
   ngOnDestroy(): void {
     this.subManager.unsubscribe();
+  }
+
+  private _initSubscribeState() {
+    this.customerId$ = this.store.select(fromStore.getCustomerIdState);
+    this.coreToken$ = this.store.select(fromStore.getCoreTokenState);
+    this.subManager.add(
+      this.customerId$.subscribe((id) => {
+        this.customerId = id;
+        console.log('customer id', id);
+      })
+    );
+    this.subManager.add(
+      this.coreToken$.subscribe((coreToken) => {
+        this.coreToken = coreToken;
+        console.log('coreToken', coreToken);
+      })
+    );
   }
 
   initHeaderInfo() {
@@ -198,7 +199,10 @@ export class LoanDeterminationComponent
   }
 
   bindingCollateralDocument() {
-    if (!this.customerInfo?.personalData || !this.customerInfo?.personalData.collateralDocument)
+    if (
+      !this.customerInfo?.personalData ||
+      !this.customerInfo?.personalData.collateralDocument
+    )
       return this.notificationService.hideLoading();
 
     const downloadFileRequest: DownloadFileRequest = {
@@ -309,9 +313,7 @@ export class LoanDeterminationComponent
 
     dialogRef.afterClosed().subscribe((result: Voucher) => {
       if (!result) return;
-      this.loanDeteminationForm.controls.voucherCode.setValue(
-        result.code
-      );
+      this.loanDeteminationForm.controls.voucherCode.setValue(result.code);
       this.checkVoucherApplied();
     });
   }
@@ -321,21 +323,17 @@ export class LoanDeterminationComponent
   }
 
   get originalLoanFee() {
-    return (
-      this.loanAmountFormatMillionPrice * 0.02
-    );
+    return this.loanAmountFormatMillionPrice * 0.02;
   }
 
   get loanFeeTotal() {
-    return (
-      this.originalLoanFee - this.discount
-    );
+    return this.originalLoanFee - this.discount;
   }
 
   checkVoucherApplied() {
     // Pick voucher from dialog
     if (this.loanDeteminationForm.controls.voucherCode.value === '') {
-      return
+      return;
     }
 
     for (const voucher of this.listVoucher) {
@@ -344,14 +342,18 @@ export class LoanDeterminationComponent
         this.loanDeteminationForm.controls.voucherCode.value.toUpperCase()
       ) {
         if (voucher.remainAmount <= 0) {
-          this.loanDeteminationForm.controls.voucherCode.setErrors({'runOut': true})
+          this.loanDeteminationForm.controls.voucherCode.setErrors({
+            runOut: true,
+          });
           this.voucherShowError =
             'payday_loan.choose_amount.codes_has_run_out | translate';
           return;
         }
 
         if (this.checkVoucherTime(voucher) === false) {
-          this.loanDeteminationForm.controls.voucherCode.setErrors({'wrongTime': true})
+          this.loanDeteminationForm.controls.voucherCode.setErrors({
+            wrongTime: true,
+          });
           this.voucherShowError =
             'Mã ưu đãi không áp dụng trong khung giờ hiện tại';
           return;
@@ -361,14 +363,15 @@ export class LoanDeterminationComponent
         return;
       }
     }
-    this.loanDeteminationForm.controls.voucherCode.setErrors({'incorrect': true})
+    this.loanDeteminationForm.controls.voucherCode.setErrors({
+      incorrect: true,
+    });
     this.voucherShowError = 'Mã ưu đãi không tồn tại';
-    console.log("this.voucherShowError", this.voucherShowError);
+    console.log('this.voucherShowError', this.voucherShowError);
   }
 
   applyCorrectedVoucher(voucher: Voucher) {
-    this.discount =
-      voucher.percentage * this.originalLoanFee
+    this.discount = voucher.percentage * this.originalLoanFee;
 
     // check max discount accepted
     if (this.discount > voucher.maxValue) {
@@ -454,45 +457,45 @@ export class LoanDeterminationComponent
 
   //Expected loan amount
   onValueChange(event) {
-    this.loanDeteminationForm.controls.loanAmount.setValue(event.value)
+    this.loanDeteminationForm.controls.loanAmount.setValue(event.value);
   }
 
   //Maximum loan amount conditions
   getLoanMaxAmount() {
-    const d = new Date()
-    const currentDate = d.getDate()
-    const salary = this.customerInfo.personalData.annualIncome
+    const d = new Date();
+    const currentDate = d.getDate();
+    const salary = this.customerInfo.personalData.annualIncome;
     switch (currentDate) {
       case 15:
       case 16:
-        this.maxAmount = salary * 0.5
+        this.maxAmount = salary * 0.5;
         break;
       case 17:
       case 18:
-        this.maxAmount = salary * 0.575
+        this.maxAmount = salary * 0.575;
         break;
       case 19:
       case 20:
-        this.maxAmount = salary * 0.65
+        this.maxAmount = salary * 0.65;
         break;
       case 21:
       case 22:
-        this.maxAmount = salary * 0.725
+        this.maxAmount = salary * 0.725;
         break;
       default:
-        this.maxAmount = salary * 0.8
+        this.maxAmount = salary * 0.8;
         break;
     }
 
     //rounding max loan amount to 0.5 nearest
-    this.maxAmount/=1000000
-    this.maxAmount = Math.round(this.maxAmount*2)/2
-    this.maxAmount*=1000000
+    this.maxAmount /= 1000000;
+    this.maxAmount = Math.round(this.maxAmount * 2) / 2;
+    this.maxAmount *= 1000000;
   }
 
   clearVoucherInput() {
-    this.loanDeteminationForm.controls.voucherCode.setValue('')
-    this.voucherShowError = ""
+    this.loanDeteminationForm.controls.voucherCode.setValue('');
+    this.voucherShowError = '';
   }
 
   openDialogIllustratingImage() {
@@ -500,7 +503,7 @@ export class LoanDeterminationComponent
       width: '332px',
       autoFocus: false,
       panelClass: 'custom-dialog-container',
-    })
+    });
   }
 }
 

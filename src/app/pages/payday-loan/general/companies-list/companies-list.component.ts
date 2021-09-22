@@ -45,8 +45,7 @@ export class CompaniesListComponent implements OnInit, OnDestroy {
     private companyControllerService: CompanyControllerService,
     private titleService: Title
   ) {
-    this.customerId$ = store.select(fromStore.getCustomerIdState);
-    this.coreToken$ = store.select(fromStore.getCoreTokenState);
+    this._initSubscribeState();
   }
 
   ngOnInit(): void {
@@ -54,7 +53,12 @@ export class CompaniesListComponent implements OnInit, OnDestroy {
       'Chọn công ty' + ' - ' + GlobalConstants.PL_VALUE_DEFAULT.PROJECT_NAME
     );
     this.initHeaderInfo();
+    this.getCustomerInfo();
+  }
 
+  private _initSubscribeState() {
+    this.customerId$ = this.store.select(fromStore.getCustomerIdState);
+    this.coreToken$ = this.store.select(fromStore.getCoreTokenState);
     this.subManager.add(
       this.customerId$.subscribe((id) => {
         this.customerId = id;
@@ -66,9 +70,8 @@ export class CompaniesListComponent implements OnInit, OnDestroy {
         this.coreToken = coreToken;
       })
     );
-
-    this.getCustomerInfo();
   }
+
 
   initHeaderInfo() {
     this.store.dispatch(new fromActions.ResetPaydayLoanInfo());
@@ -106,6 +109,7 @@ export class CompaniesListComponent implements OnInit, OnDestroy {
           if (!result || result.responseCode !== 200) {
             return this.router.navigateByUrl('/hmg/ekyc');
           }
+          this.store.dispatch(new fromActions.SetHasActiveLoanStatus(true));
           return this.router.navigate([
             'hmg/current-loan',
             formatSlug(

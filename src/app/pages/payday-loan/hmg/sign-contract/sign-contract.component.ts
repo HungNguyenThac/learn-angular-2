@@ -35,6 +35,7 @@ import { environment } from '../../../../../environments/environment';
 import { GlobalConstants } from '../../../../core/common/global-constants';
 import { MultiLanguageService } from '../../../../share/translate/multiLanguageService';
 import {
+  ApiResponsePaydayLoan,
   ApplicationControllerService,
   PaydayLoan,
 } from '../../../../../../open-api-modules/loanapp-api-docs';
@@ -99,13 +100,14 @@ export class SignContractComponent implements OnInit {
     private router: Router,
     private store: Store<fromStore.State>,
     private dialog: MatDialog
-  ) {}
+  ) {
+    this.initHeaderInfo();
+    this._initSubscribeState();
+  }
 
   ngOnInit(): void {
     this.onResponsiveInverted();
     window.addEventListener('resize', this.onResponsiveInverted);
-    this.initHeaderInfo();
-    this._initSubscribeState();
     this.initInfo();
   }
 
@@ -222,45 +224,54 @@ export class SignContractComponent implements OnInit {
    * get Contract
    */
   getContract() {
-    this.getActiveLoan();
-
-    this.getUserInfo();
-
     this.subManager.add(
-      this.getContractCurrentLoan().subscribe((contractInfoCurrentLoan) => {
-        if (contractInfoCurrentLoan)
-          this.contractInfo = contractInfoCurrentLoan;
-
-        if (
-          this.contractInfo &&
-          this.contractInfo.path &&
-          !this.isSentOtpOnsign
-        ) {
-          this.downloadFile(this.contractInfo.path).subscribe((response) => {
-            this.linkPdf = window.URL.createObjectURL(new Blob([response]));
-          });
-          return;
+      this.getActiveLoan().subscribe((response: ApiResponsePaydayLoan) => {
+        if (!response || response.errorCode) {
+          return this.handleGetActiveLoanError(response);
         }
-        this.acceptAndDownloadContract();
+        this.currentLoan = response.result;
+
+        this.getUserInfo();
+
+        this.subManager.add(
+          this.getContractCurrentLoan().subscribe((contractInfoCurrentLoan) => {
+            if (contractInfoCurrentLoan)
+              this.contractInfo = contractInfoCurrentLoan;
+
+            if (
+              this.contractInfo &&
+              this.contractInfo.path &&
+              !this.isSentOtpOnsign
+            ) {
+              this.downloadFile(this.contractInfo.path).subscribe(
+                (response) => {
+                  this.linkPdf = window.URL.createObjectURL(
+                    new Blob([response])
+                  );
+                }
+              );
+              return;
+            }
+            this.acceptAndDownloadContract();
+          })
+        );
       })
     );
   }
 
   getActiveLoan() {
-    this.subManager.add(
-      this.applicationControllerService
-        .getActiveLoan(this.customerId, this.coreToken)
-        .subscribe((response) => {
-          if (response.errorCode) {
-            return this.handleGetActiveLoanError(response);
-          }
-          this.currentLoan = response.result;
+    return this.applicationControllerService
+      .getActiveLoan(this.customerId, this.coreToken)
+      .pipe(
+        map((response: ApiResponsePaydayLoan) => {
+          return response;
         })
-    );
+      );
   }
 
   handleGetActiveLoanError(response) {
     if (response.errorCode === ERROR_CODE.DO_NOT_ACTIVE_LOAN_ERROR) {
+      this.store.dispatch(new fromActions.SetHasActiveLoanStatus(false));
       this.router.navigateByUrl('companies');
       return;
     }
@@ -280,8 +291,8 @@ export class SignContractComponent implements OnInit {
       map((response) => {
         if (response.responseCode == 200) {
           let contractInfo = response.result;
-          this.idRequest = contractInfo['idRequest'];
-          this.idDocument = contractInfo['idDocument'];
+          this.idRequest = contractInfo.idRequest;
+          this.idDocument = contractInfo.idDocument;
           return response.result;
         }
         return null;
@@ -333,11 +344,17 @@ export class SignContractComponent implements OnInit {
               this.showErrorModal();
               return;
             }
+
+            this.downLoadContractFromCore();
           }
         )
       );
+      return;
     }
+    this.downLoadContractFromCore();
+  }
 
+  downLoadContractFromCore() {
     this.downloadContract().subscribe((response) => {
       if (response.responseCode !== 200 || !response.result) {
         this.showErrorModal();
@@ -396,8 +413,8 @@ export class SignContractComponent implements OnInit {
     return this.borrowerControllerService
       .acceptContract({
         access_token: this.coreToken,
-        epayCustomerId: this.currentLoan.coreLoanUuid,
-        loanId: this.currentLoan.id,
+        epayCustomerId: this.customerId,
+        loanId: this.currentLoan.coreLoanUuid,
         contractId: environment.CONTRACT_UUID,
         activityStatus: environment.CONTRACT_ACTIVITY_STATUS,
       })

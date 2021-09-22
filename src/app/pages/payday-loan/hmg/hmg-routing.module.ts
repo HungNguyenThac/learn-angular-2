@@ -10,6 +10,7 @@ import { AdditionalInformationComponent } from './additional-information/additio
 import { PlChoosePaymentMethodComponent } from './pl-choose-payment-method/pl-choose-payment-method.component';
 import { LoanPaymentComponent } from './loan-payment/loan-payment.component';
 import { GpayPaymentResultComponent } from './gpay-payment-result/gpay-payment-result.component';
+import { SignContractComponent } from './sign-contract/sign-contract.component';
 
 export const HmgRoutes: Routes = [
   {
@@ -48,6 +49,11 @@ export const HmgRoutes: Routes = [
       {
         path: 'current-loan/:status',
         component: CurrentLoanComponent,
+        data: { animation: true },
+      },
+      {
+        path: 'sign-contract',
+        component: SignContractComponent,
         data: { animation: true },
       },
       {
