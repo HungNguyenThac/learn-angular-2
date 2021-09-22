@@ -101,22 +101,28 @@ export class CompanyControllerService {
     /**
      * @param name 
      * @param groupName 
+     * @param id 
      * @param avatar 
+     * @param taxCode 
+     * @param owner 
+     * @param address 
+     * @param createdBy 
+     * @param updatedBy 
+     * @param createdAt 
+     * @param updatedAt 
+     * @param code 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public createCompany(name: string, groupName: string, avatar: Blob, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<ApiResponseCompanyInfo>;
-    public createCompany(name: string, groupName: string, avatar: Blob, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<ApiResponseCompanyInfo>>;
-    public createCompany(name: string, groupName: string, avatar: Blob, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<ApiResponseCompanyInfo>>;
-    public createCompany(name: string, groupName: string, avatar: Blob, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
+    public createCompany(name: string, groupName: string, id?: string, avatar?: Blob, taxCode?: string, owner?: string, address?: string, createdBy?: string, updatedBy?: string, createdAt?: string, updatedAt?: string, code?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<ApiResponseCompanyInfo>;
+    public createCompany(name: string, groupName: string, id?: string, avatar?: Blob, taxCode?: string, owner?: string, address?: string, createdBy?: string, updatedBy?: string, createdAt?: string, updatedAt?: string, code?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<ApiResponseCompanyInfo>>;
+    public createCompany(name: string, groupName: string, id?: string, avatar?: Blob, taxCode?: string, owner?: string, address?: string, createdBy?: string, updatedBy?: string, createdAt?: string, updatedAt?: string, code?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<ApiResponseCompanyInfo>>;
+    public createCompany(name: string, groupName: string, id?: string, avatar?: Blob, taxCode?: string, owner?: string, address?: string, createdBy?: string, updatedBy?: string, createdAt?: string, updatedAt?: string, code?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
         if (name === null || name === undefined) {
             throw new Error('Required parameter name was null or undefined when calling createCompany.');
         }
         if (groupName === null || groupName === undefined) {
             throw new Error('Required parameter groupName was null or undefined when calling createCompany.');
-        }
-        if (avatar === null || avatar === undefined) {
-            throw new Error('Required parameter avatar was null or undefined when calling createCompany.');
         }
 
         let headers = this.defaultHeaders;
@@ -152,6 +158,9 @@ export class CompanyControllerService {
             formParams = new HttpParams({encoder: this.encoder});
         }
 
+        if (id !== undefined) {
+            formParams = formParams.append('id', <any>id) as any || formParams;
+        }
         if (name !== undefined) {
             formParams = formParams.append('name', <any>name) as any || formParams;
         }
@@ -160,6 +169,30 @@ export class CompanyControllerService {
         }
         if (avatar !== undefined) {
             formParams = formParams.append('avatar', <any>avatar) as any || formParams;
+        }
+        if (taxCode !== undefined) {
+            formParams = formParams.append('taxCode', <any>taxCode) as any || formParams;
+        }
+        if (owner !== undefined) {
+            formParams = formParams.append('owner', <any>owner) as any || formParams;
+        }
+        if (address !== undefined) {
+            formParams = formParams.append('address', <any>address) as any || formParams;
+        }
+        if (createdBy !== undefined) {
+            formParams = formParams.append('createdBy', <any>createdBy) as any || formParams;
+        }
+        if (updatedBy !== undefined) {
+            formParams = formParams.append('updatedBy', <any>updatedBy) as any || formParams;
+        }
+        if (createdAt !== undefined) {
+            formParams = formParams.append('createdAt', <any>createdAt) as any || formParams;
+        }
+        if (updatedAt !== undefined) {
+            formParams = formParams.append('updatedAt', <any>updatedAt) as any || formParams;
+        }
+        if (code !== undefined) {
+            formParams = formParams.append('code', <any>code) as any || formParams;
         }
 
         let responseType_: 'text' | 'json' = 'json';
@@ -275,25 +308,21 @@ export class CompanyControllerService {
      * @param id 
      * @param name 
      * @param groupName 
+     * @param code 
      * @param avatar 
+     * @param createdBy 
+     * @param taxCode 
+     * @param owner 
+     * @param address 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public updateCompany(id: string, name: string, groupName: string, avatar: Blob, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<ApiResponseCompanyInfo>;
-    public updateCompany(id: string, name: string, groupName: string, avatar: Blob, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<ApiResponseCompanyInfo>>;
-    public updateCompany(id: string, name: string, groupName: string, avatar: Blob, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<ApiResponseCompanyInfo>>;
-    public updateCompany(id: string, name: string, groupName: string, avatar: Blob, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
+    public updateCompany(id: string, name?: string, groupName?: string, code?: string, avatar?: Blob, createdBy?: string, taxCode?: string, owner?: string, address?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<ApiResponseCompanyInfo>;
+    public updateCompany(id: string, name?: string, groupName?: string, code?: string, avatar?: Blob, createdBy?: string, taxCode?: string, owner?: string, address?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<ApiResponseCompanyInfo>>;
+    public updateCompany(id: string, name?: string, groupName?: string, code?: string, avatar?: Blob, createdBy?: string, taxCode?: string, owner?: string, address?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<ApiResponseCompanyInfo>>;
+    public updateCompany(id: string, name?: string, groupName?: string, code?: string, avatar?: Blob, createdBy?: string, taxCode?: string, owner?: string, address?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
         if (id === null || id === undefined) {
             throw new Error('Required parameter id was null or undefined when calling updateCompany.');
-        }
-        if (name === null || name === undefined) {
-            throw new Error('Required parameter name was null or undefined when calling updateCompany.');
-        }
-        if (groupName === null || groupName === undefined) {
-            throw new Error('Required parameter groupName was null or undefined when calling updateCompany.');
-        }
-        if (avatar === null || avatar === undefined) {
-            throw new Error('Required parameter avatar was null or undefined when calling updateCompany.');
         }
 
         let headers = this.defaultHeaders;
@@ -335,8 +364,23 @@ export class CompanyControllerService {
         if (groupName !== undefined) {
             formParams = formParams.append('groupName', <any>groupName) as any || formParams;
         }
+        if (code !== undefined) {
+            formParams = formParams.append('code', <any>code) as any || formParams;
+        }
         if (avatar !== undefined) {
             formParams = formParams.append('avatar', <any>avatar) as any || formParams;
+        }
+        if (createdBy !== undefined) {
+            formParams = formParams.append('createdBy', <any>createdBy) as any || formParams;
+        }
+        if (taxCode !== undefined) {
+            formParams = formParams.append('taxCode', <any>taxCode) as any || formParams;
+        }
+        if (owner !== undefined) {
+            formParams = formParams.append('owner', <any>owner) as any || formParams;
+        }
+        if (address !== undefined) {
+            formParams = formParams.append('address', <any>address) as any || formParams;
         }
 
         let responseType_: 'text' | 'json' = 'json';
@@ -344,7 +388,7 @@ export class CompanyControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.put<ApiResponseCompanyInfo>(`${this.configuration.basePath}/company/v1/${encodeURIComponent(String(id))}`,
+        return this.httpClient.put<ApiResponseCompanyInfo>(`${this.configuration.basePath}/company/v1/update-company/${encodeURIComponent(String(id))}`,
             convertFormParamsToString ? formParams.toString() : formParams,
             {
                 responseType: <any>responseType_,

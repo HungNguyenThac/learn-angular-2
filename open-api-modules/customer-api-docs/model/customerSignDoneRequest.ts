@@ -11,9 +11,8 @@
  */
 
 
-export interface SignOTPResponseOnSign { 
-    error?: number;
-    message?: string;
-    data?: object;
+export interface CustomerSignDoneRequest { 
+    idRequest: number;
+    idDocument: number;
 }
 

@@ -11,8 +11,9 @@
  */
 
 
-export interface SigningPosition { 
-    xposition?: number;
-    yposition?: number;
+export interface ConfirmOTPResponse { 
+    customerId?: string;
+    documentPath?: string;
+    remainingRequests?: number;
 }
 

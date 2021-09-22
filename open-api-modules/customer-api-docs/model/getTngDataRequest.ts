@@ -11,8 +11,7 @@
  */
 
 
-export interface SigningPosition { 
-    xposition?: number;
-    yposition?: number;
+export interface GetTngDataRequest { 
+    documentPath: string;
 }
 

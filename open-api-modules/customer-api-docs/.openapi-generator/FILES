@@ -35,8 +35,10 @@ model/companyInfo.ts
 model/confirmInformationRequest.ts
 model/confirmInformationV2Request.ts
 model/customerInfoResponse.ts
+model/customerSignDoneRequest.ts
 model/financialData.ts
 model/fraudCheck.ts
+model/getTngDataRequest.ts
 model/idCardInfo.ts
 model/informationSalaryReceiptDateByOfficeCodeRequest.ts
 model/informationSalaryReceiptDateRequest.ts

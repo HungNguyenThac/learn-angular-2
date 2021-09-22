@@ -210,7 +210,7 @@ export class AdditionalInformationComponent
             }
           }
           // redirect to loan detemination
-          this.router.navigateByUrl('hmg/loan-determination');
+          this.router.navigateByUrl('hmg/sign-contract-terms-of-service');
         })
     );
   }
