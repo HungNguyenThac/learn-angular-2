@@ -29,16 +29,20 @@ import {
   VoucherTransaction,
 } from 'open-api-modules/loanapp-api-docs';
 import {
-  ApiResponseObject,
   DownloadFileRequest,
   FileControllerService,
 } from 'open-api-modules/com-api-docs';
 import formatSlug from 'src/app/core/utils/format-slug';
-import { PAYDAY_LOAN_STATUS } from 'src/app/core/common/enum/payday-loan';
-import { DomSanitizer } from '@angular/platform-browser';
+import {
+  PAYDAY_LOAN_STATUS,
+  PL_STEP_NAVIGATION,
+} from 'src/app/core/common/enum/payday-loan';
+import { DomSanitizer, Title } from '@angular/platform-browser';
 import { MatDialog } from '@angular/material/dialog';
 import { PlVoucherListComponent } from '../../components/pl-voucher-list/pl-voucher-list.component';
 import * as moment from 'moment';
+import { GlobalConstants } from '../../../../core/common/global-constants';
+import * as fromActions from '../../../../core/store';
 
 @Component({
   selector: 'app-loan-determination',
@@ -95,7 +99,8 @@ export class LoanDeterminationComponent
     public sanitizer: DomSanitizer,
     private fb: FormBuilder,
     private cdr: ChangeDetectorRef,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private titleService: Title
   ) {
     this.loanDeteminationForm = fb.group({
       loanAmount: [''],
@@ -123,6 +128,13 @@ export class LoanDeterminationComponent
         console.log('coreToken', coreToken);
       })
     );
+
+    this.titleService.setTitle(
+      'Bổ sung thông tin' +
+        ' - ' +
+        GlobalConstants.PL_VALUE_DEFAULT.PROJECT_NAME
+    );
+    this.initHeaderInfo();
 
     this.getVoucherList();
   }
@@ -153,6 +165,19 @@ export class LoanDeterminationComponent
 
   ngOnDestroy(): void {
     this.subManager.unsubscribe();
+  }
+
+  initHeaderInfo() {
+    this.store.dispatch(new fromActions.ResetPaydayLoanInfo());
+    this.store.dispatch(new fromActions.SetShowLeftBtn(false));
+    this.store.dispatch(new fromActions.SetShowRightBtn(false));
+    this.store.dispatch(new fromActions.SetShowProfileBtn(true));
+    this.store.dispatch(new fromActions.SetShowStepNavigation(true));
+    this.store.dispatch(
+      new fromActions.SetStepNavigationInfo(
+        PL_STEP_NAVIGATION.CHOOSE_AMOUNT_TO_BORROW
+      )
+    );
   }
 
   checkLoanExisted() {
@@ -290,15 +315,20 @@ export class LoanDeterminationComponent
   }
 
   loanAmountFormatMillionPrice() {
-    return this.loanDeteminationForm.controls["loanAmount"].value*1000000
+    return this.loanDeteminationForm.controls['loanAmount'].value * 1000000;
   }
 
   originalLoanFee() {
-    return this.loanDeteminationForm.controls["loanAmount"].value*1000000*0.02
+    return (
+      this.loanDeteminationForm.controls['loanAmount'].value * 1000000 * 0.02
+    );
   }
 
   loanFeeTotal() {
-    return this.loanDeteminationForm.controls["loanAmount"].value*1000000*0.02 - this.discount
+    return (
+      this.loanDeteminationForm.controls['loanAmount'].value * 1000000 * 0.02 -
+      this.discount
+    );
   }
 
   checkVoucherApplied() {
@@ -309,11 +339,13 @@ export class LoanDeterminationComponent
       );
     }
 
-    if (this.loanDeteminationForm.controls.voucherCode.value === '')
-      return;
+    if (this.loanDeteminationForm.controls.voucherCode.value === '') return;
 
     for (const voucher of this.listVoucher) {
-      if (voucher.code===this.loanDeteminationForm.controls.voucherCode.value.toUpperCase()) {
+      if (
+        voucher.code ===
+        this.loanDeteminationForm.controls.voucherCode.value.toUpperCase()
+      ) {
         if (voucher.remainAmount <= 0) {
           this.voucherShowError =
             'payday_loan.choose_amount.codes_has_run_out | translate';
@@ -326,11 +358,11 @@ export class LoanDeterminationComponent
           return;
         }
         this.loanDeteminationForm.controls.voucherCode.setValue(voucher.code);
-        this.applyCorrectedVoucher(voucher)
+        this.applyCorrectedVoucher(voucher);
         return;
       }
     }
-    this.voucherShowError = 'Mã ưu đãi không tồn tại'
+    this.voucherShowError = 'Mã ưu đãi không tồn tại';
   }
 
   applyCorrectedVoucher(voucher: Voucher) {
@@ -352,7 +384,7 @@ export class LoanDeterminationComponent
       createdAt: voucher.createdAt,
     };
 
-    this.isCorrectedVoucherApplied = true
+    this.isCorrectedVoucherApplied = true;
   }
 
   showError(title: string, content: string) {

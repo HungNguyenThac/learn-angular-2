@@ -8,7 +8,6 @@ import * as fromStore from 'src/app/core/store/index';
 import { NotificationService } from 'src/app/core/services/notification.service';
 import { MultiLanguageService } from 'src/app/share/translate/multiLanguageService';
 import {
-  AdditionalInformationRequest,
   AdditionalInformationV2Request,
   ApiResponseCustomerInfoResponse,
   CustomerInfoResponse,
@@ -16,6 +15,10 @@ import {
   InfoV2ControllerService,
 } from 'open-api-modules/customer-api-docs';
 import { ApiResponseObject } from 'open-api-modules/com-api-docs';
+import { GlobalConstants } from '../../../../core/common/global-constants';
+import { Title } from '@angular/platform-browser';
+import * as fromActions from '../../../../core/store';
+import { PL_STEP_NAVIGATION } from '../../../../core/common/enum/payday-loan';
 
 @Component({
   selector: 'app-additional-information',
@@ -71,7 +74,8 @@ export class AdditionalInformationComponent
     private infoControllerService: InfoControllerService,
     private infoV2ControllerService: InfoV2ControllerService,
     private notificationService: NotificationService,
-    private multiLanguageService: MultiLanguageService
+    private multiLanguageService: MultiLanguageService,
+    private titleService: Title
   ) {
     this.additionalInfoForm = this.fb.group({
       maritalStatus: [''],
@@ -101,6 +105,14 @@ export class AdditionalInformationComponent
         console.log('coreToken', coreToken);
       })
     );
+
+    this.titleService.setTitle(
+      'Bổ sung thông tin' +
+        ' - ' +
+        GlobalConstants.PL_VALUE_DEFAULT.PROJECT_NAME
+    );
+    this.initHeaderInfo();
+
     this.notificationService.showLoading(null);
   }
 
@@ -131,7 +143,8 @@ export class AdditionalInformationComponent
             borrowerEmploymentHistoryTextVariable1:
               this.customerInfo.personalData
                 .borrowerEmploymentHistoryTextVariable1,
-            borrowerEmploymentAverageWage: this.customerInfo.personalData.annualIncome,
+            borrowerEmploymentAverageWage:
+              this.customerInfo.personalData.annualIncome,
           });
         })
     );
@@ -141,6 +154,19 @@ export class AdditionalInformationComponent
     this.subManager.unsubscribe();
   }
 
+  initHeaderInfo() {
+    this.store.dispatch(new fromActions.ResetPaydayLoanInfo());
+    this.store.dispatch(new fromActions.SetShowLeftBtn(false));
+    this.store.dispatch(new fromActions.SetShowRightBtn(false));
+    this.store.dispatch(new fromActions.SetShowProfileBtn(true));
+    this.store.dispatch(new fromActions.SetShowStepNavigation(true));
+    this.store.dispatch(
+      new fromActions.SetStepNavigationInfo(
+        PL_STEP_NAVIGATION.ADDITIONAL_INFORMATION
+      )
+    );
+  }
+
   onSubmit() {
     if (!this.additionalInfoForm.valid) return;
     // maping for request api additional Infomation
@@ -148,20 +174,25 @@ export class AdditionalInformationComponent
       maritalStatus: this.additionalInfoForm.controls.maritalStatus.value,
       educationType: this.additionalInfoForm.controls.educationType.value,
       borrowerDetailTextVariable1:
-      this.additionalInfoForm.controls.borrowerDetailTextVariable1.value,
+        this.additionalInfoForm.controls.borrowerDetailTextVariable1.value,
       borrowerEmploymentHistoryTextVariable1:
-      this.additionalInfoForm.controls.borrowerEmploymentHistoryTextVariable1
-      .value,
+        this.additionalInfoForm.controls.borrowerEmploymentHistoryTextVariable1
+          .value,
       annualIncome:
-      Number(this.additionalInfoForm.controls.borrowerEmploymentAverageWage.value)*1000000,
+        Number(
+          this.additionalInfoForm.controls.borrowerEmploymentAverageWage.value
+        ) * 1000000,
     };
-    console.log("additionalInformationRequest",additionalInformationV2Request)
+    console.log('additionalInformationRequest', additionalInformationV2Request);
 
     this.notificationService.showLoading(null);
     // call api additional Infomation
     this.subManager.add(
       this.infoV2ControllerService
-        .additionalInformationV2(this.customerId, additionalInformationV2Request)
+        .additionalInformationV2(
+          this.customerId,
+          additionalInformationV2Request
+        )
         .subscribe((result: ApiResponseObject) => {
           //throw error
           this.notificationService.hideLoading();
@@ -172,7 +203,10 @@ export class AdditionalInformationComponent
               );
               return this.showError('common.error', message);
             } else {
-              return this.showError('common.error','common.something_went_wrong')
+              return this.showError(
+                'common.error',
+                'common.something_went_wrong'
+              );
             }
           }
           // redirect to loan detemination
