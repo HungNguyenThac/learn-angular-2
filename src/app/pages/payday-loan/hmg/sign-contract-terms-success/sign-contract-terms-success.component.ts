@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import { Router } from '@angular/router';
 import * as fromActions from '../../../../core/store';
 import * as fromStore from '../../../../core/store';
@@ -7,13 +7,15 @@ import * as fromSelectors from '../../../../core/store/selectors';
 import { Observable, Subscription } from 'rxjs';
 import formatSlug from '../../../../core/utils/format-slug';
 import { PAYDAY_LOAN_STATUS } from '../../../../core/common/enum/payday-loan';
+import { GlobalConstants } from '../../../../core/common/global-constants';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-sign-contract-terms-success',
   templateUrl: './sign-contract-terms-success.component.html',
   styleUrls: ['./sign-contract-terms-success.component.scss'],
 })
-export class SignContractTermsSuccessComponent implements OnInit {
+export class SignContractTermsSuccessComponent implements OnInit, OnDestroy {
   firstName: '';
 
   isSignContractTermsSuccess$: Observable<boolean>;
@@ -22,13 +24,21 @@ export class SignContractTermsSuccessComponent implements OnInit {
 
   subManager = new Subscription();
 
-  constructor(private router: Router, private store: Store<fromStore.State>) {
+  constructor(
+    private router: Router,
+    private store: Store<fromStore.State>,
+    private titleService: Title
+  ) {
     this.initHeaderInfo();
     this._initSubscribeState();
   }
 
   ngOnInit(): void {
-
+    this.titleService.setTitle(
+      'Ký thư chấp thuận thành công' +
+        ' - ' +
+        GlobalConstants.PL_VALUE_DEFAULT.PROJECT_NAME
+    );
   }
 
   private _initSubscribeState() {
@@ -69,5 +79,9 @@ export class SignContractTermsSuccessComponent implements OnInit {
     this.store.dispatch(new fromActions.ResetPaydayLoanInfo());
     this.store.dispatch(new fromActions.SetShowProfileBtn(true));
     this.store.dispatch(new fromActions.SetShowNavigationBar(false));
+  }
+
+  ngOnDestroy(): void {
+    this.subManager.unsubscribe();
   }
 }

@@ -86,6 +86,11 @@ export class SignContractTermsOfServiceComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.titleService.setTitle(
+      'Ký thư chấp thuận' +
+      ' - ' +
+      GlobalConstants.PL_VALUE_DEFAULT.PROJECT_NAME
+    );
     this.onResponsiveInverted();
     window.addEventListener('resize', this.onResponsiveInverted);
     this.initInfo();

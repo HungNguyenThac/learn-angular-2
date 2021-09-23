@@ -106,6 +106,9 @@ export class SignContractComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.titleService.setTitle(
+      'Ký hợp đồng' + ' - ' + GlobalConstants.PL_VALUE_DEFAULT.PROJECT_NAME
+    );
     this.onResponsiveInverted();
     window.addEventListener('resize', this.onResponsiveInverted);
     this.initInfo();
@@ -168,6 +171,7 @@ export class SignContractComponent implements OnInit {
     this.store.dispatch(new fromActions.SetShowRightBtn(false));
     this.store.dispatch(new fromActions.SetShowProfileBtn(true));
     this.store.dispatch(new fromActions.SetShowStepNavigation(false));
+    this.store.dispatch(new fromActions.SetCurrentLoanCode(null));
   }
 
   get showSignContractBtn() {
@@ -530,6 +534,7 @@ export class SignContractComponent implements OnInit {
           if (response.responseCode !== 200) {
             return this.showErrorModal();
           }
+          this.store.dispatch(new fromActions.SetCustomerInfo(response.result));
           this.userInfo = response.result;
         })
     );
@@ -571,7 +576,9 @@ export class SignContractComponent implements OnInit {
             idDocument: this.idDocument,
             idRequest: this.idRequest,
           });
-
+          this.store.dispatch(
+            new fromActions.SetCurrentLoanCode(this.currentLoan.loanCode)
+          );
           this.store.dispatch(new fromActions.SetSignContractSuccess(true));
           this.router.navigateByUrl('hmg/sign-contract-success');
         })
@@ -657,7 +664,11 @@ export class SignContractComponent implements OnInit {
   }
 
   afterload() {
-    document.querySelector('.ng2-pdf-viewer-container').setAttribute("style", "position: relative !important");
-    document.querySelector('pdf-viewer').setAttribute("style","height: auto !important")
+    document
+      .querySelector('.ng2-pdf-viewer-container')
+      .setAttribute('style', 'position: relative !important');
+    document
+      .querySelector('pdf-viewer')
+      .setAttribute('style', 'height: auto !important');
   }
 }
