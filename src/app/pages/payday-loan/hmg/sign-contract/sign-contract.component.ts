@@ -655,4 +655,9 @@ export class SignContractComponent implements OnInit {
     this.store.dispatch(new fromActions.SetSentOtpOnsignStatus(false));
     this.subManager.unsubscribe();
   }
+
+  afterload() {
+    document.querySelector('.ng2-pdf-viewer-container').setAttribute("style", "position: relative !important");
+    document.querySelector('pdf-viewer').setAttribute("style","height: auto !important")
+  }
 }

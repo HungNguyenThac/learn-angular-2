@@ -1,3 +1,5 @@
+import { MultiLanguageService } from 'src/app/share/translate/multiLanguageService';
+import { NotificationService } from 'src/app/core/services/notification.service';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import {
   AbstractControl,
@@ -7,7 +9,6 @@ import {
   Validators,
 } from '@angular/forms';
 import { Router } from '@angular/router';
-import { ToastrService } from 'ngx-toastr';
 import { ApiResponseObject } from 'open-api-modules/com-api-docs';
 import {
   CreateCustomerAccountRequest,
@@ -49,32 +50,21 @@ export class SignUpComponent implements OnInit, OnDestroy {
 
   subManager = new Subscription();
 
-  matchValues(
-    matchTo: string // name of the control to match to
-  ): (AbstractControl) => ValidationErrors | null {
-    return (control: AbstractControl): ValidationErrors | null => {
-      return !!control.parent &&
-        !!control.parent.value &&
-        control.value === control.parent.controls[matchTo].value
-        ? null
-        : { isMatching: false };
-    };
-  }
-
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
     private signOnControllerService: SignOnControllerService,
-    private notifier: ToastrService,
     private titleService: Title,
-    private store: Store<fromStore.State>
+    private store: Store<fromStore.State>,
+    private notificationService: NotificationService,
+    private multiLanguageService: MultiLanguageService
   ) {
     this.signUpForm = this.formBuilder.group({
       mobileNumber: ['', [Validators.required]],
       password: ['', [Validators.required]],
       confirmPassword: [
         '',
-        [Validators.required, this.matchValues('password')],
+        [Validators.required],
       ],
     });
   }
@@ -120,12 +110,15 @@ export class SignUpComponent implements OnInit, OnDestroy {
     this.subManager.add(
       this.signOnControllerService
         .createCustomerAccount(createCustomerAccountRequest)
-        .subscribe((data: ApiResponseObject) => {
-          if (data.errorCode != null) {
-            return this.notifier.error(String(data?.message));
+        .subscribe((result: ApiResponseObject) => {
+          if (result.errorCode != null) {
+            const message = this.multiLanguageService.instant(
+              'payday_loan.error_code.' + result.errorCode.toLowerCase()
+            );
+            return this.showError('common.error', message);
           }
 
-          this.createCustomerAccountRequestResult = data.result;
+          this.createCustomerAccountRequestResult = result.result;
 
           if (this.openOtpConfirm === false) {
             this.openOtpConfirm = true;
@@ -155,7 +148,10 @@ export class SignUpComponent implements OnInit, OnDestroy {
         .createVerifiedCustomerAccount(createVerifiedAccountRequest)
         .subscribe((result) => {
           if (result.errorCode != null) {
-            return this.notifier.error(result.message);
+            const message = this.multiLanguageService.instant(
+              'payday_loan.error_code.' + result.errorCode.toLowerCase()
+            );
+            return this.showError('common.error', message);
           }
           console.log('create Verified success');
           this.redirectToSignUpSuccessPage();
@@ -170,5 +166,13 @@ export class SignUpComponent implements OnInit, OnDestroy {
 
   redirectToSignUpSuccessPage() {
     this.router.navigateByUrl('/auth/sign-up-success');
+  }
+
+  showError(title: string, content: string) {
+    return this.notificationService.openErrorModal({
+      title: this.multiLanguageService.instant(title),
+      content: this.multiLanguageService.instant(content),
+      primaryBtnText: this.multiLanguageService.instant('common.confirm'),
+    });
   }
 }

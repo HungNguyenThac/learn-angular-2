@@ -32,7 +32,9 @@ export class ShowErrorsComponent {
 
     strongPassword: (params: any) => "##FIELD## phải gồm ít nhất 6 ký tự, bao gồm ít nhất 1 chữ cái viết hoa, 1 chữ cái viết thường và 1 chữ số!.",
 
-    phoneNumber: (params: any) => "Số điện thoại không đúng hoặc chưa tồn tại trên hệ thống.",
+    phoneNumber: (params: any) => "##FIELD## không đúng định dạng.",
+
+    confirmPassword: (params:any) => "##FIELD## không trùng khớp."
   };
 
   @Input() private control: AbstractControlDirective | AbstractControl;
