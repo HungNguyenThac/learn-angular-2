@@ -253,26 +253,34 @@ export class LoanDeterminationComponent
         const loanStatus = result.result.status;
 
         //call api com svc upload document vehicle registration
-        this.fileControllerService
-          .uploadSingleFile(
-            'VEHICLE_REGISTRATION',
-            this.loanDeteminationForm.controls['collateralDocument'].value,
-            this.customerId
-          )
-          .subscribe((result) => {
-            this.notificationService.hideLoading();
-            if (!result || result.responseCode !== 200) {
-              const message = this.multiLanguageService.instant(
-                'payday_loan.error_code.' + result.errorCode.toLowerCase()
-              );
-              return this.showError('common.error', message);
-            }
+        if(this.loanDeteminationForm.controls['collateralDocument'].value) {
+          this.fileControllerService
+            .uploadSingleFile(
+              'VEHICLE_REGISTRATION',
+              this.loanDeteminationForm.controls['collateralDocument'].value,
+              this.customerId
+            )
+            .subscribe((result) => {
+              this.notificationService.hideLoading();
+              if (!result || result.responseCode !== 200) {
+                const message = this.multiLanguageService.instant(
+                  'payday_loan.error_code.' + result.errorCode.toLowerCase()
+                );
+                return this.showError('common.error', message);
+              }
 
-            return this.router.navigate([
-              'hmg/current-loan',
-              formatSlug(loanStatus || PAYDAY_LOAN_STATUS.UNKNOWN_STATUS),
-            ]);
-          });
+              return this.router.navigate([
+                'hmg/current-loan',
+                formatSlug(loanStatus || PAYDAY_LOAN_STATUS.UNKNOWN_STATUS),
+              ]);
+            });
+        } else {
+          return this.router.navigate([
+            'hmg/current-loan',
+            formatSlug(loanStatus || PAYDAY_LOAN_STATUS.UNKNOWN_STATUS),
+          ]);
+        }
+
       });
   }
 
