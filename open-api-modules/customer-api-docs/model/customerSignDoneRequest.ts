@@ -11,8 +11,8 @@
  */
 
 
-export interface SigningPosition { 
-    xposition?: number;
-    yposition?: number;
+export interface CustomerSignDoneRequest { 
+    idRequest: number;
+    idDocument: number;
 }
 

@@ -9,18 +9,19 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { SigningPositionRequest } from './signingPositionRequest';
+import { SigningPosition } from './signingPosition';
 
 
-export interface CreateSigningPositionRequest { 
-    documentType: string;
-    companyName: CreateSigningPositionRequest.CompanyNameEnum;
-    page: number;
-    positionBorrower: SigningPositionRequest;
-    positionInvestor?: SigningPositionRequest;
-    positionEpay?: SigningPositionRequest;
+export interface DocumentSigningLocationEntity { 
+    id?: string;
+    companyName?: DocumentSigningLocationEntity.CompanyNameEnum;
+    documentType?: string;
+    page?: number;
+    positionBorrower?: SigningPosition;
+    positionInvestor?: SigningPosition;
+    positionEpay?: SigningPosition;
 }
-export namespace CreateSigningPositionRequest {
+export namespace DocumentSigningLocationEntity {
     export type CompanyNameEnum = 'HMG' | 'TNG';
     export const CompanyNameEnum = {
         Hmg: 'HMG' as CompanyNameEnum,

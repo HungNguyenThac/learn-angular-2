@@ -10,7 +10,7 @@ import {
   MAT_MOMENT_DATE_FORMATS,
   MomentDateAdapter,
 } from '@angular/material-moment-adapter';
-import { FormBuilder, FormGroup, RequiredValidator, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
 import { Store } from '@ngrx/store';
@@ -33,7 +33,11 @@ import * as moment from 'moment';
 import { GlobalConstants } from '../../../../core/common/global-constants';
 import { Title } from '@angular/platform-browser';
 import * as fromActions from '../../../../core/store';
-import { PL_STEP_NAVIGATION } from '../../../../core/common/enum/payday-loan';
+import {
+  PAYDAY_LOAN_STATUS,
+  PL_STEP_NAVIGATION,
+} from '../../../../core/common/enum/payday-loan';
+import formatSlug from '../../../../core/utils/format-slug';
 
 @Component({
   selector: 'app-confirm-information',
@@ -50,7 +54,8 @@ import { PL_STEP_NAVIGATION } from '../../../../core/common/enum/payday-loan';
   ],
 })
 export class ConfirmInformationComponent
-  implements OnInit, AfterViewInit, OnDestroy {
+  implements OnInit, AfterViewInit, OnDestroy
+{
   infoForm: FormGroup;
   name: any;
 
@@ -63,6 +68,8 @@ export class ConfirmInformationComponent
   password: string;
   public coreToken$: Observable<any>;
   coreToken: string;
+  hasActiveLoan$: Observable<boolean>;
+
   subManager = new Subscription();
 
   constructor(
@@ -88,14 +95,37 @@ export class ConfirmInformationComponent
       email: ['', Validators.email],
     });
 
-    this.customerId$ = store.select(fromStore.getCustomerIdState);
-    this.coreToken$ = store.select(fromStore.getCoreTokenState);
-    this.password$ = store.select(fromStore.getPasswordState);
+    this.initHeaderInfo();
+    this._initSubscribeState();
   }
 
   ngOnInit(): void {
     this.notificationService.showLoading(null);
-    //get customer id, password & core token from store
+    this.titleService.setTitle(
+      'Xác nhận thông tin' +
+        ' - ' +
+        GlobalConstants.PL_VALUE_DEFAULT.PROJECT_NAME
+    );
+  }
+
+  private _initSubscribeState() {
+    this.customerId$ = this.store.select(fromStore.getCustomerIdState);
+    this.coreToken$ = this.store.select(fromStore.getCoreTokenState);
+    this.password$ = this.store.select(fromStore.getPasswordState);
+    this.hasActiveLoan$ = this.store.select(fromStore.isHasActiveLoan);
+
+
+    this.subManager.add(
+      this.hasActiveLoan$.subscribe((hasActiveLoan) => {
+        if (hasActiveLoan) {
+          return this.router.navigate([
+            'hmg/current-loan',
+            formatSlug(PAYDAY_LOAN_STATUS.UNKNOWN_STATUS),
+          ]);
+        }
+      })
+    );
+
     this.subManager.add(
       this.customerId$.subscribe((id) => {
         this.customerId = id;
@@ -114,13 +144,6 @@ export class ConfirmInformationComponent
         console.log('coreToken', coreToken);
       })
     );
-
-    this.titleService.setTitle(
-      'Xác nhận thông tin' +
-      ' - ' +
-      GlobalConstants.PL_VALUE_DEFAULT.PROJECT_NAME
-    );
-    this.initHeaderInfo();
   }
 
   ngAfterViewInit() {
@@ -269,18 +292,20 @@ export class ConfirmInformationComponent
           nationalId: this.customerId,
           customerId: this.customerId,
           idIssuePlace: this.customerInfo.personalData.idIssuePlace,
-        }
-        this.contractControllerService.createLetterHMG('HMG', createLetterRequest).subscribe((result) => {
-          this.notificationService.hideLoading();
-          if (!result || result.responseCode !== 200) {
-            const message = this.multiLanguageService.instant(
-              'payday_loan.error_code.' + result.errorCode.toLowerCase()
-            );
-            return this.showError('common.error', message);
-          }
-          // redirect to additional information
-          this.router.navigateByUrl('/hmg/additional-information');
-        })
+        };
+        this.contractControllerService
+          .createLetter('HMG', createLetterRequest)
+          .subscribe((result) => {
+            this.notificationService.hideLoading();
+            if (!result || result.responseCode !== 200) {
+              const message = this.multiLanguageService.instant(
+                'payday_loan.error_code.' + result.errorCode.toLowerCase()
+              );
+              return this.showError('common.error', message);
+            }
+            // redirect to additional information
+            this.router.navigateByUrl('/hmg/additional-information');
+          });
       });
   }
 
@@ -298,5 +323,4 @@ export class ConfirmInformationComponent
       'DD/MM/YYYY'
     );
   }
-
 }

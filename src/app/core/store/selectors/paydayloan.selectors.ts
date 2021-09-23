@@ -62,3 +62,9 @@ export const isSentOtpOnsign = createSelector(
   fromFeature.getCoreState,
   (state: fromFeature.State) => state.paydayLoan.isSentOtpOnsign
 );
+
+export const isHasActiveLoan = createSelector(
+  fromFeature.getCoreState,
+  (state: fromFeature.State) => state.paydayLoan.hasActiveLoan
+);
+

@@ -9,11 +9,13 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { ConfirmOTPResponse } from './confirmOTPResponse';
 
 
-export interface SignOTPResponseOnSign { 
-    error?: number;
-    message?: string;
-    data?: object;
+export interface ApiResponseConfirmOTPResponse { 
+    result?: ConfirmOTPResponse;
+    errorCode?: string;
+    message?: object;
+    responseCode?: number;
 }
 

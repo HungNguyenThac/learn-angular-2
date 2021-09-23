@@ -9,11 +9,11 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { SignOTPResponseOnSign } from './signOTPResponseOnSign';
+import { Contract } from './contract';
 
 
-export interface ApiResponseSignOTPResponseOnSign { 
-    result?: SignOTPResponseOnSign;
+export interface ApiResponseContract { 
+    result?: Contract;
     errorCode?: string;
     message?: object;
     responseCode?: number;

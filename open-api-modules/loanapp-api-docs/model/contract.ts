@@ -11,10 +11,14 @@
  */
 
 
-export interface ApiResponseObject { 
-    result?: object;
-    errorCode?: string;
-    message?: object;
-    responseCode?: number;
+export interface Contract { 
+    id?: string;
+    status?: string;
+    type?: string;
+    loanId?: string;
+    idRequest?: number;
+    idDocument?: number;
+    path?: string;
+    createdAt?: string;
 }
 
