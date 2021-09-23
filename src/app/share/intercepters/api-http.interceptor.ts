@@ -70,6 +70,8 @@ export class ApiHttpInterceptor implements HttpInterceptor {
                 this.multiLanguageService.instant('common.confirm'),
             });
             return null;
+          },
+          ()=> {
           }
         )
       );
