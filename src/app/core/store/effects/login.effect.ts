@@ -86,6 +86,7 @@ export class LoginEffects {
           );
           this.store$.dispatch(new fromActions.SetSignContractSuccess(false));
           this.store$.dispatch(new fromActions.SetHasActiveLoanStatus(false));
+          this.store$.dispatch(new fromActions.SetCurrentLoanCode(null));
         })
       ),
     { dispatch: false }

@@ -32,6 +32,10 @@ export class MultiLanguageService {
     this._subject.next({language: language});
   }
 
+  public use(language: string) {
+    return this.translateService.use(language);
+  }
+
   private _getLanguage(): Observable<any> {
     return this._subject.asObservable();
   }

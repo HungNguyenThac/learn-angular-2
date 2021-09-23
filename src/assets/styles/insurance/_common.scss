@@ -1,6 +1,13 @@
 @import "src/assets/styles/variables";
 @import "src/assets/styles/insurance/insurance-button";
 
+router-outlet ~ * {
+  position: absolute;
+  height: auto;
+  width: 100%;
+  min-height: calc(100% - 94px);
+}
+
 .container-fluid {
   height: auto;
   padding: 0;
@@ -43,12 +50,6 @@
   font-size: 12px;
   line-height: 16px;
   color: $system-color-red;
-}
-
-router-outlet ~ * {
-  position: absolute;
-  height: 100%;
-  width: 100%;
 }
 
 @media (min-width: 1200px) {
