@@ -114,7 +114,6 @@ export class LoanDeterminationComponent
   }
 
   ngOnInit(): void {
-    this.notificationService.showLoading(null);
     //get customer id, password & core token from store
 
     this.titleService.setTitle(
@@ -134,7 +133,6 @@ export class LoanDeterminationComponent
         .getInfo(this.customerId)
         .subscribe((result: ApiResponseCustomerInfoResponse) => {
           if (!result || result.responseCode !== 200) {
-            this.notificationService.hideLoading();
             return this.showError(
               'common.error',
               'common.something_went_wrong'
@@ -187,7 +185,6 @@ export class LoanDeterminationComponent
       .getActiveLoan(this.customerId, this.coreToken)
       .subscribe((result: ApiResponsePaydayLoan) => {
         if (result.responseCode === 200) {
-          this.notificationService.hideLoading();
           return this.router.navigate([
             'hmg/current-loan',
             formatSlug(
@@ -204,7 +201,7 @@ export class LoanDeterminationComponent
       !this.customerInfo?.personalData ||
       !this.customerInfo?.personalData.collateralDocument
     )
-      return this.notificationService.hideLoading();
+      return;
 
     const downloadFileRequest: DownloadFileRequest = {
       documentPath: this.customerInfo?.personalData.collateralDocument,
@@ -213,7 +210,6 @@ export class LoanDeterminationComponent
     this.fileControllerService
       .downloadFile(downloadFileRequest)
       .subscribe((blob) => {
-        this.notificationService.hideLoading();
         let objectURL = URL.createObjectURL(blob);
         this.collateralImgSrc =
           this.sanitizer.bypassSecurityTrustUrl(objectURL);
@@ -230,7 +226,6 @@ export class LoanDeterminationComponent
   onSubmit() {
     if (!this.loanDeteminationForm.valid) return;
     console.log(this.loanDeteminationForm.getRawValue());
-    this.notificationService.showLoading(null);
 
     const createApplicationRequest: CreateApplicationRequest = {
       coreToken: this.coreToken,
@@ -244,7 +239,6 @@ export class LoanDeterminationComponent
       .createLoan(createApplicationRequest)
       .subscribe((result: ApiResponseApplyResponse) => {
         if (!result || result.responseCode !== 200) {
-          this.notificationService.hideLoading();
           const message = this.multiLanguageService.instant(
             'payday_loan.error_code.' + result.errorCode.toLowerCase()
           );
@@ -253,7 +247,7 @@ export class LoanDeterminationComponent
         const loanStatus = result.result.status;
 
         //call api com svc upload document vehicle registration
-        if(this.loanDeteminationForm.controls['collateralDocument'].value) {
+        if (this.loanDeteminationForm.controls['collateralDocument'].value) {
           this.fileControllerService
             .uploadSingleFile(
               'VEHICLE_REGISTRATION',
@@ -261,7 +255,6 @@ export class LoanDeterminationComponent
               this.customerId
             )
             .subscribe((result) => {
-              this.notificationService.hideLoading();
               if (!result || result.responseCode !== 200) {
                 const message = this.multiLanguageService.instant(
                   'payday_loan.error_code.' + result.errorCode.toLowerCase()
@@ -280,7 +273,6 @@ export class LoanDeterminationComponent
             formatSlug(loanStatus || PAYDAY_LOAN_STATUS.UNKNOWN_STATUS),
           ]);
         }
-
       });
   }
 

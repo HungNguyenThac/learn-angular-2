@@ -15,8 +15,8 @@ import {
 } from '../../../../core/common/enum/payday-loan';
 import { RepaymentControllerService } from '../../../../../../open-api-modules/payment-api-docs';
 import base64 from 'base-64';
-import {GlobalConstants} from "../../../../core/common/global-constants";
-import {Title} from "@angular/platform-browser";
+import { GlobalConstants } from '../../../../core/common/global-constants';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-gpay-payment-result',
@@ -44,13 +44,12 @@ export class GpayPaymentResultComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.titleService.setTitle(
       'Kết quả thanh toán' +
-      ' - ' +
-      GlobalConstants.PL_VALUE_DEFAULT.PROJECT_NAME
+        ' - ' +
+        GlobalConstants.PL_VALUE_DEFAULT.PROJECT_NAME
     );
-    this.notificationService.showLoading();
+
     setTimeout(() => {
       this.callWebHookRepayment();
-      this.notificationService.hideLoading();
       this.checkResultData().then((r) => {});
     }, 5000);
   }

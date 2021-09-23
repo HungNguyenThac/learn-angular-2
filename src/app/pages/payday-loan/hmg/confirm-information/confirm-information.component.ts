@@ -1,5 +1,7 @@
-import { CreateLetterRequest } from '../../../../../../open-api-modules/com-api-docs';
-import { ContractControllerService } from '../../../../../../open-api-modules/com-api-docs';
+import {
+  ContractControllerService,
+  CreateLetterRequest,
+} from '../../../../../../open-api-modules/com-api-docs';
 import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
 import {
   DateAdapter,
@@ -38,7 +40,6 @@ import {
   PL_STEP_NAVIGATION,
 } from '../../../../core/common/enum/payday-loan';
 import formatSlug from '../../../../core/utils/format-slug';
-import {SetCoreToken} from "src/app/core/store/index";
 
 @Component({
   selector: 'app-confirm-information',
@@ -101,7 +102,6 @@ export class ConfirmInformationComponent
   }
 
   ngOnInit(): void {
-    this.notificationService.showLoading(null);
     this.titleService.setTitle(
       'Xác nhận thông tin' +
         ' - ' +
@@ -150,7 +150,6 @@ export class ConfirmInformationComponent
     this.infoControllerService
       .getInfo(this.customerId)
       .subscribe((result: ApiResponseCustomerInfoResponse) => {
-        this.notificationService.hideLoading();
         if (!result || result.responseCode !== 200) {
           return this.showError('common.error', 'common.something_went_wrong');
         }
@@ -189,7 +188,6 @@ export class ConfirmInformationComponent
 
   onInfoSubmit() {
     if (!this.infoForm.valid) return;
-    this.notificationService.showLoading(null);
     this.subManager.add(
       this.infoV2ControllerService
         .validateConfirmInformationRequestV2(this.customerId, {
@@ -210,7 +208,7 @@ export class ConfirmInformationComponent
             const message = this.multiLanguageService.instant(
               'payday_loan.error_code.' + result.errorCode.toLowerCase()
             );
-            this.notificationService.hideLoading();
+
             this.showError('common.error', message);
             return;
           }
@@ -258,14 +256,15 @@ export class ConfirmInformationComponent
     this.borrowerControllerService
       .borrowerStepOne(borrowerStepOneInput)
       .subscribe((result: ApiResponseObject) => {
-        this.notificationService.hideLoading();
         if (!result || result.responseCode !== 200) {
           const message = this.multiLanguageService.instant(
             'payday_loan.error_code.' + result.errorCode.toLowerCase()
           );
           return this.showError('common.error', message);
         }
-        this.store.dispatch(new fromActions.SetCoreToken(result.result['access_token']))
+        this.store.dispatch(
+          new fromActions.SetCoreToken(result.result['access_token'])
+        );
         this.coreUserId = result.result['userId'];
         this.confirmInfomation();
       });
@@ -279,7 +278,6 @@ export class ConfirmInformationComponent
       )
       .subscribe((result: ApiResponseObject) => {
         if (!result || result.responseCode !== 200) {
-          this.notificationService.hideLoading();
           const message = this.multiLanguageService.instant(
             'payday_loan.error_code.' + result.errorCode.toLowerCase()
           );
@@ -297,7 +295,6 @@ export class ConfirmInformationComponent
         this.contractControllerService
           .createLetter('HMG', createLetterRequest)
           .subscribe((result) => {
-            this.notificationService.hideLoading();
             if (!result || result.responseCode !== 200) {
               const message = this.multiLanguageService.instant(
                 'payday_loan.error_code.' + result.errorCode.toLowerCase()

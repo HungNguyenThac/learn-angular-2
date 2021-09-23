@@ -22,6 +22,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   showRightBtn$: Observable<boolean>;
   navigationTitle$: Observable<string>;
   showNavigationBar$: Observable<boolean>;
+  authorization$: Observable<any>;
 
   customerInfo: CustomerInfoResponse = null;
   logoSrc: string = 'assets/img/monex-logo.svg';
@@ -36,6 +37,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   leftBtnIcon: string = 'sprite-group-3-icon-back';
   rightBtnIcon: string = 'sprite-group-3-help-white';
   titleNavigation: string = 'Ứng lương 0% lãi';
+  shortName: string = '0';
 
   subManager = new Subscription();
 
@@ -64,10 +66,19 @@ export class HeaderComponent implements OnInit, OnDestroy {
       fromSelectors.displayNavigationBar
     );
     this.navigationTitle$ = this.store.select(fromSelectors.getNavigationTitle);
+    this.authorization$ = this.store.select(
+      fromSelectors.getAuthorizationState
+    );
 
     this.subManager.add(
       this.customerInfo$.subscribe((customerInfo: CustomerInfoResponse) => {
         this.customerInfo = customerInfo;
+        if (customerInfo?.personalData?.firstName) {
+          const names = customerInfo.personalData.firstName.split(' ');
+          this.shortName = names[names.length - 1].charAt(0);
+        } else {
+          this.shortName = '0';
+        }
       })
     );
 
@@ -84,8 +95,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
     );
 
     this.subManager.add(
-      this.showProfileBtn$.subscribe((show: boolean) => {
-        this.showProfileBtn = show;
+      this.authorization$.subscribe((authorization: any) => {
+        this.showProfileBtn = !!authorization;
       })
     );
 
