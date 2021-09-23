@@ -125,9 +125,8 @@ export class CurrentLoanComponent implements OnInit, OnDestroy {
 
   initInfo() {
     // if (this.isChooseAmountSuccess) {
-    //   this.notificationService.showLoading();
+    //
     //   setTimeout(async () => {
-    //     this.notificationService.hideLoading();
     //     // this.resetChooseAmountSuccess();
     //     await this.getActiveLoan(false, true);
     //     await this.getContractCurrentLoan(false, true);
@@ -135,56 +134,21 @@ export class CurrentLoanComponent implements OnInit, OnDestroy {
     //   return;
     // }
     this.getActiveLoan();
-    // this.getContractCurrentLoan();
   }
 
-  // getContractCurrentLoan(showLoading = true) {
-  //   if (!this.currentLoan.id || !this.customerId) return;
-  //
-  //   if (showLoading) {
-  //     this.notificationService.showLoading();
-  //   }
-  //   this.subManager.add(
-  //     this.contractControllerService
-  //       .getContract(this.currentLoan.id, this.customerId)
-  //       .subscribe(
-  //         (response) => {
-  //           this.notificationService.hideLoading();
-  //           if (response.responseCode == 200) {
-  //             this.contractInfo.status = response.result['status'];
-  //           }
-  //         },
-  //         (error) => {},
-  //         () => {
-  //           this.notificationService.hideLoading();
-  //         }
-  //       )
-  //   );
-  // }
-
-  getActiveLoan(showLoading = true) {
-    if (showLoading) {
-      this.notificationService.showLoading();
-    }
+  getActiveLoan() {
     this.subManager.add(
       this.applicationControllerService
         .getActiveLoan(this.customerId, this.coreToken)
-        .subscribe(
-          (response: ApiResponsePaydayLoan) => {
-            this.notificationService.hideLoading();
-            if (response.errorCode || response.responseCode != 200) {
-              return this.handleGetActiveLoanError(response);
-            }
-            this.store.dispatch(new fromActions.SetHasActiveLoanStatus(true));
-            this.currentLoan = response.result;
-            this.displayPageTitle();
-            this.getUserInfo();
-          },
-          (error) => {},
-          () => {
-            this.notificationService.hideLoading();
+        .subscribe((response: ApiResponsePaydayLoan) => {
+          if (response.errorCode || response.responseCode != 200) {
+            return this.handleGetActiveLoanError(response);
           }
-        )
+          this.store.dispatch(new fromActions.SetHasActiveLoanStatus(true));
+          this.currentLoan = response.result;
+          this.displayPageTitle();
+          this.getUserInfo();
+        })
     );
   }
 
@@ -215,20 +179,15 @@ export class CurrentLoanComponent implements OnInit, OnDestroy {
   }
 
   getUserInfo() {
-    this.notificationService.showLoading();
     this.subManager.add(
-      this.infoControllerService.getInfo(this.customerId).subscribe(
-        (response: ApiResponseCustomerInfoResponse) => {
+      this.infoControllerService
+        .getInfo(this.customerId)
+        .subscribe((response: ApiResponseCustomerInfoResponse) => {
           if (response.responseCode !== 200) {
             this.showErrorModal();
           }
           this.userInfo = response.result;
-        },
-        (error) => {},
-        () => {
-          this.notificationService.hideLoading();
-        }
-      )
+        })
     );
   }
 

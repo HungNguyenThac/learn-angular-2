@@ -1,11 +1,11 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import * as fromStore from './../../../../core/store';
 import * as fromActions from './../../../../core/store';
-import { MultiLanguageService } from '../../../../share/translate/multiLanguageService';
-import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs/Observable';
+import {MultiLanguageService} from '../../../../share/translate/multiLanguageService';
+import {Store} from '@ngrx/store';
+import {Observable} from 'rxjs/Observable';
 import * as fromSelectors from '../../../../core/store/selectors';
-import { NotificationService } from '../../../../core/services/notification.service';
+import {NotificationService} from '../../../../core/services/notification.service';
 import {
   ApiResponseVirtualAccount,
   GpayVirtualAccountControllerService,
@@ -16,11 +16,11 @@ import {
   PAYDAY_LOAN_STATUS,
   PL_STEP_NAVIGATION,
 } from '../../../../core/common/enum/payday-loan';
-import { InfoControllerService } from '../../../../../../open-api-modules/customer-api-docs';
-import { GlobalConstants } from '../../../../core/common/global-constants';
-import { Router } from '@angular/router';
-import { Title } from '@angular/platform-browser';
-import { Subscription } from 'rxjs';
+import {InfoControllerService} from '../../../../../../open-api-modules/customer-api-docs';
+import {GlobalConstants} from '../../../../core/common/global-constants';
+import {Router} from '@angular/router';
+import {Title} from '@angular/platform-browser';
+import {Subscription} from 'rxjs';
 import formatSlug from '../../../../core/utils/format-slug';
 
 @Component({
@@ -53,8 +53,8 @@ export class EkycComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.titleService.setTitle(
       'Định danh điện tử' +
-        ' - ' +
-        GlobalConstants.PL_VALUE_DEFAULT.PROJECT_NAME
+      ' - ' +
+      GlobalConstants.PL_VALUE_DEFAULT.PROJECT_NAME
     );
     this.initHeaderInfo();
     this.getCustomerInfo();
@@ -102,7 +102,8 @@ export class EkycComponent implements OnInit, OnDestroy {
   }
 
   redirectToConfirmInformationPage() {
-    this.router.navigateByUrl('hmg/confirm-information').then((r) => {});
+    this.router.navigateByUrl('hmg/confirm-information').then((r) => {
+    });
   }
 
   completeEkyc(ekycCompleteData) {
@@ -111,7 +112,6 @@ export class EkycComponent implements OnInit, OnDestroy {
       !ekycCompleteData.result ||
       !ekycCompleteData.result.idCardInfo
     ) {
-      this.showErrorModal();
       return;
     }
 
@@ -148,7 +148,6 @@ export class EkycComponent implements OnInit, OnDestroy {
   }
 
   createVirtualAccount(customerId, accountName) {
-    this.notificationService.showLoading();
     this.subManager.add(
       this.gpayVirtualAccountControllerService
         .createVirtualAccount({
@@ -162,17 +161,12 @@ export class EkycComponent implements OnInit, OnDestroy {
             }
 
             this.showErrorModal();
-          },
-          (error) => {},
-          () => {
-            this.notificationService.hideLoading();
           }
         )
     );
   }
 
   getVirtualAccount(customerId, accountName) {
-    this.notificationService.showLoading();
     this.subManager.add(
       this.gpayVirtualAccountControllerService
         .getVirtualAccount(customerId)
@@ -190,17 +184,12 @@ export class EkycComponent implements OnInit, OnDestroy {
 
             this.showErrorModal();
             return null;
-          },
-          (error) => {},
-          () => {
-            this.notificationService.hideLoading();
           }
         )
     );
   }
 
   getCustomerInfo() {
-    this.notificationService.showLoading();
     this.subManager.add(
       this.infoControllerService.getInfo(this.customerId, null).subscribe(
         (response) => {
@@ -237,10 +226,6 @@ export class EkycComponent implements OnInit, OnDestroy {
           }
 
           this.redirectToConfirmInformationPage();
-        },
-        (error) => {},
-        () => {
-          this.notificationService.hideLoading();
         }
       )
     );

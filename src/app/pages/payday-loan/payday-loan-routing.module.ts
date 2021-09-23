@@ -1,6 +1,6 @@
-import {Routes} from '@angular/router';
-import {IntroduceComponent} from "./general/introduce/introduce.component";
-import {CompaniesListComponent} from "./general/companies-list/companies-list.component";
+import { Routes } from '@angular/router';
+import { IntroduceComponent } from './general/introduce/introduce.component';
+import { CompaniesListComponent } from './general/companies-list/companies-list.component';
 
 export const PaydayLoanRoutes: Routes = [
   {
@@ -9,17 +9,17 @@ export const PaydayLoanRoutes: Routes = [
       {
         path: 'introduce',
         component: IntroduceComponent,
-        data: {animation: true},
+        data: { animation: true },
       },
       {
         path: 'companies',
         component: CompaniesListComponent,
-        data: {animation: true},
+        data: { animation: true },
       },
       {
         path: 'hmg',
-        loadChildren: () => import('./hmg/hmg.module').then(m => m.HmgModule)
-      }
+        loadChildren: () => import('./hmg/hmg.module').then((m) => m.HmgModule),
+      },
     ],
   },
 ];

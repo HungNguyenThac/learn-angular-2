@@ -25,7 +25,10 @@ import { MultiLanguageService } from '../../../../share/translate/multiLanguageS
 import { environment } from '../../../../../environments/environment';
 import { Title } from '@angular/platform-browser';
 import { GlobalConstants } from '../../../../core/common/global-constants';
-import {ERROR_CODE, PAYDAY_LOAN_STATUS} from '../../../../core/common/enum/payday-loan';
+import {
+  ERROR_CODE,
+  PAYDAY_LOAN_STATUS,
+} from '../../../../core/common/enum/payday-loan';
 import formatSlug from '../../../../core/utils/format-slug';
 
 @Component({
@@ -68,10 +71,8 @@ export class LoanPaymentComponent implements OnInit, OnDestroy {
         GlobalConstants.PL_VALUE_DEFAULT.PROJECT_NAME
     );
 
-    this.notificationService.showLoading();
     this.getUserInfo();
     this.getActiveLoan();
-    this.notificationService.hideLoading();
   }
 
   initHeaderInfo() {
@@ -178,7 +179,7 @@ export class LoanPaymentComponent implements OnInit, OnDestroy {
 
   handleGetActiveLoanError(response: ApiResponsePaydayLoan) {
     if (response.errorCode === ERROR_CODE.DO_NOT_ACTIVE_LOAN_ERROR) {
-      this.store.dispatch(new fromActions.SetHasActiveLoanStatus(false))
+      this.store.dispatch(new fromActions.SetHasActiveLoanStatus(false));
       this.router.navigateByUrl('companies');
       return;
     }

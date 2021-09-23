@@ -16,5 +16,10 @@ export const _providers = [
     useClass: fromInterceptors.TimingInterceptor,
     multi: true
   },
+  {
+    provide: HTTP_INTERCEPTORS,
+    useClass: fromInterceptors.LoadingInterceptor,
+    multi: true
+  },
 ]
 
