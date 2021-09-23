@@ -68,3 +68,7 @@ export const isHasActiveLoan = createSelector(
   (state: fromFeature.State) => state.paydayLoan.hasActiveLoan
 );
 
+export const getCurrentLoanCode = createSelector(
+  fromFeature.getCoreState,
+  (state: fromFeature.State) => state.paydayLoan.currentLoanCode
+);
