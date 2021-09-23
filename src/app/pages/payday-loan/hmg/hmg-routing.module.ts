@@ -76,11 +76,6 @@ export const HmgRoutes: Routes = [
         path: 'callback',
         component: GpayPaymentResultComponent,
         data: { animation: true },
-      },
-      {
-        path: '**',
-        component: NotFoundComponent,
-        data: {animation: true}
       }
     ],
   },
