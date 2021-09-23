@@ -29,6 +29,7 @@ import {
 } from '../../common/enum/payday-loan';
 import { NotificationService } from '../../services/notification.service';
 import { MultiLanguageService } from '../../../share/translate/multiLanguageService';
+import {ResetEkycInfo} from "../actions";
 
 @Injectable()
 export class LoginEffects {
@@ -87,6 +88,7 @@ export class LoginEffects {
           this.store$.dispatch(new fromActions.SetSignContractSuccess(false));
           this.store$.dispatch(new fromActions.SetHasActiveLoanStatus(false));
           this.store$.dispatch(new fromActions.SetCurrentLoanCode(null));
+          this.store$.dispatch(new fromActions.ResetEkycInfo(null));
         })
       ),
     { dispatch: false }

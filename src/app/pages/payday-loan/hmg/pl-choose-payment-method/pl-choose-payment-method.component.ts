@@ -1,15 +1,15 @@
-import { Component, OnInit } from '@angular/core';
-import { Title } from '@angular/platform-browser';
-import { Store } from '@ngrx/store';
+import {Component, OnInit} from '@angular/core';
+import {Title} from '@angular/platform-browser';
+import {Store} from '@ngrx/store';
 import * as fromStore from '../../../../core/store';
 import * as fromActions from '../../../../core/store';
-import { Router } from '@angular/router';
-import { NotificationService } from '../../../../core/services/notification.service';
-import { MultiLanguageService } from '../../../../share/translate/multiLanguageService';
-import { Observable } from 'rxjs/Observable';
+import {Router} from '@angular/router';
+import {NotificationService} from '../../../../core/services/notification.service';
+import {MultiLanguageService} from '../../../../share/translate/multiLanguageService';
+import {Observable} from 'rxjs/Observable';
 import * as fromSelectors from '../../../../core/store/selectors';
-import { Subscription } from 'rxjs';
-import { GlobalConstants } from '../../../../core/common/global-constants';
+import {Subscription} from 'rxjs';
+import {GlobalConstants} from '../../../../core/common/global-constants';
 import {
   ApiResponsePaydayLoan,
   ApplicationControllerService,
@@ -18,7 +18,7 @@ import {
   ApiResponseCustomerInfoResponse,
   InfoControllerService,
 } from '../../../../../../open-api-modules/customer-api-docs';
-import { environment } from '../../../../../environments/environment';
+import {environment} from '../../../../../environments/environment';
 import {
   ApiResponseGpayRepaymentResponse,
   ApiResponseListRepaymentTransaction,
@@ -26,9 +26,9 @@ import {
   GpayVirtualAccountControllerService,
   RepaymentControllerService,
 } from '../../../../../../open-api-modules/payment-api-docs';
-import { PaymentProductInfo } from '../../../../public/models/payment-product-info.model';
-import { PaymentUserInfo } from '../../../../public/models/payment-user-info.model';
-import { PaymentVirtualAccount } from '../../../../public/models/payment-virtual-account.model';
+import {PaymentProductInfo} from '../../../../public/models/payment-product-info.model';
+import {PaymentUserInfo} from '../../../../public/models/payment-user-info.model';
+import {PaymentVirtualAccount} from '../../../../public/models/payment-virtual-account.model';
 import {
   ERROR_CODE,
   PAYDAY_LOAN_STATUS,
@@ -85,8 +85,8 @@ export class PlChoosePaymentMethodComponent implements OnInit {
   ngOnInit(): void {
     this.titleService.setTitle(
       'Chọn hình thức thanh toán' +
-        ' - ' +
-        GlobalConstants.PL_VALUE_DEFAULT.PROJECT_NAME
+      ' - ' +
+      GlobalConstants.PL_VALUE_DEFAULT.PROJECT_NAME
     );
 
     this.getUserInfo();
@@ -123,21 +123,17 @@ export class PlChoosePaymentMethodComponent implements OnInit {
           this.customerId,
           this.currentLoan.id
         )
-        .subscribe(
-          (response: ApiResponseListRepaymentTransaction) => {
-            if (!response || response.responseCode !== 200) {
-              return;
-            }
-            let paidAmount = 0;
-            for (let i = 0; i < response.result.length; i++) {
-              paidAmount += response.result[i].amount;
-            }
+        .subscribe((response: ApiResponseListRepaymentTransaction) => {
+          if (!response || response.responseCode !== 200) {
+            return;
+          }
+          let paidAmount = 0;
+          for (let i = 0; i < response.result.length; i++) {
+            paidAmount += response.result[i].amount;
+          }
 
-            this.vaInfo.paidAmount = paidAmount;
-          },
-          (error) => {},
-          () => {}
-        )
+          this.vaInfo.paidAmount = paidAmount;
+        })
     );
   }
 
@@ -160,39 +156,35 @@ export class PlChoosePaymentMethodComponent implements OnInit {
     this.subManager.add(
       this.applicationControllerService
         .getActiveLoan(this.customerId, this.coreToken)
-        .subscribe(
-          (response: ApiResponsePaydayLoan) => {
-            if (
-              !response ||
-              response.errorCode ||
-              response.responseCode !== 200
-            ) {
-              return this.handleGetActiveLoanError(response);
-            }
-            this.currentLoan = {
-              id: response.result.id,
-              message: response.result.loanCode,
-              code: response.result.loanCode,
-              expectedAmount: response.result.expectedAmount || 0,
-              latePenaltyPayment: response.result.latePenaltyPayment || 0,
-            };
+        .subscribe((response: ApiResponsePaydayLoan) => {
+          if (
+            !response ||
+            response.errorCode ||
+            response.responseCode !== 200
+          ) {
+            return this.handleGetActiveLoanError(response);
+          }
+          this.currentLoan = {
+            id: response.result.id,
+            message: response.result.loanCode,
+            code: response.result.loanCode,
+            expectedAmount: response.result.expectedAmount || 0,
+            latePenaltyPayment: response.result.latePenaltyPayment || 0,
+          };
 
-            if (response.result.status !== PAYDAY_LOAN_STATUS.IN_REPAYMENT) {
-              return this.router.navigate([
-                'hmg/current-loan',
-                formatSlug(
-                  response.result.status || PAYDAY_LOAN_STATUS.UNKNOWN_STATUS
-                ),
-              ]);
-            }
+          if (response.result.status !== PAYDAY_LOAN_STATUS.IN_REPAYMENT) {
+            return this.router.navigate([
+              'hmg/current-loan',
+              formatSlug(
+                response.result.status || PAYDAY_LOAN_STATUS.UNKNOWN_STATUS
+              ),
+            ]);
+          }
 
-            this.getVirtualAccount(this.customerId, this.userInfo.fullName);
+          this.getVirtualAccount(this.customerId, this.userInfo.fullName);
 
-            this.getRepaymentList();
-          },
-          (error) => {},
-          () => {}
-        )
+          this.getRepaymentList();
+        })
     );
   }
 
@@ -200,30 +192,24 @@ export class PlChoosePaymentMethodComponent implements OnInit {
     this.subManager.add(
       this.gpayVirtualAccountControllerService
         .getVirtualAccount(customerId)
-        .subscribe(
-          (response: ApiResponseVirtualAccount) => {
-            if (response.result && response.responseCode === 200) {
-              this.vaInfo = {
-                ...this.vaInfo,
-                accountNumber: response.result.accountNumber,
-                accountName: response.result.accountName,
-                bankCode: response.result.bankCode,
-              };
-              return response.result;
-            }
+        .subscribe((response: ApiResponseVirtualAccount) => {
+          if (response.result && response.responseCode === 200) {
+            this.vaInfo = {
+              ...this.vaInfo,
+              accountNumber: response.result.accountNumber,
+              accountName: response.result.accountName,
+              bankCode: response.result.bankCode,
+            };
+            return response.result;
+          }
 
-            if (
-              response.errorCode === ERROR_CODE.DO_NOT_EXIST_VIRTUAL_ACCOUNT
-            ) {
-              return this.createVirtualAccount(customerId, accountName);
-            }
+          if (response.errorCode === ERROR_CODE.DO_NOT_EXIST_VIRTUAL_ACCOUNT) {
+            return this.createVirtualAccount(customerId, accountName);
+          }
 
-            this.showErrorModal();
-            return null;
-          },
-          (error) => {},
-          () => {}
-        )
+          this.showErrorModal();
+          return null;
+        })
     );
   }
 
@@ -234,42 +220,34 @@ export class PlChoosePaymentMethodComponent implements OnInit {
           customerId: customerId,
           accountName: changeAlias(accountName),
         })
-        .subscribe(
-          (response: ApiResponseVirtualAccount) => {
-            if (response.result && response.responseCode === 200) {
-              this.vaInfo = {
-                ...this.vaInfo,
-                accountNumber: response.result.accountNumber,
-                accountName: response.result.accountName,
-                bankCode: response.result.bankCode,
-              };
-              return response.result;
-            }
-
-            this.showErrorModal();
-          },
-          (error) => {},
-          () => {
-            this.notificationService.hideLoading();
+        .subscribe((response: ApiResponseVirtualAccount) => {
+          if (response.result && response.responseCode === 200) {
+            this.vaInfo = {
+              ...this.vaInfo,
+              accountNumber: response.result.accountNumber,
+              accountName: response.result.accountName,
+              bankCode: response.result.bankCode,
+            };
+            return response.result;
           }
-        )
+
+          this.showErrorModal();
+        })
     );
   }
 
   getUserInfo() {
     this.subManager.add(
-      this.infoControllerService.getInfo(this.customerId).subscribe(
-        (response: ApiResponseCustomerInfoResponse) => {
+      this.infoControllerService
+        .getInfo(this.customerId)
+        .subscribe((response: ApiResponseCustomerInfoResponse) => {
           if (!response || !response.result || response.responseCode !== 200) {
             return this.showErrorModal();
           }
           this.userInfo = {
             fullName: response.result?.personalData?.firstName,
           };
-        },
-        (error) => {},
-        () => {}
-      )
+        })
     );
   }
 

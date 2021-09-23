@@ -119,7 +119,6 @@ export class AdditionalInformationComponent
       this.infoControllerService
         .getInfo(this.customerId)
         .subscribe((result: ApiResponseCustomerInfoResponse) => {
-          this.notificationService.hideLoading();
           if (!result || result.responseCode !== 200) {
             return this.showError(
               'common.error',
