@@ -70,6 +70,7 @@ export class LoanDeterminationComponent
     ],
   };
   collateralImgSrc: any;
+  collateralFile: any;
 
   customerInfo: CustomerInfoResponse;
   coreUserId: string;
@@ -185,15 +186,15 @@ export class LoanDeterminationComponent
     this.applicationControllerService
       .getActiveLoan(this.customerId, this.coreToken)
       .subscribe((result: ApiResponsePaydayLoan) => {
-        // if (result.responseCode === 200) {
-        //   this.notificationService.hideLoading();
-        //   return this.router.navigate([
-        //     'hmg/current-loan',
-        //     formatSlug(
-        //       result.result.status || PAYDAY_LOAN_STATUS.UNKNOWN_STATUS
-        //     ),
-        //   ]);
-        // }
+        if (result.responseCode === 200) {
+          this.notificationService.hideLoading();
+          return this.router.navigate([
+            'hmg/current-loan',
+            formatSlug(
+              result.result.status || PAYDAY_LOAN_STATUS.UNKNOWN_STATUS
+            ),
+          ]);
+        }
         this.bindingCollateralDocument();
       });
   }
@@ -224,7 +225,6 @@ export class LoanDeterminationComponent
       result.file
     );
     this.collateralImgSrc = result.imgSrc;
-    console.log('ok');
   }
 
   onSubmit() {
@@ -250,23 +250,29 @@ export class LoanDeterminationComponent
           );
           return this.showError('common.error', message);
         }
-        const loanStatus = result.result.status
+        const loanStatus = result.result.status;
 
         //call api com svc upload document vehicle registration
-        this.fileControllerService.uploadSingleFile("VEHICLE_REGISTRATION", this.collateralImgSrc, this.customerId).subscribe((result) => {
-          this.notificationService.hideLoading();
-          if (!result || result.responseCode !== 200) {
-            const message = this.multiLanguageService.instant(
-              'payday_loan.error_code.' + result.errorCode.toLowerCase()
-            );
-            return this.showError('common.error', message);
-          }
+        this.fileControllerService
+          .uploadSingleFile(
+            'VEHICLE_REGISTRATION',
+            this.loanDeteminationForm.controls['collateralDocument'].value,
+            this.customerId
+          )
+          .subscribe((result) => {
+            this.notificationService.hideLoading();
+            if (!result || result.responseCode !== 200) {
+              const message = this.multiLanguageService.instant(
+                'payday_loan.error_code.' + result.errorCode.toLowerCase()
+              );
+              return this.showError('common.error', message);
+            }
 
-          return this.router.navigate([
-            'hmg/current-loan',
-            formatSlug(loanStatus || PAYDAY_LOAN_STATUS.UNKNOWN_STATUS),
-          ]);
-        })
+            return this.router.navigate([
+              'hmg/current-loan',
+              formatSlug(loanStatus || PAYDAY_LOAN_STATUS.UNKNOWN_STATUS),
+            ]);
+          });
       });
   }
 
@@ -288,34 +294,6 @@ export class LoanDeterminationComponent
   }
 
   openDialogVoucherList() {
-    // this.listVoucher = [
-    //   {
-    //     id: '694e0ac1-4ca1-40af-827c-216a0371a1b5',
-    //     promotionEventId: 'ba756283-8a14-4d73-8756-f909d09792e5',
-    //     code: 'TNG50',
-    //     maxValue: 50000,
-    //     percentage: 0.5,
-    //     maxAmount: 500,
-    //     remainAmount: 460,
-    //     activedTime: ['6.5-8.5', '11.5-13.5', '18-21', '0-24'],
-    //     description:
-    //       '<ul><li>Chỉ được sử dụng cho số điện thoại v&agrave; CMND/CCCD đ&atilde; d&ugrave;ng để đăng k&yacute;.</li><li>Mỗi kh&aacute;ch h&agrave;ng chỉ được &aacute;p dụng 1 lần cho khoản ứng lương đầu ti&ecirc;n.</li><li>Gi&aacute; trị ưu đ&atilde;i tối đa 50.000đ D&agrave;nh cho 100 kh&aacute;ch h&agrave;ng &aacute;p dụng m&atilde; đầu ti&ecirc;n.</li><li>C&aacute;c khung giờ &aacute;p dụng: 6h30 - 8h30, 11h30 - 13h30, 18h - 21h</li><li>Thời hạn &aacute;p dụng: 19/07/2021 - 31/08/2021</li></ul>',
-    //     createdAt: '2021-07-15T23:46:51.985',
-    //   },
-    //   {
-    //     id: '694e0ac1-4ca1-40af-827c-216a0371a1b5',
-    //     promotionEventId: 'ba756283-8a14-4d73-8756-f909d09792e5',
-    //     code: 'TNG50',
-    //     maxValue: 50000,
-    //     percentage: 0.5,
-    //     maxAmount: 500,
-    //     remainAmount: 460,
-    //     activedTime: ['6.5-8.5', '11.5-13.5', '18-21', '0-24'],
-    //     description:
-    //       '<ul><li>Chỉ được sử dụng cho số điện thoại v&agrave; CMND/CCCD đ&atilde; d&ugrave;ng để đăng k&yacute;.</li><li>Mỗi kh&aacute;ch h&agrave;ng chỉ được &aacute;p dụng 1 lần cho khoản ứng lương đầu ti&ecirc;n.</li><li>Gi&aacute; trị ưu đ&atilde;i tối đa 50.000đ D&agrave;nh cho 100 kh&aacute;ch h&agrave;ng &aacute;p dụng m&atilde; đầu ti&ecirc;n.</li><li>C&aacute;c khung giờ &aacute;p dụng: 6h30 - 8h30, 11h30 - 13h30, 18h - 21h</li><li>Thời hạn &aacute;p dụng: 19/07/2021 - 31/08/2021</li></ul>',
-    //     createdAt: '2021-07-15T23:46:51.985',
-    //   },
-    // ];
     const dialogRef = this.dialog.open(PlVoucherListComponent, {
       width: '320px',
       autoFocus: false,
@@ -474,37 +452,37 @@ export class LoanDeterminationComponent
 
   //Maximum loan amount conditions
   getLoanMaxAmount() {
-    const d = new Date()
-    const currentDate = d.getDate()
-    let maxAmountCalc = this.maxAmount
-    const salary = this.customerInfo.personalData.annualIncome
+    const d = new Date();
+    const currentDate = d.getDate();
+    let maxAmountCalc = this.maxAmount;
+    const salary = this.customerInfo.personalData.annualIncome;
     switch (currentDate) {
       case 15:
       case 16:
-        maxAmountCalc = salary * 0.5
+        maxAmountCalc = salary * 0.5;
         break;
       case 17:
       case 18:
-        maxAmountCalc = salary * 0.575
+        maxAmountCalc = salary * 0.575;
         break;
       case 19:
       case 20:
-        maxAmountCalc = salary * 0.65
+        maxAmountCalc = salary * 0.65;
         break;
       case 21:
       case 22:
-        maxAmountCalc = salary * 0.725
+        maxAmountCalc = salary * 0.725;
         break;
       default:
-        maxAmountCalc = salary * 0.8
+        maxAmountCalc = salary * 0.8;
         break;
-      }
-      
-      //rounding max loan amount to 0.5 nearest
-      maxAmountCalc/=1000000
-      maxAmountCalc = Math.round(maxAmountCalc*2)/2
-      maxAmountCalc*=1000000
-      this.maxAmount = maxAmountCalc
+    }
+
+    //rounding max loan amount to 0.5 nearest
+    maxAmountCalc /= 1000000;
+    maxAmountCalc = Math.round(maxAmountCalc * 2) / 2;
+    maxAmountCalc *= 1000000;
+    this.maxAmount = maxAmountCalc;
   }
 
   clearVoucherInput() {
