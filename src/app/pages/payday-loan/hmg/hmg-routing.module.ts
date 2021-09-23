@@ -11,7 +11,7 @@ import { PlChoosePaymentMethodComponent } from './pl-choose-payment-method/pl-ch
 import { LoanPaymentComponent } from './loan-payment/loan-payment.component';
 import { GpayPaymentResultComponent } from './gpay-payment-result/gpay-payment-result.component';
 import { SignContractComponent } from './sign-contract/sign-contract.component';
-import {NotFoundComponent} from "../../errors/not-found/not-found.component";
+import { AuthGuardService as AuthGuard } from './../../../core/services/auth-guard.service';
 
 export const HmgRoutes: Routes = [
   {
@@ -21,62 +21,73 @@ export const HmgRoutes: Routes = [
         path: 'ekyc',
         component: EkycComponent,
         data: { animation: true },
+        canActivate: [AuthGuard],
       },
       {
         path: 'confirm-information',
         component: ConfirmInformationComponent,
         data: { animation: true },
+        canActivate: [AuthGuard],
       },
       {
         path: 'sign-contract-terms-of-service',
         component: SignContractTermsOfServiceComponent,
         data: { animation: true },
+        canActivate: [AuthGuard],
       },
       {
         path: 'sign-contract-terms-success',
         component: SignContractTermsSuccessComponent,
         data: { animation: true },
+        canActivate: [AuthGuard],
       },
       {
         path: 'additional-information',
         component: AdditionalInformationComponent,
         data: { animation: true },
+        canActivate: [AuthGuard],
       },
       {
         path: 'loan-determination',
         component: LoanDeterminationComponent,
         data: { animation: true },
+        canActivate: [AuthGuard],
       },
       {
         path: 'current-loan/:status',
         component: CurrentLoanComponent,
         data: { animation: true },
+        canActivate: [AuthGuard],
       },
       {
         path: 'sign-contract',
         component: SignContractComponent,
         data: { animation: true },
+        canActivate: [AuthGuard],
       },
       {
         path: 'sign-contract-success',
         component: SignContractSuccessComponent,
         data: { animation: true },
+        canActivate: [AuthGuard],
       },
       {
         path: 'loan-payment',
         component: LoanPaymentComponent,
         data: { animation: true },
+        canActivate: [AuthGuard],
       },
       {
         path: 'choose-payment-method',
         component: PlChoosePaymentMethodComponent,
         data: { animation: true },
+        canActivate: [AuthGuard],
       },
       {
         path: 'callback',
         component: GpayPaymentResultComponent,
         data: { animation: true },
-      }
+      },
     ],
   },
 ];
