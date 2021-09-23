@@ -17,7 +17,9 @@ export class PlVoucherListComponent implements OnInit {
     this.voucherListArray = data
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+  
+  }
 
   voucherApply(voucherChoose: Voucher) {
     this.dialogRef.close(voucherChoose)

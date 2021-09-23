@@ -30,4 +30,7 @@
             <div [innerHtml]="voucher.description" class="voucher-description" [hidden]="!isExpanded"></div>
         </mat-expansion-panel>
     </mat-accordion>
+    <div *ngIf="voucherListArray.length === 0">
+        <h4 class="text-center">Không có mã khuyến mãi</h4>
+    </div>
 </div>
