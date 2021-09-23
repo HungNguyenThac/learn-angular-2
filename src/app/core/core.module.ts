@@ -16,6 +16,7 @@ import { GlobalConfig } from 'ngx-toastr/toastr/toastr-config';
 import { _providers } from './providers';
 import { MomentModule } from 'ngx-moment';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { JwtModule } from '@auth0/angular-jwt';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(
@@ -24,6 +25,11 @@ export function HttpLoaderFactory(http: HttpClient) {
     '.json?cacheBuster=' + new Date().toISOString().replace(/\.|:|-/g, '')
   );
 }
+
+export function tokenGetter() {
+  return localStorage.getItem('login.authorization.token');
+}
+
 
 const customNotifierOptions: Partial<GlobalConfig> = {
   positionClass: 'toast-bottom-left',
@@ -37,6 +43,12 @@ const customNotifierOptions: Partial<GlobalConfig> = {
     CoreStoreModule,
     SharedModule,
     HttpClientModule,
+    JwtModule.forRoot({
+      config: {
+        tokenGetter: tokenGetter,
+        allowedDomains: ["webapp-hmg-staging.epay.vn"]
+      },
+    }),
     ToastrModule.forRoot(customNotifierOptions),
     TranslateModule.forRoot({
       loader: {
