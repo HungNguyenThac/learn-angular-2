@@ -153,20 +153,16 @@ export class SignContractTermsOfServiceComponent implements OnInit, OnDestroy {
       this.router.navigateByUrl('hmg/sign-contract-terms-success');
     }
 
-    this.store.dispatch(new fromActions.SetShowLeftBtn(this.isSentOtpOnsign));
+    // this.store.dispatch(new fromActions.SetShowLeftBtn(this.isSentOtpOnsign));
   }
 
   initHeaderInfo() {
     this.store.dispatch(new fromActions.ResetPaydayLoanInfo());
-    this.store.dispatch(new fromActions.SetShowLeftBtn(false));
+    this.store.dispatch(new fromActions.SetShowLeftBtn(true));
     this.store.dispatch(new fromActions.SetShowRightBtn(false));
     this.store.dispatch(new fromActions.SetShowProfileBtn(true));
-    this.store.dispatch(new fromActions.SetShowStepNavigation(true));
-    this.store.dispatch(
-      new fromActions.SetStepNavigationInfo(
-        PL_STEP_NAVIGATION.ADDITIONAL_INFORMATION
-      )
-    );
+    this.store.dispatch(new fromActions.SetShowStepNavigation(false));
+    this.store.dispatch(new fromActions.SetNavigationTitle("Thư chấp thuận"));
   }
 
   get showSignContractTermsBtn() {
