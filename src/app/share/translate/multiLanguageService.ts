@@ -36,6 +36,14 @@ export class MultiLanguageService {
     return this.translateService.use(language);
   }
 
+  public reloadLang(language: string) {
+    return this.translateService.reloadLang(language);
+  }
+
+  public resetLang(language: string) {
+    return this.translateService.resetLang(language);
+  }
+
   private _getLanguage(): Observable<any> {
     return this._subject.asObservable();
   }
