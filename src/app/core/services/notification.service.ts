@@ -3,7 +3,7 @@ import { PlPromptComponent } from '../../share/components';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import { Prompt } from '../../public/models/prompt.model';
-import { PlLoadingComponent } from '../../share/components/dialogs/pl-loading/pl-loading.component';
+import { PlLoadingComponent } from '../../share/components';
 import { PlLoading } from 'src/app/public/models/plloading.model';
 
 @Injectable({
