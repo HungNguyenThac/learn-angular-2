@@ -17,6 +17,7 @@ export class MainLayoutComponent implements OnInit {
 
   }
 
-  ngOnInit(): void {
+  async ngOnInit() {
+    await this.multiLanguageService.use('vi').toPromise();
   }
 }
