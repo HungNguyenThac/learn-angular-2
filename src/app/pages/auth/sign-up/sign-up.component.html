@@ -17,7 +17,7 @@
             <button type="button" tabindex="-1" *ngIf="signUpForm.controls.mobileNumber.value" matSuffix mat-icon-button
               class="support-icon" aria-label="Clear" (click)="signUpForm.controls.mobileNumber.setValue('')"
               disableRipple="true">
-              <div class="clear-icon" [ngClass]="{ invisible: !isUsernameInputFocus }"></div>
+              <div class="clear-icon"></div>
             </button>
             <show-errors [control]="signUpForm.controls['mobileNumber']" [controlLabel]="'payday_loan.auth.phone_number_login' | translate"
               [hasIconPrefix]="true">
@@ -38,7 +38,7 @@
               (blur)="isPasswordInputFocus = false" [ngClass]="isPasswordInputFocus ? 'is-focused-input' : ''" />
             <button type="button" tabindex="-1" *ngIf="signUpForm.controls.password.value" matSuffix mat-icon-button
               aria-label="Clear" (click)="signUpForm.controls.password.setValue('')" disableRipple="true">
-              <div class="clear-icon" [ngClass]="{ invisible: !isPasswordInputFocus }"></div>
+              <div class="clear-icon"></div>
             </button>
             <button type="button" tabindex="-1" matSuffix mat-icon-button class="support-icon"
               (click)="isPassVisible = !isPassVisible">
@@ -65,13 +65,13 @@
                   : ''
               "></div>
             <input [type]="isConfirmPassVisible ? 'text' : 'password'" matInput formControlName="confirmPassword"
-            [placeholder]= '"payday_loan.auth.repeat_password" | translate' autocomplete required strong-password-validate (focus)="isConfirmPasswordInputFocus = true"
+            [placeholder]= '"payday_loan.auth.repeat_password" | translate' autocomplete required confirm-password-validate (focus)="isConfirmPasswordInputFocus = true"
               (blur)="isConfirmPasswordInputFocus = false"
               [ngClass]="isConfirmPasswordInputFocus ? 'is-focused-input' : ''" />
             <button type="button" tabindex="-1" *ngIf="signUpForm.controls.confirmPassword.value" matSuffix
               mat-icon-button aria-label="Clear" (click)="signUpForm.controls.confirmPassword.setValue('')"
               disableRipple="true">
-              <div class="clear-icon" [ngClass]="{ invisible: !isConfirmPasswordInputFocus }"></div>
+              <div class="clear-icon"></div>
             </button>
             <button type="button" tabindex="-1" matSuffix mat-icon-button class="support-icon"
               (click)="isConfirmPassVisible = !isConfirmPassVisible">
@@ -85,7 +85,7 @@
                     : 'password-hide-icon'
                 ]"></div>
             </button>
-            <show-errors [control]="signUpForm.controls['confirmPassword']" [controlLabel]="'payday_loan.auth.repeat_password'"
+            <show-errors [control]="signUpForm.controls['confirmPassword']" [controlLabel]="'payday_loan.auth.repeat_password' | translate"
               [hasIconPrefix]="true">
             </show-errors>
           </mat-form-field>

@@ -43,6 +43,7 @@ import { PlVoucherListComponent } from '../../components/pl-voucher-list/pl-vouc
 import * as moment from 'moment';
 import { GlobalConstants } from '../../../../core/common/global-constants';
 import * as fromActions from '../../../../core/store';
+import { IllustratingImgDialogComponent } from '../../components/illustrating-img-dialog/illustrating-img-dialog.component';
 
 @Component({
   selector: 'app-loan-determination',
@@ -53,9 +54,9 @@ export class LoanDeterminationComponent
   implements OnInit, AfterViewInit, OnDestroy
 {
   loanDeteminationForm: FormGroup;
-  maxAmount: number = 13;
-  minAmount: number = 0;
-  step: number = 1;
+  maxAmount: number;
+  minAmount: number = 2000000;
+  step: number = 500000;
   loanPurpose = {
     fieldName: 'Mục đích ứng lương',
     options: [
@@ -78,7 +79,6 @@ export class LoanDeterminationComponent
   coreToken: string;
 
   listVoucher: Array<Voucher>;
-  voucherCodeChooseApply: string;
   voucherShowError: string;
   voucherApplied: VoucherTransaction;
   discount: number = 0;
@@ -108,42 +108,24 @@ export class LoanDeterminationComponent
       collateralDocument: [''],
       voucherCode: [''],
     });
-
-    this.customerId$ = store.select(fromStore.getCustomerIdState);
-    this.coreToken$ = store.select(fromStore.getCoreTokenState);
+    this.initHeaderInfo();
+    this._initSubscribeState();
   }
 
   ngOnInit(): void {
     this.notificationService.showLoading(null);
     //get customer id, password & core token from store
-    this.subManager.add(
-      this.customerId$.subscribe((id) => {
-        this.customerId = id;
-        console.log('customer id', id);
-      })
-    );
-    this.subManager.add(
-      this.coreToken$.subscribe((coreToken) => {
-        this.coreToken = coreToken;
-        console.log('coreToken', coreToken);
-      })
-    );
 
     this.titleService.setTitle(
-      'Bổ sung thông tin' +
+      'Chọn số tiền cần ứng' +
         ' - ' +
         GlobalConstants.PL_VALUE_DEFAULT.PROJECT_NAME
     );
-    this.initHeaderInfo();
-
     this.getVoucherList();
   }
 
   ngAfterViewInit() {
-    this.cdr.detectChanges();
-    this.loanDeteminationForm.controls['loanAmount'].setValue(
-      this.minAmount + this.step
-    );
+    this.loanDeteminationForm.controls['loanAmount'].setValue(this.minAmount);
 
     //get customer info
     this.subManager.add(
@@ -158,13 +140,32 @@ export class LoanDeterminationComponent
             );
           }
           this.customerInfo = result.result;
+          this.getLoanMaxAmount();
           this.checkLoanExisted();
         })
     );
+    this.cdr.detectChanges();
   }
 
   ngOnDestroy(): void {
     this.subManager.unsubscribe();
+  }
+
+  private _initSubscribeState() {
+    this.customerId$ = this.store.select(fromStore.getCustomerIdState);
+    this.coreToken$ = this.store.select(fromStore.getCoreTokenState);
+    this.subManager.add(
+      this.customerId$.subscribe((id) => {
+        this.customerId = id;
+        console.log('customer id', id);
+      })
+    );
+    this.subManager.add(
+      this.coreToken$.subscribe((coreToken) => {
+        this.coreToken = coreToken;
+        console.log('coreToken', coreToken);
+      })
+    );
   }
 
   initHeaderInfo() {
@@ -198,7 +199,10 @@ export class LoanDeterminationComponent
   }
 
   bindingCollateralDocument() {
-    if (this.customerInfo?.personalData.collateralDocument === null)
+    if (
+      !this.customerInfo?.personalData ||
+      !this.customerInfo?.personalData.collateralDocument
+    )
       return this.notificationService.hideLoading();
 
     const downloadFileRequest: DownloadFileRequest = {
@@ -239,18 +243,30 @@ export class LoanDeterminationComponent
     this.paydayLoanControllerService
       .createLoan(createApplicationRequest)
       .subscribe((result: ApiResponseApplyResponse) => {
-        this.notificationService.hideLoading();
         if (!result || result.responseCode !== 200) {
+          this.notificationService.hideLoading();
           const message = this.multiLanguageService.instant(
             'payday_loan.error_code.' + result.errorCode.toLowerCase()
           );
           return this.showError('common.error', message);
         }
+        const loanStatus = result.result.status
 
-        return this.router.navigate([
-          'hmg/current-loan',
-          formatSlug(result.result.status || PAYDAY_LOAN_STATUS.UNKNOWN_STATUS),
-        ]);
+        //call api com svc upload document vehicle registration
+        this.fileControllerService.uploadSingleFile("VEHICLE_REGISTRATION", this.collateralImgSrc, this.customerId).subscribe((result) => {
+          this.notificationService.hideLoading();
+          if (!result || result.responseCode !== 200) {
+            const message = this.multiLanguageService.instant(
+              'payday_loan.error_code.' + result.errorCode.toLowerCase()
+            );
+            return this.showError('common.error', message);
+          }
+
+          return this.router.navigate([
+            'hmg/current-loan',
+            formatSlug(loanStatus || PAYDAY_LOAN_STATUS.UNKNOWN_STATUS),
+          ]);
+        })
       });
   }
 
@@ -272,34 +288,34 @@ export class LoanDeterminationComponent
   }
 
   openDialogVoucherList() {
-    this.listVoucher = [
-      {
-        id: '694e0ac1-4ca1-40af-827c-216a0371a1b5',
-        promotionEventId: 'ba756283-8a14-4d73-8756-f909d09792e5',
-        code: 'TNG50',
-        maxValue: 50000,
-        percentage: 0.5,
-        maxAmount: 500,
-        remainAmount: 460,
-        activedTime: ['6.5-8.5', '11.5-13.5', '18-21', '0-24'],
-        description:
-          '<ul><li>Chỉ được sử dụng cho số điện thoại v&agrave; CMND/CCCD đ&atilde; d&ugrave;ng để đăng k&yacute;.</li><li>Mỗi kh&aacute;ch h&agrave;ng chỉ được &aacute;p dụng 1 lần cho khoản ứng lương đầu ti&ecirc;n.</li><li>Gi&aacute; trị ưu đ&atilde;i tối đa 50.000đ D&agrave;nh cho 100 kh&aacute;ch h&agrave;ng &aacute;p dụng m&atilde; đầu ti&ecirc;n.</li><li>C&aacute;c khung giờ &aacute;p dụng: 6h30 - 8h30, 11h30 - 13h30, 18h - 21h</li><li>Thời hạn &aacute;p dụng: 19/07/2021 - 31/08/2021</li></ul>',
-        createdAt: '2021-07-15T23:46:51.985',
-      },
-      {
-        id: '694e0ac1-4ca1-40af-827c-216a0371a1b5',
-        promotionEventId: 'ba756283-8a14-4d73-8756-f909d09792e5',
-        code: 'TNG50',
-        maxValue: 50000,
-        percentage: 0.5,
-        maxAmount: 500,
-        remainAmount: 460,
-        activedTime: ['6.5-8.5', '11.5-13.5', '18-21', '0-24'],
-        description:
-          '<ul><li>Chỉ được sử dụng cho số điện thoại v&agrave; CMND/CCCD đ&atilde; d&ugrave;ng để đăng k&yacute;.</li><li>Mỗi kh&aacute;ch h&agrave;ng chỉ được &aacute;p dụng 1 lần cho khoản ứng lương đầu ti&ecirc;n.</li><li>Gi&aacute; trị ưu đ&atilde;i tối đa 50.000đ D&agrave;nh cho 100 kh&aacute;ch h&agrave;ng &aacute;p dụng m&atilde; đầu ti&ecirc;n.</li><li>C&aacute;c khung giờ &aacute;p dụng: 6h30 - 8h30, 11h30 - 13h30, 18h - 21h</li><li>Thời hạn &aacute;p dụng: 19/07/2021 - 31/08/2021</li></ul>',
-        createdAt: '2021-07-15T23:46:51.985',
-      },
-    ];
+    // this.listVoucher = [
+    //   {
+    //     id: '694e0ac1-4ca1-40af-827c-216a0371a1b5',
+    //     promotionEventId: 'ba756283-8a14-4d73-8756-f909d09792e5',
+    //     code: 'TNG50',
+    //     maxValue: 50000,
+    //     percentage: 0.5,
+    //     maxAmount: 500,
+    //     remainAmount: 460,
+    //     activedTime: ['6.5-8.5', '11.5-13.5', '18-21', '0-24'],
+    //     description:
+    //       '<ul><li>Chỉ được sử dụng cho số điện thoại v&agrave; CMND/CCCD đ&atilde; d&ugrave;ng để đăng k&yacute;.</li><li>Mỗi kh&aacute;ch h&agrave;ng chỉ được &aacute;p dụng 1 lần cho khoản ứng lương đầu ti&ecirc;n.</li><li>Gi&aacute; trị ưu đ&atilde;i tối đa 50.000đ D&agrave;nh cho 100 kh&aacute;ch h&agrave;ng &aacute;p dụng m&atilde; đầu ti&ecirc;n.</li><li>C&aacute;c khung giờ &aacute;p dụng: 6h30 - 8h30, 11h30 - 13h30, 18h - 21h</li><li>Thời hạn &aacute;p dụng: 19/07/2021 - 31/08/2021</li></ul>',
+    //     createdAt: '2021-07-15T23:46:51.985',
+    //   },
+    //   {
+    //     id: '694e0ac1-4ca1-40af-827c-216a0371a1b5',
+    //     promotionEventId: 'ba756283-8a14-4d73-8756-f909d09792e5',
+    //     code: 'TNG50',
+    //     maxValue: 50000,
+    //     percentage: 0.5,
+    //     maxAmount: 500,
+    //     remainAmount: 460,
+    //     activedTime: ['6.5-8.5', '11.5-13.5', '18-21', '0-24'],
+    //     description:
+    //       '<ul><li>Chỉ được sử dụng cho số điện thoại v&agrave; CMND/CCCD đ&atilde; d&ugrave;ng để đăng k&yacute;.</li><li>Mỗi kh&aacute;ch h&agrave;ng chỉ được &aacute;p dụng 1 lần cho khoản ứng lương đầu ti&ecirc;n.</li><li>Gi&aacute; trị ưu đ&atilde;i tối đa 50.000đ D&agrave;nh cho 100 kh&aacute;ch h&agrave;ng &aacute;p dụng m&atilde; đầu ti&ecirc;n.</li><li>C&aacute;c khung giờ &aacute;p dụng: 6h30 - 8h30, 11h30 - 13h30, 18h - 21h</li><li>Thời hạn &aacute;p dụng: 19/07/2021 - 31/08/2021</li></ul>',
+    //     createdAt: '2021-07-15T23:46:51.985',
+    //   },
+    // ];
     const dialogRef = this.dialog.open(PlVoucherListComponent, {
       width: '320px',
       autoFocus: false,
@@ -309,37 +325,28 @@ export class LoanDeterminationComponent
 
     dialogRef.afterClosed().subscribe((result: Voucher) => {
       if (!result) return;
-      this.voucherCodeChooseApply = result.code;
+      this.loanDeteminationForm.controls.voucherCode.setValue(result.code);
       this.checkVoucherApplied();
     });
   }
 
-  loanAmountFormatMillionPrice() {
-    return this.loanDeteminationForm.controls['loanAmount'].value * 1000000;
+  get loanAmountFormatMillionPrice() {
+    return this.loanDeteminationForm.controls['loanAmount'].value;
   }
 
-  originalLoanFee() {
-    return (
-      this.loanDeteminationForm.controls['loanAmount'].value * 1000000 * 0.02
-    );
+  get originalLoanFee() {
+    return this.loanAmountFormatMillionPrice * 0.02;
   }
 
-  loanFeeTotal() {
-    return (
-      this.loanDeteminationForm.controls['loanAmount'].value * 1000000 * 0.02 -
-      this.discount
-    );
+  get loanFeeTotal() {
+    return this.originalLoanFee - this.discount;
   }
 
   checkVoucherApplied() {
     // Pick voucher from dialog
-    if (this.voucherCodeChooseApply) {
-      this.loanDeteminationForm.controls.voucherCode.setValue(
-        this.voucherCodeChooseApply
-      );
+    if (this.loanDeteminationForm.controls.voucherCode.value === '') {
+      return;
     }
-
-    if (this.loanDeteminationForm.controls.voucherCode.value === '') return;
 
     for (const voucher of this.listVoucher) {
       if (
@@ -347,12 +354,18 @@ export class LoanDeterminationComponent
         this.loanDeteminationForm.controls.voucherCode.value.toUpperCase()
       ) {
         if (voucher.remainAmount <= 0) {
+          this.loanDeteminationForm.controls.voucherCode.setErrors({
+            runOut: true,
+          });
           this.voucherShowError =
             'payday_loan.choose_amount.codes_has_run_out | translate';
           return;
         }
 
         if (this.checkVoucherTime(voucher) === false) {
+          this.loanDeteminationForm.controls.voucherCode.setErrors({
+            wrongTime: true,
+          });
           this.voucherShowError =
             'Mã ưu đãi không áp dụng trong khung giờ hiện tại';
           return;
@@ -362,15 +375,15 @@ export class LoanDeterminationComponent
         return;
       }
     }
+    this.loanDeteminationForm.controls.voucherCode.setErrors({
+      incorrect: true,
+    });
     this.voucherShowError = 'Mã ưu đãi không tồn tại';
+    console.log('this.voucherShowError', this.voucherShowError);
   }
 
   applyCorrectedVoucher(voucher: Voucher) {
-    this.discount =
-      voucher.percentage *
-      this.loanDeteminationForm.controls.loanAmount.value *
-      1000000 *
-      0.02;
+    this.discount = voucher.percentage * this.originalLoanFee;
 
     // check max discount accepted
     if (this.discount > voucher.maxValue) {
@@ -453,4 +466,58 @@ export class LoanDeterminationComponent
     }
     return false;
   }
+
+  //Expected loan amount
+  onValueChange(event) {
+    this.loanDeteminationForm.controls.loanAmount.setValue(event.value);
+  }
+
+  //Maximum loan amount conditions
+  getLoanMaxAmount() {
+    const d = new Date()
+    const currentDate = d.getDate()
+    let maxAmountCalc = this.maxAmount
+    const salary = this.customerInfo.personalData.annualIncome
+    switch (currentDate) {
+      case 15:
+      case 16:
+        maxAmountCalc = salary * 0.5
+        break;
+      case 17:
+      case 18:
+        maxAmountCalc = salary * 0.575
+        break;
+      case 19:
+      case 20:
+        maxAmountCalc = salary * 0.65
+        break;
+      case 21:
+      case 22:
+        maxAmountCalc = salary * 0.725
+        break;
+      default:
+        maxAmountCalc = salary * 0.8
+        break;
+      }
+      
+      //rounding max loan amount to 0.5 nearest
+      maxAmountCalc/=1000000
+      maxAmountCalc = Math.round(maxAmountCalc*2)/2
+      maxAmountCalc*=1000000
+      this.maxAmount = maxAmountCalc
+  }
+
+  clearVoucherInput() {
+    this.loanDeteminationForm.controls.voucherCode.setValue('');
+    this.voucherShowError = '';
+  }
+
+  openDialogIllustratingImage() {
+    const dialogRef = this.dialog.open(IllustratingImgDialogComponent, {
+      width: '332px',
+      autoFocus: false,
+      panelClass: 'custom-dialog-container',
+    });
+  }
 }
+

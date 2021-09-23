@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import {
   ERROR_CODE,
-  ERROR_CODE_KEY,
+  ERROR_CODE_KEY, PAYDAY_LOAN_STATUS,
   PL_STEP_NAVIGATION,
 } from 'src/app/core/common/enum/payday-loan';
 import { MultiLanguageService } from '../../../../share/translate/multiLanguageService';
@@ -32,6 +32,7 @@ import { Router } from '@angular/router';
 import { PlPromptComponent } from '../../../../share/components';
 import { GlobalConstants } from '../../../../core/common/global-constants';
 import { environment } from '../../../../../environments/environment';
+import formatSlug from "../../../../core/utils/format-slug";
 
 @Component({
   selector: 'app-contract-terms-of-service',
@@ -64,6 +65,7 @@ export class SignContractTermsOfServiceComponent implements OnInit, OnDestroy {
   isSignContractTermsSuccess: boolean;
 
   isSentOtpOnsign$: Observable<boolean>;
+  hasActiveLoan$: Observable<boolean>;
 
   subManager = new Subscription();
 
@@ -78,13 +80,19 @@ export class SignContractTermsOfServiceComponent implements OnInit, OnDestroy {
     private router: Router,
     private store: Store<fromStore.State>,
     private dialog: MatDialog
-  ) {}
-
-  ngOnInit(): void {
-    this.onResponsiveInverted();
-    window.addEventListener('resize', this.onResponsiveInverted);
+  ) {
     this.initHeaderInfo();
     this._initSubscribeState();
+  }
+
+  ngOnInit(): void {
+    this.titleService.setTitle(
+      'Ký thư chấp thuận' +
+      ' - ' +
+      GlobalConstants.PL_VALUE_DEFAULT.PROJECT_NAME
+    );
+    this.onResponsiveInverted();
+    window.addEventListener('resize', this.onResponsiveInverted);
     this.initInfo();
   }
 
@@ -97,6 +105,18 @@ export class SignContractTermsOfServiceComponent implements OnInit, OnDestroy {
 
     this.isSignContractTermsSuccess$ = this.store.select(
       fromSelectors.isSignContractTermsSuccess
+    );
+    this.hasActiveLoan$ = this.store.select(fromStore.isHasActiveLoan);
+
+    this.subManager.add(
+      this.hasActiveLoan$.subscribe((hasActiveLoan) => {
+        if (hasActiveLoan) {
+          return this.router.navigate([
+            'hmg/current-loan',
+            formatSlug(PAYDAY_LOAN_STATUS.UNKNOWN_STATUS),
+          ]);
+        }
+      })
     );
 
     this.subManager.add(
@@ -482,5 +502,10 @@ export class SignContractTermsOfServiceComponent implements OnInit, OnDestroy {
     window.removeEventListener('resize', this.onResponsiveInverted);
     this.store.dispatch(new fromActions.SetSentOtpOnsignStatus(false));
     this.subManager.unsubscribe();
+  }
+
+  afterload() {
+    document.querySelector('.ng2-pdf-viewer-container').setAttribute("style", "position: relative !important");
+    document.querySelector('pdf-viewer').setAttribute("style","height: auto !important")
   }
 }

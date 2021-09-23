@@ -1,3 +1,5 @@
+import { MultiLanguageService } from 'src/app/share/translate/multiLanguageService';
+import { NotificationService } from 'src/app/core/services/notification.service';
 import { Component, OnInit } from '@angular/core';
 import {
   AbstractControl,
@@ -45,24 +47,13 @@ export class ForgotPasswordComponent implements OnInit {
 
   subManager = new Subscription();
 
-  matchValues(
-    matchTo: string // name of the control to match to
-  ): (AbstractControl) => ValidationErrors | null {
-    return (control: AbstractControl): ValidationErrors | null => {
-      return !!control.parent &&
-        !!control.parent.value &&
-        control.value === control.parent.controls[matchTo].value
-        ? null
-        : { isMatching: false };
-    };
-  }
-
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
     private signOnControllerService: SignOnControllerService,
-    private notifier: ToastrService,
     private titleService: Title,
+    private notificationService: NotificationService,
+    private multiLanguageService: MultiLanguageService,
     private store: Store<fromStore.State>
   ) {
     this.passwordForgotForm = this.formBuilder.group({
@@ -70,7 +61,7 @@ export class ForgotPasswordComponent implements OnInit {
       password: ['', [Validators.required]],
       confirmPassword: [
         '',
-        [Validators.required, this.matchValues('password')],
+        [Validators.required],
       ],
     });
   }
@@ -108,12 +99,15 @@ export class ForgotPasswordComponent implements OnInit {
     this.subManager.add(
       this.signOnControllerService
         .resetPasswordbyMobileOtp(createCustomerAccountRequest)
-        .subscribe((data) => {
-          if (data.errorCode != null) {
-            return this.notifier.error(String(data?.message));
+        .subscribe((result) => {
+          if (result.errorCode != null) {
+            const message = this.multiLanguageService.instant(
+              'payday_loan.error_code.' + result.errorCode.toLowerCase()
+            );
+            return this.showError('common.error', message);
           }
 
-          this.resetPasswordbyMobileOtpResult = data.result;
+          this.resetPasswordbyMobileOtpResult = result.result;
         })
     );
   }
@@ -145,7 +139,10 @@ export class ForgotPasswordComponent implements OnInit {
       .resetPasswordbyOtp(resetPasswordVerifiedAccountRequest)
       .subscribe((result) => {
         if (result.errorCode != null) {
-          return this.notifier.error(result.message);
+          const message = this.multiLanguageService.instant(
+            'payday_loan.error_code.' + result.errorCode.toLowerCase()
+          );
+          return this.showError('common.error', message);
         }
 
         console.log('reset password Verified success');
@@ -173,7 +170,10 @@ export class ForgotPasswordComponent implements OnInit {
       .resetPasswordVerifiedOtp(resetVerifiedPasswordOtpRequest)
       .subscribe((result) => {
         if (result.errorCode != null) {
-          return this.notifier.error(result.message);
+          const message = this.multiLanguageService.instant(
+            'payday_loan.error_code.' + result.errorCode.toLowerCase()
+          );
+          return this.showError('common.error', message);
         }
         console.log('confirm otp', this.passwordForgotForm.getRawValue());
         console.log('confirm otp success');
@@ -190,5 +190,13 @@ export class ForgotPasswordComponent implements OnInit {
 
   redirectToResetPasswordSuccessPage() {
     this.router.navigateByUrl('/auth/reset-password-success');
+  }
+
+  showError(title: string, content: string) {
+    return this.notificationService.openErrorModal({
+      title: this.multiLanguageService.instant(title),
+      content: this.multiLanguageService.instant(content),
+      primaryBtnText: this.multiLanguageService.instant('common.confirm'),
+    });
   }
 }

@@ -3,6 +3,10 @@ $spaceBetweenBox: 40px;
 $spaceBetweenContent: 24px;
 $spaceWithFooter: 56px;
 
+.modal-open {
+  overflow-y: hidden;
+}
+
 ::ng-deep .custom-dialog-container {
   .mat-dialog-container {
     padding: 0;
@@ -228,4 +232,9 @@ input.pl-text-otp {
   height: 0.5px;
   margin: 16px 0;
   background: $grey-02;
+}
+
+.mat-slider-min-value:not(.mat-slider-thumb-label-showing) .mat-slider-thumb {
+  border: none; 
+  background-color: $monex-color-00;
 }

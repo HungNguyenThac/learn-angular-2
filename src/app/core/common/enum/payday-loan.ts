@@ -78,7 +78,8 @@ export enum ERROR_CODE {
   COMPANY_NOT_EXIST = 'COMPANY_NOT_EXIST',
   APPROVAL_LETTER_NOT_EXIST = 'APPROVAL_LETTER_NOT_EXIST',
   DO_NOT_ACTIVE_LOAN_ERROR = 'DO_NOT_ACTIVE_LOAN_ERROR',
-  NOT_FOUND_SESSION = 'NOT_FOUND_SESSION'
+  NOT_FOUND_SESSION = 'NOT_FOUND_SESSION',
+  INTERNAL_SERVER_ERROR = 'INTERNAL_SERVER_ERROR'
 }
 
 export enum ERROR_CODE_KEY {
@@ -100,6 +101,7 @@ export enum ERROR_CODE_KEY {
   APPROVAL_LETTER_NOT_EXIST = 'payday_loan.error_code.approval_letter_not_exist',
   DO_NOT_ACTIVE_LOAN_ERROR = 'payday_loan.error_code.do_not_active_loan_error',
   NOT_FOUND_SESSION = 'payday_loan.error_code.not_found_session',
+  INTERNAL_SERVER_ERROR = 'payday_loan.error_code.internal_server_error',
 }
 
 export enum SIGN_STATUS {

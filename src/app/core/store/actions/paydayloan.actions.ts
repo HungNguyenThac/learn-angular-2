@@ -20,6 +20,9 @@ export const SET_SIGN_CONTRACT_TERMS_SUCCESS =
 export const SET_SIGN_CONTRACT_SUCCESS =
   '[PaydayLoan] Set sign contract success';
 export const SET_SENT_OTP_ONSIGN_STATUS = '[PaydayLoan] Set sent otp status';
+export const SET_HAS_ACTIVE_LOAN_STATUS =
+  '[PaydayLoan] Set has active loan status';
+export const SET_CURRENT_LOAN_CODE = '[PaydayLoan] Set current loan code';
 
 export class SetEkycInfo implements Action {
   readonly type = SET_EKYC_INFO;
@@ -117,6 +120,18 @@ export class SetSentOtpOnsignStatus implements Action {
   constructor(public payload: boolean) {}
 }
 
+export class SetHasActiveLoanStatus implements Action {
+  readonly type = SET_HAS_ACTIVE_LOAN_STATUS;
+
+  constructor(public payload: boolean) {}
+}
+
+export class SetCurrentLoanCode implements Action {
+  readonly type = SET_CURRENT_LOAN_CODE;
+
+  constructor(public payload: string) {}
+}
+
 export type PaydayLoanActions =
   | SetEkycInfo
   | ResetEkycInfo
@@ -133,4 +148,6 @@ export type PaydayLoanActions =
   | SetShowNavigationBar
   | SetSignContractSuccess
   | SetSignContractTermsSuccess
-  | SetSentOtpOnsignStatus;
+  | SetSentOtpOnsignStatus
+  | SetHasActiveLoanStatus
+  | SetCurrentLoanCode;

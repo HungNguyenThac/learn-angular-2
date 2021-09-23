@@ -9,10 +9,11 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { Contract } from './contract';
 
 
-export interface ApiResponseObject { 
-    result?: object;
+export interface ApiResponseContract { 
+    result?: Contract;
     errorCode?: string;
     message?: object;
     responseCode?: number;

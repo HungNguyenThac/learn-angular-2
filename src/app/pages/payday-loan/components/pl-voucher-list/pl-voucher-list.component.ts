@@ -8,7 +8,6 @@ import { Voucher } from 'open-api-modules/loanapp-api-docs';
   styleUrls: ['./pl-voucher-list.component.scss'],
 })
 export class PlVoucherListComponent implements OnInit {
-  panelOpenState = false;
   voucherListArray: Array<Voucher>;
 
   constructor(
@@ -18,7 +17,9 @@ export class PlVoucherListComponent implements OnInit {
     this.voucherListArray = data
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+  
+  }
 
   voucherApply(voucherChoose: Voucher) {
     this.dialogRef.close(voucherChoose)

@@ -180,9 +180,8 @@
               <p id="salary-amount-value">
                 {{
                   additionalInfoForm.controls["borrowerEmploymentAverageWage"]
-                    .value || minAmount
+                    .value | formatMillionPrice
                 }}
-                Triệu
               </p>
             </div>
             <div class="col-md-12">
@@ -193,6 +192,7 @@
                 [max]="maxAmount"
                 [min]="minAmount"
                 [step]="step"
+                (input)="onValueChange($event)"
               >
               </mat-slider>
             </div>
@@ -204,8 +204,8 @@
                 justify-content-between
               "
             >
-              <p class="value">{{ minAmount + step }} Triệu</p>
-              <p class="value">{{ maxAmount }} Triệu</p>
+              <p class="value">{{ minAmount | formatMillionPrice }}</p>
+              <p class="value">{{ maxAmount | formatMillionPrice }}</p>
             </div>
 
             <div class="col-md-12">

@@ -1,7 +1,7 @@
 <div class="voucher-dialog">
     <h3 id="voucher-dialog-title"> {{"payday_loan.choose_amount.choose_voucher" | translate}}</h3>
-    <mat-accordion>
-        <mat-expansion-panel class="voucher-detail-container" (opened)="panelOpenState = true" (closed)="panelOpenState = false" *ngFor="let voucher of voucherListArray">
+    <mat-accordion displayMode="flat">
+        <mat-expansion-panel (opened)="isExpanded=true" class="voucher-detail-container" *ngFor="let voucher of voucherListArray">
             <mat-expansion-panel-header class="voucher-header">
                 <div class="d-flex flex-column">
                     <mat-panel-title class="d-flex align-items-center justify-content-between voucher-title">
@@ -27,7 +27,10 @@
                     </div>
                 </div>
             </mat-expansion-panel-header>
-            <div [innerHtml]="voucher.description" class="voucher-description"></div>
+            <div [innerHtml]="voucher.description" class="voucher-description" [hidden]="!isExpanded"></div>
         </mat-expansion-panel>
     </mat-accordion>
+    <div *ngIf="voucherListArray.length === 0">
+        <h4 class="text-center">Không có mã khuyến mãi</h4>
+    </div>
 </div>

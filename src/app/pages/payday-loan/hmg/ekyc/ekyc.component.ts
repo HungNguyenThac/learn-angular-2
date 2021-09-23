@@ -13,6 +13,7 @@ import {
 import changeAlias from '../../../../core/utils/no-accent-vietnamese';
 import {
   ERROR_CODE,
+  PAYDAY_LOAN_STATUS,
   PL_STEP_NAVIGATION,
 } from '../../../../core/common/enum/payday-loan';
 import { InfoControllerService } from '../../../../../../open-api-modules/customer-api-docs';
@@ -20,6 +21,7 @@ import { GlobalConstants } from '../../../../core/common/global-constants';
 import { Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { Subscription } from 'rxjs';
+import formatSlug from '../../../../core/utils/format-slug';
 
 @Component({
   selector: 'ekyc',
@@ -28,8 +30,11 @@ import { Subscription } from 'rxjs';
 })
 export class EkycComponent implements OnInit, OnDestroy {
   customerInfo: any;
+
   customerId: string;
   customerId$: Observable<string>;
+
+  hasActiveLoan$: Observable<boolean>;
 
   subManager = new Subscription();
 
@@ -42,13 +47,7 @@ export class EkycComponent implements OnInit, OnDestroy {
     private gpayVirtualAccountControllerService: GpayVirtualAccountControllerService,
     private titleService: Title
   ) {
-    this.customerId$ = store.select(fromSelectors.getCustomerIdState);
-
-    this.subManager.add(
-      this.customerId$.subscribe((customerId) => {
-        this.customerId = customerId;
-      })
-    );
+    this._initSubscribeState();
   }
 
   ngOnInit(): void {
@@ -63,6 +62,29 @@ export class EkycComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.subManager.unsubscribe();
+  }
+
+  private _initSubscribeState() {
+    this.customerId$ = this.store.select(fromSelectors.getCustomerIdState);
+
+    this.subManager.add(
+      this.customerId$.subscribe((customerId) => {
+        this.customerId = customerId;
+      })
+    );
+
+    this.hasActiveLoan$ = this.store.select(fromSelectors.isHasActiveLoan);
+
+    this.subManager.add(
+      this.hasActiveLoan$.subscribe((hasActiveLoan) => {
+        if (hasActiveLoan) {
+          return this.router.navigate([
+            'hmg/current-loan',
+            formatSlug(PAYDAY_LOAN_STATUS.UNKNOWN_STATUS),
+          ]);
+        }
+      })
+    );
   }
 
   initHeaderInfo() {

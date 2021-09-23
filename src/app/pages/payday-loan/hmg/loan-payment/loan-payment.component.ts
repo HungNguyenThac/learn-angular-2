@@ -57,6 +57,7 @@ export class LoanPaymentComponent implements OnInit, OnDestroy {
     private multiLanguageService: MultiLanguageService,
     private titleService: Title
   ) {
+    this.initHeaderInfo();
     this._initSubscribeState();
   }
 
@@ -66,7 +67,6 @@ export class LoanPaymentComponent implements OnInit, OnDestroy {
         ' - ' +
         GlobalConstants.PL_VALUE_DEFAULT.PROJECT_NAME
     );
-    this.initHeaderInfo();
 
     this.notificationService.showLoading();
     this.getUserInfo();
@@ -178,6 +178,7 @@ export class LoanPaymentComponent implements OnInit, OnDestroy {
 
   handleGetActiveLoanError(response: ApiResponsePaydayLoan) {
     if (response.errorCode === ERROR_CODE.DO_NOT_ACTIVE_LOAN_ERROR) {
+      this.store.dispatch(new fromActions.SetHasActiveLoanStatus(false))
       this.router.navigateByUrl('companies');
       return;
     }
