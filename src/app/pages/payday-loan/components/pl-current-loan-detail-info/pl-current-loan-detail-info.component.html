@@ -110,7 +110,7 @@
   <div
     class="text-center"
     id="sign-contract-btn-submit"
-    *ngIf="currentLoan?.status === 'FUNDED'"
+    *ngIf="currentLoan?.status === 'FUNDED' || currentLoan?.status === 'CONTRACT_AWAITING'"
   >
     <button
       class="insurance-btn btn-primary"

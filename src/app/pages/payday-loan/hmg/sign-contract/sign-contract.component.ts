@@ -44,6 +44,8 @@ import {
   BorrowerControllerService,
 } from '../../../../../../open-api-modules/core-api-docs';
 import { map } from 'rxjs/operators';
+import formatSlug from '../../../../core/utils/format-slug';
+import {SetNavigationTitle} from "../../../../core/store";
 
 @Component({
   selector: 'app-sign-contract',
@@ -107,7 +109,7 @@ export class SignContractComponent implements OnInit {
 
   ngOnInit(): void {
     this.titleService.setTitle(
-      'Ký hợp đồng' + ' - ' + GlobalConstants.PL_VALUE_DEFAULT.PROJECT_NAME
+      'Chi tiết hợp đồng' + ' - ' + GlobalConstants.PL_VALUE_DEFAULT.PROJECT_NAME
     );
     this.onResponsiveInverted();
     window.addEventListener('resize', this.onResponsiveInverted);
@@ -162,16 +164,17 @@ export class SignContractComponent implements OnInit {
       this.router.navigateByUrl('hmg/sign-contract-success');
     }
 
-    this.store.dispatch(new fromActions.SetShowLeftBtn(this.isSentOtpOnsign));
+    // this.store.dispatch(new fromActions.SetShowLeftBtn(this.isSentOtpOnsign));
   }
 
   initHeaderInfo() {
     this.store.dispatch(new fromActions.ResetPaydayLoanInfo());
-    this.store.dispatch(new fromActions.SetShowLeftBtn(false));
+    this.store.dispatch(new fromActions.SetShowLeftBtn(true));
     this.store.dispatch(new fromActions.SetShowRightBtn(false));
     this.store.dispatch(new fromActions.SetShowProfileBtn(true));
     this.store.dispatch(new fromActions.SetShowStepNavigation(false));
     this.store.dispatch(new fromActions.SetCurrentLoanCode(null));
+    this.store.dispatch(new fromActions.SetNavigationTitle("Chi tiết hợp đồng"));
   }
 
   get showSignContractBtn() {
@@ -235,30 +238,47 @@ export class SignContractComponent implements OnInit {
         }
         this.currentLoan = response.result;
 
+        this.store.dispatch(
+          new fromActions.SetCurrentLoanCode(this.currentLoan.loanCode)
+        );
+        if (
+          this.currentLoan.status !== PAYDAY_LOAN_STATUS.FUNDED &&
+          this.currentLoan.status !== PAYDAY_LOAN_STATUS.CONTRACT_AWAITING
+        ) {
+          return this.router.navigate([
+            'hmg/current-loan',
+            formatSlug(
+              this.currentLoan.status || PAYDAY_LOAN_STATUS.UNKNOWN_STATUS
+            ),
+          ]);
+        }
+
         this.getUserInfo();
 
-        this.subManager.add(
-          this.getContractCurrentLoan().subscribe((contractInfoCurrentLoan) => {
-            if (contractInfoCurrentLoan)
-              this.contractInfo = contractInfoCurrentLoan;
+        this.getActiveContract();
+      })
+    );
+  }
 
-            if (
-              this.contractInfo &&
-              this.contractInfo.path &&
-              !this.isSentOtpOnsign
-            ) {
-              this.downloadFile(this.contractInfo.path).subscribe(
-                (response) => {
-                  this.linkPdf = window.URL.createObjectURL(
-                    new Blob([response])
-                  );
-                }
-              );
-              return;
+  getActiveContract() {
+    this.subManager.add(
+      this.getCurrentLoanContract().subscribe((contractInfoCurrentLoan) => {
+        if (contractInfoCurrentLoan)
+          this.contractInfo = contractInfoCurrentLoan;
+
+        if (
+          this.contractInfo &&
+          this.contractInfo.path &&
+          !this.isSentOtpOnsign
+        ) {
+          this.downloadSingleFile(this.contractInfo.path).subscribe(
+            (response) => {
+              this.linkPdf = window.URL.createObjectURL(new Blob([response]));
             }
-            this.acceptAndDownloadContract();
-          })
-        );
+          );
+          return;
+        }
+        this.acceptAndDownloadContract();
       })
     );
   }
@@ -290,7 +310,7 @@ export class SignContractComponent implements OnInit {
     });
   }
 
-  getContractCurrentLoan() {
+  getCurrentLoanContract() {
     return this.getLoanappContract().pipe(
       map((response) => {
         if (response.responseCode == 200) {
@@ -444,7 +464,7 @@ export class SignContractComponent implements OnInit {
       );
   }
 
-  downloadFile(documentPath) {
+  downloadSingleFile(documentPath) {
     return this.fileControllerService
       .downloadFile({
         customerId: this.customerId,
@@ -486,7 +506,7 @@ export class SignContractComponent implements OnInit {
             return;
           }
           if (response.errorCode === ERROR_CODE.SESSION_SIGN_ALREADY_EXIST) {
-            this.getContractCurrentLoan().subscribe((currentOtpRequest) => {
+            this.getCurrentLoanContract().subscribe((currentOtpRequest) => {
               if (
                 currentOtpRequest &&
                 currentOtpRequest['idRequest'] &&
