@@ -9,6 +9,7 @@ export const LOGIN_SIGNIN_CORE = '[LoginCore] signin core';
 export const LOGIN_SIGNIN_CORE_SUCCESS = '[LoginCore] signin core success';
 export const LOGIN_SIGNIN_CORE_ERROR = '[LoginCore] signin core error';
 export const SET_CUSTOMER_MOBILE = '[Login] Set customer mobile';
+export const SET_CORE_TOKEN = '[Login] Set core token';
 
 export class Signin implements Action {
   readonly type = LOGIN_SIGNIN;
@@ -58,6 +59,12 @@ export class SetCustomerMobile implements Action {
   constructor(public payload: string) {}
 }
 
+export class SetCoreToken implements Action {
+  readonly type = SET_CORE_TOKEN;
+
+  constructor(public payload: string) {}
+}
+
 export type LoginActions =
   | SigninError
   | SigninSuccess
@@ -66,4 +73,5 @@ export type LoginActions =
   | SigninCoreSuccess
   | SigninCore
   | SigninCoreError
-  | SetCustomerMobile;
+  | SetCustomerMobile
+  | SetCoreToken;

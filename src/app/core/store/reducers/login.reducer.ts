@@ -110,6 +110,15 @@ class LoginActions {
       customerMobile: payload,
     };
   }
+
+  setCoreToken() {
+    const payload = this.action.payload;
+
+    return {
+      ...this.state,
+      coreToken: payload,
+    };
+  }
 }
 
 export function loginReducer(
@@ -149,6 +158,10 @@ export function loginReducer(
 
     case actions.SET_CUSTOMER_MOBILE: {
       return loginActions.setCustomerMobile();
+    }
+
+    case actions.SET_CORE_TOKEN: {
+      return loginActions.setCoreToken();
     }
 
     default: {

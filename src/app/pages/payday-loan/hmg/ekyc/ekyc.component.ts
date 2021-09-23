@@ -136,7 +136,7 @@ export class EkycComponent implements OnInit, OnDestroy {
   }
 
   notificationEkycSuccess() {
-    this.notificationService.openErrorModal({
+    this.notificationService.openSuccessModal({
       title: this.multiLanguageService.instant(
         'payday_loan.ekyc.eKYC_successful'
       ),
