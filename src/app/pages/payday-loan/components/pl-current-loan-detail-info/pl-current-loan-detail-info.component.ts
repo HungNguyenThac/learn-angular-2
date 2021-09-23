@@ -95,6 +95,7 @@ export class PlCurrentLoanDetailInfoComponent implements OnInit {
     return (
       this.currentLoan.status === PAYDAY_LOAN_STATUS.DOCUMENTATION_COMPLETE ||
       this.currentLoan.status === PAYDAY_LOAN_STATUS.DOCUMENT_AWAITING ||
+      this.currentLoan.status === PAYDAY_LOAN_STATUS.CONTRACT_AWAITING ||
       this.currentLoan.status === PAYDAY_LOAN_STATUS.FUNDED ||
       this.currentLoan.status === PAYDAY_LOAN_STATUS.INITIALIZED
     );
