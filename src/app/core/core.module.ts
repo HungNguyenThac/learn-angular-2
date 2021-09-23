@@ -27,7 +27,8 @@ export function HttpLoaderFactory(http: HttpClient) {
 }
 
 export function tokenGetter() {
-  return localStorage.getItem('login.authorization.token');
+  let coreState = JSON.parse(localStorage.getItem('core'));
+  return coreState?.login?.authorization?.token
 }
 
 
