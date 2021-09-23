@@ -1,5 +1,5 @@
-import { CreateLetterRequest } from './../../../../../../open-api-modules/com-api-docs/model/createLetterRequest';
-import { ContractControllerService } from './../../../../../../open-api-modules/com-api-docs/api/contractController.service';
+import { CreateLetterRequest } from '../../../../../../open-api-modules/com-api-docs';
+import { ContractControllerService } from '../../../../../../open-api-modules/com-api-docs';
 import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
 import {
   DateAdapter,
@@ -38,6 +38,7 @@ import {
   PL_STEP_NAVIGATION,
 } from '../../../../core/common/enum/payday-loan';
 import formatSlug from '../../../../core/utils/format-slug';
+import {SetCoreToken} from "src/app/core/store/index";
 
 @Component({
   selector: 'app-confirm-information',
@@ -113,7 +114,6 @@ export class ConfirmInformationComponent
     this.coreToken$ = this.store.select(fromStore.getCoreTokenState);
     this.password$ = this.store.select(fromStore.getPasswordState);
     this.hasActiveLoan$ = this.store.select(fromStore.isHasActiveLoan);
-
 
     this.subManager.add(
       this.hasActiveLoan$.subscribe((hasActiveLoan) => {
@@ -258,13 +258,14 @@ export class ConfirmInformationComponent
     this.borrowerControllerService
       .borrowerStepOne(borrowerStepOneInput)
       .subscribe((result: ApiResponseObject) => {
+        this.notificationService.hideLoading();
         if (!result || result.responseCode !== 200) {
           const message = this.multiLanguageService.instant(
             'payday_loan.error_code.' + result.errorCode.toLowerCase()
           );
-          this.notificationService.hideLoading();
           return this.showError('common.error', message);
         }
+        this.store.dispatch(new fromActions.SetCoreToken(result.result['access_token']))
         this.coreUserId = result.result['userId'];
         this.confirmInfomation();
       });
