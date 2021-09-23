@@ -1,5 +1,5 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { MultiLanguageService } from '../../../../share/translate/multiLanguageService';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {MultiLanguageService} from '../../../../share/translate/multiLanguageService';
 import {
   ERROR_CODE,
   GPAY_RESULT_STATUS,
@@ -18,18 +18,18 @@ import {
   ContractControllerService,
   PaydayLoan,
 } from '../../../../../../open-api-modules/loanapp-api-docs';
-import { Params, Router } from '@angular/router';
+import {Params, Router} from '@angular/router';
 import * as fromActions from '../../../../core/store';
 import * as fromStore from '../../../../core/store';
-import { Store } from '@ngrx/store';
-import { NotificationService } from '../../../../core/services/notification.service';
-import { Observable } from 'rxjs/Observable';
+import {Store} from '@ngrx/store';
+import {NotificationService} from '../../../../core/services/notification.service';
+import {Observable} from 'rxjs/Observable';
 import * as fromSelectors from '../../../../core/store/selectors';
-import { Subscription } from 'rxjs';
+import {Subscription} from 'rxjs';
 import formatSlug from 'src/app/core/utils/format-slug';
-import { environment } from '../../../../../environments/environment';
-import { Title } from '@angular/platform-browser';
-import { GlobalConstants } from '../../../../core/common/global-constants';
+import {environment} from '../../../../../environments/environment';
+import {Title} from '@angular/platform-browser';
+import {GlobalConstants} from '../../../../core/common/global-constants';
 
 @Component({
   selector: 'pl-current-loan',
@@ -125,7 +125,7 @@ export class CurrentLoanComponent implements OnInit, OnDestroy {
 
   initInfo() {
     // if (this.isChooseAmountSuccess) {
-    //   this.notificationService.showLoading();
+    //
     //   setTimeout(async () => {
     //     this.notificationService.hideLoading();
     //     // this.resetChooseAmountSuccess();
@@ -135,56 +135,21 @@ export class CurrentLoanComponent implements OnInit, OnDestroy {
     //   return;
     // }
     this.getActiveLoan();
-    // this.getContractCurrentLoan();
   }
 
-  // getContractCurrentLoan(showLoading = true) {
-  //   if (!this.currentLoan.id || !this.customerId) return;
-  //
-  //   if (showLoading) {
-  //     this.notificationService.showLoading();
-  //   }
-  //   this.subManager.add(
-  //     this.contractControllerService
-  //       .getContract(this.currentLoan.id, this.customerId)
-  //       .subscribe(
-  //         (response) => {
-  //           this.notificationService.hideLoading();
-  //           if (response.responseCode == 200) {
-  //             this.contractInfo.status = response.result['status'];
-  //           }
-  //         },
-  //         (error) => {},
-  //         () => {
-  //           this.notificationService.hideLoading();
-  //         }
-  //       )
-  //   );
-  // }
-
-  getActiveLoan(showLoading = true) {
-    if (showLoading) {
-      this.notificationService.showLoading();
-    }
+  getActiveLoan() {
     this.subManager.add(
       this.applicationControllerService
         .getActiveLoan(this.customerId, this.coreToken)
-        .subscribe(
-          (response: ApiResponsePaydayLoan) => {
-            this.notificationService.hideLoading();
-            if (response.errorCode || response.responseCode != 200) {
-              return this.handleGetActiveLoanError(response);
-            }
-            this.store.dispatch(new fromActions.SetHasActiveLoanStatus(true));
-            this.currentLoan = response.result;
-            this.displayPageTitle();
-            this.getUserInfo();
-          },
-          (error) => {},
-          () => {
-            this.notificationService.hideLoading();
+        .subscribe((response: ApiResponsePaydayLoan) => {
+          if (response.errorCode || response.responseCode != 200) {
+            return this.handleGetActiveLoanError(response);
           }
-        )
+          this.store.dispatch(new fromActions.SetHasActiveLoanStatus(true));
+          this.currentLoan = response.result;
+          this.displayPageTitle();
+          this.getUserInfo();
+        })
     );
   }
 
@@ -209,13 +174,12 @@ export class CurrentLoanComponent implements OnInit, OnDestroy {
   formatGetSalaryDate(value) {
     return value
       ? moment(new Date(value), 'DD/MM/YYYY HH:mm:ss')
-          .add(1, 'day')
-          .format('DD/MM/YYYY HH:mm:ss')
+        .add(1, 'day')
+        .format('DD/MM/YYYY HH:mm:ss')
       : 'N/A';
   }
 
   getUserInfo() {
-    this.notificationService.showLoading();
     this.subManager.add(
       this.infoControllerService.getInfo(this.customerId).subscribe(
         (response: ApiResponseCustomerInfoResponse) => {
@@ -224,7 +188,8 @@ export class CurrentLoanComponent implements OnInit, OnDestroy {
           }
           this.userInfo = response.result;
         },
-        (error) => {},
+        (error) => {
+        },
         () => {
           this.notificationService.hideLoading();
         }
@@ -240,7 +205,7 @@ export class CurrentLoanComponent implements OnInit, OnDestroy {
       content: environment.PRODUCTION
         ? this.multiLanguageService.instant('common.something_went_wrong')
         : content ||
-          this.multiLanguageService.instant('common.something_went_wrong'),
+        this.multiLanguageService.instant('common.something_went_wrong'),
       primaryBtnText: this.multiLanguageService.instant('common.confirm'),
     });
   }

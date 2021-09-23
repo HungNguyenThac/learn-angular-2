@@ -71,8 +71,7 @@ export class ApiHttpInterceptor implements HttpInterceptor {
             });
             return null;
           },
-          ()=> {
-          }
+          () => {}
         )
       );
     } else {

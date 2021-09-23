@@ -18,6 +18,9 @@ import {
 import { Observable } from 'rxjs/Observable';
 import * as fromSelectors from '../../../../core/store/selectors';
 import { NotificationService } from '../../../../core/services/notification.service';
+import { Prompt } from '../../../../public/models/prompt.model';
+import { PlPromptComponent } from '../../../../share/components';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'ekyc-upload',
@@ -81,7 +84,8 @@ export class EkycUploadComponent implements OnInit, AfterViewInit {
     private multiLanguageService: MultiLanguageService,
     private store: Store<fromStore.State>,
     private kalapaV2Service: KalapaV2ControllerService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    public dialog: MatDialog
   ) {
     this.customerId$ = store.select(fromSelectors.getCustomerIdState);
 
@@ -150,7 +154,9 @@ export class EkycUploadComponent implements OnInit, AfterViewInit {
           this.params.selfieImg,
           this.params.backIdentityCardImg,
           false,
-          false
+          false,
+          null,
+          true
         )
         .subscribe(
           (ekycResponse: ApiResponseKalapaResponse) => {
@@ -174,9 +180,8 @@ export class EkycUploadComponent implements OnInit, AfterViewInit {
   }
 
   handleEkycError(ekycInfo) {
-    this.resetParams();
     if (ekycInfo.responseCode !== 200) {
-      this.notificationService.openErrorModal({
+      this.showErrorModal({
         title: this.multiLanguageService.instant(
           'payday_loan.ekyc.ekyc_failed_title'
         ),
@@ -184,15 +189,44 @@ export class EkycUploadComponent implements OnInit, AfterViewInit {
           'payday_loan.ekyc.ekyc_failed_content'
         ),
         primaryBtnText: this.multiLanguageService.instant('common.confirm'),
+        imgUrl: 'assets/img/payday-loan/warning-prompt-icon.png',
       });
       return;
     }
 
-    this.notificationService.openErrorModal({
+    this.showErrorModal({
       title: this.multiLanguageService.instant('common.notification'),
       content: this.multiLanguageService.instant('common.something_went_wrong'),
       primaryBtnText: this.multiLanguageService.instant('common.confirm'),
+      imgUrl: 'assets/img/payday-loan/warning-prompt-icon.png',
     });
+  }
+
+  showErrorModal(payload: Prompt, imgUrl?: string) {
+    let promptDialogRef = this.dialog.open(PlPromptComponent, {
+      panelClass: 'custom-dialog-container',
+      height: 'auto',
+      minHeight: '194px',
+      maxWidth: '330px',
+      data: {
+        imgBackgroundClass: payload?.imgBackgroundClass
+          ? payload?.imgBackgroundClass + ' text-center'
+          : 'text-center',
+        imgUrl: !payload?.imgGroupUrl ? payload?.imgUrl || imgUrl : null,
+        imgGroupUrl: payload?.imgGroupUrl || null,
+        title: payload?.title,
+        content: payload?.content,
+        primaryBtnText: payload?.primaryBtnText,
+        secondaryBtnText: payload?.secondaryBtnText,
+      },
+    });
+
+    this.subManager.add(
+      promptDialogRef.afterClosed().subscribe((confirmed: boolean) => {
+        this.resetParams();
+        this.subManager.unsubscribe();
+      })
+    );
   }
 
   resetParams() {

@@ -98,7 +98,7 @@ export class LoginEffects {
       map((action: fromActions.Signin) => action.payload),
       switchMap((login: LoginForm) => {
         const { username, password } = login;
-        this.notificationService.showLoading();
+
         return this.signOnService
           .mobileLogin({
             mobile: username,
@@ -106,7 +106,7 @@ export class LoginEffects {
           })
           .pipe(
             map((result) => {
-              this.notificationService.hideLoading();
+              //
               this.loginInput = login;
               this.loginPayload = result;
               if (!result || result.responseCode !== 200) {
@@ -124,30 +124,21 @@ export class LoginEffects {
       this.actions$.pipe(
         ofType(fromActions.LOGIN_SIGNIN_SUCCESS),
         tap(() => {
-          this.notificationService.showLoading();
           this.infoService
             .getInfo(this.loginPayload.result.customerId)
-            .subscribe(
-              (result: ApiResponseCustomerInfoResponse) => {
-                if (!result || result.responseCode !== 200) return;
+            .subscribe((result: ApiResponseCustomerInfoResponse) => {
+              if (!result || result.responseCode !== 200) return;
 
-                this.store$.dispatch(
-                  new fromActions.SetCustomerInfo(result.result)
-                );
+              this.store$.dispatch(
+                new fromActions.SetCustomerInfo(result.result)
+              );
 
-                if (result.result.personalData.stepOne !== 'DONE') {
-                  this._redirectToNextPage().then((r) => {});
-                }
-
-                this.store$.dispatch(
-                  new fromActions.SigninCore(this.loginInput)
-                );
-              },
-              (error) => {},
-              () => {
-                this.notificationService.hideLoading();
+              if (result.result.personalData.stepOne !== 'DONE') {
+                this._redirectToNextPage().then((r) => {});
               }
-            );
+
+              this.store$.dispatch(new fromActions.SigninCore(this.loginInput));
+            });
         })
       ),
     { dispatch: false }
@@ -202,31 +193,24 @@ export class LoginEffects {
       this.actions$.pipe(
         ofType(fromActions.LOGIN_SIGNIN_CORE_SUCCESS),
         tap(() => {
-          this.notificationService.showLoading();
           this.applicationControllerService
             .getActiveLoan(this.customerId, this.coreToken)
-            .subscribe(
-              (result: ApiResponsePaydayLoan) => {
-                if (!result || result.responseCode !== 200) {
-                  return this._redirectToNextPage();
-                }
-
-                this.store$.dispatch(
-                  new fromActions.SetHasActiveLoanStatus(true)
-                );
-
-                return this.router.navigate([
-                  'hmg/current-loan',
-                  formatSlug(
-                    result.result.status || PAYDAY_LOAN_STATUS.UNKNOWN_STATUS
-                  ),
-                ]);
-              },
-              (e) => {},
-              () => {
-                this.notificationService.hideLoading();
+            .subscribe((result: ApiResponsePaydayLoan) => {
+              if (!result || result.responseCode !== 200) {
+                return this._redirectToNextPage();
               }
-            );
+
+              this.store$.dispatch(
+                new fromActions.SetHasActiveLoanStatus(true)
+              );
+
+              return this.router.navigate([
+                'hmg/current-loan',
+                formatSlug(
+                  result.result.status || PAYDAY_LOAN_STATUS.UNKNOWN_STATUS
+                ),
+              ]);
+            });
         })
       ),
     { dispatch: false }

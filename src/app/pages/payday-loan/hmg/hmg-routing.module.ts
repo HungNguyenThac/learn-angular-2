@@ -11,6 +11,7 @@ import { PlChoosePaymentMethodComponent } from './pl-choose-payment-method/pl-ch
 import { LoanPaymentComponent } from './loan-payment/loan-payment.component';
 import { GpayPaymentResultComponent } from './gpay-payment-result/gpay-payment-result.component';
 import { SignContractComponent } from './sign-contract/sign-contract.component';
+import {NotFoundComponent} from "../../errors/not-found/not-found.component";
 
 export const HmgRoutes: Routes = [
   {
@@ -76,6 +77,11 @@ export const HmgRoutes: Routes = [
         component: GpayPaymentResultComponent,
         data: { animation: true },
       },
+      {
+        path: '**',
+        component: NotFoundComponent,
+        data: {animation: true}
+      }
     ],
   },
 ];

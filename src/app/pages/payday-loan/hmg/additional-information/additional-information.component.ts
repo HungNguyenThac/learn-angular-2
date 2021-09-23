@@ -107,8 +107,6 @@ export class AdditionalInformationComponent
         ' - ' +
         GlobalConstants.PL_VALUE_DEFAULT.PROJECT_NAME
     );
-
-    this.notificationService.showLoading(null);
   }
 
   ngAfterViewInit(): void {
@@ -210,10 +208,7 @@ export class AdditionalInformationComponent
       annualIncome:
         this.additionalInfoForm.controls.borrowerEmploymentAverageWage.value,
     };
-    console.log('additionalInformationRequest', additionalInformationV2Request);
 
-    this.notificationService.showLoading(null);
-    // call api additional Infomation
     this.subManager.add(
       this.infoV2ControllerService
         .additionalInformationV2(
@@ -222,19 +217,17 @@ export class AdditionalInformationComponent
         )
         .subscribe((result: ApiResponseObject) => {
           //throw error
-          this.notificationService.hideLoading();
           if (!result || result.responseCode !== 200) {
             if (result?.errorCode != null) {
               const message = this.multiLanguageService.instant(
                 'payday_loan.error_code.' + result?.errorCode.toLowerCase()
               );
               return this.showError('common.error', message);
-            } else {
-              return this.showError(
-                'common.error',
-                'common.something_went_wrong'
-              );
             }
+            return this.showError(
+              'common.error',
+              'common.something_went_wrong'
+            );
           }
           // redirect to loan detemination
           this.router.navigateByUrl('hmg/sign-contract-terms-of-service');
