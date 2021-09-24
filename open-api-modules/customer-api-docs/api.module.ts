@@ -10,6 +10,7 @@ import { KalapaControllerService } from './api/kalapaController.service';
 import { KalapaV2ControllerService } from './api/kalapaV2Controller.service';
 import { NewsletterControllerService } from './api/newsletterController.service';
 import { NotificationControllerService } from './api/notificationController.service';
+import { RatingControllerService } from './api/ratingController.service';
 import { TngControllerService } from './api/tngController.service';
 
 @NgModule({

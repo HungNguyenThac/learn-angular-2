@@ -19,6 +19,8 @@ import { Observable }                                        from 'rxjs';
 
 import { ApiResponseCompanyInfo } from '../model/models';
 import { ApiResponseListCompanyInfo } from '../model/models';
+import { ApiResponseString } from '../model/models';
+import { DeleteCompanyRequest } from '../model/models';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
 import { Configuration }                                     from '../configuration';
@@ -202,6 +204,59 @@ export class CompanyControllerService {
 
         return this.httpClient.post<ApiResponseCompanyInfo>(`${this.configuration.basePath}/company/v1/add`,
             convertFormParamsToString ? formParams.toString() : formParams,
+            {
+                responseType: <any>responseType_,
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * @param deleteCompanyRequest 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public deleteCompany(deleteCompanyRequest: DeleteCompanyRequest, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseString>;
+    public deleteCompany(deleteCompanyRequest: DeleteCompanyRequest, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseString>>;
+    public deleteCompany(deleteCompanyRequest: DeleteCompanyRequest, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseString>>;
+    public deleteCompany(deleteCompanyRequest: DeleteCompanyRequest, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
+        if (deleteCompanyRequest === null || deleteCompanyRequest === undefined) {
+            throw new Error('Required parameter deleteCompanyRequest was null or undefined when calling deleteCompany.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (httpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                '*/*'
+            ];
+            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
+        if (httpHeaderAcceptSelected !== undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'application/json'
+        ];
+        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
+        if (httpContentTypeSelected !== undefined) {
+            headers = headers.set('Content-Type', httpContentTypeSelected);
+        }
+
+        let responseType_: 'text' | 'json' = 'json';
+        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+            responseType_ = 'text';
+        }
+
+        return this.httpClient.delete<ApiResponseString>(`${this.configuration.basePath}/company/v1/delete-company`,
             {
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
