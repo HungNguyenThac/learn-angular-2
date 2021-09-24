@@ -34,16 +34,18 @@ import {
 } from 'open-api-modules/com-api-docs';
 import formatSlug from 'src/app/core/utils/format-slug';
 import {
+  DOCUMENT_TYPE,
   PAYDAY_LOAN_STATUS,
   PL_STEP_NAVIGATION,
 } from 'src/app/core/common/enum/payday-loan';
 import { DomSanitizer, Title } from '@angular/platform-browser';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { PlVoucherListComponent } from '../../components/pl-voucher-list/pl-voucher-list.component';
 import * as moment from 'moment';
 import { GlobalConstants } from '../../../../core/common/global-constants';
 import * as fromActions from '../../../../core/store';
 import { IllustratingImgDialogComponent } from '../../components/illustrating-img-dialog/illustrating-img-dialog.component';
+import { PlPromptComponent } from '../../../../share/components';
 
 @Component({
   selector: 'app-loan-determination',
@@ -53,7 +55,7 @@ import { IllustratingImgDialogComponent } from '../../components/illustrating-im
 export class LoanDeterminationComponent
   implements OnInit, AfterViewInit, OnDestroy
 {
-  loanDeteminationForm: FormGroup;
+  loanDeterminationForm: FormGroup;
   maxAmount: number;
   minAmount: number = 2000000;
   step: number = 500000;
@@ -101,9 +103,10 @@ export class LoanDeterminationComponent
     private fb: FormBuilder,
     private cdr: ChangeDetectorRef,
     public dialog: MatDialog,
-    private titleService: Title
+    private titleService: Title,
+    private promptDialogRef: MatDialogRef<PlPromptComponent>
   ) {
-    this.loanDeteminationForm = fb.group({
+    this.loanDeterminationForm = fb.group({
       loanAmount: [''],
       loanPurpose: [''],
       collateralDocument: [''],
@@ -125,7 +128,7 @@ export class LoanDeterminationComponent
   }
 
   ngAfterViewInit() {
-    this.loanDeteminationForm.controls['loanAmount'].setValue(this.minAmount);
+    this.loanDeterminationForm.controls['loanAmount'].setValue(this.minAmount);
 
     //get customer info
     this.subManager.add(
@@ -139,7 +142,9 @@ export class LoanDeterminationComponent
             );
           }
           this.customerInfo = result.result;
-          this.getLoanMaxAmount();
+
+          this.initAmountSliderValue();
+
           this.checkLoanExisted();
         })
     );
@@ -217,63 +222,62 @@ export class LoanDeterminationComponent
   }
 
   resultCollateral(result) {
-    this.loanDeteminationForm.controls['collateralDocument'].setValue(
+    this.loanDeterminationForm.controls['collateralDocument'].setValue(
       result.file
     );
     this.collateralImgSrc = result.imgSrc;
   }
 
   onSubmit() {
-    if (!this.loanDeteminationForm.valid) return;
-    console.log(this.loanDeteminationForm.getRawValue());
+    if (this.loanDeterminationForm.invalid) return;
 
     const createApplicationRequest: CreateApplicationRequest = {
       coreToken: this.coreToken,
       customerId: this.customerId,
-      expectedAmount: this.loanDeteminationForm.controls.loanAmount.value,
-      purpose: this.loanDeteminationForm.controls.loanPurpose.value,
+      expectedAmount: this.loanDeterminationForm.controls.loanAmount.value,
+      purpose: this.loanDeterminationForm.controls.loanPurpose.value,
       voucherTransaction: this.voucherApplied,
     };
 
-    this.paydayLoanControllerService
-      .createLoan(createApplicationRequest)
-      .subscribe((result: ApiResponseApplyResponse) => {
-        if (!result || result.responseCode !== 200) {
-          const message = this.multiLanguageService.instant(
-            'payday_loan.error_code.' + result.errorCode.toLowerCase()
-          );
-          return this.showError('common.error', message);
-        }
-        const loanStatus = result.result.status;
+    this.subManager.add(
+      this.paydayLoanControllerService
+        .createLoan(createApplicationRequest)
+        .subscribe((result: ApiResponseApplyResponse) => {
 
-        //call api com svc upload document vehicle registration
-        if (this.loanDeteminationForm.controls['collateralDocument'].value) {
-          this.fileControllerService
-            .uploadSingleFile(
-              'VEHICLE_REGISTRATION',
-              this.loanDeteminationForm.controls['collateralDocument'].value,
-              this.customerId
-            )
-            .subscribe((result) => {
-              if (!result || result.responseCode !== 200) {
-                const message = this.multiLanguageService.instant(
-                  'payday_loan.error_code.' + result.errorCode.toLowerCase()
-                );
-                return this.showError('common.error', message);
-              }
+          if (!result || result.responseCode !== 200) {
+            return this.showError(
+              'payday_loan.choose_amount.create_loan_failed_title',
+              'payday_loan.choose_amount.create_loan_failed_desc'
+            );
+          }
 
-              return this.router.navigate([
-                'hmg/current-loan',
-                formatSlug(loanStatus || PAYDAY_LOAN_STATUS.UNKNOWN_STATUS),
-              ]);
-            });
-        } else {
-          return this.router.navigate([
-            'hmg/current-loan',
-            formatSlug(loanStatus || PAYDAY_LOAN_STATUS.UNKNOWN_STATUS),
-          ]);
-        }
-      });
+          this.handleCreateLoanSuccessfully();
+        })
+    );
+  }
+
+  handleCreateLoanSuccessfully() {
+    //call api com svc upload document vehicle registration
+    if (this.loanDeterminationForm.controls['collateralDocument'].value) {
+      this.fileControllerService
+        .uploadSingleFile(
+          DOCUMENT_TYPE.VEHICLE_REGISTRATION,
+          this.loanDeterminationForm.controls['collateralDocument'].value,
+          this.customerId
+        )
+        .subscribe((result) => {
+          if (!result || result.responseCode !== 200) {
+            const message =
+              'payday_loan.error_code.' + result.errorCode.toLowerCase();
+            return this.showError('common.error', message);
+          }
+
+          this.openCreateLoanSuccessModal();
+        });
+      return;
+    }
+
+    this.openCreateLoanSuccessModal();
   }
 
   getVoucherList() {
@@ -303,13 +307,13 @@ export class LoanDeterminationComponent
 
     dialogRef.afterClosed().subscribe((result: Voucher) => {
       if (!result) return;
-      this.loanDeteminationForm.controls.voucherCode.setValue(result.code);
+      this.loanDeterminationForm.controls.voucherCode.setValue(result.code);
       this.checkVoucherApplied();
     });
   }
 
   get loanAmountFormatMillionPrice() {
-    return this.loanDeteminationForm.controls['loanAmount'].value;
+    return this.loanDeterminationForm.controls['loanAmount'].value;
   }
 
   get originalLoanFee() {
@@ -322,17 +326,17 @@ export class LoanDeterminationComponent
 
   checkVoucherApplied() {
     // Pick voucher from dialog
-    if (this.loanDeteminationForm.controls.voucherCode.value === '') {
+    if (this.loanDeterminationForm.controls.voucherCode.value === '') {
       return;
     }
 
     for (const voucher of this.listVoucher) {
       if (
         voucher.code ===
-        this.loanDeteminationForm.controls.voucherCode.value.toUpperCase()
+        this.loanDeterminationForm.controls.voucherCode.value.toUpperCase()
       ) {
         if (voucher.remainAmount <= 0) {
-          this.loanDeteminationForm.controls.voucherCode.setErrors({
+          this.loanDeterminationForm.controls.voucherCode.setErrors({
             runOut: true,
           });
           this.voucherShowError =
@@ -341,19 +345,19 @@ export class LoanDeterminationComponent
         }
 
         if (this.checkVoucherTime(voucher) === false) {
-          this.loanDeteminationForm.controls.voucherCode.setErrors({
+          this.loanDeterminationForm.controls.voucherCode.setErrors({
             wrongTime: true,
           });
           this.voucherShowError =
             'Mã ưu đãi không áp dụng trong khung giờ hiện tại';
           return;
         }
-        this.loanDeteminationForm.controls.voucherCode.setValue(voucher.code);
+        this.loanDeterminationForm.controls.voucherCode.setValue(voucher.code);
         this.applyCorrectedVoucher(voucher);
         return;
       }
     }
-    this.loanDeteminationForm.controls.voucherCode.setErrors({
+    this.loanDeterminationForm.controls.voucherCode.setErrors({
       incorrect: true,
     });
     this.voucherShowError = 'Mã ưu đãi không tồn tại';
@@ -447,46 +451,64 @@ export class LoanDeterminationComponent
 
   //Expected loan amount
   onValueChange(event) {
-    this.loanDeteminationForm.controls.loanAmount.setValue(event.value);
+    this.loanDeterminationForm.controls.loanAmount.setValue(event.value);
   }
 
-  //Maximum loan amount conditions
-  getLoanMaxAmount() {
-    const d = new Date();
-    const currentDate = d.getDate();
-    let maxAmountCalc = this.maxAmount;
-    const salary = this.customerInfo.personalData.annualIncome;
-    switch (currentDate) {
-      case 15:
-      case 16:
-        maxAmountCalc = salary * 0.5;
-        break;
-      case 17:
-      case 18:
-        maxAmountCalc = salary * 0.575;
-        break;
-      case 19:
-      case 20:
-        maxAmountCalc = salary * 0.65;
-        break;
-      case 21:
-      case 22:
-        maxAmountCalc = salary * 0.725;
-        break;
-      default:
-        maxAmountCalc = salary * 0.8;
-        break;
+  initAmountSliderValue() {
+    if (!this.customerInfo.personalData?.annualIncome) {
+      return;
     }
 
-    //rounding max loan amount to 0.5 nearest
-    maxAmountCalc /= 1000000;
-    maxAmountCalc = Math.round(maxAmountCalc * 2) / 2;
-    maxAmountCalc *= 1000000;
-    this.maxAmount = maxAmountCalc;
+    this.maxAmount = this.getMaxValue(
+      this.customerInfo.personalData.annualIncome
+    );
+
+    //Example 3.000.000, 2.500.000, 3.500.000 , expected defaultAmountValue = 1.500.000, 1.500.000, 2.000.000
+    let defaultAmountValue: any;
+    if ((this.maxAmount / 500000) % 2 === 0) {
+      defaultAmountValue = Math.round(this.maxAmount / 2);
+    } else {
+      defaultAmountValue = Math.round((this.maxAmount + 500000) / 2);
+    }
+
+    this.loanDeterminationForm.controls['loanAmount'].setValue(
+      defaultAmountValue
+    );
+  }
+
+  getMaxValue(annualIncome) {
+    let millionAnnualIncome =
+      (this.getPercentOfSalaryByDay() * annualIncome) / 1000000;
+
+    if (millionAnnualIncome % 1 >= 0.5) {
+      return (Math.round(millionAnnualIncome) - 0.5) * 1000000;
+    }
+
+    return Math.floor(millionAnnualIncome) * 1000000;
+  }
+
+  getPercentOfSalaryByDay() {
+    let today = new Date().getDate();
+    switch (today) {
+      case 15:
+      case 16:
+        return 0.5;
+      case 17:
+      case 18:
+        return 0.575;
+      case 19:
+      case 20:
+        return 0.65;
+      case 21:
+      case 22:
+        return 0.725;
+      default:
+        return 0.8;
+    }
   }
 
   clearVoucherInput() {
-    this.loanDeteminationForm.controls.voucherCode.setValue('');
+    this.loanDeterminationForm.controls.voucherCode.setValue('');
     this.voucherShowError = '';
   }
 
@@ -497,5 +519,35 @@ export class LoanDeterminationComponent
       panelClass: 'custom-dialog-container',
     });
   }
-}
 
+  openCreateLoanSuccessModal() {
+    this.promptDialogRef = this.dialog.open(PlPromptComponent, {
+      panelClass: 'custom-dialog-container',
+      height: 'auto',
+      minHeight: '194px',
+      maxWidth: '330px',
+      data: {
+        imgBackgroundClass: 'text-center',
+        imgUrl: 'assets/img/payday-loan/success-prompt-icon.png',
+        title: this.multiLanguageService.instant(
+          'payday_loan.choose_amount.choose_amount_successful'
+        ),
+        content: this.multiLanguageService.instant(
+          'payday_loan.choose_amount.choose_amount_successful_content'
+        ),
+        primaryBtnText: this.multiLanguageService.instant(
+          'payday_loan.choose_amount.back_to_home'
+        ),
+      },
+    });
+
+    this.subManager.add(
+      this.promptDialogRef.afterClosed().subscribe((confirmed: boolean) => {
+        return this.router.navigate([
+          'hmg/current-loan',
+          formatSlug(PAYDAY_LOAN_STATUS.UNKNOWN_STATUS),
+        ]);
+      })
+    );
+  }
+}

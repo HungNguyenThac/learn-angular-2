@@ -1,8 +1,8 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import {
   ERROR_CODE,
-  ERROR_CODE_KEY, PAYDAY_LOAN_STATUS,
-  PL_STEP_NAVIGATION,
+  ERROR_CODE_KEY,
+  PAYDAY_LOAN_STATUS,
 } from 'src/app/core/common/enum/payday-loan';
 import { MultiLanguageService } from '../../../../share/translate/multiLanguageService';
 import { MatDialog } from '@angular/material/dialog';
@@ -32,7 +32,7 @@ import { Router } from '@angular/router';
 import { PlPromptComponent } from '../../../../share/components';
 import { GlobalConstants } from '../../../../core/common/global-constants';
 import { environment } from '../../../../../environments/environment';
-import formatSlug from "../../../../core/utils/format-slug";
+import formatSlug from '../../../../core/utils/format-slug';
 
 @Component({
   selector: 'app-contract-terms-of-service',
@@ -88,8 +88,8 @@ export class SignContractTermsOfServiceComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.titleService.setTitle(
       'Ký thư chấp thuận' +
-      ' - ' +
-      GlobalConstants.PL_VALUE_DEFAULT.PROJECT_NAME
+        ' - ' +
+        GlobalConstants.PL_VALUE_DEFAULT.PROJECT_NAME
     );
     this.onResponsiveInverted();
     window.addEventListener('resize', this.onResponsiveInverted);
@@ -162,7 +162,7 @@ export class SignContractTermsOfServiceComponent implements OnInit, OnDestroy {
     this.store.dispatch(new fromActions.SetShowRightBtn(false));
     this.store.dispatch(new fromActions.SetShowProfileBtn(true));
     this.store.dispatch(new fromActions.SetShowStepNavigation(false));
-    this.store.dispatch(new fromActions.SetNavigationTitle("Thư chấp thuận"));
+    this.store.dispatch(new fromActions.SetNavigationTitle('Thư chấp thuận'));
   }
 
   get showSignContractTermsBtn() {
@@ -197,9 +197,9 @@ export class SignContractTermsOfServiceComponent implements OnInit, OnDestroy {
     });
 
     this.subManager.add(
-      dialogRef.afterClosed().subscribe((confirmed: boolean) => {
+      dialogRef.afterClosed().subscribe((confirmed: string) => {
         console.log(confirmed);
-        if (confirmed) {
+        if (confirmed === 'clickPrimary') {
           this.sendLetterOtp();
         }
       })
@@ -219,7 +219,8 @@ export class SignContractTermsOfServiceComponent implements OnInit, OnDestroy {
           return;
         }
         if (response.errorCode === ERROR_CODE.SESSION_SIGN_ALREADY_EXIST) {
-          this.getLatestApprovalLetter();
+          this.getLatestApprovalLetter(true);
+
           return;
         }
 
@@ -342,48 +343,44 @@ export class SignContractTermsOfServiceComponent implements OnInit, OnDestroy {
     );
   }
 
-  getLatestApprovalLetter() {
+  getLatestApprovalLetter(setSentOtpStatus: boolean = false) {
     this.subManager.add(
       this.approvalLetterControllerService
         .getApprovalLetterByCustomerId(this.customerId)
-        .subscribe(
-          (response: ApiResponseApprovalLetter) => {
-            if (response.responseCode == 200) {
-              if (response.result.customerSignDone) {
-                return this.router.navigateByUrl('hmg/loan-determination');
-              }
-              this.idRequest = response.result.idRequest;
-              this.idDocument = response.result.idDocument;
-              this.contractInfo = response.result;
-              this.disabledOTP = false;
+        .subscribe((response: ApiResponseApprovalLetter) => {
+          if (response.responseCode == 200) {
+            if (response.result.customerSignDone) {
+              return this.router.navigateByUrl('hmg/loan-determination');
+            }
+            this.idRequest = response.result.idRequest;
+            this.idDocument = response.result.idDocument;
+            this.contractInfo = response.result;
+            this.disabledOTP = false;
 
-              if (
-                this.contractInfo &&
-                this.contractInfo.path &&
-                !this.isSentOtpOnsign
-              ) {
-                this.downloadFile(this.contractInfo.path);
-              }
-              if (
-                this.contractInfo &&
-                this.contractInfo.idRequest &&
-                this.contractInfo.idDocument
-              ) {
-                this.disabledOTP = false;
-                this.store.dispatch(
-                  new fromActions.SetSentOtpOnsignStatus(true)
-                );
-                this.store.dispatch(new fromActions.SetShowLeftBtn(true));
-                return;
-              }
+            if (
+              this.contractInfo &&
+              this.contractInfo.path &&
+              !this.isSentOtpOnsign
+            ) {
+              this.downloadFile(this.contractInfo.path);
+            }
+
+            if (
+              this.contractInfo &&
+              this.contractInfo.idRequest &&
+              this.contractInfo.idDocument &&
+              setSentOtpStatus
+            ) {
+              this.disabledOTP = false;
+              this.store.dispatch(new fromActions.SetSentOtpOnsignStatus(true));
+              this.store.dispatch(new fromActions.SetShowLeftBtn(true));
               return;
             }
-            this.contractInfo = null;
-            this.createApprovalLetter();
-          },
-          (error) => {},
-          () => {}
-        )
+            return;
+          }
+          this.contractInfo = null;
+          this.createApprovalLetter();
+        })
     );
   }
 
@@ -501,7 +498,11 @@ export class SignContractTermsOfServiceComponent implements OnInit, OnDestroy {
   }
 
   afterload() {
-    document.querySelector('.ng2-pdf-viewer-container').setAttribute("style", "position: relative !important");
-    document.querySelector('pdf-viewer').setAttribute("style","height: auto !important")
+    document
+      .querySelector('.ng2-pdf-viewer-container')
+      .setAttribute('style', 'position: relative !important');
+    document
+      .querySelector('pdf-viewer')
+      .setAttribute('style', 'height: auto !important');
   }
 }
