@@ -55,6 +55,7 @@ export class SignContractTermsOfServiceComponent implements OnInit, OnDestroy {
   disabledOTP: boolean = false;
   idDocument: any = null;
   idRequest: any = null;
+  approvalLetterId: any = null;
 
   customerId: string;
   customerId$: Observable<string>;
@@ -354,6 +355,7 @@ export class SignContractTermsOfServiceComponent implements OnInit, OnDestroy {
             }
             this.idRequest = response.result.idRequest;
             this.idDocument = response.result.idDocument;
+            this.approvalLetterId =  response.result.id;
             this.contractInfo = response.result;
             this.disabledOTP = false;
 
@@ -407,6 +409,7 @@ export class SignContractTermsOfServiceComponent implements OnInit, OnDestroy {
           }
 
           this.infoControllerService.customerSignDone(this.customerId, {
+            approvalLetterId: this.approvalLetterId,
             idDocument: this.idDocument,
             idRequest: this.idRequest,
           });

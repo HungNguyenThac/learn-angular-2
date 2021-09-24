@@ -17,8 +17,10 @@ import { HttpClient, HttpHeaders, HttpParams,
 import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
-import { ApiResponseBoolean } from '../model/models';
-import { TemplateRequest } from '../model/models';
+import { ApiResponseRating } from '../model/models';
+import { ApiResponseString } from '../model/models';
+import { CreateRatingRequest } from '../model/models';
+import { UpdateRatingRequest } from '../model/models';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
 import { Configuration }                                     from '../configuration';
@@ -28,7 +30,7 @@ import { Configuration }                                     from '../configurat
 @Injectable({
   providedIn: 'root'
 })
-export class NotificationControllerService {
+export class RatingControllerService {
 
     protected basePath = 'http://localhost:8004';
     public defaultHeaders = new HttpHeaders();
@@ -86,72 +88,16 @@ export class NotificationControllerService {
     }
 
     /**
-     * @param customerId 
-     * @param loanCode 
+     * @param createRatingRequest 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public notifyCustomerHasInRepaymentLoan(customerId: string, loanCode: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseBoolean>;
-    public notifyCustomerHasInRepaymentLoan(customerId: string, loanCode: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseBoolean>>;
-    public notifyCustomerHasInRepaymentLoan(customerId: string, loanCode: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseBoolean>>;
-    public notifyCustomerHasInRepaymentLoan(customerId: string, loanCode: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
-        if (customerId === null || customerId === undefined) {
-            throw new Error('Required parameter customerId was null or undefined when calling notifyCustomerHasInRepaymentLoan.');
-        }
-        if (loanCode === null || loanCode === undefined) {
-            throw new Error('Required parameter loanCode was null or undefined when calling notifyCustomerHasInRepaymentLoan.');
-        }
-
-        let queryParameters = new HttpParams({encoder: this.encoder});
-        if (loanCode !== undefined && loanCode !== null) {
-          queryParameters = this.addToHttpParams(queryParameters,
-            <any>loanCode, 'loanCode');
-        }
-
-        let headers = this.defaultHeaders;
-
-        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-        if (httpHeaderAcceptSelected === undefined) {
-            // to determine the Accept header
-            const httpHeaderAccepts: string[] = [
-                '*/*'
-            ];
-            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        }
-        if (httpHeaderAcceptSelected !== undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
-        }
-
-
-        let responseType_: 'text' | 'json' = 'json';
-        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
-            responseType_ = 'text';
-        }
-
-        return this.httpClient.post<ApiResponseBoolean>(`${this.configuration.basePath}/notification/v1/${encodeURIComponent(String(customerId))}/notify-in-repayment-loan`,
-            null,
-            {
-                params: queryParameters,
-                responseType: <any>responseType_,
-                withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress
-            }
-        );
-    }
-
-    /**
-     * @param templateRequest 
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public notifyCustomerHasInRepaymentLoanByTemplate(templateRequest: TemplateRequest, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseBoolean>;
-    public notifyCustomerHasInRepaymentLoanByTemplate(templateRequest: TemplateRequest, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseBoolean>>;
-    public notifyCustomerHasInRepaymentLoanByTemplate(templateRequest: TemplateRequest, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseBoolean>>;
-    public notifyCustomerHasInRepaymentLoanByTemplate(templateRequest: TemplateRequest, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
-        if (templateRequest === null || templateRequest === undefined) {
-            throw new Error('Required parameter templateRequest was null or undefined when calling notifyCustomerHasInRepaymentLoanByTemplate.');
+    public createRating(createRatingRequest: CreateRatingRequest, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseString>;
+    public createRating(createRatingRequest: CreateRatingRequest, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseString>>;
+    public createRating(createRatingRequest: CreateRatingRequest, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseString>>;
+    public createRating(createRatingRequest: CreateRatingRequest, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
+        if (createRatingRequest === null || createRatingRequest === undefined) {
+            throw new Error('Required parameter createRatingRequest was null or undefined when calling createRating.');
         }
 
         let headers = this.defaultHeaders;
@@ -183,8 +129,126 @@ export class NotificationControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.post<ApiResponseBoolean>(`${this.configuration.basePath}/notification/v1/notify-in-repayment-loan-by-template`,
-            templateRequest,
+        return this.httpClient.post<ApiResponseString>(`${this.configuration.basePath}/v1/rating/create-rating`,
+            createRatingRequest,
+            {
+                responseType: <any>responseType_,
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * @param customerId 
+     * @param applicationType 
+     * @param isRated 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getAllRatings(customerId: string, applicationType: string, isRated?: boolean, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseRating>;
+    public getAllRatings(customerId: string, applicationType: string, isRated?: boolean, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseRating>>;
+    public getAllRatings(customerId: string, applicationType: string, isRated?: boolean, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseRating>>;
+    public getAllRatings(customerId: string, applicationType: string, isRated?: boolean, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
+        if (customerId === null || customerId === undefined) {
+            throw new Error('Required parameter customerId was null or undefined when calling getAllRatings.');
+        }
+        if (applicationType === null || applicationType === undefined) {
+            throw new Error('Required parameter applicationType was null or undefined when calling getAllRatings.');
+        }
+
+        let queryParameters = new HttpParams({encoder: this.encoder});
+        if (customerId !== undefined && customerId !== null) {
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>customerId, 'customerId');
+        }
+        if (applicationType !== undefined && applicationType !== null) {
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>applicationType, 'applicationType');
+        }
+        if (isRated !== undefined && isRated !== null) {
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>isRated, 'isRated');
+        }
+
+        let headers = this.defaultHeaders;
+
+        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (httpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                '*/*'
+            ];
+            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
+        if (httpHeaderAcceptSelected !== undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+
+        let responseType_: 'text' | 'json' = 'json';
+        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+            responseType_ = 'text';
+        }
+
+        return this.httpClient.get<ApiResponseRating>(`${this.configuration.basePath}/v1/rating/get-all-ratings`,
+            {
+                params: queryParameters,
+                responseType: <any>responseType_,
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * @param updateRatingRequest 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public updateRating(updateRatingRequest: UpdateRatingRequest, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseString>;
+    public updateRating(updateRatingRequest: UpdateRatingRequest, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseString>>;
+    public updateRating(updateRatingRequest: UpdateRatingRequest, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseString>>;
+    public updateRating(updateRatingRequest: UpdateRatingRequest, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
+        if (updateRatingRequest === null || updateRatingRequest === undefined) {
+            throw new Error('Required parameter updateRatingRequest was null or undefined when calling updateRating.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (httpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                '*/*'
+            ];
+            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
+        if (httpHeaderAcceptSelected !== undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'application/json'
+        ];
+        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
+        if (httpContentTypeSelected !== undefined) {
+            headers = headers.set('Content-Type', httpContentTypeSelected);
+        }
+
+        let responseType_: 'text' | 'json' = 'json';
+        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+            responseType_ = 'text';
+        }
+
+        return this.httpClient.post<ApiResponseString>(`${this.configuration.basePath}/v1/rating/update-rating`,
+            updateRatingRequest,
             {
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,

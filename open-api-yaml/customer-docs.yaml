@@ -29,6 +29,42 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiResponseCompanyInfo'
+  /v1/rating/update-rating:
+    post:
+      tags:
+      - rating-controller
+      operationId: updateRating
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateRatingRequest'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseString'
+  /v1/rating/create-rating:
+    post:
+      tags:
+      - rating-controller
+      operationId: createRating
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateRatingRequest'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseString'
   /tng/v1/{customerId}/provides-information-salary-receipt-date:
     post:
       tags:
@@ -177,6 +213,24 @@ paths:
         required: true
         schema:
           type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseBoolean'
+  /notification/v1/notify-in-repayment-loan-by-template:
+    post:
+      tags:
+      - notification-controller
+      operationId: notifyCustomerHasInRepaymentLoanByTemplate
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TemplateRequest'
+        required: true
       responses:
         "200":
           description: OK
@@ -538,6 +592,34 @@ paths:
                 $ref: '#/components/schemas/ApiResponseCompanyInfo'
       security:
       - bearerAuth: []
+  /v1/rating/get-all-ratings:
+    get:
+      tags:
+      - rating-controller
+      operationId: getAllRatings
+      parameters:
+      - name: customerId
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: applicationType
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: isRated
+        in: query
+        required: false
+        schema:
+          type: boolean
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseRating'
   /info/v1/{customerId}:
     get:
       tags:
@@ -641,6 +723,24 @@ paths:
                 $ref: '#/components/schemas/ApiResponseApprovalLetter'
       security:
       - bearerAuth: []
+  /company/v1/delete-company:
+    delete:
+      tags:
+      - company-controller
+      operationId: deleteCompany
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeleteCompanyRequest'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseString'
 components:
   schemas:
     UpdateCompanyRequest:
@@ -701,6 +801,44 @@ components:
         createdAt:
           type: string
         updatedAt:
+          type: string
+    UpdateRatingRequest:
+      required:
+      - customerId
+      - customerOpinion
+      - rate
+      type: object
+      properties:
+        rate:
+          type: string
+        customerOpinion:
+          type: string
+        customerId:
+          type: string
+    ApiResponseString:
+      type: object
+      properties:
+        result:
+          type: string
+        errorCode:
+          type: string
+        message:
+          type: object
+        responseCode:
+          type: integer
+          format: int32
+    CreateRatingRequest:
+      required:
+      - applicationId
+      - applicationType
+      - customerId
+      type: object
+      properties:
+        customerId:
+          type: string
+        applicationId:
+          type: string
+        applicationType:
           type: string
     ApiResponseCheckIsPaydayByCustomerIdResponse:
       type: object
@@ -869,6 +1007,18 @@ components:
         responseCode:
           type: integer
           format: int32
+    TemplateRequest:
+      required:
+      - customerId
+      - templateName
+      type: object
+      properties:
+        templateName:
+          type: string
+        customerId:
+          type: string
+        amount:
+          type: string
     NewsLetterRequest:
       required:
       - email
@@ -1025,7 +1175,7 @@ components:
         borrowerEmploymentHistoryTextVariable1:
           type: string
         annualIncome:
-          maximum: 100000000
+          maximum: 500000000
           minimum: 1000000
           type: integer
           format: int32
@@ -1081,10 +1231,13 @@ components:
           type: string
     CustomerSignDoneRequest:
       required:
+      - approvalLetterId
       - idDocument
       - idRequest
       type: object
       properties:
+        approvalLetterId:
+          type: string
         idRequest:
           type: integer
           format: int32
@@ -1145,6 +1298,35 @@ components:
           type: string
         code:
           type: string
+    ApiResponseRating:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/Rating'
+        errorCode:
+          type: string
+        message:
+          type: object
+        responseCode:
+          type: integer
+          format: int32
+    Rating:
+      type: object
+      properties:
+        id:
+          type: string
+        applicationId:
+          type: string
+        applicationType:
+          type: string
+        rate:
+          type: string
+        customerOpinion:
+          type: string
+        customerId:
+          type: string
+        rated:
+          type: boolean
     ApiResponseCustomerInfoResponse:
       type: object
       properties:
@@ -1267,6 +1449,13 @@ components:
         responseCode:
           type: integer
           format: int32
+    DeleteCompanyRequest:
+      required:
+      - id
+      type: object
+      properties:
+        id:
+          type: string
   securitySchemes:
     Bearer:
       type: apiKey

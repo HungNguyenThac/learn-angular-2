@@ -69,6 +69,7 @@ export class SignContractComponent implements OnInit {
   errorText: string = '';
   disabledOTP: boolean = false;
   idDocument: any = null;
+  approvalLetterId: any = null;
   idRequest: any = null;
   contractDocumentPath: any = null;
   displaySignContract: boolean = false;
@@ -592,10 +593,6 @@ export class SignContractComponent implements OnInit {
             return this.handleErrorVerifyOtp(response);
           }
 
-          this.infoControllerService.customerSignDone(this.customerId, {
-            idDocument: this.idDocument,
-            idRequest: this.idRequest,
-          });
           this.store.dispatch(
             new fromActions.SetCurrentLoanCode(this.currentLoan.loanCode)
           );
