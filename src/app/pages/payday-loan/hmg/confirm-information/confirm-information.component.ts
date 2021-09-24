@@ -36,6 +36,7 @@ import { GlobalConstants } from '../../../../core/common/global-constants';
 import { Title } from '@angular/platform-browser';
 import * as fromActions from '../../../../core/store';
 import {
+  ERROR_CODE_KEY,
   PAYDAY_LOAN_STATUS,
   PL_STEP_NAVIGATION,
 } from '../../../../core/common/enum/payday-loan';
@@ -147,26 +148,38 @@ export class ConfirmInformationComponent
   }
 
   ngAfterViewInit() {
-    this.infoControllerService
-      .getInfo(this.customerId)
-      .subscribe((result: ApiResponseCustomerInfoResponse) => {
-        if (!result || result.responseCode !== 200) {
-          return this.showError('common.error', 'common.something_went_wrong');
-        }
-        this.customerInfo = result.result;
-        this.infoForm.patchValue({
-          name: this.customerInfo.personalData.firstName,
-          dateOfBirth: moment(
-            this.customerInfo.personalData.dateOfBirth
-          ).toISOString(),
-          gender: this.customerInfo.personalData.gender,
-          identityNumberOne: this.customerInfo.personalData.identityNumberOne,
-          idIssuePlace: this.customerInfo.personalData.idIssuePlace,
-          permanentAddress: this.customerInfo.personalData.addressTwoLine1,
-          currentAddress: this.customerInfo.personalData.addressOneLine1,
-          email: this.customerInfo.personalData.emailAddress,
-        });
-      });
+    this.getCustomerInfo();
+  }
+
+  getCustomerInfo() {
+    this.subManager.add(
+      this.infoControllerService
+        .getInfo(this.customerId)
+        .subscribe((response: ApiResponseCustomerInfoResponse) => {
+          if (!response || response.responseCode !== 200) {
+            return this.handleResponseError(response?.errorCode);
+          }
+
+          this.customerInfo = response.result;
+          this.store.dispatch(new fromActions.SetCustomerInfo(response.result));
+          this.initConfirmInfoFormData();
+        })
+    );
+  }
+
+  initConfirmInfoFormData() {
+    this.infoForm.patchValue({
+      name: this.customerInfo.personalData.firstName,
+      dateOfBirth: moment(
+        this.customerInfo.personalData.dateOfBirth
+      ).toISOString(),
+      gender: this.customerInfo.personalData.gender,
+      identityNumberOne: this.customerInfo.personalData.identityNumberOne,
+      idIssuePlace: this.customerInfo.personalData.idIssuePlace,
+      permanentAddress: this.customerInfo.personalData.addressTwoLine1,
+      currentAddress: this.customerInfo.personalData.addressOneLine1,
+      email: this.customerInfo.personalData.emailAddress,
+    });
   }
 
   ngOnDestroy(): void {
@@ -205,12 +218,7 @@ export class ConfirmInformationComponent
         })
         .subscribe((result: ApiResponseObject) => {
           if (!result || result.responseCode !== 200) {
-            const message = this.multiLanguageService.instant(
-              'payday_loan.error_code.' + result.errorCode.toLowerCase()
-            );
-
-            this.showError('common.error', message);
-            return;
+            return this.handleResponseError(result.errorCode);
           }
           this.confirmInfomationCustomer();
         })
@@ -257,10 +265,7 @@ export class ConfirmInformationComponent
       .borrowerStepOne(borrowerStepOneInput)
       .subscribe((result: ApiResponseObject) => {
         if (!result || result.responseCode !== 200) {
-          const message = this.multiLanguageService.instant(
-            'payday_loan.error_code.' + result.errorCode.toLowerCase()
-          );
-          return this.showError('common.error', message);
+          return this.handleResponseError(result.errorCode);
         }
         this.store.dispatch(
           new fromActions.SetCoreToken(result.result['access_token'])
@@ -268,6 +273,13 @@ export class ConfirmInformationComponent
         this.coreUserId = result.result['userId'];
         this.confirmInfomation();
       });
+  }
+
+  handleResponseError(errorCode: string) {
+    return this.showError(
+      'common.error',
+      errorCode ? ERROR_CODE_KEY[errorCode] : 'common.something_went_wrong'
+    );
   }
 
   confirmInfomation() {
@@ -278,10 +290,7 @@ export class ConfirmInformationComponent
       )
       .subscribe((result: ApiResponseObject) => {
         if (!result || result.responseCode !== 200) {
-          const message = this.multiLanguageService.instant(
-            'payday_loan.error_code.' + result.errorCode.toLowerCase()
-          );
-          return this.showError('common.error', message);
+          return this.handleResponseError(result.errorCode);
         }
 
         //success call Api create letter com svc
@@ -296,10 +305,7 @@ export class ConfirmInformationComponent
           .createLetter('HMG', createLetterRequest)
           .subscribe((result) => {
             if (!result || result.responseCode !== 200) {
-              const message = this.multiLanguageService.instant(
-                'payday_loan.error_code.' + result.errorCode.toLowerCase()
-              );
-              return this.showError('common.error', message);
+              return this.handleResponseError(result.errorCode);
             }
             // redirect to additional information
             this.router.navigateByUrl('/hmg/additional-information');
