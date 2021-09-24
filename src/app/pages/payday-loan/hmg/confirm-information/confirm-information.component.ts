@@ -286,11 +286,11 @@ export class ConfirmInformationComponent
 
         //success call Api create letter com svc
         const createLetterRequest: CreateLetterRequest = {
-          dateOfBirth: this.customerInfo.personalData.dateOfBirth,
-          name: this.customerInfo.personalData.firstName,
-          nationalId: this.customerId,
+          dateOfBirth: this.customerInfo?.personalData?.dateOfBirth,
+          name: this.customerInfo?.personalData?.firstName,
+          nationalId: this.customerInfo?.personalData?.identityNumberOne,
           customerId: this.customerId,
-          idIssuePlace: this.customerInfo.personalData.idIssuePlace,
+          idIssuePlace: this.customerInfo?.personalData?.idIssuePlace,
         };
         this.contractControllerService
           .createLetter('HMG', createLetterRequest)
