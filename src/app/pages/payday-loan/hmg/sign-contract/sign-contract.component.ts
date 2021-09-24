@@ -214,9 +214,9 @@ export class SignContractComponent implements OnInit {
     });
 
     this.subManager.add(
-      dialogRef.afterClosed().subscribe((confirmed: boolean) => {
+      dialogRef.afterClosed().subscribe((confirmed: string) => {
         console.log(confirmed);
-        if (confirmed) {
+        if (confirmed === "clickPrimary") {
           this.sendContractPaydayOtp();
         }
       })
