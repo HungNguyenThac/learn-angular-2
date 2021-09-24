@@ -35,6 +35,7 @@ import {
 import formatSlug from 'src/app/core/utils/format-slug';
 import {
   DOCUMENT_TYPE,
+  ERROR_CODE_KEY,
   PAYDAY_LOAN_STATUS,
   PL_STEP_NAVIGATION,
 } from 'src/app/core/common/enum/payday-loan';
@@ -134,15 +135,12 @@ export class LoanDeterminationComponent
     this.subManager.add(
       this.infoControllerService
         .getInfo(this.customerId)
-        .subscribe((result: ApiResponseCustomerInfoResponse) => {
-          if (!result || result.responseCode !== 200) {
-            return this.showError(
-              'common.error',
-              'common.something_went_wrong'
-            );
+        .subscribe((response: ApiResponseCustomerInfoResponse) => {
+          if (!response || response.responseCode !== 200) {
+            return this.handleResponseError(response?.errorCode);
           }
-          this.customerInfo = result.result;
-
+          this.customerInfo = response.result;
+          this.store.dispatch(new fromActions.SetCustomerInfo(response.result));
           this.initAmountSliderValue();
 
           this.checkLoanExisted();
@@ -182,6 +180,13 @@ export class LoanDeterminationComponent
       new fromActions.SetStepNavigationInfo(
         PL_STEP_NAVIGATION.CHOOSE_AMOUNT_TO_BORROW
       )
+    );
+  }
+
+  handleResponseError(errorCode: string) {
+    return this.showError(
+      'common.error',
+      errorCode ? ERROR_CODE_KEY[errorCode] : 'common.something_went_wrong'
     );
   }
 
@@ -243,7 +248,6 @@ export class LoanDeterminationComponent
       this.paydayLoanControllerService
         .createLoan(createApplicationRequest)
         .subscribe((result: ApiResponseApplyResponse) => {
-
           if (!result || result.responseCode !== 200) {
             return this.showError(
               'payday_loan.choose_amount.create_loan_failed_title',
@@ -265,11 +269,9 @@ export class LoanDeterminationComponent
           this.loanDeterminationForm.controls['collateralDocument'].value,
           this.customerId
         )
-        .subscribe((result) => {
-          if (!result || result.responseCode !== 200) {
-            const message =
-              'payday_loan.error_code.' + result.errorCode.toLowerCase();
-            return this.showError('common.error', message);
+        .subscribe((response) => {
+          if (!response || response.responseCode !== 200) {
+            return this.handleResponseError(response?.errorCode);
           }
 
           this.openCreateLoanSuccessModal();
@@ -284,15 +286,11 @@ export class LoanDeterminationComponent
     this.subManager.add(
       this.promotionControllerService
         .createVoucher1()
-        .subscribe((result: ApiResponseListVoucher) => {
-          if (!result && result.responseCode !== 200) {
-            const message = this.multiLanguageService.instant(
-              'payday_loan.error_code.' + result.errorCode.toLowerCase()
-            );
-            return this.showError('common.error', message);
+        .subscribe((response: ApiResponseListVoucher) => {
+          if (!response && response.responseCode !== 200) {
+            return this.handleResponseError(response?.errorCode);
           }
-          console.log('result', result);
-          this.listVoucher = result.result;
+          this.listVoucher = response.result;
         })
     );
   }

@@ -22,6 +22,8 @@ import {Router} from '@angular/router';
 import {Title} from '@angular/platform-browser';
 import {Subscription} from 'rxjs';
 import formatSlug from '../../../../core/utils/format-slug';
+import {PlPromptComponent} from '../../../../share/components';
+import {MatDialog, MatDialogRef} from '@angular/material/dialog';
 
 @Component({
   selector: 'ekyc',
@@ -45,7 +47,9 @@ export class EkycComponent implements OnInit, OnDestroy {
     private infoControllerService: InfoControllerService,
     private router: Router,
     private gpayVirtualAccountControllerService: GpayVirtualAccountControllerService,
-    private titleService: Title
+    private titleService: Title,
+    public dialog: MatDialog,
+    private promptDialogRef: MatDialogRef<PlPromptComponent>
   ) {
     this._initSubscribeState();
   }
@@ -102,8 +106,7 @@ export class EkycComponent implements OnInit, OnDestroy {
   }
 
   redirectToConfirmInformationPage() {
-    this.router.navigateByUrl('hmg/confirm-information').then((r) => {
-    });
+    this.router.navigateByUrl('hmg/confirm-information');
   }
 
   completeEkyc(ekycCompleteData) {
@@ -121,8 +124,6 @@ export class EkycComponent implements OnInit, OnDestroy {
     this.getVirtualAccount(this.customerId, ekycInfo.name);
 
     this.notificationEkycSuccess();
-
-    this.redirectToConfirmInformationPage();
   }
 
   showErrorModal(title?, content?) {
@@ -136,15 +137,30 @@ export class EkycComponent implements OnInit, OnDestroy {
   }
 
   notificationEkycSuccess() {
-    this.notificationService.openSuccessModal({
-      title: this.multiLanguageService.instant(
-        'payday_loan.ekyc.eKYC_successful'
-      ),
-      content: this.multiLanguageService.instant(
-        'payday_loan.ekyc.eKYC_successful_content'
-      ),
-      primaryBtnText: this.multiLanguageService.instant('common.confirm'),
+    this.promptDialogRef = this.dialog.open(PlPromptComponent, {
+      panelClass: 'custom-dialog-container',
+      height: 'auto',
+      minHeight: '194px',
+      maxWidth: '330px',
+      data: {
+        imgBackgroundClass: 'text-center',
+        imgUrl: 'assets/img/payday-loan/success-prompt-icon.png',
+        title: this.multiLanguageService.instant(
+          'payday_loan.ekyc.eKYC_successful'
+        ),
+        content: this.multiLanguageService.instant(
+          'payday_loan.ekyc.eKYC_successful_content'
+        ),
+        primaryBtnText: this.multiLanguageService.instant('common.confirm'),
+      },
     });
+    this.subManager.add(
+      this.promptDialogRef.afterClosed().subscribe((confirmed: boolean) => {
+        if (confirmed) {
+          this.redirectToConfirmInformationPage();
+        }
+      })
+    );
   }
 
   createVirtualAccount(customerId, accountName) {
@@ -154,15 +170,13 @@ export class EkycComponent implements OnInit, OnDestroy {
           customerId: customerId,
           accountName: changeAlias(accountName),
         })
-        .subscribe(
-          (response: ApiResponseVirtualAccount) => {
-            if (response.result && response.responseCode === 200) {
-              return response.result;
-            }
-
-            this.showErrorModal();
+        .subscribe((response: ApiResponseVirtualAccount) => {
+          if (response.result && response.responseCode === 200) {
+            return response.result;
           }
-        )
+
+          this.showErrorModal();
+        })
     );
   }
 
@@ -170,29 +184,26 @@ export class EkycComponent implements OnInit, OnDestroy {
     this.subManager.add(
       this.gpayVirtualAccountControllerService
         .getVirtualAccount(customerId)
-        .subscribe(
-          (response: ApiResponseVirtualAccount) => {
-            if (response.result && response.responseCode === 200) {
-              return response.result;
-            }
-
-            if (
-              response.errorCode === ERROR_CODE.DO_NOT_EXIST_VIRTUAL_ACCOUNT
-            ) {
-              return this.createVirtualAccount(customerId, accountName);
-            }
-
-            this.showErrorModal();
-            return null;
+        .subscribe((response: ApiResponseVirtualAccount) => {
+          if (response.result && response.responseCode === 200) {
+            return response.result;
           }
-        )
+
+          if (response.errorCode === ERROR_CODE.DO_NOT_EXIST_VIRTUAL_ACCOUNT) {
+            return this.createVirtualAccount(customerId, accountName);
+          }
+
+          this.showErrorModal();
+          return null;
+        })
     );
   }
 
   getCustomerInfo() {
     this.subManager.add(
-      this.infoControllerService.getInfo(this.customerId, null).subscribe(
-        (response) => {
+      this.infoControllerService
+        .getInfo(this.customerId, null)
+        .subscribe((response) => {
           if (
             response.responseCode !== 200 ||
             !response.result ||
@@ -226,8 +237,7 @@ export class EkycComponent implements OnInit, OnDestroy {
           }
 
           this.redirectToConfirmInformationPage();
-        }
-      )
+        })
     );
   }
 }

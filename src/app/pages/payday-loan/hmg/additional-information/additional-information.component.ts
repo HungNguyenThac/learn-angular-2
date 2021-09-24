@@ -25,6 +25,7 @@ import { GlobalConstants } from '../../../../core/common/global-constants';
 import { Title } from '@angular/platform-browser';
 import * as fromActions from '../../../../core/store';
 import {
+  ERROR_CODE_KEY,
   PAYDAY_LOAN_STATUS,
   PL_STEP_NAVIGATION,
 } from '../../../../core/common/enum/payday-loan';
@@ -114,33 +115,7 @@ export class AdditionalInformationComponent
     this.additionalInfoForm.controls['borrowerEmploymentAverageWage'].setValue(
       this.minAmount
     );
-    //get customer info data
-    this.subManager.add(
-      this.infoControllerService
-        .getInfo(this.customerId)
-        .subscribe((result: ApiResponseCustomerInfoResponse) => {
-          if (!result || result.responseCode !== 200) {
-            return this.showError(
-              'common.error',
-              'common.something_went_wrong'
-            );
-          }
-
-          this.customerInfo = result.result;
-          console.log('customerInfo', this.customerInfo);
-          this.additionalInfoForm.patchValue({
-            maritalStatus: this.customerInfo.personalData.maritalStatus,
-            educationType: this.customerInfo.personalData.educationType,
-            borrowerDetailTextVariable1:
-              this.customerInfo.personalData.borrowerDetailTextVariable1,
-            borrowerEmploymentHistoryTextVariable1:
-              this.customerInfo.personalData
-                .borrowerEmploymentHistoryTextVariable1,
-            borrowerEmploymentAverageWage:
-              this.customerInfo.personalData.annualIncome,
-          });
-        })
-    );
+    this.getCustomerInfo();
     this.cdr.detectChanges();
   }
 
@@ -193,6 +168,36 @@ export class AdditionalInformationComponent
     );
   }
 
+  getCustomerInfo() {
+    //get customer info data
+    this.subManager.add(
+      this.infoControllerService
+        .getInfo(this.customerId)
+        .subscribe((response: ApiResponseCustomerInfoResponse) => {
+          if (!response || response.responseCode !== 200) {
+            return this.handleResponseError(response?.errorCode);
+          }
+
+          this.customerInfo = response.result;
+          this.store.dispatch(new fromActions.SetCustomerInfo(response.result));
+          this.initAdditionalInfoFormData();
+        })
+    );
+  }
+
+  initAdditionalInfoFormData() {
+    this.additionalInfoForm.patchValue({
+      maritalStatus: this.customerInfo.personalData.maritalStatus,
+      educationType: this.customerInfo.personalData.educationType,
+      borrowerDetailTextVariable1:
+        this.customerInfo.personalData.borrowerDetailTextVariable1,
+      borrowerEmploymentHistoryTextVariable1:
+        this.customerInfo.personalData.borrowerEmploymentHistoryTextVariable1,
+      borrowerEmploymentAverageWage:
+        this.customerInfo.personalData.annualIncome,
+    });
+  }
+
   onSubmit() {
     if (!this.additionalInfoForm.valid) return;
     // maping for request api additional Infomation
@@ -217,20 +222,18 @@ export class AdditionalInformationComponent
         .subscribe((result: ApiResponseObject) => {
           //throw error
           if (!result || result.responseCode !== 200) {
-            if (result?.errorCode != null) {
-              const message = this.multiLanguageService.instant(
-                'payday_loan.error_code.' + result?.errorCode.toLowerCase()
-              );
-              return this.showError('common.error', message);
-            }
-            return this.showError(
-              'common.error',
-              'common.something_went_wrong'
-            );
+            return this.handleResponseError(result.errorCode);
           }
           // redirect to loan detemination
           this.router.navigateByUrl('hmg/sign-contract-terms-of-service');
         })
+    );
+  }
+
+  handleResponseError(errorCode: string) {
+    return this.showError(
+      'common.error',
+      errorCode ? ERROR_CODE_KEY[errorCode] : 'common.something_went_wrong'
     );
   }
 
