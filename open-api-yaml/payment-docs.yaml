@@ -110,29 +110,11 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiResponseString'
-  /v1/repayment/gpay/paydayloan-tng:
+  /v1/repayment/gpay/paydayloan:
     post:
       tags:
       - repayment-controller
       operationId: gpayRepaymentPaydayLoanTNG
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/RepaymentRequest'
-        required: true
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ApiResponseGpayRepaymentResponse'
-  /v1/repayment/gpay/paydayloan-hmg:
-    post:
-      tags:
-      - repayment-controller
-      operationId: gpayRepaymentPaydayLoanHmg
       requestBody:
         content:
           application/json:
@@ -473,12 +455,15 @@ components:
     RepaymentRequest:
       required:
       - applicationId
+      - applicationType
       - customerId
       type: object
       properties:
         customerId:
           type: string
         applicationId:
+          type: string
+        applicationType:
           type: string
         amount:
           type: integer

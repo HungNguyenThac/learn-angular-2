@@ -14,6 +14,7 @@
 export interface RepaymentRequest { 
     customerId: string;
     applicationId: string;
+    applicationType: string;
     amount?: number;
     tokenId?: string;
     bankCode?: string;

@@ -1,15 +1,15 @@
-import {Component, OnInit} from '@angular/core';
-import {Title} from '@angular/platform-browser';
-import {Store} from '@ngrx/store';
+import { Component, OnInit } from '@angular/core';
+import { Title } from '@angular/platform-browser';
+import { Store } from '@ngrx/store';
 import * as fromStore from '../../../../core/store';
 import * as fromActions from '../../../../core/store';
-import {Router} from '@angular/router';
-import {NotificationService} from '../../../../core/services/notification.service';
-import {MultiLanguageService} from '../../../../share/translate/multiLanguageService';
-import {Observable} from 'rxjs/Observable';
+import { Router } from '@angular/router';
+import { NotificationService } from '../../../../core/services/notification.service';
+import { MultiLanguageService } from '../../../../share/translate/multiLanguageService';
+import { Observable } from 'rxjs/Observable';
 import * as fromSelectors from '../../../../core/store/selectors';
-import {Subscription} from 'rxjs';
-import {GlobalConstants} from '../../../../core/common/global-constants';
+import { Subscription } from 'rxjs';
+import { GlobalConstants } from '../../../../core/common/global-constants';
 import {
   ApiResponsePaydayLoan,
   ApplicationControllerService,
@@ -18,7 +18,7 @@ import {
   ApiResponseCustomerInfoResponse,
   InfoControllerService,
 } from '../../../../../../open-api-modules/customer-api-docs';
-import {environment} from '../../../../../environments/environment';
+import { environment } from '../../../../../environments/environment';
 import {
   ApiResponseGpayRepaymentResponse,
   ApiResponseListRepaymentTransaction,
@@ -26,10 +26,11 @@ import {
   GpayVirtualAccountControllerService,
   RepaymentControllerService,
 } from '../../../../../../open-api-modules/payment-api-docs';
-import {PaymentProductInfo} from '../../../../public/models/payment-product-info.model';
-import {PaymentUserInfo} from '../../../../public/models/payment-user-info.model';
-import {PaymentVirtualAccount} from '../../../../public/models/payment-virtual-account.model';
+import { PaymentProductInfo } from '../../../../public/models/payment-product-info.model';
+import { PaymentUserInfo } from '../../../../public/models/payment-user-info.model';
+import { PaymentVirtualAccount } from '../../../../public/models/payment-virtual-account.model';
 import {
+  APPLICATION_TYPE,
   ERROR_CODE,
   PAYDAY_LOAN_STATUS,
 } from '../../../../core/common/enum/payday-loan';
@@ -85,8 +86,8 @@ export class PlChoosePaymentMethodComponent implements OnInit {
   ngOnInit(): void {
     this.titleService.setTitle(
       'Chọn hình thức thanh toán' +
-      ' - ' +
-      GlobalConstants.PL_VALUE_DEFAULT.PROJECT_NAME
+        ' - ' +
+        GlobalConstants.PL_VALUE_DEFAULT.PROJECT_NAME
     );
 
     this.getUserInfo();
@@ -140,9 +141,10 @@ export class PlChoosePaymentMethodComponent implements OnInit {
   finalization() {
     this.subManager.add(
       this.repaymentControllerService
-        .gpayRepaymentPaydayLoanHmg({
+        .gpayRepaymentPaydayLoanTNG({
           customerId: this.customerId,
           applicationId: this.currentLoan.id,
+          applicationType: APPLICATION_TYPE.PAYDAYLOAN_HMG,
         })
         .subscribe((response: ApiResponseGpayRepaymentResponse) => {
           if (!response || !response.result || !response.result.order_url)
