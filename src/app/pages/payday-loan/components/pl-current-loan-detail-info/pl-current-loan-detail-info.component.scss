@@ -95,3 +95,13 @@
     max-width: 200px;
   }
 }
+
+.pl-btn-finalization {
+  background-color: $system-color-indigo;
+
+  &:hover,
+  &:focus,
+  &:active {
+    background-color: #8f8dfa;
+  }
+}

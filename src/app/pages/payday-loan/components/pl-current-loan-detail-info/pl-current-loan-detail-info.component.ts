@@ -4,6 +4,7 @@ import {GPAY_RESULT_STATUS, PAYDAY_LOAN_STATUS, REPAYMENT_STATUS,} from '../../.
 import {PL_LABEL_STATUS} from 'src/app/core/common/enum/label-status';
 import {PaydayLoan} from '../../../../../../open-api-modules/loanapp-api-docs';
 import {CustomerInfoResponse} from '../../../../../../open-api-modules/customer-api-docs';
+import * as moment from "moment";
 
 @Component({
   selector: 'pl-current-loan-detail-info',
@@ -137,4 +138,30 @@ export class PlCurrentLoanDetailInfoComponent implements OnInit {
   additionalDocument() {
     // this.$router.push({ name: "PlAdditionalDocument" });
   }
+
+  formatSettlementDate(value) {
+    if (!value) {
+      return 'N/A';
+    }
+    const createdDate = new Date(value);
+    if (createdDate.getDate() > 15) {
+      return '15/' + moment(createdDate).add(1, 'month').format('MM/YYYY');
+    }
+
+    return '15/' + moment(createdDate).format('MM/YYYY');
+  }
+
+  formatPunishStartTime(value) {
+    if (!value) {
+      return 'N/A';
+    }
+
+    const createdDate = new Date(value);
+    if (createdDate.getDate() > 15) {
+      return '00h, 16/' + moment(createdDate).add(1, 'month').format('MM/YYYY');
+    }
+
+    return '00h, 16/' + moment(createdDate).format('MM/YYYY');
+  }
+
 }
