@@ -31,7 +31,10 @@
         ></p>
       </pl-inline-message>
 
-      <pl-inline-message [messageType]="'WARNING'" *ngIf="showMessageWaitingApproval">
+      <pl-inline-message
+        [messageType]="'WARNING'"
+        *ngIf="showMessageWaitingApproval"
+      >
         <p
           [innerHTML]="
             'payday_loan.current_loan.please_wait_approval' | translate
@@ -54,6 +57,7 @@
   </div>
   <div id="current-loan-amount-container">
     <ul class="pl-list">
+      <!--  total_amount   -->
       <li class="pl-list-item">
         <p class="pl-list-item-label">
           {{ "payday_loan.current_loan.total_amount" | translate }}
@@ -62,6 +66,8 @@
           {{ currentLoan?.expectedAmount | formatPrice: null }}
         </p>
       </li>
+
+      <!-- loan_code -->
       <li class="pl-list-item">
         <p class="pl-list-item-label">
           {{ "payday_loan.current_loan.loan_code" | translate }}
@@ -70,6 +76,8 @@
           {{ currentLoan?.loanCode }}
         </p>
       </li>
+
+      <!--   service_fee   -->
       <li class="pl-list-item">
         <p class="pl-list-item-label pl-service-fee-label">
           {{ "payday_loan.current_loan.service_fee" | translate }}
@@ -85,14 +93,28 @@
           {{ currentLoan?.totalServiceFees | formatPrice: null }}
         </p>
       </li>
+
+      <!--   settlement_date   -->
       <li class="pl-list-item" *ngIf="currentLoan?.status === 'IN_REPAYMENT'">
         <p class="pl-list-item-label">
           {{ "payday_loan.current_loan.settlement_date" | translate }}
         </p>
         <p class="pl-list-item-content">
-          {{ "payday_loan.current_loan.settlement_date_text" | translate }}
+          {{ formatSettlementDate(currentLoan.createdAt) }}
         </p>
       </li>
+
+      <!--  punish_start_time    -->
+      <li class="pl-list-item" *ngIf="currentLoan?.status === 'IN_REPAYMENT'">
+        <p class="pl-list-item-label">
+          {{ "payday_loan.current_loan.punish_start_time" | translate }}
+        </p>
+        <p class="pl-list-item-content">
+          {{ formatPunishStartTime(currentLoan.createdAt) }}
+        </p>
+      </li>
+
+      <!--  loan_status    -->
       <li class="pl-list-item">
         <p class="pl-list-item-label">
           {{ "payday_loan.current_loan.loan_status" | translate }}
@@ -110,7 +132,10 @@
   <div
     class="text-center"
     id="sign-contract-btn-submit"
-    *ngIf="currentLoan?.status === 'FUNDED' || currentLoan?.status === 'CONTRACT_AWAITING'"
+    *ngIf="
+      currentLoan?.status === 'FUNDED' ||
+      currentLoan?.status === 'CONTRACT_AWAITING'
+    "
   >
     <button
       class="insurance-btn btn-primary"
@@ -143,7 +168,7 @@
     <button
       type="button"
       id="pl-current-loan-finalization-btn"
-      class="btn-primary pl-btn-finalization"
+      class="insurance-btn btn-primary pl-btn-finalization"
       [disabled]="disabledBtnFinalization"
       (click)="finalizationTrigger()"
     >
