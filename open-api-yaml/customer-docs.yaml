@@ -6,7 +6,26 @@ servers:
 - url: http://localhost:8004
   description: Generated server url
 paths:
-  /company/v1/update-company/{id}:
+  /company/v1/{id}:
+    get:
+      tags:
+      - company-controller
+      operationId: getCompanyById
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseCompanyInfo'
+      security:
+      - bearerAuth: []
     put:
       tags:
       - company-controller
@@ -83,39 +102,6 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ApiResponseCheckIsPaydayByCustomerIdResponse'
-  /tng/v1/provides-information:
-    post:
-      tags:
-      - tng-controller
-      operationId: providesInformation
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                file:
-                  type: string
-                  format: binary
-      responses:
-        "200":
-          description: OK
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/ApiResponse'
-  /tng/v1/provides-information-test:
-    post:
-      tags:
-      - tng-controller
-      operationId: providesInformationTest
-      responses:
-        "200":
-          description: OK
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/ApiResponseObject'
   /tng/v1/provides-information-salary-receipt-date:
     post:
       tags:
@@ -183,7 +169,7 @@ paths:
     post:
       tags:
       - tng-controller
-      operationId: IsEmployeesWorkingatTNG
+      operationId: IsEmployeesWorkingAtTNG
       requestBody:
         content:
           application/json:
@@ -435,6 +421,30 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ApiResponseObject'
+  /info/v1/{customerId}/update-finance:
+    post:
+      tags:
+      - info-controller
+      operationId: updateFinance
+      parameters:
+      - name: customerId
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FinancialData'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseObject'
   /info/v1/{customerId}/return-confirm-information:
     post:
       tags:
@@ -643,26 +653,6 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ApiResponseCustomerInfoResponse'
-  /company/v1/{id}:
-    get:
-      tags:
-      - company-controller
-      operationId: getCompanyById
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          description: OK
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/ApiResponseCompanyInfo'
-      security:
-      - bearerAuth: []
   /company/v1/get-list:
     get:
       tags:
@@ -723,17 +713,17 @@ paths:
                 $ref: '#/components/schemas/ApiResponseApprovalLetter'
       security:
       - bearerAuth: []
-  /company/v1/delete-company:
+  /company/v1/{companyId}:
     delete:
       tags:
       - company-controller
       operationId: deleteCompany
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/DeleteCompanyRequest'
+      parameters:
+      - name: companyId
+        in: path
         required: true
+        schema:
+          type: string
       responses:
         "200":
           description: OK
@@ -758,6 +748,8 @@ components:
         createdBy:
           type: string
         taxCode:
+          type: string
+        businessCode:
           type: string
         owner:
           type: string
@@ -788,6 +780,8 @@ components:
           type: string
         taxCode:
           type: string
+        businessCode:
+          type: string
         owner:
           type: string
         address:
@@ -805,12 +799,16 @@ components:
     UpdateRatingRequest:
       required:
       - customerId
-      - customerOpinion
-      - rate
       type: object
       properties:
         rate:
           type: string
+          enum:
+          - NOT_SATISFIED
+          - SEMI_SATISFIED
+          - NORMAL
+          - SATISFIED
+          - VERY_SATISFIED
         customerOpinion:
           type: string
         customerId:
@@ -950,18 +948,13 @@ components:
           type: string
         backIdTwo:
           type: string
-    ApiResponse:
+    InformationSalaryReceiptDateRequest:
+      required:
+      - employee_code
       type: object
       properties:
-        result:
-          type: object
-        errorCode:
+        employee_code:
           type: string
-        message:
-          type: object
-        responseCode:
-          type: integer
-          format: int32
     ApiResponseObject:
       type: object
       properties:
@@ -974,13 +967,6 @@ components:
         responseCode:
           type: integer
           format: int32
-    InformationSalaryReceiptDateRequest:
-      required:
-      - employee_code
-      type: object
-      properties:
-        employee_code:
-          type: string
     InformationSalaryReceiptDateByOfficeCodeRequest:
       required:
       - officeCode
@@ -988,6 +974,18 @@ components:
       properties:
         officeCode:
           type: string
+    ApiResponse:
+      type: object
+      properties:
+        result:
+          type: object
+        errorCode:
+          type: string
+        message:
+          type: object
+        responseCode:
+          type: integer
+          format: int32
     TNGRequest:
       required:
       - employeeCode
@@ -1222,6 +1220,15 @@ components:
           type: object
           additionalProperties:
             type: object
+    FinancialData:
+      type: object
+      properties:
+        bankName:
+          type: string
+        bankCode:
+          type: string
+        accountNumber:
+          type: string
     GetTngDataRequest:
       required:
       - documentPath
@@ -1283,6 +1290,8 @@ components:
           type: string
           format: binary
         taxCode:
+          type: string
+        businessCode:
           type: string
         owner:
           type: string
@@ -1349,17 +1358,8 @@ components:
         kalapaData:
           $ref: '#/components/schemas/KalapaResponse'
         tngData:
-          $ref: '#/components/schemas/TnGInformationResponse'
-    FinancialData:
-      type: object
-      properties:
-        bankName:
-          type: string
-        bankCode:
-          type: string
-        accountNumber:
-          type: string
-    TnGInformationResponse:
+          $ref: '#/components/schemas/TNGInformationResponse'
+    TNGInformationResponse:
       type: object
       properties:
         createdAt:
@@ -1449,13 +1449,6 @@ components:
         responseCode:
           type: integer
           format: int32
-    DeleteCompanyRequest:
-      required:
-      - id
-      type: object
-      properties:
-        id:
-          type: string
   securitySchemes:
     Bearer:
       type: apiKey

@@ -23,6 +23,7 @@ import { ApiResponseObject } from '../model/models';
 import { ChooseCompanyRequest } from '../model/models';
 import { ConfirmInformationRequest } from '../model/models';
 import { CustomerSignDoneRequest } from '../model/models';
+import { FinancialData } from '../model/models';
 import { GetTngDataRequest } from '../model/models';
 import { UpdateInfoRequest } from '../model/models';
 
@@ -526,6 +527,64 @@ export class InfoControllerService {
 
         return this.httpClient.post<ApiResponseObject>(`${this.configuration.basePath}/info/v1/${encodeURIComponent(String(customerId))}/return-confirm-information`,
             null,
+            {
+                responseType: <any>responseType_,
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * @param customerId 
+     * @param financialData 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public updateFinance(customerId: string, financialData: FinancialData, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseObject>;
+    public updateFinance(customerId: string, financialData: FinancialData, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseObject>>;
+    public updateFinance(customerId: string, financialData: FinancialData, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseObject>>;
+    public updateFinance(customerId: string, financialData: FinancialData, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
+        if (customerId === null || customerId === undefined) {
+            throw new Error('Required parameter customerId was null or undefined when calling updateFinance.');
+        }
+        if (financialData === null || financialData === undefined) {
+            throw new Error('Required parameter financialData was null or undefined when calling updateFinance.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (httpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                '*/*'
+            ];
+            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
+        if (httpHeaderAcceptSelected !== undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'application/json'
+        ];
+        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
+        if (httpContentTypeSelected !== undefined) {
+            headers = headers.set('Content-Type', httpContentTypeSelected);
+        }
+
+        let responseType_: 'text' | 'json' = 'json';
+        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+            responseType_ = 'text';
+        }
+
+        return this.httpClient.post<ApiResponseObject>(`${this.configuration.basePath}/info/v1/${encodeURIComponent(String(customerId))}/update-finance`,
+            financialData,
             {
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,

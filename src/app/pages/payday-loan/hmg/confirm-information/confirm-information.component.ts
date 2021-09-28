@@ -18,7 +18,10 @@ import { Observable, Subscription } from 'rxjs';
 import { Store } from '@ngrx/store';
 import * as fromStore from 'src/app/core/store/index';
 import {
+  ApiResponseCompanyInfo,
   ApiResponseCustomerInfoResponse,
+  CompanyControllerService,
+  CompanyInfo,
   ConfirmInformationV2Request,
   CustomerInfoResponse,
   InfoControllerService,
@@ -36,6 +39,7 @@ import { GlobalConstants } from '../../../../core/common/global-constants';
 import { Title } from '@angular/platform-browser';
 import * as fromActions from '../../../../core/store';
 import {
+  COMPANY_NAME,
   ERROR_CODE_KEY,
   PAYDAY_LOAN_STATUS,
   PL_STEP_NAVIGATION,
@@ -73,6 +77,8 @@ export class ConfirmInformationComponent
   coreToken: string;
   hasActiveLoan$: Observable<boolean>;
 
+  companyInfo: CompanyInfo;
+
   subManager = new Subscription();
 
   constructor(
@@ -84,6 +90,7 @@ export class ConfirmInformationComponent
     private multiLanguageService: MultiLanguageService,
     private borrowerControllerService: BorrowerControllerService,
     private contractControllerService: ContractControllerService,
+    private companyControllerService: CompanyControllerService,
     private formBuilder: FormBuilder,
     private titleService: Title
   ) {
@@ -161,8 +168,12 @@ export class ConfirmInformationComponent
           }
 
           this.customerInfo = response.result;
+
           this.store.dispatch(new fromActions.SetCustomerInfo(response.result));
+
           this.initConfirmInfoFormData();
+
+          this.getCompanyInfoById(this.customerInfo.personalData.companyId);
         })
     );
   }
@@ -199,33 +210,117 @@ export class ConfirmInformationComponent
     );
   }
 
-  onInfoSubmit() {
+  onSubmit() {
     if (!this.infoForm.valid) return;
     this.subManager.add(
       this.infoV2ControllerService
-        .validateConfirmInformationRequestV2(this.customerId, {
-          firstName: this.infoForm.controls['name'].value,
-          dateOfBirth: this.formatTime(
-            this.infoForm.controls['dateOfBirth'].value
-          ),
-          gender: this.infoForm.controls['gender'].value,
-          identityNumberSix: this.infoForm.controls['email'].value,
-          identityNumberOne: this.infoForm.controls['identityNumberOne'].value,
-          addressTwoLine1: this.infoForm.controls['permanentAddress'].value,
-          addressOneLine1: this.infoForm.controls['currentAddress'].value,
-          emailAddress: this.infoForm.controls['email'].value,
-          idIssuePlace: this.infoForm.controls['idIssuePlace'].value,
-        })
+        .validateConfirmInformationRequestV2(
+          this.customerId,
+          this.buildConfirmInformationRequest()
+        )
         .subscribe((result: ApiResponseObject) => {
           if (!result || result.responseCode !== 200) {
             return this.handleResponseError(result.errorCode);
           }
-          this.confirmInfomationCustomer();
+          this.confirmInformationCustomer();
         })
     );
   }
 
-  bindingConfirmInfomationRequest(): ConfirmInformationV2Request {
+  confirmInformationCustomer() {
+    if (this.customerInfo.personalData.stepOne === 'DONE') {
+      this.coreUserId = this.customerInfo.personalData.coreUserId;
+      return this.confirmInformation();
+    }
+
+    const confirmInformationRequest = this.buildConfirmInformationRequest();
+
+    const borrowerStepOneInput = this.buildStepOneData(
+      confirmInformationRequest
+    );
+
+    this.borrowerControllerService
+      .borrowerStepOne(borrowerStepOneInput)
+      .subscribe((result: ApiResponseObject) => {
+        if (!result || result.responseCode !== 200) {
+          return this.handleResponseError(result.errorCode);
+        }
+        this.store.dispatch(
+          new fromActions.SetCoreToken(result.result['access_token'])
+        );
+        this.coreUserId = result.result['userId'];
+        this.confirmInformation();
+      });
+  }
+
+  getCompanyInfoById(companyId: string) {
+    this.subManager.add(
+      this.companyControllerService
+        .getCompanyById(companyId)
+        .subscribe((responseCompanyInfo: ApiResponseCompanyInfo) => {
+          if (
+            !responseCompanyInfo ||
+            responseCompanyInfo.responseCode !== 200
+          ) {
+            return this.handleResponseError(responseCompanyInfo.errorCode);
+          }
+          this.companyInfo = responseCompanyInfo.result;
+        })
+    );
+  }
+
+  handleResponseError(errorCode: string) {
+    return this.notificationService.openErrorModal({
+      title: this.multiLanguageService.instant('common.error'),
+      content: this.multiLanguageService.instant(
+        errorCode && ERROR_CODE_KEY[errorCode]
+          ? ERROR_CODE_KEY[errorCode]
+          : 'common.something_went_wrong'
+      ),
+      primaryBtnText: this.multiLanguageService.instant('common.confirm'),
+    });
+  }
+
+  confirmInformation() {
+    this.infoV2ControllerService
+      .confirmInformationV2(
+        this.customerId,
+        this.buildConfirmInformationRequest()
+      )
+      .subscribe((result: ApiResponseObject) => {
+        if (!result || result.responseCode !== 200) {
+          return this.handleResponseError(result.errorCode);
+        }
+
+        this.createApprovalLetter();
+      });
+  }
+
+  createApprovalLetter() {
+    const createLetterRequest: CreateLetterRequest =
+      this.buildCreateLetterRequest();
+    this.contractControllerService
+      .createLetter(COMPANY_NAME.HMG, createLetterRequest)
+      .subscribe((result) => {
+        if (!result || result.responseCode !== 200) {
+          return this.handleResponseError(result.errorCode);
+        }
+
+        this.router.navigateByUrl('/hmg/additional-information');
+      });
+  }
+
+  buildCreateLetterRequest(): CreateLetterRequest {
+    return {
+      dateOfBirth: this.customerInfo?.personalData?.dateOfBirth,
+      name: this.customerInfo?.personalData?.firstName,
+      nationalId: this.customerInfo?.personalData?.identityNumberOne,
+      customerId: this.customerId,
+      idIssuePlace: this.customerInfo?.personalData?.idIssuePlace,
+    };
+  }
+
+  buildConfirmInformationRequest(): ConfirmInformationV2Request {
     return {
       firstName: this.infoForm.controls['name'].value,
       dateOfBirth: this.formatTime(this.infoForm.controls['dateOfBirth'].value),
@@ -240,85 +335,33 @@ export class ConfirmInformationComponent
     };
   }
 
-  confirmInfomationCustomer() {
-    if (this.customerInfo.personalData.stepOne === 'DONE') {
-      this.coreUserId = this.customerInfo.personalData.coreUserId;
-      return this.confirmInfomation();
-    }
-    const data = this.bindingConfirmInfomationRequest();
-
-    const borrowerStepOneInput: BorrowerStepOneInput = {
+  buildStepOneData(
+    confirmInformationRequest: ConfirmInformationV2Request
+  ): BorrowerStepOneInput {
+    return {
       customerId: this.customerId,
       password: this.password,
       confirmPassword: this.password,
       mobileNumber: this.customerInfo.personalData.mobileNumber,
-      firstName: data.firstName,
-      dateOfBirth: data.dateOfBirth,
-      gender: data.gender,
-      identityNumberOne: data.identityNumberOne,
-      identityNumberSix: data.identityNumberSix,
-      addressOneLine1: data.addressOneLine1,
-      addressTwoLine1: data.addressTwoLine1,
+      firstName: confirmInformationRequest.firstName,
+      dateOfBirth: confirmInformationRequest.dateOfBirth,
+      gender: confirmInformationRequest.gender,
+      identityNumberOne: confirmInformationRequest.identityNumberOne,
+      identityNumberSix: confirmInformationRequest.identityNumberSix,
+      emailAddress: confirmInformationRequest.emailAddress,
+      //permanent address
+      addressOneLine1: confirmInformationRequest.addressOneLine1,
+      //temporary address
+      addressTwoLine1: confirmInformationRequest.addressTwoLine1,
+      //Company Name
+      borrowerProfileTextVariable2: this.companyInfo.name,
+      //Business company code
+      borrowerProfileTextVariable3: this.companyInfo.businessCode,
+      //Company director
+      borrowerProfileTextVariable4: this.companyInfo.owner,
+      //Company Address
+      borrowerProfileTextVariable5: this.companyInfo.address,
     };
-
-    this.borrowerControllerService
-      .borrowerStepOne(borrowerStepOneInput)
-      .subscribe((result: ApiResponseObject) => {
-        if (!result || result.responseCode !== 200) {
-          return this.handleResponseError(result.errorCode);
-        }
-        this.store.dispatch(
-          new fromActions.SetCoreToken(result.result['access_token'])
-        );
-        this.coreUserId = result.result['userId'];
-        this.confirmInfomation();
-      });
-  }
-
-  handleResponseError(errorCode: string) {
-    return this.showError(
-      'common.error',
-      errorCode ? ERROR_CODE_KEY[errorCode] : 'common.something_went_wrong'
-    );
-  }
-
-  confirmInfomation() {
-    this.infoV2ControllerService
-      .confirmInformationV2(
-        this.customerId,
-        this.bindingConfirmInfomationRequest()
-      )
-      .subscribe((result: ApiResponseObject) => {
-        if (!result || result.responseCode !== 200) {
-          return this.handleResponseError(result.errorCode);
-        }
-
-        //success call Api create letter com svc
-        const createLetterRequest: CreateLetterRequest = {
-          dateOfBirth: this.customerInfo?.personalData?.dateOfBirth,
-          name: this.customerInfo?.personalData?.firstName,
-          nationalId: this.customerInfo?.personalData?.identityNumberOne,
-          customerId: this.customerId,
-          idIssuePlace: this.customerInfo?.personalData?.idIssuePlace,
-        };
-        this.contractControllerService
-          .createLetter('HMG', createLetterRequest)
-          .subscribe((result) => {
-            if (!result || result.responseCode !== 200) {
-              return this.handleResponseError(result.errorCode);
-            }
-            // redirect to additional information
-            this.router.navigateByUrl('/hmg/additional-information');
-          });
-      });
-  }
-
-  showError(title: string, content: string) {
-    return this.notificationService.openErrorModal({
-      title: this.multiLanguageService.instant(title),
-      content: this.multiLanguageService.instant(content),
-      primaryBtnText: this.multiLanguageService.instant('common.confirm'),
-    });
   }
 
   formatTime(timeInput) {
