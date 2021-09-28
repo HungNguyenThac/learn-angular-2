@@ -188,7 +188,7 @@ export class ConfirmInformationComponent
 
   initHeaderInfo() {
     this.store.dispatch(new fromActions.ResetPaydayLoanInfo());
-    this.store.dispatch(new fromActions.SetShowLeftBtn(true));
+    this.store.dispatch(new fromActions.SetShowLeftBtn(false));
     this.store.dispatch(new fromActions.SetShowRightBtn(false));
     this.store.dispatch(new fromActions.SetShowProfileBtn(true));
     this.store.dispatch(new fromActions.SetShowStepNavigation(true));
