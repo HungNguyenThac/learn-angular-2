@@ -12,7 +12,7 @@
 
 
 export interface BorrowerLoanContractDownloadRequest { 
-    epayCustomerId?: string;
+    epayCustomerId: string;
     access_token: string;
     loanUuid: string;
     contractUuid: string;

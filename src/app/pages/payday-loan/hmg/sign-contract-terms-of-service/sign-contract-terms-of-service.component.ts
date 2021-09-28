@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import {
+  COMPANY_NAME,
   ERROR_CODE,
   ERROR_CODE_KEY,
   PAYDAY_LOAN_STATUS,
@@ -209,7 +210,7 @@ export class SignContractTermsOfServiceComponent implements OnInit, OnDestroy {
 
   sendLetterOtp() {
     let params = this.buildParamsSendLetterOtp();
-    this.contractControllerService.sendLetterOTPHMG('HMG', params).subscribe(
+    this.contractControllerService.sendLetterOTPHMG(COMPANY_NAME.HMG, params).subscribe(
       (response: ApiResponseSignWithOTPResponse) => {
         if (response && response.responseCode === 200) {
           this.disabledOTP = false;
@@ -313,7 +314,7 @@ export class SignContractTermsOfServiceComponent implements OnInit, OnDestroy {
   createApprovalLetter() {
     this.subManager.add(
       this.contractControllerService
-        .createLetter('HMG', {
+        .createLetter(COMPANY_NAME.HMG, {
           name: this.userInfo.personalData?.firstName,
           dateOfBirth: this.userInfo.personalData?.dateOfBirth,
           nationalId: this.userInfo.personalData?.identityNumberOne,
