@@ -13,7 +13,7 @@
 
 export interface UpdateRatingRequest { 
     rate?: UpdateRatingRequest.RateEnum;
-    customerOpinion: string;
+    customerOpinion?: string;
     customerId: string;
 }
 export namespace UpdateRatingRequest {

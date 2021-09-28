@@ -799,7 +799,6 @@ components:
     UpdateRatingRequest:
       required:
       - customerId
-      - customerOpinion
       type: object
       properties:
         rate:
