@@ -10,8 +10,8 @@
  * Do not edit the class manually.
  */
 import { PersonalData } from './personalData';
-import { TnGInformationResponse } from './tnGInformationResponse';
 import { KalapaResponse } from './kalapaResponse';
+import { TNGInformationResponse } from './tNGInformationResponse';
 import { FinancialData } from './financialData';
 
 
@@ -19,6 +19,6 @@ export interface CustomerInfoResponse {
     personalData?: PersonalData;
     financialData?: FinancialData;
     kalapaData?: KalapaResponse;
-    tngData?: TnGInformationResponse;
+    tngData?: TNGInformationResponse;
 }
 

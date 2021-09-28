@@ -131,3 +131,8 @@ export enum APPLICATION_TYPE {
   PAYDAYLOAN_HMG = 'PaydayLoan-HMG',
   INSURANCE = 'Insurance',
 }
+
+export enum COMPANY_NAME {
+  HMG = 'HMG',
+  TNG = 'TNG',
+}

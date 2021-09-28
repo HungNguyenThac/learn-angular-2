@@ -13,6 +13,7 @@
 
 export interface BorrowerStepOneInput { 
     customerId: string;
+    emailAddress: string;
     password: string;
     confirmPassword: string;
     mobileNumber: string;
@@ -21,7 +22,11 @@ export interface BorrowerStepOneInput {
     gender: string;
     identityNumberOne: string;
     identityNumberSix?: string;
-    addressOneLine1?: string;
-    addressTwoLine1?: string;
+    borrowerProfileTextVariable2: string;
+    borrowerProfileTextVariable3: string;
+    borrowerProfileTextVariable4: string;
+    borrowerProfileTextVariable5: string;
+    addressOneLine1: string;
+    addressTwoLine1: string;
 }
 

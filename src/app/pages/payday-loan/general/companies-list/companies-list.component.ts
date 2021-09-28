@@ -12,7 +12,10 @@ import {
   ApplicationControllerService,
 } from 'open-api-modules/loanapp-api-docs';
 import { Observable, Subscription } from 'rxjs';
-import { PAYDAY_LOAN_STATUS } from 'src/app/core/common/enum/payday-loan';
+import {
+  COMPANY_NAME,
+  PAYDAY_LOAN_STATUS,
+} from 'src/app/core/common/enum/payday-loan';
 import { NotificationService } from 'src/app/core/services/notification.service';
 import formatSlug from 'src/app/core/utils/format-slug';
 import { MultiLanguageService } from 'src/app/share/translate/multiLanguageService';
@@ -72,7 +75,6 @@ export class CompaniesListComponent implements OnInit, OnDestroy {
     );
   }
 
-
   initHeaderInfo() {
     this.store.dispatch(new fromActions.ResetPaydayLoanInfo());
     this.store.dispatch(new fromActions.SetNavigationTitle('Ứng lương 0% lãi'));
@@ -92,10 +94,7 @@ export class CompaniesListComponent implements OnInit, OnDestroy {
             );
           }
 
-          if (result.result.personalData.companyId) {
-            this.getActiveLoan();
-          }
-
+          this.getActiveLoan();
           this.getListCompany();
         })
     );
@@ -123,7 +122,7 @@ export class CompaniesListComponent implements OnInit, OnDestroy {
   getListCompany() {
     this.subManager.add(
       this.companyControllerService
-        .getListCompany('HMG')
+        .getListCompany(COMPANY_NAME.HMG)
         .subscribe((result: ApiResponseListCompanyInfo) => {
           if (!result || result.responseCode !== 200) {
             return this.showError(
