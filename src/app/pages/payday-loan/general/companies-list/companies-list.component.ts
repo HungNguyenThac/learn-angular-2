@@ -107,7 +107,7 @@ export class CompaniesListComponent implements OnInit, OnDestroy {
         .getActiveLoan(this.customerId, this.coreToken)
         .subscribe((result: ApiResponsePaydayLoan) => {
           if (!result || result.responseCode !== 200) {
-            return this.router.navigateByUrl('/hmg/ekyc');
+            return;
           }
           this.store.dispatch(new fromActions.SetHasActiveLoanStatus(true));
           return this.router.navigate([
