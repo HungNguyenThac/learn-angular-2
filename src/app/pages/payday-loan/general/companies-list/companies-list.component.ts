@@ -101,6 +101,9 @@ export class CompaniesListComponent implements OnInit, OnDestroy {
   }
 
   getActiveLoan() {
+    if (!this.coreToken) {
+      return;
+    }
     this.subManager.add(
       this.applicationControllerService
         .getActiveLoan(this.customerId, this.coreToken)
