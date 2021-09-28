@@ -266,7 +266,6 @@ export class SignContractTermsOfServiceComponent implements OnInit, OnDestroy {
    */
   getContract() {
     this.getUserInfo();
-    this.getLatestApprovalLetter();
   }
 
   downloadFile(documentPath) {
@@ -294,9 +293,8 @@ export class SignContractTermsOfServiceComponent implements OnInit, OnDestroy {
             return this.showErrorModal();
           }
           this.userInfo = response.result;
-        },
-        (error) => {},
-        () => {}
+          this.getLatestApprovalLetter();
+        }
       )
     );
   }
