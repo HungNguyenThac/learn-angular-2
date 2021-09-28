@@ -40,7 +40,6 @@ model/confirmInformationV2Request.ts
 model/createRatingRequest.ts
 model/customerInfoResponse.ts
 model/customerSignDoneRequest.ts
-model/deleteCompanyRequest.ts
 model/financialData.ts
 model/fraudCheck.ts
 model/getTngDataRequest.ts
@@ -48,16 +47,15 @@ model/idCardInfo.ts
 model/informationSalaryReceiptDateByOfficeCodeRequest.ts
 model/informationSalaryReceiptDateRequest.ts
 model/inlineObject.ts
-model/inlineObject1.ts
 model/kalapaResponse.ts
 model/models.ts
 model/newsLetterRequest.ts
 model/personalData.ts
 model/rating.ts
 model/selfieCheck.ts
+model/tNGInformationResponse.ts
 model/tNGRequest.ts
 model/templateRequest.ts
-model/tnGInformationResponse.ts
 model/updateInfoRequest.ts
 model/updateRatingRequest.ts
 variables.ts

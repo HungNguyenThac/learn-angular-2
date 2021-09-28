@@ -18,6 +18,9 @@ import * as fromSelectors from '../../../../core/store/selectors';
 import { Store } from '@ngrx/store';
 import * as fromStore from '../../../../core/store';
 import { environment } from '../../../../../environments/environment';
+import { ERROR_CODE_KEY } from '../../../../core/common/enum/payday-loan';
+import { NotificationService } from '../../../../core/services/notification.service';
+import { MultiLanguageService } from '../../../translate/multiLanguageService';
 
 @Component({
   selector: 'app-transfer-payment',
@@ -46,7 +49,9 @@ export class TransferPaymentComponent implements OnInit, OnDestroy {
   constructor(
     private dialog: MatDialog,
     private gpayVirtualAccountControllerService: GpayVirtualAccountControllerService,
-    private store: Store<fromStore.State>
+    private store: Store<fromStore.State>,
+    private notificationService: NotificationService,
+    private multiLanguageService: MultiLanguageService
   ) {
     this.customerId$ = store.select(fromSelectors.getCustomerIdState);
 
@@ -70,12 +75,6 @@ export class TransferPaymentComponent implements OnInit, OnDestroy {
   }
 
   displayGuideDialog() {
-    this.gpayVirtualAccountControllerService.createPaymentOrder1({
-      customerId: this.customerId,
-      applicationId: this.productInfo.id,
-      applicationType: environment.PAYMENT_ORDER_NAME,
-    });
-
     const dialogRef = this.dialog.open(GuideTransferPaymentDialogComponent, {
       panelClass: 'custom-dialog-container',
       height: 'auto',
@@ -93,6 +92,39 @@ export class TransferPaymentComponent implements OnInit, OnDestroy {
         console.log(confirmed);
       })
     );
+  }
+
+  createPaymentOrder() {
+    this.subManager.add(
+      this.gpayVirtualAccountControllerService
+        .createPaymentOrder1({
+          customerId: this.customerId,
+          applicationId: this.productInfo.id,
+          applicationType: environment.PAYMENT_ORDER_NAME,
+        })
+        .subscribe((response) => {
+          if (
+            !response ||
+            response.errorCode ||
+            response.responseCode !== 200
+          ) {
+            return this.handleResponseError(response?.errorCode);
+          }
+          this.displayGuideDialog();
+        })
+    );
+  }
+
+  handleResponseError(errorCode: string) {
+    return this.notificationService.openErrorModal({
+      title: this.multiLanguageService.instant('common.error'),
+      content: this.multiLanguageService.instant(
+        errorCode && ERROR_CODE_KEY[errorCode]
+          ? ERROR_CODE_KEY[errorCode]
+          : 'common.something_went_wrong'
+      ),
+      primaryBtnText: this.multiLanguageService.instant('common.confirm'),
+    });
   }
 
   ngOnDestroy(): void {

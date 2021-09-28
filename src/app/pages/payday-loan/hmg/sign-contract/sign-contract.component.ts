@@ -25,6 +25,7 @@ import * as fromActions from '../../../../core/store';
 import { MatDialog } from '@angular/material/dialog';
 import * as fromSelectors from '../../../../core/store/selectors';
 import {
+  COMPANY_NAME,
   DOCUMENT_TYPE,
   ERROR_CODE,
   ERROR_CODE_KEY,
@@ -540,7 +541,7 @@ export class SignContractComponent implements OnInit {
   }
 
   sendContractOtp(params: SendContractOTPRequest) {
-    return this.contractControllerService.sendContractOTP('HMG', params).pipe(
+    return this.contractControllerService.sendContractOTP(COMPANY_NAME.HMG, params).pipe(
       map((response: ApiResponseSignWithOTPResponse) => {
         return response;
       })

@@ -13,12 +13,17 @@
 
 export interface ProfileUpdateRequest { 
     access_token: string;
-    emailAddress?: string;
     epayCustomerId: string;
     firstName?: string;
+    emailAddress?: string;
+    identityNumberSix?: string;
     dateOfBirth?: string;
     gender?: string;
     identityNumberOne?: string;
+    borrowerProfileTextVariable2?: string;
+    borrowerProfileTextVariable3?: string;
+    borrowerProfileTextVariable4?: string;
+    borrowerProfileTextVariable5?: string;
     addressOneLine1?: string;
     addressTwoLine1?: string;
 }

@@ -23,7 +23,6 @@ import { ApiResponseObject } from '../model/models';
 import { InformationSalaryReceiptDateByOfficeCodeRequest } from '../model/models';
 import { InformationSalaryReceiptDateRequest } from '../model/models';
 import { InlineObject } from '../model/models';
-import { InlineObject1 } from '../model/models';
 import { TNGRequest } from '../model/models';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
@@ -141,12 +140,12 @@ export class TngControllerService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public isEmployeesWorkingatTNG(tNGRequest: TNGRequest, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseObject>;
-    public isEmployeesWorkingatTNG(tNGRequest: TNGRequest, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseObject>>;
-    public isEmployeesWorkingatTNG(tNGRequest: TNGRequest, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseObject>>;
-    public isEmployeesWorkingatTNG(tNGRequest: TNGRequest, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
+    public isEmployeesWorkingAtTNG(tNGRequest: TNGRequest, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseObject>;
+    public isEmployeesWorkingAtTNG(tNGRequest: TNGRequest, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseObject>>;
+    public isEmployeesWorkingAtTNG(tNGRequest: TNGRequest, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseObject>>;
+    public isEmployeesWorkingAtTNG(tNGRequest: TNGRequest, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
         if (tNGRequest === null || tNGRequest === undefined) {
-            throw new Error('Required parameter tNGRequest was null or undefined when calling isEmployeesWorkingatTNG.');
+            throw new Error('Required parameter tNGRequest was null or undefined when calling isEmployeesWorkingAtTNG.');
         }
 
         let headers = this.defaultHeaders;
@@ -191,66 +190,15 @@ export class TngControllerService {
     }
 
     /**
+     * @param organizationName 
      * @param inlineObject 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public providesInformation(inlineObject?: InlineObject, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponse>;
-    public providesInformation(inlineObject?: InlineObject, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponse>>;
-    public providesInformation(inlineObject?: InlineObject, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponse>>;
-    public providesInformation(inlineObject?: InlineObject, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
-
-        let headers = this.defaultHeaders;
-
-        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-        if (httpHeaderAcceptSelected === undefined) {
-            // to determine the Accept header
-            const httpHeaderAccepts: string[] = [
-                '*/*'
-            ];
-            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        }
-        if (httpHeaderAcceptSelected !== undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
-        }
-
-
-        // to determine the Content-Type header
-        const consumes: string[] = [
-            'application/json'
-        ];
-        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
-        if (httpContentTypeSelected !== undefined) {
-            headers = headers.set('Content-Type', httpContentTypeSelected);
-        }
-
-        let responseType_: 'text' | 'json' = 'json';
-        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
-            responseType_ = 'text';
-        }
-
-        return this.httpClient.post<ApiResponse>(`${this.configuration.basePath}/tng/v1/provides-information`,
-            inlineObject,
-            {
-                responseType: <any>responseType_,
-                withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress
-            }
-        );
-    }
-
-    /**
-     * @param organizationName 
-     * @param inlineObject1 
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public providesInformationOfEmployees(organizationName: string, inlineObject1?: InlineObject1, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponse>;
-    public providesInformationOfEmployees(organizationName: string, inlineObject1?: InlineObject1, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponse>>;
-    public providesInformationOfEmployees(organizationName: string, inlineObject1?: InlineObject1, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponse>>;
-    public providesInformationOfEmployees(organizationName: string, inlineObject1?: InlineObject1, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
+    public providesInformationOfEmployees(organizationName: string, inlineObject?: InlineObject, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponse>;
+    public providesInformationOfEmployees(organizationName: string, inlineObject?: InlineObject, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponse>>;
+    public providesInformationOfEmployees(organizationName: string, inlineObject?: InlineObject, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponse>>;
+    public providesInformationOfEmployees(organizationName: string, inlineObject?: InlineObject, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
         if (organizationName === null || organizationName === undefined) {
             throw new Error('Required parameter organizationName was null or undefined when calling providesInformationOfEmployees.');
         }
@@ -291,7 +239,7 @@ export class TngControllerService {
         }
 
         return this.httpClient.post<ApiResponse>(`${this.configuration.basePath}/tng/v1/provides-information-of-employees`,
-            inlineObject1,
+            inlineObject,
             {
                 params: queryParameters,
                 responseType: <any>responseType_,
@@ -401,47 +349,6 @@ export class TngControllerService {
 
         return this.httpClient.post<ApiResponseObject>(`${this.configuration.basePath}/tng/v1/provides-information-salary-receipt-date-via-code-office`,
             informationSalaryReceiptDateByOfficeCodeRequest,
-            {
-                responseType: <any>responseType_,
-                withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress
-            }
-        );
-    }
-
-    /**
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public providesInformationTest(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseObject>;
-    public providesInformationTest(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseObject>>;
-    public providesInformationTest(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseObject>>;
-    public providesInformationTest(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
-
-        let headers = this.defaultHeaders;
-
-        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-        if (httpHeaderAcceptSelected === undefined) {
-            // to determine the Accept header
-            const httpHeaderAccepts: string[] = [
-                '*/*'
-            ];
-            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        }
-        if (httpHeaderAcceptSelected !== undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
-        }
-
-
-        let responseType_: 'text' | 'json' = 'json';
-        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
-            responseType_ = 'text';
-        }
-
-        return this.httpClient.post<ApiResponseObject>(`${this.configuration.basePath}/tng/v1/provides-information-test`,
-            null,
             {
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,

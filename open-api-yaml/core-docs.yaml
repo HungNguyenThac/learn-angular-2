@@ -967,9 +967,16 @@ components:
           type: string
     BorrowerStepOneInput:
       required:
+      - addressOneLine1
+      - addressTwoLine1
+      - borrowerProfileTextVariable2
+      - borrowerProfileTextVariable3
+      - borrowerProfileTextVariable4
+      - borrowerProfileTextVariable5
       - confirmPassword
       - customerId
       - dateOfBirth
+      - emailAddress
       - firstName
       - gender
       - identityNumberOne
@@ -978,6 +985,8 @@ components:
       type: object
       properties:
         customerId:
+          type: string
+        emailAddress:
           type: string
         password:
           type: string
@@ -994,6 +1003,14 @@ components:
         identityNumberOne:
           type: string
         identityNumberSix:
+          type: string
+        borrowerProfileTextVariable2:
+          type: string
+        borrowerProfileTextVariable3:
+          type: string
+        borrowerProfileTextVariable4:
+          type: string
+        borrowerProfileTextVariable5:
           type: string
         addressOneLine1:
           type: string
@@ -1060,17 +1077,27 @@ components:
       properties:
         access_token:
           type: string
-        emailAddress:
-          type: string
         epayCustomerId:
           type: string
         firstName:
+          type: string
+        emailAddress:
+          type: string
+        identityNumberSix:
           type: string
         dateOfBirth:
           type: string
         gender:
           type: string
         identityNumberOne:
+          type: string
+        borrowerProfileTextVariable2:
+          type: string
+        borrowerProfileTextVariable3:
+          type: string
+        borrowerProfileTextVariable4:
+          type: string
+        borrowerProfileTextVariable5:
           type: string
         addressOneLine1:
           type: string
@@ -1505,6 +1532,7 @@ components:
       required:
       - access_token
       - contractUuid
+      - epayCustomerId
       - loanUuid
       type: object
       properties:

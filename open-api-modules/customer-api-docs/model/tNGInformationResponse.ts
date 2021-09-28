@@ -11,7 +11,17 @@
  */
 
 
-export interface DeleteCompanyRequest { 
-    id: string;
+export interface TNGInformationResponse { 
+    createdAt?: string;
+    hoDem?: string;
+    ten?: string;
+    maDonVi?: string;
+    tenDonVi?: string;
+    theATM?: string;
+    maNganHang?: string;
+    tenNganHang?: string;
+    thuNhap?: string;
+    soCong?: string;
+    maNS?: string;
 }
 

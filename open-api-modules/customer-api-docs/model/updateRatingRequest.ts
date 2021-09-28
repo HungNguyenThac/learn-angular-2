@@ -12,8 +12,19 @@
 
 
 export interface UpdateRatingRequest { 
-    rate: string;
+    rate?: UpdateRatingRequest.RateEnum;
     customerOpinion: string;
     customerId: string;
 }
+export namespace UpdateRatingRequest {
+    export type RateEnum = 'NOT_SATISFIED' | 'SEMI_SATISFIED' | 'NORMAL' | 'SATISFIED' | 'VERY_SATISFIED';
+    export const RateEnum = {
+        NotSatisfied: 'NOT_SATISFIED' as RateEnum,
+        SemiSatisfied: 'SEMI_SATISFIED' as RateEnum,
+        Normal: 'NORMAL' as RateEnum,
+        Satisfied: 'SATISFIED' as RateEnum,
+        VerySatisfied: 'VERY_SATISFIED' as RateEnum
+    };
+}
+
 
