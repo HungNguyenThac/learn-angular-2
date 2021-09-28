@@ -19,6 +19,7 @@ import { PlVoucherListComponent } from './components/pl-voucher-list/pl-voucher-
 import { ChatBoxComponent } from './components/chat-box/chat-box.component';
 import { DetailLoanPaymentComponent } from './components/detail-loan-payment/detail-loan-payment.component';
 import { IllustratingImgDialogComponent } from './components/illustrating-img-dialog/illustrating-img-dialog.component';
+import { RatingComponent } from './components/rating/rating.component';
 
 @NgModule({
   declarations: [
@@ -36,6 +37,7 @@ import { IllustratingImgDialogComponent } from './components/illustrating-img-di
     ChatBoxComponent,
     DetailLoanPaymentComponent,
     IllustratingImgDialogComponent,
+    RatingComponent,
   ],
   imports: [
     CommonModule,
