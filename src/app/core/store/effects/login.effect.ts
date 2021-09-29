@@ -207,7 +207,7 @@ export class LoginEffects {
               );
 
               return this.router.navigate([
-                'hmg/current-loan',
+                'current-loan',
                 formatSlug(
                   result.result.status || PAYDAY_LOAN_STATUS.UNKNOWN_STATUS
                 ),
@@ -232,6 +232,6 @@ export class LoginEffects {
   private _redirectToNextPage() {
     if (!this.customerInfo.personalData.companyId)
       return this.router.navigate(['companies']);
-    return this.router.navigate(['hmg/ekyc']);
+    return this.router.navigate(['ekyc']);
   }
 }

@@ -97,7 +97,7 @@ export class GpayPaymentResultComponent implements OnInit, OnDestroy {
     let dataDecodedBase64 = base64.decode(this.routerQueryParams.data);
     if (!dataDecodedBase64 || !dataDecodedBase64.status) {
       return this.router.navigate([
-        'hmg/current-loan',
+        'current-loan',
         formatSlug(PAYDAY_LOAN_STATUS.CALLBACK_PAYMENT_RESULT),
       ]);
     }
@@ -106,7 +106,7 @@ export class GpayPaymentResultComponent implements OnInit, OnDestroy {
     }
 
     this.router.navigate([
-      'hmg/current-loan',
+      'current-loan',
       formatSlug(
         dataDecodedBase64.status || PAYDAY_LOAN_STATUS.CALLBACK_PAYMENT_RESULT
       ),

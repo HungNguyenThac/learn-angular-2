@@ -114,7 +114,7 @@ export class SignContractTermsOfServiceComponent implements OnInit, OnDestroy {
       this.hasActiveLoan$.subscribe((hasActiveLoan) => {
         if (hasActiveLoan) {
           return this.router.navigate([
-            'hmg/current-loan',
+            'current-loan',
             formatSlug(PAYDAY_LOAN_STATUS.UNKNOWN_STATUS),
           ]);
         }
@@ -145,14 +145,14 @@ export class SignContractTermsOfServiceComponent implements OnInit, OnDestroy {
           this.isSignContractTermsSuccess = isSignContractTermsSuccess;
 
           if (this.isSignContractTermsSuccess) {
-            return this.router.navigateByUrl('hmg/sign-contract-terms-success');
+            return this.router.navigateByUrl('sign-approval-letter-success');
           }
         }
       )
     );
 
     if (this.isSignContractTermsSuccess) {
-      this.router.navigateByUrl('hmg/sign-contract-terms-success');
+      return this.router.navigateByUrl('sign-approval-letter-success');
     }
 
     // this.store.dispatch(new fromActions.SetShowLeftBtn(this.isSentOtpOnsign));
@@ -224,7 +224,6 @@ export class SignContractTermsOfServiceComponent implements OnInit, OnDestroy {
           }
           if (response.errorCode === ERROR_CODE.SESSION_SIGN_ALREADY_EXIST) {
             this.getLatestApprovalLetter(true);
-
             return;
           }
 
@@ -352,7 +351,7 @@ export class SignContractTermsOfServiceComponent implements OnInit, OnDestroy {
         .subscribe((response: ApiResponseApprovalLetter) => {
           if (response.responseCode == 200) {
             if (response.result.customerSignDone) {
-              return this.router.navigateByUrl('hmg/loan-determination');
+              return this.router.navigateByUrl('loan-determination');
             }
             this.idRequest = response.result.idRequest;
             this.idDocument = response.result.idDocument;
@@ -418,7 +417,7 @@ export class SignContractTermsOfServiceComponent implements OnInit, OnDestroy {
           this.store.dispatch(
             new fromActions.SetSignContractTermsSuccess(true)
           );
-          this.router.navigateByUrl('hmg/sign-contract-terms-success');
+          this.router.navigateByUrl('sign-approval-letter-success');
         })
     );
   }

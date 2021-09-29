@@ -176,7 +176,7 @@ export class PlChoosePaymentMethodComponent implements OnInit {
 
           if (response.result.status !== PAYDAY_LOAN_STATUS.IN_REPAYMENT) {
             return this.router.navigate([
-              'hmg/current-loan',
+              'current-loan',
               formatSlug(
                 response.result.status || PAYDAY_LOAN_STATUS.UNKNOWN_STATUS
               ),

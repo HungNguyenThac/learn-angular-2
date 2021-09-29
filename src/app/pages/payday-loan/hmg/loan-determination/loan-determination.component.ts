@@ -201,7 +201,7 @@ export class LoanDeterminationComponent
       .subscribe((result: ApiResponsePaydayLoan) => {
         if (result.responseCode === 200) {
           return this.router.navigate([
-            'hmg/current-loan',
+            'current-loan',
             formatSlug(
               result.result.status || PAYDAY_LOAN_STATUS.UNKNOWN_STATUS
             ),
@@ -556,7 +556,7 @@ export class LoanDeterminationComponent
     this.subManager.add(
       this.promptDialogRef.afterClosed().subscribe((confirmed: boolean) => {
         return this.router.navigate([
-          'hmg/current-loan',
+          'current-loan',
           formatSlug(PAYDAY_LOAN_STATUS.UNKNOWN_STATUS),
         ]);
       })

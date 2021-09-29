@@ -137,7 +137,7 @@ export class LoanPaymentComponent implements OnInit, OnDestroy {
 
             if (this.currentLoan.status !== PAYDAY_LOAN_STATUS.IN_REPAYMENT) {
               return this.router.navigate([
-                'hmg/current-loan',
+                'current-loan',
                 formatSlug(
                   this.currentLoan.status || PAYDAY_LOAN_STATUS.UNKNOWN_STATUS
                 ),
@@ -195,7 +195,7 @@ export class LoanPaymentComponent implements OnInit, OnDestroy {
   }
 
   finalization() {
-    this.router.navigateByUrl('hmg/choose-payment-method');
+    this.router.navigateByUrl('choose-payment-method');
   }
 
   ngOnDestroy(): void {
