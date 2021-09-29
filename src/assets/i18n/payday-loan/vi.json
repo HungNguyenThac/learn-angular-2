@@ -361,7 +361,8 @@
       "do_not_active_loan_error": "Không tồn tại khoản vay nào",
       "not_found_session": "Không tồn tại phiên ký",
       "internal_server_error": "Có lỗi xảy ra, vui lòng thử lại sau",
-      "core_error": "Có lỗi xảy ra, vui lòng thử lại sau"
+      "core_error": "Có lỗi xảy ra, vui lòng thử lại sau",
+      "verification_failed": "Mã OTP không chính xác, vui lòng thử lại"
     },
     "introduce": {
       "product": "Sản phẩm",
