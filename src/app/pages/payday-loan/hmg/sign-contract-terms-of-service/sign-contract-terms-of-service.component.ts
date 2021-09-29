@@ -409,11 +409,6 @@ export class SignContractTermsOfServiceComponent implements OnInit, OnDestroy {
           }
 
           this.customerSignDone();
-
-          this.store.dispatch(
-            new fromActions.SetSignContractTermsSuccess(true)
-          );
-          this.router.navigateByUrl('sign-approval-letter-success');
         })
     );
   }
@@ -427,7 +422,10 @@ export class SignContractTermsOfServiceComponent implements OnInit, OnDestroy {
           idRequest: this.idRequest,
         })
         .subscribe((response) => {
-          console.log(response);
+          this.store.dispatch(
+            new fromActions.SetSignContractTermsSuccess(true)
+          );
+          this.router.navigateByUrl('sign-approval-letter-success');
         })
     );
   }
