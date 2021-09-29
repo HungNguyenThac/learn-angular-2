@@ -83,7 +83,7 @@ export class EkycComponent implements OnInit, OnDestroy {
       this.hasActiveLoan$.subscribe((hasActiveLoan) => {
         if (hasActiveLoan) {
           return this.router.navigate([
-            'hmg/current-loan',
+            'current-loan',
             formatSlug(PAYDAY_LOAN_STATUS.UNKNOWN_STATUS),
           ]);
         }
@@ -106,7 +106,7 @@ export class EkycComponent implements OnInit, OnDestroy {
   }
 
   redirectToConfirmInformationPage() {
-    this.router.navigateByUrl('hmg/confirm-information');
+    this.router.navigateByUrl('confirm-information');
   }
 
   completeEkyc(ekycCompleteData) {

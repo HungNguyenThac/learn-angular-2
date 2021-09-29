@@ -127,7 +127,7 @@ export class ConfirmInformationComponent
       this.hasActiveLoan$.subscribe((hasActiveLoan) => {
         if (hasActiveLoan) {
           return this.router.navigate([
-            'hmg/current-loan',
+            'current-loan',
             formatSlug(PAYDAY_LOAN_STATUS.UNKNOWN_STATUS),
           ]);
         }
@@ -306,7 +306,7 @@ export class ConfirmInformationComponent
           return this.handleResponseError(result.errorCode);
         }
 
-        this.router.navigateByUrl('/hmg/additional-information');
+        this.router.navigateByUrl('/additional-information');
       });
   }
 

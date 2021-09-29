@@ -159,13 +159,13 @@ export class SignContractComponent implements OnInit {
         this.isSignContractSuccess = isSignContractSuccess;
 
         if (this.isSignContractSuccess) {
-          return this.router.navigateByUrl('hmg/sign-contract-success');
+          return this.router.navigateByUrl('sign-contract-success');
         }
       })
     );
 
     if (this.isSignContractSuccess) {
-      this.router.navigateByUrl('hmg/sign-contract-success');
+      this.router.navigateByUrl('sign-contract-success');
     }
 
     // this.store.dispatch(new fromActions.SetShowLeftBtn(this.isSentOtpOnsign));
@@ -252,7 +252,7 @@ export class SignContractComponent implements OnInit {
           this.currentLoan.status !== PAYDAY_LOAN_STATUS.CONTRACT_AWAITING
         ) {
           return this.router.navigate([
-            'hmg/current-loan',
+            'current-loan',
             formatSlug(
               this.currentLoan.status || PAYDAY_LOAN_STATUS.UNKNOWN_STATUS
             ),
@@ -604,7 +604,7 @@ export class SignContractComponent implements OnInit {
             new fromActions.SetCurrentLoanCode(this.currentLoan.loanCode)
           );
           this.store.dispatch(new fromActions.SetSignContractSuccess(true));
-          this.router.navigateByUrl('hmg/sign-contract-success');
+          this.router.navigateByUrl('sign-contract-success');
         })
     );
   }

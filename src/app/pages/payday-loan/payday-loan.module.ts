@@ -19,6 +19,21 @@ import { PlVoucherListComponent } from './components/pl-voucher-list/pl-voucher-
 import { ChatBoxComponent } from './components/chat-box/chat-box.component';
 import { DetailLoanPaymentComponent } from './components/detail-loan-payment/detail-loan-payment.component';
 import { IllustratingImgDialogComponent } from './components/illustrating-img-dialog/illustrating-img-dialog.component';
+import { IntroduceComponent } from './general/introduce/introduce.component';
+import { CompaniesListComponent } from './general/companies-list/companies-list.component';
+import { LoanDeterminationComponent } from './hmg/loan-determination/loan-determination.component';
+import { AdditionalInformationComponent } from './hmg/additional-information/additional-information.component';
+import { ConfirmInformationComponent } from './hmg/confirm-information/confirm-information.component';
+import { EkycComponent } from './hmg/ekyc/ekyc.component';
+import { SignContractTermsOfServiceComponent } from './hmg/sign-contract-terms-of-service/sign-contract-terms-of-service.component';
+import { SignContractSuccessComponent } from './hmg/sign-contract-success/sign-contract-success.component';
+import { SignContractTermsSuccessComponent } from './hmg/sign-contract-terms-success/sign-contract-terms-success.component';
+import { CurrentLoanComponent } from './hmg/current-loan/current-loan.component';
+import { LoanPaymentComponent } from './hmg/loan-payment/loan-payment.component';
+import { PlChoosePaymentMethodComponent } from './hmg/pl-choose-payment-method/pl-choose-payment-method.component';
+import { GpayPaymentResultComponent } from './hmg/gpay-payment-result/gpay-payment-result.component';
+import { SignContractComponent } from './hmg/sign-contract/sign-contract.component';
+import { PdfViewerModule } from 'ng2-pdf-viewer';
 
 @NgModule({
   declarations: [
@@ -36,6 +51,20 @@ import { IllustratingImgDialogComponent } from './components/illustrating-img-di
     ChatBoxComponent,
     DetailLoanPaymentComponent,
     IllustratingImgDialogComponent,
+    IntroduceComponent,
+    CompaniesListComponent,
+    LoanDeterminationComponent,
+    AdditionalInformationComponent,
+    ConfirmInformationComponent,
+    EkycComponent,
+    SignContractTermsOfServiceComponent,
+    SignContractSuccessComponent,
+    SignContractTermsSuccessComponent,
+    CurrentLoanComponent,
+    LoanPaymentComponent,
+    PlChoosePaymentMethodComponent,
+    GpayPaymentResultComponent,
+    SignContractComponent,
   ],
   imports: [
     CommonModule,
@@ -43,6 +72,7 @@ import { IllustratingImgDialogComponent } from './components/illustrating-img-di
     SharedModule,
     TranslateModule,
     FormsModule,
+    PdfViewerModule,
   ],
   exports: [
     VerifyOtpFormComponent,
