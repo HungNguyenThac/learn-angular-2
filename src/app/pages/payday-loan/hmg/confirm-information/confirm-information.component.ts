@@ -312,11 +312,11 @@ export class ConfirmInformationComponent
 
   buildCreateLetterRequest(): CreateLetterRequest {
     return {
-      dateOfBirth: this.customerInfo?.personalData?.dateOfBirth,
-      name: this.customerInfo?.personalData?.firstName,
-      nationalId: this.customerInfo?.personalData?.identityNumberOne,
+      dateOfBirth: this.formatTime(this.infoForm.controls['dateOfBirth'].value),
+      name: this.infoForm.controls['name'].value,
+      nationalId: this.infoForm.controls['identityNumberOne'].value,
       customerId: this.customerId,
-      idIssuePlace: this.customerInfo?.personalData?.idIssuePlace,
+      idIssuePlace: this.infoForm.controls['idIssuePlace'].value,
     };
   }
 
