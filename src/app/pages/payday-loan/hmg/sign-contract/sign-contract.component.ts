@@ -641,6 +641,7 @@ export class SignContractComponent implements OnInit {
         );
         break;
       case ERROR_CODE.OTP_EXPIRE_TIME:
+        this.disabledOTP = true;
         this.errorText = this.multiLanguageService.instant(
           `payday_loan.error_code.` + response.errorCode.toLowerCase()
         );
