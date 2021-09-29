@@ -14,6 +14,15 @@
 export interface CreateRatingRequest { 
     customerId: string;
     applicationId: string;
-    applicationType: string;
+    applicationType?: CreateRatingRequest.ApplicationTypeEnum;
 }
+export namespace CreateRatingRequest {
+    export type ApplicationTypeEnum = 'PDL_TNG' | 'PDL_HMG' | 'INSURANCE';
+    export const ApplicationTypeEnum = {
+        PdlTng: 'PDL_TNG' as ApplicationTypeEnum,
+        PdlHmg: 'PDL_HMG' as ApplicationTypeEnum,
+        Insurance: 'INSURANCE' as ApplicationTypeEnum
+    };
+}
+
 
