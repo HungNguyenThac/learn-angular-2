@@ -210,37 +210,39 @@ export class SignContractTermsOfServiceComponent implements OnInit, OnDestroy {
 
   sendLetterOtp() {
     let params = this.buildParamsSendLetterOtp();
-    this.contractControllerService.sendLetterOTPHMG(COMPANY_NAME.HMG, params).subscribe(
-      (response: ApiResponseSignWithOTPResponse) => {
-        if (response && response.responseCode === 200) {
-          this.disabledOTP = false;
-          this.idRequest = response.result.idRequest;
-          this.idDocument = response.result.idDocument;
-          this.store.dispatch(new fromActions.SetSentOtpOnsignStatus(true));
-          this.store.dispatch(new fromActions.SetShowLeftBtn(true));
-          return;
-        }
-        if (response.errorCode === ERROR_CODE.SESSION_SIGN_ALREADY_EXIST) {
-          this.getLatestApprovalLetter(true);
+    this.contractControllerService
+      .sendLetterOTPHMG(COMPANY_NAME.HMG, params)
+      .subscribe(
+        (response: ApiResponseSignWithOTPResponse) => {
+          if (response && response.responseCode === 200) {
+            this.disabledOTP = false;
+            this.idRequest = response.result.idRequest;
+            this.idDocument = response.result.idDocument;
+            this.store.dispatch(new fromActions.SetSentOtpOnsignStatus(true));
+            this.store.dispatch(new fromActions.SetShowLeftBtn(true));
+            return;
+          }
+          if (response.errorCode === ERROR_CODE.SESSION_SIGN_ALREADY_EXIST) {
+            this.getLatestApprovalLetter(true);
 
-          return;
-        }
+            return;
+          }
 
-        if (response.errorCode === ERROR_CODE.LOCK_CREATE_NEW_SESSION) {
-          this.disabledOTP = true;
-          return this.showLockedSendOTPMessage(response.result.unLockTime);
-        }
+          if (response.errorCode === ERROR_CODE.LOCK_CREATE_NEW_SESSION) {
+            this.disabledOTP = true;
+            return this.showLockedSendOTPMessage(response.result.unLockTime);
+          }
 
-        this.showErrorModal(
-          null,
-          environment.PRODUCTION
-            ? this.multiLanguageService.instant('common.something_went_wrong')
-            : response.message
-        );
-      },
-      (error) => {},
-      () => {}
-    );
+          this.showErrorModal(
+            null,
+            environment.PRODUCTION
+              ? this.multiLanguageService.instant('common.something_went_wrong')
+              : response.message
+          );
+        },
+        (error) => {},
+        () => {}
+      );
   }
 
   buildParamsSendLetterOtp() {
@@ -287,15 +289,15 @@ export class SignContractTermsOfServiceComponent implements OnInit, OnDestroy {
 
   getUserInfo() {
     this.subManager.add(
-      this.infoControllerService.getInfo(this.customerId).subscribe(
-        (response: ApiResponseCustomerInfoResponse) => {
+      this.infoControllerService
+        .getInfo(this.customerId)
+        .subscribe((response: ApiResponseCustomerInfoResponse) => {
           if (response.responseCode !== 200) {
             return this.showErrorModal();
           }
           this.userInfo = response.result;
           this.getLatestApprovalLetter();
-        }
-      )
+        })
     );
   }
 
@@ -354,7 +356,7 @@ export class SignContractTermsOfServiceComponent implements OnInit, OnDestroy {
             }
             this.idRequest = response.result.idRequest;
             this.idDocument = response.result.idDocument;
-            this.approvalLetterId =  response.result.id;
+            this.approvalLetterId = response.result.id;
             this.contractInfo = response.result;
             this.disabledOTP = false;
 
@@ -428,7 +430,6 @@ export class SignContractTermsOfServiceComponent implements OnInit, OnDestroy {
   handleErrorVerifyOtp(response) {
     switch (response.errorCode) {
       case ERROR_CODE.OTP_INVALID:
-      case ERROR_CODE.OTP_EXPIRE_TIME:
         this.errorText = this.multiLanguageService.instant(
           `payday_loan.error_code.` + response.errorCode.toLowerCase()
         );
@@ -453,6 +454,17 @@ export class SignContractTermsOfServiceComponent implements OnInit, OnDestroy {
           )
         );
         break;
+      case ERROR_CODE.OTP_EXPIRE_TIME:
+        this.errorText = this.multiLanguageService.instant(
+          `payday_loan.error_code.` + response.errorCode.toLowerCase()
+        );
+        this.showErrorModal(
+          null,
+          this.multiLanguageService.instant(
+            'payday_loan.error_code.otp_expire_time'
+          )
+        );
+        break
       case ERROR_CODE.OTP_CONFIRM_MAXIMUM:
         this.disabledOTP = true;
         this.errorText = this.multiLanguageService.instant(

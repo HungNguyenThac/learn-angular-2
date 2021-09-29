@@ -46,7 +46,7 @@ import {
 } from '../../../../../../open-api-modules/core-api-docs';
 import { map } from 'rxjs/operators';
 import formatSlug from '../../../../core/utils/format-slug';
-import {SetNavigationTitle} from "../../../../core/store";
+import { SetNavigationTitle } from '../../../../core/store';
 
 @Component({
   selector: 'app-sign-contract',
@@ -111,7 +111,9 @@ export class SignContractComponent implements OnInit {
 
   ngOnInit(): void {
     this.titleService.setTitle(
-      'Chi tiết hợp đồng' + ' - ' + GlobalConstants.PL_VALUE_DEFAULT.PROJECT_NAME
+      'Chi tiết hợp đồng' +
+        ' - ' +
+        GlobalConstants.PL_VALUE_DEFAULT.PROJECT_NAME
     );
     this.onResponsiveInverted();
     window.addEventListener('resize', this.onResponsiveInverted);
@@ -176,7 +178,9 @@ export class SignContractComponent implements OnInit {
     this.store.dispatch(new fromActions.SetShowProfileBtn(true));
     this.store.dispatch(new fromActions.SetShowStepNavigation(false));
     this.store.dispatch(new fromActions.SetCurrentLoanCode(null));
-    this.store.dispatch(new fromActions.SetNavigationTitle("Chi tiết hợp đồng"));
+    this.store.dispatch(
+      new fromActions.SetNavigationTitle('Chi tiết hợp đồng')
+    );
   }
 
   get showSignContractBtn() {
@@ -218,7 +222,7 @@ export class SignContractComponent implements OnInit {
     this.subManager.add(
       dialogRef.afterClosed().subscribe((confirmed: string) => {
         console.log(confirmed);
-        if (confirmed === "clickPrimary") {
+        if (confirmed === 'clickPrimary') {
           this.sendContractPaydayOtp();
         }
       })
@@ -541,11 +545,13 @@ export class SignContractComponent implements OnInit {
   }
 
   sendContractOtp(params: SendContractOTPRequest) {
-    return this.contractControllerService.sendContractOTP(COMPANY_NAME.HMG, params).pipe(
-      map((response: ApiResponseSignWithOTPResponse) => {
-        return response;
-      })
-    );
+    return this.contractControllerService
+      .sendContractOTP(COMPANY_NAME.HMG, params)
+      .pipe(
+        map((response: ApiResponseSignWithOTPResponse) => {
+          return response;
+        })
+      );
   }
 
   getUserInfo() {
@@ -610,7 +616,6 @@ export class SignContractComponent implements OnInit {
   handleErrorVerifyOtp(response) {
     switch (response.errorCode) {
       case ERROR_CODE.OTP_INVALID:
-      case ERROR_CODE.OTP_EXPIRE_TIME:
         this.errorText = this.multiLanguageService.instant(
           `payday_loan.error_code.` + response.errorCode.toLowerCase()
         );
@@ -632,6 +637,17 @@ export class SignContractComponent implements OnInit {
             {
               remaining: response.result.remainingRequests,
             }
+          )
+        );
+        break;
+      case ERROR_CODE.OTP_EXPIRE_TIME:
+        this.errorText = this.multiLanguageService.instant(
+          `payday_loan.error_code.` + response.errorCode.toLowerCase()
+        );
+        this.showErrorModal(
+          null,
+          this.multiLanguageService.instant(
+            'payday_loan.error_code.otp_expire_time'
           )
         );
         break;

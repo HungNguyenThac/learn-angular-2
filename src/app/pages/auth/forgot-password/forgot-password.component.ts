@@ -1,16 +1,8 @@
 import { MultiLanguageService } from 'src/app/share/translate/multiLanguageService';
 import { NotificationService } from 'src/app/core/services/notification.service';
 import { Component, OnInit } from '@angular/core';
-import {
-  AbstractControl,
-  FormBuilder,
-  FormGroup,
-  ValidationErrors,
-  Validators,
-} from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { ToastrService } from 'ngx-toastr';
-import { ApiResponseObject } from 'open-api-modules/com-api-docs';
 import {
   CreateCustomerAccountRequest,
   ResetPasswordVerifiedAccountRequest,
@@ -23,7 +15,7 @@ import * as fromActions from '../../../core/store';
 import * as fromStore from '../../../core/store';
 import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
-import {ERROR_CODE_KEY} from "../../../core/common/enum/payday-loan";
+import { ERROR_CODE_KEY } from '../../../core/common/enum/payday-loan';
 
 @Component({
   selector: 'app-forgot-password',
@@ -60,10 +52,7 @@ export class ForgotPasswordComponent implements OnInit {
     this.passwordForgotForm = this.formBuilder.group({
       mobileNumber: ['', [Validators.required]],
       password: ['', [Validators.required]],
-      confirmPassword: [
-        '',
-        [Validators.required],
-      ],
+      confirmPassword: ['', [Validators.required]],
     });
   }
 
@@ -133,16 +122,17 @@ export class ForgotPasswordComponent implements OnInit {
         password_again: this.passwordForgotForm.controls.confirmPassword.value,
       };
     this.subManager.add(
-    this.signOnControllerService
-      .resetPasswordbyOtp(resetPasswordVerifiedAccountRequest)
-      .subscribe((result) => {
-        if (result.errorCode != null || result.responseCode !== 200) {
-          return this.handleResponseError(result.errorCode);
-        }
+      this.signOnControllerService
+        .resetPasswordbyOtp(resetPasswordVerifiedAccountRequest)
+        .subscribe((result) => {
+          if (result.errorCode != null || result.responseCode !== 200) {
+            return this.handleResponseError(result.errorCode);
+          }
 
-        console.log('reset password Verified success');
-        this.redirectToResetPasswordSuccessPage();
-      }));
+          console.log('reset password Verified success');
+          this.redirectToResetPasswordSuccessPage();
+        })
+    );
   }
 
   onRuleAccepted() {
@@ -161,17 +151,18 @@ export class ForgotPasswordComponent implements OnInit {
       otp: otp,
     };
     this.subManager.add(
-    this.signOnControllerService
-      .resetPasswordVerifiedOtp(resetVerifiedPasswordOtpRequest)
-      .subscribe((result) => {
-        if (result.errorCode != null || result.responseCode !== 200) {
-          return this.handleResponseError(result.errorCode);
-        }
+      this.signOnControllerService
+        .resetPasswordVerifiedOtp(resetVerifiedPasswordOtpRequest)
+        .subscribe((result) => {
+          if (result.errorCode != null || result.responseCode !== 200) {
+            return this.handleResponseError(result.errorCode);
+          }
 
-        this.otp = otp;
-        this.openOtpConfirm = false;
-        this.changePasswordForm = true;
-      }));
+          this.otp = otp;
+          this.openOtpConfirm = false;
+          this.changePasswordForm = true;
+        })
+    );
   }
 
   resendOtp() {

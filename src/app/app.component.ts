@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { MultiLanguageService } from './share/translate/multiLanguageService';
 import { fadeAnimation } from './core/common/animations/router.animation';
+import 'src/assets/styles/main.scss';
 
 @Component({
   selector: 'app-root',
