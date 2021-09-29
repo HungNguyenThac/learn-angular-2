@@ -15,6 +15,7 @@ import * as fromActions from '../../../core/store';
 import * as fromStore from '../../../core/store';
 import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
+import { ERROR_CODE_KEY } from '../../../core/common/enum/payday-loan';
 
 @Component({
   selector: 'app-sign-up',
@@ -103,11 +104,8 @@ export class SignUpComponent implements OnInit, OnDestroy {
       this.signOnControllerService
         .createCustomerAccount(createCustomerAccountRequest)
         .subscribe((result: ApiResponseObject) => {
-          if (result.errorCode != null) {
-            const message = this.multiLanguageService.instant(
-              'payday_loan.error_code.' + result.errorCode.toLowerCase()
-            );
-            return this.showError('common.error', message);
+          if (result.errorCode != null || result.responseCode !== 200) {
+            return this.handleResponseError(result.errorCode);
           }
 
           this.createCustomerAccountRequestResult = result.result;
@@ -139,37 +137,37 @@ export class SignUpComponent implements OnInit, OnDestroy {
       this.signOnControllerService
         .createVerifiedCustomerAccount(createVerifiedAccountRequest)
         .subscribe((result) => {
-          if (result.errorCode != null) {
-            const message = this.multiLanguageService.instant(
-              'payday_loan.error_code.' + result.errorCode.toLowerCase()
-            );
-            return this.showError('common.error', message);
+          if (result.errorCode != null || result.responseCode !== 200) {
+            return this.handleResponseError(result.errorCode);
           }
           this.store.dispatch(
             new fromActions.SetCustomerMobile(
               createVerifiedAccountRequest.mobile
             )
           );
-          console.log('create Verified success');
+
           this.redirectToSignUpSuccessPage();
         })
     );
   }
 
+  handleResponseError(errorCode: string) {
+    return this.notificationService.openErrorModal({
+      title: this.multiLanguageService.instant('common.error'),
+      content: this.multiLanguageService.instant(
+        errorCode && ERROR_CODE_KEY[errorCode]
+          ? ERROR_CODE_KEY[errorCode]
+          : 'common.something_went_wrong'
+      ),
+      primaryBtnText: this.multiLanguageService.instant('common.confirm'),
+    });
+  }
+
   resendOtp() {
-    console.log('resent');
     this.getOtp();
   }
 
   redirectToSignUpSuccessPage() {
     this.router.navigateByUrl('/auth/sign-up-success');
-  }
-
-  showError(title: string, content: string) {
-    return this.notificationService.openErrorModal({
-      title: this.multiLanguageService.instant(title),
-      content: this.multiLanguageService.instant(content),
-      primaryBtnText: this.multiLanguageService.instant('common.confirm'),
-    });
   }
 }
