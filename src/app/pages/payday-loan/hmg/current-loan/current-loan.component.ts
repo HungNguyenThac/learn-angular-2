@@ -71,7 +71,11 @@ export class CurrentLoanComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.initPageTitle(this.routerParams.status);
+    this.titleService.setTitle(
+      'Khoản vay hiện tại' +
+        ' - ' +
+        GlobalConstants.PL_VALUE_DEFAULT.PROJECT_NAME
+    );
     this.initHeaderInfo();
     this.initInfo();
   }
@@ -117,8 +121,10 @@ export class CurrentLoanComponent implements OnInit, OnDestroy {
   }
 
   initPageTitle(status) {
+    let pageTitle = this.getPageTitle(status);
+    console.log('ádsad');
     this.titleService.setTitle(
-      "Khoản vay hiện tại" + ' - ' + GlobalConstants.PL_VALUE_DEFAULT.PROJECT_NAME
+      pageTitle + ' - ' + GlobalConstants.PL_VALUE_DEFAULT.PROJECT_NAME
     );
   }
 
@@ -145,6 +151,9 @@ export class CurrentLoanComponent implements OnInit, OnDestroy {
           }
           this.store.dispatch(new fromActions.SetHasActiveLoanStatus(true));
           this.currentLoan = response.result;
+          this.initPageTitle(
+            this.currentLoan.status || PAYDAY_LOAN_STATUS.UNKNOWN_STATUS
+          );
           this.displayPageTitle();
           this.getUserInfo();
         })
@@ -156,10 +165,6 @@ export class CurrentLoanComponent implements OnInit, OnDestroy {
       this.routerParams['status'] !==
       formatSlug(this.currentLoan.status || PAYDAY_LOAN_STATUS.UNKNOWN_STATUS)
     ) {
-      this.initPageTitle(
-        this.currentLoan.status || PAYDAY_LOAN_STATUS.UNKNOWN_STATUS
-      );
-
       this.router.navigate([
         'current-loan',
         formatSlug(
