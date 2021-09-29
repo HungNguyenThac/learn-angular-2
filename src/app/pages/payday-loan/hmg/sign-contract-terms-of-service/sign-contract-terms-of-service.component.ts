@@ -334,7 +334,7 @@ export class SignContractTermsOfServiceComponent implements OnInit, OnDestroy {
               this.contractInfo = {
                 path: response.result.documentPath,
               };
-
+              console.log('vava');
               this.downloadFile(this.contractInfo.path);
             }
           },
@@ -364,6 +364,7 @@ export class SignContractTermsOfServiceComponent implements OnInit, OnDestroy {
               this.contractInfo.path &&
               !this.isSentOtpOnsign
             ) {
+              console.log('ấcd');
               this.downloadFile(this.contractInfo.path);
             }
 
@@ -422,8 +423,8 @@ export class SignContractTermsOfServiceComponent implements OnInit, OnDestroy {
           idRequest: this.idRequest,
         })
         .subscribe((response) => {
-          if(!response || response.responseCode !== 200) {
-            return this.handleResponseError(response?.errorCode)
+          if (!response || response.responseCode !== 200) {
+            return this.handleResponseError(response?.errorCode);
           }
           this.store.dispatch(
             new fromActions.SetSignContractTermsSuccess(true)

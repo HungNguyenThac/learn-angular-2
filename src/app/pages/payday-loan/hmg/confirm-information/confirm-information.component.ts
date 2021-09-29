@@ -18,8 +18,10 @@ import { Observable, Subscription } from 'rxjs';
 import { Store } from '@ngrx/store';
 import * as fromStore from 'src/app/core/store/index';
 import {
+  ApiResponseApprovalLetter,
   ApiResponseCompanyInfo,
   ApiResponseCustomerInfoResponse,
+  ApprovalLetterControllerService,
   CompanyControllerService,
   CompanyInfo,
   ConfirmInformationV2Request,
@@ -91,6 +93,7 @@ export class ConfirmInformationComponent
     private borrowerControllerService: BorrowerControllerService,
     private contractControllerService: ContractControllerService,
     private companyControllerService: CompanyControllerService,
+    private approvalLetterControllerService: ApprovalLetterControllerService,
     private formBuilder: FormBuilder,
     private titleService: Title
   ) {
@@ -292,8 +295,31 @@ export class ConfirmInformationComponent
           return this.handleResponseError(result.errorCode);
         }
 
-        this.createApprovalLetter();
+        this.getLatestApprovalLetter();
       });
+  }
+
+  getLatestApprovalLetter() {
+    this.subManager.add(
+      this.approvalLetterControllerService
+        .getApprovalLetterByCustomerId(this.customerId)
+        .subscribe((response: ApiResponseApprovalLetter) => {
+          if (
+            !this.customerInfo.personalData.approvalLetterId &&
+            response.responseCode !== 200
+          ) {
+            return this.createApprovalLetter();
+          }
+
+          if (response.result && response.result.customerSignDone) {
+            return this.router.navigateByUrl('loan-determination');
+          }
+
+          if (response.result && !response.result.customerSignDone) {
+            return this.router.navigateByUrl('additional-information');
+          }
+        })
+    );
   }
 
   createApprovalLetter() {
