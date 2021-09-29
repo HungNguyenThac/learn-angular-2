@@ -54,8 +54,8 @@ echo ""
 echo "*********************"
 echo "Content ./code/environments/environment.ts"
 echo "*********************"
-cd /code/environments
-more ./environment.ts
+cd /code
+more ./environments/environment.ts
 
 ########################################
 # Start ngnix server
