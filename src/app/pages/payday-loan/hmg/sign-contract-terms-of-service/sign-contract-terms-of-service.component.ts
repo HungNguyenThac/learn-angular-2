@@ -422,12 +422,27 @@ export class SignContractTermsOfServiceComponent implements OnInit, OnDestroy {
           idRequest: this.idRequest,
         })
         .subscribe((response) => {
+          if(!response || response.responseCode !== 200) {
+            return this.handleResponseError(response?.errorCode)
+          }
           this.store.dispatch(
             new fromActions.SetSignContractTermsSuccess(true)
           );
           this.router.navigateByUrl('sign-approval-letter-success');
         })
     );
+  }
+
+  handleResponseError(errorCode: string) {
+    return this.notificationService.openErrorModal({
+      title: this.multiLanguageService.instant('common.error'),
+      content: this.multiLanguageService.instant(
+        errorCode && ERROR_CODE_KEY[errorCode]
+          ? ERROR_CODE_KEY[errorCode]
+          : 'common.something_went_wrong'
+      ),
+      primaryBtnText: this.multiLanguageService.instant('common.confirm'),
+    });
   }
 
   signContract() {
