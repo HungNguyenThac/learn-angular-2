@@ -334,7 +334,6 @@ export class SignContractTermsOfServiceComponent implements OnInit, OnDestroy {
               this.contractInfo = {
                 path: response.result.documentPath,
               };
-              console.log('vava');
               this.downloadFile(this.contractInfo.path);
             }
           },
@@ -364,7 +363,6 @@ export class SignContractTermsOfServiceComponent implements OnInit, OnDestroy {
               this.contractInfo.path &&
               !this.isSentOtpOnsign
             ) {
-              console.log('ấcd');
               this.downloadFile(this.contractInfo.path);
             }
 
