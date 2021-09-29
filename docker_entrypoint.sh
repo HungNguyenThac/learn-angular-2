@@ -36,13 +36,13 @@ echo ""
 echo "*********************"
 echo "Create ./code/environments/environment.ts"
 echo "*******Exists?*********"
-cd code/environments
+cd code
 ls
 echo "*******Delete********"
-rm environment.ts
+rm environments/environment.ts
 echo "*******Deleted?********"
 ls
-"/bin/sh" ../generate_env-config.sh > ./environment.ts
+"/bin/sh" ../generate_env-config.sh > ./environments/environment.ts
 echo "*******Generated?******"
 ls
 ########################################
