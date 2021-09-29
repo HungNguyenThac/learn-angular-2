@@ -1,13 +1,7 @@
 import { MultiLanguageService } from 'src/app/share/translate/multiLanguageService';
 import { NotificationService } from 'src/app/core/services/notification.service';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import {
-  AbstractControl,
-  FormBuilder,
-  FormGroup,
-  ValidationErrors,
-  Validators,
-} from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ApiResponseObject } from 'open-api-modules/com-api-docs';
 import {
@@ -62,10 +56,7 @@ export class SignUpComponent implements OnInit, OnDestroy {
     this.signUpForm = this.formBuilder.group({
       mobileNumber: ['', [Validators.required]],
       password: ['', [Validators.required]],
-      confirmPassword: [
-        '',
-        [Validators.required],
-      ],
+      confirmPassword: ['', [Validators.required]],
     });
   }
 
@@ -99,6 +90,7 @@ export class SignUpComponent implements OnInit, OnDestroy {
         this.signUpForm.controls.mobileNumber.value
       )
     );
+    this.mobile = this.signUpForm.controls.mobileNumber.value;
     this.getOtp();
   }
 
@@ -153,6 +145,11 @@ export class SignUpComponent implements OnInit, OnDestroy {
             );
             return this.showError('common.error', message);
           }
+          this.store.dispatch(
+            new fromActions.SetCustomerMobile(
+              createVerifiedAccountRequest.mobile
+            )
+          );
           console.log('create Verified success');
           this.redirectToSignUpSuccessPage();
         })

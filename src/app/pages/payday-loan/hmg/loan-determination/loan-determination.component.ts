@@ -88,6 +88,11 @@ export class LoanDeterminationComponent
   discount: number = 0;
   isCorrectedVoucherApplied: boolean = false;
 
+  intervalTime: any;
+  disabledBtn: boolean = false;
+  countdownTime: number =
+    GlobalConstants.PL_VALUE_DEFAULT.DEFAULT_DISABLED_BTN_TIME;
+
   subManager = new Subscription();
 
   constructor(
@@ -235,15 +240,14 @@ export class LoanDeterminationComponent
 
   onSubmit() {
     if (this.loanDeterminationForm.invalid) return;
+    this.disabledBtn = true;
+    this.countdownTimer(this.countdownTime);
+    this.createNewApplication();
+  }
 
-    const createApplicationRequest: CreateApplicationRequest = {
-      coreToken: this.coreToken,
-      customerId: this.customerId,
-      expectedAmount: this.loanDeterminationForm.controls.loanAmount.value,
-      purpose: this.loanDeterminationForm.controls.loanPurpose.value,
-      voucherTransaction: this.voucherApplied,
-    };
-
+  createNewApplication() {
+    const createApplicationRequest: CreateApplicationRequest =
+      this.buildApplicationRequest();
     this.subManager.add(
       this.paydayLoanControllerService
         .createLoan(createApplicationRequest)
@@ -258,6 +262,16 @@ export class LoanDeterminationComponent
           this.handleCreateLoanSuccessfully();
         })
     );
+  }
+
+  buildApplicationRequest(): CreateApplicationRequest {
+    return {
+      coreToken: this.coreToken,
+      customerId: this.customerId,
+      expectedAmount: this.loanDeterminationForm.controls.loanAmount.value,
+      purpose: this.loanDeterminationForm.controls.loanPurpose.value,
+      voucherTransaction: this.voucherApplied,
+    };
   }
 
   handleCreateLoanSuccessfully() {
@@ -547,5 +561,23 @@ export class LoanDeterminationComponent
         ]);
       })
     );
+  }
+
+  countdownTimer(second) {
+    let duration = moment.duration(second * 1000, 'milliseconds');
+    let interval = 1000;
+    let intervalProcess = (this.intervalTime = setInterval(() => {
+      duration = moment.duration(
+        duration.asMilliseconds() - interval,
+        'milliseconds'
+      );
+      document.getElementById(
+        'loan-determination-countdown-timer'
+      ).textContent = '( ' + duration.asSeconds() + 's )';
+      if (duration.asSeconds() == 0) {
+        clearInterval(intervalProcess);
+        this.disabledBtn = false;
+      }
+    }, interval));
   }
 }
