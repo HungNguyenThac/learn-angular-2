@@ -124,9 +124,12 @@
     type="button"
     id="transfer-btn-submit"
     class="insurance-btn btn-primary"
-    (click)="createPaymentOrder()"
+    [disabled]="disabledBtn"
+    (click)="initPaymentOrder()"
   >
     {{ 'payment.choose_payment_method.payment' | translate }}
+    <span id="transfer-payment-countdown-timer" class="pl-countdown-time" *ngIf="disabledBtn">( {{ countdownTime }}
+      s )</span>
   </button>
 </div>
 

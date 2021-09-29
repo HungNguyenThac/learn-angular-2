@@ -828,7 +828,6 @@ components:
     CreateRatingRequest:
       required:
       - applicationId
-      - applicationType
       - customerId
       type: object
       properties:
@@ -838,6 +837,10 @@ components:
           type: string
         applicationType:
           type: string
+          enum:
+          - PDL_TNG
+          - PDL_HMG
+          - INSURANCE
     ApiResponseCheckIsPaydayByCustomerIdResponse:
       type: object
       properties:
@@ -1175,8 +1178,8 @@ components:
         annualIncome:
           maximum: 500000000
           minimum: 1000000
-          type: integer
-          format: int32
+          type: number
+          format: float
     ConfirmInformationRequest:
       required:
       - addressOneLine1

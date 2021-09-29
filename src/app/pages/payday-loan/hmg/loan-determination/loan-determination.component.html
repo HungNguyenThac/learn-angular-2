@@ -275,10 +275,12 @@
                   class="ui-button w-100"
                   id="loan-detemination-form-confirm-btn"
                   color="primary"
-                  [disabled]="loanDeterminationForm.invalid"
+                  [disabled]="loanDeterminationForm.invalid || disabledBtn"
                   (click)="onSubmit()"
                 >
                   {{ "common.confirm" | translate }}
+                  <span id="loan-determination-countdown-timer" class="pl-countdown-time" *ngIf="disabledBtn">( {{ countdownTime }}
+                    s )</span>
                 </button>
               </div>
             </div>
