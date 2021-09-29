@@ -14,7 +14,6 @@
 export interface UpdateRatingRequest { 
     rate?: UpdateRatingRequest.RateEnum;
     customerOpinion?: string;
-    customerId: string;
 }
 export namespace UpdateRatingRequest {
     export type RateEnum = 'NOT_SATISFIED' | 'SEMI_SATISFIED' | 'NORMAL' | 'SATISFIED' | 'VERY_SATISFIED';
