@@ -5206,13 +5206,6 @@ ngx-moment@^5.0.0:
   dependencies:
     tslib "^2.0.0"
 
-ngx-toastr@^14.1.0:
-  version "14.1.0"
-  resolved "https://registry.npmjs.org/ngx-toastr/-/ngx-toastr-14.1.0.tgz"
-  integrity sha512-bDdgM7cJXGvJCEU+aggsZ58Fc4x87oH0mjsjGAPQHqJ4K6gYCWaB79i1RxVBPmoXmTGooNJeeCsSZYLoHIo2Bg==
-  dependencies:
-    tslib "^2.2.0"
-
 nice-try@^1.0.4:
   version "1.0.5"
   resolved "https://registry.npmjs.org/nice-try/-/nice-try-1.0.5.tgz"
