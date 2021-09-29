@@ -117,9 +117,8 @@ export class CurrentLoanComponent implements OnInit, OnDestroy {
   }
 
   initPageTitle(status) {
-    let pageTitle = this.getPageTitle(status);
     this.titleService.setTitle(
-      pageTitle + ' - ' + GlobalConstants.PL_VALUE_DEFAULT.PROJECT_NAME
+      "Khoản vay hiện tại" + ' - ' + GlobalConstants.PL_VALUE_DEFAULT.PROJECT_NAME
     );
   }
 
@@ -206,7 +205,6 @@ export class CurrentLoanComponent implements OnInit, OnDestroy {
 
   getPageTitle(status) {
     const currentLoanStatus = this.getStatusFromSlug(status);
-
     if (!currentLoanStatus) {
       return this.multiLanguageService.instant(`page_title.current_loan`);
     }
