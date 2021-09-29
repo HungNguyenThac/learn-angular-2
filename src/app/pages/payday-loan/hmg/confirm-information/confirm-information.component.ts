@@ -311,13 +311,7 @@ export class ConfirmInformationComponent
             return this.createApprovalLetter();
           }
 
-          if (response.result && response.result.customerSignDone) {
-            return this.router.navigateByUrl('loan-determination');
-          }
-
-          if (response.result && !response.result.customerSignDone) {
-            return this.router.navigateByUrl('additional-information');
-          }
+          return this.router.navigateByUrl('additional-information');
         })
     );
   }
