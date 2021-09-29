@@ -81,40 +81,40 @@ export class RouterEffects {
               this.router.navigateByUrl('/auth/sign-in');
               break;
             }
-            case '/hmg/additional-information': {
-              this.router.navigateByUrl('/hmg/confirm-information');
+            case '/additional-information': {
+              this.router.navigateByUrl('/confirm-information');
               break;
             }
-            case '/hmg/sign-contract-terms-of-service': {
+            case '/sign-approval-letter': {
               if (this.isSentOtpOnsign) {
                 return this.store$.dispatch(
                   new fromActions.SetSentOtpOnsignStatus(false)
                 );
               }
-              this.router.navigateByUrl('/hmg/additional-information');
+              this.router.navigateByUrl('/additional-information');
               break;
             }
-            case '/hmg/sign-contract': {
+            case '/sign-contract': {
               if (this.isSentOtpOnsign) {
                 return this.store$.dispatch(
                   new fromActions.SetSentOtpOnsignStatus(false)
                 );
               }
               this.router.navigate([
-                'hmg/current-loan',
+                'current-loan',
                 formatSlug(PAYDAY_LOAN_STATUS.UNKNOWN_STATUS),
               ]);
               break;
             }
-            case '/hmg/loan-payment': {
+            case '/loan-payment': {
               this.router.navigate([
-                'hmg/current-loan',
+                'current-loan',
                 formatSlug(PAYDAY_LOAN_STATUS.UNKNOWN_STATUS),
               ]);
               break;
             }
-            case '/hmg/choose-payment-method':
-              this.router.navigateByUrl('/hmg/loan-payment');
+            case '/choose-payment-method':
+              this.router.navigateByUrl('/loan-payment');
               break;
             default:
               break;

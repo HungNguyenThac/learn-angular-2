@@ -113,7 +113,7 @@ export class CompaniesListComponent implements OnInit, OnDestroy {
           }
           this.store.dispatch(new fromActions.SetHasActiveLoanStatus(true));
           return this.router.navigate([
-            'hmg/current-loan',
+            'current-loan',
             formatSlug(
               result.result.status || PAYDAY_LOAN_STATUS.UNKNOWN_STATUS
             ),
@@ -149,7 +149,7 @@ export class CompaniesListComponent implements OnInit, OnDestroy {
               'common.something_went_wrong'
             );
           }
-          return this.router.navigateByUrl('/hmg/ekyc');
+          return this.router.navigateByUrl('/ekyc');
         })
     );
   }
