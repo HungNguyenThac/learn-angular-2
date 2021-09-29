@@ -1,3 +1,5 @@
+import { ApiResponseRating } from './../../../../../open-api-modules/customer-api-docs/model/apiResponseRating';
+import { RatingControllerService } from './../../../../../open-api-modules/customer-api-docs/api/ratingController.service';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
@@ -29,7 +31,7 @@ import {
 } from '../../common/enum/payday-loan';
 import { NotificationService } from '../../services/notification.service';
 import { MultiLanguageService } from '../../../share/translate/multiLanguageService';
-import {ResetEkycInfo} from "../actions";
+import { ResetEkycInfo } from '../actions';
 
 @Injectable()
 export class LoginEffects {
@@ -54,6 +56,7 @@ export class LoginEffects {
     private infoService: InfoControllerService,
     private loginService: LoginControllerService,
     private applicationControllerService: ApplicationControllerService,
+    private ratingControllerService: RatingControllerService,
     private notificationService: NotificationService,
     private multiLanguageService: MultiLanguageService
   ) {
@@ -134,6 +137,17 @@ export class LoginEffects {
               this.store$.dispatch(
                 new fromActions.SetCustomerInfo(result.result)
               );
+
+              //get rating info----------
+              this.ratingControllerService
+                .getAllRatings(this.customerId, 'PL_HMG')
+                .subscribe((apiResponseRating: ApiResponseRating) => {
+                  if (!apiResponseRating || !apiResponseRating.result) {
+                    return this.store$.dispatch(new fromActions.SetRatingInfo(null))
+                  }
+                  this.store$.dispatch(new fromActions.SetRatingInfo(apiResponseRating.result));
+                });
+              //--------------------------
 
               if (result.result.personalData.stepOne !== 'DONE') {
                 this._redirectToNextPage().then((r) => {});

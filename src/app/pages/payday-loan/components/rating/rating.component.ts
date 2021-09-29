@@ -1,18 +1,19 @@
+import { Rating } from './../../../../../../open-api-modules/customer-api-docs/model/rating';
 import { PlPromptComponent } from './../../../../share/components/dialogs/pl-prompt/pl-prompt.component';
 import { UpdateRatingRequest } from './../../../../../../open-api-modules/customer-api-docs/model/updateRatingRequest';
 import { RatingControllerService } from './../../../../../../open-api-modules/customer-api-docs/api/ratingController.service';
-import {
-  ERROR_CODE_KEY,
-  RATING_STATUS,
-} from './../../../../core/common/enum/payday-loan';
+import { ERROR_CODE_KEY } from './../../../../core/common/enum/payday-loan';
 import { MultiLanguageService } from './../../../../share/translate/multiLanguageService';
 import { NotificationService } from './../../../../core/services/notification.service';
 import { Subscription, Observable } from 'rxjs';
-import { Component, OnInit } from '@angular/core';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { Component, OnInit, Inject } from '@angular/core';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Store } from '@ngrx/store';
 import * as fromStore from 'src/app/core/store/index';
-import { ApiResponseString } from 'open-api-modules/customer-api-docs';
+import {
+  ApiResponseString,
+  CreateRatingRequest,
+} from 'open-api-modules/customer-api-docs';
 
 @Component({
   selector: 'app-rating',
@@ -24,10 +25,9 @@ export class RatingComponent implements OnInit {
   customerId: string;
   public customerId$: Observable<any>;
 
-  customerOpinion: string;
-  rate: string;
-  rateElementArray = [];
-  rateArray = [];
+  rateInfo: Rating;
+  customerOpinion: string = '';
+  rate: UpdateRatingRequest.RateEnum;
   fastOpinionsArray = [
     'Giải ngân nhanh chóng',
     'Quy trình đơn giản',
@@ -42,7 +42,8 @@ export class RatingComponent implements OnInit {
     private ratingControllerService: RatingControllerService,
     private store: Store<fromStore.State>,
     public dialogRef: MatDialogRef<RatingComponent>,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    @Inject(MAT_DIALOG_DATA) public data,
   ) {
     this.customerId$ = this.store.select(fromStore.getCustomerIdState);
     this.subManager.add(
@@ -50,29 +51,28 @@ export class RatingComponent implements OnInit {
         this.customerId = id;
       })
     );
+    this.rateInfo = data
   }
 
-  ngOnInit(): void {
-    for (const key in RATING_STATUS) {
-      this.rateElementArray.push(document.getElementById(RATING_STATUS[key]));
-      this.rateArray.push(RATING_STATUS[key]);
-    }
-  }
-  onSubmit(accept: boolean) {
-    if (accept) {
-    }
-    let customerOpinion: string = this.customerOpinion;
+  ngOnInit(): void {}
+  onSubmit() {
+    let updateRatingRequest: UpdateRatingRequest;
+
+    //Rating
+    let customerOpinion: string;
+    customerOpinion = this.customerOpinion;
     for (let i = 0; i < this.fastOpinionsArray.length; i++) {
       if (this.fastOpinionsHightlightStatus[i]) {
-        customerOpinion = this.fastOpinionsArray[i] + customerOpinion;
+        customerOpinion = this.fastOpinionsArray[i] + '.' + customerOpinion;
       }
     }
 
-    const updateRatingRequest: UpdateRatingRequest = {
+    updateRatingRequest = {
       customerId: this.customerId,
       customerOpinion: customerOpinion,
       rate: this.rate,
     };
+
     console.log('updateRatingRequest', updateRatingRequest);
 
     this.subManager.add(
@@ -83,10 +83,29 @@ export class RatingComponent implements OnInit {
             return this.handleResponseError(response?.errorCode);
           }
           this.dialogRef.close();
-          this.openSuccessDialog()
+          this.openSuccessDialog();
         })
     );
-    
+  }
+
+  onCloseRating() {
+    let updateRatingRequest: UpdateRatingRequest;
+    updateRatingRequest = {
+      customerId: this.customerId,
+    };
+    this.subManager.add(
+      this.ratingControllerService
+        .updateRating(updateRatingRequest)
+        .subscribe((response: ApiResponseString) => {
+          if (!response || response.responseCode !== 200) {
+            return this.showError(
+              'common.error',
+              'common.something_went_wrong'
+            );
+          }
+          this.dialogRef.close();
+        })
+    );
   }
 
   openSuccessDialog() {
@@ -121,13 +140,7 @@ export class RatingComponent implements OnInit {
     });
   }
 
-  rateChoice(rate) {
-    this.rate = RATING_STATUS[rate];
-    for (let i = 0; i < this.rateArray.length; i++) {
-      this.rateElementArray[i].classList.remove('choose');
-      if (this.rateArray[i] === rate) {
-        this.rateElementArray[i].classList.add('choose');
-      }
-    }
+  rateChoice(rate: UpdateRatingRequest.RateEnum) {
+    this.rate = rate;
   }
 }

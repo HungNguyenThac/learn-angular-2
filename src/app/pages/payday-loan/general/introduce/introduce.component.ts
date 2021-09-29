@@ -18,7 +18,6 @@ export class IntroduceComponent implements OnInit, AfterViewInit {
     private router: Router,
     private titleService: Title,
     private multiLanguageService: MultiLanguageService,
-    private dialog: MatDialog,
     private store: Store<fromStore.State>
   ) {}
 

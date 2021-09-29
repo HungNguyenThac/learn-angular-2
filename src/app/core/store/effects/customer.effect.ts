@@ -1,3 +1,4 @@
+import { RatingComponent } from './../../../pages/payday-loan/components/rating/rating.component';
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { of } from 'rxjs/observable/of';
@@ -8,12 +9,14 @@ import {
   ApiResponseCustomerInfoResponse,
   InfoControllerService,
 } from '../../../../../open-api-modules/customer-api-docs';
+import { MatDialog } from '@angular/material/dialog';
 
 @Injectable()
 export class CustomerEffects {
   constructor(
     private actions$: Actions,
-    private infoControllerService: InfoControllerService
+    private infoControllerService: InfoControllerService,
+    private dialog: MatDialog
   ) {}
 
   getCustomerInfo$ = createEffect(() =>
