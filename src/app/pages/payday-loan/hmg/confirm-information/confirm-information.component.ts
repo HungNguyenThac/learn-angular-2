@@ -305,8 +305,8 @@ export class ConfirmInformationComponent
         .getApprovalLetterByCustomerId(this.customerId)
         .subscribe((response: ApiResponseApprovalLetter) => {
           if (
-            !this.customerInfo.personalData.approvalLetterId &&
-            response.responseCode !== 200
+            !this.customerInfo.personalData.approvalLetterId ||
+            (response.responseCode === 200 && !response.result?.customerSignDone)
           ) {
             return this.createApprovalLetter();
           }
