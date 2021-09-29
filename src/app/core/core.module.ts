@@ -38,7 +38,7 @@ export function tokenGetter() {
     JwtModule.forRoot({
       config: {
         tokenGetter: tokenGetter,
-        allowedDomains: ["webapp-hmg-staging.epay.vn"]
+        allowedDomains: ["webapp-hmg-staging.epay.vn", "hmg.monex.vn"]
       },
     }),
     TranslateModule.forRoot({

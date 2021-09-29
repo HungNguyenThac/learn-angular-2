@@ -1,6 +1,6 @@
 export const environment = {
   PRODUCTION: false,
-  API_BASE_URL: 'https://api-staging.epay.vn',
+  API_BASE_URL: 'https://api-aws.epay.vn',
   IDENTITY_API_PATH: '/identity',
   CUSTOMER_API_PATH: '/customer',
   COM_API_PATH: '/com',
