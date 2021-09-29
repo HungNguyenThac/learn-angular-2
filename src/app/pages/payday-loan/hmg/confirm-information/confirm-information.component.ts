@@ -361,6 +361,8 @@ export class ConfirmInformationComponent
       borrowerProfileTextVariable4: this.companyInfo.owner,
       //Company Address
       borrowerProfileTextVariable5: this.companyInfo.address,
+      //Company phone number
+      borrowerProfileTextVariable6: this.companyInfo.mobile,
     };
   }
 
