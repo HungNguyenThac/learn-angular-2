@@ -124,6 +124,7 @@
     type="button"
     id="transfer-btn-submit"
     class="insurance-btn btn-primary"
+    [disabled]="disabledBtn"
     (click)="initPaymentOrder()"
   >
     {{ 'payment.choose_payment_method.payment' | translate }}

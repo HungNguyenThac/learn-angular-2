@@ -33,8 +33,8 @@ export class ChoosePaymentMethodComponent implements OnInit {
 
   displayConfirmModalEvent($event) {
     this.notificationService.openPrompt({
-      imgUrl: "assets/img/icon/group-3/svg/info.svg",
-      imgBackgroundClass: "notification-info-img",
+      imgUrl: 'assets/img/icon/group-3/svg/info.svg',
+      imgBackgroundClass: 'notification-info-img',
       title: this.multiLanguageService.instant('common.notification'),
       content: this.multiLanguageService.instant(
         'payment.choose_payment_method.confirm_finalization_content',
@@ -43,6 +43,7 @@ export class ChoosePaymentMethodComponent implements OnInit {
       primaryBtnText: this.multiLanguageService.instant(
         'payment.guide_transfer.understand'
       ),
+      secondaryBtnText: this.multiLanguageService.instant('common.close'),
     });
   }
 
