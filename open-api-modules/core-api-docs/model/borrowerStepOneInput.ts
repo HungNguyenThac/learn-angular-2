@@ -26,6 +26,7 @@ export interface BorrowerStepOneInput {
     borrowerProfileTextVariable3: string;
     borrowerProfileTextVariable4: string;
     borrowerProfileTextVariable5: string;
+    borrowerProfileTextVariable6: string;
     addressOneLine1: string;
     addressTwoLine1: string;
 }
