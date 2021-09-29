@@ -129,7 +129,7 @@ export class AdditionalInformationComponent
       this.hasActiveLoan$.subscribe((hasActiveLoan) => {
         if (hasActiveLoan) {
           return this.router.navigate([
-            'hmg/current-loan',
+            'current-loan',
             formatSlug(PAYDAY_LOAN_STATUS.UNKNOWN_STATUS),
           ]);
         }
@@ -225,7 +225,7 @@ export class AdditionalInformationComponent
             return this.handleResponseError(result.errorCode);
           }
           // redirect to loan detemination
-          this.router.navigateByUrl('hmg/sign-contract-terms-of-service');
+          this.router.navigateByUrl('sign-approval-letter');
         })
     );
   }

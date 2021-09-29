@@ -9,10 +9,8 @@ import { throwIfAlreadyLoaded } from './common/module-import-guard';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 
 import { SharedModule } from '../share/shared.module';
-import { ToastrModule } from 'ngx-toastr';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
-import { GlobalConfig } from 'ngx-toastr/toastr/toastr-config';
 import { _providers } from './providers';
 import { MomentModule } from 'ngx-moment';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -31,13 +29,6 @@ export function tokenGetter() {
   return coreState?.login?.authorization?.token
 }
 
-
-const customNotifierOptions: Partial<GlobalConfig> = {
-  positionClass: 'toast-bottom-left',
-  maxOpened: 3, // max toasts opened
-  autoDismiss: true, // dismiss current toast when max is reached
-};
-
 @NgModule({
   imports: [
     CommonModule,
@@ -50,7 +41,6 @@ const customNotifierOptions: Partial<GlobalConfig> = {
         allowedDomains: ["webapp-hmg-staging.epay.vn"]
       },
     }),
-    ToastrModule.forRoot(customNotifierOptions),
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,

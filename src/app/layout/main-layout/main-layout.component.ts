@@ -19,23 +19,13 @@ import { Subscription } from 'rxjs';
   ],
 })
 export class MainLayoutComponent implements OnInit {
-  public customerId$: Observable<any>;
-  customerId: string;
   rateInfo$: Observable<any>;
   subManager = new Subscription();
   constructor(private multiLanguageService: MultiLanguageService,
     private store: Store<fromStore.State>,
     private dialog: MatDialog
     ) {
-    this.customerId$ = this.store.select(fromStore.getCustomerIdState);
     this.rateInfo$ = this.store.select(fromStore.getRatingState);
-    
-    this.subManager.add(
-      this.customerId$.subscribe((id) => {
-        this.customerId = id;
-        console.log('customer id', id);
-      })
-      );
 
       this.subManager.add(
         this.rateInfo$.subscribe((rateInfo:Rating) => {

@@ -18,6 +18,7 @@ export interface CompanyInfo {
     code?: string;
     taxCode?: string;
     businessCode?: string;
+    mobile?: string;
     owner?: string;
     address?: string;
     avatar?: string;

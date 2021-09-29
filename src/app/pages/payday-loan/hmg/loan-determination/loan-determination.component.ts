@@ -201,7 +201,7 @@ export class LoanDeterminationComponent
       .subscribe((result: ApiResponsePaydayLoan) => {
         if (result.responseCode === 200) {
           return this.router.navigate([
-            'hmg/current-loan',
+            'current-loan',
             formatSlug(
               result.result.status || PAYDAY_LOAN_STATUS.UNKNOWN_STATUS
             ),
@@ -246,6 +246,9 @@ export class LoanDeterminationComponent
   }
 
   createNewApplication() {
+    if (!this.coreToken) {
+      return this.showError('common.error', 'common.something_went_wrong');
+    }
     const createApplicationRequest: CreateApplicationRequest =
       this.buildApplicationRequest();
     this.subManager.add(
@@ -556,7 +559,7 @@ export class LoanDeterminationComponent
     this.subManager.add(
       this.promptDialogRef.afterClosed().subscribe((confirmed: boolean) => {
         return this.router.navigate([
-          'hmg/current-loan',
+          'current-loan',
           formatSlug(PAYDAY_LOAN_STATUS.UNKNOWN_STATUS),
         ]);
       })

@@ -23,7 +23,7 @@ import {
 } from '../../../../../open-api-modules/loanapp-api-docs';
 import { Store } from '@ngrx/store';
 import * as fromStore from '../index';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import formatSlug from './../../../core/utils/format-slug';
 import {
   ERROR_CODE_KEY,
@@ -31,7 +31,6 @@ import {
 } from '../../common/enum/payday-loan';
 import { NotificationService } from '../../services/notification.service';
 import { MultiLanguageService } from '../../../share/translate/multiLanguageService';
-import { ResetEkycInfo } from '../actions';
 
 @Injectable()
 export class LoginEffects {
@@ -47,6 +46,8 @@ export class LoginEffects {
   public customerInfo$: Observable<any>;
   customerInfo: CustomerInfoResponse;
 
+  subManager = new Subscription();
+
   constructor(
     private actions$: Actions,
     private store$: Store<fromStore.State>,
@@ -61,19 +62,25 @@ export class LoginEffects {
     private multiLanguageService: MultiLanguageService
   ) {
     this.coreToken$ = store$.select(fromStore.getCoreTokenState);
-    this.coreToken$.subscribe((token) => {
-      this.coreToken = token;
-    });
+    this.subManager.add(
+      this.coreToken$.subscribe((token) => {
+        this.coreToken = token;
+      })
+    );
 
     this.customerId$ = store$.select(fromStore.getCustomerIdState);
-    this.customerId$.subscribe((customer_id) => {
-      this.customerId = customer_id;
-    });
+    this.subManager.add(
+      this.customerId$.subscribe((customer_id) => {
+        this.customerId = customer_id;
+      })
+    );
 
     this.customerInfo$ = store$.select(fromStore.getCustomerInfoState);
-    this.customerInfo$.subscribe((customerInfo) => {
-      this.customerInfo = customerInfo;
-    });
+    this.subManager.add(
+      this.customerInfo$.subscribe((customerInfo) => {
+        this.customerInfo = customerInfo;
+      })
+    );
   }
 
   logoutSignOut$ = createEffect(
@@ -129,14 +136,15 @@ export class LoginEffects {
       this.actions$.pipe(
         ofType(fromActions.LOGIN_SIGNIN_SUCCESS),
         tap(() => {
-          this.infoService
-            .getInfo(this.loginPayload.result.customerId)
-            .subscribe((result: ApiResponseCustomerInfoResponse) => {
-              if (!result || result.responseCode !== 200) return;
+          this.subManager.add(
+            this.infoService
+              .getInfo(this.loginPayload.result.customerId)
+              .subscribe((result: ApiResponseCustomerInfoResponse) => {
+                if (!result || result.responseCode !== 200) return;
 
-              this.store$.dispatch(
-                new fromActions.SetCustomerInfo(result.result)
-              );
+                this.store$.dispatch(
+                  new fromActions.SetCustomerInfo(result.result)
+                );
 
               //get rating info----------
               this.ratingControllerService
@@ -153,8 +161,11 @@ export class LoginEffects {
                 this._redirectToNextPage().then((r) => {});
               }
 
-              this.store$.dispatch(new fromActions.SigninCore(this.loginInput));
-            });
+                this.store$.dispatch(
+                  new fromActions.SigninCore(this.loginInput)
+                );
+              })
+          );
         })
       ),
     { dispatch: false }
@@ -209,24 +220,26 @@ export class LoginEffects {
       this.actions$.pipe(
         ofType(fromActions.LOGIN_SIGNIN_CORE_SUCCESS),
         tap(() => {
-          this.applicationControllerService
-            .getActiveLoan(this.customerId, this.coreToken)
-            .subscribe((result: ApiResponsePaydayLoan) => {
-              if (!result || result.responseCode !== 200) {
-                return this._redirectToNextPage();
-              }
+          this.subManager.add(
+            this.applicationControllerService
+              .getActiveLoan(this.customerId, this.coreToken)
+              .subscribe((result: ApiResponsePaydayLoan) => {
+                if (!result || result.responseCode !== 200) {
+                  return this._redirectToNextPage();
+                }
 
-              this.store$.dispatch(
-                new fromActions.SetHasActiveLoanStatus(true)
-              );
+                this.store$.dispatch(
+                  new fromActions.SetHasActiveLoanStatus(true)
+                );
 
-              return this.router.navigate([
-                'hmg/current-loan',
-                formatSlug(
-                  result.result.status || PAYDAY_LOAN_STATUS.UNKNOWN_STATUS
-                ),
-              ]);
-            });
+                return this.router.navigate([
+                  'current-loan',
+                  formatSlug(
+                    result.result.status || PAYDAY_LOAN_STATUS.UNKNOWN_STATUS
+                  ),
+                ]);
+              })
+          );
         })
       ),
     { dispatch: false }
@@ -237,7 +250,18 @@ export class LoginEffects {
       this.actions$.pipe(
         ofType(fromActions.LOGIN_SIGNIN_CORE_ERROR),
         tap(() => {
-          this._redirectToNextPage().then((r) => {});
+          this.store$.dispatch(new fromActions.ResetCustomerInfo());
+          this.store$.dispatch(new fromActions.Logout());
+          setTimeout(() => {
+            this.notificationService.openErrorModal({
+              title: this.multiLanguageService.instant('common.notification'),
+              content: this.multiLanguageService.instant(
+                'common.something_went_wrong'
+              ),
+              primaryBtnText:
+                this.multiLanguageService.instant('common.confirm'),
+            });
+          }, 500);
         })
       ),
     { dispatch: false }
@@ -246,6 +270,6 @@ export class LoginEffects {
   private _redirectToNextPage() {
     if (!this.customerInfo.personalData.companyId)
       return this.router.navigate(['companies']);
-    return this.router.navigate(['hmg/ekyc']);
+    return this.router.navigate(['ekyc']);
   }
 }

@@ -81,6 +81,7 @@ export enum ERROR_CODE {
   NOT_FOUND_SESSION = 'NOT_FOUND_SESSION',
   INTERNAL_SERVER_ERROR = 'INTERNAL_SERVER_ERROR',
   CORE_ERROR = 'CORE_ERROR',
+  VERIFICATION_FAILED = 'VERIFICATION_FAILED',
 }
 
 export enum ERROR_CODE_KEY {
@@ -104,6 +105,7 @@ export enum ERROR_CODE_KEY {
   NOT_FOUND_SESSION = 'payday_loan.error_code.not_found_session',
   INTERNAL_SERVER_ERROR = 'payday_loan.error_code.internal_server_error',
   CORE_ERROR = 'payday_loan.error_code.core_error',
+  VERIFICATION_FAILED = 'payday_loan.error_code.verification_failed',
 }
 
 export enum SIGN_STATUS {

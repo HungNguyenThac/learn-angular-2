@@ -12,7 +12,6 @@ import { Store } from '@ngrx/store';
 import * as fromStore from 'src/app/core/store/index';
 import {
   ApiResponseString,
-  CreateRatingRequest,
 } from 'open-api-modules/customer-api-docs';
 
 @Component({
@@ -57,7 +56,7 @@ export class RatingComponent implements OnInit {
   ngOnInit(): void {}
   onSubmit() {
     let updateRatingRequest: UpdateRatingRequest;
-
+    let id = this.rateInfo.id
     //Rating
     let customerOpinion: string;
     customerOpinion = this.customerOpinion;
@@ -68,7 +67,6 @@ export class RatingComponent implements OnInit {
     }
 
     updateRatingRequest = {
-      customerId: this.customerId,
       customerOpinion: customerOpinion,
       rate: this.rate,
     };
@@ -77,7 +75,7 @@ export class RatingComponent implements OnInit {
 
     this.subManager.add(
       this.ratingControllerService
-        .updateRating(updateRatingRequest)
+        .updateRating(id, updateRatingRequest)
         .subscribe((response: ApiResponseString) => {
           if (!response || response.responseCode !== 200) {
             return this.handleResponseError(response?.errorCode);
@@ -90,12 +88,10 @@ export class RatingComponent implements OnInit {
 
   onCloseRating() {
     let updateRatingRequest: UpdateRatingRequest;
-    updateRatingRequest = {
-      customerId: this.customerId,
-    };
+    updateRatingRequest = {};
     this.subManager.add(
       this.ratingControllerService
-        .updateRating(updateRatingRequest)
+        .updateRating(this.rateInfo.id, updateRatingRequest)
         .subscribe((response: ApiResponseString) => {
           if (!response || response.responseCode !== 200) {
             return this.showError(

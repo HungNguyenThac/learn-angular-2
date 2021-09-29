@@ -57,7 +57,7 @@ export class SignContractSuccessComponent implements OnInit, OnDestroy {
       this.isSignContractSuccess$.subscribe((isSignContractSuccess) => {
         this.isSignContractSuccess = isSignContractSuccess;
         if (!this.isSignContractSuccess) {
-          this.router.navigateByUrl('hmg/sign-contract');
+          this.router.navigateByUrl('sign-contract');
         }
       })
     );
@@ -79,7 +79,7 @@ export class SignContractSuccessComponent implements OnInit, OnDestroy {
     this.store.dispatch(new fromActions.SetCurrentLoanCode(null));
     this.store.dispatch(new fromActions.SetSignContractSuccess(false));
     return this.router.navigate([
-      'hmg/current-loan',
+      'current-loan',
       formatSlug(PAYDAY_LOAN_STATUS.UNKNOWN_STATUS),
     ]);
   }

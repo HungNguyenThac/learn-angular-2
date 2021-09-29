@@ -973,6 +973,7 @@ components:
       - borrowerProfileTextVariable3
       - borrowerProfileTextVariable4
       - borrowerProfileTextVariable5
+      - borrowerProfileTextVariable6
       - confirmPassword
       - customerId
       - dateOfBirth
@@ -1011,6 +1012,8 @@ components:
         borrowerProfileTextVariable4:
           type: string
         borrowerProfileTextVariable5:
+          type: string
+        borrowerProfileTextVariable6:
           type: string
         addressOneLine1:
           type: string
@@ -1098,6 +1101,8 @@ components:
         borrowerProfileTextVariable4:
           type: string
         borrowerProfileTextVariable5:
+          type: string
+        borrowerProfileTextVariable6:
           type: string
         addressOneLine1:
           type: string

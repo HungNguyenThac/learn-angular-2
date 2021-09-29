@@ -109,11 +109,11 @@ export class CurrentLoanComponent implements OnInit, OnDestroy {
   }
 
   viewContract() {
-    this.router.navigateByUrl('hmg/sign-contract');
+    this.router.navigateByUrl('sign-contract');
   }
 
   finalization() {
-    this.router.navigateByUrl('hmg/loan-payment');
+    this.router.navigateByUrl('loan-payment');
   }
 
   initPageTitle(status) {
@@ -162,7 +162,7 @@ export class CurrentLoanComponent implements OnInit, OnDestroy {
       );
 
       this.router.navigate([
-        'hmg/current-loan',
+        'current-loan',
         formatSlug(
           this.currentLoan.status || PAYDAY_LOAN_STATUS.UNKNOWN_STATUS
         ),

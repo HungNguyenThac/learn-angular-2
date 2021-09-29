@@ -6,6 +6,30 @@ servers:
 - url: http://localhost:8004
   description: Generated server url
 paths:
+  /rating/v1/{id}:
+    put:
+      tags:
+      - rating-controller
+      operationId: updateRating
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateRatingRequest'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseString'
   /company/v1/{id}:
     get:
       tags:
@@ -48,42 +72,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiResponseCompanyInfo'
-  /v1/rating/update-rating:
-    post:
-      tags:
-      - rating-controller
-      operationId: updateRating
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/UpdateRatingRequest'
-        required: true
-      responses:
-        "200":
-          description: OK
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/ApiResponseString'
-  /v1/rating/create-rating:
-    post:
-      tags:
-      - rating-controller
-      operationId: createRating
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/CreateRatingRequest'
-        required: true
-      responses:
-        "200":
-          description: OK
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/ApiResponseString'
   /tng/v1/{customerId}/provides-information-salary-receipt-date:
     post:
       tags:
@@ -183,6 +171,24 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ApiResponseObject'
+  /rating/v1/create-rating:
+    post:
+      tags:
+      - rating-controller
+      operationId: createRating
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateRatingRequest'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseString'
   /notification/v1/{customerId}/notify-in-repayment-loan:
     post:
       tags:
@@ -602,7 +608,7 @@ paths:
                 $ref: '#/components/schemas/ApiResponseCompanyInfo'
       security:
       - bearerAuth: []
-  /v1/rating/get-all-ratings:
+  /rating/v1/get-all-ratings:
     get:
       tags:
       - rating-controller
@@ -733,6 +739,31 @@ paths:
                 $ref: '#/components/schemas/ApiResponseString'
 components:
   schemas:
+    UpdateRatingRequest:
+      type: object
+      properties:
+        rate:
+          type: string
+          enum:
+          - NOT_SATISFIED
+          - SEMI_SATISFIED
+          - NORMAL
+          - SATISFIED
+          - VERY_SATISFIED
+        customerOpinion:
+          type: string
+    ApiResponseString:
+      type: object
+      properties:
+        result:
+          type: string
+        errorCode:
+          type: string
+        message:
+          type: object
+        responseCode:
+          type: integer
+          format: int32
     UpdateCompanyRequest:
       type: object
       properties:
@@ -750,6 +781,8 @@ components:
         taxCode:
           type: string
         businessCode:
+          type: string
+        mobile:
           type: string
         owner:
           type: string
@@ -782,6 +815,8 @@ components:
           type: string
         businessCode:
           type: string
+        mobile:
+          type: string
         owner:
           type: string
         address:
@@ -796,51 +831,6 @@ components:
           type: string
         updatedAt:
           type: string
-    UpdateRatingRequest:
-      required:
-      - customerId
-      type: object
-      properties:
-        rate:
-          type: string
-          enum:
-          - NOT_SATISFIED
-          - SEMI_SATISFIED
-          - NORMAL
-          - SATISFIED
-          - VERY_SATISFIED
-        customerOpinion:
-          type: string
-        customerId:
-          type: string
-    ApiResponseString:
-      type: object
-      properties:
-        result:
-          type: string
-        errorCode:
-          type: string
-        message:
-          type: object
-        responseCode:
-          type: integer
-          format: int32
-    CreateRatingRequest:
-      required:
-      - applicationId
-      - customerId
-      type: object
-      properties:
-        customerId:
-          type: string
-        applicationId:
-          type: string
-        applicationType:
-          type: string
-          enum:
-          - PDL_TNG
-          - PDL_HMG
-          - INSURANCE
     ApiResponseCheckIsPaydayByCustomerIdResponse:
       type: object
       properties:
@@ -996,6 +986,22 @@ components:
       properties:
         employeeCode:
           type: string
+    CreateRatingRequest:
+      required:
+      - applicationId
+      - customerId
+      type: object
+      properties:
+        customerId:
+          type: string
+        applicationId:
+          type: string
+        applicationType:
+          type: string
+          enum:
+          - PDL_TNG
+          - PDL_HMG
+          - INSURANCE
     ApiResponseBoolean:
       type: object
       properties:

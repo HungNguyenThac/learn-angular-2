@@ -51,7 +51,7 @@ export class SignContractTermsSuccessComponent implements OnInit, OnDestroy {
       this.hasActiveLoan$.subscribe((hasActiveLoan) => {
         if (hasActiveLoan) {
           return this.router.navigate([
-            'hmg/current-loan',
+            'current-loan',
             formatSlug(PAYDAY_LOAN_STATUS.UNKNOWN_STATUS),
           ]);
         }
@@ -63,7 +63,7 @@ export class SignContractTermsSuccessComponent implements OnInit, OnDestroy {
         (isSignContractTermsSuccess) => {
           this.isSignContractTermsSuccess = isSignContractTermsSuccess;
           if (!this.isSignContractTermsSuccess) {
-            this.router.navigateByUrl('hmg/sign-contract-terms-of-service');
+            this.router.navigateByUrl('sign-approval-letter');
           }
         }
       )
@@ -72,7 +72,7 @@ export class SignContractTermsSuccessComponent implements OnInit, OnDestroy {
 
   redirectToLoanDetermination() {
     this.store.dispatch(new fromActions.SetSignContractTermsSuccess(false));
-    this.router.navigateByUrl('hmg/loan-determination');
+    this.router.navigateByUrl('loan-determination');
   }
 
   initHeaderInfo() {

@@ -46,7 +46,7 @@ import {
 } from '../../../../../../open-api-modules/core-api-docs';
 import { map } from 'rxjs/operators';
 import formatSlug from '../../../../core/utils/format-slug';
-import {SetNavigationTitle} from "../../../../core/store";
+import { SetNavigationTitle } from '../../../../core/store';
 
 @Component({
   selector: 'app-sign-contract',
@@ -111,7 +111,9 @@ export class SignContractComponent implements OnInit {
 
   ngOnInit(): void {
     this.titleService.setTitle(
-      'Chi tiết hợp đồng' + ' - ' + GlobalConstants.PL_VALUE_DEFAULT.PROJECT_NAME
+      'Chi tiết hợp đồng' +
+        ' - ' +
+        GlobalConstants.PL_VALUE_DEFAULT.PROJECT_NAME
     );
     this.onResponsiveInverted();
     window.addEventListener('resize', this.onResponsiveInverted);
@@ -157,13 +159,13 @@ export class SignContractComponent implements OnInit {
         this.isSignContractSuccess = isSignContractSuccess;
 
         if (this.isSignContractSuccess) {
-          return this.router.navigateByUrl('hmg/sign-contract-success');
+          return this.router.navigateByUrl('sign-contract-success');
         }
       })
     );
 
     if (this.isSignContractSuccess) {
-      this.router.navigateByUrl('hmg/sign-contract-success');
+      this.router.navigateByUrl('sign-contract-success');
     }
 
     // this.store.dispatch(new fromActions.SetShowLeftBtn(this.isSentOtpOnsign));
@@ -176,7 +178,9 @@ export class SignContractComponent implements OnInit {
     this.store.dispatch(new fromActions.SetShowProfileBtn(true));
     this.store.dispatch(new fromActions.SetShowStepNavigation(false));
     this.store.dispatch(new fromActions.SetCurrentLoanCode(null));
-    this.store.dispatch(new fromActions.SetNavigationTitle("Chi tiết hợp đồng"));
+    this.store.dispatch(
+      new fromActions.SetNavigationTitle('Chi tiết hợp đồng')
+    );
   }
 
   get showSignContractBtn() {
@@ -218,7 +222,7 @@ export class SignContractComponent implements OnInit {
     this.subManager.add(
       dialogRef.afterClosed().subscribe((confirmed: string) => {
         console.log(confirmed);
-        if (confirmed === "clickPrimary") {
+        if (confirmed === 'clickPrimary') {
           this.sendContractPaydayOtp();
         }
       })
@@ -248,7 +252,7 @@ export class SignContractComponent implements OnInit {
           this.currentLoan.status !== PAYDAY_LOAN_STATUS.CONTRACT_AWAITING
         ) {
           return this.router.navigate([
-            'hmg/current-loan',
+            'current-loan',
             formatSlug(
               this.currentLoan.status || PAYDAY_LOAN_STATUS.UNKNOWN_STATUS
             ),
@@ -541,11 +545,13 @@ export class SignContractComponent implements OnInit {
   }
 
   sendContractOtp(params: SendContractOTPRequest) {
-    return this.contractControllerService.sendContractOTP(COMPANY_NAME.HMG, params).pipe(
-      map((response: ApiResponseSignWithOTPResponse) => {
-        return response;
-      })
-    );
+    return this.contractControllerService
+      .sendContractOTP(COMPANY_NAME.HMG, params)
+      .pipe(
+        map((response: ApiResponseSignWithOTPResponse) => {
+          return response;
+        })
+      );
   }
 
   getUserInfo() {
@@ -598,7 +604,7 @@ export class SignContractComponent implements OnInit {
             new fromActions.SetCurrentLoanCode(this.currentLoan.loanCode)
           );
           this.store.dispatch(new fromActions.SetSignContractSuccess(true));
-          this.router.navigateByUrl('hmg/sign-contract-success');
+          this.router.navigateByUrl('sign-contract-success');
         })
     );
   }
@@ -610,7 +616,6 @@ export class SignContractComponent implements OnInit {
   handleErrorVerifyOtp(response) {
     switch (response.errorCode) {
       case ERROR_CODE.OTP_INVALID:
-      case ERROR_CODE.OTP_EXPIRE_TIME:
         this.errorText = this.multiLanguageService.instant(
           `payday_loan.error_code.` + response.errorCode.toLowerCase()
         );
@@ -635,6 +640,7 @@ export class SignContractComponent implements OnInit {
           )
         );
         break;
+      case ERROR_CODE.OTP_EXPIRE_TIME:
       case ERROR_CODE.OTP_CONFIRM_MAXIMUM:
         this.disabledOTP = true;
         this.errorText = this.multiLanguageService.instant(

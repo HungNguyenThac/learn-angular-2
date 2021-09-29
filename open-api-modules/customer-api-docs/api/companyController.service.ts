@@ -362,15 +362,16 @@ export class CompanyControllerService {
      * @param createdBy 
      * @param taxCode 
      * @param businessCode 
+     * @param mobile 
      * @param owner 
      * @param address 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public updateCompany(id: string, name?: string, groupName?: string, code?: string, avatar?: Blob, createdBy?: string, taxCode?: string, businessCode?: string, owner?: string, address?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<ApiResponseCompanyInfo>;
-    public updateCompany(id: string, name?: string, groupName?: string, code?: string, avatar?: Blob, createdBy?: string, taxCode?: string, businessCode?: string, owner?: string, address?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<ApiResponseCompanyInfo>>;
-    public updateCompany(id: string, name?: string, groupName?: string, code?: string, avatar?: Blob, createdBy?: string, taxCode?: string, businessCode?: string, owner?: string, address?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<ApiResponseCompanyInfo>>;
-    public updateCompany(id: string, name?: string, groupName?: string, code?: string, avatar?: Blob, createdBy?: string, taxCode?: string, businessCode?: string, owner?: string, address?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
+    public updateCompany(id: string, name?: string, groupName?: string, code?: string, avatar?: Blob, createdBy?: string, taxCode?: string, businessCode?: string, mobile?: string, owner?: string, address?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<ApiResponseCompanyInfo>;
+    public updateCompany(id: string, name?: string, groupName?: string, code?: string, avatar?: Blob, createdBy?: string, taxCode?: string, businessCode?: string, mobile?: string, owner?: string, address?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<ApiResponseCompanyInfo>>;
+    public updateCompany(id: string, name?: string, groupName?: string, code?: string, avatar?: Blob, createdBy?: string, taxCode?: string, businessCode?: string, mobile?: string, owner?: string, address?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<ApiResponseCompanyInfo>>;
+    public updateCompany(id: string, name?: string, groupName?: string, code?: string, avatar?: Blob, createdBy?: string, taxCode?: string, businessCode?: string, mobile?: string, owner?: string, address?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
         if (id === null || id === undefined) {
             throw new Error('Required parameter id was null or undefined when calling updateCompany.');
         }
@@ -428,6 +429,9 @@ export class CompanyControllerService {
         }
         if (businessCode !== undefined) {
             formParams = formParams.append('businessCode', <any>businessCode) as any || formParams;
+        }
+        if (mobile !== undefined) {
+            formParams = formParams.append('mobile', <any>mobile) as any || formParams;
         }
         if (owner !== undefined) {
             formParams = formParams.append('owner', <any>owner) as any || formParams;
