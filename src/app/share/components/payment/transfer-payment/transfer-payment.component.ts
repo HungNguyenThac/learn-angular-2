@@ -21,6 +21,7 @@ import { environment } from '../../../../../environments/environment';
 import { ERROR_CODE_KEY } from '../../../../core/common/enum/payday-loan';
 import { NotificationService } from '../../../../core/services/notification.service';
 import { MultiLanguageService } from '../../../translate/multiLanguageService';
+import * as moment from "moment";
 
 @Component({
   selector: 'app-transfer-payment',
@@ -43,6 +44,11 @@ export class TransferPaymentComponent implements OnInit, OnDestroy {
       GlobalConstants.PL_VALUE_DEFAULT.FIXED_REPAYMENT_VA_FEE
     );
   }
+
+  intervalTime: any;
+  disabledBtn: boolean = false;
+  countdownTime: number =
+    GlobalConstants.PL_VALUE_DEFAULT.DEFAULT_DISABLED_BTN_TIME;
 
   subManager = new Subscription();
 
@@ -94,6 +100,12 @@ export class TransferPaymentComponent implements OnInit, OnDestroy {
     );
   }
 
+  initPaymentOrder() {
+    this.disabledBtn = true;
+    this.countdownTimer(this.countdownTime);
+    this.createPaymentOrder();
+  }
+
   createPaymentOrder() {
     this.subManager.add(
       this.gpayVirtualAccountControllerService
@@ -125,6 +137,23 @@ export class TransferPaymentComponent implements OnInit, OnDestroy {
       ),
       primaryBtnText: this.multiLanguageService.instant('common.confirm'),
     });
+  }
+
+  countdownTimer(second) {
+    let duration = moment.duration(second * 1000, 'milliseconds');
+    let interval = 1000;
+    let intervalProcess = (this.intervalTime = setInterval(() => {
+      duration = moment.duration(
+        duration.asMilliseconds() - interval,
+        'milliseconds'
+      );
+      document.getElementById('transfer-payment-countdown-timer').textContent =
+        '( ' + duration.asSeconds() + 's )';
+      if (duration.asSeconds() == 0) {
+        clearInterval(intervalProcess);
+        this.disabledBtn = false;
+      }
+    }, interval));
   }
 
   ngOnDestroy(): void {

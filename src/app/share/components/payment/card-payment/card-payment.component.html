@@ -52,6 +52,7 @@
     (click)="finalization()"
   >
     {{ 'payment.choose_payment_method.payment' | translate }}
-    <span class="pl-countdown-time" *ngIf="disabledBtn">( {{ countdownTime }}s )</span>
+    <span id="card-payment-countdown-timer" class="pl-countdown-time" *ngIf="disabledBtn">( {{ countdownTime }}
+      s )</span>
   </button>
 </div>
