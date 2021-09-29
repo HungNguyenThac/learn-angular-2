@@ -29,7 +29,7 @@ export class MainLayoutComponent implements OnInit {
 
       this.subManager.add(
         this.rateInfo$.subscribe((rateInfo:Rating) => {
-          if (rateInfo) {
+          if (!rateInfo.rated) {
             this.dialog.open(RatingComponent, {
               autoFocus: false,
               data: rateInfo,

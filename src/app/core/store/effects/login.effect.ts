@@ -148,7 +148,7 @@ export class LoginEffects {
 
               //get rating info----------
               this.ratingControllerService
-                .getAllRatings(this.customerId, 'PL_HMG')
+                .getAllRatings(this.customerId, 'PDL_HMG', false)
                 .subscribe((apiResponseRating: ApiResponseRating) => {
                   if (!apiResponseRating || !apiResponseRating.result) {
                     return this.store$.dispatch(new fromActions.SetRatingInfo(null))
