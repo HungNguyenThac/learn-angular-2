@@ -408,16 +408,26 @@ export class SignContractTermsOfServiceComponent implements OnInit, OnDestroy {
             return this.handleErrorVerifyOtp(response);
           }
 
-          this.infoControllerService.customerSignDone(this.customerId, {
-            approvalLetterId: this.approvalLetterId,
-            idDocument: this.idDocument,
-            idRequest: this.idRequest,
-          });
+          this.customerSignDone();
 
           this.store.dispatch(
             new fromActions.SetSignContractTermsSuccess(true)
           );
           this.router.navigateByUrl('sign-approval-letter-success');
+        })
+    );
+  }
+
+  customerSignDone() {
+    this.subManager.add(
+      this.infoControllerService
+        .customerSignDone(this.customerId, {
+          approvalLetterId: this.approvalLetterId,
+          idDocument: this.idDocument,
+          idRequest: this.idRequest,
+        })
+        .subscribe((response) => {
+          console.log(response);
         })
     );
   }

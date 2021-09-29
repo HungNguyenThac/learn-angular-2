@@ -246,6 +246,9 @@ export class LoanDeterminationComponent
   }
 
   createNewApplication() {
+    if (!this.coreToken) {
+      return this.showError('common.error', 'common.something_went_wrong');
+    }
     const createApplicationRequest: CreateApplicationRequest =
       this.buildApplicationRequest();
     this.subManager.add(
