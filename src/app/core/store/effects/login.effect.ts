@@ -29,7 +29,6 @@ import {
 } from '../../common/enum/payday-loan';
 import { NotificationService } from '../../services/notification.service';
 import { MultiLanguageService } from '../../../share/translate/multiLanguageService';
-import {ResetEkycInfo} from "../actions";
 
 @Injectable()
 export class LoginEffects {
@@ -223,7 +222,18 @@ export class LoginEffects {
       this.actions$.pipe(
         ofType(fromActions.LOGIN_SIGNIN_CORE_ERROR),
         tap(() => {
-          this._redirectToNextPage().then((r) => {});
+          this.store$.dispatch(new fromActions.ResetCustomerInfo());
+          this.store$.dispatch(new fromActions.Logout());
+          setTimeout(() => {
+            this.notificationService.openErrorModal({
+              title: this.multiLanguageService.instant('common.notification'),
+              content: this.multiLanguageService.instant(
+                'common.something_went_wrong'
+              ),
+              primaryBtnText:
+                this.multiLanguageService.instant('common.confirm'),
+            });
+          }, 500);
         })
       ),
     { dispatch: false }
