@@ -129,7 +129,7 @@ export class RatingControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.post<ApiResponseString>(`${this.configuration.basePath}/v1/rating/create-rating`,
+        return this.httpClient.post<ApiResponseString>(`${this.configuration.basePath}/rating/v1/create-rating`,
             createRatingRequest,
             {
                 responseType: <any>responseType_,
@@ -193,7 +193,7 @@ export class RatingControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.get<ApiResponseRating>(`${this.configuration.basePath}/v1/rating/get-all-ratings`,
+        return this.httpClient.get<ApiResponseRating>(`${this.configuration.basePath}/rating/v1/get-all-ratings`,
             {
                 params: queryParameters,
                 responseType: <any>responseType_,
@@ -206,14 +206,18 @@ export class RatingControllerService {
     }
 
     /**
+     * @param id 
      * @param updateRatingRequest 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public updateRating(updateRatingRequest: UpdateRatingRequest, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseString>;
-    public updateRating(updateRatingRequest: UpdateRatingRequest, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseString>>;
-    public updateRating(updateRatingRequest: UpdateRatingRequest, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseString>>;
-    public updateRating(updateRatingRequest: UpdateRatingRequest, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
+    public updateRating(id: string, updateRatingRequest: UpdateRatingRequest, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseString>;
+    public updateRating(id: string, updateRatingRequest: UpdateRatingRequest, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseString>>;
+    public updateRating(id: string, updateRatingRequest: UpdateRatingRequest, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseString>>;
+    public updateRating(id: string, updateRatingRequest: UpdateRatingRequest, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
+        if (id === null || id === undefined) {
+            throw new Error('Required parameter id was null or undefined when calling updateRating.');
+        }
         if (updateRatingRequest === null || updateRatingRequest === undefined) {
             throw new Error('Required parameter updateRatingRequest was null or undefined when calling updateRating.');
         }
@@ -247,7 +251,7 @@ export class RatingControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.post<ApiResponseString>(`${this.configuration.basePath}/v1/rating/update-rating`,
+        return this.httpClient.put<ApiResponseString>(`${this.configuration.basePath}/rating/v1/${encodeURIComponent(String(id))}`,
             updateRatingRequest,
             {
                 responseType: <any>responseType_,
