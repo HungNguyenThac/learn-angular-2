@@ -120,6 +120,8 @@ export class LoanDeterminationComponent
     });
     this.initHeaderInfo();
     this._initSubscribeState();
+    this.minAmount = GlobalConstants.PL_VALUE_DEFAULT.MIN_VALUE;
+    this.step = GlobalConstants.PL_VALUE_DEFAULT.STEP_VALUE;
   }
 
   ngOnInit(): void {
@@ -480,15 +482,18 @@ export class LoanDeterminationComponent
 
     //Example 3.000.000, 2.500.000, 3.500.000 , expected defaultAmountValue = 1.500.000, 1.500.000, 2.000.000
     let defaultAmountValue: any;
-    if ((this.maxAmount / 500000) % 2 === 0) {
+    if ((this.maxAmount / this.step) % 2 === 0) {
       defaultAmountValue = Math.round(this.maxAmount / 2);
     } else {
-      defaultAmountValue = Math.round((this.maxAmount + 500000) / 2);
+      defaultAmountValue = Math.round((this.maxAmount + this.step) / 2);
     }
 
-    this.loanDeterminationForm.controls['loanAmount'].setValue(
-      defaultAmountValue
-    );
+    //default < Min value
+    if (defaultAmountValue >= this.minAmount) {
+      this.loanDeterminationForm.controls['loanAmount'].setValue(
+        defaultAmountValue
+      );
+    }
   }
 
   getMaxValue(annualIncome) {
