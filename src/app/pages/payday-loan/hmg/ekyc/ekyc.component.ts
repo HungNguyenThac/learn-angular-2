@@ -1,11 +1,11 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import * as fromStore from './../../../../core/store';
 import * as fromActions from './../../../../core/store';
-import {MultiLanguageService} from '../../../../share/translate/multiLanguageService';
-import {Store} from '@ngrx/store';
-import {Observable} from 'rxjs/Observable';
+import { MultiLanguageService } from '../../../../share/translate/multiLanguageService';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs/Observable';
 import * as fromSelectors from '../../../../core/store/selectors';
-import {NotificationService} from '../../../../core/services/notification.service';
+import { NotificationService } from '../../../../core/services/notification.service';
 import {
   ApiResponseVirtualAccount,
   GpayVirtualAccountControllerService,
@@ -16,14 +16,14 @@ import {
   PAYDAY_LOAN_STATUS,
   PL_STEP_NAVIGATION,
 } from '../../../../core/common/enum/payday-loan';
-import {InfoControllerService} from '../../../../../../open-api-modules/customer-api-docs';
-import {GlobalConstants} from '../../../../core/common/global-constants';
-import {Router} from '@angular/router';
-import {Title} from '@angular/platform-browser';
-import {Subscription} from 'rxjs';
+import { InfoControllerService } from '../../../../../../open-api-modules/customer-api-docs';
+import { GlobalConstants } from '../../../../core/common/global-constants';
+import { Router } from '@angular/router';
+import { Title } from '@angular/platform-browser';
+import { Subscription } from 'rxjs';
 import formatSlug from '../../../../core/utils/format-slug';
-import {PlPromptComponent} from '../../../../share/components';
-import {MatDialog, MatDialogRef} from '@angular/material/dialog';
+import { PlPromptComponent } from '../../../../share/components';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'ekyc',
@@ -57,8 +57,8 @@ export class EkycComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.titleService.setTitle(
       'Định danh điện tử' +
-      ' - ' +
-      GlobalConstants.PL_VALUE_DEFAULT.PROJECT_NAME
+        ' - ' +
+        GlobalConstants.PL_VALUE_DEFAULT.PROJECT_NAME
     );
     this.initHeaderInfo();
     this.getCustomerInfo();
@@ -166,10 +166,14 @@ export class EkycComponent implements OnInit, OnDestroy {
   createVirtualAccount(customerId, accountName) {
     this.subManager.add(
       this.gpayVirtualAccountControllerService
-        .createVirtualAccount({
-          customerId: customerId,
-          accountName: changeAlias(accountName),
-        })
+        .createVirtualAccount(
+          {
+            customerId: customerId,
+            accountName: changeAlias(accountName),
+          },
+          null,
+          true
+        )
         .subscribe((response: ApiResponseVirtualAccount) => {
           if (response.result && response.responseCode === 200) {
             return response.result;
@@ -183,7 +187,7 @@ export class EkycComponent implements OnInit, OnDestroy {
   getVirtualAccount(customerId, accountName) {
     this.subManager.add(
       this.gpayVirtualAccountControllerService
-        .getVirtualAccount(customerId)
+        .getVirtualAccount(customerId, null, true)
         .subscribe((response: ApiResponseVirtualAccount) => {
           if (response.result && response.responseCode === 200) {
             return response.result;
