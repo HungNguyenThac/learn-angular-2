@@ -193,8 +193,6 @@ export class AdditionalInformationComponent
         this.customerInfo.personalData.borrowerDetailTextVariable1,
       borrowerEmploymentHistoryTextVariable1:
         this.customerInfo.personalData.borrowerEmploymentHistoryTextVariable1,
-      borrowerEmploymentAverageWage:
-        this.customerInfo.personalData.annualIncome,
     });
   }
 
