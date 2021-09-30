@@ -413,6 +413,7 @@ export class SignContractTermsOfServiceComponent implements OnInit, OnDestroy {
 
   resendOtp() {
     this.errorText = null;
+    this.otp = [];
     this.sendLetterOtp();
   }
 

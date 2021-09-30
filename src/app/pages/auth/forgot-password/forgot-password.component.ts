@@ -15,7 +15,10 @@ import * as fromActions from '../../../core/store';
 import * as fromStore from '../../../core/store';
 import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
-import { ERROR_CODE_KEY } from '../../../core/common/enum/payday-loan';
+import {
+  ERROR_CODE,
+  ERROR_CODE_KEY,
+} from '../../../core/common/enum/payday-loan';
 
 @Component({
   selector: 'app-forgot-password',
@@ -141,7 +144,7 @@ export class ForgotPasswordComponent implements OnInit {
 
   //OTP
   verifyOtp(otp) {
-    console.log(otp);
+    this.errorText = null;
     const requestId = this.resetPasswordbyMobileOtpResult.requestId;
     const signature = this.resetPasswordbyMobileOtpResult.signature;
     const resetVerifiedPasswordOtpRequest: ResetVerifiedPasswordOtpRequest = {
@@ -155,6 +158,12 @@ export class ForgotPasswordComponent implements OnInit {
         .resetPasswordVerifiedOtp(resetVerifiedPasswordOtpRequest)
         .subscribe((result) => {
           if (result.errorCode != null || result.responseCode !== 200) {
+            this.errorText = this.multiLanguageService.instant(
+              result.errorCode && ERROR_CODE_KEY[result.errorCode]
+                ? ERROR_CODE_KEY[result.errorCode]
+                : 'common.something_went_wrong'
+            );
+            this.otp = [];
             return this.handleResponseError(result.errorCode);
           }
 
@@ -166,7 +175,8 @@ export class ForgotPasswordComponent implements OnInit {
   }
 
   resendOtp() {
-    console.log('resend otp');
+    this.errorText = null;
+    this.otp = [];
     this.getOtp();
   }
 
