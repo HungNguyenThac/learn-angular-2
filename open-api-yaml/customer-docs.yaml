@@ -1302,6 +1302,8 @@ components:
           type: string
         businessCode:
           type: string
+        mobile:
+          type: string
         owner:
           type: string
         address:
