@@ -36,6 +36,7 @@
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+  transition: 0.3s;
   .emotion-description {
     text-align: center;
     height: 28px;
@@ -96,6 +97,7 @@
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
+    transition: 0.3s;
   }
   .rating-tag-item.highlight {
     background: $monex-color-00;

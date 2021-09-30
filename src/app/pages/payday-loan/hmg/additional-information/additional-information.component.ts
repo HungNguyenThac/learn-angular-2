@@ -67,7 +67,7 @@ export class AdditionalInformationComponent
     ],
   };
 
-  maxAmount: number = 500000000;
+  maxAmount: number = 100000000;
   minAmount: number = 4000000;
   step: number = 1000000;
 
