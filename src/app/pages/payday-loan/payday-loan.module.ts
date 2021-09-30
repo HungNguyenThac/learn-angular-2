@@ -19,6 +19,7 @@ import { PlVoucherListComponent } from './components/pl-voucher-list/pl-voucher-
 import { ChatBoxComponent } from './components/chat-box/chat-box.component';
 import { DetailLoanPaymentComponent } from './components/detail-loan-payment/detail-loan-payment.component';
 import { IllustratingImgDialogComponent } from './components/illustrating-img-dialog/illustrating-img-dialog.component';
+import { RatingComponent } from './components/rating/rating.component';
 import { IntroduceComponent } from './general/introduce/introduce.component';
 import { CompaniesListComponent } from './general/companies-list/companies-list.component';
 import { LoanDeterminationComponent } from './hmg/loan-determination/loan-determination.component';
@@ -51,6 +52,7 @@ import { PdfViewerModule } from 'ng2-pdf-viewer';
     ChatBoxComponent,
     DetailLoanPaymentComponent,
     IllustratingImgDialogComponent,
+    RatingComponent,
     IntroduceComponent,
     CompaniesListComponent,
     LoanDeterminationComponent,

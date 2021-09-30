@@ -1,3 +1,5 @@
+import { ApiResponseRating } from './../../../../../open-api-modules/customer-api-docs/model/apiResponseRating';
+import { RatingControllerService } from './../../../../../open-api-modules/customer-api-docs/api/ratingController.service';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
@@ -55,6 +57,7 @@ export class LoginEffects {
     private infoService: InfoControllerService,
     private loginService: LoginControllerService,
     private applicationControllerService: ApplicationControllerService,
+    private ratingControllerService: RatingControllerService,
     private notificationService: NotificationService,
     private multiLanguageService: MultiLanguageService
   ) {
@@ -143,14 +146,24 @@ export class LoginEffects {
                   new fromActions.SetCustomerInfo(result.result)
                 );
 
-                if (result.result.personalData.stepOne === 'DONE') {
-                  this.store$.dispatch(
-                    new fromActions.SigninCore(this.loginInput)
-                  );
-                  return;
-                }
+              //get rating info----------
+              this.ratingControllerService
+                .getAllRatings(this.customerId, 'PDL_HMG', false)
+                .subscribe((apiResponseRating: ApiResponseRating) => {
+                  if (!apiResponseRating || !apiResponseRating.result) {
+                    return this.store$.dispatch(new fromActions.SetRatingInfo(null))
+                  }
+                  this.store$.dispatch(new fromActions.SetRatingInfo(apiResponseRating.result));
+                });
+              //--------------------------
 
-                return this._redirectToNextPage();
+              if (result.result.personalData.stepOne !== 'DONE') {
+                this._redirectToNextPage().then((r) => {});
+              }
+
+                this.store$.dispatch(
+                  new fromActions.SigninCore(this.loginInput)
+                );
               })
           );
         })

@@ -12,3 +12,9 @@ export const getCustomerErrorState = createSelector(
     (state: fromFeature.State) => state.customer ? state.customer.getCustomerError : ''
 );
 
+export const getRatingState = createSelector(
+  fromFeature.getCoreState,
+  (state: fromFeature.State) => state.customer ? state.customer.rateInfo : ''
+);
+
+
