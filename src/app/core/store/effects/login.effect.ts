@@ -143,13 +143,14 @@ export class LoginEffects {
                   new fromActions.SetCustomerInfo(result.result)
                 );
 
-                if (result.result.personalData.stepOne !== 'DONE') {
-                  return this._redirectToNextPage();
+                if (result.result.personalData.stepOne === 'DONE') {
+                  this.store$.dispatch(
+                    new fromActions.SigninCore(this.loginInput)
+                  );
+                  return;
                 }
 
-                this.store$.dispatch(
-                  new fromActions.SigninCore(this.loginInput)
-                );
+                return this._redirectToNextPage();
               })
           );
         })
