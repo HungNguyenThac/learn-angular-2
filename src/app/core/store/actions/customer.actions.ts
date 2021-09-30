@@ -5,6 +5,7 @@ export const GET_CUSTOMER_INFO_ERROR = '[Customer] get customer info error';
 export const GET_CUSTOMER_INFO_SUCCESS = '[Customer] get customer info success';
 export const SET_CUSTOMER_INFO = '[Customer] set customer info';
 export const RESET_CUSTOMER_INFO = '[Customer] reset customer info';
+export const SET_RATING_INFO = '[Customer] set rating info';
 
 export class GetCustomerInfo implements Action {
   readonly type = GET_CUSTOMER_INFO;
@@ -36,9 +37,17 @@ export class ResetCustomerInfo implements Action {
   constructor(public payload?: any) {}
 }
 
+export class SetRatingInfo implements Action {
+  readonly type = SET_RATING_INFO;
+
+  constructor(public payload?: any) {}
+}
+
 export type CustomerActions =
   | GetCustomerInfoError
   | GetCustomerInfoSuccess
   | GetCustomerInfo
   | SetCustomerInfo
-  | ResetCustomerInfo;
+  | ResetCustomerInfo
+  | SetRatingInfo
+  ;
