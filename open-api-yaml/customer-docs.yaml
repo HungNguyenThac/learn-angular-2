@@ -1247,7 +1247,6 @@ components:
           type: string
     CustomerSignDoneRequest:
       required:
-      - approvalLetterId
       - idDocument
       - idRequest
       type: object
