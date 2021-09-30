@@ -17,7 +17,6 @@ export interface TransactionNotificationEntity {
     content?: string;
     title?: string;
     type?: TransactionNotificationEntity.TypeEnum;
-    provider?: string;
     isSeen?: string;
     date?: string;
 }

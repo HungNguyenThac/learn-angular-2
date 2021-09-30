@@ -4,7 +4,6 @@ import { HttpClient } from '@angular/common/http';
 
 import { ContractControllerService } from './api/contractController.service';
 import { FileControllerService } from './api/fileController.service';
-import { InsuranceControllerService } from './api/insuranceController.service';
 import { MailControllerService } from './api/mailController.service';
 import { OtpControllerService } from './api/otpController.service';
 import { PushNotificationControllerService } from './api/pushNotificationController.service';

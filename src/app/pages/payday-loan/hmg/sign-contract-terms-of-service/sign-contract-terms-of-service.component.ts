@@ -11,8 +11,11 @@ import { Subscription } from 'rxjs';
 import { PdfViewerComponent } from 'ng2-pdf-viewer';
 import {
   ApiResponseApprovalLetter,
+  ApiResponseCompanyInfo,
   ApiResponseCustomerInfoResponse,
   ApprovalLetterControllerService,
+  CompanyControllerService,
+  CompanyInfo,
   CustomerInfoResponse,
   InfoControllerService,
 } from '../../../../../../open-api-modules/customer-api-docs';
@@ -27,6 +30,7 @@ import {
   ApiResponseCreateLetterResponse,
   ApiResponseSignWithOTPResponse,
   ContractControllerService,
+  CreateLetterRequest,
   FileControllerService,
 } from '../../../../../../open-api-modules/com-api-docs';
 import { Router } from '@angular/router';
@@ -57,6 +61,7 @@ export class SignContractTermsOfServiceComponent implements OnInit, OnDestroy {
   idDocument: any = null;
   idRequest: any = null;
   approvalLetterId: any = null;
+  companyInfo: CompanyInfo;
 
   customerId: string;
   customerId$: Observable<string>;
@@ -78,6 +83,7 @@ export class SignContractTermsOfServiceComponent implements OnInit, OnDestroy {
     private contractControllerService: ContractControllerService,
     private approvalLetterControllerService: ApprovalLetterControllerService,
     private fileControllerService: FileControllerService,
+    private companyControllerService: CompanyControllerService,
     private titleService: Title,
     private router: Router,
     private store: Store<fromStore.State>,
@@ -211,7 +217,7 @@ export class SignContractTermsOfServiceComponent implements OnInit, OnDestroy {
   sendLetterOtp() {
     let params = this.buildParamsSendLetterOtp();
     this.contractControllerService
-      .sendLetterOTPHMG(COMPANY_NAME.HMG, params)
+      .sendLetterOTP(COMPANY_NAME.HMG, params)
       .subscribe(
         (response: ApiResponseSignWithOTPResponse) => {
           if (response && response.responseCode === 200) {
@@ -269,6 +275,22 @@ export class SignContractTermsOfServiceComponent implements OnInit, OnDestroy {
     this.getUserInfo();
   }
 
+  getCompanyInfoById(companyId: string) {
+    this.subManager.add(
+      this.companyControllerService
+        .getCompanyById(companyId)
+        .subscribe((responseCompanyInfo: ApiResponseCompanyInfo) => {
+          if (
+            !responseCompanyInfo ||
+            responseCompanyInfo.responseCode !== 200
+          ) {
+            return this.handleResponseError(responseCompanyInfo.errorCode);
+          }
+          this.companyInfo = responseCompanyInfo.result;
+        })
+    );
+  }
+
   downloadFile(documentPath) {
     this.subManager.add(
       this.fileControllerService
@@ -294,7 +316,12 @@ export class SignContractTermsOfServiceComponent implements OnInit, OnDestroy {
           if (response.responseCode !== 200) {
             return this.showErrorModal();
           }
+
           this.userInfo = response.result;
+          if (this.userInfo?.personalData?.companyId) {
+            this.getCompanyInfoById(this.userInfo?.personalData?.companyId);
+          }
+
           this.getLatestApprovalLetter();
         })
     );
@@ -310,36 +337,33 @@ export class SignContractTermsOfServiceComponent implements OnInit, OnDestroy {
     });
   }
 
+  buildCreateLetterRequest(): CreateLetterRequest {
+    return {
+      name: this.userInfo.personalData?.firstName,
+      dateOfBirth: this.userInfo.personalData?.dateOfBirth,
+      nationalId: this.userInfo.personalData?.identityNumberOne,
+      customerId: this.customerId,
+      idIssuePlace: this.userInfo.personalData?.idIssuePlace,
+      company: this.companyInfo.name,
+    };
+  }
+
   createApprovalLetter() {
     this.subManager.add(
       this.contractControllerService
-        .createLetter(COMPANY_NAME.HMG, {
-          name: this.userInfo.personalData?.firstName,
-          dateOfBirth: this.userInfo.personalData?.dateOfBirth,
-          nationalId: this.userInfo.personalData?.identityNumberOne,
-          customerId: this.customerId,
-          idIssuePlace: this.userInfo.personalData?.idIssuePlace,
-        })
-        .subscribe(
-          (response: ApiResponseCreateLetterResponse) => {
-            if (
-              !response ||
-              !response.result ||
-              response.responseCode !== 200
-            ) {
-              return this.showErrorModal();
-            }
+        .createLetter(COMPANY_NAME.HMG, this.buildCreateLetterRequest())
+        .subscribe((response: ApiResponseCreateLetterResponse) => {
+          if (!response || !response.result || response.responseCode !== 200) {
+            return this.showErrorModal();
+          }
 
-            if (response.result.documentPath && !this.isSentOtpOnsign) {
-              this.contractInfo = {
-                path: response.result.documentPath,
-              };
-              this.downloadFile(this.contractInfo.path);
-            }
-          },
-          (error) => {},
-          () => {}
-        )
+          if (response.result.documentPath && !this.isSentOtpOnsign) {
+            this.contractInfo = {
+              path: response.result.documentPath,
+            };
+            this.downloadFile(this.contractInfo.path);
+          }
+        })
     );
   }
 
@@ -360,14 +384,6 @@ export class SignContractTermsOfServiceComponent implements OnInit, OnDestroy {
 
             if (
               this.contractInfo &&
-              this.contractInfo.path &&
-              !this.isSentOtpOnsign
-            ) {
-              this.downloadFile(this.contractInfo.path);
-            }
-
-            if (
-              this.contractInfo &&
               this.contractInfo.idRequest &&
               this.contractInfo.idDocument &&
               setSentOtpStatus
@@ -377,6 +393,16 @@ export class SignContractTermsOfServiceComponent implements OnInit, OnDestroy {
               this.store.dispatch(new fromActions.SetShowLeftBtn(true));
               return;
             }
+            ``;
+
+            if (
+              this.contractInfo &&
+              this.contractInfo.path &&
+              !this.isSentOtpOnsign
+            ) {
+              this.downloadFile(this.contractInfo.path);
+            }
+
             return;
           }
           this.contractInfo = null;
