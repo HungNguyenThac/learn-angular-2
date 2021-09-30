@@ -123,7 +123,7 @@ export class SignUpComponent implements OnInit, OnDestroy {
 
   //OTP
   verifyOtp(otp) {
-    console.log(otp);
+    this.errorText = null;
     const requestId = this.createCustomerAccountRequestResult.requestId;
     const signature = this.createCustomerAccountRequestResult.signature;
     const createVerifiedAccountRequest: CreateVerifiedAccountRequest = {
@@ -138,6 +138,12 @@ export class SignUpComponent implements OnInit, OnDestroy {
         .createVerifiedCustomerAccount(createVerifiedAccountRequest)
         .subscribe((result) => {
           if (result.errorCode != null || result.responseCode !== 200) {
+            this.errorText = this.multiLanguageService.instant(
+              result.errorCode && ERROR_CODE_KEY[result.errorCode]
+                ? ERROR_CODE_KEY[result.errorCode]
+                : 'common.something_went_wrong'
+            );
+            this.otp = [];
             return this.handleResponseError(result.errorCode);
           }
           this.store.dispatch(
@@ -164,6 +170,8 @@ export class SignUpComponent implements OnInit, OnDestroy {
   }
 
   resendOtp() {
+    this.errorText = null;
+    this.otp = [];
     this.getOtp();
   }
 
