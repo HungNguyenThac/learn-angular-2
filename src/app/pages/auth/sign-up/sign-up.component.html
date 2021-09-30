@@ -99,10 +99,12 @@
 
         <div class="col-md-12">
           <div id="get-otp-btn-container">
-            <mat-checkbox id="insurance-checkbox" [value]="ruleAccepted" (click)="onRuleAccepted()">
+            <div class="d-flex insurance-checkbox-container">
+              <mat-checkbox id="insurance-checkbox" [value]="ruleAccepted" (click)="onRuleAccepted()">
+              </mat-checkbox>
               <p class="insurance-checkbox-text align-items-center" [innerHTML]= '"payday_loan.auth.confirm_policy" | translate'>
               </p>
-            </mat-checkbox>
+            </div>
             <button type="submit" (click)="onSubmit()" (keyup.enter)="onSubmit()"
               [disabled]="!signUpForm.valid || !ruleAccepted" mat-raised-button color="primary"
               class="ui-button confirm-btn">

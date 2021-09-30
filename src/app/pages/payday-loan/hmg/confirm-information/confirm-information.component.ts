@@ -48,6 +48,18 @@ import {
 } from '../../../../core/common/enum/payday-loan';
 import formatSlug from '../../../../core/utils/format-slug';
 
+export const MY_FORMATS = {
+  parse: {
+      dateInput: 'LL'
+  },
+  display: {
+      dateInput: 'DD/MM/YYYY',
+      monthYearLabel: 'YYYY',
+      dateA11yLabel: 'LL',
+      monthYearA11yLabel: 'YYYY'
+  }
+};
+
 @Component({
   selector: 'app-confirm-information',
   templateUrl: './confirm-information.component.html',
@@ -59,9 +71,10 @@ import formatSlug from '../../../../core/utils/format-slug';
       useClass: MomentDateAdapter,
       deps: [MAT_DATE_LOCALE],
     },
-    { provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS },
+    { provide: MAT_DATE_FORMATS, useValue: MY_FORMATS },
   ],
 })
+
 export class ConfirmInformationComponent
   implements OnInit, AfterViewInit, OnDestroy
 {
