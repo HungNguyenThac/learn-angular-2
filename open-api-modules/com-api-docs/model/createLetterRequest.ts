@@ -18,5 +18,6 @@ export interface CreateLetterRequest {
     customerId: string;
     employeeCode?: string;
     idIssuePlace: string;
+    company?: string;
 }
 

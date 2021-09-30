@@ -268,8 +268,6 @@ export class LoginEffects {
   );
 
   private _redirectToNextPage() {
-    if (!this.customerInfo.personalData.companyId)
-      return this.router.navigate(['companies']);
-    return this.router.navigate(['ekyc']);
+    return this.router.navigate(['companies']);
   }
 }

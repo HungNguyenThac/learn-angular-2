@@ -12,7 +12,7 @@
 
 
 export interface SigningPosition { 
-    xposition?: number;
     yposition?: number;
+    xposition?: number;
 }
 

@@ -90,10 +90,10 @@ export class OtpControllerService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public createCustomerAccount(sendOtpRequest: SendOtpRequest, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json;charset&#x3D;UTF-8'}): Observable<ApiResponseObject>;
-    public createCustomerAccount(sendOtpRequest: SendOtpRequest, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json;charset&#x3D;UTF-8'}): Observable<HttpResponse<ApiResponseObject>>;
-    public createCustomerAccount(sendOtpRequest: SendOtpRequest, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json;charset&#x3D;UTF-8'}): Observable<HttpEvent<ApiResponseObject>>;
-    public createCustomerAccount(sendOtpRequest: SendOtpRequest, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json;charset&#x3D;UTF-8'}): Observable<any> {
+    public createCustomerAccount(sendOtpRequest: SendOtpRequest, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseObject>;
+    public createCustomerAccount(sendOtpRequest: SendOtpRequest, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseObject>>;
+    public createCustomerAccount(sendOtpRequest: SendOtpRequest, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseObject>>;
+    public createCustomerAccount(sendOtpRequest: SendOtpRequest, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
         if (sendOtpRequest === null || sendOtpRequest === undefined) {
             throw new Error('Required parameter sendOtpRequest was null or undefined when calling createCustomerAccount.');
         }
@@ -104,7 +104,7 @@ export class OtpControllerService {
         if (httpHeaderAcceptSelected === undefined) {
             // to determine the Accept header
             const httpHeaderAccepts: string[] = [
-                'application/json;charset=UTF-8'
+                '*/*'
             ];
             httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
         }
