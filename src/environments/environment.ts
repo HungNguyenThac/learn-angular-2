@@ -1,5 +1,5 @@
 export const environment = {
-  PRODUCTION: false,
+  PRODUCTION: true,
   API_BASE_URL: 'https://api-aws.epay.vn',
   IDENTITY_API_PATH: '/identity',
   CUSTOMER_API_PATH: '/customer',
