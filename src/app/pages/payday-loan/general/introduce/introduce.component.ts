@@ -6,6 +6,7 @@ import { GlobalConstants } from '../../../../core/common/global-constants';
 import { Store } from '@ngrx/store';
 import * as fromActions from '../../../../core/store';
 import { MultiLanguageService } from '../../../../share/translate/multiLanguageService';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-introduce',
