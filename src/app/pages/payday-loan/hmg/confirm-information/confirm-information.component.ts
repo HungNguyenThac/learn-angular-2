@@ -350,6 +350,7 @@ export class ConfirmInformationComponent
       nationalId: this.infoForm.controls['identityNumberOne'].value,
       customerId: this.customerId,
       idIssuePlace: this.infoForm.controls['idIssuePlace'].value,
+      company: this.companyInfo.name,
     };
   }
 

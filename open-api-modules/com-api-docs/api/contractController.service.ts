@@ -310,15 +310,15 @@ export class ContractControllerService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public sendLetterOTPHMG(companyName: 'HMG' | 'TNG', sendLetterOTPRequest: SendLetterOTPRequest, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<ApiResponseSignWithOTPResponse>;
-    public sendLetterOTPHMG(companyName: 'HMG' | 'TNG', sendLetterOTPRequest: SendLetterOTPRequest, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<ApiResponseSignWithOTPResponse>>;
-    public sendLetterOTPHMG(companyName: 'HMG' | 'TNG', sendLetterOTPRequest: SendLetterOTPRequest, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<ApiResponseSignWithOTPResponse>>;
-    public sendLetterOTPHMG(companyName: 'HMG' | 'TNG', sendLetterOTPRequest: SendLetterOTPRequest, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
+    public sendLetterOTP(companyName: 'HMG' | 'TNG', sendLetterOTPRequest: SendLetterOTPRequest, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<ApiResponseSignWithOTPResponse>;
+    public sendLetterOTP(companyName: 'HMG' | 'TNG', sendLetterOTPRequest: SendLetterOTPRequest, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<ApiResponseSignWithOTPResponse>>;
+    public sendLetterOTP(companyName: 'HMG' | 'TNG', sendLetterOTPRequest: SendLetterOTPRequest, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<ApiResponseSignWithOTPResponse>>;
+    public sendLetterOTP(companyName: 'HMG' | 'TNG', sendLetterOTPRequest: SendLetterOTPRequest, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
         if (companyName === null || companyName === undefined) {
-            throw new Error('Required parameter companyName was null or undefined when calling sendLetterOTPHMG.');
+            throw new Error('Required parameter companyName was null or undefined when calling sendLetterOTP.');
         }
         if (sendLetterOTPRequest === null || sendLetterOTPRequest === undefined) {
-            throw new Error('Required parameter sendLetterOTPRequest was null or undefined when calling sendLetterOTPHMG.');
+            throw new Error('Required parameter sendLetterOTPRequest was null or undefined when calling sendLetterOTP.');
         }
 
         let headers = this.defaultHeaders;
