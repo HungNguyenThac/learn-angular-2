@@ -21,27 +21,32 @@ import { Subscription } from 'rxjs';
 export class MainLayoutComponent implements OnInit {
   rateInfo$: Observable<any>;
   subManager = new Subscription();
-  constructor(private multiLanguageService: MultiLanguageService,
+  constructor(
+    private multiLanguageService: MultiLanguageService,
     private store: Store<fromStore.State>,
     private dialog: MatDialog
-    ) {
-    this.rateInfo$ = this.store.select(fromStore.getRatingState);
-
-      this.subManager.add(
-        this.rateInfo$.subscribe((rateInfo:Rating) => {
-          if (!rateInfo.rated) {
-            this.dialog.open(RatingComponent, {
-              autoFocus: false,
-              data: rateInfo,
-              panelClass: 'custom-dialog-container',
-            });
-          }
-        })
-      );
+  ) {
+    this.initSubRating();
   }
 
   async ngOnInit() {
     await this.multiLanguageService.changeLanguage('vi');
     await this.multiLanguageService.use('vi');
+  }
+
+  initSubRating() {
+    this.rateInfo$ = this.store.select(fromStore.getRatingState);
+
+    this.subManager.add(
+      this.rateInfo$.subscribe((rateInfo: Rating) => {
+        if (rateInfo && !rateInfo.rated) {
+          this.dialog.open(RatingComponent, {
+            autoFocus: false,
+            data: rateInfo,
+            panelClass: 'custom-dialog-container',
+          });
+        }
+      })
+    );
   }
 }

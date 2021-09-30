@@ -1,14 +1,25 @@
-import {AfterViewInit, Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
-import {GlobalConstants} from "../../../../core/common/global-constants";
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {
+  AfterViewInit,
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output,
+} from '@angular/core';
+import { GlobalConstants } from '../../../../core/common/global-constants';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import * as moment from 'moment';
 
 @Component({
   selector: 'app-verify-otp-form',
   templateUrl: './verify-otp-form.component.html',
-  styleUrls: ['./verify-otp-form.component.scss']
+  styleUrls: ['./verify-otp-form.component.scss'],
 })
-export class VerifyOtpFormComponent implements OnInit, AfterViewInit, OnDestroy {
+export class VerifyOtpFormComponent
+  implements OnInit, AfterViewInit, OnDestroy
+{
   @Input() mobile: string;
   @Input() showSubmitButton: boolean = true;
   @Input() errorText: string;
@@ -22,25 +33,25 @@ export class VerifyOtpFormComponent implements OnInit, AfterViewInit, OnDestroy 
 
   otp: string;
   disableBtnNext: boolean = true;
-  countdownTime: number = GlobalConstants.PL_VALUE_DEFAULT.RESEND_OTP_COUNTDOWN_TIME;
+  countdownTime: number =
+    GlobalConstants.PL_VALUE_DEFAULT.RESEND_OTP_COUNTDOWN_TIME;
   intervalTime: any;
   hiddenCountdown: boolean = false;
-  countResendOtp: 0;
-  maxResendOTP: number = GlobalConstants.PL_VALUE_DEFAULT.MAX_RESEND_OTP
 
-  constructor(private formBuilder: FormBuilder) {
+  constructor(
+    private formBuilder: FormBuilder,
+    private cdr: ChangeDetectorRef
+  ) {
     this.verifyOtpForm = this.formBuilder.group({
-      otp: ["", [Validators.required]],
-    })
+      otp: ['', [Validators.required]],
+    });
   }
 
   ngAfterViewInit(): void {
     this.countdownTimer(this.countdownTime);
   }
 
-  ngOnInit(): void {
-  }
-
+  ngOnInit(): void {}
 
   submit() {
     if (this.disableBtnNext) return;
@@ -49,15 +60,14 @@ export class VerifyOtpFormComponent implements OnInit, AfterViewInit, OnDestroy 
 
   resendOtpClick() {
     this.resendOtp.emit(this.mobile);
-    this.countResendOtp++;
-    if (this.countResendOtp < this.maxResendOTP) {
-      this.resetCountdownTimer();
-    }
+    this.otp = null;
+    this.resetCountdownTimer();
   }
 
   resetCountdownTimer() {
     this.hiddenCountdown = false;
     this.countdownTimer(this.countdownTime);
+    this.cdr.detectChanges();
   }
 
   handleOnComplete(value) {
@@ -67,7 +77,7 @@ export class VerifyOtpFormComponent implements OnInit, AfterViewInit, OnDestroy 
       this.submit();
       return;
     }
-    document.getElementById("btn-next-form-signing-otp").focus();
+    document.getElementById('btn-next-form-signing-otp').focus();
   }
 
   handleOnChange(value) {
@@ -76,12 +86,15 @@ export class VerifyOtpFormComponent implements OnInit, AfterViewInit, OnDestroy 
   }
 
   countdownTimer(second) {
-    let duration = moment.duration(second * 1000, "milliseconds");
+    let duration = moment.duration(second * 1000, 'milliseconds');
     let interval = 1000;
     let intervalProcess = (this.intervalTime = setInterval(() => {
-      duration = moment.duration(duration.asMilliseconds() - interval, "milliseconds");
-      document.getElementById("signing-otp-countdown-timer").textContent =
-        duration.asSeconds() + "s";
+      duration = moment.duration(
+        duration.asMilliseconds() - interval,
+        'milliseconds'
+      );
+      document.getElementById('signing-otp-countdown-timer').textContent =
+        duration.asSeconds() + 's';
       if (duration.asSeconds() == 0) {
         clearInterval(intervalProcess);
         this.hiddenCountdown = true;
@@ -96,5 +109,4 @@ export class VerifyOtpFormComponent implements OnInit, AfterViewInit, OnDestroy 
   ngOnDestroy(): void {
     this.destroyCountdownTimer();
   }
-
 }
