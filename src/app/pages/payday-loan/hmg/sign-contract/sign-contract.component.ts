@@ -580,6 +580,7 @@ export class SignContractComponent implements OnInit {
 
   resendOtp() {
     this.errorText = null;
+    this.otp = [];
     this.sendContractPaydayOtp();
   }
 
