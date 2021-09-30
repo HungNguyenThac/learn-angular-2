@@ -146,24 +146,29 @@ export class LoginEffects {
                   new fromActions.SetCustomerInfo(result.result)
                 );
 
-              //get rating info----------
-              this.ratingControllerService
-                .getAllRatings(this.customerId, 'PDL_HMG', false)
-                .subscribe((apiResponseRating: ApiResponseRating) => {
-                  if (!apiResponseRating || !apiResponseRating.result) {
-                    return this.store$.dispatch(new fromActions.SetRatingInfo(null))
-                  }
-                  this.store$.dispatch(new fromActions.SetRatingInfo(apiResponseRating.result));
-                });
-              //--------------------------
+                //get rating info----------
+                this.ratingControllerService
+                  .getAllRatings(this.customerId, 'PDL_HMG', false)
+                  .subscribe((apiResponseRating: ApiResponseRating) => {
+                    if (!apiResponseRating || !apiResponseRating.result) {
+                      return this.store$.dispatch(
+                        new fromActions.SetRatingInfo(null)
+                      );
+                    }
+                    this.store$.dispatch(
+                      new fromActions.SetRatingInfo(apiResponseRating.result)
+                    );
+                  });
+                //--------------------------
 
-              if (result.result.personalData.stepOne !== 'DONE') {
-                this._redirectToNextPage().then((r) => {});
-              }
+                if (result.result.personalData.stepOne === 'DONE') {
+                  this.store$.dispatch(
+                    new fromActions.SigninCore(this.loginInput)
+                  );
+                  return;
+                }
 
-                this.store$.dispatch(
-                  new fromActions.SigninCore(this.loginInput)
-                );
+                this._redirectToNextPage();
               })
           );
         })
