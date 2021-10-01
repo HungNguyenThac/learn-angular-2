@@ -50,6 +50,9 @@
                     'payday_loan.confirm_information.choose_date_of_birth'
                       | translate
                   "
+                  [min]="minDateTime"
+                  [max]="maxDateTime"
+                  readonly
                   required
                 />
                 <mat-datepicker-toggle
