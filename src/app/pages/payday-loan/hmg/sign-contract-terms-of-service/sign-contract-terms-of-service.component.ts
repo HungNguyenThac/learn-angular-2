@@ -393,7 +393,6 @@ export class SignContractTermsOfServiceComponent implements OnInit, OnDestroy {
               this.store.dispatch(new fromActions.SetShowLeftBtn(true));
               return;
             }
-            ``;
 
             if (
               this.contractInfo &&
