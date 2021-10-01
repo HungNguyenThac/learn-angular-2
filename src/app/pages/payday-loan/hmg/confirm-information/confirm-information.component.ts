@@ -212,6 +212,7 @@ export class ConfirmInformationComponent
       currentAddress: this.customerInfo.personalData.addressOneLine1,
       email: this.customerInfo.personalData.emailAddress,
     });
+
   }
 
   formatDateToDisplay(date) {
