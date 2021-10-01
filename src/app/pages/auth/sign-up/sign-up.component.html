@@ -12,15 +12,16 @@
                   ? 'is-focused-icon'
                   : ''
               "></div>
-            <input type="text" matInput formControlName="mobileNumber" [placeholder]="'payday_loan.auth.phone_number_login' | translate " required phone-number-validate
+            <input type="text" matInput formControlName="mobileNumber"
+              [placeholder]="'payday_loan.auth.phone_number_login' | translate " required phone-number-validate
               (focus)="isUsernameInputFocus = true" [ngClass]="isUsernameInputFocus ? 'is-focused-input' : ''" />
             <button type="button" tabindex="-1" *ngIf="signUpForm.controls.mobileNumber.value" matSuffix mat-icon-button
               class="support-icon" aria-label="Clear" (click)="signUpForm.controls.mobileNumber.setValue('')"
               disableRipple="true">
               <div class="clear-icon"></div>
             </button>
-            <show-errors [control]="signUpForm.controls['mobileNumber']" [controlLabel]="'payday_loan.auth.phone_number_login' | translate"
-              [hasIconPrefix]="true">
+            <show-errors [control]="signUpForm.controls['mobileNumber']"
+              [controlLabel]="'payday_loan.auth.phone_number_login' | translate" [hasIconPrefix]="true">
             </show-errors>
           </mat-form-field>
         </div>
@@ -34,8 +35,9 @@
                   : ''
               "></div>
             <input [type]="isPassVisible ? 'text' : 'password'" matInput formControlName="password"
-            [placeholder]= '"payday_loan.auth.password" | translate' autocomplete required strong-password-validate (focus)="isPasswordInputFocus = true"
-              (blur)="isPasswordInputFocus = false" [ngClass]="isPasswordInputFocus ? 'is-focused-input' : ''" />
+              [placeholder]='"payday_loan.auth.password" | translate' autocomplete required strong-password-validate
+              (focus)="isPasswordInputFocus = true" (blur)="isPasswordInputFocus = false"
+              [ngClass]="isPasswordInputFocus ? 'is-focused-input' : ''" />
             <button type="button" tabindex="-1" *ngIf="signUpForm.controls.password.value" matSuffix mat-icon-button
               aria-label="Clear" (click)="signUpForm.controls.password.setValue('')" disableRipple="true">
               <div class="clear-icon"></div>
@@ -50,7 +52,8 @@
                   isPassVisible ? 'password-show-icon' : 'password-hide-icon'
                 ]"></div>
             </button>
-            <show-errors [control]="signUpForm.controls['password']" [controlLabel]="'payday_loan.auth.password' | translate" [hasIconPrefix]="true">
+            <show-errors [control]="signUpForm.controls['password']"
+              [controlLabel]="'payday_loan.auth.password' | translate" [hasIconPrefix]="true">
             </show-errors>
           </mat-form-field>
         </div>
@@ -65,7 +68,8 @@
                   : ''
               "></div>
             <input [type]="isConfirmPassVisible ? 'text' : 'password'" matInput formControlName="confirmPassword"
-            [placeholder]= '"payday_loan.auth.repeat_password" | translate' autocomplete required confirm-password-validate (focus)="isConfirmPasswordInputFocus = true"
+              [placeholder]='"payday_loan.auth.repeat_password" | translate' autocomplete required
+              confirm-password-validate (focus)="isConfirmPasswordInputFocus = true"
               (blur)="isConfirmPasswordInputFocus = false"
               [ngClass]="isConfirmPasswordInputFocus ? 'is-focused-input' : ''" />
             <button type="button" tabindex="-1" *ngIf="signUpForm.controls.confirmPassword.value" matSuffix
@@ -85,8 +89,8 @@
                     : 'password-hide-icon'
                 ]"></div>
             </button>
-            <show-errors [control]="signUpForm.controls['confirmPassword']" [controlLabel]="'payday_loan.auth.repeat_password' | translate"
-              [hasIconPrefix]="true">
+            <show-errors [control]="signUpForm.controls['confirmPassword']"
+              [controlLabel]="'payday_loan.auth.repeat_password' | translate" [hasIconPrefix]="true">
             </show-errors>
           </mat-form-field>
         </div>
@@ -102,7 +106,8 @@
             <div class="d-flex insurance-checkbox-container">
               <mat-checkbox id="insurance-checkbox" [value]="ruleAccepted" (click)="onRuleAccepted()">
               </mat-checkbox>
-              <p class="insurance-checkbox-text align-items-center" [innerHTML]= '"payday_loan.auth.confirm_policy" | translate'>
+              <p class="insurance-checkbox-text align-items-center"
+                [innerHTML]='"payday_loan.auth.confirm_policy" | translate'>
               </p>
             </div>
             <button type="submit" (click)="onSubmit()" (keyup.enter)="onSubmit()"
