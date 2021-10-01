@@ -78,6 +78,14 @@ export class ConfirmInformationComponent
   infoForm: FormGroup;
   name: any;
 
+  maxDateTime = moment(new Date(), 'YYYY-MM-DD')
+    .subtract(18, 'years')
+    .toISOString();
+
+  minDateTime = moment(new Date(), 'YYYY-MM-DD')
+    .subtract(70, 'years')
+    .toISOString();
+
   genderOptions = ['Nam', 'Nữ'];
   customerInfo: CustomerInfoResponse;
   coreUserId: string;
@@ -194,7 +202,9 @@ export class ConfirmInformationComponent
   initConfirmInfoFormData() {
     this.infoForm.patchValue({
       name: this.customerInfo.personalData.firstName,
-      dateOfBirth: this.formatDateToDisplay( this.customerInfo.personalData.dateOfBirth),
+      dateOfBirth: this.formatDateToDisplay(
+        this.customerInfo.personalData.dateOfBirth
+      ),
       gender: this.customerInfo.personalData.gender,
       identityNumberOne: this.customerInfo.personalData.identityNumberOne,
       idIssuePlace: this.customerInfo.personalData.idIssuePlace,
@@ -213,10 +223,10 @@ export class ConfirmInformationComponent
   }
 
   formatDateToDisplay(date) {
-    let formatDate = moment(date, ["DD-MM-YYYY", "DD/MM/YYYY"]).format(
-      "YYYY-DD-MM HH:mm:ss"
+    let formatDate = moment(date, ['DD-MM-YYYY', 'DD/MM/YYYY']).format(
+      'YYYY-DD-MM HH:mm:ss'
     );
-    return moment(formatDate, "YYYY-DD-MM").toISOString();
+    return moment(formatDate, 'YYYY-DD-MM').toISOString();
   }
 
   ngOnDestroy(): void {

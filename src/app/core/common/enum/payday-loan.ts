@@ -38,7 +38,7 @@ export enum PAYDAY_LOAN_STEP {
 
 export enum PAYDAY_LOAN_STEP_TITLE {
   ELECTRONIC_IDENTIFIERS = 'Định danh điện tử',
-  CONFIRM_INFORMATION = 'Xác thực thông tin',
+  CONFIRM_INFORMATION = 'Xác nhận thông tin',
   ADDITIONAL_INFORMATION = 'Bổ sung thông tin',
   CHOOSE_AMOUNT_TO_BORROW = 'Chọn số tiền cần ứng',
   CONTRACT_SIGNING = 'Ký hợp đồng',
