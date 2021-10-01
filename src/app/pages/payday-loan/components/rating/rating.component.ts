@@ -1,18 +1,21 @@
-import { Rating } from './../../../../../../open-api-modules/customer-api-docs/model/rating';
-import { PlPromptComponent } from './../../../../share/components/dialogs/pl-prompt/pl-prompt.component';
-import { UpdateRatingRequest } from './../../../../../../open-api-modules/customer-api-docs/model/updateRatingRequest';
-import { RatingControllerService } from './../../../../../../open-api-modules/customer-api-docs/api/ratingController.service';
-import { ERROR_CODE_KEY } from './../../../../core/common/enum/payday-loan';
-import { MultiLanguageService } from './../../../../share/translate/multiLanguageService';
-import { NotificationService } from './../../../../core/services/notification.service';
+import { Rating } from '../../../../../../open-api-modules/customer-api-docs';
+import { PlPromptComponent } from '../../../../share/components';
+import { UpdateRatingRequest } from '../../../../../../open-api-modules/customer-api-docs';
+import { RatingControllerService } from '../../../../../../open-api-modules/customer-api-docs';
+import { ERROR_CODE_KEY } from '../../../../core/common/enum/payday-loan';
+import { MultiLanguageService } from '../../../../share/translate/multiLanguageService';
+import { NotificationService } from '../../../../core/services/notification.service';
 import { Subscription, Observable } from 'rxjs';
 import { Component, OnInit, Inject } from '@angular/core';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import {
+  MatDialog,
+  MatDialogRef,
+  MAT_DIALOG_DATA,
+} from '@angular/material/dialog';
 import { Store } from '@ngrx/store';
 import * as fromStore from 'src/app/core/store/index';
-import {
-  ApiResponseString,
-} from 'open-api-modules/customer-api-docs';
+import { ApiResponseString } from 'open-api-modules/customer-api-docs';
+import * as fromActions from '../../../../core/store';
 
 @Component({
   selector: 'app-rating',
@@ -42,7 +45,7 @@ export class RatingComponent implements OnInit {
     private store: Store<fromStore.State>,
     public dialogRef: MatDialogRef<RatingComponent>,
     public dialog: MatDialog,
-    @Inject(MAT_DIALOG_DATA) public data,
+    @Inject(MAT_DIALOG_DATA) public data
   ) {
     this.customerId$ = this.store.select(fromStore.getCustomerIdState);
     this.subManager.add(
@@ -50,13 +53,14 @@ export class RatingComponent implements OnInit {
         this.customerId = id;
       })
     );
-    this.rateInfo = data
+    this.rateInfo = data;
   }
 
   ngOnInit(): void {}
+
   onSubmit() {
     let updateRatingRequest: UpdateRatingRequest;
-    let id = this.rateInfo.id
+    let id = this.rateInfo.id;
     //Rating
     let customerOpinion: string;
     customerOpinion = this.customerOpinion;
@@ -71,37 +75,39 @@ export class RatingComponent implements OnInit {
       rate: this.rate,
     };
 
-    console.log('updateRatingRequest', updateRatingRequest);
-
     this.subManager.add(
-      this.ratingControllerService
-        .updateRating(id, updateRatingRequest)
-        .subscribe((response: ApiResponseString) => {
+      this.customerRating(this.rateInfo.id, updateRatingRequest).subscribe(
+        (response: ApiResponseString) => {
           if (!response || response.responseCode !== 200) {
             return this.handleResponseError(response?.errorCode);
           }
+          this.store.dispatch(new fromActions.ResetRatingInfo());
           this.dialogRef.close();
           this.openSuccessDialog();
-        })
+        }
+      )
     );
   }
 
   onCloseRating() {
     let updateRatingRequest: UpdateRatingRequest;
     updateRatingRequest = {};
+
     this.subManager.add(
-      this.ratingControllerService
-        .updateRating(this.rateInfo.id, updateRatingRequest)
-        .subscribe((response: ApiResponseString) => {
+      this.customerRating(this.rateInfo.id, updateRatingRequest).subscribe(
+        (response: ApiResponseString) => {
           if (!response || response.responseCode !== 200) {
-            return this.showError(
-              'common.error',
-              'common.something_went_wrong'
-            );
+            return;
           }
+          this.store.dispatch(new fromActions.ResetRatingInfo());
           this.dialogRef.close();
-        })
+        }
+      )
     );
+  }
+
+  customerRating(id: string, updateRatingRequest: UpdateRatingRequest) {
+    return this.ratingControllerService.updateRating(id, updateRatingRequest);
   }
 
   openSuccessDialog() {
