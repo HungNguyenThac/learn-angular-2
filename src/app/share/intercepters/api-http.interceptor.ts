@@ -59,7 +59,7 @@ export class ApiHttpInterceptor implements HttpInterceptor {
         tap(
           (event) => {},
           (error) => {
-          
+            Sentry.captureException(error)
             if (error instanceof HttpErrorResponse)
               return this._handleAuthError(error);
 

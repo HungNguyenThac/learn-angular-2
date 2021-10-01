@@ -9,6 +9,7 @@ import { Integrations } from "@sentry/tracing";
 
 Sentry.init({
   dsn: "https://13f18b48c55246a2a3d65a3572b3cea5@o818430.ingest.sentry.io/5807970",
+  environment: environment.PRODUCTION ? 'production' : 'dev',
   integrations: [
     new Integrations.BrowserTracing({
       tracingOrigins: ["http://hmg.monex.vn/", "https://api-aws.epay.vn", /^\//],
