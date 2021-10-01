@@ -17,6 +17,7 @@ import * as fromActions from '../../core/store';
 import { environment } from '../../../environments/environment';
 import { NotificationService } from '../../core/services/notification.service';
 import { MultiLanguageService } from '../translate/multiLanguageService';
+import * as Sentry from "@sentry/angular";
 
 const RESPONSE_CODE_401_CHANGE_PASSWORD_REQUIRED = 'change_password_required';
 
@@ -58,6 +59,7 @@ export class ApiHttpInterceptor implements HttpInterceptor {
         tap(
           (event) => {},
           (error) => {
+          
             if (error instanceof HttpErrorResponse)
               return this._handleAuthError(error);
 
