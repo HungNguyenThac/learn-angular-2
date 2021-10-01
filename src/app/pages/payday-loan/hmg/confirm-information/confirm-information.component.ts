@@ -8,10 +8,7 @@ import {
   MAT_DATE_FORMATS,
   MAT_DATE_LOCALE,
 } from '@angular/material/core';
-import {
-  MAT_MOMENT_DATE_FORMATS,
-  MomentDateAdapter,
-} from '@angular/material-moment-adapter';
+import { MomentDateAdapter } from '@angular/material-moment-adapter';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
@@ -33,6 +30,7 @@ import { NotificationService } from 'src/app/core/services/notification.service'
 import { MultiLanguageService } from 'src/app/share/translate/multiLanguageService';
 import { ApiResponseObject } from 'open-api-modules/com-api-docs';
 import {
+  ApiResponseBorrowerStepOneResponse,
   BorrowerControllerService,
   BorrowerStepOneInput,
 } from 'open-api-modules/core-api-docs';
@@ -50,14 +48,14 @@ import formatSlug from '../../../../core/utils/format-slug';
 
 export const MY_FORMATS = {
   parse: {
-      dateInput: 'LL'
+    dateInput: 'LL',
   },
   display: {
-      dateInput: 'DD/MM/YYYY',
-      monthYearLabel: 'YYYY',
-      dateA11yLabel: 'LL',
-      monthYearA11yLabel: 'YYYY'
-  }
+    dateInput: 'DD/MM/YYYY',
+    monthYearLabel: 'YYYY',
+    dateA11yLabel: 'LL',
+    monthYearA11yLabel: 'YYYY',
+  },
 };
 
 @Component({
@@ -74,7 +72,6 @@ export const MY_FORMATS = {
     { provide: MAT_DATE_FORMATS, useValue: MY_FORMATS },
   ],
 })
-
 export class ConfirmInformationComponent
   implements OnInit, AfterViewInit, OnDestroy
 {
@@ -255,18 +252,20 @@ export class ConfirmInformationComponent
       confirmInformationRequest
     );
 
-    this.borrowerControllerService
-      .borrowerStepOne(borrowerStepOneInput)
-      .subscribe((result: ApiResponseObject) => {
-        if (!result || result.responseCode !== 200) {
-          return this.handleResponseError(result.errorCode);
-        }
-        this.store.dispatch(
-          new fromActions.SetCoreToken(result.result['access_token'])
-        );
-        this.coreUserId = result.result['userId'];
-        this.confirmInformation();
-      });
+    this.subManager.add(
+      this.borrowerControllerService
+        .borrowerStepOne(borrowerStepOneInput)
+        .subscribe((result: ApiResponseBorrowerStepOneResponse) => {
+          if (!result || result.responseCode !== 200) {
+            return this.handleResponseError(result.errorCode);
+          }
+          this.store.dispatch(
+            new fromActions.SetCoreToken(result.result.access_token)
+          );
+          this.coreUserId = result.result.userId;
+          this.confirmInformation();
+        })
+    );
   }
 
   getCompanyInfoById(companyId: string) {
@@ -298,18 +297,20 @@ export class ConfirmInformationComponent
   }
 
   confirmInformation() {
-    this.infoV2ControllerService
-      .confirmInformationV2(
-        this.customerId,
-        this.buildConfirmInformationRequest()
-      )
-      .subscribe((result: ApiResponseObject) => {
-        if (!result || result.responseCode !== 200) {
-          return this.handleResponseError(result.errorCode);
-        }
+    this.subManager.add(
+      this.infoV2ControllerService
+        .confirmInformationV2(
+          this.customerId,
+          this.buildConfirmInformationRequest()
+        )
+        .subscribe((result: ApiResponseObject) => {
+          if (!result || result.responseCode !== 200) {
+            return this.handleResponseError(result.errorCode);
+          }
 
-        this.getLatestApprovalLetter();
-      });
+          this.getLatestApprovalLetter();
+        })
+    );
   }
 
   getLatestApprovalLetter() {
@@ -319,7 +320,8 @@ export class ConfirmInformationComponent
         .subscribe((response: ApiResponseApprovalLetter) => {
           if (
             !this.customerInfo.personalData.approvalLetterId ||
-            (response.responseCode === 200 && !response.result?.customerSignDone)
+            (response.responseCode === 200 &&
+              !response.result?.customerSignDone)
           ) {
             return this.createApprovalLetter();
           }
@@ -332,15 +334,18 @@ export class ConfirmInformationComponent
   createApprovalLetter() {
     const createLetterRequest: CreateLetterRequest =
       this.buildCreateLetterRequest();
-    this.contractControllerService
-      .createLetter(COMPANY_NAME.HMG, createLetterRequest)
-      .subscribe((result) => {
-        if (!result || result.responseCode !== 200) {
-          return this.handleResponseError(result.errorCode);
-        }
 
-        this.router.navigateByUrl('/additional-information');
-      });
+    this.subManager.add(
+      this.contractControllerService
+        .createLetter(COMPANY_NAME.HMG, createLetterRequest)
+        .subscribe((result) => {
+          if (!result || result.responseCode !== 200) {
+            return this.handleResponseError(result.errorCode);
+          }
+
+          this.router.navigateByUrl('/additional-information');
+        })
+    );
   }
 
   buildCreateLetterRequest(): CreateLetterRequest {

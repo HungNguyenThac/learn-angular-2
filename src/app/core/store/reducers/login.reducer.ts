@@ -93,6 +93,7 @@ class LoginActions {
 
   signinCoreSuccess() {
     const payload = this.action.payload;
+
     if (!payload || !payload.code || payload.code !== 200) return this.state;
 
     return {
