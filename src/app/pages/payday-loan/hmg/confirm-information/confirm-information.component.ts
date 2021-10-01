@@ -213,13 +213,6 @@ export class ConfirmInformationComponent
       email: this.customerInfo.personalData.emailAddress,
     });
 
-    console.log(
-      'this.customerInfo.personalData.dateOfBirth',
-      this.customerInfo.personalData.dateOfBirth
-    );
-    console.log(
-      moment(this.customerInfo.personalData.dateOfBirth).toISOString()
-    );
   }
 
   formatDateToDisplay(date) {
