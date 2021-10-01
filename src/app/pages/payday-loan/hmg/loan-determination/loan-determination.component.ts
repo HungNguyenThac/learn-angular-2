@@ -5,7 +5,12 @@ import {
   OnDestroy,
   OnInit,
 } from '@angular/core';
-import {FormBuilder, FormGroup, RequiredValidator, Validators} from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  RequiredValidator,
+  Validators,
+} from '@angular/forms';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import * as fromStore from 'src/app/core/store/index';
@@ -137,22 +142,7 @@ export class LoanDeterminationComponent
 
   ngAfterViewInit() {
     this.loanDeterminationForm.controls['loanAmount'].setValue(this.minAmount);
-
-    //get customer info
-    this.subManager.add(
-      this.infoControllerService
-        .getInfo(this.customerId)
-        .subscribe((response: ApiResponseCustomerInfoResponse) => {
-          if (!response || response.responseCode !== 200) {
-            return this.handleResponseError(response?.errorCode);
-          }
-          this.customerInfo = response.result;
-          this.store.dispatch(new fromActions.SetCustomerInfo(response.result));
-          this.initAmountSliderValue();
-
-          this.checkLoanExisted();
-        })
-    );
+    this.getCustomerInfo();
     this.cdr.detectChanges();
   }
 
@@ -187,6 +177,30 @@ export class LoanDeterminationComponent
       new fromActions.SetStepNavigationInfo(
         PL_STEP_NAVIGATION.CHOOSE_AMOUNT_TO_BORROW
       )
+    );
+  }
+
+  getCustomerInfo() {
+    this.subManager.add(
+      this.infoControllerService
+        .getInfo(this.customerId)
+        .subscribe((response: ApiResponseCustomerInfoResponse) => {
+          if (!response || response.responseCode !== 200) {
+            return this.handleResponseError(response?.errorCode);
+          }
+          this.customerInfo = response.result;
+
+          if (this.customerInfo.personalData.collateralDocument) {
+            this.loanDeterminationForm.controls['collateralDocument'].setValue(
+              this.customerInfo.personalData.collateralDocument
+            );
+          }
+
+          this.store.dispatch(new fromActions.SetCustomerInfo(response.result));
+          this.initAmountSliderValue();
+
+          this.checkLoanExisted();
+        })
     );
   }
 
@@ -251,8 +265,10 @@ export class LoanDeterminationComponent
     if (!this.coreToken) {
       return this.showError('common.error', 'common.something_went_wrong');
     }
+
     const createApplicationRequest: CreateApplicationRequest =
       this.buildApplicationRequest();
+
     this.subManager.add(
       this.paydayLoanControllerService
         .createLoan(createApplicationRequest)
