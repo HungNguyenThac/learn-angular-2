@@ -271,7 +271,7 @@ export class ConfirmInformationComponent
       this.borrowerControllerService
         .borrowerStepOne(borrowerStepOneInput)
         .subscribe((result: ApiResponseBorrowerStepOneResponse) => {
-          if (!result || result.responseCode !== 200) {
+          if (!result || result.responseCode !== 200 || result.result.code == "400") {
             return this.handleResponseError(result.errorCode);
           }
           this.store.dispatch(
