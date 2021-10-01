@@ -99,6 +99,7 @@ export class LoginEffects {
           this.store$.dispatch(new fromActions.SetHasActiveLoanStatus(false));
           this.store$.dispatch(new fromActions.SetCurrentLoanCode(null));
           this.store$.dispatch(new fromActions.ResetEkycInfo(null));
+          this.store$.dispatch(new fromActions.ResetRatingInfo());
         })
       ),
     { dispatch: false }
