@@ -53,7 +53,7 @@ export class AdditionalInformationComponent
 
   borrowerDetailTextVariable1 = {
     fieldName: 'Số người phụ thuộc tài chính',
-    options: ['0', '1', '2', '3', 'nhiều hơn 3'],
+    options: ['0', '1', '2', '3', 'Nhiều hơn 3'],
   };
 
   borrowerEmploymentHistoryTextVariable1 = {
