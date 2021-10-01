@@ -93,25 +93,46 @@ export class ForgotPasswordComponent implements OnInit {
       this.signOnControllerService
         .resetPasswordbyMobileOtp(createCustomerAccountRequest)
         .subscribe((result) => {
-          if (result.errorCode != null || result.responseCode !== 200) {
-            return this.handleResponseError(result.errorCode);
+          if (
+            !result ||
+            result.errorCode != null ||
+            result.responseCode !== 200
+          ) {
+            return this.handleGetOtpError(result?.errorCode);
           }
 
+          this.openOtpConfirm = true;
+          this.mobile = this.passwordForgotForm.controls.mobileNumber.value;
           this.resetPasswordbyMobileOtpResult = result.result;
         })
     );
   }
 
+  handleGetOtpError(errorCode: string) {
+    let content = this.multiLanguageService.instant(
+      errorCode && ERROR_CODE_KEY[errorCode]
+        ? ERROR_CODE_KEY[errorCode]
+        : 'common.something_went_wrong'
+    );
+    if (ERROR_CODE.ACCOUNT_NOT_EXIST) {
+      content = this.multiLanguageService.instant(
+        'payday_loan.error_code.account_not_existed'
+      );
+    }
+
+    return this.notificationService.openErrorModal({
+      title: this.multiLanguageService.instant('common.error'),
+      content: content,
+      primaryBtnText: this.multiLanguageService.instant('common.confirm'),
+    });
+  }
+
   onOpenOtpConfirm() {
-    if (!this.passwordForgotForm.controls.mobileNumber.valid) return;
-    this.openOtpConfirm = true;
-    console.log('open otp', this.passwordForgotForm.getRawValue());
+    if (this.passwordForgotForm.controls.mobileNumber.invalid) return;
     this.getOtp();
-    this.mobile = this.passwordForgotForm.controls.mobileNumber.value;
   }
 
   onSubmit() {
-    console.log(this.passwordForgotForm.getRawValue());
     const requestId = this.resetPasswordbyMobileOtpResult.requestId;
     const signature = this.resetPasswordbyMobileOtpResult.signature;
 
@@ -132,7 +153,6 @@ export class ForgotPasswordComponent implements OnInit {
             return this.handleResponseError(result.errorCode);
           }
 
-          console.log('reset password Verified success');
           this.redirectToResetPasswordSuccessPage();
         })
     );
