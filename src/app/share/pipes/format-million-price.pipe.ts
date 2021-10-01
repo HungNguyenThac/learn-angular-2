@@ -15,7 +15,7 @@ import { Pipe, PipeTransform } from '@angular/core';
   name: 'formatMillionPrice',
 })
 export class FormatMillionPricePipe implements PipeTransform {
-  millionText: string = 'Tr';
+  millionText: string = 'Triệu';
 
   transform(value: any, ...args: any[]): string {
     if (!value) return '';
