@@ -5,7 +5,7 @@ import {
   OnDestroy,
   OnInit,
 } from '@angular/core';
-import { FormBuilder, FormGroup, RequiredValidator } from '@angular/forms';
+import {FormBuilder, FormGroup, RequiredValidator, Validators} from '@angular/forms';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import * as fromStore from 'src/app/core/store/index';
@@ -113,9 +113,9 @@ export class LoanDeterminationComponent
     private promptDialogRef: MatDialogRef<PlPromptComponent>
   ) {
     this.loanDeterminationForm = fb.group({
-      loanAmount: ['', RequiredValidator],
+      loanAmount: ['', Validators.required],
       loanPurpose: [''],
-      collateralDocument: ['', RequiredValidator],
+      collateralDocument: ['', Validators.required],
       voucherCode: [''],
     });
     this.initHeaderInfo();
