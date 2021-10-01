@@ -50,14 +50,14 @@ import formatSlug from '../../../../core/utils/format-slug';
 
 export const MY_FORMATS = {
   parse: {
-      dateInput: 'LL'
+    dateInput: 'LL',
   },
   display: {
-      dateInput: 'DD/MM/YYYY',
-      monthYearLabel: 'YYYY',
-      dateA11yLabel: 'LL',
-      monthYearA11yLabel: 'YYYY'
-  }
+    dateInput: 'DD/MM/YYYY',
+    monthYearLabel: 'YYYY',
+    dateA11yLabel: 'LL',
+    monthYearA11yLabel: 'YYYY',
+  },
 };
 
 @Component({
@@ -74,7 +74,6 @@ export const MY_FORMATS = {
     { provide: MAT_DATE_FORMATS, useValue: MY_FORMATS },
   ],
 })
-
 export class ConfirmInformationComponent
   implements OnInit, AfterViewInit, OnDestroy
 {
@@ -207,6 +206,14 @@ export class ConfirmInformationComponent
       currentAddress: this.customerInfo.personalData.addressOneLine1,
       email: this.customerInfo.personalData.emailAddress,
     });
+
+    console.log(
+      'this.customerInfo.personalData.dateOfBirth',
+      this.customerInfo.personalData.dateOfBirth
+    );
+    console.log(
+      moment(this.customerInfo.personalData.dateOfBirth).toISOString()
+    );
   }
 
   ngOnDestroy(): void {
@@ -319,7 +326,8 @@ export class ConfirmInformationComponent
         .subscribe((response: ApiResponseApprovalLetter) => {
           if (
             !this.customerInfo.personalData.approvalLetterId ||
-            (response.responseCode === 200 && !response.result?.customerSignDone)
+            (response.responseCode === 200 &&
+              !response.result?.customerSignDone)
           ) {
             return this.createApprovalLetter();
           }
