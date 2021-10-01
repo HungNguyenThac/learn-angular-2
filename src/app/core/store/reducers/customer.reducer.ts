@@ -55,9 +55,13 @@ class CustomerActions {
     return { ...this.state, getCustomerError: payload };
   }
 
-  rating() {
+  setRatingInfo() {
     const payload = this.action.payload;
     return { ...this.state, rateInfo: payload}
+  }
+
+  resetRatingInfo() {
+    return { ...this.state, rateInfo: null}
   }
 }
 
@@ -89,8 +93,13 @@ export function customerReducer(
     }
 
     case fromActions.SET_RATING_INFO: {
-      return customerActions.rating();
+      return customerActions.setRatingInfo();
     }
+
+    case fromActions.RESET_RATING_INFO: {
+      return customerActions.resetRatingInfo();
+    }
+
 
     default: {
       return state;

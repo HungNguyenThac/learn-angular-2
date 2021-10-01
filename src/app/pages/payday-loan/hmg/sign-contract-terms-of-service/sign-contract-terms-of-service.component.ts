@@ -101,7 +101,7 @@ export class SignContractTermsOfServiceComponent implements OnInit, OnDestroy {
     );
     this.onResponsiveInverted();
     window.addEventListener('resize', this.onResponsiveInverted);
-    this.initInfo();
+    this.getUserInfo();
   }
 
   private _initSubscribeState() {
@@ -175,10 +175,6 @@ export class SignContractTermsOfServiceComponent implements OnInit, OnDestroy {
 
   get showSignContractTermsBtn() {
     return this.contractInfo && this.contractInfo.path;
-  }
-
-  initInfo() {
-    this.getContract();
   }
 
   openDialogPrompt() {
@@ -268,13 +264,6 @@ export class SignContractTermsOfServiceComponent implements OnInit, OnDestroy {
     this.responsive = window.innerWidth < 768;
   }
 
-  /**
-   * get Contract
-   */
-  getContract() {
-    this.getUserInfo();
-  }
-
   getCompanyInfoById(companyId: string) {
     this.subManager.add(
       this.companyControllerService
@@ -349,9 +338,12 @@ export class SignContractTermsOfServiceComponent implements OnInit, OnDestroy {
   }
 
   createApprovalLetter() {
+    const createLetterRequest: CreateLetterRequest =
+      this.buildCreateLetterRequest();
+
     this.subManager.add(
       this.contractControllerService
-        .createLetter(COMPANY_NAME.HMG, this.buildCreateLetterRequest())
+        .createLetter(COMPANY_NAME.HMG, createLetterRequest)
         .subscribe((response: ApiResponseCreateLetterResponse) => {
           if (!response || !response.result || response.responseCode !== 200) {
             return this.showErrorModal();
@@ -372,40 +364,40 @@ export class SignContractTermsOfServiceComponent implements OnInit, OnDestroy {
       this.approvalLetterControllerService
         .getApprovalLetterByCustomerId(this.customerId)
         .subscribe((response: ApiResponseApprovalLetter) => {
-          if (response.responseCode == 200) {
-            if (response.result.customerSignDone) {
-              return this.router.navigateByUrl('loan-determination');
-            }
-            this.idRequest = response.result.idRequest;
-            this.idDocument = response.result.idDocument;
-            this.approvalLetterId = response.result.id;
-            this.contractInfo = response.result;
-            this.disabledOTP = false;
-
-            if (
-              this.contractInfo &&
-              this.contractInfo.idRequest &&
-              this.contractInfo.idDocument &&
-              setSentOtpStatus
-            ) {
-              this.disabledOTP = false;
-              this.store.dispatch(new fromActions.SetSentOtpOnsignStatus(true));
-              this.store.dispatch(new fromActions.SetShowLeftBtn(true));
-              return;
-            }
-
-            if (
-              this.contractInfo &&
-              this.contractInfo.path &&
-              !this.isSentOtpOnsign
-            ) {
-              this.downloadFile(this.contractInfo.path);
-            }
-
+          if (response.responseCode !== 200) {
+            this.contractInfo = null;
+            this.createApprovalLetter();
             return;
           }
-          this.contractInfo = null;
-          this.createApprovalLetter();
+
+          if (response.result.customerSignDone) {
+            return this.router.navigateByUrl('loan-determination');
+          }
+          this.idRequest = response.result.idRequest;
+          this.idDocument = response.result.idDocument;
+          this.approvalLetterId = response.result.id;
+          this.contractInfo = response.result;
+          this.disabledOTP = false;
+
+          if (
+            this.contractInfo &&
+            this.contractInfo.idRequest &&
+            this.contractInfo.idDocument &&
+            setSentOtpStatus
+          ) {
+            this.disabledOTP = false;
+            this.store.dispatch(new fromActions.SetSentOtpOnsignStatus(true));
+            this.store.dispatch(new fromActions.SetShowLeftBtn(true));
+            return;
+          }
+
+          if (
+            this.contractInfo &&
+            this.contractInfo.path &&
+            !this.isSentOtpOnsign
+          ) {
+            this.downloadFile(this.contractInfo.path);
+          }
         })
     );
   }
