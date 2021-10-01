@@ -194,9 +194,7 @@ export class ConfirmInformationComponent
   initConfirmInfoFormData() {
     this.infoForm.patchValue({
       name: this.customerInfo.personalData.firstName,
-      dateOfBirth: moment(
-        this.customerInfo.personalData.dateOfBirth
-      ).toISOString(),
+      dateOfBirth: this.formatDateToDisplay( this.customerInfo.personalData.dateOfBirth),
       gender: this.customerInfo.personalData.gender,
       identityNumberOne: this.customerInfo.personalData.identityNumberOne,
       idIssuePlace: this.customerInfo.personalData.idIssuePlace,
@@ -212,6 +210,13 @@ export class ConfirmInformationComponent
     console.log(
       moment(this.customerInfo.personalData.dateOfBirth).toISOString()
     );
+  }
+
+  formatDateToDisplay(date) {
+    let formatDate = moment(date, ["DD-MM-YYYY", "DD/MM/YYYY"]).format(
+      "YYYY-DD-MM HH:mm:ss"
+    );
+    return moment(formatDate, "YYYY-DD-MM").toISOString();
   }
 
   ngOnDestroy(): void {

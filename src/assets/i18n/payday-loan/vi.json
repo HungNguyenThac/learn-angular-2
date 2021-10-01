@@ -342,7 +342,7 @@
     },
     "error_code": {
       "account_not_exist": "Số điện thoại hoặc mật khẩu không chính xác!",
-      "account_not_existed": "Tài khoản không tồn tại",
+      "account_not_existed": "Số điện thoại không chông chính xác!",
       "account_existed": "Số điện thoại đã tồn tại trên hệ thống",
       "email_already_exits": "Email đã tồn tại, vui lòng thử email khác",
       "miss_param": "Thiếu tham số, vui lòng kiểm tra dữ liệu đầu vào",
