@@ -1,5 +1,8 @@
-import { ApiResponseRating } from './../../../../../open-api-modules/customer-api-docs/model/apiResponseRating';
-import { RatingControllerService } from './../../../../../open-api-modules/customer-api-docs/api/ratingController.service';
+import {
+  ApiResponseRating,
+  CreateRatingRequest,
+  RatingControllerService,
+} from '../../../../../open-api-modules/customer-api-docs';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
@@ -149,7 +152,11 @@ export class LoginEffects {
 
                 //get rating info----------
                 this.ratingControllerService
-                  .getAllRatings(this.customerId, 'PDL_HMG', false)
+                  .getAllRatings(
+                    this.customerId,
+                    CreateRatingRequest.ApplicationTypeEnum.PdlHmg,
+                    false
+                  )
                   .subscribe((apiResponseRating: ApiResponseRating) => {
                     if (!apiResponseRating || !apiResponseRating.result) {
                       return this.store$.dispatch(

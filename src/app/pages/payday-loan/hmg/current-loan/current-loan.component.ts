@@ -122,7 +122,6 @@ export class CurrentLoanComponent implements OnInit, OnDestroy {
 
   initPageTitle(status) {
     let pageTitle = this.getPageTitle(status);
-    console.log('ádsad');
     this.titleService.setTitle(
       pageTitle + ' - ' + GlobalConstants.PL_VALUE_DEFAULT.PROJECT_NAME
     );

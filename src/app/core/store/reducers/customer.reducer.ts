@@ -1,8 +1,9 @@
-import { SET_RATING_INFO } from './../actions/customer.actions';
-import { Rating } from './../../../../../open-api-modules/customer-api-docs/model/rating';
+import {
+  CustomerInfoResponse,
+  Rating,
+} from '../../../../../open-api-modules/customer-api-docs';
 import * as fromActions from '../actions';
 import { HttpErrorResponse } from '@angular/common/http';
-import { CustomerInfoResponse } from '../../../../../open-api-modules/customer-api-docs';
 
 export interface CustomerState {
   customerInfo: CustomerInfoResponse;
@@ -57,11 +58,15 @@ class CustomerActions {
 
   setRatingInfo() {
     const payload = this.action.payload;
-    return { ...this.state, rateInfo: payload}
+    return { ...this.state, rateInfo: payload };
   }
 
   resetRatingInfo() {
-    return { ...this.state, rateInfo: null}
+    return { ...this.state, rateInfo: null };
+  }
+
+  getRatingInfo() {
+    return { ...this.state };
   }
 }
 
@@ -100,6 +105,17 @@ export function customerReducer(
       return customerActions.resetRatingInfo();
     }
 
+    case fromActions.GET_RATING_INFO: {
+      return customerActions.getRatingInfo();
+    }
+
+    case fromActions.GET_RATING_INFO_SUCCESS: {
+      return customerActions.setRatingInfo();
+    }
+
+    case fromActions.GET_RATING_INFO_ERROR: {
+      return customerActions.resetRatingInfo();
+    }
 
     default: {
       return state;

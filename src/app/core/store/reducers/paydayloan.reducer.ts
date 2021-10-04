@@ -42,7 +42,7 @@ export const PAYDAY_LOAN_INITIAL_STATE: PaydayLoanState = {
   signContractSuccess: false,
   isSentOtpOnsign: false,
   hasActiveLoan: false,
-  currentLoanCode: null
+  currentLoanCode: null,
 };
 
 class PaydayLoanActions {
@@ -173,13 +173,26 @@ class PaydayLoanActions {
     return { ...this.state, hasActiveLoan: payload };
   }
 
-
   setCurrentLoanCode() {
     const payload = this.action.payload;
 
     return { ...this.state, currentLoanCode: payload };
   }
 
+  getActiveLoanInfo() {
+    return { ...this.state };
+  }
+
+  getActiveLoanInfoSuccess() {
+    return {
+      ...this.state,
+      hasActiveLoan: true,
+    };
+  }
+
+  getActiveLoanInfoError() {
+    return { ...this.state, hasActiveLoan: false };
+  }
 }
 
 export function paydayLoanReducer(
@@ -226,8 +239,14 @@ export function paydayLoanReducer(
       return paydayLoanActions.setSentOtpOnsignStatus();
     case fromActions.SET_HAS_ACTIVE_LOAN_STATUS:
       return paydayLoanActions.setHasActiveLoanStatus();
-      case fromActions.SET_CURRENT_LOAN_CODE:
+    case fromActions.SET_CURRENT_LOAN_CODE:
       return paydayLoanActions.setCurrentLoanCode();
+    case fromActions.GET_ACTIVE_LOAN_INFO:
+      return paydayLoanActions.getActiveLoanInfo();
+    case fromActions.GET_ACTIVE_LOAN_INFO_SUCCESS:
+      return paydayLoanActions.getActiveLoanInfoSuccess();
+    case fromActions.GET_ACTIVE_LOAN_INFO_ERROR:
+      return paydayLoanActions.getActiveLoanInfoError();
     default: {
       return state;
     }
