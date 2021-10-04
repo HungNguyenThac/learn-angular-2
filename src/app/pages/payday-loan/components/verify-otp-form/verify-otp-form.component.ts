@@ -47,8 +47,7 @@ export class VerifyOtpFormComponent
     });
   }
 
-  ngAfterViewInit(): void {
-  }
+  ngAfterViewInit(): void {}
 
   ngOnInit(): void {
     this.countdownTimer(this.countdownTime);
