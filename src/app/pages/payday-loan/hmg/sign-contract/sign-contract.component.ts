@@ -46,7 +46,7 @@ import {
 } from '../../../../../../open-api-modules/core-api-docs';
 import { map } from 'rxjs/operators';
 import formatSlug from '../../../../core/utils/format-slug';
-import { SetNavigationTitle } from '../../../../core/store';
+import urlToFile from '../../../../core/utils/url-to-file';
 
 @Component({
   selector: 'app-sign-contract',
@@ -396,7 +396,7 @@ export class SignContractComponent implements OnInit {
 
       this.linkPdf = blobUrl;
 
-      this.urlToFile(
+      urlToFile(
         JSON.parse(JSON.stringify(blobUrl)),
         'contract.pdf',
         'pdf'
@@ -424,19 +424,6 @@ export class SignContractComponent implements OnInit {
           return response;
         })
       );
-  }
-
-  urlToFile(url, filename, mimeType) {
-    return fetch(url)
-      .then(function (res) {
-        return res.arrayBuffer();
-      })
-      .then(function (buf) {
-        return new File([buf], filename, { type: mimeType });
-      })
-      .catch((e) => {
-        // Sentry.captureException(e);
-      });
   }
 
   acceptContract() {

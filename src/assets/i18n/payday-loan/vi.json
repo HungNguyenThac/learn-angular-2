@@ -200,7 +200,7 @@
       "current_loan_info": "Thông tin ứng lương",
       "sign_contract": "Ký hợp đồng",
       "awaiting_borrow_sign_contract": "Yêu cầu ứng lương của bạn đã được phê duyệt thành công. Vui lòng kiểm tra và ký hợp đồng ứng lương để được giải ngân ngay lập tức.",
-      "awaiting_epay_sign_contract": "Bạn hoàn thành phiên ký. Vui lòng đợi Monex hoàn thiện hợp đồng",
+      "awaiting_epay_sign_contract": "Bạn đã hoàn thành phiên ký. Vui lòng đợi Monex hoàn thiện hợp đồng",
       "please_wait_approval": "Khoản vay đang trong quá trình xét duyệt. Quý khách vui lòng đợi thông báo gửi về qua tin nhắn/email để hoàn thành thủ tục ứng lương",
       "payment_processing": "Hệ thống đang xử lí giao dịch tất toán, vui lòng chờ trong giây lát.",
       "total_amount": "Tổng khoản vay",

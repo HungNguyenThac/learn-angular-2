@@ -33,10 +33,11 @@ export class ResetPasswordSuccessComponent
     );
     this.initHeaderInfo();
     this.resetSession();
+    this.countdownTimer(this.countdownTime);
   }
 
   ngAfterViewInit(): void {
-    this.countdownTimer(this.countdownTime);
+
   }
 
   initHeaderInfo() {

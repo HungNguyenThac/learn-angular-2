@@ -48,10 +48,11 @@ export class VerifyOtpFormComponent
   }
 
   ngAfterViewInit(): void {
-    this.countdownTimer(this.countdownTime);
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.countdownTimer(this.countdownTime);
+  }
 
   submit() {
     if (this.disableBtnNext) return;
