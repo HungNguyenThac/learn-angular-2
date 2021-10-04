@@ -1,5 +1,4 @@
 <div class="single-otp-input">
-
   <input
     #inputEle
     [type]="inputType"
@@ -18,11 +17,12 @@
     (blur)="handleOnBlur()"
   />
   <span *ngIf="!isLastChild && separator">
-      <span [innerHTML]="separator"></span>
-    </span>
+    <span [innerHTML]="separator"></span>
+  </span>
 
   <div
     *ngIf="displayStatusLine"
     class="otp-status-line"
-    [ngClass]="{ active: model }"></div>
+    [ngClass]="{ active: model }"
+  ></div>
 </div>

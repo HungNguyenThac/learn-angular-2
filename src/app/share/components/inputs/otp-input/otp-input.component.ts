@@ -15,7 +15,7 @@ export class OtpInputComponent implements OnInit {
   @Input() numInputs: number = 4;
   @Input() separator: string = '**';
   @Input() inputClasses: string = '';
-  @Input() inputType: string = 'text';
+  @Input() inputType: string = 'tel';
   @Input() shouldAutoFocus: boolean = false;
   @Input() displayStatusLine: boolean = false;
   @Input() placeholder: string = '0';
