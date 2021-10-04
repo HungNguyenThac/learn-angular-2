@@ -11,8 +11,7 @@
               <div class="username-icon" matPrefix
                   [ngClass]="signInForm.controls.mobileNumber.value!='' || isUsernameInputFocus ? 'is-focused-icon' : '' ">
               </div>
-              <input autocomplete="false" required autocomplete="off" readonly 
-              onfocus="this.removeAttribute('readonly');" appPhoneNumberOnly phone-number-validate type="text" matInput formControlName="mobileNumber"
+              <input autocomplete="false" required autocomplete="false" appPhoneNumberOnly phone-number-validate type="text" matInput formControlName="mobileNumber"
                   [placeholder]='"payday_loan.auth.phone_number_login" | translate'
                   (focus)="isUsernameInputFocus=true" (blur)="isUsernameInputFocus=false"
                   [ngClass]="isUsernameInputFocus  ? 'is-focused-input' : '' ">
