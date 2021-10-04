@@ -1,5 +1,5 @@
-import { Rating } from './../../../../open-api-modules/customer-api-docs/model/rating';
-import { RatingComponent } from './../../pages/payday-loan/components/rating/rating.component';
+import { Rating } from '../../../../open-api-modules/customer-api-docs';
+import { RatingComponent } from '../../pages/payday-loan/components/rating/rating.component';
 import { Observable } from 'rxjs/Observable';
 import { Component, OnInit } from '@angular/core';
 import { fadeAnimation } from '../../core/common/animations/router.animation';
