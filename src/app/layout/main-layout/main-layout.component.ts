@@ -22,11 +22,11 @@ export class MainLayoutComponent implements OnInit {
   rateInfo$: Observable<any>;
   customerId$: Observable<string>;
   accessToken$: Observable<string>;
-  coreToken$: Observable<string>;
+  // coreToken$: Observable<string>;
 
   customerId: string;
   accessToken: string;
-  coreToken: string;
+  // coreToken: string;
 
   subManager = new Subscription();
   constructor(
@@ -53,7 +53,7 @@ export class MainLayoutComponent implements OnInit {
     this.rateInfo$ = this.store.select(fromStore.getRatingState);
     this.customerId$ = this.store.select(fromStore.getCustomerIdState);
     this.accessToken$ = this.store.select(fromStore.getTokenState);
-    this.coreToken$ = this.store.select(fromStore.getCoreTokenState);
+    // this.coreToken$ = this.store.select(fromStore.getCoreTokenState);
 
     this.subManager.add(
       this.rateInfo$.subscribe((rateInfo: Rating) => {
@@ -79,10 +79,10 @@ export class MainLayoutComponent implements OnInit {
       })
     );
 
-    this.subManager.add(
-      this.coreToken$.subscribe((coreToken: any) => {
-        this.coreToken = coreToken;
-      })
-    );
+    // this.subManager.add(
+    //   this.coreToken$.subscribe((coreToken: any) => {
+    //     this.coreToken = coreToken;
+    //   })
+    // );
   }
 }

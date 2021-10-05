@@ -25,13 +25,13 @@
             <div class="css-sprite-smiling-face-with-smiling-eyes emotion"></div>
             <div class="emotion-description">Tốt</div>
         </div>
-        <div class="emotion-box" [ngClass]="{'choose': rate === 'VERY_SATISFIED'}"y (click)="rateChoice('VERY_SATISFIED')">
+        <div class="emotion-box" [ngClass]="{'choose': rate === 'VERY_SATISFIED'}" (click)="rateChoice('VERY_SATISFIED')">
             <div class="css-sprite-smiling-face-with-heart-eyes emotion"></div>
             <div class="emotion-description">Tuyệt vời</div>
         </div>
     </div>
     <div class="d-flex flex-wrap rating-tag-box">
-        <div class="rating-tag-item" *ngFor="let opinion of fastOpinionsArray, let i = index" (click)="fastOpinionsHightlightStatus[i]=!fastOpinionsHightlightStatus[i]" 
+        <div class="rating-tag-item" *ngFor="let opinion of fastOpinionsArray, let i = index" (click)="fastOpinionsHightlightStatus[i]=!fastOpinionsHightlightStatus[i]"
         [class.highlight]="fastOpinionsHightlightStatus[i]" >{{opinion}}</div>
     </div>
     <form class="review-form">

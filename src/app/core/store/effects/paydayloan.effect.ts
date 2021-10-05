@@ -56,7 +56,10 @@ export class PaydayloanEffects {
           .pipe(
             map((response: ApiResponsePaydayLoan) => {
               console.log('Effect Response:', response);
-              return new fromActions.GetActiveLoanInfoSuccess(response);
+              if (!response || response.responseCode !== 200) {
+                return new fromActions.GetActiveLoanInfoError(response.errorCode);
+              }
+              return new fromActions.GetActiveLoanInfoSuccess(response.result);
             }),
             catchError((error) =>
               of(new fromActions.GetActiveLoanInfoError(error))

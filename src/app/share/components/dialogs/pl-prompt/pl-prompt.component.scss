@@ -20,6 +20,11 @@
 .mat-dialog-actions {
   padding: 0;
   margin-bottom: 0 !important;
+
+  .mat-button-base + .mat-button-base,
+  .mat-mdc-button-base + .mat-mdc-button-base {
+    margin-left: 0;
+  }
 }
 
 .pl-prompt-title {
@@ -181,6 +186,6 @@
 
 @media (max-width: 768px) {
   .pl-prompt-btn {
-    max-width: 271px;
+    max-width: 100%;
   }
 }
