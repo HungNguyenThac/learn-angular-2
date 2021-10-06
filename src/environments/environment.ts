@@ -12,4 +12,5 @@ export const environment = {
   PAYMENT_ORDER_NAME: 'PaydayLoan-HMG',
   CONTRACT_ACTIVITY_STATUS: 'acceptContract',
   CONTRACT_UUID: '0d6a2105-b04b-46de-b90c-4342d9e8ae55',
+  SENTRY_DSN: "https://13f18b48c55246a2a3d65a3572b3cea5@o818430.ingest.sentry.io/5807970"
 };

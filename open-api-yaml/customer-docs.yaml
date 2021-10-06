@@ -788,6 +788,9 @@ components:
           type: string
         address:
           type: string
+        payday:
+          type: integer
+          format: int32
     ApiResponseCompanyInfo:
       type: object
       properties:
@@ -821,6 +824,9 @@ components:
           type: string
         address:
           type: string
+        payday:
+          type: integer
+          format: int32
         avatar:
           type: string
         createdBy:
@@ -918,8 +924,6 @@ components:
         paydayLoanStatus:
           type: string
         errorGetTngInfo:
-          type: boolean
-        isValidTngInfo:
           type: boolean
         collateralDocument:
           type: string
@@ -1307,6 +1311,9 @@ components:
           type: string
         address:
           type: string
+        payday:
+          type: integer
+          format: int32
         createdBy:
           type: string
         updatedBy:

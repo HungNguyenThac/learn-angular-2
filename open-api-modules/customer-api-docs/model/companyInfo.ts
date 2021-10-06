@@ -21,6 +21,7 @@ export interface CompanyInfo {
     mobile?: string;
     owner?: string;
     address?: string;
+    payday?: number;
     avatar?: string;
     createdBy?: string;
     updatedBy?: string;
