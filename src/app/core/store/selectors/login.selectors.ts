@@ -8,20 +8,15 @@ export const getAuthorizationState = createSelector(
 );
 
 export const getTokenState = createSelector(
-    fromFeature.getCoreState,
-    (state: fromFeature.State) => {
-        return state.login.authorization ? state.login.authorization?.token : '';
-    }
+  fromFeature.getCoreState,
+  (state: fromFeature.State) => {
+    return state.login.authorization ? state.login.authorization?.token : '';
+  }
 );
 
 export const getCustomerIdState = createSelector(
     fromFeature.getCoreState,
     (state: fromFeature.State) => state.login ? state.login.authorization?.customerId : ''
-);
-
-export const getCustomerMobileState = createSelector(
-  fromFeature.getCoreState,
-  (state: fromFeature.State) => state.login ? state.login.customerMobile : ''
 );
 
 export const getAuthoritiesUserState = createSelector(
@@ -37,14 +32,4 @@ export const getLoginErrorState = createSelector(
 export const getLoginProgressState = createSelector(
     fromFeature.getCoreState,
     (state: fromFeature.State) => state.login ? state.login.loginProcess : ''
-);
-
-export const getCoreTokenState = createSelector(
-  fromFeature.getCoreState,
-  (state: fromFeature.State) => state.login ? state.login.coreToken : ''
-);
-
-export const getPasswordState = createSelector(
-    fromFeature.getCoreState,
-    (state: fromFeature.State) => state.login ? state.login.password : ''
 );

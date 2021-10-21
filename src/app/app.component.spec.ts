@@ -20,16 +20,16 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it(`should have as title 'monex-webapp-hmg'`, () => {
+  it(`should have as title 'monex-op'`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
-    expect(app.title).toEqual('monex-webapp-hmg');
+    expect(app.title).toEqual('monex-op');
   });
 
   it('should render title', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('.content span')?.textContent).toContain('monex-webapp-hmg app is running!');
+    expect(compiled.querySelector('.content span')?.textContent).toContain('monex-op app is running!');
   });
 });

@@ -1,0 +1,17 @@
+export * from './apiController.service';
+import { ApiControllerService } from './apiController.service';
+export * from './apiResourceController.service';
+import { ApiResourceControllerService } from './apiResourceController.service';
+export * from './applicationController.service';
+import { ApplicationControllerService } from './applicationController.service';
+export * from './applicationHmgController.service';
+import { ApplicationHmgControllerService } from './applicationHmgController.service';
+export * from './companyController.service';
+import { CompanyControllerService } from './companyController.service';
+export * from './customerController.service';
+import { CustomerControllerService } from './customerController.service';
+export * from './openApiControllerWebMvc.service';
+import { OpenApiControllerWebMvcService } from './openApiControllerWebMvc.service';
+export * from './swagger2ControllerWebMvc.service';
+import { Swagger2ControllerWebMvcService } from './swagger2ControllerWebMvc.service';
+export const APIS = [ApiControllerService, ApiResourceControllerService, ApplicationControllerService, ApplicationHmgControllerService, CompanyControllerService, CustomerControllerService, OpenApiControllerWebMvcService, Swagger2ControllerWebMvcService];

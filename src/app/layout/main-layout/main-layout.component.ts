@@ -1,5 +1,3 @@
-import { Rating } from '../../../../open-api-modules/customer-api-docs';
-import { RatingComponent } from '../../pages/payday-loan/components/rating/rating.component';
 import { Observable } from 'rxjs/Observable';
 import { Component, OnInit } from '@angular/core';
 import { fadeAnimation } from '../../core/common/animations/router.animation';
@@ -19,16 +17,14 @@ import { Subscription } from 'rxjs';
   ],
 })
 export class MainLayoutComponent implements OnInit {
-  rateInfo$: Observable<any>;
   customerId$: Observable<string>;
   accessToken$: Observable<string>;
-  // coreToken$: Observable<string>;
 
   customerId: string;
   accessToken: string;
-  // coreToken: string;
 
   subManager = new Subscription();
+
   constructor(
     private multiLanguageService: MultiLanguageService,
     private store: Store<fromStore.State>,
@@ -50,22 +46,8 @@ export class MainLayoutComponent implements OnInit {
   }
 
   _initSubscribeState() {
-    this.rateInfo$ = this.store.select(fromStore.getRatingState);
     this.customerId$ = this.store.select(fromStore.getCustomerIdState);
     this.accessToken$ = this.store.select(fromStore.getTokenState);
-    // this.coreToken$ = this.store.select(fromStore.getCoreTokenState);
-
-    this.subManager.add(
-      this.rateInfo$.subscribe((rateInfo: Rating) => {
-        if (rateInfo && !rateInfo.rated) {
-          this.dialog.open(RatingComponent, {
-            autoFocus: false,
-            data: rateInfo,
-            panelClass: 'custom-dialog-container',
-          });
-        }
-      })
-    );
 
     this.subManager.add(
       this.customerId$.subscribe((customerId: string) => {
@@ -78,11 +60,5 @@ export class MainLayoutComponent implements OnInit {
         this.accessToken = accessToken;
       })
     );
-
-    // this.subManager.add(
-    //   this.coreToken$.subscribe((coreToken: any) => {
-    //     this.coreToken = coreToken;
-    //   })
-    // );
   }
 }

@@ -1,80 +1,160 @@
 <header>
   <div class="container-fluid">
     <header>
-      <div id="insurance-header">
+      <!-- Top  Header  -->
+      <div id="monex-op-header">
         <div class="header-container">
           <div class="container no-padding justify-content-center">
             <div
-              id="insurance-header-content"
+              id="monex-op-header-content"
               class="d-flex justify-content-between align-items-center"
             >
-              <a><img [src]="logoSrc" alt="logo-monex" id="logo-monex"/></a>
-              <!--              <ng-template #Login>-->
-              <!--                <button mat-flat-button class="ui-button button-login">-->
-              <!--                  {{ "auth.login" | translate }}-->
-              <!--                </button>-->
-              <!--              </ng-template>-->
-              <div *ngIf="showProfileBtn">
-                <button
-                  id="profile-btn"
-                  mat-button
-                  [matMenuTriggerFor]="menu"
-                  class="no-padding"
-                >
-                  <div
-                    class="
-                      d-flex
-                      flex-row
-                      text-center
-                      justify-content-between
-                      align-items-center
-                    "
-                  >
-                    <div class="avatar">{{shortName}}</div>
-                    <div class="sprite-group-1-icon-down"></div>
-                  </div>
-                </button>
-                <mat-menu #menu="matMenu">
-                  <button mat-menu-item (click)="logout()">
-                    {{ "auth.logout" | translate }}
+              <a
+                href="javascript:void(0)"
+                id="logo-monex-container"
+                class="d-flex align-items-center"
+              >
+                <img [src]="logoSrc" alt="logo-monex" id="logo-monex" />
+                <span class="divider-monex-logo" *ngIf="!responsive">|</span>
+                <span id="title-monex-op" *ngIf="!responsive">{{
+                  "header.op" | translate
+                }}</span>
+              </a>
+
+              <div class="d-flex gap-3" *ngIf="showProfileBtn">
+                <section *ngIf="!responsive">
+                  <button class="header-nav-btn gap-1">
+                    <span>{{ "header.notification" | translate }}</span>
+                    <div class="sprite-group-5-notification-on-white"></div>
                   </button>
-                </mat-menu>
+                </section>
+
+                <section *ngIf="!responsive">
+                  <button class="header-nav-btn gap-1">
+                    <span>{{ "header.setting" | translate }}</span>
+                    <div class="sprite-group-5-setting-white"></div>
+                  </button>
+                </section>
+
+                <section>
+                  <button
+                    id="profile-btn"
+                    [matMenuTriggerFor]="menu"
+                    class="no-padding"
+                  >
+                    <div
+                      class="
+                        d-flex
+                        flex-row
+                        text-center
+                        justify-content-between
+                        align-items-center
+                        gap-2
+                      "
+                    >
+                      <div>
+                        <p id="manager-name">{{ fullName }}</p>
+                        <p id="manager-role" class="d-flex gap-1">
+                          <span class="sprite-group-5-personal-roll"></span>
+                          <span>{{ roleName }}</span>
+                        </p>
+                      </div>
+                      <div class="avatar">{{ shortName }}</div>
+                    </div>
+                  </button>
+                  <mat-menu #menu="matMenu">
+                    <button mat-menu-item class="gap-1" *ngIf="responsive">
+                      <div class="d-flex gap-1 align-items-center">
+                        <span>{{ "header.notification" | translate }}</span>
+                        <div class="sprite-group-5-notification-on"></div>
+                      </div>
+                    </button>
+
+                    <button mat-menu-item class="gap-1" *ngIf="responsive">
+                      <div class="d-flex gap-1 align-items-center">
+                        <span>{{ "header.setting" | translate }}</span>
+                        <div class="sprite-group-5-setting"></div>
+                      </div>
+                    </button>
+
+                    <button mat-menu-item (click)="logout()">
+                      {{ "auth.logout" | translate }}
+                    </button>
+                  </mat-menu>
+                </section>
               </div>
             </div>
           </div>
         </div>
       </div>
 
-      <div id="insurance-navigation-bar" *ngIf="showNavigationBar">
-        <div class="container no-padding insurance-navigation-bar-container">
-          <!-- Top navigation -->
-          <div id="insurance-top-navigation" class="justify-content-between">
-            <button
-              mat-icon-button
-              class="no-padding insurance-top-nav-btn"
-              (click)="backToPrevPage()"
+      <!-- Top nav bar -->
+      <div id="navigation-bar" *ngIf="showProfileBtn">
+        <div class="container no-padding">
+          <div id="op-top-navigation" class="justify-content-between">
+            <!-- Menu Mobile  -->
+            <mat-toolbar
+              id="nav-toolbar-mobile"
+              *ngIf="responsive; else desktopMenu"
             >
-              <span [ngClass]="leftBtnIcon" *ngIf="displayLeftBtn"></span>
-            </button>
+              <span class="fill-remaining-space">
+                <button
+                  mat-icon-button
+                  [matMenuTriggerFor]="menuMobile"
+                  #menuTrigger="matMenuTrigger"
+                  (click)="menuTrigger.openMenu()"
+                >
+                  <mat-icon>menu</mat-icon>
+                </button>
+                <mat-menu #menuMobile="matMenu" [overlapTrigger]="false">
+                  <span (mouseleave)="menuTrigger.closeMenu()">
+                    <button
+                      mat-menu-item
+                      *ngFor="let menuItem of menuItems"
+                      class="
+                        mobile-menu-item
+                        gap-2
+                        d-inline-flex
+                        align-items-center
+                      "
+                      [ngClass]="{
+                        active: selectedNavItem === menuItem.navItem
+                      }"
+                      [routerLink]="menuItem.path"
+                    >
+                      <span [ngClass]="menuItem.iconClass"></span>
+                      <span>{{ menuItem.title }}</span>
+                    </button>
+                  </span>
+                </mat-menu>
+              </span>
+              <span class="fill-remaining-space"></span>
+            </mat-toolbar>
 
-            <!-- Stepper navigation -->
-            <app-step-navigation
-              *ngIf="showStepNavigation; else showTitle"
-              class="w-100"
-            ></app-step-navigation>
-            <ng-template #showTitle
-            ><h2>{{ titleNavigation }}</h2></ng-template
-            >
-
-            <button mat-icon-button class="no-padding insurance-top-nav-btn insurance-top-nav-btn-right">
-              <span [ngClass]="rightBtnIcon" *ngIf="displayRightBtn"></span>
-            </button>
+            <!-- Menu Desktop -->
+            <ng-template #desktopMenu>
+              <ul class="nav m-auto gap-3">
+                <li class="nav-item" *ngFor="let menuItem of menuItems">
+                  <a
+                    [routerLink]="menuItem.path"
+                    class="
+                      nav-link
+                      d-inline-flex
+                      align-items-center
+                      gap-1
+                      op-nav-link
+                    "
+                    [ngClass]="{
+                      active: selectedNavItem === menuItem.navItem
+                    }"
+                  >
+                    <span [ngClass]="menuItem.iconClass"></span>
+                    <span>{{ menuItem.title }}</span>
+                  </a>
+                </li>
+              </ul>
+            </ng-template>
           </div>
-
-          <!-- Stepper progress bar-->
-          <app-step-progress-bar
-            *ngIf="showStepProgressBar"
-          ></app-step-progress-bar>
         </div>
       </div>
     </header>

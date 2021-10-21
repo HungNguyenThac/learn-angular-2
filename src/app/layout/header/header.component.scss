@@ -1,4 +1,4 @@
-@import "../../../assets/styles/variables";
+@import "../../../styles/variables";
 
 $main-font: 14px;
 
@@ -6,8 +6,8 @@ header {
   z-index: 1;
 }
 
-#insurance-header {
-  background: $monex-gradient-03;
+#monex-op-header {
+  background: #0d0d80;
   font-family: $sfPro;
   width: 100%;
 }
@@ -20,7 +20,8 @@ header {
   backdrop-filter: blur(200px);
   font-family: $sfPro;
 
-  .button-login, .avatar {
+  .button-login,
+  .avatar {
     height: 32px;
     display: flex;
     align-items: center;
@@ -39,22 +40,106 @@ header {
 
   #profile-btn {
     min-width: 52px;
+    background: none;
+    border: none;
+    color: $white;
+  }
+
+  #manager-name {
+    font-family: $sfPro;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 18px;
+    text-align: right;
+    letter-spacing: 0.1px;
+    color: $white;
+  }
+
+  #manager-role {
+    font-family: $sfPro;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 12px;
+    line-height: 14px;
+    text-align: right;
+    text-transform: uppercase;
+    color: $system-color-yellow;
   }
 }
 
-#logo-monex {
-  height: 28px;
+#logo-monex-container {
+  text-decoration: none;
+  &:hover {
+    text-decoration: none;
+  }
+
+  #logo-monex {
+    height: 28px;
+  }
+
+  .divider-monex-logo {
+    padding: 0 12px;
+    color: #5e59db;
+  }
+
+  #title-monex-op {
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 18px;
+    letter-spacing: 0.1px;
+    color: $white;
+    font-family: $sfPro;
+  }
 }
 
-#insurance-navigation-bar {
+.header-nav-btn {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 7px 12px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 40px;
+  border: none;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 18px;
+  letter-spacing: 0.1px;
+  color: $white;
+}
+
+#navigation-bar {
   padding: 0;
-  background: $monex-gradient-03;
+  background: $white;
+  box-shadow: inset 0px -1px 0px #f2f2f7;
   font-family: $sfPro;
 
-  #insurance-top-navigation {
+  #op-top-navigation {
     padding: 0 16px;
     display: flex;
     height: 48px;
+
+    .op-nav-link {
+      padding: 7px 12px;
+      height: 32px;
+      background: transparent;
+      border-radius: 40px;
+      font-family: $sfPro;
+      font-style: normal;
+      font-weight: 500;
+      font-size: 14px;
+      line-height: 18px;
+      letter-spacing: 0.1px;
+      color: $grey-10;
+
+      &.active {
+        color: $white;
+        background: $monex-color-00;
+      }
+    }
   }
 
   h2 {
@@ -66,23 +151,24 @@ header {
   }
 }
 
-.insurance-top-nav-btn {
-  width: auto;
-  height: 100%;
-  min-width: 20px;
-  span {
-    width: 20px;
-    height: 20px;
+#nav-toolbar-mobile {
+  background: transparent;
+  height: auto;
+}
+
+.mobile-menu-item {
+  &.active {
+    background: $monex-color-00;
+    color: $white;
   }
 }
 
-#insurance-header-content {
+#monex-op-header-content {
   padding: 8px 0;
 }
 
 @media (max-width: 768px) {
-  #insurance-header-content {
+  #monex-op-header-content {
     padding: 8px 16px;
   }
 }
-

@@ -1232,10 +1232,10 @@
   dependencies:
     tslib "^2.0.0"
 
-"@ngrx/store@^12.4.0":
-  version "12.4.0"
-  resolved "https://registry.npmjs.org/@ngrx/store/-/store-12.4.0.tgz"
-  integrity sha512-+kC2Ro2BmsxghHQhq4u+9HGE4BPy739werimspuqz37yUG1G3CdxMp0wuoD2M5371spUTFsXOtjKzpifOYbWbg==
+"@ngrx/store@^12.5.0":
+  version "12.5.0"
+  resolved "https://registry.yarnpkg.com/@ngrx/store/-/store-12.5.0.tgz#163bb73b16d8ec4d4e1a24a8cc399afdd2863aa3"
+  integrity sha512-+RnUz9n7WnTcw+7evXxvlnnbQhb+9SPP7F2vOCsC/2kNLjA75H1xzShdIs5iswv43YyfnOK6tNeakHPVp+B9Ng==
   dependencies:
     tslib "^2.0.0"
 
@@ -4058,6 +4058,11 @@ image-size@~0.5.0:
   resolved "https://registry.npmjs.org/image-size/-/image-size-0.5.5.tgz"
   integrity sha1-Cd/Uq50g4p6xw+gLiZA3jfnjy5w=
 
+immer@^9.0.6:
+  version "9.0.6"
+  resolved "https://registry.yarnpkg.com/immer/-/immer-9.0.6.tgz#7a96bf2674d06c8143e327cbf73539388ddf1a73"
+  integrity sha512-G95ivKpy+EvVAnAab4fVa4YGYn24J1SpEktnJX7JJ45Bd7xqME/SCplFzYFmTbrkwZbQ4xJK1xMTUYBkN6pWsQ==
+
 import-fresh@^3.2.1:
   version "3.3.0"
   resolved "https://registry.npmjs.org/import-fresh/-/import-fresh-3.3.0.tgz"
@@ -5252,6 +5257,20 @@ ng2-pdf-viewer@^7.0.1:
   dependencies:
     pdfjs-dist "~2.7.570"
     tslib "^2.0.0"
+
+ngrx-immer@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/ngrx-immer/-/ngrx-immer-1.0.1.tgz#a33d2ae6eba2cb3f93d5541e3962dbda614d0de7"
+  integrity sha512-2J+2AfcJY2GQbHLCbojZFsU1RuqKlUgpYm/mKnuMCyeYObsGd5rrK2UgLVUZJYZNTG97rNEpg3vDRl0kKwSQhg==
+  dependencies:
+    tslib "^2.2.0"
+
+ngrx-slice@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/ngrx-slice/-/ngrx-slice-4.0.0.tgz#b3492e2ca0932906b4bb5d13d5a655a65d9d9145"
+  integrity sha512-tazXkSzZrpKNRC9ILej72zAB83YonfKTwo2MTm6ape/w3wXdZkngeonr3Srw1/NNl6PuWAmdD8zxso6iapYoCQ==
+  dependencies:
+    tslib "^2.1.0"
 
 ngrx-store-localstorage@^12.0.1:
   version "12.0.1"

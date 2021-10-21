@@ -1,5 +1,5 @@
-@import "src/assets/styles/variables";
-@import "src/assets/styles/insurance/insurance-button";
+@import "../../../../../styles/variables";
+@import "../../../../../styles/payday-loan/pl-button";
 
 .card-payment-text {
   font-family: $sfPro;
@@ -103,7 +103,7 @@
   text-align: right;
   margin: auto 0;
 
-  .insurance-btn {
+  .pl-btn {
     font-family: $sfPro;
     height: 32px;
     max-width: 80px;
@@ -119,7 +119,7 @@
 .btn-actions {
   margin-top: 12px;
 
-  .insurance-btn {
+  .pl-btn {
     max-width: 273px;
   }
 }
@@ -166,7 +166,7 @@
   }
 
   .btn-actions {
-    .insurance-btn {
+    .pl-btn {
       max-width: 200px;
     }
   }

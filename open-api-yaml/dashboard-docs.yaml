@@ -1,0 +1,1050 @@
+openapi: 3.0.1
+info:
+  title: OpenAPI definition
+  version: v0
+servers:
+- url: http://localhost:8004
+  description: Generated server url
+paths:
+  /v1/customers:
+    post:
+      tags:
+      - customer-controller
+      operationId: getCustomers
+      parameters:
+      - name: pageSize
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: pageNumber
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: sortField
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: descending
+        in: query
+        required: false
+        schema:
+          type: boolean
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties:
+                type: object
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseSearchAndPaginationResponseCustomerInfo'
+      security:
+      - bearerAuth: []
+  /v1/companies:
+    post:
+      tags:
+      - company-controller
+      operationId: getCompanies
+      parameters:
+      - name: pageSize
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: pageNumber
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: sortField
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: descending
+        in: query
+        required: false
+        schema:
+          type: boolean
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties:
+                type: object
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseSearchAndPaginationResponseCompanyInfo'
+      security:
+      - bearerAuth: []
+  /v3/api-docs:
+    get:
+      tags:
+      - open-api-controller-web-mvc
+      operationId: getDocumentation
+      parameters:
+      - name: group
+        in: query
+        required: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: string
+            application/hal+json:
+              schema:
+                type: string
+  /v2/api-docs:
+    get:
+      tags:
+      - swagger-2-controller-web-mvc
+      operationId: getDocumentation_1
+      parameters:
+      - name: group
+        in: query
+        required: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: string
+            application/hal+json:
+              schema:
+                type: string
+  /v1/examples:
+    get:
+      tags:
+      - api-controller
+      operationId: mobileOtpLogin
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseListString'
+  /v1/customers/{customerId}:
+    get:
+      tags:
+      - customer-controller
+      operationId: getCustomerById
+      parameters:
+      - name: customerId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseCustomerInfo'
+      security:
+      - bearerAuth: []
+  /v1/companies/{companyId}:
+    get:
+      tags:
+      - company-controller
+      operationId: getCompanyById
+      parameters:
+      - name: companyId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseCompanyInfo'
+      security:
+      - bearerAuth: []
+  /v1/application/{loanId}/voucher:
+    get:
+      tags:
+      - application-controller
+      operationId: getVoucherInfo
+      parameters:
+      - name: loanId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: voucherTransactionId
+        in: query
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseSearchVoucherInfoResponse'
+  /v1/application/{id}:
+    get:
+      tags:
+      - application-controller
+      operationId: getLoanById
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponsePaydayLoanTng'
+  /v1/application/list:
+    get:
+      tags:
+      - application-controller
+      operationId: findApplication
+      parameters:
+      - name: query
+        in: query
+        required: true
+        schema:
+          $ref: '#/components/schemas/SearchPaydayLoanRequest'
+      - name: pageSize
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: pageNumber
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: orderBy
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: desc
+        in: query
+        required: false
+        schema:
+          type: boolean
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseSearchPaydayLoanResponse'
+  /v1/application/hmg/{loanId}/voucher:
+    get:
+      tags:
+      - application-hmg-controller
+      operationId: getVoucherInfo_1
+      parameters:
+      - name: loanId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: voucherTransactionId
+        in: query
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseSearchVoucherInfoResponse'
+  /v1/application/hmg/{id}:
+    get:
+      tags:
+      - application-hmg-controller
+      operationId: getLoanById_1
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponsePaydayLoanHmg'
+  /v1/application/hmg/list:
+    get:
+      tags:
+      - application-hmg-controller
+      operationId: findApplication_1
+      parameters:
+      - name: query
+        in: query
+        required: true
+        schema:
+          $ref: '#/components/schemas/SearchPaydayLoanRequest'
+      - name: pageSize
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: pageNumber
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: orderBy
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: desc
+        in: query
+        required: false
+        schema:
+          type: boolean
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseSearchPaydayLoanResponse'
+  /swagger-resources:
+    get:
+      tags:
+      - api-resource-controller
+      operationId: swaggerResources
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SwaggerResource'
+  /swagger-resources/configuration/ui:
+    get:
+      tags:
+      - api-resource-controller
+      operationId: uiConfiguration
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UiConfiguration'
+  /swagger-resources/configuration/security:
+    get:
+      tags:
+      - api-resource-controller
+      operationId: securityConfiguration
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SecurityConfiguration'
+components:
+  schemas:
+    ApiResponseSearchAndPaginationResponseCustomerInfo:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/SearchAndPaginationResponseCustomerInfo'
+        errorCode:
+          type: string
+        message:
+          type: object
+        responseCode:
+          type: integer
+          format: int32
+    CustomerInfo:
+      type: object
+      properties:
+        id:
+          type: string
+        firstName:
+          type: string
+        gender:
+          type: string
+        dateOfBirth:
+          type: string
+        identityNumberSix:
+          type: string
+        emailAddress:
+          type: string
+        mobileNumber:
+          type: string
+        addressTwoLine1:
+          type: string
+        addressOneLine1:
+          type: string
+        borrowerDetailTextVariable1:
+          type: string
+        maritalStatus:
+          type: string
+        educationType:
+          type: string
+        coreUserId:
+          type: string
+        note:
+          type: string
+        idDocumentType:
+          type: string
+        identityNumberOne:
+          type: string
+        idIssuePlace:
+          type: string
+        idIssueDate:
+          type: string
+        idFeatures:
+          type: string
+        idExpiredDate:
+          type: string
+        idOrigin:
+          type: string
+        companyId:
+          type: string
+        officeCode:
+          type: string
+        organizationName:
+          type: string
+        officeName:
+          type: string
+        annualIncome:
+          type: number
+          format: float
+        workingDay:
+          type: number
+          format: float
+        borrowerEmploymentHistoryTextVariable1:
+          type: string
+        stepOne:
+          type: string
+        stepTwoIndividual:
+          type: string
+        stepThreeEmployment:
+          type: string
+        paydayLoanStatus:
+          type: string
+        errorGetTngInfo:
+          type: boolean
+        isValidTngInfo:
+          type: boolean
+        collateralDocument:
+          type: string
+        salaryDocument1:
+          type: string
+        salaryDocument2:
+          type: string
+        salaryDocument3:
+          type: string
+        approvalLetterId:
+          type: string
+        frontId:
+          type: string
+        frontIdTwo:
+          type: string
+        backId:
+          type: string
+        backIdTwo:
+          type: string
+        selfie:
+          type: string
+        bankName:
+          type: string
+        bankCode:
+          type: string
+        accountNumber:
+          type: string
+        tngData:
+          $ref: '#/components/schemas/TngInformationResponse'
+        kalapaData:
+          $ref: '#/components/schemas/KalapaResponse'
+        createdAt:
+          type: string
+        updatedBy:
+          type: string
+        updatedAt:
+          type: string
+    FraudCheck:
+      type: object
+      properties:
+        facesMatched:
+          type: integer
+          format: int32
+        floatingMark:
+          type: boolean
+        screenPhoto:
+          type: boolean
+        blacklist:
+          type: boolean
+        abnormalText:
+          type: boolean
+        abnormalFace:
+          type: boolean
+        cornerCut:
+          type: boolean
+    IdCardInfo:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        address:
+          type: string
+        dob:
+          type: string
+        home:
+          type: string
+        expiredDate:
+          type: string
+        documentType:
+          type: string
+        dateOfIssue:
+          type: string
+        features:
+          type: string
+        gender:
+          type: string
+        placeOfIssue:
+          type: string
+    KalapaResponse:
+      type: object
+      properties:
+        createdAt:
+          type: string
+        taxName:
+          type: string
+        verified:
+          type: boolean
+        idCardInfo:
+          $ref: '#/components/schemas/IdCardInfo'
+        selfieCheck:
+          $ref: '#/components/schemas/SelfieCheck'
+        fraudCheck:
+          $ref: '#/components/schemas/FraudCheck'
+    Pagination:
+      type: object
+      properties:
+        size:
+          type: integer
+          format: int32
+        page:
+          type: integer
+          format: int32
+        total:
+          type: integer
+          format: int32
+        maxPage:
+          type: integer
+          format: int32
+    SearchAndPaginationResponseCustomerInfo:
+      type: object
+      properties:
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/CustomerInfo'
+    SelfieCheck:
+      type: object
+      properties:
+        matched:
+          type: boolean
+        matchingScore:
+          type: integer
+          format: int32
+    TngInformationResponse:
+      type: object
+      properties:
+        createdAt:
+          type: string
+        hoDem:
+          type: string
+        ten:
+          type: string
+        maDonVi:
+          type: string
+        tenDonVi:
+          type: string
+        theATM:
+          type: string
+        maNganHang:
+          type: string
+        tenNganHang:
+          type: string
+        thuNhap:
+          type: string
+        soCong:
+          type: string
+        maNS:
+          type: string
+    ApiResponseSearchAndPaginationResponseCompanyInfo:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/SearchAndPaginationResponseCompanyInfo'
+        errorCode:
+          type: string
+        message:
+          type: object
+        responseCode:
+          type: integer
+          format: int32
+    CompanyInfo:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        groupName:
+          type: string
+        avatar:
+          type: string
+        createdBy:
+          type: string
+        updatedBy:
+          type: string
+        createdAt:
+          type: string
+        updatedAt:
+          type: string
+    SearchAndPaginationResponseCompanyInfo:
+      type: object
+      properties:
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/CompanyInfo'
+    ApiResponseListString:
+      type: object
+      properties:
+        result:
+          type: array
+          items:
+            type: string
+        errorCode:
+          type: string
+        message:
+          type: object
+        responseCode:
+          type: integer
+          format: int32
+    ApiResponseCustomerInfo:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/CustomerInfo'
+        errorCode:
+          type: string
+        message:
+          type: object
+        responseCode:
+          type: integer
+          format: int32
+    ApiResponseCompanyInfo:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/CompanyInfo'
+        errorCode:
+          type: string
+        message:
+          type: object
+        responseCode:
+          type: integer
+          format: int32
+    ApiResponseSearchVoucherInfoResponse:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/SearchVoucherInfoResponse'
+        errorCode:
+          type: string
+        message:
+          type: object
+        responseCode:
+          type: integer
+          format: int32
+    PromotionEvent:
+      type: object
+      properties:
+        id:
+          type: string
+        purpose:
+          type: string
+        createdBy:
+          type: string
+        createdAt:
+          type: string
+        expiredAt:
+          type: string
+    SearchVoucherInfoResponse:
+      type: object
+      properties:
+        promotionEvent:
+          $ref: '#/components/schemas/PromotionEvent'
+        voucher:
+          $ref: '#/components/schemas/Voucher'
+        voucherTransaction:
+          $ref: '#/components/schemas/VoucherTransaction'
+    Voucher:
+      type: object
+      properties:
+        id:
+          type: string
+        promotionEventId:
+          type: string
+        code:
+          type: string
+        maxValue:
+          type: integer
+          format: int32
+        percentage:
+          type: number
+          format: float
+        maxAmount:
+          type: integer
+          format: int32
+        remainAmount:
+          type: integer
+          format: int32
+        activedTime:
+          type: array
+          items:
+            type: string
+        description:
+          type: string
+        createdAt:
+          type: string
+    VoucherTransaction:
+      type: object
+      properties:
+        id:
+          type: string
+        voucherId:
+          type: string
+        customerId:
+          type: string
+        loanId:
+          type: string
+        discountValue:
+          type: integer
+          format: int32
+        createdAt:
+          type: string
+    ApiResponsePaydayLoanTng:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/PaydayLoanTng'
+        errorCode:
+          type: string
+        message:
+          type: object
+        responseCode:
+          type: integer
+          format: int32
+    PaydayLoanTng:
+      type: object
+      properties:
+        id:
+          type: string
+        coreLoanUuid:
+          type: string
+        customerId:
+          type: string
+        expectedAmount:
+          type: integer
+          format: int32
+        expectedTenure:
+          type: integer
+          format: int32
+        actualAmount:
+          type: integer
+          format: int32
+        status:
+          type: string
+        oldStatus:
+          type: string
+        appTypeUuid:
+          type: string
+        appType:
+          type: string
+        loanCode:
+          type: string
+        purpose:
+          type: string
+        voucherTransactionId:
+          type: string
+        repaymentStatus:
+          type: string
+        latePenaltyPayment:
+          type: integer
+          format: int32
+        totalServiceFees:
+          type: integer
+          format: int32
+        getSalaryAt:
+          type: string
+        createdAt:
+          type: string
+    SearchPaydayLoanRequest:
+      type: object
+      properties:
+        loanCode:
+          type: string
+        mobileNumber:
+          type: string
+        status:
+          type: string
+    ApiResponseSearchPaydayLoanResponse:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/SearchPaydayLoanResponse'
+        errorCode:
+          type: string
+        message:
+          type: object
+        responseCode:
+          type: integer
+          format: int32
+    SearchPaydayLoanResponse:
+      type: object
+      properties:
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+        searchPaydayLoanResult:
+          type: array
+          items:
+            $ref: '#/components/schemas/SearchPaydayLoanResult'
+    SearchPaydayLoanResult:
+      type: object
+      properties:
+        customerId:
+          type: string
+        loanId:
+          type: string
+        loanCode:
+          type: string
+        tenure:
+          type: integer
+          format: int32
+        status:
+          type: string
+        repaymentStatus:
+          type: string
+        amount:
+          type: integer
+          format: int32
+        createdAt:
+          type: string
+        customerName:
+          type: string
+        mobileNumber:
+          type: string
+        emailAddress:
+          type: string
+    ApiResponsePaydayLoanHmg:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/PaydayLoanHmg'
+        errorCode:
+          type: string
+        message:
+          type: object
+        responseCode:
+          type: integer
+          format: int32
+    PaydayLoanHmg:
+      type: object
+      properties:
+        id:
+          type: string
+        coreLoanUuid:
+          type: string
+        customerId:
+          type: string
+        expectedAmount:
+          type: integer
+          format: int32
+        expectedTenure:
+          type: integer
+          format: int32
+        actualAmount:
+          type: integer
+          format: int32
+        status:
+          type: string
+        oldStatus:
+          type: string
+        appTypeUuid:
+          type: string
+        appType:
+          type: string
+        loanCode:
+          type: string
+        purpose:
+          type: string
+        voucherTransactionId:
+          type: string
+        repaymentStatus:
+          type: string
+        latePenaltyPayment:
+          type: integer
+          format: int32
+        totalServiceFees:
+          type: integer
+          format: int32
+        getSalaryAt:
+          type: string
+        createdAt:
+          type: string
+    SwaggerResource:
+      type: object
+      properties:
+        name:
+          type: string
+        url:
+          type: string
+        swaggerVersion:
+          type: string
+        location:
+          type: string
+          deprecated: true
+    UiConfiguration:
+      type: object
+      properties:
+        deepLinking:
+          type: boolean
+        displayOperationId:
+          type: boolean
+        defaultModelsExpandDepth:
+          type: integer
+          format: int32
+        defaultModelExpandDepth:
+          type: integer
+          format: int32
+        defaultModelRendering:
+          type: string
+          enum:
+          - example
+          - model
+        displayRequestDuration:
+          type: boolean
+        docExpansion:
+          type: string
+          enum:
+          - none
+          - list
+          - full
+        filter:
+          type: object
+        maxDisplayedTags:
+          type: integer
+          format: int32
+        operationsSorter:
+          type: string
+          enum:
+          - alpha
+          - method
+        showExtensions:
+          type: boolean
+        showCommonExtensions:
+          type: boolean
+        tagsSorter:
+          type: string
+          enum:
+          - alpha
+        validatorUrl:
+          type: string
+        supportedSubmitMethods:
+          type: array
+          items:
+            type: string
+        swaggerBaseUiUrl:
+          type: string
+    SecurityConfiguration:
+      type: object
+      properties:
+        apiKey:
+          type: string
+          deprecated: true
+        apiKeyVehicle:
+          type: string
+          deprecated: true
+        apiKeyName:
+          type: string
+          deprecated: true
+        clientId:
+          type: string
+        clientSecret:
+          type: string
+        realm:
+          type: string
+        appName:
+          type: string
+        scopeSeparator:
+          type: string
+        additionalQueryStringParams:
+          type: object
+          additionalProperties:
+            type: object
+        useBasicAuthenticationWithAccessCodeGrant:
+          type: boolean
+        enableCsrfSupport:
+          type: boolean

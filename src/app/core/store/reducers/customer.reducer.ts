@@ -8,13 +8,11 @@ import { HttpErrorResponse } from '@angular/common/http';
 export interface CustomerState {
   customerInfo: CustomerInfoResponse;
   getCustomerError: HttpErrorResponse;
-  rateInfo: Rating;
 }
 
 export const CUSTOMER_INITIAL_STATE: CustomerState = {
   customerInfo: null,
-  getCustomerError: null,
-  rateInfo: null,
+  getCustomerError: null
 };
 
 class CustomerActions {
@@ -55,19 +53,6 @@ class CustomerActions {
     const payload = this.action.payload;
     return { ...this.state, getCustomerError: payload };
   }
-
-  setRatingInfo() {
-    const payload = this.action.payload;
-    return { ...this.state, rateInfo: payload };
-  }
-
-  resetRatingInfo() {
-    return { ...this.state, rateInfo: null };
-  }
-
-  getRatingInfo() {
-    return { ...this.state };
-  }
 }
 
 export function customerReducer(
@@ -95,26 +80,6 @@ export function customerReducer(
 
     case fromActions.RESET_CUSTOMER_INFO: {
       return customerActions.resetCustomerInfo();
-    }
-
-    case fromActions.SET_RATING_INFO: {
-      return customerActions.setRatingInfo();
-    }
-
-    case fromActions.RESET_RATING_INFO: {
-      return customerActions.resetRatingInfo();
-    }
-
-    case fromActions.GET_RATING_INFO: {
-      return customerActions.getRatingInfo();
-    }
-
-    case fromActions.GET_RATING_INFO_SUCCESS: {
-      return customerActions.setRatingInfo();
-    }
-
-    case fromActions.GET_RATING_INFO_ERROR: {
-      return customerActions.resetRatingInfo();
     }
 
     default: {

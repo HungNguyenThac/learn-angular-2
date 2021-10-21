@@ -1,6 +1,6 @@
-@import "src/assets/styles/variables";
-@import "src/assets/styles/payday-loan/pl-layout";
-@import "src/assets/styles/payday-loan/pl-auth";
+@import "src/styles/variables";
+@import "../../../../../styles/payday-loan/pl-layout";
+@import "../../../../../styles/payday-loan/pl-auth";
 #pl-auth-success-container {
   .pl-check-mark-icon {
     margin: 0 auto;

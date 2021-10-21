@@ -64,19 +64,11 @@ export class ForgotPasswordComponent implements OnInit {
       'Quên mật khẩu' + ' - ' + GlobalConstants.PL_VALUE_DEFAULT.PROJECT_NAME
     );
 
-    this.initHeaderInfo();
     this.resetSession();
   }
 
   ngOnDestroy(): void {
     this.subManager.unsubscribe();
-  }
-
-  initHeaderInfo() {
-    this.store.dispatch(new fromActions.ResetPaydayLoanInfo());
-    this.store.dispatch(new fromActions.SetNavigationTitle('Quên mật khẩu'));
-    this.store.dispatch(new fromActions.SetShowLeftBtn(true));
-    this.store.dispatch(new fromActions.SetShowRightBtn(false));
   }
 
   resetSession() {

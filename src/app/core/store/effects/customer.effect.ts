@@ -6,8 +6,6 @@ import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import * as fromActions from '../actions';
 import {
   ApiResponseCustomerInfoResponse,
-  ApiResponseRating,
-  CreateRatingRequest,
   InfoControllerService,
   RatingControllerService,
 } from '../../../../../open-api-modules/customer-api-docs';
@@ -59,35 +57,8 @@ export class CustomerEffects {
       this.actions$.pipe(
         ofType(fromActions.GET_CUSTOMER_INFO_SUCCESS),
         map((action: fromActions.GetCustomerInfoSuccess) => action.payload),
-        tap((response: ApiResponseCustomerInfoResponse) => {
-          this.store$.dispatch(new fromStore.GetRatingInfo());
-          this.store$.dispatch(new fromStore.GetActiveLoanInfo());
-        })
+        tap((response: ApiResponseCustomerInfoResponse) => {})
       ),
     { dispatch: false }
-  );
-
-  getRatingInfo$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(fromActions.GET_RATING_INFO),
-      switchMap(() => {
-        return this.ratingControllerService
-          .getAllRatings(
-            this.customerId,
-            CreateRatingRequest.ApplicationTypeEnum.PdlHmg,
-            false
-          )
-          .pipe(
-            map((response: ApiResponseRating) => {
-              console.log('Effect Response:', response);
-              if (!response || response.responseCode !== 200) {
-                return new fromActions.GetRatingInfoError();
-              }
-              return new fromActions.GetRatingInfoSuccess(response.result);
-            }),
-            catchError((error) => of(new fromActions.GetRatingInfoError(error)))
-          );
-      })
-    )
   );
 }

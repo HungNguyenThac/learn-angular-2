@@ -35,7 +35,9 @@ Auto migrate effect
 - ng generate @ngrx/schematics:create-effect-migration
 
 Generate api docs
+- openapi-generator-cli generate -i open-api-yaml/dashboard-docs.yaml -g typescript-angular -o ./open-api-modules/dashboard-api-docs
 - openapi-generator-cli generate -i open-api-yaml/loanapp-docs.yaml -g typescript-angular -o ./open-api-modules/loanapp-api-docs 
+- openapi-generator-cli generate -i open-api-yaml/loanapp-hmg-docs.yaml -g typescript-angular -o ./open-api-modules/loanapp-hmg-api-docs 
 - openapi-generator-cli generate -i open-api-yaml/identity-docs.yaml -g typescript-angular -o ./open-api-modules/identity-api-docs
 - openapi-generator-cli generate -i open-api-yaml/customer-docs.yaml -g typescript-angular -o ./open-api-modules/customer-api-docs
 - openapi-generator-cli generate -i open-api-yaml/com-docs.yaml -g typescript-angular -o ./open-api-modules/com-api-docs

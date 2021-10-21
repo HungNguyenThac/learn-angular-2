@@ -26,7 +26,7 @@ export class SignInComponent implements OnInit {
     private titleService: Title
   ) {
     this.signInForm = this.formBuilder.group({
-      mobileNumber: [''],
+      username: [''],
       password: [''],
     });
   }
@@ -36,7 +36,6 @@ export class SignInComponent implements OnInit {
       'Đăng nhập' + ' - ' + GlobalConstants.PL_VALUE_DEFAULT.PROJECT_NAME
     );
     this.resetSession();
-    this.initHeaderInfo();
   }
 
   onSubmit() {
@@ -44,17 +43,13 @@ export class SignInComponent implements OnInit {
       return;
     }
 
-    const username = this.signInForm.controls.mobileNumber.value;
+    const username = this.signInForm.controls.username.value;
     const password = this.signInForm.controls.password.value;
 
     this.store.dispatch(new fromActions.Signin({ username, password }));
   }
 
   initHeaderInfo() {
-    this.store.dispatch(new fromActions.ResetPaydayLoanInfo());
-    this.store.dispatch(new fromActions.SetNavigationTitle('Đăng nhập'));
-    this.store.dispatch(new fromActions.SetShowLeftBtn(true));
-    this.store.dispatch(new fromActions.SetShowRightBtn(false));
   }
 
   resetSession() {

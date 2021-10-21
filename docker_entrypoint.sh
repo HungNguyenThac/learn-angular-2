@@ -15,7 +15,7 @@ ls
 cd /code
 ls
 cd ..
-more ./generate_env-config.sh
+#more ./generate_env-config.sh
 
 ########################################
 # Create env-config.js file in the public folder
@@ -37,13 +37,6 @@ echo "*********************"
 echo "Create ./code/environments/environment.ts"
 echo "*******Exists?*********"
 cd code
-ls
-echo "*******Delete********"
-rm environments/environment.ts
-echo "*******Deleted?********"
-ls
-"/bin/sh" ../generate_env-config.sh > ./environments/environment.ts
-echo "*******Generated?******"
 ls
 ########################################
 # Create config.ts file in the public folder

@@ -31,18 +31,12 @@ export class ResetPasswordSuccessComponent
         ' - ' +
         GlobalConstants.PL_VALUE_DEFAULT.PROJECT_NAME
     );
-    this.initHeaderInfo();
     this.resetSession();
     this.countdownTimer(this.countdownTime);
   }
 
   ngAfterViewInit(): void {
 
-  }
-
-  initHeaderInfo() {
-    this.store.dispatch(new fromActions.ResetPaydayLoanInfo());
-    this.store.dispatch(new fromActions.SetShowNavigationBar(false));
   }
 
   resetSession() {

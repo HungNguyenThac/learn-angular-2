@@ -1,4 +1,4 @@
-@import "src/assets/styles/variables";
+@import "../../../../../styles/variables";
 
 #guide-transfer-payment-dialog-container {
   position: relative;
@@ -15,7 +15,7 @@
   padding: 16px;
   margin-top: 0;
 
-  .insurance-btn {
+  .pl-btn {
     max-width: 100%;
   }
 }
@@ -135,7 +135,7 @@
 
 @media (max-width: 768px) {
   .btn-actions {
-    .insurance-btn {
+    .pl-btn {
       max-width: 200px;
     }
   }

@@ -1,8 +1,4 @@
-import {
-  ApiResponseRating,
-  CreateRatingRequest,
-  RatingControllerService,
-} from '../../../../../open-api-modules/customer-api-docs';
+import { RatingControllerService } from '../../../../../open-api-modules/customer-api-docs';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
@@ -10,7 +6,13 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { map, switchMap, tap } from 'rxjs/operators';
 import * as fromActions from '../actions';
 import { LoginForm } from '../../../public/models';
-import { SignOnControllerService } from '../../../../../open-api-modules/identity-api-docs';
+import {
+  ApiResponseGetTokenResponse,
+  ApiResponseLoginResponse,
+  ServiceCredentialControllerService,
+  SignOnControllerService,
+} from '../../../../../open-api-modules/identity-api-docs';
+import * as Sentry from '@sentry/angular';
 import {
   ApiResponseCustomerInfoResponse,
   CustomerInfoResponse,
@@ -20,28 +22,17 @@ import {
   LoginControllerService,
   LoginInput,
 } from 'open-api-modules/core-api-docs';
-import {
-  ApiResponsePaydayLoan,
-  ApplicationControllerService,
-} from '../../../../../open-api-modules/loanapp-api-docs';
+import { ApplicationControllerService } from '../../../../../open-api-modules/loanapp-api-docs';
 import { Store } from '@ngrx/store';
 import * as fromStore from '../index';
 import { Observable, Subscription } from 'rxjs';
-import formatSlug from './../../../core/utils/format-slug';
-import {
-  ERROR_CODE_KEY,
-  PAYDAY_LOAN_STATUS,
-} from '../../common/enum/payday-loan';
+import { ERROR_CODE_KEY } from '../../common/enum/payday-loan';
 import { NotificationService } from '../../services/notification.service';
 import { MultiLanguageService } from '../../../share/translate/multiLanguageService';
 
 @Injectable()
 export class LoginEffects {
   loginInput: LoginInput;
-  loginPayload: any;
-
-  public coreToken$: Observable<any>;
-  coreToken: string;
 
   public customerId$: Observable<any>;
   customerId: string;
@@ -56,7 +47,7 @@ export class LoginEffects {
     private store$: Store<fromStore.State>,
     private router: Router,
     private location: Location,
-    private signOnService: SignOnControllerService,
+    private serviceCredentialControllerService: ServiceCredentialControllerService,
     private infoService: InfoControllerService,
     private loginService: LoginControllerService,
     private applicationControllerService: ApplicationControllerService,
@@ -64,13 +55,6 @@ export class LoginEffects {
     private notificationService: NotificationService,
     private multiLanguageService: MultiLanguageService
   ) {
-    this.coreToken$ = store$.select(fromStore.getCoreTokenState);
-    this.subManager.add(
-      this.coreToken$.subscribe((token) => {
-        this.coreToken = token;
-      })
-    );
-
     this.customerId$ = store$.select(fromStore.getCustomerIdState);
     this.subManager.add(
       this.customerId$.subscribe((customer_id) => {
@@ -93,16 +77,7 @@ export class LoginEffects {
         tap(() => {
           this.notificationService.destroyAllDialog();
           this.store$.dispatch(new fromActions.ResetCustomerInfo());
-          this.store$.dispatch(new fromActions.SetShowProfileBtn(false));
-          this.store$.dispatch(new fromActions.SetSentOtpOnsignStatus(false));
-          this.store$.dispatch(
-            new fromActions.SetSignContractTermsSuccess(false)
-          );
-          this.store$.dispatch(new fromActions.SetSignContractSuccess(false));
-          this.store$.dispatch(new fromActions.SetHasActiveLoanStatus(false));
-          this.store$.dispatch(new fromActions.SetCurrentLoanCode(null));
-          this.store$.dispatch(new fromActions.ResetEkycInfo(null));
-          this.store$.dispatch(new fromActions.ResetRatingInfo());
+          Sentry.configureScope((scope) => scope.setUser(null));
         })
       ),
     { dispatch: false }
@@ -115,16 +90,15 @@ export class LoginEffects {
       switchMap((login: LoginForm) => {
         const { username, password } = login;
 
-        return this.signOnService
-          .mobileLogin({
-            mobile: username,
-            password: password,
+        return this.serviceCredentialControllerService
+          .getToken({
+            username: username,
+            secret: password,
           })
           .pipe(
-            map((result) => {
+            map((result: ApiResponseGetTokenResponse) => {
               //
               this.loginInput = login;
-              this.loginPayload = result;
               if (!result || result.responseCode !== 200) {
                 return new fromActions.SigninError(result.errorCode);
               }
@@ -139,46 +113,11 @@ export class LoginEffects {
     () =>
       this.actions$.pipe(
         ofType(fromActions.LOGIN_SIGNIN_SUCCESS),
+        map((action: fromActions.SigninSuccess) => action.payload),
         tap(() => {
-          this.subManager.add(
-            this.infoService
-              .getInfo(this.loginPayload.result.customerId)
-              .subscribe((result: ApiResponseCustomerInfoResponse) => {
-                if (!result || result.responseCode !== 200) return;
-
-                this.store$.dispatch(
-                  new fromActions.SetCustomerInfo(result.result)
-                );
-
-                //get rating info----------
-                this.ratingControllerService
-                  .getAllRatings(
-                    this.customerId,
-                    CreateRatingRequest.ApplicationTypeEnum.PdlHmg,
-                    false
-                  )
-                  .subscribe((apiResponseRating: ApiResponseRating) => {
-                    if (!apiResponseRating || !apiResponseRating.result) {
-                      return this.store$.dispatch(
-                        new fromActions.SetRatingInfo(null)
-                      );
-                    }
-                    this.store$.dispatch(
-                      new fromActions.SetRatingInfo(apiResponseRating.result)
-                    );
-                  });
-                //--------------------------
-
-                if (result.result.personalData.stepOne === 'DONE') {
-                  this.store$.dispatch(
-                    new fromActions.SigninCore(this.loginInput)
-                  );
-                  return;
-                }
-
-                this._redirectToNextPage();
-              })
-          );
+          Sentry.setUser({
+            id: this.customerId
+          });
         })
       ),
     { dispatch: false }
@@ -203,84 +142,4 @@ export class LoginEffects {
       ),
     { dispatch: false }
   );
-
-  loginSinginCore$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(fromActions.LOGIN_SIGNIN_CORE),
-      map((action: fromActions.SigninCore) => action.payload),
-      switchMap((login: LoginForm) => {
-        const { username, password } = login;
-        return this.loginService
-          .login({
-            username: username,
-            password: password,
-          })
-          .pipe(
-            map((result) => {
-              const coreResponse = JSON.parse(JSON.stringify(result));
-              if (!coreResponse || coreResponse.code !== 200) {
-                return new fromActions.SigninCoreError(coreResponse.message);
-              }
-              return new fromActions.SigninCoreSuccess(coreResponse);
-            })
-          );
-      })
-    )
-  );
-
-  loginSinginCoreSuccess$ = createEffect(
-    () =>
-      this.actions$.pipe(
-        ofType(fromActions.LOGIN_SIGNIN_CORE_SUCCESS),
-        tap(() => {
-          this.subManager.add(
-            this.applicationControllerService
-              .getActiveLoan(this.customerId, this.coreToken)
-              .subscribe((result: ApiResponsePaydayLoan) => {
-                if (!result || result.responseCode !== 200) {
-                  return this._redirectToNextPage();
-                }
-
-                this.store$.dispatch(
-                  new fromActions.SetHasActiveLoanStatus(true)
-                );
-
-                return this.router.navigate([
-                  'current-loan',
-                  formatSlug(
-                    result.result.status || PAYDAY_LOAN_STATUS.UNKNOWN_STATUS
-                  ),
-                ]);
-              })
-          );
-        })
-      ),
-    { dispatch: false }
-  );
-
-  loginSinginCoreError$ = createEffect(
-    () =>
-      this.actions$.pipe(
-        ofType(fromActions.LOGIN_SIGNIN_CORE_ERROR),
-        tap(() => {
-          this.store$.dispatch(new fromActions.ResetCustomerInfo());
-          this.store$.dispatch(new fromActions.Logout());
-          setTimeout(() => {
-            this.notificationService.openErrorModal({
-              title: this.multiLanguageService.instant('common.notification'),
-              content: this.multiLanguageService.instant(
-                'common.something_went_wrong'
-              ),
-              primaryBtnText:
-                this.multiLanguageService.instant('common.confirm'),
-            });
-          }, 500);
-        })
-      ),
-    { dispatch: false }
-  );
-
-  private _redirectToNextPage() {
-    return this.router.navigate(['companies']);
-  }
 }
