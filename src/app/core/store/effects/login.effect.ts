@@ -78,6 +78,7 @@ export class LoginEffects {
           this.notificationService.destroyAllDialog();
           this.store$.dispatch(new fromActions.ResetCustomerInfo());
           Sentry.configureScope((scope) => scope.setUser(null));
+          this.router.navigateByUrl('/auth/sign-in');
         })
       ),
     { dispatch: false }

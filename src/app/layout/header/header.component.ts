@@ -147,6 +147,5 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   logout() {
     this.store.dispatch(new fromActions.Logout(null));
-    this.router.navigateByUrl('');
   }
 }
