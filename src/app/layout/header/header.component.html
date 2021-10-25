@@ -92,6 +92,7 @@
           </div>
         </div>
       </div>
+      <!-- End: Top  Header  -->
 
       <!-- Top nav bar -->
       <div id="navigation-bar" *ngIf="showProfileBtn">
@@ -129,66 +130,95 @@
             </span>
             <span class="fill-remaining-space"></span>
           </mat-toolbar>
+          <!-- End: Menu Mobile  -->
 
           <!-- Menu Desktop -->
           <ng-template #desktopMenu>
             <div id="op-top-navigation" class="justify-content-between">
               <ul class="nav m-auto gap-3">
                 <li class="nav-item" *ngFor="let menuItem of menuItems">
-                  <a
-                    [routerLink]="menuItem.path"
-                    class="
-                      nav-link
-                      d-inline-flex
-                      align-items-center
-                      gap-1
-                      op-nav-link
-                    "
-                    [ngClass]="{
-                      active: selectedNavItem === menuItem.navItem
-                    }"
-                    [matMenuTriggerFor]="menuDesktop"
-                    #subMenuTrigger="matMenuTrigger"
-                    (mousemove)="
-                      menuItem.subItems && menuItem.subItems.length > 0
-                        ? subMenuTrigger.openMenu()
-                        : subMenuTrigger.closeMenu()
+                  <!--  Has sub items  -->
+                  <div
+                    *ngIf="
+                      menuItem.subItems && menuItem.subItems.length > 0;
+                      else hasNotSubItems
                     "
                   >
-                    <span [ngClass]="menuItem.iconClass"></span>
-                    <span>{{ menuItem.title }}</span>
-                  </a>
+                    <a
+                      [routerLink]="menuItem.path"
+                      class="
+                        nav-link
+                        d-inline-flex
+                        align-items-center
+                        gap-1
+                        op-nav-link
+                      "
+                      [ngClass]="{
+                        active: selectedNavItem === menuItem.navItem
+                      }"
+                      [matMenuTriggerFor]="menuDesktop"
+                      #subMenuTrigger="matMenuTrigger"
+                      (mousemove)="subMenuTrigger.openMenu()"
+                    >
+                      <span [ngClass]="menuItem.iconClass"></span>
+                      <span>{{ menuItem.title }}</span>
+                    </a>
 
-                  <!-- Submenu-->
-                  <mat-menu
-                    #menuDesktop="matMenu"
-                    [overlapTrigger]="false"
-                    class="sub-menu-desktop"
-                  >
-                    <span (mouseleave)="subMenuTrigger.closeMenu()">
-                      <button
-                        mat-menu-item
-                        *ngFor="let subItem of menuItem.subItems"
-                        class="
-                          sub-menu-desktop-item
-                          gap-2
-                          d-flex
-                          align-items-center
-                        "
-                        [routerLink]="subItem.path"
-                      >
-                        <span [ngClass]="subItem.iconClass"></span>
-                        <span>{{ subItem.title }}</span>
-                      </button>
-                    </span>
-                  </mat-menu>
-                  <!--  End submenu -->
+                    <!-- Submenu-->
+                    <mat-menu
+                      #menuDesktop="matMenu"
+                      [overlapTrigger]="false"
+                      class="sub-menu-desktop"
+                    >
+                      <span (mouseleave)="subMenuTrigger.closeMenu()">
+                        <button
+                          mat-menu-item
+                          *ngFor="let subItem of menuItem.subItems"
+                          class="
+                            sub-menu-desktop-item
+                            gap-2
+                            d-flex
+                            align-items-center
+                          "
+                          [routerLink]="subItem.path"
+                        >
+                          <span [ngClass]="subItem.iconClass"></span>
+                          <span>{{ subItem.title }}</span>
+                        </button>
+                      </span>
+                    </mat-menu>
+                    <!--  End submenu -->
+                  </div>
+                  <!--  End: has sub items  -->
+
+                  <!--  Hasnot sub items  -->
+                  <ng-template #hasNotSubItems>
+                    <a
+                      [routerLink]="menuItem.path"
+                      class="
+                        nav-link
+                        d-inline-flex
+                        align-items-center
+                        gap-1
+                        op-nav-link
+                      "
+                      [ngClass]="{
+                        active: selectedNavItem === menuItem.navItem
+                      }"
+                    >
+                      <span [ngClass]="menuItem.iconClass"></span>
+                      <span>{{ menuItem.title }}</span>
+                    </a>
+                  </ng-template>
+                  <!--  End: Hasnot sub items  -->
                 </li>
               </ul>
             </div>
           </ng-template>
+          <!-- End: Menu Desktop -->
         </div>
       </div>
+      <!-- End: Top nav bar   -->
     </header>
   </div>
 </header>
