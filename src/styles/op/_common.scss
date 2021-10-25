@@ -35,7 +35,6 @@ router-outlet ~ * {
   }
 }
 
-
 .modal-open {
   overflow-y: hidden;
 }
@@ -277,4 +276,18 @@ input.pl-text-otp {
   padding-left: 4px;
   font-family: $sfPro;
   font-weight: 400;
+}
+
+.container,
+.container-lg,
+.container-md,
+.container-sm,
+.container-xl,
+.container-xxl {
+  max-width: 1440px;
+}
+
+.op-background-container {
+  background: $grey-03;
+  min-height: calc(100vh - 96px);
 }

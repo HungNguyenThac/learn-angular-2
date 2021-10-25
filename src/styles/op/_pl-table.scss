@@ -1,0 +1,24 @@
+@import "../variables";
+
+table {
+  width: 100%;
+}
+
+th.mat-sort-header-sorted {
+  color: black;
+}
+
+table.mat-table {
+  tr.mat-header-row {
+    background: #FAFAFA;
+    box-shadow: inset 0px -1px 0px $grey-02;
+  }
+  tr.mat-row:nth-child(2n) {
+    background: #FAFAFA;
+    box-shadow: inset 0px -1px 0px $grey-02;
+  }
+  td.mat-cell {
+    border: none;
+  }
+}
+

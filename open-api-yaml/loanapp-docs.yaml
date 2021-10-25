@@ -9,7 +9,7 @@ paths:
   /v1/{loanId}/update-loan:
     post:
       tags:
-      - payday-loan-controller
+      - op-controller
       operationId: updateInfo
       parameters:
       - name: loanId
@@ -33,7 +33,7 @@ paths:
   /v1/{loanId}/change-status:
     post:
       tags:
-      - payday-loan-controller
+      - op-controller
       operationId: changeLoanStatus
       parameters:
       - name: loanId
@@ -129,7 +129,7 @@ paths:
   /v1/get-service-token:
     post:
       tags:
-      - payday-loan-controller
+      - op-controller
       operationId: getServiceToken
       responses:
         "200":
@@ -137,7 +137,7 @@ paths:
   /v1/cronjob/withdraw-loan:
     post:
       tags:
-      - payday-loan-controller
+      - op-controller
       operationId: withdraw
       responses:
         "200":
@@ -149,7 +149,7 @@ paths:
   /v1/cronjob/overdue:
     post:
       tags:
-      - payday-loan-controller
+      - op-controller
       operationId: setLoanOverdue
       responses:
         "200":
@@ -161,7 +161,7 @@ paths:
   /v1/cronjob/notify-loan-inrepayment:
     post:
       tags:
-      - payday-loan-controller
+      - op-controller
       operationId: notifyInRepaymentLoan
       responses:
         "200":
@@ -173,7 +173,7 @@ paths:
   /v1/cronjob/notify-before-get-salary:
     post:
       tags:
-      - payday-loan-controller
+      - op-controller
       operationId: notifyBeforeGetSalary
       responses:
         "200":
@@ -185,7 +185,7 @@ paths:
   /v1/create-application:
     post:
       tags:
-      - payday-loan-controller
+      - op-controller
       operationId: createLoan
       requestBody:
         content:
@@ -203,7 +203,7 @@ paths:
   /v1/{loanId}:
     get:
       tags:
-      - payday-loan-controller
+      - op-controller
       operationId: changeLoanStatus_1
       parameters:
       - name: loanId
@@ -221,7 +221,7 @@ paths:
   /v1/{customerId}/get-loan:
     get:
       tags:
-      - payday-loan-controller
+      - op-controller
       operationId: getLoan
       parameters:
       - name: customerId
@@ -244,7 +244,7 @@ paths:
   /v1/{customerId}/get-active-loan:
     get:
       tags:
-      - payday-loan-controller
+      - op-controller
       operationId: getActivePaydayLoan
       parameters:
       - name: customerId
@@ -303,7 +303,7 @@ paths:
   /v1/status:
     get:
       tags:
-      - payday-loan-controller
+      - op-controller
       operationId: getLoanByStatus
       parameters:
       - name: status

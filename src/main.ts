@@ -12,7 +12,7 @@ Sentry.init({
   environment: environment.PRODUCTION ? 'production' : 'dev',
   integrations: [
     new Integrations.BrowserTracing({
-      tracingOrigins: ["https://hmg.monex.vn", "https://api-aws.epay.vn", /^\//],
+      tracingOrigins: ["https://operator.monex.vn", "https://api-aws.epay.vn", /^\//],
       routingInstrumentation: Sentry.routingInstrumentation,
     }),
   ],

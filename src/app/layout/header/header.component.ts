@@ -26,8 +26,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
   shortName: string = '0';
   fullName: string = 'Nguyễn Thị Admin';
   roleName: string = 'Super admin';
+
   selectedNavItem: NAV_ITEM = NAV_ITEM.DASHBOARD;
-  navItemOptions = NAV_ITEM;
   menuItems: any = [
     {
       navItem: NAV_ITEM.DASHBOARD,
@@ -45,6 +45,22 @@ export class HeaderComponent implements OnInit, OnDestroy {
         this.selectedNavItem === NAV_ITEM.LOANAPP
           ? 'sprite-group-5-coin-white'
           : 'sprite-group-5-coin',
+      subItems: [
+        {
+          title: this.multiLanguageService.instant(
+            'header.navigation.loanapp_hmg'
+          ),
+          iconClass: 'sprite-group-5-pl-24',
+          path: '/',
+        },
+        {
+          title: this.multiLanguageService.instant(
+            'header.navigation.loanapp_hmg'
+          ),
+          iconClass: 'sprite-group-5-pl-24',
+          path: '/',
+        },
+      ],
       path: '/',
     },
     {

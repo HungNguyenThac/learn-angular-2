@@ -26,7 +26,7 @@ export function HttpLoaderFactory(http: HttpClient) {
 
 export function tokenGetter() {
   let coreState = JSON.parse(localStorage.getItem('core'));
-  return coreState?.login?.authorization?.token
+  return coreState?.login?.authorization?.token;
 }
 
 @NgModule({
@@ -38,7 +38,7 @@ export function tokenGetter() {
     JwtModule.forRoot({
       config: {
         tokenGetter: tokenGetter,
-        allowedDomains: ["webapp-hmg-staging.epay.vn", "hmg.monex.vn"]
+        allowedDomains: ['operator-staging.epay.vn', 'operator.monex.vn'],
       },
     }),
     TranslateModule.forRoot({
