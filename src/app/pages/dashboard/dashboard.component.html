@@ -166,18 +166,18 @@
                   />
                 </svg>
               </button>
-              <mat-accordion class="filter-panel">
+              <mat-accordion class="filter-panel" [ngClass]="panelOpenState ? 'd-block' : 'd-none'">
                 <mat-expansion-panel
                   hideToggle
                   [expanded]="panelOpenState"
                 >
                   <div class="filter-description">
                     Trường thông tin
-                    <button mat-button class="reset-btn">Đặt lại</button>
+                    <button mat-button class="reset-btn" (click)="resetDisplayColumn()">Đặt lại</button>
                   </div>
-                  <div class="filter-fields">
-                    <div *ngFor="let ele of selectedFields" class="field">
-                      <mat-checkbox class="checkbox" checked="ele.fieldState" (click)="updateDisplayColumns(ele)" color="primary">{{ele?.fieldName}}</mat-checkbox>
+                  <div class="filter-fields" [formGroup]="fieldsControl">
+                    <div *ngFor="let fieldName of fieldsName" class="field">
+                      <mat-checkbox class="checkbox" [formControlName]="fieldName" (change)="updateDisplayColumns()" color="primary">{{fieldName}}</mat-checkbox>
                     </div>
                   </div>
                 </mat-expansion-panel>
