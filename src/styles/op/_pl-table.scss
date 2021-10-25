@@ -1,24 +1,132 @@
 @import "../variables";
 
-table {
-  width: 100%;
-}
-
 th.mat-sort-header-sorted {
   color: black;
 }
 
-table.mat-table {
-  tr.mat-header-row {
-    background: #FAFAFA;
+table {
+  width: 100%;
+  font-family: $sfPro;
+  .mat-header-row {
+    display: flex;
+    height: 32px;
+    background: #fafafa;
     box-shadow: inset 0px -1px 0px $grey-02;
   }
-  tr.mat-row:nth-child(2n) {
-    background: #FAFAFA;
+  .mat-row {
+    display: flex;
+    min-height: 48px;
     box-shadow: inset 0px -1px 0px $grey-02;
+    &:nth-child(2n) {
+      background: #fafafa;
+    }
   }
-  td.mat-cell {
+
+  .mat-cell,
+  .mat-footer-cell,
+  .mat-header-cell {
+    text-align: left;
+    display: flex;
+    align-items: center;
+    flex: 1 1 100px;
+    overflow: hidden;
     border: none;
+  }
+
+  .mat-header-cell {
+    color: #3a3a3c;
+    text-transform: uppercase;
+    font-weight: 600;
+    font-size: 12px;
+    line-height: 14px;
+  }
+
+  .mat-cell {
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 22px;
+    color: #3a3a3c;
+  }
+
+  th.mat-header-cell:first-of-type,
+  td.mat-cell:first-of-type,
+  td.mat-footer-cell:first-of-type {
+    padding-left: 8px !important;
+  }
+
+  th.mat-header-cell:last-of-type,
+  td.mat-cell:last-of-type,
+  td.mat-footer-last:first-of-type {
+    padding-right: 8px !important;
+  }
+
+  // .mat-column-position {
+  //   flex: 0 0 44px;
+  // }
+}
+
+::ng-deep .mat-sort-header-arrow {
+  transform: none !important;
+  height: 14px !important;
+  width: 14px !important;
+  min-width: 14px !important;
+  opacity: 1 !important;
+  color: #8e8e93;
+}
+
+::ng-deep .mat-sort-header-arrow[style] {
+  // Hide default arrow stem
+  .mat-sort-header-stem {
+    display: none;
+  }
+  .mat-sort-header-indicator {
+    opacity: 1;
+    color: #8e8e93;
+    // Hide default arrow as its composed of left, right and middle
+    .mat-sort-header-pointer-left,
+    .mat-sort-header-pointer-right,
+    .mat-sort-header-pointer-middle {
+      display: none;
+    }
+  }
+  &::before {
+    content: url(../../assets/img/icon/group-6-op/svg/Sort/Inactive.svg);
   }
 }
 
+// My custom ascending arrow
+[aria-sort="ascending"] {
+  ::ng-deep .mat-sort-header-arrow {
+    &::before {
+      content: "";
+    }
+    .mat-sort-header-indicator {
+      &::before {
+        content: url(../../assets/img/icon/group-6-op/svg/Sort/Down.svg);
+        transform: scale(0.58);
+        top: -6px;
+        right: -6px;
+        position: absolute;
+      }
+    }
+  }
+}
+
+// My custom descending arrow
+[aria-sort="descending"] {
+  ::ng-deep .mat-sort-header-arrow {
+    &::before {
+      content: "";
+    }
+    .mat-sort-header-indicator {
+      &::before {
+        content: url(../../assets/img/icon/group-6-op/svg/Sort/Up.svg);
+        transform: scale(0.58);
+        bottom: -9px;
+        right: -6px;
+        position: absolute;
+      }
+    }
+  }
+}
