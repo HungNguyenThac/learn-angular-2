@@ -10,3 +10,51 @@
 ::ng-deep.mat-form-field-appearance-legacy .mat-form-field-underline {
   display: none;
 }
+
+::ng-deep.cdk-overlay-pane.advance-search-dialog {
+  position: absolute !important;
+  right: 18px;
+  top: 152px;
+}
+
+.filter-panel {
+  position: absolute;
+  z-index: 999;
+  width: 448px;
+  height: 288px;
+  right: 0;
+  top: 58px;
+  padding: 0 16px 16px;
+  .filter-description {
+    padding: 10px 16px;
+    color: #3a3a3c;
+    font-family: $sfPro;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 16px;
+    position: relative;
+    .reset-btn {
+      position: absolute;
+      right: 0px;
+      top: 10px;
+      font-weight: 600;
+      font-size: 16px;
+      line-height: 20px;
+      color: #007aff;
+    }
+  }
+  .filter-fields {
+    padding: 16px;
+    display: flex;
+    flex-wrap: wrap;
+    column-gap: 12px;
+    .field {
+      display: flex;
+      flex-grow: 1;
+      flex-basis: calc(50% - 12px);
+      height: 36px;
+      align-items: center;
+      padding-left: 9px;
+    }
+  }
+}

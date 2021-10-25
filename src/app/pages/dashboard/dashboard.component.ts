@@ -1,9 +1,11 @@
+import { MatDialog } from '@angular/material/dialog';
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { Color, Label, MultiDataSet } from 'ng2-charts';
 import { ChartDataSets, ChartType } from 'chart.js';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { MatSort, Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { FormControl, FormBuilder, FormGroup } from '@angular/forms';
 
 export interface PeriodicElement {
   name: string;
@@ -66,13 +68,20 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   displayedColumns: string[] = ['position', 'name', 'weight', 'symbol'];
   dataSource = new MatTableDataSource(ELEMENT_DATA);
 
+  selectedFields: object[] = [];
+  panelOpenState = false;
+
   pages: Array<number>;
   pageSize: number = 5;
   pageIndex: number = 0;
   pageSizeOptions: number[] = [5, 10, 25, 100];
   totalItems: number = 0;
 
-  constructor(private _liveAnnouncer: LiveAnnouncer) {}
+  constructor(
+    private _liveAnnouncer: LiveAnnouncer,
+    public matDialog: MatDialog,
+    public formBuilder: FormBuilder
+  ) {}
   @ViewChild(MatSort) sort: MatSort;
 
   ngAfterViewInit() {
@@ -82,6 +91,13 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     this.totalItems = ELEMENT_DATA.length;
     this.pages = new Array(Math.round(this.totalItems / this.pageSize));
+    for (let i = 0; i < this.displayedColumns.length; i++) {
+      this.selectedFields.push({})
+      this.selectedFields[i]['fieldName'] = this.displayedColumns[i];
+      this.selectedFields[i]['fieldState'] = true;
+    }
+    console.log('this.selectedFields', this.selectedFields);
+
   }
 
   /** Announce the change in sort state for assistive technology. */
@@ -101,5 +117,15 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     this.pageIndex = i;
     event.preventDefault();
     // this.getAllPermits();
+  }
+
+  updateDisplayColumns(selectedField) {
+    selectedField.fieldState = !selectedField.fieldState;
+    this.displayedColumns = []
+    for (let i = 0; i < this.selectedFields.length; i++) {
+      if (this.selectedFields[i]["fieldState"]) {
+        this.displayedColumns.push(this.selectedFields[i]['fieldName']);
+      }
+    }
   }
 }
