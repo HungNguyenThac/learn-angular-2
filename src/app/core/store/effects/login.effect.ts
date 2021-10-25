@@ -118,6 +118,7 @@ export class LoginEffects {
           Sentry.setUser({
             id: this.customerId
           });
+          this.router.navigateByUrl("/");
         })
       ),
     { dispatch: false }

@@ -1,10 +1,11 @@
-import {Injectable} from '@angular/core';
-import {Observable, Subject} from 'rxjs';
-import {CookieService} from 'ngx-cookie-service';
-import {TranslateService} from '@ngx-translate/core';
-import {HttpClient} from '@angular/common/http';
+import { EventEmitter, Injectable } from '@angular/core';
+import { Observable, Subject } from 'rxjs';
+import { CookieService } from 'ngx-cookie-service';
+import { TranslateService } from '@ngx-translate/core';
+import { HttpClient } from '@angular/common/http';
+import { LangChangeEvent } from '@ngx-translate/core/lib/translate.service';
 
-@Injectable({providedIn: 'root'})
+@Injectable({ providedIn: 'root' })
 export class MultiLanguageService {
   private _subject = new Subject<any>();
   private _translationsUrl = 'assets/i18n';
@@ -13,8 +14,7 @@ export class MultiLanguageService {
     private cookieService: CookieService,
     private translateService: TranslateService,
     private http: HttpClient
-  ) {
-  }
+  ) {}
 
   public currentLanguage() {
     // const _language = this.cookieService.get('_language');
@@ -29,11 +29,15 @@ export class MultiLanguageService {
 
   public changeLanguage(language: string) {
     this._setCurrentLanguage(language);
-    this._subject.next({language: language});
+    this._subject.next({ language: language });
   }
 
   public use(language: string) {
     return this.translateService.use(language);
+  }
+
+  public setDefaultLang(language: string) {
+    return this.translateService.setDefaultLang(language);
   }
 
   public reloadLang(language: string) {
@@ -81,5 +85,9 @@ export class MultiLanguageService {
 
   public instant(key: string | Array<string>, interpolateParams?: Object) {
     return this.translateService.instant(key, interpolateParams);
+  }
+
+  get onLangChange(): EventEmitter<LangChangeEvent> {
+    return new this.translateService.onLangChange();
   }
 }

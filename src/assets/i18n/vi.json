@@ -110,10 +110,20 @@
     "navigation": {
       "dashboard": "Tổng quan",
       "loanapp": "Khoản vay",
+      "loanapp_hmg": "Vay ứng lương HMG",
+      "loanapp_tng": "Vay ứng lương TNG",
       "customer": "Khách hàng",
       "insurance": "Bảo hiểm",
       "saving": "Đầu tư"
     }
+  },
+  "mat_paginator_intl": {
+    "items_per_page": "Số dòng một trang",
+    "range_label": "{{range}} trên {{total}}",
+    "first_page": "Trang đầu",
+    "last_page": "Trang cuối",
+    "next_page": "Trang sau",
+    "previous_page": "Trang trước"
   },
   "not_found": {
     "back_to_login": "Quay lại trang chủ",

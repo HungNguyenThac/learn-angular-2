@@ -19,11 +19,11 @@ export class NotificationService {
   ) {}
 
   openErrorModal(payload: Prompt) {
-    this.openPrompt(payload, 'assets/img/payday-loan/warning-prompt-icon.png');
+    this.openPrompt(payload, 'assets/img/op/warning-prompt-icon.png');
   }
 
   openSuccessModal(payload: Prompt) {
-    this.openPrompt(payload, 'assets/img/payday-loan/success-prompt-icon.png');
+    this.openPrompt(payload, 'assets/img/op/success-prompt-icon.png');
   }
 
   openPrompt(payload: Prompt, imgUrl?: string) {

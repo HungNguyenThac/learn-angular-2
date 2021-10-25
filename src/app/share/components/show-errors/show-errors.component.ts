@@ -12,7 +12,7 @@ import {AbstractControl, AbstractControlDirective} from "@angular/forms";
       </div>
     </div>
   `,
-  styleUrls: ['../../../../styles/payday-loan/_validator.scss']
+  styleUrls: ['../../../../styles/op/_validator.scss']
 })
 export class ShowErrorsComponent {
   private static readonly errorMessages: any = {

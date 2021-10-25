@@ -4,7 +4,7 @@
       <!-- Top  Header  -->
       <div id="monex-op-header">
         <div class="header-container">
-          <div class="container no-padding justify-content-center">
+          <div class="container justify-content-center">
             <div
               id="monex-op-header-content"
               class="d-flex justify-content-between align-items-center"
@@ -39,7 +39,9 @@
                 <section>
                   <button
                     id="profile-btn"
-                    [matMenuTriggerFor]="menu"
+                    [matMenuTriggerFor]="profileMenu"
+                    #profileMenuTrigger="matMenuTrigger"
+                    (click)="profileMenuTrigger.openMenu()"
                     class="no-padding"
                   >
                     <div
@@ -62,24 +64,27 @@
                       <div class="avatar">{{ shortName }}</div>
                     </div>
                   </button>
-                  <mat-menu #menu="matMenu">
-                    <button mat-menu-item class="gap-1" *ngIf="responsive">
-                      <div class="d-flex gap-1 align-items-center">
-                        <span>{{ "header.notification" | translate }}</span>
-                        <div class="sprite-group-5-notification-on"></div>
-                      </div>
-                    </button>
 
-                    <button mat-menu-item class="gap-1" *ngIf="responsive">
-                      <div class="d-flex gap-1 align-items-center">
-                        <span>{{ "header.setting" | translate }}</span>
-                        <div class="sprite-group-5-setting"></div>
-                      </div>
-                    </button>
+                  <mat-menu #profileMenu="matMenu">
+                    <span (mouseleave)="profileMenuTrigger.closeMenu()">
+                      <button mat-menu-item class="gap-1" *ngIf="responsive">
+                        <div class="d-flex gap-1 align-items-center">
+                          <span>{{ "header.notification" | translate }}</span>
+                          <div class="sprite-group-5-notification-on"></div>
+                        </div>
+                      </button>
 
-                    <button mat-menu-item (click)="logout()">
-                      {{ "auth.logout" | translate }}
-                    </button>
+                      <button mat-menu-item class="gap-1" *ngIf="responsive">
+                        <div class="d-flex gap-1 align-items-center">
+                          <span>{{ "header.setting" | translate }}</span>
+                          <div class="sprite-group-5-setting"></div>
+                        </div>
+                      </button>
+
+                      <button mat-menu-item (click)="logout()">
+                        {{ "auth.logout" | translate }}
+                      </button>
+                    </span>
                   </mat-menu>
                 </section>
               </div>
@@ -91,48 +96,43 @@
       <!-- Top nav bar -->
       <div id="navigation-bar" *ngIf="showProfileBtn">
         <div class="container no-padding">
-          <div id="op-top-navigation" class="justify-content-between">
-            <!-- Menu Mobile  -->
-            <mat-toolbar
-              id="nav-toolbar-mobile"
-              *ngIf="responsive; else desktopMenu"
-            >
-              <span class="fill-remaining-space">
-                <button
-                  mat-icon-button
-                  [matMenuTriggerFor]="menuMobile"
-                  #menuTrigger="matMenuTrigger"
-                  (click)="menuTrigger.openMenu()"
-                >
-                  <mat-icon>menu</mat-icon>
-                </button>
-                <mat-menu #menuMobile="matMenu" [overlapTrigger]="false">
-                  <span (mouseleave)="menuTrigger.closeMenu()">
-                    <button
-                      mat-menu-item
-                      *ngFor="let menuItem of menuItems"
-                      class="
-                        mobile-menu-item
-                        gap-2
-                        d-inline-flex
-                        align-items-center
-                      "
-                      [ngClass]="{
-                        active: selectedNavItem === menuItem.navItem
-                      }"
-                      [routerLink]="menuItem.path"
-                    >
-                      <span [ngClass]="menuItem.iconClass"></span>
-                      <span>{{ menuItem.title }}</span>
-                    </button>
-                  </span>
-                </mat-menu>
-              </span>
-              <span class="fill-remaining-space"></span>
-            </mat-toolbar>
+          <!-- Menu Mobile  -->
+          <mat-toolbar
+            id="nav-toolbar-mobile"
+            *ngIf="responsive; else desktopMenu"
+          >
+            <span class="fill-remaining-space">
+              <button
+                mat-icon-button
+                [matMenuTriggerFor]="menuMobile"
+                #menuTrigger="matMenuTrigger"
+                (click)="menuTrigger.openMenu()"
+              >
+                <mat-icon>menu</mat-icon>
+              </button>
+              <mat-menu #menuMobile="matMenu" [overlapTrigger]="false">
+                <span (mouseleave)="menuTrigger.closeMenu()">
+                  <button
+                    mat-menu-item
+                    *ngFor="let menuItem of menuItems"
+                    class="mobile-menu-item gap-2 d-flex align-items-center"
+                    [ngClass]="{
+                      active: selectedNavItem === menuItem.navItem
+                    }"
+                    [routerLink]="menuItem.path"
+                  >
+                    <span [ngClass]="menuItem.iconClass"></span>
+                    <span>{{ menuItem.title }}</span>
+                  </button>
+                </span>
+              </mat-menu>
+            </span>
+            <span class="fill-remaining-space"></span>
+          </mat-toolbar>
 
-            <!-- Menu Desktop -->
-            <ng-template #desktopMenu>
+          <!-- Menu Desktop -->
+          <ng-template #desktopMenu>
+            <div id="op-top-navigation" class="justify-content-between">
               <ul class="nav m-auto gap-3">
                 <li class="nav-item" *ngFor="let menuItem of menuItems">
                   <a
@@ -147,14 +147,46 @@
                     [ngClass]="{
                       active: selectedNavItem === menuItem.navItem
                     }"
+                    [matMenuTriggerFor]="menuDesktop"
+                    #subMenuTrigger="matMenuTrigger"
+                    (mousemove)="
+                      menuItem.subItems && menuItem.subItems.length > 0
+                        ? subMenuTrigger.openMenu()
+                        : subMenuTrigger.closeMenu()
+                    "
                   >
                     <span [ngClass]="menuItem.iconClass"></span>
                     <span>{{ menuItem.title }}</span>
                   </a>
+
+                  <!-- Submenu-->
+                  <mat-menu
+                    #menuDesktop="matMenu"
+                    [overlapTrigger]="false"
+                    class="sub-menu-desktop"
+                  >
+                    <span (mouseleave)="subMenuTrigger.closeMenu()">
+                      <button
+                        mat-menu-item
+                        *ngFor="let subItem of menuItem.subItems"
+                        class="
+                          sub-menu-desktop-item
+                          gap-2
+                          d-flex
+                          align-items-center
+                        "
+                        [routerLink]="subItem.path"
+                      >
+                        <span [ngClass]="subItem.iconClass"></span>
+                        <span>{{ subItem.title }}</span>
+                      </button>
+                    </span>
+                  </mat-menu>
+                  <!--  End submenu -->
                 </li>
               </ul>
-            </ng-template>
-          </div>
+            </div>
+          </ng-template>
         </div>
       </div>
     </header>

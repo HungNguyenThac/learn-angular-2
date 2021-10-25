@@ -48,10 +48,6 @@ export class SignInComponent implements OnInit {
 
     this.store.dispatch(new fromActions.Signin({ username, password }));
   }
-
-  initHeaderInfo() {
-  }
-
   resetSession() {
     this.store.dispatch(new fromActions.Logout());
   }
