@@ -1,0 +1,48 @@
+<div class="container-fluid op-breadcrumb-container">
+  <div class="container">
+    <div
+      id="op-breadcrumb-content"
+      class="d-flex justify-content-between align-items-center gap-2"
+    >
+      <div class="d-inline-flex gap-3">
+        <span *ngIf="iconClass; else isIconImgSrc" [ngClass]="iconClass"></span>
+        <ng-template #isIconImgSrc>
+          <span>
+            <img [src]="iconImgSrc" class="op-breadcrumb-icon" alt="" />
+          </span>
+        </ng-template>
+        <h2 class="op-breadcrumb-title d-inline-flex align-items-center">
+          {{ title }}
+        </h2>
+      </div>
+      <div class="d-inline-flex gap-3">
+        <form
+          [formGroup]="searchForm"
+          class="form-container"
+          *ngIf="searchable"
+        >
+          <div class="row">
+            <div class="col-md-12">
+              <div class="input-icons">
+                <div class="icon">
+                  <span class="sprite-group-5-search"></span>
+                </div>
+
+                <input
+                  class="input-field"
+                  formControlName="textSearch"
+                  [placeholder]="searchPlaceholder"
+                />
+              </div>
+            </div>
+          </div>
+        </form>
+
+        <button mat-button class="op-breadcrumb-add-btn">
+          <span class="sprite-group-5-add-white"></span>
+          <span class="ps-1">Thêm nhà cung cấp</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

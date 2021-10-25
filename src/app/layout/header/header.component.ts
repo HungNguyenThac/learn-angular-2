@@ -70,7 +70,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
         this.selectedNavItem === NAV_ITEM.CUSTOMER
           ? 'sprite-group-5-customer-white'
           : 'sprite-group-5-customer',
-      path: '/',
+      path: '/customer/list',
     },
     {
       navItem: NAV_ITEM.INSURANCE,
