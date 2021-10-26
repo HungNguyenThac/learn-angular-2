@@ -8,6 +8,7 @@ import { SharedModule } from './share/shared.module';
 import { LayoutModule } from './layout/layout.module';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { ChartsModule } from 'ng2-charts';
+import {CustomerModule} from "./pages/customer/customer.module";
 
 @NgModule({
   declarations: [AppComponent, DashboardComponent],
@@ -19,6 +20,7 @@ import { ChartsModule } from 'ng2-charts';
     SharedModule,
     LayoutModule,
     ChartsModule,
+    CustomerModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

@@ -7,8 +7,8 @@ th.mat-sort-header-sorted {
 table.mat-table {
   width: 100%;
   font-family: $sfPro;
-  display: block;
   overflow-x: auto;
+  display: grid;
 
   .mat-header-row {
     display: flex;
