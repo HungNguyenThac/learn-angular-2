@@ -9,6 +9,12 @@ import { OtpInputComponent } from './inputs/otp-input/otp-input.component';
 import { SingleOtpInputComponent } from './inputs/single-otp-input/single-otp-input.component';
 import { PlLoadingComponent } from './dialogs/pl-loading/pl-loading.component';
 import { GuideTransferPaymentDialogComponent } from './payment/guide-transfer-payment-dialog/guide-transfer-payment-dialog.component';
+import { BaseManagementLayoutComponent } from './base/base-management-layout/base-management-layout.component';
+import { BaseFilterFormComponent } from './base/base-filter-form/base-filter-form.component';
+import { BaseExpandedTableComponent } from './base/base-expanded-table/base-expanded-table.component';
+import { BaseBreadcrumbComponent } from './base/base-breadcrumb/base-breadcrumb.component';
+import { PlInlineMessageComponent } from './statutes/pl-inline-message/pl-inline-message.component';
+import { PlStatusLabelComponent } from './statutes/pl-status-label/pl-status-label.component';
 
 export const components: any[] = [
   ConfirmationDialog,
@@ -22,6 +28,12 @@ export const components: any[] = [
   PlPromptComponent,
   PlLoadingComponent,
   GuideTransferPaymentDialogComponent,
+  PlInlineMessageComponent,
+  PlStatusLabelComponent,
+  BaseManagementLayoutComponent,
+  BaseFilterFormComponent,
+  BaseExpandedTableComponent,
+  BaseBreadcrumbComponent,
 ];
 
 export * from './dialogs/confirmation-dialog/confirmation-dialog.component';
@@ -35,3 +47,9 @@ export * from './inputs/otp-input/otp-input.component';
 export * from './inputs/single-otp-input/single-otp-input.component';
 export * from './dialogs/pl-loading/pl-loading.component';
 export * from './payment/guide-transfer-payment-dialog/guide-transfer-payment-dialog.component';
+export * from './base/base-management-layout/base-management-layout.component';
+export * from './base/base-filter-form/base-filter-form.component';
+export * from './base/base-expanded-table/base-expanded-table.component';
+export * from './base/base-breadcrumb/base-breadcrumb.component';
+export * from './statutes/pl-inline-message/pl-inline-message.component';
+export * from './statutes/pl-status-label/pl-status-label.component';

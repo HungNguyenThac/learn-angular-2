@@ -9,6 +9,10 @@ import * as fromPipes from './pipes';
 import * as fromDirectives from './directives';
 import { FormsModule } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { BaseBreadcrumbComponent } from './components/base/base-breadcrumb/base-breadcrumb.component';
+import { BaseExpandedTableComponent } from './components/base/base-expanded-table/base-expanded-table.component';
+import { BaseFilterFormComponent } from './components/base/base-filter-form/base-filter-form.component';
+import { BaseManagementLayoutComponent } from './components/base/base-management-layout/base-management-layout.component';
 
 @NgModule({
   declarations: [
@@ -16,6 +20,10 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
     ...fromValidators.validators,
     ...fromDirectives.directives,
     ...fromPipes.pipes,
+    BaseBreadcrumbComponent,
+    BaseExpandedTableComponent,
+    BaseFilterFormComponent,
+    BaseManagementLayoutComponent,
   ],
   imports: [CommonModule, MaterialModule, TranslateModule, FormsModule],
   exports: [
