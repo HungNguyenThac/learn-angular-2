@@ -24,7 +24,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   logoSrc: string = 'assets/img/monex-logo.svg';
   showProfileBtn: boolean = false;
   shortName: string = '0';
-  fullName: string = 'Nguyễn Thị Admin';
+  fullName: string = 'Nguyễn Văn A';
   roleName: string = 'Super admin';
 
   selectedNavItem: NAV_ITEM = NAV_ITEM.DASHBOARD;

@@ -1,0 +1,94 @@
+<div class="container-fluid">
+  <div class="row p-3">
+    <!--  Info  -->
+    <section class="col-12">
+      <div class="row">
+        <!-- Left ekyc Info -->
+        <article class="col-12 col-sm-12 col-md-6 col-lg-6 mt-3">
+          <div class="row d-flex align-items-center">
+            <!-- Front ID  -->
+            <div class="col-12 text-center">
+              <section class="ekyc-img-container d-inline-block">
+                <article class="op-customer-ekyc-box">
+                  <img
+                    class="op-customer-ekyc-img"
+                    src="assets/img/payday-loan/avatar-default.png"
+                    alt=""
+                  />
+
+                  <div class="op-customer-ekyc-img-zoom">
+                    <span class="sprite-group-5-Zoom"></span>
+                  </div>
+                </article>
+                <article
+                  class="d-flex align-items-center justify-content-between mt-2"
+                >
+                  <div class="op-customer-ekyc-img-title">
+                    {{ "customer.identity.front_id" | translate }}
+                  </div>
+                  <div
+                    class="op-customer-ekyc-img-download-btn gap-1 d-flex p-1"
+                  >
+                    <span class="sprite-group-5-download-green"></span>
+                    <span class="op-customer-ekyc-img-download-title">{{
+                      "customer.identity.download" | translate
+                    }}</span>
+                  </div>
+                </article>
+              </section>
+            </div>
+
+            <!-- Back ID  -->
+            <div class="col-12 text-center mt-3">
+              <section class="ekyc-img-container d-inline-block">
+                <article class="op-customer-ekyc-box">
+                  <img
+                    class="op-customer-ekyc-img"
+                    src="assets/img/payday-loan/avatar-default.png"
+                    alt=""
+                  />
+
+                  <div class="op-customer-ekyc-img-zoom">
+                    <span class="sprite-group-5-Zoom"></span>
+                  </div>
+                </article>
+                <article
+                  class="d-flex align-items-center justify-content-between mt-2"
+                >
+                  <div class="op-customer-ekyc-img-title">
+                    {{ "customer.identity.back_id" | translate }}
+                  </div>
+                  <div
+                    class="op-customer-ekyc-img-download-btn gap-1 d-flex p-1"
+                  >
+                    <span class="sprite-group-5-download-green"></span>
+                    <span class="op-customer-ekyc-img-download-title">{{
+                      "customer.identity.download" | translate
+                    }}</span>
+                  </div>
+                </article>
+              </section>
+            </div>
+          </div>
+        </article>
+
+        <!-- Right ekyc Info -->
+        <article class="col-12 col-sm-12 col-md-6 col-lg-6">
+          <ul class="pl-list">
+            <li
+              class="pl-list-item"
+              *ngFor="let rightEkycInfo of rightEkycInfos"
+            >
+              <p class="pl-list-item-label">
+                {{ rightEkycInfo.title }}
+              </p>
+              <p class="pl-list-item-content">
+                {{ rightEkycInfo.value }}
+              </p>
+            </li>
+          </ul>
+        </article>
+      </div>
+    </section>
+  </div>
+</div>
