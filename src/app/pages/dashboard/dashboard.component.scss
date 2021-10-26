@@ -7,42 +7,6 @@
   padding-bottom: 16px;
 }
 
-.op-card.card {
-  .card-title {
-    padding: 10px 16px;
-    box-shadow: inset 0px -1px 0px $grey-02;
-  }
-
-  .card-name {
-    font-family: $sfPro;
-    font-style: normal;
-    font-weight: 600;
-    font-size: 20px;
-    line-height: 24px;
-    color: $grey-10;
-  }
-
-  .card-info-title {
-    font-family: $sfPro;
-    font-style: normal;
-    font-weight: 600;
-    font-size: 12px;
-    line-height: 14px;
-    text-transform: uppercase;
-    color: $grey-06;
-  }
-
-  .card-info-content {
-    font-family: $sfPro;
-    font-style: normal;
-    font-weight: 500;
-    font-size: 32px;
-    line-height: 36px;
-    color: $grey-10;
-    margin-top: 4px;
-  }
-}
-
 ::ng-deep.mat-form-field-appearance-legacy .mat-form-field-underline {
   display: none;
 }

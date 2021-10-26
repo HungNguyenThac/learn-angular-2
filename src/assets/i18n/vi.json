@@ -1,6 +1,6 @@
 {
   "common": {
-    "project_name": "Monex",
+    "project_name": "Monex Operator",
     "name": "Tên",
     "full_name": "Tên đầy đủ",
     "description": "Mô tả",
@@ -120,6 +120,7 @@
   "mat_paginator_intl": {
     "items_per_page": "Số dòng một trang",
     "range_label": "{{range}} trên {{total}}",
+    "page_per_total_label": "Trang {{page}} / {{total}}",
     "first_page": "Trang đầu",
     "last_page": "Trang cuối",
     "next_page": "Trang sau",

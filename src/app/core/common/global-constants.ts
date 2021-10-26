@@ -27,7 +27,7 @@ export class GlobalConstants {
     COUNTDOWN_TIME: "2021-09-06 00:00:00",
     COUNTDOWN_START_TIME: "2021-09-01 18:00:00",
     CLOSE_ADS_POPUP_TIME: "2021-09-01 00:00:00",
-    PROJECT_NAME: "Monex"
+    PROJECT_NAME: "Monex Operator"
   };
 
 }

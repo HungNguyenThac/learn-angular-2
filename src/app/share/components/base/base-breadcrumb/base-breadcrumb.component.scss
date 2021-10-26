@@ -1,0 +1,64 @@
+@import "src/styles/variables";
+.op-breadcrumb-container {
+  background: $grey-00;
+  box-shadow: inset 0px -1px 0px $grey-02;
+}
+
+#op-breadcrumb-content {
+  height: 56px;
+}
+
+h2.op-breadcrumb-title {
+  font-family: $sfPro;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 24px;
+  color: $grey-10;
+}
+
+.input-icons .icon {
+  position: absolute;
+}
+
+.input-icons {
+  width: 100%;
+  min-width: 360px;
+}
+
+.icon {
+  padding: 10px;
+  color: green;
+}
+
+.input-field {
+  width: 100%;
+  padding: 10px 10px 10px 36px;
+  background: $white;
+  border-radius: 8px;
+  border: none;
+  text-overflow: ellipsis;
+
+  &:focus,
+  &:active {
+    outline: none;
+  }
+}
+
+.op-breadcrumb-add-btn {
+  font-family: $sfPro;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 22px;
+  color: $white;
+  background: $system-color-blue;
+  border-radius: 4px;
+}
+
+@media (max-width: 768px) {
+  .input-icons {
+    width: 100%;
+    min-width: 100px;
+  }
+}
