@@ -16,7 +16,8 @@ export class PlStatusLabelComponent implements OnInit {
       "pl-status-label-disbursement":
         this.statusType === PL_LABEL_STATUS.DISBURSEMENT,
       "pl-status-label-rejected": this.statusType === PL_LABEL_STATUS.REJECT,
-      "pl-status-label-cancel": this.statusType === PL_LABEL_STATUS.CANCEL
+      "pl-status-label-cancel": this.statusType === PL_LABEL_STATUS.CANCEL,
+      "pl-status-label-info": this.statusType === PL_LABEL_STATUS.INFO,
     };
   }
 

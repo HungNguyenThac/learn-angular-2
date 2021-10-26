@@ -18,9 +18,15 @@
 }
 
 .pl-status-label-success {
-  background: #F2FFF5;
+  background: $dim-light-green;
   border: 1px solid $system-color-green;;
   color: $system-color-green;
+}
+
+.pl-status-label-info{
+  background: $dim-light-blue;
+  border: 1px solid $system-color-blue;;
+  color: $system-color-blue;
 }
 
 .pl-status-label-disbursement {

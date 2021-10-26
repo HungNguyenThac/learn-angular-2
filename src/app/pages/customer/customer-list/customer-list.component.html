@@ -1,1 +1,6 @@
-<app-base-management-layout></app-base-management-layout>
+<app-base-management-layout [detailElementTemplate]="detailElementTemplate">
+</app-base-management-layout>
+
+<ng-template #detailElementTemplate>
+  <app-customer-detail-element></app-customer-detail-element>
+</ng-template>

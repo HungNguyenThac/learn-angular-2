@@ -33,6 +33,7 @@ export function tokenGetter() {
   imports: [
     CommonModule,
     CoreStoreModule,
+    BrowserAnimationsModule,
     SharedModule,
     HttpClientModule,
     JwtModule.forRoot({
@@ -48,8 +49,7 @@ export function tokenGetter() {
         deps: [HttpClient],
       },
     }),
-    MomentModule,
-    BrowserAnimationsModule,
+    MomentModule
   ],
   providers: [_providers],
   declarations: [],
