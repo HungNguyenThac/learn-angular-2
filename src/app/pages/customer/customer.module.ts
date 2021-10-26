@@ -32,5 +32,6 @@ import { CustomerActivityHistoryComponent } from './components/customer-activity
     RouterModule.forChild(CustomerRoutes),
     TranslateModule,
   ],
+  exports: [CustomerDetailElementComponent],
 })
 export class CustomerModule {}
