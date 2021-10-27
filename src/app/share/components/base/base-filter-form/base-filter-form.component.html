@@ -12,58 +12,179 @@
     </div>
     <div>
       <ul>
-        <li
-          class="
-            px-3
-            py-2
-            d-flex
-            justify-content-between
-            align-items-center
-            filter-child-item
-          "
+        <mat-radio-group
+          aria-labelledby="example-radio-group-label"
+          class="example-radio-group"
+          [(ngModel)]="chooseTimeFilterMethod"
         >
-          <div>
-            <mat-radio-button value="1">Toàn thời gian</mat-radio-button>
-          </div>
-          <div
+          <li
             class="
-              d-inline-flex
+              px-3
+              py-2
+              d-flex
               justify-content-between
               align-items-center
               filter-child-item
-              gap-1
             "
           >
-            <!--            <span class="filter-status-count">10</span>-->
-            <span class="sprite-group-5-chevron-right-blue"></span>
-          </div>
-        </li>
-        <li
-          class="
-            px-3
-            py-2
-            d-flex
-            justify-content-between
-            align-items-center
-            filter-child-item
-          "
-        >
-          <div>
-            <mat-radio-button value="2">Chọn khoảng thời gian</mat-radio-button>
-          </div>
-          <div
+            <div>
+              <mat-radio-button
+                value="1"
+                (click)="showHideDetailOption(staticMethodEle, stateMethodEle)"
+                >{{ choosenStaticMethod }}</mat-radio-button
+              >
+              <div
+                class="filter-form-container-expand"
+                id="staticMethodEle"
+                #staticMethodEle
+              >
+                <div class="arrow">
+                  <svg
+                    width="5"
+                    height="14"
+                    viewBox="0 0 5 14"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M0.408408 6.05719L4.38739 2.25245C4.77964 1.87738 5 1.36867 5 0.838239V13.1618C5 12.6313 4.77964 12.1226 4.38739 11.7475L0.408409 7.94281C-0.136136 7.42211 -0.136137 6.57789 0.408408 6.05719Z"
+                      fill="white"
+                    />
+                  </svg>
+                </div>
+                <div class="title">Thời gian</div>
+                <div class="table-options">
+                  <div
+                    class="column-options"
+                    *ngFor="let timeOption of timeFilterOptions"
+                  >
+                    <div class="thead">{{ timeOption.mainTitle }}</div>
+                    <div
+                      class="trow"
+                      *ngFor="let ele of timeOption.options"
+                      (click)="
+                        chooseTimeFilter(
+                          ele.startDate,
+                          ele.endDate,
+                          ele.title,
+                          staticMethodEle
+                        )
+                      "
+                    >
+                      {{ ele.title }}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class="
+                d-inline-flex
+                justify-content-between
+                align-items-center
+                filter-child-item
+                gap-1
+              "
+            >
+              <!--            <span class="filter-status-count">10</span>-->
+              <span class="sprite-group-5-chevron-right-blue"></span>
+            </div>
+          </li>
+          <li
             class="
-              d-inline-flex
+              px-3
+              py-2
+              d-flex
               justify-content-between
               align-items-center
               filter-child-item
-              gap-1
             "
           >
-            <!--            <span class="filter-status-count">10</span>-->
-            <span class="sprite-group-5-chevron-right-grey"></span>
-          </div>
-        </li>
+            <div>
+              <mat-radio-button
+                value="2"
+                (click)="showHideDetailOption(stateMethodEle, staticMethodEle)"
+                >{{ choosenStateMethod }}</mat-radio-button
+              >
+              <div
+                class="filter-form-container-expand"
+                id="stateMethodEle"
+                #stateMethodEle
+              >
+                <div class="arrow">
+                  <svg
+                    width="5"
+                    height="14"
+                    viewBox="0 0 5 14"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M0.408408 6.05719L4.38739 2.25245C4.77964 1.87738 5 1.36867 5 0.838239V13.1618C5 12.6313 4.77964 12.1226 4.38739 11.7475L0.408409 7.94281C-0.136136 7.42211 -0.136137 6.57789 0.408408 6.05719Z"
+                      fill="white"
+                    />
+                  </svg>
+                </div>
+                <div class="title">
+                  Chọn khoảng thời gian
+                  <button
+                    mat-button
+                    class="reset-btn"
+                    (click)="resetSelectedDate()"
+                  >
+                    Đặt lại
+                  </button>
+                </div>
+                <div class="d-flex">
+                  <div class="datepicker-container">
+                    <div class="description">
+                      Từ ngày
+                      <span class="selected-date" *ngIf="selectedStartDate">{{
+                        selectedStartDay + " ngày " + selectedStartDateDisplay
+                      }}</span>
+                    </div>
+                    <mat-card class="calendar-card">
+                      <mat-calendar
+                        [selected]="selectedStartDate"
+                        [maxDate]="currentTime"
+                        (selectedChange)="onSelectStartDate($event)"
+                      ></mat-calendar>
+                    </mat-card>
+                  </div>
+
+                  <div class="datepicker-container">
+                    <div class="description">
+                      Từ ngày
+                      <span class="selected-date" *ngIf="selectedEndDate">{{
+                        selectedEndDay + " ngày " + selectedEndDateDisplay
+                      }}</span>
+                    </div>
+                    <mat-card class="calendar-card">
+                      <mat-calendar
+                        [selected]="selectedEndDate"
+                        [maxDate]="currentTime"
+                        [minDate]="selectedStartDate"
+                        (selectedChange)="onSelectEndDate($event, stateMethodEle)"
+                      ></mat-calendar>
+                    </mat-card>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class="
+                d-inline-flex
+                justify-content-between
+                align-items-center
+                filter-child-item
+                gap-1
+              "
+            >
+              <!--            <span class="filter-status-count">10</span>-->
+              <span class="sprite-group-5-chevron-right-grey"></span>
+            </div>
+          </li>
+        </mat-radio-group>
       </ul>
     </div>
   </div>

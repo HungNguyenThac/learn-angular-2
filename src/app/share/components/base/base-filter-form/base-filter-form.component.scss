@@ -3,6 +3,7 @@
 .filter-form-container {
   background: $white;
   height: 100%;
+  position: relative;
 }
 
 .filter-boxes {
@@ -26,7 +27,7 @@
     line-height: 18px;
     letter-spacing: 0.1px;
     color: $grey-10;
-
+    position: relative;
     &:hover {
       background: $dim-light-blue;
     }
@@ -91,4 +92,104 @@
     width: 20px;
     line-height: 20px;
   }
+}
+
+.filter-form-container-expand {
+  display: none;
+  position: absolute;
+  z-index: 999;
+  right: 0;
+  top: 0;
+  background-color: white;
+  transform: translateX(calc(100% + 8px));
+  border-radius: 4px;
+  .arrow {
+    position: absolute;
+    left: 0;
+    top: 10px;
+    transform: translateX(-100%);
+  }
+  .title {
+    padding: 10px 16px;
+    font-family: $sfPro;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 20px;
+    color: #3a3a3c;
+    box-shadow: inset 0px -1px 0px #f2f2f7;
+    .reset-btn {
+      position: absolute;
+      right: 0px;
+      top: 10px;
+      font-weight: 600;
+      font-size: 16px;
+      line-height: 20px;
+      color: #007aff;
+    }
+  }
+  .table-options {
+    padding: 16px;
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    .column-options {
+      width: 100px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      .thead {
+        margin-bottom: 4px;
+        font-family: $sfPro;
+        font-style: normal;
+        font-weight: 600;
+        font-size: 12px;
+        line-height: 14px;
+        text-transform: uppercase;
+        color: #636366;
+      }
+      .trow {
+        font-family: $sfPro;
+        font-style: normal;
+        font-weight: 500;
+        font-size: 14px;
+        line-height: 18px;
+        color: #007aff;
+        cursor: pointer;
+      }
+    }
+  }
+  .datepicker-container {
+    padding: 16px;
+    box-shadow: inset -1px 0px 0px #f2f2f7;
+    .description {
+      font-family: $sfPro;
+      font-style: normal;
+      font-weight: 500;
+      font-size: 14px;
+      line-height: 18px;
+      color: #1c1c1e;
+      .selected-date {
+        color: #007aff;
+      }
+    }
+    .calendar-card {
+      margin-top: 16px;
+      width: 50%;
+      min-width: 320px;
+      padding: 0;
+      border: 1px solid #e5e5ea;
+      border-radius: 4px;
+    }
+  }
+}
+
+#staticMethodEle {
+  width: 596px;
+}
+
+#stateMethodEle {
+  width: 704px;
+  filter: drop-shadow(0px 8px 16px rgba(0, 0, 0, 0.05))
+    drop-shadow(0px 16px 32px rgba(0, 0, 0, 0.05));
 }
