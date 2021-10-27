@@ -1,1 +1,135 @@
-Upcoming
+<div class="container-fluid">
+  <div class="row p-3">
+    <!-- CMND/CCCD Document -->
+    <article class="col-12 col-sm-6 col-md-4 col-lg-4 mb-2">
+      <mat-accordion>
+        <mat-expansion-panel>
+          <mat-expansion-panel-header class="pb-2 pt-2 ps-3 pe-3">
+            <mat-panel-title>{{
+              "customer.document_info.ekyc_info" | translate
+            }}</mat-panel-title>
+          </mat-expansion-panel-header>
+          <div class="expansion-panel-content">
+            <div class="row">
+              <!-- Front ID  -->
+              <article class="col-12">
+                <app-upload-document-area
+                  [title]="'customer.document_info.front_id' | translate"
+                  [imgSrc]=""
+                ></app-upload-document-area>
+              </article>
+              <!-- Back ID  -->
+              <article class="col-12">
+                <app-upload-document-area
+                  [title]="'customer.document_info.back_id' | translate"
+                  [imgSrc]=""
+                ></app-upload-document-area>
+              </article>
+              <!-- Selfie  -->
+              <article class="col-12">
+                <app-upload-document-area
+                  [title]="'customer.document_info.selfie' | translate"
+                  [imgSrc]=""
+                ></app-upload-document-area>
+              </article>
+            </div>
+          </div>
+        </mat-expansion-panel>
+      </mat-accordion>
+    </article>
+
+    <!-- Salary Document -->
+    <article class="col-12 col-sm-6 col-md-4 col-lg-4 mb-2">
+      <mat-accordion>
+        <mat-expansion-panel>
+          <mat-expansion-panel-header class="pb-2 pt-2 ps-3 pe-3">
+            <mat-panel-title>{{
+              "customer.document_info.finance_info" | translate
+            }}</mat-panel-title>
+          </mat-expansion-panel-header>
+          <div class="expansion-panel-content">
+            <div class="row">
+              <!-- Salary 1  -->
+              <article class="col-12">
+                <app-upload-document-area
+                  [title]="'customer.document_info.salary_sheet_1' | translate"
+                  [imgSrc]=""
+                ></app-upload-document-area>
+              </article>
+              <!-- Salary 2  -->
+              <article class="col-12">
+                <app-upload-document-area
+                  [title]="'customer.document_info.salary_sheet_2' | translate"
+                  [imgSrc]=""
+                ></app-upload-document-area>
+              </article>
+              <!-- Salary 3  -->
+              <article class="col-12">
+                <app-upload-document-area
+                  [title]="'customer.document_info.salary_sheet_3' | translate"
+                  [imgSrc]=""
+                ></app-upload-document-area>
+              </article>
+            </div>
+          </div>
+        </mat-expansion-panel>
+      </mat-accordion>
+    </article>
+
+    <!-- Collateral document -->
+    <article class="col-12 col-sm-6 col-md-4 col-lg-4 mb-2">
+      <mat-accordion>
+        <mat-expansion-panel>
+          <mat-expansion-panel-header class="pb-2 pt-2 ps-3 pe-3">
+            <mat-panel-title>{{
+              "customer.document_info.collateral_info" | translate
+            }}</mat-panel-title>
+          </mat-expansion-panel-header>
+          <div class="expansion-panel-content">
+            <div class="row">
+              <article class="col-12">
+                <app-upload-document-area
+                  [title]="'customer.document_info.collateral_img' | translate"
+                  [imgSrc]=""
+                ></app-upload-document-area>
+              </article>
+            </div>
+          </div>
+        </mat-expansion-panel>
+      </mat-accordion>
+    </article>
+
+    <!-- CMND/CCCD Extra -->
+    <article class="col-12 col-sm-6 col-md-4 col-lg-4 mb-2">
+      <mat-accordion>
+        <mat-expansion-panel>
+          <mat-expansion-panel-header class="pb-2 pt-2 ps-3 pe-3">
+            <mat-panel-title>{{
+              "customer.document_info.extra_ekyc_info" | translate
+            }}</mat-panel-title>
+          </mat-expansion-panel-header>
+          <div class="expansion-panel-content">
+            <div class="row">
+
+              <!-- Front ID 2 -->
+              <article class="col-12">
+                <app-upload-document-area
+                  [title]="'customer.document_info.front_id_2' | translate"
+                  [imgSrc]=""
+                ></app-upload-document-area>
+              </article>
+              <!-- Back ID 2 -->
+
+              <article class="col-12">
+                <app-upload-document-area
+                  [title]="'customer.document_info.back_id_2' | translate"
+                  [imgSrc]=""
+                ></app-upload-document-area>
+              </article>
+            </div>
+          </div>
+        </mat-expansion-panel>
+      </mat-accordion>
+    </article>
+  </div>
+</div>

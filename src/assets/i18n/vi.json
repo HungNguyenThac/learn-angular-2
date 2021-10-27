@@ -60,7 +60,9 @@
     "network_error": "Mất kết nối. Vui lòng kiểm tra kết nối mạng và thử lại",
     "maintain_text": "Hệ thống đang tạm dừng để nâng cấp tính năng mới. Rất xin lỗi vì đã làm phiền. Monex xin chân thành cảm ơn!",
     "loading_title": "Thông tin của bạn đang được xử lý",
-    "loading_content": "Quá trình sẽ mất khoảng một vài giây, vui lòng không thoát ứng dụng"
+    "loading_content": "Quá trình sẽ mất khoảng một vài giây, vui lòng không thoát ứng dụng",
+    "reset": "Đặt lại",
+    "field": "Trường thông tin"
   },
   "auth": {
     "phone_number": "Số điện thoại",
@@ -197,6 +199,25 @@
       "bank_name": "Ngân hàng",
       "bank_code": "Mã ngân hàng",
       "received_date": "Ngày lấy thông tin"
+    },
+    "document_info": {
+      "ekyc_info": "Thông tin EKYC",
+      "finance_info": "Thông tin lương",
+      "collateral_info": "Tài sản đảm bảo",
+      "extra_ekyc_info": "CMND/CCCD phụ",
+      "download": "Tải xuống",
+      "update": "Cập nhật",
+      "upload": "Tải lên",
+      "delete": "Xóa",
+      "front_id": "CMND/CCCD mặt trước",
+      "front_id_2": "CMND/CCCD mặt trước",
+      "back_id": "CMND/CCCD mặt sau",
+      "back_id_2": "CMND/CCCD mặt sau",
+      "selfie": "Ảnh chân dung",
+      "salary_sheet_1": "Ảnh bảng lương số 1",
+      "salary_sheet_2": "Ảnh bảng lương số 2",
+      "salary_sheet_3": "Ảnh bảng lương số 3",
+      "collateral_img": "Tài sản đảm bảo"
     }
   },
   "not_found": {
