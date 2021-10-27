@@ -132,8 +132,37 @@ export class BaseFilterFormComponent implements OnInit {
   chooseTimeFilterMethod: number;
   choosenStaticMethod: string = 'Toàn thời gian';
   choosenStateMethod: string = 'Chọn khoảng thời gian';
+  choosenCompany: string = 'HMG';
   selectedStartDate: Date | null;
   selectedEndDate: Date | null = this.currentTime;
+  companyListSelected: string[] = [];
+
+  companiesListOptions = [
+    {
+      name: 'CTCP Tập đoàn Hoàng Minh (HMG)',
+      logo: 'assets/img/logo/favicon.ico',
+    },
+    {
+      name: 'CTCP Đầu tư và Công nghệ Việt Nam (Epay)',
+      logo: 'assets/img/logo/favicon.ico',
+    },
+    {
+      name: 'ALPHA',
+      logo: 'assets/img/logo/favicon.ico',
+    },
+    {
+      name: 'CMC',
+      logo: 'assets/img/logo/favicon.ico',
+    },
+    {
+      name: 'EGO',
+      logo: 'assets/img/logo/favicon.ico',
+    },
+    {
+      name: 'AFEX',
+      logo: 'assets/img/logo/favicon.ico',
+    },
+  ];
   constructor() {}
 
   ngOnInit(): void {}
@@ -341,12 +370,20 @@ export class BaseFilterFormComponent implements OnInit {
     element.style.display = 'none';
   }
 
-  showHideDetailOption(currentElement, otherElement) {
-    otherElement.style.display = 'none';
+  showHideDetailOption(currentElement) {
+    const filterFormList = document.querySelectorAll(
+      '.filter-form-container-expand'
+    );
     if (window.getComputedStyle(currentElement, null).display == 'none') {
-      return (currentElement.style.display = 'block');
+      filterFormList.forEach((ele) => {
+        ele.setAttribute("style","display:none")
+      });
+      currentElement.style.display = 'block';
+      return;
     }
-    return (currentElement.style.display = 'none');
+     filterFormList.forEach((ele) => {
+       ele.setAttribute('style', 'display:none');
+     });
   }
 
   get selectedStartDateDisplay() {
@@ -406,5 +443,19 @@ export class BaseFilterFormComponent implements OnInit {
     this.selectedStartDate = null;
     this.selectedEndDate = null;
     this.choosenStateMethod = 'Chọn khoảng thời gian';
+  }
+
+  toSelectCompanyFilter(company) {
+    const index = this.companyListSelected.findIndex((ele) => ele === company);
+    if (index < 0) {
+      this.companyListSelected.push(company);
+    } else {
+      this.companyListSelected.splice(index, 1);
+    }
+    //Call filter API
+  }
+
+  resetSelectedCompany() {
+    this.companyListSelected = [];
   }
 }

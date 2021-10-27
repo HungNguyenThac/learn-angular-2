@@ -193,3 +193,28 @@
   filter: drop-shadow(0px 8px 16px rgba(0, 0, 0, 0.05))
     drop-shadow(0px 16px 32px rgba(0, 0, 0, 0.05));
 }
+
+#companyListEle {
+  width: 500px;
+  max-width: 80vw;
+}
+
+.company-row {
+  box-shadow: inset 0px -1px 0px #F2F2F7;
+  padding: 8px 16px;
+  &:nth-child(2n) {
+    background: #F7FBFF
+  }
+  .company-logo {
+    width: 36px;
+    height: 24px;
+    margin-right: 16px;
+  }
+
+  .company-name {
+    font-family: $sfPro;
+    font-size: 14px;
+    line-height: 18px;
+    color: $grey-10;
+  }
+}
