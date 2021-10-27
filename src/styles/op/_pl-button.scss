@@ -81,6 +81,69 @@
   }
 }
 
+.op-img-upload-btn {
+  background: $dim-light-blue;
+  border-radius: 4px;
+  cursor: pointer;
+  width: fit-content;
+
+  &:hover {
+    opacity: 0.8;
+  }
+
+  .op-img-upload-btn-title {
+    font-family: $sfPro;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 12px;
+    line-height: 14px;
+    text-transform: uppercase;
+    color: $system-color-blue;
+  }
+}
+
+.op-img-download-btn {
+  background: $dim-light-green;
+  border-radius: 4px;
+  cursor: pointer;
+  width: fit-content;
+
+  &:hover {
+    opacity: 0.8;
+  }
+
+  .op-img-download-btn-title {
+    font-family: $sfPro;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 12px;
+    line-height: 14px;
+    text-transform: uppercase;
+    color: $monex-color-00;
+  }
+}
+
+.op-img-delete-btn {
+  background: $dim-light-red;
+  border-radius: 4px;
+  cursor: pointer;
+  width: fit-content;
+
+  &:hover {
+    opacity: 0.8;
+  }
+
+  .op-img-delete-btn-title {
+    font-family: $sfPro;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 12px;
+    line-height: 14px;
+    text-transform: uppercase;
+    color: $system-color-red;
+  }
+}
+
 
 @media (max-width: 768px) {
   .pl-btn {

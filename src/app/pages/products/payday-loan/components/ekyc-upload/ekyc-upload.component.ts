@@ -189,7 +189,7 @@ export class EkycUploadComponent implements OnInit, AfterViewInit {
           'payday_loan.ekyc.ekyc_failed_content'
         ),
         primaryBtnText: this.multiLanguageService.instant('common.confirm'),
-        imgUrl: 'assets/img/op/warning-prompt-icon.png',
+        imgUrl: 'assets/img/payday-loan/warning-prompt-icon.png',
       });
       return;
     }
@@ -198,7 +198,7 @@ export class EkycUploadComponent implements OnInit, AfterViewInit {
       title: this.multiLanguageService.instant('common.notification'),
       content: this.multiLanguageService.instant('common.something_went_wrong'),
       primaryBtnText: this.multiLanguageService.instant('common.confirm'),
-      imgUrl: 'assets/img/op/warning-prompt-icon.png',
+      imgUrl: 'assets/img/payday-loan/warning-prompt-icon.png',
     });
   }
 

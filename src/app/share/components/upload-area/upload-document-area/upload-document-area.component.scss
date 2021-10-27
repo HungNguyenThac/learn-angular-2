@@ -1,25 +1,29 @@
-@import "src/styles/variables";
 @import "src/styles/op/pl-button";
+@import "src/styles/variables";
 
-.op-customer-ekyc-box {
+.op-customer-avatar {
   background: $white;
   border: 1px solid rgba(0, 0, 0, 0.1);
   box-sizing: content-box;
   border-radius: 8px;
   position: relative;
   cursor: zoom-in;
-  width: 250px;
-  height: 150px;
+  width: 100px;
+  height: 100px;
   text-align: center;
   flex: none;
   overflow: hidden;
 
-  .op-customer-ekyc-img {
-    width: 250px;
-    height: 150px;
+  &:hover {
+    opacity: 0.8;
   }
 
-  .op-customer-ekyc-img-zoom {
+  .op-customer-avatar-img {
+    width: 100px;
+    height: 100px;
+  }
+
+  .op-customer-avatar-img-zoom {
     background: rgba(0, 0, 0, 0.8);
     border-radius: 50%;
     width: 24px;
@@ -31,7 +35,7 @@
   }
 }
 
-.op-customer-ekyc-img-title {
+.upload-img-area-title {
   font-family: $sfPro;
   font-style: normal;
   font-weight: 500;
@@ -39,16 +43,4 @@
   line-height: 18px;
   letter-spacing: 0.1px;
   color: $grey-10;
-}
-
-@media (max-width: 768px) {
-  .op-customer-ekyc {
-    width: 200px;
-    height: 100px;
-
-    .op-customer-ekyc-img {
-      width: 200px;
-      height: 100px;
-    }
-  }
 }
