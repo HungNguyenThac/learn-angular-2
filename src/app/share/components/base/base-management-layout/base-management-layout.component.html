@@ -4,11 +4,26 @@
   <div class="container-fluid">
     <div class="container">
       <div class="row">
-        <div class="col-12 col-sm-12 col-md-4 col-lg-3">
+        <div class="col-12 col-sm-12 col-md-4 col-lg-2">
           <app-base-filter-form></app-base-filter-form>
         </div>
-        <div class="col-12 col-sm-12 col-md-8 col-lg-9 mt-3">
-          <app-base-expanded-table></app-base-expanded-table>
+        <div
+          class="
+            col-12 col-sm-12 col-md-8 col-lg-10
+            mt-3
+            mb-3
+            base-layout-content
+          "
+        >
+          <app-base-expanded-table
+            [dataSource]="dataSource"
+            [pageIndex]="pageIndex"
+            [displayedColumns]="displayedColumns"
+            [totalItems]="totalItems"
+            [pageSizeOptions]="pageSizeOptions"
+            [detailElementTemplate]="detailElementTemplate"
+          >
+          </app-base-expanded-table>
         </div>
       </div>
     </div>

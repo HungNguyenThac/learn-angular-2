@@ -126,6 +126,73 @@
     "next_page": "Trang sau",
     "previous_page": "Trang trước"
   },
+  "customer": {
+    "tabs": {
+      "individual_info": "Thông tin cá nhân",
+      "ekyc_info": "Thông tin CMND/CCCD",
+      "company_info": "Thông tin công ty",
+      "document_info": "Tài liệu",
+      "check_info": "Kiểm tra thông tin",
+      "transaction_history": "Lịch sử giao dịch",
+      "activity_history": "Lịch sử hoạt động"
+    },
+    "individual_info": {
+      "id": "ID khách hàng",
+      "fullname": "Họ và tên",
+      "phone_number": "Số điện thoại",
+      "date_of_birth": "Ngày sinh",
+      "email": "Email",
+      "cmnd": "Số CMND/CCCD",
+      "permanent_address": "Địa chỉ thường trú",
+      "current_residence": "Địa chỉ hiện tại",
+      "id_origin": "Quê quán",
+      "number_of_dependents": "Số người PTTC",
+      "marital_status": "Tình trạng hôn nhân",
+      "bank_account_number": "Số TKNH",
+      "bank_name": "Ngân hàng",
+      "va_account_number": "Số Tài khoản VA",
+      "created_at": "Ngày tạo tài khoản",
+      "updated_at": "Ngày cập nhật",
+      "updated_by": "Người cập nhật",
+      "note": "Ghi chú",
+      "type_note": "Viết ghi chú...",
+      "enough_info": "Đầy đủ thông tin",
+      "active": "Đang hoạt động",
+      "avatar": "Ảnh chân dung",
+      "update": "Cập nhật",
+      "lock": "Ngừng hoạt động"
+    },
+    "identity": {
+      "front_id": "CMND/CCCD mặt trước",
+      "back_id": "CMND/CCCD mặt sau",
+      "download": "Tải xuống",
+      "id_number": "Số CMND/CCCD",
+      "fullname": "Họ và tên",
+      "date_of_birth": "Ngày sinh",
+      "phone_number": "Số điện thoại",
+      "id_origin": "Nguyên quán",
+      "folk": "Dân tộc",
+      "religion": "Tôn giáo",
+      "id_features": "Dấu vết riêng",
+      "id_issue_date": "Ngày cấp",
+      "id_issue_place": "Nơi cấp",
+      "received_date": "Ngày lấy thông tin"
+    },
+    "company_info": {
+      "company_name": "Tên công ty",
+      "employee_code": "Mã nhân viên",
+      "last_name": "Họ và tên đệm",
+      "first_name": "Tên",
+      "office_code": "Mã đơn vị",
+      "office_name": "Tên đơn vị ",
+      "annual_income": "Thu nhập",
+      "working_days": "Số công",
+      "account_number": "TK Ngân hàng",
+      "bank_name": "Ngân hàng",
+      "bank_code": "Mã ngân hàng",
+      "received_date": "Ngày lấy thông tin"
+    }
+  },
   "not_found": {
     "back_to_login": "Quay lại trang chủ",
     "have_error": "Có lỗi xảy ra"

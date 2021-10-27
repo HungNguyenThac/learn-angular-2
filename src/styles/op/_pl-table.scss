@@ -4,18 +4,40 @@ th.mat-sort-header-sorted {
   color: black;
 }
 
-table {
+table.mat-table {
   width: 100%;
   font-family: $sfPro;
+
   .mat-header-row {
     display: flex;
     height: 32px;
     background: #fafafa;
     box-shadow: inset 0px -1px 0px $grey-02;
   }
-  .mat-row {
+
+  tr.op-detail-row {
+    height: 0;
+  }
+
+  .op-element-row td {
+    border-bottom-width: 0;
+  }
+
+  .op-element-detail {
+    overflow: hidden;
     display: flex;
-    min-height: 48px;
+  }
+
+  tr.op-element-row:not(.op-expanded-row):hover {
+    background: #fafafa;
+  }
+
+  tr.op-element-row:not(.op-expanded-row):active {
+    background: #fafafa;
+  }
+
+  tr:not(.op-expanded-row):not(.op-element-row):not(.op-detail-row) {
+    display: flex;
     box-shadow: inset 0px -1px 0px $grey-02;
     &:nth-child(2n) {
       background: #fafafa;
@@ -34,7 +56,7 @@ table {
   }
 
   .mat-header-cell {
-    color: #3a3a3c;
+    color: $grey-10;
     text-transform: uppercase;
     font-weight: 600;
     font-size: 12px;
@@ -46,7 +68,7 @@ table {
     font-weight: normal;
     font-size: 16px;
     line-height: 22px;
-    color: #3a3a3c;
+    color: $grey-10;
   }
 
   th.mat-header-cell:first-of-type,
@@ -73,6 +95,80 @@ table {
   min-width: 14px !important;
   opacity: 1 !important;
   color: #8e8e93;
+}
+
+table.expanded-table {
+  tr.op-detail-row {
+    box-shadow: none;
+  }
+
+  .expanded-active {
+    border: 1px solid $system-color-blue;
+    border-top: none;
+    border-radius: 0 0 4px 4px;
+  }
+
+  tr.op-element-row {
+    min-height: 48px;
+    display: flex;
+    box-shadow: inset 0px -1px 0px $grey-02;
+
+    &.op-expanded-row {
+      box-shadow: none;
+      background-color: $dim-light-blue;
+      border: 1px solid $system-color-blue;
+      border-bottom: none;
+      border-radius: 4px 4px 0 0;
+    }
+  }
+
+  .mat-row:nth-child(2n + 3) {
+    background: #fafafa;
+  }
+
+  .mat-row:not(:nth-child(4n + 3)) {
+    background-color: $white;
+  }
+}
+
+.filter-panel {
+  position: absolute;
+  z-index: 999;
+  right: 0;
+  top: 58px;
+  padding: 0 16px 16px;
+  .filter-description {
+    padding: 10px 16px;
+    color: $grey-10;
+    font-family: $sfPro;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 16px;
+    position: relative;
+    .reset-btn {
+      position: absolute;
+      right: 0px;
+      top: 10px;
+      font-weight: 600;
+      font-size: 16px;
+      line-height: 20px;
+      color: #007aff;
+    }
+  }
+  .filter-fields {
+    padding: 16px;
+    display: flex;
+    flex-wrap: wrap;
+    column-gap: 12px;
+    .field {
+      display: flex;
+      flex-grow: 1;
+      flex-basis: calc(50% - 12px);
+      height: 36px;
+      align-items: center;
+      padding-left: 9px;
+    }
+  }
 }
 
 ::ng-deep .mat-sort-header-arrow[style] {
