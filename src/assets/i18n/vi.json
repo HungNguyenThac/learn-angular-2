@@ -162,7 +162,13 @@
       "active": "Đang hoạt động",
       "avatar": "Ảnh chân dung",
       "update": "Cập nhật",
-      "lock": "Ngừng hoạt động"
+      "lock": "Ngừng hoạt động",
+      "cancel_update": "Hủy cập nhật",
+      "save_update": "Lưu hoạt động",
+      "gender": "Giới tính",
+      "gender_male": "Nam",
+      "gender_female": "Nữ",
+      "gender_other": "Khác"
     },
     "identity": {
       "front_id": "CMND/CCCD mặt trước",

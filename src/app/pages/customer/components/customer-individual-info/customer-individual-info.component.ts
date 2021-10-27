@@ -1,6 +1,8 @@
-import { Component, OnInit} from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { Component, OnInit } from '@angular/core';
 import { MultiLanguageService } from '../../../../share/translate/multiLanguageService';
 import { CustomerInfo } from '../../../../../../open-api-modules/dashboard-api-docs';
+import { CustomerDetailUpdateDialogComponent } from '../customer-individual-info-update-dialog/customer-detail-update-dialog.component';
 
 @Component({
   selector: 'app-customer-individual-info',
@@ -114,9 +116,18 @@ export class CustomerIndividualInfoComponent implements OnInit {
     // },
   ];
 
-  constructor(private multiLanguageService: MultiLanguageService) {}
+  constructor(
+    private multiLanguageService: MultiLanguageService,
+    private dialog: MatDialog
+  ) {}
 
   ngOnInit(): void {
     this.customerInfo.firstName = 'Nguyễn Trần Thanh Trúc';
+  }
+  openUpdateDialog() {
+    const dialogRef = this.dialog.open(CustomerDetailUpdateDialogComponent, {
+      panelClass: 'custom-info-dialog-container',
+      data: this.customerInfo,
+    });
   }
 }
