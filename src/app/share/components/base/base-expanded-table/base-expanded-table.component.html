@@ -22,21 +22,33 @@
         />
       </svg>
     </button>
-    <mat-accordion class="filter-panel">
+    <mat-accordion class="filter-panel" (mouseleave)="panelOpenState = false">
       <mat-expansion-panel hideToggle [expanded]="panelOpenState">
-        <div class="filter-description">
-          Trường thông tin
-          <button mat-button class="reset-btn">Đặt lại</button>
-        </div>
-        <div class="filter-fields">
-          <div *ngFor="let ele of selectedFields" class="field">
-            <mat-checkbox
-              class="checkbox"
-              checked="ele.fieldState"
-              (click)="updateDisplayColumns(ele)"
-              color="primary"
-              >{{ ele?.fieldName }}</mat-checkbox
-            >
+        <div class="card op-card">
+          <div
+            class="
+              card-title
+              filter-description
+              d-flex
+              align-items-center
+              gap-1
+            "
+          >
+            {{ "common.field" | translate }}
+            <button mat-button class="reset-btn">
+              {{ "common.reset" | translate }}
+            </button>
+          </div>
+          <div class="card-body filter-fields">
+            <div *ngFor="let ele of selectedFields" class="field">
+              <mat-checkbox
+                class="checkbox"
+                checked="ele.fieldState"
+                (click)="updateDisplayColumns(ele)"
+                color="primary"
+                >{{ ele?.fieldName }}</mat-checkbox
+              >
+            </div>
           </div>
         </div>
       </mat-expansion-panel>
@@ -84,6 +96,7 @@
             >
               <ng-container
                 class="w-100"
+                *ngIf="element == expandedElement"
                 [ngTemplateOutlet]="detailElementTemplate"
               ></ng-container>
             </div>
