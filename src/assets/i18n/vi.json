@@ -226,9 +226,9 @@
   },
   "page_title": {
     "payday_loan": "Tiện ích ứng lương 24h",
-    "payday_loan_sign_in": "Đăng nhập",
-    "payday_loan_forgot_password": "Khôi phục mật khẩu",
-    "payday_loan_forgot_pass_success": "Khôi phục mật khẩu thành công",
+    "sign_in": "Đăng nhập",
+    "forgot_password": "Khôi phục mật khẩu",
+    "forgot_pass_success": "Khôi phục mật khẩu thành công",
     "loan_payment": "Chi tiết tất toán khoản vay",
     "choose_payment_method": "Chọn hình thức thanh toán",
     "not_found": "404",
