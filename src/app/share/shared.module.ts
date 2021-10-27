@@ -9,6 +9,8 @@ import * as fromPipes from './pipes';
 import * as fromDirectives from './directives';
 import {FormsModule} from '@angular/forms';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import { DocumentButtonComponent } from './components/button/document-button/document-button.component';
+import { UploadDocumentAreaComponent } from './components/upload-area/upload-document-area/upload-document-area.component';
 
 @NgModule({
   declarations: [
@@ -16,6 +18,8 @@ import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
     ...fromValidators.validators,
     ...fromDirectives.directives,
     ...fromPipes.pipes,
+    DocumentButtonComponent,
+    UploadDocumentAreaComponent,
   ],
   imports: [CommonModule, MaterialModule, TranslateModule, FormsModule],
   exports: [
@@ -24,11 +28,12 @@ import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
     ...fromValidators.validators,
     ...fromDirectives.directives,
     ...fromPipes.pipes,
+    DocumentButtonComponent,
+    UploadDocumentAreaComponent,
   ],
   providers: [
-    {provide: MAT_DIALOG_DATA, useValue: {}},
-    {provide: MatDialogRef, useValue: {}},
+    { provide: MAT_DIALOG_DATA, useValue: {} },
+    { provide: MatDialogRef, useValue: {} },
   ],
 })
-export class SharedModule {
-}
+export class SharedModule {}

@@ -5,3 +5,10 @@ export enum NAV_ITEM {
   INSURANCE = 'INSURANCE',
   SAVING = 'SAVING',
 }
+
+export enum DOCUMENT_BTN_TYPE {
+  UPLOAD = 'UPLOAD',
+  UPDATE = 'UPDATE',
+  DOWNLOAD = 'DOWNLOAD',
+  DELETE = 'DELETE',
+}

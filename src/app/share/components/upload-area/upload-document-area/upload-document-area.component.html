@@ -1,0 +1,63 @@
+<div class="p-3 d-flex gap-2">
+  <div>
+    <div class="op-customer-avatar">
+      <img
+        class="op-customer-avatar-img"
+        [src]="imgSrc"
+        alt="img"
+        *ngIf="imgSrc; else isNotImg"
+      />
+      <ng-template #isNotImg>
+        <img
+          class="op-customer-avatar-img"
+          src="assets/img/payday-loan/img-holder.png"
+          alt=""
+        />
+      </ng-template>
+
+      <div class="op-customer-avatar-img-zoom">
+        <span class="sprite-group-5-Zoom"></span>
+      </div>
+    </div>
+  </div>
+  <div>
+    <p class="mt-1 upload-img-area-title">
+      {{ title }}
+    </p>
+
+    <!--  Upload  -->
+    <app-document-button
+      [documentType]="documentBtnTypes.UPLOAD"
+      [classes]="'mt-1'"
+      [hidden]="hiddenUploadBtn"
+      *ngIf="!imgSrc; else hasImgSrc"
+      (clickBtn)="changeDocument($event)"
+    ></app-document-button>
+
+    <ng-template #hasImgSrc>
+      <!--  update  -->
+      <app-document-button
+        [documentType]="documentBtnTypes.UPDATE"
+        [classes]="'mt-1'"
+        [hidden]="hiddenUploadBtn"
+        (clickBtn)="changeDocument($event)"
+      ></app-document-button>
+
+      <!--  Download  -->
+      <app-document-button
+        [documentType]="documentBtnTypes.DOWNLOAD"
+        [classes]="'mt-1'"
+        [hidden]="hiddenDownloadBtn"
+        (clickBtn)="changeDocument($event)"
+      ></app-document-button>
+
+      <!--  Delete  -->
+      <app-document-button
+        [documentType]="documentBtnTypes.DELETE"
+        [classes]="'mt-1'"
+        [hidden]="hiddenDeleteBtn"
+        (clickBtn)="changeDocument($event)"
+      ></app-document-button>
+    </ng-template>
+  </div>
+</div>

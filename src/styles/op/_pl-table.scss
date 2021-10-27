@@ -11,7 +11,7 @@ table.mat-table {
   .mat-header-row {
     display: flex;
     height: 32px;
-    background: #fafafa;
+    background: $grey-00;
     box-shadow: inset 0px -1px 0px $grey-02;
   }
 
@@ -29,18 +29,18 @@ table.mat-table {
   }
 
   tr.op-element-row:not(.op-expanded-row):hover {
-    background: #fafafa;
+    background: $grey-00;
   }
 
   tr.op-element-row:not(.op-expanded-row):active {
-    background: #fafafa;
+    background: $grey-00;
   }
 
   tr:not(.op-expanded-row):not(.op-element-row):not(.op-detail-row) {
     display: flex;
     box-shadow: inset 0px -1px 0px $grey-02;
     &:nth-child(2n) {
-      background: #fafafa;
+      background: $grey-00;
     }
   }
 
@@ -123,7 +123,7 @@ table.expanded-table {
   }
 
   .mat-row:nth-child(2n + 3) {
-    background: #fafafa;
+    background: $grey-00;
   }
 
   .mat-row:not(:nth-child(4n + 3)) {

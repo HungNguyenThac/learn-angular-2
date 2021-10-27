@@ -191,6 +191,25 @@
       "bank_name": "Ngân hàng",
       "bank_code": "Mã ngân hàng",
       "received_date": "Ngày lấy thông tin"
+    },
+    "document_info": {
+      "ekyc_info": "Thông tin EKYC",
+      "finance_info": "Thông tin lương",
+      "collateral_info": "Tài sản đảm bảo",
+      "extra_ekyc_info": "CMND/CCCD phụ",
+      "download": "Tải xuống",
+      "update": "Cập nhật",
+      "upload": "Tải lên",
+      "delete": "Xóa",
+      "front_id": "CMND/CCCD mặt trước",
+      "front_id_2": "CMND/CCCD mặt trước",
+      "back_id": "CMND/CCCD mặt sau",
+      "back_id_2": "CMND/CCCD mặt sau",
+      "selfie": "Ảnh chân dung",
+      "salary_sheet_1": "Ảnh bảng lương số 1",
+      "salary_sheet_2": "Ảnh bảng lương số 2",
+      "salary_sheet_3": "Ảnh bảng lương số 3",
+      "collateral_img": "Tài sản đảm bảo"
     }
   },
   "not_found": {
