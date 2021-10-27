@@ -6,6 +6,13 @@ import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { MatSort, Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { FormControl, FormBuilder, FormGroup } from '@angular/forms';
+import { GlobalConstants } from '../../core/common/global-constants';
+import { Title } from '@angular/platform-browser';
+import { Store } from '@ngrx/store';
+import * as fromStore from '../../core/store';
+import * as fromActions from '../../core/store';
+import { MultiLanguageService } from '../../share/translate/multiLanguageService';
+import { NAV_ITEM } from '../../core/common/enum/operator';
 
 export interface PeriodicElement {
   name: string;
@@ -81,10 +88,13 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   constructor(
     private _liveAnnouncer: LiveAnnouncer,
     public matDialog: MatDialog,
-    public formBuilder: FormBuilder
+    public formBuilder: FormBuilder,
+    private titleService: Title,
+    private store: Store<fromStore.State>,
+    private multiLanguageService: MultiLanguageService
   ) {
     this.pages = new Array(Math.round(this.totalItems / this.pageSize));
-    this.fieldsName = this.displayedColumns.slice()
+    this.fieldsName = this.displayedColumns.slice();
     const controlsConfig = {};
     for (let i = 0; i < this.fieldsName.length; i++) {
       const fieldName = this.fieldsName[i];
@@ -99,6 +109,12 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
+    this.titleService.setTitle(
+      this.multiLanguageService.instant('page_title.dashboard') +
+        ' - ' +
+        GlobalConstants.PL_VALUE_DEFAULT.PROJECT_NAME
+    );
+    this.store.dispatch(new fromActions.SetOperatorInfo(NAV_ITEM.DASHBOARD));
     this.totalItems = ELEMENT_DATA.length;
   }
 
@@ -131,9 +147,9 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   }
 
   resetDisplayColumn() {
-     for (let i = 0; i < this.fieldsName.length; i++) {
-       this.fieldsControl.controls[this.fieldsName[i]].setValue(true);
-     }
-     this.displayedColumns = this.fieldsName
+    for (let i = 0; i < this.fieldsName.length; i++) {
+      this.fieldsControl.controls[this.fieldsName[i]].setValue(true);
+    }
+    this.displayedColumns = this.fieldsName;
   }
 }

@@ -6,6 +6,7 @@ import * as fromStore from './../../../core/store';
 import * as fromActions from './../../../core/store';
 import { Title } from '@angular/platform-browser';
 import { GlobalConstants } from '../../../core/common/global-constants';
+import { MultiLanguageService } from '../../../share/translate/multiLanguageService';
 
 @Component({
   selector: 'app-sign-in',
@@ -23,7 +24,8 @@ export class SignInComponent implements OnInit {
     private formBuilder: FormBuilder,
     private router: Router,
     private store: Store<fromStore.State>,
-    private titleService: Title
+    private titleService: Title,
+    private multiLanguageService: MultiLanguageService
   ) {
     this.signInForm = this.formBuilder.group({
       username: [''],
@@ -33,7 +35,9 @@ export class SignInComponent implements OnInit {
 
   ngOnInit(): void {
     this.titleService.setTitle(
-      'Đăng nhập' + ' - ' + GlobalConstants.PL_VALUE_DEFAULT.PROJECT_NAME
+      this.multiLanguageService.instant('page_title.sign_in') +
+        ' - ' +
+        GlobalConstants.PL_VALUE_DEFAULT.PROJECT_NAME
     );
     this.resetSession();
   }
