@@ -29,11 +29,11 @@ table.mat-table {
   }
 
   tr.op-element-row:not(.op-expanded-row):hover {
-    background: $grey-00;
+    background: $dim-light-blue;
   }
 
   tr.op-element-row:not(.op-expanded-row):active {
-    background: $grey-00;
+    background: $dim-light-blue;
   }
 
   tr:not(.op-expanded-row):not(.op-element-row):not(.op-detail-row) {

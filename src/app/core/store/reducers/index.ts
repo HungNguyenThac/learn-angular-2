@@ -4,6 +4,7 @@ import * as fromRouter from '@ngrx/router-store';
 import * as fromRouterReducers from './router.reducer';
 import * as fromLoginReducers from './login.reducer';
 import * as fromCustomerReducers from './customer.reducer';
+import * as fromOperatorReducers from './operator.reducer';
 
 export * from './router.reducer';
 
@@ -12,18 +13,21 @@ export interface State {
   login: fromLoginReducers.LoginState;
   customer: fromCustomerReducers.CustomerState;
   routerReducer: fromRouter.RouterReducerState<fromRouterReducers.RouterStateUrl>;
+  operator: fromOperatorReducers.OperatorState;
 }
 
 export const CORE_INITIAL_STATE: State = {
   login: fromLoginReducers.LOGIN_INITIAL_STATE,
   customer: fromCustomerReducers.CUSTOMER_INITIAL_STATE,
-  routerReducer: null
+  routerReducer: null,
+  operator: fromOperatorReducers.OPERATOR_INITIAL_STATE,
 };
 
 export const reducers: ActionReducerMap<State> = {
   routerReducer: fromRouter.routerReducer,
   login: fromLoginReducers.loginReducer,
-  customer: fromCustomerReducers.customerReducer
+  customer: fromCustomerReducers.customerReducer,
+  operator: fromOperatorReducers.operatorReducer,
 };
 
 export const getRouterState =

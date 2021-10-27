@@ -122,7 +122,13 @@
                     }"
                     [routerLink]="menuItem.path"
                   >
-                    <span [ngClass]="menuItem.iconClass"></span>
+                    <span
+                      [ngClass]="[
+                        selectedNavItem === menuItem.navItem
+                          ? menuItem.activeIconClass
+                          : menuItem.defaultIconClass
+                      ]"
+                    ></span>
                     <span>{{ menuItem.title }}</span>
                   </button>
                 </span>
@@ -160,7 +166,13 @@
                       #subMenuTrigger="matMenuTrigger"
                       (mousemove)="subMenuTrigger.openMenu()"
                     >
-                      <span [ngClass]="menuItem.iconClass"></span>
+                      <span
+                        [ngClass]="[
+                          selectedNavItem === menuItem.navItem
+                            ? menuItem.activeIconClass
+                            : menuItem.defaultIconClass
+                        ]"
+                      ></span>
                       <span>{{ menuItem.title }}</span>
                     </a>
 
@@ -206,7 +218,13 @@
                         active: selectedNavItem === menuItem.navItem
                       }"
                     >
-                      <span [ngClass]="menuItem.iconClass"></span>
+                      <span
+                        [ngClass]="[
+                          selectedNavItem === menuItem.navItem
+                            ? menuItem.activeIconClass
+                            : menuItem.defaultIconClass
+                        ]"
+                      ></span>
                       <span>{{ menuItem.title }}</span>
                     </a>
                   </ng-template>
