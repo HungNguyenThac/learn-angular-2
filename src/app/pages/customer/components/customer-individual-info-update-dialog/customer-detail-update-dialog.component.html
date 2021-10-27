@@ -1,336 +1,349 @@
 <div class="container-fluid">
-  <div class="row px-3 py-2 title">
-    <div class="col-12">
-      Cập nhật thông tin khách hàng
-    </div>
-  </div>
-  <div class="row px-3 pt-1">
-    <!-- Avatar -->
-    <section class="col-12 col-sm-12 col-md-4 col-lg-3 py-2">
-      <div class="d-flex gap-2">
-        <div class="op-customer-avatar">
-          <img
-            class="op-customer-avatar-img"
-            src="assets/img/payday-loan/avatar-default.png"
-            alt=""
-          />
+  <div class="card op-card">
+    <button mat-icon-button tabindex="-1" class="close-btn" mat-dialog-close>
+      <svg
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M4.2097 4.3871L4.29289 4.29289C4.65338 3.93241 5.22061 3.90468 5.6129 4.2097L5.70711 4.29289L12 10.585L18.2929 4.29289C18.6834 3.90237 19.3166 3.90237 19.7071 4.29289C20.0976 4.68342 20.0976 5.31658 19.7071 5.70711L13.415 12L19.7071 18.2929C20.0676 18.6534 20.0953 19.2206 19.7903 19.6129L19.7071 19.7071C19.3466 20.0676 18.7794 20.0953 18.3871 19.7903L18.2929 19.7071L12 13.415L5.70711 19.7071C5.31658 20.0976 4.68342 20.0976 4.29289 19.7071C3.90237 19.3166 3.90237 18.6834 4.29289 18.2929L10.585 12L4.29289 5.70711C3.93241 5.34662 3.90468 4.77939 4.2097 4.3871L4.29289 4.29289L4.2097 4.3871Z"
+          fill="#8E8E93"
+        />
+      </svg>
+    </button>
+    <div class="card-title title">Cập nhật thông tin khách hàng</div>
+    <div class="card-body">
+      <div class="row">
+        <!-- Avatar -->
+        <section class="col-12 col-sm-12 col-md-4 col-lg-3">
+          <div class="d-flex gap-2">
+            <div class="op-customer-avatar">
+              <img
+                class="op-customer-avatar-img"
+                src="assets/img/payday-loan/avatar-default.png"
+                alt=""
+              />
 
-          <div class="op-customer-avatar-img-zoom">
-            <span class="sprite-group-5-Zoom"></span>
+              <div class="op-customer-avatar-img-zoom">
+                <span class="sprite-group-5-Zoom"></span>
+              </div>
+            </div>
+
+            <div class="op-customer-name">
+              <p class="op-customer-name-content">
+                {{ customerInfo.firstName }}
+              </p>
+              <p class="op-customer-name-title">
+                {{ "customer.individual_info.avatar" | translate }}
+              </p>
+            </div>
           </div>
-        </div>
+        </section>
 
-        <div class="op-customer-name">
-          <p class="op-customer-name-content">{{ customerInfo.firstName }}</p>
-          <p class="op-customer-name-title">
-            {{ "customer.individual_info.avatar" | translate }}
-          </p>
-        </div>
+        <!--  Info  -->
+        <section class="col-12 col-sm-12 col-md-8 col-lg-9">
+          <form [formGroup]="customerInvidualForm">
+            <div class="row">
+              <!-- Left Individual Info -->
+              <div class="col-12 col-sm-12 col-md-6 col-lg-6 pr-2">
+                <div>
+                  <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>{{
+                      "customer.individual_info.id" | translate
+                    }}</mat-label>
+                    <input
+                      matInput
+                      [placeholder]="'customer.individual_info.id' | translate"
+                      [value]="customerInvidualForm.controls.id.value"
+                      disabled
+                    />
+                  </mat-form-field>
+                </div>
+
+                <div>
+                  <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>{{
+                      "customer.individual_info.fullname" | translate
+                    }}</mat-label>
+                    <input
+                      matInput
+                      [placeholder]="
+                        'customer.individual_info.fullname' | translate
+                      "
+                      formControlName="fullname"
+                    />
+                  </mat-form-field>
+                </div>
+
+                <div>
+                  <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>{{
+                      "customer.individual_info.phone_number" | translate
+                    }}</mat-label>
+                    <input
+                      matInput
+                      [placeholder]="
+                        'customer.individual_info.phone_number' | translate
+                      "
+                      formControlName="phoneNumber"
+                    />
+                  </mat-form-field>
+                </div>
+
+                <div>
+                  <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>{{
+                      "customer.individual_info.email" | translate
+                    }}</mat-label>
+                    <input
+                      matInput
+                      [placeholder]="
+                        'customer.individual_info.email' | translate
+                      "
+                      formControlName="email"
+                    />
+                  </mat-form-field>
+                </div>
+
+                <div class="d-flex gap-3">
+                  <mat-form-field appearance="outline" class="w-50">
+                    <mat-label>{{
+                      "customer.individual_info.date_of_birth" | translate
+                    }}</mat-label>
+                    <input
+                      matInput
+                      [matDatepicker]="picker"
+                      [placeholder]="
+                        'customer.individual_info.date_of_birth' | translate
+                      "
+                      formControlName="dateOfBirth"
+                    />
+                    <mat-datepicker-toggle
+                      matSuffix
+                      [for]="picker"
+                    ></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                  </mat-form-field>
+
+                  <mat-form-field appearance="outline" class="w-50">
+                    <mat-label>{{
+                      "customer.individual_info.gender" | translate
+                    }}</mat-label>
+                    <mat-select formControlName="gender">
+                      <mat-option
+                        *ngFor="let gender of genderOptions"
+                        [value]="gender"
+                      >
+                        {{ gender }}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+
+                <div>
+                  <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>{{
+                      "customer.individual_info.cmnd" | translate
+                    }}</mat-label>
+                    <input
+                      matInput
+                      [placeholder]="
+                        'customer.individual_info.cmnd' | translate
+                      "
+                      formControlName="cmnd"
+                    />
+                  </mat-form-field>
+                </div>
+
+                <div>
+                  <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>{{
+                      "customer.individual_info.permanent_address" | translate
+                    }}</mat-label>
+                    <input
+                      matInput
+                      [placeholder]="
+                        'customer.individual_info.permanent_address' | translate
+                      "
+                      formControlName="permanentAddress"
+                    />
+                  </mat-form-field>
+                </div>
+
+                <div>
+                  <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>{{
+                      "customer.individual_info.current_residence" | translate
+                    }}</mat-label>
+                    <input
+                      matInput
+                      [placeholder]="
+                        'customer.individual_info.current_residence' | translate
+                      "
+                      formControlName="currentResidence"
+                    />
+                  </mat-form-field>
+                </div>
+
+                <div>
+                  <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>{{
+                      "customer.individual_info.id_origin" | translate
+                    }}</mat-label>
+                    <input
+                      matInput
+                      [placeholder]="
+                        'customer.individual_info.id_origin' | translate
+                      "
+                      formControlName="idOrigin"
+                    />
+                  </mat-form-field>
+                </div>
+              </div>
+
+              <!-- Right Individual Info -->
+              <div class="col-12 col-sm-12 col-md-6 col-lg-6 pl-2">
+                <div>
+                  <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>{{
+                      "customer.individual_info.number_of_dependents"
+                        | translate
+                    }}</mat-label>
+                    <mat-select formControlName="numberOfDependents">
+                      <mat-option
+                        *ngFor="
+                          let numberOfDependentsOption of numberOfDependentsOptions.options
+                        "
+                        [value]="numberOfDependentsOption"
+                      >
+                        {{ numberOfDependentsOption }}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+
+                <div>
+                  <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>{{
+                      "customer.individual_info.marital_status" | translate
+                    }}</mat-label>
+                    <mat-select formControlName="maritalStatus">
+                      <mat-option
+                        *ngFor="
+                          let maritalStatusOption of maritalStatusOptions.options
+                        "
+                        [value]="maritalStatusOption"
+                      >
+                        {{ maritalStatusOption }}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+
+                <div>
+                  <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>{{
+                      "customer.individual_info.bank_account_number" | translate
+                    }}</mat-label>
+                    <input
+                      matInput
+                      [placeholder]="
+                        'customer.individual_info.bank_account_number'
+                          | translate
+                      "
+                      formControlName="bankAccountNumber"
+                    />
+                  </mat-form-field>
+                </div>
+
+                <div>
+                  <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>{{
+                      "customer.individual_info.bank_name" | translate
+                    }}</mat-label>
+                    <mat-select formControlName="bankName">
+                      <mat-option
+                        *ngFor="let bankNameOption of bankNameOptions.options"
+                        [value]="bankNameOption"
+                      >
+                        {{ bankNameOption }}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+
+                <div>
+                  <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>{{
+                      "customer.individual_info.va_account_number" | translate
+                    }}</mat-label>
+                    <input
+                      matInput
+                      [placeholder]="
+                        'customer.individual_info.va_account_number' | translate
+                      "
+                      [value]="
+                        customerInvidualForm.controls.vaAccountNumber.value
+                      "
+                      disabled
+                    />
+                  </mat-form-field>
+                </div>
+
+                <div>
+                  <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>{{
+                      "customer.individual_info.created_at" | translate
+                    }}</mat-label>
+                    <input
+                      matInput
+                      [placeholder]="
+                        'customer.individual_info.created_at' | translate
+                      "
+                      [value]="customerInvidualForm.controls.createdAt.value"
+                      disabled
+                    />
+                  </mat-form-field>
+                </div>
+
+                <div>
+                  <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>{{
+                      "customer.individual_info.updated_at" | translate
+                    }}</mat-label>
+                    <input
+                      matInput
+                      [placeholder]="
+                        'customer.individual_info.updated_at' | translate
+                      "
+                      [value]="customerInvidualForm.controls.updatedAt.value"
+                      disabled
+                    />
+                  </mat-form-field>
+                </div>
+              </div>
+            </div>
+          </form>
+        </section>
       </div>
-    </section>
+    </div>
+    <!--  Actions -->
 
-    <!--  Info  -->
-    <section class="col-12 col-sm-12 col-md-8 col-lg-9">
-      <form [formGroup]="customerInvidualForm">
-        <div class="row">
-          <!-- Left Individual Info -->
-          <div class="col-12 col-sm-12 col-md-6 col-lg-6 pr-2">
-            <div>
-              <mat-form-field appearance="outline" class="w-100">
-                <mat-label>{{
-                  "customer.individual_info.id" | translate
-                }}</mat-label>
-                <input
-                  matInput
-                  [placeholder]="'customer.individual_info.id' | translate"
-                  [value]="customerInvidualForm.controls.id.value"
-                  disabled
-                />
-              </mat-form-field>
-            </div>
-
-            <div>
-              <mat-form-field appearance="outline" class="w-100">
-                <mat-label>{{
-                  "customer.individual_info.fullname" | translate
-                }}</mat-label>
-                <input
-                  matInput
-                  [placeholder]="
-                    'customer.individual_info.fullname' | translate
-                  "
-                  formControlName="fullname"
-                />
-              </mat-form-field>
-            </div>
-
-            <div>
-              <mat-form-field appearance="outline" class="w-100">
-                <mat-label>{{
-                  "customer.individual_info.phone_number" | translate
-                }}</mat-label>
-                <input
-                  matInput
-                  [placeholder]="
-                    'customer.individual_info.phone_number' | translate
-                  "
-                  formControlName="phoneNumber"
-                />
-              </mat-form-field>
-            </div>
-
-            <div>
-              <mat-form-field appearance="outline">
-                <mat-label>{{
-                  "customer.individual_info.email" | translate
-                }}</mat-label>
-                <input
-                  matInput
-                  [placeholder]="'customer.individual_info.email' | translate"
-                  formControlName="email"
-                />
-              </mat-form-field>
-            </div>
-
-            <div class="d-flex gap-3">
-              <mat-form-field appearance="outline" class="w-50">
-                <mat-label>{{
-                  "customer.individual_info.date_of_birth" | translate
-                }}</mat-label>
-                <input
-                  matInput
-                  [matDatepicker]="picker"
-                  [placeholder]="
-                    'customer.individual_info.date_of_birth' | translate
-                  "
-                  formControlName="dateOfBirth"
-                />
-                <mat-datepicker-toggle
-                  matSuffix
-                  [for]="picker"
-                ></mat-datepicker-toggle>
-                <mat-datepicker #picker></mat-datepicker>
-              </mat-form-field>
-
-              <mat-form-field appearance="outline" class="w-50">
-                <mat-label>{{
-                  "customer.individual_info.gender" | translate
-                }}</mat-label>
-                <mat-select
-                  formControlName="gender"
-                >
-                  <mat-option
-                    *ngFor="let gender of genderOptions"
-                    [value]="gender"
-                  >
-                    {{ gender }}
-                  </mat-option>
-                </mat-select>
-              </mat-form-field>
-            </div>
-
-            <div>
-              <mat-form-field appearance="outline" class="w-100">
-                <mat-label>{{
-                  "customer.individual_info.cmnd" | translate
-                }}</mat-label>
-                <input
-                  matInput
-                  [placeholder]="'customer.individual_info.cmnd' | translate"
-                  formControlName="cmnd"
-                />
-              </mat-form-field>
-            </div>
-
-            <div>
-              <mat-form-field appearance="outline" class="w-100">
-                <mat-label>{{
-                  "customer.individual_info.permanent_address" | translate
-                }}</mat-label>
-                <input
-                  matInput
-                  [placeholder]="
-                    'customer.individual_info.permanent_address' | translate
-                  "
-                  formControlName="permanentAddress"
-                />
-              </mat-form-field>
-            </div>
-
-            <div>
-              <mat-form-field appearance="outline" class="w-100">
-                <mat-label>{{
-                  "customer.individual_info.current_residence" | translate
-                }}</mat-label>
-                <input
-                  matInput
-                  [placeholder]="
-                    'customer.individual_info.current_residence' | translate
-                  "
-                  formControlName="currentResidence"
-                />
-              </mat-form-field>
-            </div>
-
-            <div>
-              <mat-form-field appearance="outline" class="w-100">
-                <mat-label>{{
-                  "customer.individual_info.id_origin" | translate
-                }}</mat-label>
-                <input
-                  matInput
-                  [placeholder]="
-                    'customer.individual_info.id_origin' | translate
-                  "
-                 formControlName="idOrigin"
-                />
-              </mat-form-field>
-            </div>
-          </div>
-
-          <!-- Right Individual Info -->
-          <div class="col-12 col-sm-12 col-md-6 col-lg-6 pl-2">
-            <div>
-              <mat-form-field appearance="outline" class="w-100">
-                <mat-label>{{
-                  "customer.individual_info.number_of_dependents" | translate
-                }}</mat-label>
-                <mat-select
-                 formControlName="numberOfDependents"
-                >
-                  <mat-option
-                    *ngFor="
-                      let numberOfDependentsOption of numberOfDependentsOptions.options
-                    "
-                    [value]="numberOfDependentsOption"
-                  >
-                    {{ numberOfDependentsOption }}
-                  </mat-option>
-                </mat-select>
-              </mat-form-field>
-            </div>
-
-            <div>
-              <mat-form-field appearance="outline" class="w-100">
-                <mat-label>{{
-                  "customer.individual_info.marital_status" | translate
-                }}</mat-label>
-                <mat-select
-                  formControlName="maritalStatus"
-                >
-                  <mat-option
-                    *ngFor="
-                      let maritalStatusOption of maritalStatusOptions.options
-                    "
-                    [value]="maritalStatusOption"
-                  >
-                    {{ maritalStatusOption }}
-                  </mat-option>
-                </mat-select>
-              </mat-form-field>
-            </div>
-
-            <div>
-              <mat-form-field appearance="outline" class="w-100">
-                <mat-label>{{
-                  "customer.individual_info.bank_account_number" | translate
-                }}</mat-label>
-                <input
-                  matInput
-                  [placeholder]="
-                    'customer.individual_info.bank_account_number' | translate
-                  "
-                  formControlName="bankAccountNumber"
-                />
-              </mat-form-field>
-            </div>
-
-            <div>
-              <mat-form-field appearance="outline" class="w-100">
-                <mat-label>{{
-                  "customer.individual_info.bank_name" | translate
-                }}</mat-label>
-                <mat-select
-                  formControlName="bankName"
-                >
-                  <mat-option
-                    *ngFor="
-                      let bankNameOption of bankNameOptions.options
-                    "
-                    [value]="bankNameOption"
-                  >
-                    {{ bankNameOption }}
-                  </mat-option>
-                </mat-select>
-              </mat-form-field>
-            </div>
-
-             <div>
-              <mat-form-field appearance="outline" class="w-100">
-                <mat-label>{{
-                  "customer.individual_info.va_account_number" | translate
-                }}</mat-label>
-                <input
-                  matInput
-                  [placeholder]="
-                    'customer.individual_info.va_account_number' | translate
-                  "
-                  [value]="customerInvidualForm.controls.vaAccountNumber.value"
-                  disabled
-                />
-              </mat-form-field>
-            </div>
-
-            <div>
-              <mat-form-field appearance="outline" class="w-100">
-                <mat-label>{{
-                  "customer.individual_info.created_at" | translate
-                }}</mat-label>
-                <input
-                  matInput
-                  [placeholder]="
-                    'customer.individual_info.created_at' | translate
-                  "
-                  [value]="customerInvidualForm.controls.createdAt.value"
-                  disabled
-                />
-              </mat-form-field>
-            </div>
-
-             <div>
-              <mat-form-field appearance="outline" class="w-100">
-                <mat-label>{{
-                  "customer.individual_info.updated_at" | translate
-                }}</mat-label>
-                <input
-                  matInput
-                  [placeholder]="
-                    'customer.individual_info.updated_at' | translate
-                  "
-                  [value]="customerInvidualForm.controls.updatedAt.value"
-                  disabled
-                />
-              </mat-form-field>
-            </div>
-
-          </div>
-        </div>
-      </form>
-    </section>
-  </div>
-
-  <!--  Actions -->
-
-  <div class="row mt-3 mb-3">
-    <div class="col-12 d-flex gap-2 justify-content-end">
-      <button mat-flat-button color="warn" mat-dialog-close>
-        <span class="sprite-group-5-pen-white"></span>
-        {{ "customer.individual_info.cancel_update" | translate }}
-      </button>
-      <button mat-flat-button color="accent" (click)="submit()">
-        <span class="sprite-group-5-lock-white"></span>
-        {{ "customer.individual_info.save_update" | translate }}
-      </button>
+    <div class="row mt-3 mb-3">
+      <div class="col-12 d-flex gap-2 justify-content-end">
+        <button mat-flat-button color="warn" autofocus mat-dialog-close>
+          <span class="sprite-group-5-pen-white"></span>
+          {{ "customer.individual_info.cancel_update" | translate }}
+        </button>
+        <button mat-flat-button color="accent" (click)="submit()">
+          <span class="sprite-group-5-lock-white"></span>
+          {{ "customer.individual_info.save_update" | translate }}
+        </button>
+      </div>
     </div>
   </div>
+
 </div>
