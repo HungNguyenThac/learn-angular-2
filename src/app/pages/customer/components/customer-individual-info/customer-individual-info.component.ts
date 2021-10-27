@@ -127,6 +127,8 @@ export class CustomerIndividualInfoComponent implements OnInit {
   openUpdateDialog() {
     const dialogRef = this.dialog.open(CustomerDetailUpdateDialogComponent, {
       panelClass: 'custom-info-dialog-container',
+      maxWidth: '1200px',
+      width: '90%',
       data: this.customerInfo,
     });
   }
