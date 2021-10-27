@@ -18,6 +18,7 @@ import { MultiLanguageService } from '../../share/translate/multiLanguageService
 export class HeaderComponent implements OnInit, OnDestroy {
   customerInfo$: Observable<CustomerInfoResponse>;
   authorization$: Observable<any>;
+  activeNavItem$: Observable<any>;
   responsive: boolean = false;
 
   customerInfo: CustomerInfoResponse = null;
@@ -28,23 +29,20 @@ export class HeaderComponent implements OnInit, OnDestroy {
   roleName: string = 'Super admin';
 
   selectedNavItem: NAV_ITEM = NAV_ITEM.DASHBOARD;
-  menuItems: any = [
+
+  menuItems = [
     {
       navItem: NAV_ITEM.DASHBOARD,
       title: this.multiLanguageService.instant('header.navigation.dashboard'),
-      iconClass:
-        this.selectedNavItem === NAV_ITEM.DASHBOARD
-          ? 'sprite-group-5-home-white'
-          : 'sprite-group-5-home',
+      defaultIconClass: 'sprite-group-5-home',
+      activeIconClass: 'sprite-group-5-home-white',
       path: '/',
     },
     {
       navItem: NAV_ITEM.LOANAPP,
       title: this.multiLanguageService.instant('header.navigation.loanapp'),
-      iconClass:
-        this.selectedNavItem === NAV_ITEM.LOANAPP
-          ? 'sprite-group-5-coin-white'
-          : 'sprite-group-5-coin',
+      defaultIconClass: 'sprite-group-5-coin',
+      activeIconClass: 'sprite-group-5-coin-white',
       subItems: [
         {
           title: this.multiLanguageService.instant(
@@ -66,28 +64,22 @@ export class HeaderComponent implements OnInit, OnDestroy {
     {
       navItem: NAV_ITEM.CUSTOMER,
       title: this.multiLanguageService.instant('header.navigation.customer'),
-      iconClass:
-        this.selectedNavItem === NAV_ITEM.CUSTOMER
-          ? 'sprite-group-5-customer-white'
-          : 'sprite-group-5-customer',
+      defaultIconClass: 'sprite-group-5-customer',
+      activeIconClass: 'sprite-group-5-customer-white',
       path: '/customer/list',
     },
     {
       navItem: NAV_ITEM.INSURANCE,
       title: this.multiLanguageService.instant('header.navigation.insurance'),
-      iconClass:
-        this.selectedNavItem === NAV_ITEM.INSURANCE
-          ? 'sprite-group-5-shield-check-white'
-          : 'sprite-group-5-shield-check',
+      defaultIconClass: 'sprite-group-5-shield-check',
+      activeIconClass: 'sprite-group-5-shield-check-white',
       path: '/',
     },
     {
       navItem: NAV_ITEM.SAVING,
       title: this.multiLanguageService.instant('header.navigation.saving'),
-      iconClass:
-        this.selectedNavItem === NAV_ITEM.SAVING
-          ? 'sprite-group-5-invest-white'
-          : 'sprite-group-5-invest',
+      defaultIconClass: 'sprite-group-5-invest',
+      activeIconClass: 'sprite-group-5-invest-white',
       path: '/',
     },
   ];
@@ -118,6 +110,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   private _subscribeHeaderInfo() {
     this.customerInfo$ = this.store.select(fromSelectors.getCustomerInfoState);
+    this.activeNavItem$ = this.store.select(
+      fromSelectors.getActiveNavItemState
+    );
     this.authorization$ = this.store.select(
       fromSelectors.getAuthorizationState
     );
@@ -137,6 +132,13 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.subManager.add(
       this.authorization$.subscribe((authorization: any) => {
         this.showProfileBtn = !!authorization;
+      })
+    );
+
+    this.subManager.add(
+      this.activeNavItem$.subscribe((selectedNavItem: NAV_ITEM) => {
+        console.log('selectedNavItem', selectedNavItem);
+        this.selectedNavItem = selectedNavItem;
       })
     );
   }

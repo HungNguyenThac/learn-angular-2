@@ -231,6 +231,8 @@
     "payday_loan_forgot_pass_success": "Khôi phục mật khẩu thành công",
     "loan_payment": "Chi tiết tất toán khoản vay",
     "choose_payment_method": "Chọn hình thức thanh toán",
-    "not_found": "404"
+    "not_found": "404",
+    "customer_list": "Danh sách khách hàng",
+    "dashboard": "Trang chủ"
   }
 }
