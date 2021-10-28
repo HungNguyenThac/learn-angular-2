@@ -5,7 +5,8 @@ import { Store } from '@ngrx/store';
 import * as fromActions from '../../../core/store';
 import * as fromStore from '../../../core/store';
 import {
-  DATA_CELL_TYPE, DATA_STATUS_TYPE,
+  DATA_CELL_TYPE,
+  DATA_STATUS_TYPE,
   NAV_ITEM,
   QUERY_CONDITION_TYPE,
 } from '../../../core/common/enum/operator';
@@ -20,10 +21,11 @@ import {
 import { CustomerListService } from './customer-list.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { Params } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import * as fromSelectors from '../../../core/store/selectors';
 import { BreadcrumbOptionsModel } from '../../../public/models/breadcrumb-options.model';
-import {PL_LABEL_STATUS} from "../../../core/common/enum/label-status";
+import { PageEvent } from '@angular/material/paginator/public-api';
+import { Sort } from '@angular/material/sort';
 
 @Component({
   selector: 'app-customer-list',
@@ -98,7 +100,7 @@ export class CustomerListComponent implements OnInit, OnDestroy {
         'customer.individual_info.created_at'
       ),
       type: DATA_CELL_TYPE.DATETIME,
-      format: 'dd/MM/yyyy H:m:s',
+      format: 'dd/MM/yyyy HH:mm',
     },
   ];
   dataSource: MatTableDataSource<any> = new MatTableDataSource([]);
@@ -117,7 +119,9 @@ export class CustomerListComponent implements OnInit, OnDestroy {
     private multiLanguageService: MultiLanguageService,
     private customerListService: CustomerListService,
     private companyControllerService: CompanyControllerService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private router: Router,
+    private activatedRoute: ActivatedRoute
   ) {
     this.routeAllState$ = store.select(fromSelectors.getRouterAllState);
     this._initFilterForm();
@@ -227,7 +231,52 @@ export class CustomerListComponent implements OnInit, OnDestroy {
     this.dataSource.data = rawData?.data || [];
   }
 
+  onPageChanged(event: PageEvent) {
+    this.pageSize = event.pageSize;
+    this.pageIndex = event.pageIndex;
+    this._onFilterChange();
+  }
+
+  onSortChanged(sortState: Sort) {
+    this.filterForm.controls.orderBy.setValue(sortState.active);
+    this.filterForm.controls.descending.setValue(sortState.direction);
+    this._onFilterChange();
+  }
+
+  private _onFilterChange() {
+    const data = this.filterForm.getRawValue();
+    //convert time to ISO and set end time
+    let queryParams = {};
+
+    for (const [formControlName, queryCondition] of Object.entries(
+      data.filterConditions
+    )) {
+      queryParams[formControlName + queryCondition || ''] = data[
+        formControlName
+      ]
+        ? data[formControlName].trim()
+        : '';
+    }
+    queryParams['startTime'] = data.startTime
+      ? data.startTime.toISOString()
+      : null;
+    queryParams['endTime'] = data.endTime ? data.endTime.toISOString() : null;
+
+    queryParams['orderBy'] = data.orderBy;
+    queryParams['pageIndex'] = this.pageIndex;
+    queryParams['pageSize'] = this.pageSize;
+
+    this.router
+      .navigate([], {
+        relativeTo: this.activatedRoute,
+        queryParams,
+      })
+      .then((r) => {});
+  }
+
   ngOnDestroy(): void {
-    this.subManager.unsubscribe();
+    // if (this.subManager !== null) {
+    // this.subManager.unsubscribe();
+    // }
   }
 }

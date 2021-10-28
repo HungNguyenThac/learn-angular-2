@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, TemplateRef } from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output, TemplateRef} from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { BreadcrumbOptionsModel } from '../../../../public/models/breadcrumb-options.model';
 
@@ -40,7 +40,12 @@ export class BaseManagementLayoutComponent implements OnInit {
   @Input() pageSizeOptions: number[] = [5, 10, 25, 100];
   @Input() totalItems: number = 0;
   @Input() pageLength: number = 0;
+  @Input() orderBy: string;
+  @Input() descending: boolean;
   @Input() breadcrumbOptions: BreadcrumbOptionsModel;
+
+  @Output() onPageChanged = new EventEmitter<any>();
+  @Output() onSortChange = new EventEmitter<any>();
 
   constructor() {}
 
@@ -51,5 +56,13 @@ export class BaseManagementLayoutComponent implements OnInit {
   }
   submitSearchForm(event) {
     console.log(event);
+  }
+
+  triggerPageChange(event) {
+    this.onPageChanged.emit(event)
+  }
+
+  triggerSortChange(event) {
+    this.onSortChange.emit(event)
   }
 }

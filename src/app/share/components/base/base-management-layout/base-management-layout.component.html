@@ -35,8 +35,12 @@
             [totalItems]="totalItems"
             [pageLength]="pageLength"
             [tableTitle]="tableTitle"
+            [orderBy]="orderBy"
+            [descending]="descending"
             [pageSizeOptions]="pageSizeOptions"
             [detailElementTemplate]="detailElementTemplate"
+            (triggerPageChange)="triggerPageChange($event)"
+            (triggerSortChange)="triggerSortChange($event)"
           >
           </app-base-expanded-table>
         </div>

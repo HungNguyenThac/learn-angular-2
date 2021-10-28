@@ -29,7 +29,7 @@ export class CustomMatPaginatorIntl extends MatPaginatorIntl {
     //   startIndex < length
     //     ? Math.min(startIndex + pageSize, length)
     //     : startIndex + pageSize;
-    const totalPage = Math.round(length / pageSize);
+    const totalPage = Math.round(length / pageSize) + 1;
 
     return this.translate.instant('mat_paginator_intl.page_per_total_label', {
       page: page + 1,
