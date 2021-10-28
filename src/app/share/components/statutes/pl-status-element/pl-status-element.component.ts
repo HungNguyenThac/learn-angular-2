@@ -46,21 +46,21 @@ export class PlStatusElementComponent implements OnInit {
           label: this.multiLanguageService.instant(
             `payday_loan.pl_ui_status.${status.toLowerCase()}`
           ),
-          labelStatus: PL_LABEL_STATUS.PENDING,
+          labelStatus: PL_LABEL_STATUS.REJECT,
         };
       case PAYDAY_LOAN_UI_STATUS.NOT_COMPLETE_FILL_EKYC_YET:
         return {
           label: this.multiLanguageService.instant(
             `payday_loan.pl_ui_status.${status.toLowerCase()}`
           ),
-          labelStatus: PL_LABEL_STATUS.PENDING,
+          labelStatus: PL_LABEL_STATUS.INFO,
         };
       case PAYDAY_LOAN_UI_STATUS.NOT_ACCEPTING_TERM_YET:
         return {
           label: this.multiLanguageService.instant(
             `payday_loan.pl_ui_status.${status.toLowerCase()}`
           ),
-          labelStatus: PL_LABEL_STATUS.PENDING,
+          labelStatus: PL_LABEL_STATUS.DISBURSEMENT,
         };
       case PAYDAY_LOAN_UI_STATUS.NOT_COMPLETE_CDE_YET:
         return {

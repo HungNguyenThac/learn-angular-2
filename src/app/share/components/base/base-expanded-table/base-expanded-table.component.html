@@ -63,6 +63,9 @@
         multiTemplateDataRows
         class="expanded-table"
         (matSortChange)="announceSortChange($event)"
+        [matSortActive]="orderBy"
+        [matSortDirection]="descending"
+        matSortDisableClear
       >
         <ng-container
           matColumnDef="{{ column?.key }}"
@@ -154,7 +157,7 @@
         [length]="totalItems"
         [pageSizeOptions]="pageSizeOptions"
         showFirstLastButtons
-        aria-label="Select page of periodic elements"
+        (page)="onPageChange($event)"
       >
       </mat-paginator>
     </div>

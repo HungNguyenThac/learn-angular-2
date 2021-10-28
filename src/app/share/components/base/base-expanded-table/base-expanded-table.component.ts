@@ -1,8 +1,10 @@
 import {
   ChangeDetectorRef,
   Component,
+  EventEmitter,
   Input,
   OnInit,
+  Output,
   TemplateRef,
   ViewChild,
 } from '@angular/core';
@@ -11,6 +13,7 @@ import { Sort } from '@angular/material/sort';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { DisplayedFieldsModel } from '../../../../public/models/displayed-fields.model';
 import { MatTableDataSource } from '@angular/material/table';
+import { PageEvent } from '@angular/material/paginator/public-api';
 
 @Component({
   selector: 'app-base-expanded-table',
@@ -30,7 +33,12 @@ export class BaseExpandedTableComponent implements OnInit {
   @Input() pageLength: number;
   @Input() pageIndex: number;
   @Input() pageSize: number;
+  @Input() orderBy: string;
+  @Input() descending: boolean;
   @Input() allColumns: any[];
+
+  @Output() triggerPageChange = new EventEmitter<any>();
+  @Output() triggerSortChange = new EventEmitter<any>();
 
   expandedElement: any;
   selectedFields: DisplayedFieldsModel[] = [];
@@ -76,10 +84,16 @@ export class BaseExpandedTableComponent implements OnInit {
     } else {
       this._liveAnnouncer.announce('Sorting cleared');
     }
+
+    this.triggerSortChange.emit(sortState);
   }
 
   setPage(i, event: any) {
     this.pageIndex = i;
     event.preventDefault();
+  }
+
+  public onPageChange(event: PageEvent) {
+    this.triggerPageChange.emit(event);
   }
 }
