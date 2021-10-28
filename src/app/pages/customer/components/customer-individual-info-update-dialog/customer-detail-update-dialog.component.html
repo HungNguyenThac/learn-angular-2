@@ -329,19 +329,18 @@
           </form>
         </section>
       </div>
-    </div>
-    <!--  Actions -->
+      <!--  Actions -->
 
-    <div class="row mt-3 mb-3">
-      <div class="col-12 d-flex gap-2 justify-content-end">
-        <button mat-flat-button color="warn" autofocus mat-dialog-close>
-          <span class="sprite-group-5-pen-white"></span>
-          {{ "customer.individual_info.cancel_update" | translate }}
-        </button>
-        <button mat-flat-button color="accent" (click)="submit()">
-          <span class="sprite-group-5-lock-white"></span>
-          {{ "customer.individual_info.save_update" | translate }}
-        </button>
+      <div class="row mt-3">
+        <div class="col-12 d-flex gap-2 justify-content-end">
+          <button mat-flat-button color="warn" autofocus mat-dialog-close>
+            {{ "customer.individual_info.cancel_update" | translate }}
+          </button>
+          <button mat-flat-button color="accent" (click)="submit()">
+            <span class="sprite-group-5-save-white"></span>
+            {{ "customer.individual_info.save_update" | translate }}
+          </button>
+        </div>
       </div>
     </div>
   </div>

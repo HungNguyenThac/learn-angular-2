@@ -1,7 +1,9 @@
+import { MatDialog } from '@angular/material/dialog';
 import { Component, OnInit } from '@angular/core';
 import { CustomerInfo } from '../../../../../../open-api-modules/dashboard-api-docs';
 import { CompanyInfo } from '../../../../../../open-api-modules/dashboard-api-docs';
 import { MultiLanguageService } from '../../../../share/translate/multiLanguageService';
+import { DialogCompanyInfoUpdateComponent } from '../dialog-company-info-update/dialog-company-info-update.component';
 
 @Component({
   selector: 'app-customer-company-info',
@@ -90,7 +92,19 @@ export class CustomerCompanyInfoComponent implements OnInit {
     },
   ];
 
-  constructor(private multiLanguageService: MultiLanguageService) {}
+  constructor(
+    private multiLanguageService: MultiLanguageService,
+    private dialog: MatDialog
+  ) {}
 
   ngOnInit(): void {}
+
+  openUpdateDialog() {
+    const dialogRef = this.dialog.open(DialogCompanyInfoUpdateComponent, {
+      panelClass: 'custom-info-dialog-container',
+      maxWidth: '800px',
+      width: '90%',
+      data: this.customerInfo,
+    });
+  }
 }
