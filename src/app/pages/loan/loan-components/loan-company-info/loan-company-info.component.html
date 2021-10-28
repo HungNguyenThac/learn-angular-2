@@ -1,0 +1,62 @@
+<div class="container-fluid">
+  <div class="row p-3">
+    <!--  Info  -->
+    <section class="col-12">
+      <div class="row">
+        <!-- Left Individual Info -->
+        <article class="col-12 col-sm-12 col-md-6 col-lg-6">
+          <ul class="pl-list">
+            <li class="pl-list-item" *ngFor="let leftColumnEle of leftColumn">
+              <p class="pl-list-item-label">
+                {{ leftColumnEle.title }}
+              </p>
+              <p class="pl-list-item-content">
+                {{ leftColumnEle.value }}
+              </p>
+            </li>
+          </ul>
+        </article>
+
+        <!-- Right Individual Info -->
+        <article class="col-12 col-sm-12 col-md-6 col-lg-6">
+          <ul class="pl-list">
+            <li class="pl-list-item" *ngFor="let rightColumnEle of rightColumn">
+              <p class="pl-list-item-label">
+                {{ rightColumnEle.title }}
+              </p>
+              <p class="pl-list-item-content">
+                {{ rightColumnEle.value }}
+              </p>
+            </li>
+          </ul>
+        </article>
+      </div>
+    </section>
+  </div>
+
+  <!--  Actions -->
+
+  <div class="row mt-3 mb-3">
+    <div class="col-12 d-flex gap-2 justify-content-end">
+      <button mat-flat-button color="primary" (click)="checkSalaryInfo()">
+        <svg
+          width="16"
+          height="16"
+          viewBox="0 0 16 16"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M6.66699 1.66675C9.42839 1.66675 11.667 3.90532 11.667 6.66675C11.667 7.80681 11.2854 8.85781 10.643 9.69895L13.8051 12.862C14.0654 13.1223 14.0654 13.5445 13.8051 13.8048C13.5647 14.0451 13.1866 14.0636 12.9251 13.8603L12.8623 13.8048L9.69919 10.6427C8.85806 11.2851 7.80706 11.6667 6.66699 11.6667C3.90557 11.6667 1.66699 9.42815 1.66699 6.66675C1.66699 3.90532 3.90557 1.66675 6.66699 1.66675ZM6.66699 3.00008C4.64195 3.00008 3.00033 4.6417 3.00033 6.66675C3.00033 8.69181 4.64195 10.3334 6.66699 10.3334C8.69206 10.3334 10.3337 8.69181 10.3337 6.66675C10.3337 4.6417 8.69206 3.00008 6.66699 3.00008Z"
+            fill="white"
+          />
+        </svg>
+        {{ "loan_app.company_info.salary_info_confirmation" | translate }}
+      </button>
+      <button mat-flat-button color="accent" (click)="openUpdateDialog()">
+        <span class="sprite-group-5-pen-white"></span>
+        {{ "loan_app.company_info.update" | translate }}
+      </button>
+    </div>
+  </div>
+</div>

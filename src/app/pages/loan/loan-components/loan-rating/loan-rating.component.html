@@ -1,0 +1,36 @@
+<div class="container-fluid">
+  <div class="row p-3 justify-content-center">
+    <div class="col-12 col-sm-6 col-md-4 col-lg-4">
+      <ul class="pl-list">
+        <li class="pl-list-item">
+          <p class="pl-list-item-label">
+            {{ middleColumn[0].title }}
+          </p>
+          <p class="pl-list-item-content highlight">
+            {{ middleColumn[0].value }}
+          </p>
+        </li>
+
+        <li class="pl-list-item">
+          <p class="pl-list-item-label">
+            {{ middleColumn[1].title }}
+          </p>
+          <div class="pl-list-item-content">
+            <p *ngFor="let ele of middleColumn[1].value">
+              {{ ele }}
+            </p>
+          </div>
+        </li>
+
+        <li class="pl-list-item other-comment-customize">
+          <p class="pl-list-item-label">
+            {{ middleColumn[2].title }}
+          </p>
+          <p class="pl-list-item-content">
+            {{ middleColumn[2].value }}
+          </p>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>

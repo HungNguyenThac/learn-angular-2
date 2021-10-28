@@ -49,17 +49,17 @@ export class HeaderComponent implements OnInit, OnDestroy {
             'header.navigation.loanapp_hmg'
           ),
           iconClass: 'sprite-group-5-pl-24',
-          path: '/',
+          path: '/loan/list',
         },
         {
           title: this.multiLanguageService.instant(
             'header.navigation.loanapp_hmg'
           ),
           iconClass: 'sprite-group-5-pl-24',
-          path: '/',
+          path: '/loan/list',
         },
       ],
-      path: '/',
+      path: '/loan/list',
     },
     {
       navItem: NAV_ITEM.CUSTOMER,

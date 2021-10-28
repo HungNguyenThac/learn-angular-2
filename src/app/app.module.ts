@@ -9,6 +9,7 @@ import { LayoutModule } from './layout/layout.module';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { ChartsModule } from 'ng2-charts';
 import {CustomerModule} from "./pages/customer/customer.module";
+import { LoanModule } from './pages/loan/loan.module';
 
 @NgModule({
   declarations: [AppComponent, DashboardComponent],
@@ -21,6 +22,7 @@ import {CustomerModule} from "./pages/customer/customer.module";
     LayoutModule,
     ChartsModule,
     CustomerModule,
+    LoanModule
   ],
   providers: [],
   bootstrap: [AppComponent],

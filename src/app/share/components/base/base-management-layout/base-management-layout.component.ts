@@ -24,10 +24,11 @@ const ELEMENT_DATA: PeriodicElement[] = [
 @Component({
   selector: 'app-base-management-layout',
   templateUrl: './base-management-layout.component.html',
-  styleUrls: ['./base-management-layout.component.scss']
+  styleUrls: ['./base-management-layout.component.scss'],
 })
 export class BaseManagementLayoutComponent implements OnInit {
   @Input() detailElementTemplate: TemplateRef<any>;
+  @Input() titlePage: string = 'Khách hàng mới';
 
   displayedColumns: string[] = ['position', 'name', 'weight', 'symbol'];
   dataSource = new MatTableDataSource(ELEMENT_DATA);
@@ -37,9 +38,7 @@ export class BaseManagementLayoutComponent implements OnInit {
   pageSizeOptions: number[] = [5, 10, 25, 100];
   totalItems: number = 0;
 
-  constructor() { }
+  constructor() {}
 
-  ngOnInit(): void {
-  }
-
+  ngOnInit(): void {}
 }

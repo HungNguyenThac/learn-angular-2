@@ -14,28 +14,42 @@ const routes: Routes = [
       {
         path: '',
         component: DashboardComponent,
-        data: {animation: true},
-        canActivate: [AuthGuard]
+        data: { animation: true },
+        canActivate: [AuthGuard],
       },
       {
         path: 'payday-loan',
-        loadChildren: () => import('./pages/products/payday-loan/payday-loan.module').then(m => m.PaydayLoanModule)
+        loadChildren: () =>
+          import('./pages/products/payday-loan/payday-loan.module').then(
+            (m) => m.PaydayLoanModule
+          ),
       },
       {
         path: 'customer',
-        loadChildren: () => import('./pages/customer/customer.module').then(m => m.CustomerModule)
+        loadChildren: () =>
+          import('./pages/customer/customer.module').then(
+            (m) => m.CustomerModule
+          ),
+      },
+      {
+        path: 'loan',
+        loadChildren: () =>
+          import('./pages/loan/loan.module').then(
+            (m) => m.LoanModule
+          ),
       },
       {
         path: 'auth',
-        loadChildren: () => import('./pages/auth/auth.module').then(m => m.AuthModule),
+        loadChildren: () =>
+          import('./pages/auth/auth.module').then((m) => m.AuthModule),
       },
       {
         path: '**',
         component: NotFoundComponent,
-        data: {animation: true}
-      }
-    ]
-  }
+        data: { animation: true },
+      },
+    ],
+  },
 ];
 
 @NgModule({

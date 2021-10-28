@@ -27,6 +27,7 @@ export class BaseExpandedTableComponent implements OnInit {
   @Input() pageIndex: number;
   @Input() pageSize: number;
   @Input() displayedColumns: string[];
+  @Input() titlePage: string = "Khách hàng mới";
   expandedElement: any;
   selectedFields: object[] = [];
   panelOpenState = false;
