@@ -14,6 +14,7 @@ import { CustomerCheckInfoComponent } from './components/customer-check-info/cus
 import { CustomerTransactionHistoryComponent } from './components/customer-transaction-history/customer-transaction-history.component';
 import { CustomerActivityHistoryComponent } from './components/customer-activity-history/customer-activity-history.component';
 import { CustomerDetailUpdateDialogComponent } from './components/customer-individual-info-update-dialog/customer-detail-update-dialog.component';
+import { DialogCompanyInfoUpdateComponent } from './components/dialog-company-info-update/dialog-company-info-update.component';
 
 @NgModule({
   declarations: [
@@ -27,6 +28,7 @@ import { CustomerDetailUpdateDialogComponent } from './components/customer-indiv
     CustomerTransactionHistoryComponent,
     CustomerActivityHistoryComponent,
     CustomerDetailUpdateDialogComponent,
+    DialogCompanyInfoUpdateComponent,
   ],
   imports: [
     CommonModule,
