@@ -17,7 +17,8 @@ import * as fromActions from '../../core/store';
 import { environment } from '../../../environments/environment';
 import { NotificationService } from '../../core/services/notification.service';
 import { MultiLanguageService } from '../translate/multiLanguageService';
-import * as Sentry from "@sentry/angular";
+import * as Sentry from '@sentry/angular';
+import { ToastrService } from 'ngx-toastr';
 
 const RESPONSE_CODE_401_CHANGE_PASSWORD_REQUIRED = 'change_password_required';
 
@@ -31,7 +32,8 @@ export class ApiHttpInterceptor implements HttpInterceptor {
     private cookieService: CookieService,
     private store: Store<{ accessToken: string }>,
     private notificationService: NotificationService,
-    private multiLanguageService: MultiLanguageService
+    private multiLanguageService: MultiLanguageService,
+    private notifier: ToastrService
   ) {
     this.accessToken$ = store.select(fromSelectors.getTokenState);
     this.accessToken$.subscribe((token) => {
@@ -59,18 +61,14 @@ export class ApiHttpInterceptor implements HttpInterceptor {
         tap(
           (event) => {},
           (error) => {
-            Sentry.captureException(error)
+            Sentry.captureException(error);
             if (error instanceof HttpErrorResponse)
               return this._handleAuthError(error);
 
-            this.notificationService.openErrorModal({
-              title: this.multiLanguageService.instant('common.notification'),
-              content: this.multiLanguageService.instant(
-                'common.something_went_wrong'
-              ),
-              primaryBtnText:
-                this.multiLanguageService.instant('common.confirm'),
-            });
+            this.notifier.error(
+              this.multiLanguageService.instant('common.something_went_wrong')
+            );
+
             return null;
           },
           () => {}
@@ -82,13 +80,15 @@ export class ApiHttpInterceptor implements HttpInterceptor {
   }
 
   private _handleAuthError(err: HttpErrorResponse): Observable<any> | null {
-    this.notificationService.openErrorModal({
-      title: this.multiLanguageService.instant('common.notification'),
-      content: environment.PRODUCTION
-        ? this.multiLanguageService.instant('common.something_went_wrong')
-        : err?.error?.message,
-      primaryBtnText: this.multiLanguageService.instant('common.confirm'),
-    });
+    // this.notificationService.openErrorModal({
+    //   title: this.multiLanguageService.instant('common.notification'),
+    //   content: environment.PRODUCTION
+    //     ? this.multiLanguageService.instant('common.something_went_wrong')
+    //     : err?.error?.message,
+    //   primaryBtnText: this.multiLanguageService.instant('common.confirm'),
+    // });
+
+    this.notifier.error(this.multiLanguageService.instant(err?.error?.message));
 
     switch (err.status) {
       case 401:

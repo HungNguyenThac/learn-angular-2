@@ -72,14 +72,9 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   lineChartPlugins = [];
   lineChartType = 'line';
 
-  displayedColumns: string[] = ['position', 'name', 'weight', 'symbol'];
-  dataSource = new MatTableDataSource(ELEMENT_DATA);
+  allColumns: any[] = [];
+  dataSource = new MatTableDataSource([]);
 
-  fieldsName: Array<string> = [];
-  panelOpenState = false;
-  fieldsControl: FormGroup;
-
-  pages: Array<number>;
   pageSize: number = 5;
   pageIndex: number = 0;
   pageSizeOptions: number[] = [5, 10, 25, 100];
@@ -92,16 +87,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     private titleService: Title,
     private store: Store<fromStore.State>,
     private multiLanguageService: MultiLanguageService
-  ) {
-    this.pages = new Array(Math.round(this.totalItems / this.pageSize));
-    this.fieldsName = this.displayedColumns.slice();
-    const controlsConfig = {};
-    for (let i = 0; i < this.fieldsName.length; i++) {
-      const fieldName = this.fieldsName[i];
-      controlsConfig[fieldName] = true;
-    }
-    this.fieldsControl = formBuilder.group(controlsConfig);
-  }
+  ) {}
   @ViewChild(MatSort) sort: MatSort;
 
   ngAfterViewInit() {
@@ -116,40 +102,5 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     );
     this.store.dispatch(new fromActions.SetOperatorInfo(NAV_ITEM.DASHBOARD));
     this.totalItems = ELEMENT_DATA.length;
-  }
-
-  /** Announce the change in sort state for assistive technology. */
-  announceSortChange(sortState: Sort) {
-    // This example uses English messages. If your application supports
-    // multiple language, you would internationalize these strings.
-    // Furthermore, you can customize the message to add additional
-    // details about the values being sorted.
-    if (sortState.direction) {
-      this._liveAnnouncer.announce(`Sorted ${sortState.direction}ending`);
-    } else {
-      this._liveAnnouncer.announce('Sorting cleared');
-    }
-  }
-
-  setPage(i, event: any) {
-    this.pageIndex = i;
-    event.preventDefault();
-    // this.getAllPermits();
-  }
-
-  updateDisplayColumns() {
-    this.displayedColumns = [];
-    for (let i = 0; i < this.fieldsName.length; i++) {
-      if (this.fieldsControl.controls[this.fieldsName[i]].value) {
-        this.displayedColumns.push(this.fieldsName[i]);
-      }
-    }
-  }
-
-  resetDisplayColumn() {
-    for (let i = 0; i < this.fieldsName.length; i++) {
-      this.fieldsControl.controls[this.fieldsName[i]].setValue(true);
-    }
-    this.displayedColumns = this.fieldsName;
   }
 }

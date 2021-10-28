@@ -1,5 +1,6 @@
-import {Component, Input, OnInit, TemplateRef} from '@angular/core';
-import {MatTableDataSource} from "@angular/material/table";
+import { Component, Input, OnInit, TemplateRef } from '@angular/core';
+import { MatTableDataSource } from '@angular/material/table';
+import { BreadcrumbOptionsModel } from '../../../../public/models/breadcrumb-options.model';
 
 export interface PeriodicElement {
   name: string;
@@ -24,22 +25,31 @@ const ELEMENT_DATA: PeriodicElement[] = [
 @Component({
   selector: 'app-base-management-layout',
   templateUrl: './base-management-layout.component.html',
-  styleUrls: ['./base-management-layout.component.scss']
+  styleUrls: ['./base-management-layout.component.scss'],
 })
 export class BaseManagementLayoutComponent implements OnInit {
   @Input() detailElementTemplate: TemplateRef<any>;
 
-  displayedColumns: string[] = ['position', 'name', 'weight', 'symbol'];
-  dataSource = new MatTableDataSource(ELEMENT_DATA);
-  pages: Array<number>;
-  pageSize: number = 5;
-  pageIndex: number = 0;
-  pageSizeOptions: number[] = [5, 10, 25, 100];
-  totalItems: number = 0;
+  // @Input() allColumns: any[] = ['position', 'name', 'weight', 'symbol'];
+  // @Input() dataSource = new MatTableDataSource(ELEMENT_DATA);
+  @Input() allColumns: any[] = [];
+  @Input() tableTitle: string;
+  @Input() dataSource: MatTableDataSource<any> = new MatTableDataSource([]);
+  @Input() pageSize: number = 5;
+  @Input() pageIndex: number = 0;
+  @Input() pageSizeOptions: number[] = [5, 10, 25, 100];
+  @Input() totalItems: number = 0;
+  @Input() pageLength: number = 0;
+  @Input() breadcrumbOptions: BreadcrumbOptionsModel;
 
-  constructor() { }
+  constructor() {}
 
-  ngOnInit(): void {
+  ngOnInit(): void {}
+
+  clickBtnAdd(event) {
+    console.log(event);
   }
-
+  submitSearchForm(event) {
+    console.log(event);
+  }
 }

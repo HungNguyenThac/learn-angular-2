@@ -158,6 +158,8 @@ table.expanded-table {
     display: flex;
     flex-wrap: wrap;
     column-gap: 12px;
+    max-width: 480px;
+
     .field {
       display: flex;
       flex-grow: 1;

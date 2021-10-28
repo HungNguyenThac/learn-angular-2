@@ -15,6 +15,9 @@ import { BaseExpandedTableComponent } from './base/base-expanded-table/base-expa
 import { BaseBreadcrumbComponent } from './base/base-breadcrumb/base-breadcrumb.component';
 import { PlInlineMessageComponent } from './statutes/pl-inline-message/pl-inline-message.component';
 import { PlStatusLabelComponent } from './statutes/pl-status-label/pl-status-label.component';
+import { DocumentButtonComponent } from './button/document-button/document-button.component';
+import { UploadDocumentAreaComponent } from './upload-area/upload-document-area/upload-document-area.component';
+import { PlStatusElementComponent } from './statutes/pl-status-element/pl-status-element.component';
 
 export const components: any[] = [
   ConfirmationDialog,
@@ -34,6 +37,9 @@ export const components: any[] = [
   BaseFilterFormComponent,
   BaseExpandedTableComponent,
   BaseBreadcrumbComponent,
+  DocumentButtonComponent,
+  UploadDocumentAreaComponent,
+  PlStatusElementComponent,
 ];
 
 export * from './dialogs/confirmation-dialog/confirmation-dialog.component';
@@ -53,3 +59,6 @@ export * from './base/base-expanded-table/base-expanded-table.component';
 export * from './base/base-breadcrumb/base-breadcrumb.component';
 export * from './statutes/pl-inline-message/pl-inline-message.component';
 export * from './statutes/pl-status-label/pl-status-label.component';
+export * from './button/document-button/document-button.component';
+export * from './upload-area/upload-document-area/upload-document-area.component';
+export * from './statutes/pl-status-element/pl-status-element.component';

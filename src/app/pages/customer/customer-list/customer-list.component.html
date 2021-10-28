@@ -1,4 +1,15 @@
-<app-base-management-layout [detailElementTemplate]="detailElementTemplate">
+<app-base-management-layout
+  [detailElementTemplate]="detailElementTemplate"
+  [pageSize]="pageSize"
+  [pageIndex]="pageIndex"
+  [pageSizeOptions]="pageSizeOptions"
+  [allColumns]="allColumns"
+  [totalItems]="totalItems"
+  [tableTitle]="tableTitle"
+  [pageLength]="pageLength"
+  [dataSource]="dataSource"
+  [breadcrumbOptions]="breadcrumbOptions"
+>
 </app-base-management-layout>
 
 <ng-template #detailElementTemplate>

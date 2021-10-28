@@ -1,5 +1,17 @@
 <div class="op-background-container">
-  <app-base-breadcrumb></app-base-breadcrumb>
+  <app-base-breadcrumb
+    [title]="breadcrumbOptions.title"
+    [iconClass]="breadcrumbOptions.iconClass"
+    [iconImgSrc]="breadcrumbOptions.iconImgSrc"
+    [searchPlaceholder]="breadcrumbOptions.searchPlaceholder"
+    [searchFields]="breadcrumbOptions.searchFields"
+    [searchable]="breadcrumbOptions.searchable"
+    [extraActionLabel]="breadcrumbOptions.extraActionLabel"
+    [btnAddText]="breadcrumbOptions.btnAddText"
+    [showBtnAdd]="breadcrumbOptions.showBtnAdd"
+    (submitSearchForm)="submitSearchForm($event)"
+    (clickBtnAdd)="clickBtnAdd($event)"
+  ></app-base-breadcrumb>
 
   <div class="container-fluid">
     <div class="container">
@@ -18,8 +30,11 @@
           <app-base-expanded-table
             [dataSource]="dataSource"
             [pageIndex]="pageIndex"
-            [displayedColumns]="displayedColumns"
+            [pageSize]="pageSize"
+            [allColumns]="allColumns"
             [totalItems]="totalItems"
+            [pageLength]="pageLength"
+            [tableTitle]="tableTitle"
             [pageSizeOptions]="pageSizeOptions"
             [detailElementTemplate]="detailElementTemplate"
           >
