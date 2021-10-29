@@ -62,7 +62,8 @@
     "loading_title": "Thông tin của bạn đang được xử lý",
     "loading_content": "Quá trình sẽ mất khoảng một vài giây, vui lòng không thoát ứng dụng",
     "reset": "Đặt lại",
-    "field": "Trường thông tin"
+    "field": "Trường thông tin",
+    "no_matching_records": "Không có bản ghi nào!"
   },
   "auth": {
     "phone_number": "Số điện thoại",
@@ -168,7 +169,9 @@
       "gender": "Giới tính",
       "gender_male": "Nam",
       "gender_female": "Nữ",
-      "gender_other": "Khác"
+      "gender_other": "Khác",
+      "company": "Công ty",
+      "status": "Trạng thái tài khoản"
     },
     "identity": {
       "front_id": "CMND/CCCD mặt trước",
@@ -220,6 +223,7 @@
       "collateral_img": "Tài sản đảm bảo"
     }
   },
+<<<<<<< HEAD
   "loan_app": {
     "tabs": {
       "loan_info": "Thông tin khoản vay",
@@ -338,6 +342,36 @@
       "update": "Cập nhật",
       "salary_info_confirmation": "Xác minh thông tin lương",
       "received_date": "Ngày lấy thông tin"
+=======
+  "payday_loan": {
+    "status": {
+      "documentation_complete": "Chờ duyệt hồ sơ",
+      "document_awaiting": "Chờ hồ sơ",
+      "initialized": "Đã khởi tạo",
+      "funded": "Chờ ký hợp đồng",
+      "auction": "Chờ đầu tư",
+      "in_repayment": "Trong hạn",
+      "rejected": "Đã từ chối",
+      "withdraw": "Rút hồ sơ",
+      "contract_awaiting": "Chờ Monex ký",
+      "contract_accepted": "Ký hoàn thành",
+      "contract_rejected": "Từ chối hợp đồng",
+      "awaiting_disbursement": "Chờ giải ngân",
+      "disbursed": "Giải ngân",
+      "completed": "Đã tất toán",
+      "unknown_status": "Khoản vay hiện tại",
+      "callback_payment_result": "Khoản vay hiện tại"
+    },
+    "repayment_status": {
+      "overdue": "Quá hạn"
+    },
+    "pl_ui_status": {
+      "not_complete_ekyc_yet": "Chưa EKYC",
+      "not_complete_fill_ekyc_yet": "Chưa xác thực thông tin",
+      "not_accepting_term_yet": "Chưa ký thư chấp thuận",
+      "not_complete_cde_yet": "Chưa bổ sung thông tin",
+      "completed_cde": "Đã bổ sung thông tin"
+>>>>>>> 49c5d4b6fdeba3f35953172f03aed28e79e2a90d
     }
   },
   "not_found": {

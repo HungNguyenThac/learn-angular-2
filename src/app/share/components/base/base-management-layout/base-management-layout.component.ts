@@ -1,5 +1,6 @@
-import {Component, Input, OnInit, TemplateRef} from '@angular/core';
-import {MatTableDataSource} from "@angular/material/table";
+import {Component, EventEmitter, Input, OnInit, Output, TemplateRef} from '@angular/core';
+import { MatTableDataSource } from '@angular/material/table';
+import { BreadcrumbOptionsModel } from '../../../../public/models/breadcrumb-options.model';
 
 export interface PeriodicElement {
   name: string;
@@ -30,15 +31,39 @@ export class BaseManagementLayoutComponent implements OnInit {
   @Input() detailElementTemplate: TemplateRef<any>;
   @Input() titlePage: string = 'Khách hàng mới';
 
-  displayedColumns: string[] = ['position', 'name', 'weight', 'symbol'];
-  dataSource = new MatTableDataSource(ELEMENT_DATA);
-  pages: Array<number>;
-  pageSize: number = 5;
-  pageIndex: number = 0;
-  pageSizeOptions: number[] = [5, 10, 25, 100];
-  totalItems: number = 0;
+  // @Input() allColumns: any[] = ['position', 'name', 'weight', 'symbol'];
+  // @Input() dataSource = new MatTableDataSource(ELEMENT_DATA);
+  @Input() allColumns: any[] = [];
+  @Input() tableTitle: string;
+  @Input() dataSource: MatTableDataSource<any> = new MatTableDataSource([]);
+  @Input() pageSize: number = 5;
+  @Input() pageIndex: number = 0;
+  @Input() pageSizeOptions: number[] = [5, 10, 25, 100];
+  @Input() totalItems: number = 0;
+  @Input() pageLength: number = 0;
+  @Input() orderBy: string;
+  @Input() descending: boolean;
+  @Input() breadcrumbOptions: BreadcrumbOptionsModel;
+
+  @Output() onPageChanged = new EventEmitter<any>();
+  @Output() onSortChange = new EventEmitter<any>();
 
   constructor() {}
 
   ngOnInit(): void {}
+
+  clickBtnAdd(event) {
+    console.log(event);
+  }
+  submitSearchForm(event) {
+    console.log(event);
+  }
+
+  triggerPageChange(event) {
+    this.onPageChanged.emit(event)
+  }
+
+  triggerSortChange(event) {
+    this.onSortChange.emit(event)
+  }
 }

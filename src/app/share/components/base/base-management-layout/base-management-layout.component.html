@@ -1,5 +1,17 @@
 <div class="op-background-container">
-  <app-base-breadcrumb></app-base-breadcrumb>
+  <app-base-breadcrumb
+    [title]="breadcrumbOptions.title"
+    [iconClass]="breadcrumbOptions.iconClass"
+    [iconImgSrc]="breadcrumbOptions.iconImgSrc"
+    [searchPlaceholder]="breadcrumbOptions.searchPlaceholder"
+    [searchFields]="breadcrumbOptions.searchFields"
+    [searchable]="breadcrumbOptions.searchable"
+    [extraActionLabel]="breadcrumbOptions.extraActionLabel"
+    [btnAddText]="breadcrumbOptions.btnAddText"
+    [showBtnAdd]="breadcrumbOptions.showBtnAdd"
+    (submitSearchForm)="submitSearchForm($event)"
+    (clickBtnAdd)="clickBtnAdd($event)"
+  ></app-base-breadcrumb>
 
   <div class="container-fluid">
     <div class="container">
@@ -19,10 +31,17 @@
             [titlePage]="titlePage"
             [dataSource]="dataSource"
             [pageIndex]="pageIndex"
-            [displayedColumns]="displayedColumns"
+            [pageSize]="pageSize"
+            [allColumns]="allColumns"
             [totalItems]="totalItems"
+            [pageLength]="pageLength"
+            [tableTitle]="tableTitle"
+            [orderBy]="orderBy"
+            [descending]="descending"
             [pageSizeOptions]="pageSizeOptions"
             [detailElementTemplate]="detailElementTemplate"
+            (triggerPageChange)="triggerPageChange($event)"
+            (triggerSortChange)="triggerSortChange($event)"
           >
           </app-base-expanded-table>
         </div>

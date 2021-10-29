@@ -16,6 +16,10 @@ import { MomentModule } from 'ngx-moment';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { JwtModule } from '@auth0/angular-jwt';
 
+//Toastr
+import { ToastrModule } from 'ngx-toastr';
+import { GlobalConfig } from 'ngx-toastr/toastr/toastr-config';
+
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(
     http,
@@ -23,6 +27,12 @@ export function HttpLoaderFactory(http: HttpClient) {
     '.json?cacheBuster=' + new Date().toISOString().replace(/\.|:|-/g, '')
   );
 }
+
+const customNotifierOptions: Partial<GlobalConfig> = {
+  positionClass: 'toast-bottom-right',
+  maxOpened: 3, // max toasts opened
+  autoDismiss: true, // dismiss current toast when max is reached
+};
 
 export function tokenGetter() {
   let coreState = JSON.parse(localStorage.getItem('core'));
@@ -34,6 +44,7 @@ export function tokenGetter() {
     CommonModule,
     CoreStoreModule,
     BrowserAnimationsModule,
+    ToastrModule.forRoot(customNotifierOptions),
     SharedModule,
     HttpClientModule,
     JwtModule.forRoot({
@@ -49,7 +60,7 @@ export function tokenGetter() {
         deps: [HttpClient],
       },
     }),
-    MomentModule
+    MomentModule,
   ],
   providers: [_providers],
   declarations: [],

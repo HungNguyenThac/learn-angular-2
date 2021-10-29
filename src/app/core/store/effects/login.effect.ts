@@ -8,13 +8,10 @@ import * as fromActions from '../actions';
 import { LoginForm } from '../../../public/models';
 import {
   ApiResponseGetTokenResponse,
-  ApiResponseLoginResponse,
   ServiceCredentialControllerService,
-  SignOnControllerService,
 } from '../../../../../open-api-modules/identity-api-docs';
 import * as Sentry from '@sentry/angular';
 import {
-  ApiResponseCustomerInfoResponse,
   CustomerInfoResponse,
   InfoControllerService,
 } from 'open-api-modules/customer-api-docs';
@@ -29,6 +26,7 @@ import { Observable, Subscription } from 'rxjs';
 import { ERROR_CODE_KEY } from '../../common/enum/payday-loan';
 import { NotificationService } from '../../services/notification.service';
 import { MultiLanguageService } from '../../../share/translate/multiLanguageService';
+import { ToastrService } from 'ngx-toastr';
 
 @Injectable()
 export class LoginEffects {
@@ -53,7 +51,8 @@ export class LoginEffects {
     private applicationControllerService: ApplicationControllerService,
     private ratingControllerService: RatingControllerService,
     private notificationService: NotificationService,
-    private multiLanguageService: MultiLanguageService
+    private multiLanguageService: MultiLanguageService,
+    private notifier: ToastrService
   ) {
     this.customerId$ = store$.select(fromStore.getCustomerIdState);
     this.subManager.add(
@@ -83,7 +82,6 @@ export class LoginEffects {
       ),
     { dispatch: false }
   );
-
 
   loginSingin$ = createEffect(() =>
     this.actions$.pipe(
@@ -118,9 +116,9 @@ export class LoginEffects {
         map((action: fromActions.SigninSuccess) => action.payload),
         tap(() => {
           Sentry.setUser({
-            id: this.customerId
+            id: this.customerId,
           });
-          this.router.navigateByUrl("/");
+          this.router.navigateByUrl('/');
         })
       ),
     { dispatch: false }
@@ -132,15 +130,20 @@ export class LoginEffects {
         ofType(fromActions.LOGIN_SIGNIN_ERROR),
         map((action: fromActions.SigninError) => action.payload),
         tap((errorCode: any) => {
-          this.notificationService.openErrorModal({
-            title: this.multiLanguageService.instant('common.notification'),
-            content: errorCode
+          this.notifier.error(
+            errorCode
               ? this.multiLanguageService.instant(ERROR_CODE_KEY[errorCode])
-              : this.multiLanguageService.instant(
-                  'common.something_went_wrong'
-                ),
-            primaryBtnText: this.multiLanguageService.instant('common.confirm'),
-          });
+              : this.multiLanguageService.instant('common.something_went_wrong')
+          );
+          // this.notificationService.openErrorModal({
+          //   title: this.multiLanguageService.instant('common.notification'),
+          //   content: errorCode
+          //     ? this.multiLanguageService.instant(ERROR_CODE_KEY[errorCode])
+          //     : this.multiLanguageService.instant(
+          //         'common.something_went_wrong'
+          //       ),
+          //   primaryBtnText: this.multiLanguageService.instant('common.confirm'),
+          // });
         })
       ),
     { dispatch: false }

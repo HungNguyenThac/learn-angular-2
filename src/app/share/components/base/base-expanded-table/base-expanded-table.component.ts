@@ -1,13 +1,19 @@
 import {
+  ChangeDetectorRef,
   Component,
+  EventEmitter,
   Input,
   OnInit,
+  Output,
   TemplateRef,
   ViewChild,
 } from '@angular/core';
 import { detailExpandAnimation } from '../../../../core/common/animations/detail-expand.animation';
 import { Sort } from '@angular/material/sort';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
+import { DisplayedFieldsModel } from '../../../../public/models/displayed-fields.model';
+import { MatTableDataSource } from '@angular/material/table';
+import { PageEvent } from '@angular/material/paginator/public-api';
 
 @Component({
   selector: 'app-base-expanded-table',
@@ -20,26 +26,51 @@ import { LiveAnnouncer } from '@angular/cdk/a11y';
 })
 export class BaseExpandedTableComponent implements OnInit {
   @Input() detailElementTemplate: TemplateRef<any>;
-
-  @Input() dataSource: any;
+  @Input() tableTitle: string;
+  @Input() dataSource: MatTableDataSource<any>;
   @Input() pageSizeOptions: number[];
   @Input() totalItems: number;
+  @Input() pageLength: number;
   @Input() pageIndex: number;
   @Input() pageSize: number;
-  @Input() displayedColumns: string[];
-  @Input() titlePage: string = "Khách hàng mới";
+  @Input() orderBy: string;
+  @Input() descending: boolean;
+  @Input() allColumns: any[];
+
+  @Output() triggerPageChange = new EventEmitter<any>();
+  @Output() triggerSortChange = new EventEmitter<any>();
+
   expandedElement: any;
-  selectedFields: object[] = [];
+  selectedFields: DisplayedFieldsModel[] = [];
   panelOpenState = false;
 
-  constructor(private _liveAnnouncer: LiveAnnouncer) {}
+  get displayedColumns() {
+    return (
+      this.selectedFields.filter((element) => element.showed === true) || []
+    );
+  }
+
+  get displayedColumnKeys() {
+    return this.displayedColumns.map((item, index) => {
+      return item.key;
+    });
+  }
+
+  constructor(
+    private _liveAnnouncer: LiveAnnouncer,
+    private changeDetectorRef: ChangeDetectorRef
+  ) {}
 
   ngOnInit(): void {
-    for (let i = 0; i < this.displayedColumns.length; i++) {
-      this.selectedFields.push({});
-      this.selectedFields[i]['fieldName'] = this.displayedColumns[i];
-      this.selectedFields[i]['fieldState'] = true;
-    }
+    this.selectedFields = this.allColumns.map((item, index) => {
+      return {
+        key: item.key,
+        title: item.title,
+        type: item.type,
+        format: item.format,
+        showed: true,
+      };
+    });
   }
 
   /** Announce the change in sort state for assistive technology. */
@@ -53,21 +84,16 @@ export class BaseExpandedTableComponent implements OnInit {
     } else {
       this._liveAnnouncer.announce('Sorting cleared');
     }
+
+    this.triggerSortChange.emit(sortState);
   }
 
   setPage(i, event: any) {
     this.pageIndex = i;
     event.preventDefault();
-    // this.getAllPermits();
   }
 
-  updateDisplayColumns(selectedField) {
-    selectedField.fieldState = !selectedField.fieldState;
-    this.displayedColumns = [];
-    for (let i = 0; i < this.selectedFields.length; i++) {
-      if (this.selectedFields[i]['fieldState']) {
-        this.displayedColumns.push(this.selectedFields[i]['fieldName']);
-      }
-    }
+  public onPageChange(event: PageEvent) {
+    this.triggerPageChange.emit(event);
   }
 }
