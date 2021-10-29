@@ -15,21 +15,30 @@
               <article class="col-12">
                 <app-upload-document-area
                   [title]="'customer.document_info.front_id' | translate"
-                  [imgSrc]=""
+                  [imgSrc]="frontIdSrc"
+                  (onChangeDocument)="
+                    onChangeDocument($event, customerInfo?.frontId)
+                  "
                 ></app-upload-document-area>
               </article>
               <!-- Back ID  -->
               <article class="col-12">
                 <app-upload-document-area
                   [title]="'customer.document_info.back_id' | translate"
-                  [imgSrc]=""
+                  [imgSrc]="backIdSrc"
+                  (onChangeDocument)="
+                    onChangeDocument($event, customerInfo?.backId)
+                  "
                 ></app-upload-document-area>
               </article>
               <!-- Selfie  -->
               <article class="col-12">
                 <app-upload-document-area
                   [title]="'customer.document_info.selfie' | translate"
-                  [imgSrc]=""
+                  [imgSrc]="selfieSrc"
+                  (onChangeDocument)="
+                    onChangeDocument($event, customerInfo?.selfie)
+                  "
                 ></app-upload-document-area>
               </article>
             </div>
@@ -53,21 +62,30 @@
               <article class="col-12">
                 <app-upload-document-area
                   [title]="'customer.document_info.salary_sheet_1' | translate"
-                  [imgSrc]=""
+                  [imgSrc]="salary1Src"
+                  (onChangeDocument)="
+                    onChangeDocument($event, customerInfo?.salaryDocument1)
+                  "
                 ></app-upload-document-area>
               </article>
               <!-- Salary 2  -->
               <article class="col-12">
                 <app-upload-document-area
                   [title]="'customer.document_info.salary_sheet_2' | translate"
-                  [imgSrc]=""
+                  [imgSrc]="salary2Src"
+                  (onChangeDocument)="
+                    onChangeDocument($event, customerInfo?.salaryDocument2)
+                  "
                 ></app-upload-document-area>
               </article>
               <!-- Salary 3  -->
               <article class="col-12">
                 <app-upload-document-area
                   [title]="'customer.document_info.salary_sheet_3' | translate"
-                  [imgSrc]=""
+                  [imgSrc]="salary3Src"
+                  (onChangeDocument)="
+                    onChangeDocument($event, customerInfo?.salaryDocument3)
+                  "
                 ></app-upload-document-area>
               </article>
             </div>
@@ -90,7 +108,10 @@
               <article class="col-12">
                 <app-upload-document-area
                   [title]="'customer.document_info.collateral_img' | translate"
-                  [imgSrc]=""
+                  [imgSrc]="collateralSrc"
+                  (onChangeDocument)="
+                    onChangeDocument($event, customerInfo?.collateralDocument)
+                  "
                 ></app-upload-document-area>
               </article>
             </div>
@@ -110,12 +131,14 @@
           </mat-expansion-panel-header>
           <div class="expansion-panel-content">
             <div class="row">
-
               <!-- Front ID 2 -->
               <article class="col-12">
                 <app-upload-document-area
                   [title]="'customer.document_info.front_id_2' | translate"
-                  [imgSrc]=""
+                  [imgSrc]="frontId2Src"
+                  (onChangeDocument)="
+                    onChangeDocument($event, customerInfo?.frontIdTwo)
+                  "
                 ></app-upload-document-area>
               </article>
               <!-- Back ID 2 -->
@@ -123,7 +146,10 @@
               <article class="col-12">
                 <app-upload-document-area
                   [title]="'customer.document_info.back_id_2' | translate"
-                  [imgSrc]=""
+                  [imgSrc]="backId2Src"
+                  (onChangeDocument)="
+                    onChangeDocument($event, customerInfo?.backIdTwo)
+                  "
                 ></app-upload-document-area>
               </article>
             </div>

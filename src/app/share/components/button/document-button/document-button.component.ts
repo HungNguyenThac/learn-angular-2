@@ -26,7 +26,7 @@ export class DocumentButtonComponent implements OnInit {
       case DOCUMENT_BTN_TYPE.UPLOAD:
         return {
           title: this.multiLanguageService.instant(
-            'customer.document_info.update'
+            'customer.document_info.upload'
           ),
           containerClass: 'op-img-upload-btn',
           titleClass: 'op-img-upload-btn-title',
@@ -35,7 +35,7 @@ export class DocumentButtonComponent implements OnInit {
       case DOCUMENT_BTN_TYPE.UPDATE:
         return {
           title: this.multiLanguageService.instant(
-            'customer.document_info.upload'
+            'customer.document_info.update'
           ),
           containerClass: 'op-img-upload-btn',
           titleClass: 'op-img-upload-btn-title',

@@ -281,7 +281,7 @@ export class CustomerListComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     if (this.subManager !== null) {
-      this.subManager.unsubscribe();
+      // this.subManager.unsubscribe();
     }
   }
 }

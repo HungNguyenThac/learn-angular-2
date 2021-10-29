@@ -1,10 +1,11 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {DOCUMENT_BTN_TYPE} from "../../../../core/common/enum/operator";
+import { EventEmitter, Output } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { DOCUMENT_BTN_TYPE } from '../../../../core/common/enum/operator';
 
 @Component({
   selector: 'app-upload-document-area',
   templateUrl: './upload-document-area.component.html',
-  styleUrls: ['./upload-document-area.component.scss']
+  styleUrls: ['./upload-document-area.component.scss'],
 })
 export class UploadDocumentAreaComponent implements OnInit {
   @Input() title: string;
@@ -13,15 +14,15 @@ export class UploadDocumentAreaComponent implements OnInit {
   @Input() hiddenDownloadBtn: boolean = false;
   @Input() hiddenDeleteBtn: boolean = false;
 
+  @Output() onChangeDocument = new EventEmitter<DOCUMENT_BTN_TYPE>();
+
   documentBtnTypes = DOCUMENT_BTN_TYPE;
 
-  constructor() { }
+  constructor() {}
 
-  ngOnInit(): void {
+  ngOnInit(): void {}
+
+  changeDocument(documentType: DOCUMENT_BTN_TYPE) {
+    this.onChangeDocument.emit(documentType);
   }
-
-  changeDocument(documentType) {
-    console.log("changeDocument", documentType)
-  }
-
 }
