@@ -80,6 +80,7 @@ export enum ERROR_CODE {
   INTERNAL_SERVER_ERROR = 'INTERNAL_SERVER_ERROR',
   CORE_ERROR = 'CORE_ERROR',
   VERIFICATION_FAILED = 'VERIFICATION_FAILED',
+  WRONG_CREDENTIAL = 'WRONG_CREDENTIAL',
 }
 
 export enum ERROR_CODE_KEY {
@@ -104,6 +105,7 @@ export enum ERROR_CODE_KEY {
   INTERNAL_SERVER_ERROR = 'error_code.internal_server_error',
   CORE_ERROR = 'error_code.core_error',
   VERIFICATION_FAILED = 'error_code.verification_failed',
+  WRONG_CREDENTIAL = 'error_code.wrong_credential',
 }
 
 export enum SIGN_STATUS {

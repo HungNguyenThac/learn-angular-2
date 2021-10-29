@@ -111,6 +111,7 @@ export class CustomerListComponent implements OnInit, OnDestroy {
   pageSizeOptions: number[] = [5, 10, 25, 100];
   totalItems: number = 0;
   filterForm: FormGroup;
+  expandedElementId: string;
   private readonly routeAllState$: Observable<Params>;
 
   constructor(
@@ -243,6 +244,10 @@ export class CustomerListComponent implements OnInit, OnDestroy {
     this._onFilterChange();
   }
 
+  onExpandElementChange(element: any) {
+    this.expandedElementId = element.id
+  }
+
   private _onFilterChange() {
     const data = this.filterForm.getRawValue();
     //convert time to ISO and set end time
@@ -275,8 +280,8 @@ export class CustomerListComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    // if (this.subManager !== null) {
-    // this.subManager.unsubscribe();
-    // }
+    if (this.subManager !== null) {
+      this.subManager.unsubscribe();
+    }
   }
 }

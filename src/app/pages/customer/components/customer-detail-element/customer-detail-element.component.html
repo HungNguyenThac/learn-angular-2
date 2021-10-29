@@ -2,25 +2,37 @@
   <!--  Individual Info-->
   <mat-tab [label]="'customer.tabs.individual_info' | translate">
     <ng-template matTabContent>
-      <app-customer-individual-info></app-customer-individual-info> </ng-template
+      <app-customer-individual-info
+        [customerId]="customerId"
+        [customerInfo]="userInfo"
+      ></app-customer-individual-info> </ng-template
   ></mat-tab>
 
   <!--  EKYC Info-->
   <mat-tab [label]="'customer.tabs.ekyc_info' | translate">
     <ng-template matTabContent>
-      <app-customer-ekyc-info></app-customer-ekyc-info> </ng-template
+      <app-customer-ekyc-info
+        [customerId]="customerId"
+        [customerInfo]="userInfo"
+      ></app-customer-ekyc-info> </ng-template
   ></mat-tab>
 
   <!--  Company Info-->
   <mat-tab [label]="'customer.tabs.company_info' | translate">
     <ng-template matTabContent>
-      <app-customer-company-info></app-customer-company-info> </ng-template
+      <app-customer-company-info
+        [customerId]="customerId"
+        [customerInfo]="userInfo"
+      ></app-customer-company-info> </ng-template
   ></mat-tab>
 
   <!--  Document Info-->
   <mat-tab [label]="'customer.tabs.document_info' | translate">
     <ng-template matTabContent>
-      <app-customer-document-info></app-customer-document-info> </ng-template
+      <app-customer-document-info
+        [customerId]="customerId"
+        [customerInfo]="userInfo"
+      ></app-customer-document-info> </ng-template
   ></mat-tab>
 
   <!--  Check Info-->

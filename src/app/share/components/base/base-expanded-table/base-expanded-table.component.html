@@ -133,9 +133,7 @@
           *matRowDef="let element; columns: displayedColumnKeys"
           class="op-element-row gap-2"
           [class.op-expanded-row]="expandedElement === element"
-          (click)="
-            expandedElement = expandedElement === element ? null : element
-          "
+          (click)="expandElement(element)"
         ></tr>
         <tr
           mat-row

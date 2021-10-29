@@ -18,6 +18,7 @@ import { PlStatusLabelComponent } from './statutes/pl-status-label/pl-status-lab
 import { DocumentButtonComponent } from './button/document-button/document-button.component';
 import { UploadDocumentAreaComponent } from './upload-area/upload-document-area/upload-document-area.component';
 import { PlStatusElementComponent } from './statutes/pl-status-element/pl-status-element.component';
+import { FormatDataComponent } from './statutes/format-data/format-data.component';
 
 export const components: any[] = [
   ConfirmationDialog,
@@ -40,6 +41,7 @@ export const components: any[] = [
   DocumentButtonComponent,
   UploadDocumentAreaComponent,
   PlStatusElementComponent,
+  FormatDataComponent,
 ];
 
 export * from './dialogs/confirmation-dialog/confirmation-dialog.component';
@@ -62,3 +64,4 @@ export * from './statutes/pl-status-label/pl-status-label.component';
 export * from './button/document-button/document-button.component';
 export * from './upload-area/upload-document-area/upload-document-area.component';
 export * from './statutes/pl-status-element/pl-status-element.component';
+export * from './statutes/format-data/format-data.component';
