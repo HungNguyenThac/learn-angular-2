@@ -31,6 +31,7 @@ export enum DATA_CELL_TYPE {
   TEXT = 'TEXT',
   DATETIME = 'DATETIME',
   STATUS = 'STATUS',
+  CURRENCY = 'CURRENCY',
 }
 
 export enum DATA_STATUS_TYPE {

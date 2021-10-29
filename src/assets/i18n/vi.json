@@ -376,6 +376,35 @@
       "completed_cde": "Đã bổ sung thông tin"
     }
   },
+  "error_code": {
+    "account_not_exist": "Số điện thoại hoặc mật khẩu không chính xác!",
+    "account_not_existed": "Số điện thoại không chính xác!",
+    "account_existed": "Số điện thoại đã tồn tại trên hệ thống",
+    "email_already_exists": "Email đã tồn tại, vui lòng thử email khác",
+    "miss_param": "Thiếu tham số, vui lòng kiểm tra dữ liệu đầu vào",
+    "data_error": "Đã có lỗi xảy ra, vui lòng kiểm tra dữ liệu đầu vào",
+    "ekyc_failed": "Định danh điện tử thất bại, vui lòng thử lại",
+    "wrong_password": "Số điện thoại hoặc mật khẩu không chính xác!",
+    "otp_expire_time": "Mã OTP đã hết hạn, vui lòng lấy lại OTP",
+    "otp_invalid": "Mã OTP không chính xác, vui lòng thử lại",
+    "otp_confirm_maximum": "Đã quá số lần cho phép xác thực OTP, bạn bị tạm khóa chức năng. Vui lòng thử lại sau",
+    "session_sign_already_exist": "Phiên ký đã tồn tại. Vui lòng thử lại sau",
+    "lock_create_new_session": "Bạn tạm thời bị khóa chức năng do xác thực thất bại quá nhiều lần.",
+    "do_not_exist_virtual_account": "Bạn chưa có tài khoản thanh toán. Vui lòng liên hệ tổng đài 1900 234 583 để được hỗ trợ",
+    "not_current_loan_repayment_error": "Bạn chưa có lịch sử thanh toán cho khoản vay hiện tại",
+    "missing_anual_income": "Thiếu thông tin lương",
+    "company_not_exist": "Công ty không tồn tại",
+    "approval_letter_not_exist": "Thư chấp thuận không tồn tại",
+    "do_not_active_loan_error": "Không tồn tại khoản vay nào",
+    "not_found_session": "Không tồn tại phiên ký",
+    "internal_server_error": "Có lỗi xảy ra, vui lòng thử lại sau",
+    "core_error": "Có lỗi xảy ra, vui lòng thử lại sau",
+    "verification_failed": "Mã OTP không chính xác, vui lòng thử lại",
+    "onsign_error": "Lỗi không xác định, vui lòng thử lại sau",
+    "sent_otp_error": "Có lỗi xảy ra. Vui lòng chọn phương thức nhận OTP khác và thử lại.",
+    "invalid_loan_date_error": "Bạn không tạo khoản vay vào thời điểm này. Vui lòng tạo khoản vay sau ngày trả lương.",
+    "wrong_credential": "Tài khoản hoặc mật khẩu không chính xác. Vui lòng thử lại"
+  },
   "not_found": {
     "back_to_login": "Quay lại trang chủ",
     "have_error": "Có lỗi xảy ra"

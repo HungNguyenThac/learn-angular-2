@@ -52,7 +52,6 @@ export class ApiHttpInterceptor implements HttpInterceptor {
     if (!request.url.includes('/identity')) {
       headers['Authorization'] = `Bearer ${this.authorization}`;
     }
-
     // clone the request
     const clone = request.clone({ setHeaders: headers });
     // check domain
@@ -80,15 +79,7 @@ export class ApiHttpInterceptor implements HttpInterceptor {
   }
 
   private _handleAuthError(err: HttpErrorResponse): Observable<any> | null {
-    // this.notificationService.openErrorModal({
-    //   title: this.multiLanguageService.instant('common.notification'),
-    //   content: environment.PRODUCTION
-    //     ? this.multiLanguageService.instant('common.something_went_wrong')
-    //     : err?.error?.message,
-    //   primaryBtnText: this.multiLanguageService.instant('common.confirm'),
-    // });
-
-    this.notifier.error(this.multiLanguageService.instant(err?.error?.message));
+    this.notifier.error(err?.error?.message);
 
     switch (err.status) {
       case 401:

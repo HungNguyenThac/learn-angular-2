@@ -47,6 +47,7 @@ export class BaseManagementLayoutComponent implements OnInit {
 
   @Output() onPageChanged = new EventEmitter<any>();
   @Output() onSortChange = new EventEmitter<any>();
+  @Output() onExpandElementChange = new EventEmitter<any>();
 
   constructor() {}
 
@@ -65,5 +66,9 @@ export class BaseManagementLayoutComponent implements OnInit {
 
   triggerSortChange(event) {
     this.onSortChange.emit(event)
+  }
+
+  triggerExpandElementChange(event) {
+    this.onExpandElementChange.emit(event)
   }
 }

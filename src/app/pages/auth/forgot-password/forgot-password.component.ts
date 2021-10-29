@@ -108,7 +108,7 @@ export class ForgotPasswordComponent implements OnInit {
     );
     if (ERROR_CODE.ACCOUNT_NOT_EXIST) {
       content = this.multiLanguageService.instant(
-        'payday_loan.error_code.account_not_existed'
+        'error_code.account_not_existed'
       );
     }
 
