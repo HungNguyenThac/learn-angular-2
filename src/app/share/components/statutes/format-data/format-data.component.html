@@ -1,0 +1,11 @@
+<span *ngIf="type === 'DATETIME'">
+  {{ value | date: format }}
+</span>
+
+<span *ngIf="type === 'CURRENCY'">
+  {{ value | formatPrice: null }}
+</span>
+
+<span *ngIf="!type || type === 'TEXT'">
+  {{ value || "N/A" }}
+</span>

@@ -135,15 +135,6 @@ export class LoginEffects {
               ? this.multiLanguageService.instant(ERROR_CODE_KEY[errorCode])
               : this.multiLanguageService.instant('common.something_went_wrong')
           );
-          // this.notificationService.openErrorModal({
-          //   title: this.multiLanguageService.instant('common.notification'),
-          //   content: errorCode
-          //     ? this.multiLanguageService.instant(ERROR_CODE_KEY[errorCode])
-          //     : this.multiLanguageService.instant(
-          //         'common.something_went_wrong'
-          //       ),
-          //   primaryBtnText: this.multiLanguageService.instant('common.confirm'),
-          // });
         })
       ),
     { dispatch: false }

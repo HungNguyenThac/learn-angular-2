@@ -11,10 +11,19 @@
               <section class="ekyc-img-container d-inline-block">
                 <article class="op-customer-ekyc-box">
                   <img
+                    *ngIf="frontIdSrc; else hasNotFrontId"
                     class="op-customer-ekyc-img"
-                    src="assets/img/payday-loan/avatar-default.png"
+                    [src]="frontIdSrc"
                     alt=""
                   />
+
+                  <ng-template #hasNotFrontId>
+                    <img
+                      class="op-customer-ekyc-img"
+                      src="assets/img/payday-loan/avatar-default.png"
+                      alt=""
+                    />
+                  </ng-template>
 
                   <div class="op-customer-ekyc-img-zoom">
                     <span class="sprite-group-5-Zoom"></span>
@@ -28,6 +37,7 @@
                   </div>
                   <div
                     class="op-img-download-btn gap-1 d-flex p-1"
+                    (click)="downloadDocumentByPath(customerInfo?.frontId)"
                   >
                     <span class="sprite-group-5-download-green"></span>
                     <span class="op-img-download-btn-title">{{
@@ -43,10 +53,19 @@
               <section class="ekyc-img-container d-inline-block">
                 <article class="op-customer-ekyc-box">
                   <img
+                    *ngIf="backIdSrc; else hasNotBackId"
                     class="op-customer-ekyc-img"
-                    src="assets/img/payday-loan/avatar-default.png"
+                    [src]="backIdSrc"
                     alt=""
                   />
+
+                  <ng-template #hasNotBackId>
+                    <img
+                      class="op-customer-ekyc-img"
+                      src="assets/img/payday-loan/avatar-default.png"
+                      alt=""
+                    />
+                  </ng-template>
 
                   <div class="op-customer-ekyc-img-zoom">
                     <span class="sprite-group-5-Zoom"></span>
@@ -60,6 +79,7 @@
                   </div>
                   <div
                     class="op-img-download-btn gap-1 d-flex p-1"
+                    (click)="downloadDocumentByPath(customerInfo?.backId)"
                   >
                     <span class="sprite-group-5-download-green"></span>
                     <span class="op-img-download-btn-title">{{
@@ -83,7 +103,11 @@
                 {{ rightEkycInfo.title }}
               </p>
               <p class="pl-list-item-content">
-                {{ rightEkycInfo.value }}
+                <app-format-data
+                  [type]="rightEkycInfo?.type"
+                  [format]="rightEkycInfo?.format"
+                  [value]="rightEkycInfo?.value"
+                ></app-format-data>
               </p>
             </li>
           </ul>

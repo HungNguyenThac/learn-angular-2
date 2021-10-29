@@ -14,7 +14,11 @@
                 {{ leftCompanyInfo.title }}
               </p>
               <p class="pl-list-item-content">
-                {{ leftCompanyInfo.value }}
+                <app-format-data
+                  [type]="leftCompanyInfo?.type"
+                  [format]="leftCompanyInfo?.format"
+                  [value]="leftCompanyInfo?.value"
+                ></app-format-data>
               </p>
             </li>
           </ul>
@@ -31,7 +35,11 @@
                 {{ rightCompanyInfo.title }}
               </p>
               <p class="pl-list-item-content">
-                {{ rightCompanyInfo.value }}
+                <app-format-data
+                  [type]="rightCompanyInfo?.type"
+                  [format]="rightCompanyInfo?.format"
+                  [value]="rightCompanyInfo?.value"
+                ></app-format-data>
               </p>
             </li>
           </ul>

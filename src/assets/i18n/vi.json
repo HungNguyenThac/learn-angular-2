@@ -279,7 +279,8 @@
     "verification_failed": "Mã OTP không chính xác, vui lòng thử lại",
     "onsign_error": "Lỗi không xác định, vui lòng thử lại sau",
     "sent_otp_error": "Có lỗi xảy ra. Vui lòng chọn phương thức nhận OTP khác và thử lại.",
-    "invalid_loan_date_error": "Bạn không tạo khoản vay vào thời điểm này. Vui lòng tạo khoản vay sau ngày trả lương."
+    "invalid_loan_date_error": "Bạn không tạo khoản vay vào thời điểm này. Vui lòng tạo khoản vay sau ngày trả lương.",
+    "wrong_credential": "Tài khoản hoặc mật khẩu không chính xác. Vui lòng thử lại"
   },
   "not_found": {
     "back_to_login": "Quay lại trang chủ",

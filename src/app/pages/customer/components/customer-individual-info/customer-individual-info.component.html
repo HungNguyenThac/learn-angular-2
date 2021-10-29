@@ -5,10 +5,14 @@
       <div class="d-flex gap-2">
         <div class="op-customer-avatar">
           <img
+            *ngIf="!selfieSrc; else hasSelfieImg"
             class="op-customer-avatar-img"
             src="assets/img/payday-loan/avatar-default.png"
             alt=""
           />
+          <ng-template #hasSelfieImg>
+            <img class="op-customer-avatar-img" [src]="selfieSrc" alt="" />
+          </ng-template>
 
           <div class="op-customer-avatar-img-zoom">
             <span class="sprite-group-5-Zoom"></span>
@@ -16,7 +20,7 @@
         </div>
 
         <div class="op-customer-name">
-          <p class="op-customer-name-content">{{ customerInfo.firstName }}</p>
+          <p class="op-customer-name-content">{{ customerInfo?.firstName }}</p>
           <p class="op-customer-name-title">
             {{ "customer.individual_info.avatar" | translate }}
           </p>
@@ -46,7 +50,11 @@
                 {{ leftIndividualInfo.title }}
               </p>
               <p class="pl-list-item-content">
-                {{ leftIndividualInfo.value }}
+                <app-format-data
+                  [type]="leftIndividualInfo?.type"
+                  [format]="leftIndividualInfo?.format"
+                  [value]="leftIndividualInfo?.value"
+                ></app-format-data>
               </p>
             </li>
           </ul>
@@ -63,7 +71,11 @@
                 {{ rightIndividualInfo.title }}
               </p>
               <p class="pl-list-item-content">
-                {{ rightIndividualInfo.value }}
+                <app-format-data
+                  [type]="rightIndividualInfo?.type"
+                  [format]="rightIndividualInfo?.format"
+                  [value]="rightIndividualInfo?.value"
+                ></app-format-data>
               </p>
             </li>
             <li>
@@ -108,7 +120,7 @@
         <span class="sprite-group-5-pen-white"></span>
         {{ "customer.individual_info.update" | translate }}
       </button>
-      <button mat-flat-button color="warn">
+      <button mat-flat-button color="warn" disabled>
         <span class="sprite-group-5-lock-white"></span>
         {{ "customer.individual_info.lock" | translate }}
       </button>
