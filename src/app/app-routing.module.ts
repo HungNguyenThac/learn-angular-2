@@ -32,13 +32,6 @@ const routes: Routes = [
           ),
       },
       {
-        path: 'loan',
-        loadChildren: () =>
-          import('./pages/loan/loan.module').then(
-            (m) => m.LoanModule
-          ),
-      },
-      {
         path: 'auth',
         loadChildren: () =>
           import('./pages/auth/auth.module').then((m) => m.AuthModule),

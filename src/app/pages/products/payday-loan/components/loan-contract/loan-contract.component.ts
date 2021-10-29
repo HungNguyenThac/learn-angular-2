@@ -1,5 +1,5 @@
-import { PaydayLoan } from './../../../../../../open-api-modules/loanapp-api-docs/model/paydayLoan';
 import { Component, OnInit } from '@angular/core';
+import { PaydayLoan } from 'open-api-modules/loanapp-api-docs';
 
 @Component({
   selector: 'app-loan-contract',
