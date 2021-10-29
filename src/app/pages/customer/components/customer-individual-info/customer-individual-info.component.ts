@@ -148,7 +148,7 @@ export class CustomerIndividualInfoComponent implements OnInit, OnDestroy {
         title: this.multiLanguageService.instant(
           'customer.individual_info.va_account_number'
         ),
-        value: this.customerId,
+        value: null,
         type: DATA_CELL_TYPE.TEXT,
         format: null,
       },
