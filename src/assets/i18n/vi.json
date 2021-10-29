@@ -223,7 +223,6 @@
       "collateral_img": "Tài sản đảm bảo"
     }
   },
-<<<<<<< HEAD
   "loan_app": {
     "tabs": {
       "loan_info": "Thông tin khoản vay",
@@ -342,7 +341,8 @@
       "update": "Cập nhật",
       "salary_info_confirmation": "Xác minh thông tin lương",
       "received_date": "Ngày lấy thông tin"
-=======
+    }
+  },
   "payday_loan": {
     "status": {
       "documentation_complete": "Chờ duyệt hồ sơ",
@@ -371,7 +371,6 @@
       "not_accepting_term_yet": "Chưa ký thư chấp thuận",
       "not_complete_cde_yet": "Chưa bổ sung thông tin",
       "completed_cde": "Đã bổ sung thông tin"
->>>>>>> 49c5d4b6fdeba3f35953172f03aed28e79e2a90d
     }
   },
   "not_found": {
