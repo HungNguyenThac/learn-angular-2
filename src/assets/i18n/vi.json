@@ -234,6 +234,7 @@
     "loan_info": {
       "loan_code": "Mã khoản vay",
       "customer_name": "Tên khách hàng",
+      "customer": "Khách hàng",
       "phone_number": "Số điện thoại",
       "salary_status": "Tình trạng trả lương",
       "max_loan_amount": "Số tiền vay tối đa",
@@ -245,8 +246,10 @@
       "total_settlement_amount": "Tổng tiền tất toán",
       "voucher_code": "Mã khuyến mại",
       "loan_status": "Trạng thái khoản vay",
+      "status": "Trạng thái",
       "payment_status": "Trạng thái thanh toán",
       "created_at": "Ngày tạo khoản vay",
+      "register_at": "Ngày đăng ký",
       "updated_at": "Ngày cập nhật khoản vay",
       "updated_by": "Người cập nhật khoản vay",
       "staff_in_charge": "Nhân viên phụ trách",
