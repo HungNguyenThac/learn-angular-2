@@ -2,10 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { GlobalConstants } from 'src/app/core/common/global-constants';
 import { Store } from '@ngrx/store';
-import * as fromActions from '../../../core/store';
-import * as fromStore from '../../../core/store';
-import { NAV_ITEM } from '../../../core/common/enum/operator';
-import { MultiLanguageService } from '../../../share/translate/multiLanguageService';
+import * as fromActions from '../../../../core/store';
+import * as fromStore from '../../../../core/store';
+import { NAV_ITEM } from '../../../../core/common/enum/operator';
+import { MultiLanguageService } from '../../../../share/translate/multiLanguageService';
 @Component({
   selector: 'app-loan-list',
   templateUrl: './loan-list.component.html',

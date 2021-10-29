@@ -1,7 +1,7 @@
-import { CustomerInfo } from './../../../../../../open-api-modules/dashboard-api-docs/model/customerInfo';
-import { PaydayLoan } from './../../../../../../open-api-modules/loanapp-api-docs/model/paydayLoan';
+import { MultiLanguageService } from 'src/app/share/translate/multiLanguageService';
 import { Component, OnInit } from '@angular/core';
-import { MultiLanguageService } from '../../../../share/translate/multiLanguageService';
+import { CustomerInfo } from 'open-api-modules/dashboard-api-docs';
+import { PaydayLoan } from 'open-api-modules/loanapp-api-docs';
 
 @Component({
   selector: 'app-loan-rating',

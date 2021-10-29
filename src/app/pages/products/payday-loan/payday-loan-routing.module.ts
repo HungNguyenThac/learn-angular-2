@@ -1,3 +1,4 @@
+import { LoanListComponent } from './loan-list/loan-list.component';
 import { Routes } from '@angular/router';
 import { AuthGuardService as AuthGuard } from '../../../core/services/auth-guard.service';
 
@@ -5,12 +6,11 @@ export const PaydayLoanRoutes: Routes = [
   {
     path: '',
     children: [
-      // {
-      //   path: 'introduce',
-      //   component: IntroduceComponent,
-      //   data: { animation: true },
-      // },
-      //
+      {
+        path: 'list',
+        component: LoanListComponent,
+        data: { animation: true },
+      },
     ],
   },
 ];
