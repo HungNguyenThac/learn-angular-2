@@ -29,6 +29,7 @@ const ELEMENT_DATA: PeriodicElement[] = [
 })
 export class BaseManagementLayoutComponent implements OnInit {
   @Input() detailElementTemplate: TemplateRef<any>;
+  @Input() titlePage: string = 'Khách hàng mới';
 
   // @Input() allColumns: any[] = ['position', 'name', 'weight', 'symbol'];
   // @Input() dataSource = new MatTableDataSource(ELEMENT_DATA);

@@ -220,6 +220,10 @@ input.pl-text-otp {
       overflow: hidden;
       text-overflow: ellipsis;
       padding-left: 8px;
+      &.highlight{
+        font-weight: 500;
+        color: #34C759;
+      }
     }
 
     .pl-list-item-content-empty {
