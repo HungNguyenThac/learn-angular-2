@@ -3,7 +3,7 @@ export interface BreadcrumbOptionsModel {
   iconClass?: string;
   iconImgSrc?: string;
   searchPlaceholder?: string;
-  searchFields?: string[];
+  keyword?: string
   searchable?: boolean;
   extraActionLabel?: string;
   btnAddText?: string;

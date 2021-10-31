@@ -8,7 +8,7 @@ import {
 } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { BreadcrumbOptionsModel } from '../../../../public/models/breadcrumb-options.model';
-import {SortDirection} from "@angular/material/sort/sort-direction";
+import { SortDirection } from '@angular/material/sort/sort-direction';
 
 @Component({
   selector: 'app-base-management-layout',
@@ -43,6 +43,7 @@ export class BaseManagementLayoutComponent implements OnInit {
   clickBtnAdd(event) {
     this.onClickBtnAdd.emit(event);
   }
+
   submitSearchForm(event) {
     this.onSubmitSearchForm.emit(event);
   }

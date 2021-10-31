@@ -40,12 +40,12 @@ export class CustomerListComponent implements OnInit, OnDestroy {
     'page_title.customer_list'
   );
   breadcrumbOptions: BreadcrumbOptionsModel = {
-    title: 'Quản lý khách hàng',
+    title: this.multiLanguageService.instant('breadcrumb.manage_customer'),
     iconClass: 'sprite-group-5-customer-green-medium',
     searchPlaceholder: 'Họ tên, Mã nhân viên, Số điện thoại, Email...',
     searchable: true,
-    showBtnAdd: true,
-    btnAddText: 'Thêm nhà cung cấp',
+    showBtnAdd: false,
+    keyword: '',
   };
 
   allColumns: any[] = [
@@ -54,7 +54,7 @@ export class CustomerListComponent implements OnInit, OnDestroy {
       title: this.multiLanguageService.instant('customer.individual_info.id'),
       type: DATA_CELL_TYPE.TEXT,
       format: null,
-      showed: false
+      showed: false,
     },
     {
       key: 'firstName',
@@ -63,7 +63,7 @@ export class CustomerListComponent implements OnInit, OnDestroy {
       ),
       type: DATA_CELL_TYPE.TEXT,
       format: null,
-      showed: true
+      showed: true,
     },
     {
       key: 'mobileNumber',
@@ -72,7 +72,7 @@ export class CustomerListComponent implements OnInit, OnDestroy {
       ),
       type: DATA_CELL_TYPE.TEXT,
       format: null,
-      showed: true
+      showed: true,
     },
     {
       key: 'emailAddress',
@@ -81,7 +81,52 @@ export class CustomerListComponent implements OnInit, OnDestroy {
       ),
       type: DATA_CELL_TYPE.TEXT,
       format: null,
-      showed: true
+      showed: true,
+    },
+    {
+      key: 'dateOfBirth',
+      title: this.multiLanguageService.instant(
+        'customer.individual_info.date_of_birth'
+      ),
+      type: DATA_CELL_TYPE.TEXT,
+      format: null,
+      showed: false,
+    },
+    {
+      key: 'gender',
+      title: this.multiLanguageService.instant(
+        'customer.individual_info.gender'
+      ),
+      type: DATA_CELL_TYPE.TEXT,
+      format: null,
+      showed: false,
+    },
+    {
+      key: 'addressTwoLine1',
+      title: this.multiLanguageService.instant(
+        'customer.individual_info.permanent_address'
+      ),
+      type: DATA_CELL_TYPE.TEXT,
+      format: null,
+      showed: false,
+    },
+    {
+      key: 'addressTwoLine2',
+      title: this.multiLanguageService.instant(
+        'customer.individual_info.current_residence'
+      ),
+      type: DATA_CELL_TYPE.TEXT,
+      format: null,
+      showed: false,
+    },
+    {
+      key: 'identityNumberOne',
+      title: this.multiLanguageService.instant(
+        'customer.individual_info.id_number'
+      ),
+      type: DATA_CELL_TYPE.TEXT,
+      format: null,
+      showed: false,
     },
     {
       key: 'paydayLoanStatus',
@@ -90,7 +135,7 @@ export class CustomerListComponent implements OnInit, OnDestroy {
       ),
       type: DATA_CELL_TYPE.STATUS,
       format: DATA_STATUS_TYPE.PL_UI_STATUS,
-      showed: true
+      showed: true,
     },
     {
       key: 'companyId',
@@ -99,7 +144,16 @@ export class CustomerListComponent implements OnInit, OnDestroy {
       ),
       type: DATA_CELL_TYPE.TEXT,
       format: null,
-      showed: true
+      showed: true,
+    },
+    {
+      key: 'organizationName',
+      title: this.multiLanguageService.instant(
+        'customer.individual_info.employee_code'
+      ),
+      type: DATA_CELL_TYPE.TEXT,
+      format: null,
+      showed: true,
     },
     {
       key: 'createdAt',
@@ -108,7 +162,7 @@ export class CustomerListComponent implements OnInit, OnDestroy {
       ),
       type: DATA_CELL_TYPE.DATETIME,
       format: 'dd/MM/yyyy HH:mm',
-      showed: true
+      showed: true,
     },
   ];
   dataSource: MatTableDataSource<any> = new MatTableDataSource([]);
@@ -156,7 +210,6 @@ export class CustomerListComponent implements OnInit, OnDestroy {
       startTime: [''],
       endTime: [''],
       filterConditions: {
-        keyword: QUERY_CONDITION_TYPE.LIKE,
         companyId: QUERY_CONDITION_TYPE.EQUAL,
         paydayLoanStatus: QUERY_CONDITION_TYPE.EQUAL,
       },
@@ -182,11 +235,16 @@ export class CustomerListComponent implements OnInit, OnDestroy {
       }
     }
 
-    this.filterForm.controls.filterConditions.setValue(filterConditionsValue);
-    this.filterForm.controls.orderBy.setValue(params.orderBy || 'createdAt');
-    this.filterForm.controls.sortDirection.setValue(params.sortDirection || 'desc');
-    this.filterForm.controls.startTime.setValue(params.startTime || '');
-    this.filterForm.controls.endTime.setValue(params.endTime || '');
+    this.filterForm.patchValue({
+      filterConditions: filterConditionsValue,
+      keyword: params.keyword,
+      orderBy: params.orderBy || 'createdAt',
+      sortDirection: params.sortDirection || 'desc',
+      startTime: params.startTime,
+      endTime: params.endTime,
+    });
+
+    this.breadcrumbOptions.keyword = params.keyword;
     this.pageIndex = params.pageIndex || 0;
     this.pageSize = params.pageSize || 20;
   }
@@ -240,20 +298,25 @@ export class CustomerListComponent implements OnInit, OnDestroy {
     this.dataSource.data = rawData?.data || [];
   }
 
-  onPageChange(event: PageEvent) {
+  public onPageChange(event: PageEvent) {
     this.pageSize = event.pageSize;
     this.pageIndex = event.pageIndex;
     this._onFilterChange();
   }
 
-  onSortChange(sortState: Sort) {
+  public onSortChange(sortState: Sort) {
     this.filterForm.controls.orderBy.setValue(sortState.active);
     this.filterForm.controls.sortDirection.setValue(sortState.direction);
     this._onFilterChange();
   }
 
-  onExpandElementChange(element: any) {
+  public onExpandElementChange(element: any) {
     this.expandedElementId = element.id;
+  }
+
+  public onSubmitSearchForm(event) {
+    this.filterForm.controls.keyword.setValue(event.keyword);
+    this._onFilterChange();
   }
 
   private _onFilterChange() {
@@ -279,6 +342,7 @@ export class CustomerListComponent implements OnInit, OnDestroy {
     queryParams['sortDirection'] = data.sortDirection;
     queryParams['pageIndex'] = this.pageIndex;
     queryParams['pageSize'] = this.pageSize;
+    queryParams['keyword'] = data.keyword;
 
     this.router
       .navigate([], {

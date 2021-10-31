@@ -20,6 +20,7 @@
           [formGroup]="searchForm"
           class="form-container"
           *ngIf="searchable"
+          (submit)="submitSearch()"
         >
           <div class="row">
             <div class="col-md-12">
