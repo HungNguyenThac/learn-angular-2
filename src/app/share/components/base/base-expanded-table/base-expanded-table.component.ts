@@ -14,6 +14,7 @@ import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { DisplayedFieldsModel } from '../../../../public/models/displayed-fields.model';
 import { MatTableDataSource } from '@angular/material/table';
 import { PageEvent } from '@angular/material/paginator/public-api';
+import {SortDirection} from "@angular/material/sort/sort-direction";
 
 @Component({
   selector: 'app-base-expanded-table',
@@ -34,7 +35,7 @@ export class BaseExpandedTableComponent implements OnInit {
   @Input() pageIndex: number;
   @Input() pageSize: number;
   @Input() orderBy: string;
-  @Input() descending: boolean;
+  @Input() sortDirection: SortDirection;
   @Input() allColumns: any[];
 
   @Output() triggerPageChange = new EventEmitter<any>();

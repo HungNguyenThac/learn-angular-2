@@ -8,6 +8,7 @@ import {
 } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { BreadcrumbOptionsModel } from '../../../../public/models/breadcrumb-options.model';
+import {SortDirection} from "@angular/material/sort/sort-direction";
 
 @Component({
   selector: 'app-base-management-layout',
@@ -16,7 +17,6 @@ import { BreadcrumbOptionsModel } from '../../../../public/models/breadcrumb-opt
 })
 export class BaseManagementLayoutComponent implements OnInit {
   @Input() detailElementTemplate: TemplateRef<any>;
-  @Input() pageTitle: string;
 
   @Input() allColumns: any[] = [];
   @Input() tableTitle: string;
@@ -27,7 +27,7 @@ export class BaseManagementLayoutComponent implements OnInit {
   @Input() totalItems: number = 0;
   @Input() pageLength: number = 0;
   @Input() orderBy: string;
-  @Input() descending: boolean;
+  @Input() sortDirection: SortDirection = 'desc';
   @Input() breadcrumbOptions: BreadcrumbOptionsModel;
 
   @Output() onPageChanged = new EventEmitter<any>();
