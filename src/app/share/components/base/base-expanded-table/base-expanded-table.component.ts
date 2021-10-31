@@ -40,7 +40,7 @@ export class BaseExpandedTableComponent implements OnInit {
 
   @Output() triggerPageChange = new EventEmitter<any>();
   @Output() triggerSortChange = new EventEmitter<any>();
-  @Output() triggerExpandedElement = new EventEmitter<any>();
+  @Output() triggerExpandedElementChange = new EventEmitter<any>();
 
   expandedElement: any;
   selectedFields: DisplayedFieldsModel[] = [];
@@ -70,7 +70,7 @@ export class BaseExpandedTableComponent implements OnInit {
         title: item.title,
         type: item.type,
         format: item.format,
-        showed: true,
+        showed: item.showed
       };
     });
   }
@@ -101,6 +101,6 @@ export class BaseExpandedTableComponent implements OnInit {
 
   public expandElement(element) {
     this.expandedElement = this.expandedElement === element ? null : element;
-    this.triggerExpandedElement.emit(element);
+    this.triggerExpandedElementChange.emit(element);
   }
 }

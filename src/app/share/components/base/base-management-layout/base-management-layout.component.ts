@@ -30,7 +30,7 @@ export class BaseManagementLayoutComponent implements OnInit {
   @Input() sortDirection: SortDirection = 'desc';
   @Input() breadcrumbOptions: BreadcrumbOptionsModel;
 
-  @Output() onPageChanged = new EventEmitter<any>();
+  @Output() onPageChange = new EventEmitter<any>();
   @Output() onSortChange = new EventEmitter<any>();
   @Output() onExpandElementChange = new EventEmitter<any>();
   @Output() onClickBtnAdd = new EventEmitter<any>();
@@ -48,7 +48,7 @@ export class BaseManagementLayoutComponent implements OnInit {
   }
 
   triggerPageChange(event) {
-    this.onPageChanged.emit(event);
+    this.onPageChange.emit(event);
   }
 
   triggerSortChange(event) {

@@ -49,12 +49,13 @@ export class CustomerListComponent implements OnInit, OnDestroy {
   };
 
   allColumns: any[] = [
-    // {
-    //   key: 'id',
-    //   title: this.multiLanguageService.instant('customer.individual_info.id'),
-    //   type: DATA_CELL_TYPE.TEXT,
-    //   format: null,
-    // },
+    {
+      key: 'id',
+      title: this.multiLanguageService.instant('customer.individual_info.id'),
+      type: DATA_CELL_TYPE.TEXT,
+      format: null,
+      showed: false
+    },
     {
       key: 'firstName',
       title: this.multiLanguageService.instant(
@@ -62,6 +63,7 @@ export class CustomerListComponent implements OnInit, OnDestroy {
       ),
       type: DATA_CELL_TYPE.TEXT,
       format: null,
+      showed: true
     },
     {
       key: 'mobileNumber',
@@ -70,6 +72,7 @@ export class CustomerListComponent implements OnInit, OnDestroy {
       ),
       type: DATA_CELL_TYPE.TEXT,
       format: null,
+      showed: true
     },
     {
       key: 'emailAddress',
@@ -78,6 +81,7 @@ export class CustomerListComponent implements OnInit, OnDestroy {
       ),
       type: DATA_CELL_TYPE.TEXT,
       format: null,
+      showed: true
     },
     {
       key: 'paydayLoanStatus',
@@ -86,6 +90,7 @@ export class CustomerListComponent implements OnInit, OnDestroy {
       ),
       type: DATA_CELL_TYPE.STATUS,
       format: DATA_STATUS_TYPE.PL_UI_STATUS,
+      showed: true
     },
     {
       key: 'companyId',
@@ -94,6 +99,7 @@ export class CustomerListComponent implements OnInit, OnDestroy {
       ),
       type: DATA_CELL_TYPE.TEXT,
       format: null,
+      showed: true
     },
     {
       key: 'createdAt',
@@ -102,6 +108,7 @@ export class CustomerListComponent implements OnInit, OnDestroy {
       ),
       type: DATA_CELL_TYPE.DATETIME,
       format: 'dd/MM/yyyy HH:mm',
+      showed: true
     },
   ];
   dataSource: MatTableDataSource<any> = new MatTableDataSource([]);
@@ -233,13 +240,13 @@ export class CustomerListComponent implements OnInit, OnDestroy {
     this.dataSource.data = rawData?.data || [];
   }
 
-  onPageChanged(event: PageEvent) {
+  onPageChange(event: PageEvent) {
     this.pageSize = event.pageSize;
     this.pageIndex = event.pageIndex;
     this._onFilterChange();
   }
 
-  onSortChanged(sortState: Sort) {
+  onSortChange(sortState: Sort) {
     this.filterForm.controls.orderBy.setValue(sortState.active);
     this.filterForm.controls.sortDirection.setValue(sortState.direction);
     this._onFilterChange();
