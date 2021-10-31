@@ -1,14 +1,18 @@
 import { LoanListService } from './loan-list.service';
 import { PageEvent } from '@angular/material/paginator/public-api';
 import { Sort } from '@angular/material/sort';
-import { ApiResponseSearchAndPaginationResponseCompanyInfo } from './../../../../../../open-api-modules/dashboard-api-docs/model/apiResponseSearchAndPaginationResponseCompanyInfo';
-import { CustomerListService } from './../../../customer/customer-list/customer-list.service';
-import { CompanyControllerService } from './../../../../../../open-api-modules/dashboard-api-docs/api/companyController.service';
+import { ApiResponseSearchAndPaginationResponseCompanyInfo } from '../../../../../../open-api-modules/dashboard-api-docs';
+import { CustomerListService } from '../../../customer/customer-list/customer-list.service';
+import { CompanyControllerService } from '../../../../../../open-api-modules/dashboard-api-docs';
 import { ActivatedRoute, Router, Params } from '@angular/router';
-import { BreadcrumbOptionsModel } from './../../../../public/models/breadcrumb-options.model';
+import { BreadcrumbOptionsModel } from '../../../../public/models/breadcrumb-options.model';
 import { Subscription, Observable } from 'rxjs';
-import { SearchAndPaginationResponseCompanyInfo } from './../../../../../../open-api-modules/dashboard-api-docs/model/searchAndPaginationResponseCompanyInfo';
-import { DATA_CELL_TYPE, DATA_STATUS_TYPE, QUERY_CONDITION_TYPE } from './../../../../core/common/enum/operator';
+import { SearchAndPaginationResponseCompanyInfo } from '../../../../../../open-api-modules/dashboard-api-docs';
+import {
+  DATA_CELL_TYPE,
+  DATA_STATUS_TYPE,
+  QUERY_CONDITION_TYPE,
+} from '../../../../core/common/enum/operator';
 import { Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { GlobalConstants } from 'src/app/core/common/global-constants';
@@ -126,7 +130,7 @@ export class LoanListComponent implements OnInit {
       mobileNumber: [''],
       status: [''],
       orderBy: ['createdAt'],
-      descending: [true],
+      sortDirection: ['desc'],
       startTime: [''],
       endTime: [''],
       filterConditions: {
@@ -160,7 +164,7 @@ export class LoanListComponent implements OnInit {
 
     this.filterForm.controls.filterConditions.setValue(filterConditionsValue);
     this.filterForm.controls.orderBy.setValue(params.orderBy || 'createdAt');
-    this.filterForm.controls.descending.setValue(params.descending || true);
+    this.filterForm.controls.sortDirection.setValue(params.sortDirection || 'desc');
     this.filterForm.controls.startTime.setValue(params.startTime || '');
     this.filterForm.controls.endTime.setValue(params.endTime || '');
     this.pageIndex = params.pageIndex || 0;
@@ -222,7 +226,7 @@ export class LoanListComponent implements OnInit {
 
   onSortChanged(sortState: Sort) {
     this.filterForm.controls.orderBy.setValue(sortState.active);
-    this.filterForm.controls.descending.setValue(sortState.direction);
+    this.filterForm.controls.sortDirection.setValue(sortState.direction);
     this._onFilterChange();
   }
 

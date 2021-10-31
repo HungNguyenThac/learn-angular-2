@@ -36,10 +36,6 @@ export class CustomerListComponent implements OnInit, OnDestroy {
   companyList: SearchAndPaginationResponseCompanyInfo;
   subManager = new Subscription();
 
-  pageTitle: string = this.multiLanguageService.instant(
-    'page_title.customer_list'
-  );
-
   tableTitle: string = this.multiLanguageService.instant(
     'page_title.customer_list'
   );
