@@ -7,11 +7,10 @@ import { FormBuilder, FormGroup } from '@angular/forms';
   styleUrls: ['./base-breadcrumb.component.scss'],
 })
 export class BaseBreadcrumbComponent implements OnInit {
-  @Input() title: string = 'Quản lý khách hàng';
-  @Input() iconClass: string = 'sprite-group-5-customer-green-medium';
-  @Input() iconImgSrc: string = '';
-  @Input() searchPlaceholder: string =
-    'Họ tên, Mã nhân viên, Số điện thoại, Email...';
+  @Input() title: string;
+  @Input() iconClass: string;
+  @Input() iconImgSrc: string;
+  @Input() searchPlaceholder: string;
   @Input() searchFields: string[] = [];
   @Input() searchable: boolean = true;
   @Input() extraActionLabel: string;
@@ -25,7 +24,7 @@ export class BaseBreadcrumbComponent implements OnInit {
 
   constructor(private formBuilder: FormBuilder) {
     this.searchForm = this.formBuilder.group({
-      textSearch: [''],
+      keyword: [''],
     });
   }
 

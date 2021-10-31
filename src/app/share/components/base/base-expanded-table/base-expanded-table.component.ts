@@ -75,7 +75,7 @@ export class BaseExpandedTableComponent implements OnInit {
   }
 
   /** Announce the change in sort state for assistive technology. */
-  announceSortChange(sortState: Sort) {
+  public announceSortChange(sortState: Sort) {
     // This example uses English messages. If your application supports
     // multiple language, you would internationalize these strings.
     // Furthermore, you can customize the message to add additional
@@ -89,7 +89,7 @@ export class BaseExpandedTableComponent implements OnInit {
     this.triggerSortChange.emit(sortState);
   }
 
-  setPage(i, event: any) {
+  public setPage(i, event: any) {
     this.pageIndex = i;
     event.preventDefault();
   }
@@ -98,7 +98,7 @@ export class BaseExpandedTableComponent implements OnInit {
     this.triggerPageChange.emit(event);
   }
 
-  expandElement(element) {
+  public expandElement(element) {
     this.expandedElement = this.expandedElement === element ? null : element;
     this.triggerExpandedElement.emit(element);
   }

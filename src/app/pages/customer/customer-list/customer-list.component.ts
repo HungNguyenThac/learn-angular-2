@@ -35,6 +35,11 @@ import { Sort } from '@angular/material/sort';
 export class CustomerListComponent implements OnInit, OnDestroy {
   companyList: SearchAndPaginationResponseCompanyInfo;
   subManager = new Subscription();
+
+  pageTitle: string = this.multiLanguageService.instant(
+    'page_title.customer_list'
+  );
+
   tableTitle: string = this.multiLanguageService.instant(
     'page_title.customer_list'
   );
@@ -140,15 +145,15 @@ export class CustomerListComponent implements OnInit, OnDestroy {
 
   private _initFilterForm() {
     this.filterForm = this.formBuilder.group({
-      textSearch: [''],
+      keyword: [''],
       companyId: [''],
       paydayLoanStatus: [''],
       orderBy: ['createdAt'],
-      descending: [true],
+      sortDirection: ['desc'],
       startTime: [''],
       endTime: [''],
       filterConditions: {
-        textSearch: QUERY_CONDITION_TYPE.LIKE,
+        keyword: QUERY_CONDITION_TYPE.LIKE,
         companyId: QUERY_CONDITION_TYPE.EQUAL,
         paydayLoanStatus: QUERY_CONDITION_TYPE.EQUAL,
       },
@@ -176,7 +181,7 @@ export class CustomerListComponent implements OnInit, OnDestroy {
 
     this.filterForm.controls.filterConditions.setValue(filterConditionsValue);
     this.filterForm.controls.orderBy.setValue(params.orderBy || 'createdAt');
-    this.filterForm.controls.descending.setValue(params.descending || true);
+    this.filterForm.controls.sortDirection.setValue(params.sortDirection || 'desc');
     this.filterForm.controls.startTime.setValue(params.startTime || '');
     this.filterForm.controls.endTime.setValue(params.endTime || '');
     this.pageIndex = params.pageIndex || 0;
@@ -240,12 +245,12 @@ export class CustomerListComponent implements OnInit, OnDestroy {
 
   onSortChanged(sortState: Sort) {
     this.filterForm.controls.orderBy.setValue(sortState.active);
-    this.filterForm.controls.descending.setValue(sortState.direction);
+    this.filterForm.controls.sortDirection.setValue(sortState.direction);
     this._onFilterChange();
   }
 
   onExpandElementChange(element: any) {
-    this.expandedElementId = element.id
+    this.expandedElementId = element.id;
   }
 
   private _onFilterChange() {
@@ -268,6 +273,7 @@ export class CustomerListComponent implements OnInit, OnDestroy {
     queryParams['endTime'] = data.endTime ? data.endTime.toISOString() : null;
 
     queryParams['orderBy'] = data.orderBy;
+    queryParams['sortDirection'] = data.sortDirection;
     queryParams['pageIndex'] = this.pageIndex;
     queryParams['pageSize'] = this.pageSize;
 

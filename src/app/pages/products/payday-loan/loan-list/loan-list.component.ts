@@ -120,7 +120,7 @@ export class LoanListComponent implements OnInit {
 
   private _initFilterForm() {
     this.filterForm = this.formBuilder.group({
-      textSearch: [''],
+      keyword: [''],
       companyId: [''],
       loanCode: [''],
       mobileNumber: [''],
@@ -130,7 +130,7 @@ export class LoanListComponent implements OnInit {
       startTime: [''],
       endTime: [''],
       filterConditions: {
-        textSearch: QUERY_CONDITION_TYPE.LIKE,
+        keyword: QUERY_CONDITION_TYPE.LIKE,
         companyId: QUERY_CONDITION_TYPE.EQUAL,
         // status: QUERY_CONDITION_TYPE.EQUAL,
         // loanCode: QUERY_CONDITION_TYPE.LIKE,
