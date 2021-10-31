@@ -51,18 +51,21 @@ export class LoanListComponent implements OnInit {
       title: this.multiLanguageService.instant('loan_app.loan_info.loan_code'),
       type: DATA_CELL_TYPE.TEXT,
       format: null,
+      showed: true
     },
     {
       key: 'status',
       title: this.multiLanguageService.instant('loan_app.loan_info.status'),
       type: DATA_CELL_TYPE.STATUS,
-      format: DATA_STATUS_TYPE.PL_UI_STATUS,
+      format: DATA_STATUS_TYPE.PL_HMG_STATUS,
+      showed: true
     },
     {
       key: 'customerName',
       title: this.multiLanguageService.instant('loan_app.loan_info.customer'),
       type: DATA_CELL_TYPE.TEXT,
       format: null,
+      showed: true
     },
     {
       key: 'mobileNumber',
@@ -71,12 +74,14 @@ export class LoanListComponent implements OnInit {
       ),
       type: DATA_CELL_TYPE.TEXT,
       format: null,
+      showed: true
     },
     {
       key: 'tenure',
       title: this.multiLanguageService.instant('loan_app.loan_info.loan_term'),
       type: DATA_CELL_TYPE.TEXT,
       format: null,
+      showed: true
     },
     {
       key: 'createdAt',
@@ -85,6 +90,7 @@ export class LoanListComponent implements OnInit {
       ),
       type: DATA_CELL_TYPE.DATETIME,
       format: 'dd/MM/yyyy HH:mm',
+      showed: true
     },
   ];
   dataSource: MatTableDataSource<any> = new MatTableDataSource([]);
@@ -218,13 +224,13 @@ export class LoanListComponent implements OnInit {
     this.dataSource.data = rawData?.searchPaydayLoanResult || [];
   }
 
-  onPageChanged(event: PageEvent) {
+  onPageChange(event: PageEvent) {
     this.pageSize = event.pageSize;
     this.pageIndex = event.pageIndex;
     this._onFilterChange();
   }
 
-  onSortChanged(sortState: Sort) {
+  onSortChange(sortState: Sort) {
     this.filterForm.controls.orderBy.setValue(sortState.active);
     this.filterForm.controls.sortDirection.setValue(sortState.direction);
     this._onFilterChange();
