@@ -149,6 +149,8 @@
       "permanent_address": "Địa chỉ thường trú",
       "current_residence": "Địa chỉ hiện tại",
       "id_origin": "Quê quán",
+      "id_number": "Số CMND/CCCD",
+      "employee_code": "Mã nhân viên",
       "number_of_dependents": "Số người PTTC",
       "marital_status": "Tình trạng hôn nhân",
       "bank_account_number": "Số TKNH",
@@ -420,5 +422,8 @@
     "customer_list": "Danh sách khách hàng",
     "loan_list": "Danh sách khoản vay",
     "dashboard": "Trang chủ"
+  },
+  "breadcrumb": {
+    "manage_customer": "Quản lý khách hàng"
   }
 }
