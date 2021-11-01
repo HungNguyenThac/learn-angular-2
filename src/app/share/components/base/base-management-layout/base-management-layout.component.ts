@@ -21,9 +21,9 @@ export class BaseManagementLayoutComponent implements OnInit {
   @Input() allColumns: any[] = [];
   @Input() tableTitle: string;
   @Input() dataSource: MatTableDataSource<any> = new MatTableDataSource([]);
-  @Input() pageSize: number = 5;
+  @Input() pageSize: number = 10;
   @Input() pageIndex: number = 0;
-  @Input() pageSizeOptions: number[] = [5, 10, 25, 100];
+  @Input() pageSizeOptions: number[] = [10, 20, 50];
   @Input() totalItems: number = 0;
   @Input() pageLength: number = 0;
   @Input() orderBy: string;
