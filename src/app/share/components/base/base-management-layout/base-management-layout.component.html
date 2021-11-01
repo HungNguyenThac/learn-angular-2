@@ -4,11 +4,11 @@
     [iconClass]="breadcrumbOptions.iconClass"
     [iconImgSrc]="breadcrumbOptions.iconImgSrc"
     [searchPlaceholder]="breadcrumbOptions.searchPlaceholder"
-    [searchFields]="breadcrumbOptions.searchFields"
     [searchable]="breadcrumbOptions.searchable"
     [extraActionLabel]="breadcrumbOptions.extraActionLabel"
     [btnAddText]="breadcrumbOptions.btnAddText"
     [showBtnAdd]="breadcrumbOptions.showBtnAdd"
+    [keyword]="breadcrumbOptions.keyword"
     (submitSearchForm)="submitSearchForm($event)"
     (clickBtnAdd)="clickBtnAdd($event)"
   ></app-base-breadcrumb>
@@ -36,12 +36,12 @@
             [pageLength]="pageLength"
             [tableTitle]="tableTitle"
             [orderBy]="orderBy"
-            [descending]="descending"
+            [sortDirection]="sortDirection"
             [pageSizeOptions]="pageSizeOptions"
             [detailElementTemplate]="detailElementTemplate"
             (triggerPageChange)="triggerPageChange($event)"
             (triggerSortChange)="triggerSortChange($event)"
-            (triggerExpandedElement)="triggerExpandElementChange($event)"
+            (triggerExpandedElementChange)="triggerExpandElementChange($event)"
           >
           </app-base-expanded-table>
         </div>

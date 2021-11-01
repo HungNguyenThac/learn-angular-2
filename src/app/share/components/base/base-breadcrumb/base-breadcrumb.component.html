@@ -20,17 +20,18 @@
           [formGroup]="searchForm"
           class="form-container"
           *ngIf="searchable"
+          (submit)="submitSearch()"
         >
           <div class="row">
             <div class="col-md-12">
-              <div class="input-icons">
-                <div class="icon">
+              <div class="breadcrumb-search-input">
+                <div class="breadcrumb-input-icon" (click)="submitSearch()">
                   <span class="sprite-group-5-search"></span>
                 </div>
 
                 <input
-                  class="input-field"
-                  formControlName="textSearch"
+                  class="breadcrumb-input"
+                  formControlName="keyword"
                   [placeholder]="searchPlaceholder"
                 />
               </div>

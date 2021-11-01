@@ -14,6 +14,7 @@ import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { DisplayedFieldsModel } from '../../../../public/models/displayed-fields.model';
 import { MatTableDataSource } from '@angular/material/table';
 import { PageEvent } from '@angular/material/paginator/public-api';
+import {SortDirection} from "@angular/material/sort/sort-direction";
 
 @Component({
   selector: 'app-base-expanded-table',
@@ -34,12 +35,12 @@ export class BaseExpandedTableComponent implements OnInit {
   @Input() pageIndex: number;
   @Input() pageSize: number;
   @Input() orderBy: string;
-  @Input() descending: boolean;
+  @Input() sortDirection: SortDirection;
   @Input() allColumns: any[];
 
   @Output() triggerPageChange = new EventEmitter<any>();
   @Output() triggerSortChange = new EventEmitter<any>();
-  @Output() triggerExpandedElement = new EventEmitter<any>();
+  @Output() triggerExpandedElementChange = new EventEmitter<any>();
 
   expandedElement: any;
   selectedFields: DisplayedFieldsModel[] = [];
@@ -69,13 +70,13 @@ export class BaseExpandedTableComponent implements OnInit {
         title: item.title,
         type: item.type,
         format: item.format,
-        showed: true,
+        showed: item.showed
       };
     });
   }
 
   /** Announce the change in sort state for assistive technology. */
-  announceSortChange(sortState: Sort) {
+  public announceSortChange(sortState: Sort) {
     // This example uses English messages. If your application supports
     // multiple language, you would internationalize these strings.
     // Furthermore, you can customize the message to add additional
@@ -89,7 +90,7 @@ export class BaseExpandedTableComponent implements OnInit {
     this.triggerSortChange.emit(sortState);
   }
 
-  setPage(i, event: any) {
+  public setPage(i, event: any) {
     this.pageIndex = i;
     event.preventDefault();
   }
@@ -98,8 +99,8 @@ export class BaseExpandedTableComponent implements OnInit {
     this.triggerPageChange.emit(event);
   }
 
-  expandElement(element) {
+  public expandElement(element) {
     this.expandedElement = this.expandedElement === element ? null : element;
-    this.triggerExpandedElement.emit(element);
+    this.triggerExpandedElementChange.emit(element);
   }
 }

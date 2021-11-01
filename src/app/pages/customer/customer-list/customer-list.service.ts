@@ -54,7 +54,7 @@ export class CustomerListService {
       params.pageIndex,
       requestBody,
       params.orderBy,
-      params.descending
+      params.sortDirection === 'desc'
     );
   }
 }

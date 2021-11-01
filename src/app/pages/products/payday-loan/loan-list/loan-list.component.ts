@@ -1,14 +1,18 @@
 import { LoanListService } from './loan-list.service';
 import { PageEvent } from '@angular/material/paginator/public-api';
 import { Sort } from '@angular/material/sort';
-import { ApiResponseSearchAndPaginationResponseCompanyInfo } from './../../../../../../open-api-modules/dashboard-api-docs/model/apiResponseSearchAndPaginationResponseCompanyInfo';
-import { CustomerListService } from './../../../customer/customer-list/customer-list.service';
-import { CompanyControllerService } from './../../../../../../open-api-modules/dashboard-api-docs/api/companyController.service';
+import { ApiResponseSearchAndPaginationResponseCompanyInfo } from '../../../../../../open-api-modules/dashboard-api-docs';
+import { CustomerListService } from '../../../customer/customer-list/customer-list.service';
+import { CompanyControllerService } from '../../../../../../open-api-modules/dashboard-api-docs';
 import { ActivatedRoute, Router, Params } from '@angular/router';
-import { BreadcrumbOptionsModel } from './../../../../public/models/breadcrumb-options.model';
+import { BreadcrumbOptionsModel } from '../../../../public/models/breadcrumb-options.model';
 import { Subscription, Observable } from 'rxjs';
-import { SearchAndPaginationResponseCompanyInfo } from './../../../../../../open-api-modules/dashboard-api-docs/model/searchAndPaginationResponseCompanyInfo';
-import { DATA_CELL_TYPE, DATA_STATUS_TYPE, QUERY_CONDITION_TYPE } from './../../../../core/common/enum/operator';
+import { SearchAndPaginationResponseCompanyInfo } from '../../../../../../open-api-modules/dashboard-api-docs';
+import {
+  DATA_CELL_TYPE,
+  DATA_STATUS_TYPE,
+  QUERY_CONDITION_TYPE,
+} from '../../../../core/common/enum/operator';
 import { Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { GlobalConstants } from 'src/app/core/common/global-constants';
@@ -47,18 +51,21 @@ export class LoanListComponent implements OnInit {
       title: this.multiLanguageService.instant('loan_app.loan_info.loan_code'),
       type: DATA_CELL_TYPE.TEXT,
       format: null,
+      showed: true
     },
     {
       key: 'status',
       title: this.multiLanguageService.instant('loan_app.loan_info.status'),
       type: DATA_CELL_TYPE.STATUS,
-      format: DATA_STATUS_TYPE.PL_UI_STATUS,
+      format: DATA_STATUS_TYPE.PL_HMG_STATUS,
+      showed: true
     },
     {
       key: 'customerName',
       title: this.multiLanguageService.instant('loan_app.loan_info.customer'),
       type: DATA_CELL_TYPE.TEXT,
       format: null,
+      showed: true
     },
     {
       key: 'mobileNumber',
@@ -67,12 +74,14 @@ export class LoanListComponent implements OnInit {
       ),
       type: DATA_CELL_TYPE.TEXT,
       format: null,
+      showed: true
     },
     {
       key: 'tenure',
       title: this.multiLanguageService.instant('loan_app.loan_info.loan_term'),
       type: DATA_CELL_TYPE.TEXT,
       format: null,
+      showed: true
     },
     {
       key: 'createdAt',
@@ -81,14 +90,15 @@ export class LoanListComponent implements OnInit {
       ),
       type: DATA_CELL_TYPE.DATETIME,
       format: 'dd/MM/yyyy HH:mm',
+      showed: true
     },
   ];
   dataSource: MatTableDataSource<any> = new MatTableDataSource([]);
   pages: Array<number>;
-  pageSize: number = 5;
+  pageSize: number = 10;
   pageIndex: number = 0;
   pageLength: number = 0;
-  pageSizeOptions: number[] = [5, 10, 25, 100];
+  pageSizeOptions: number[] = [10, 20, 50];
   totalItems: number = 0;
   filterForm: FormGroup;
   private readonly routeAllState$: Observable<Params>;
@@ -120,17 +130,17 @@ export class LoanListComponent implements OnInit {
 
   private _initFilterForm() {
     this.filterForm = this.formBuilder.group({
-      textSearch: [''],
+      keyword: [''],
       companyId: [''],
       loanCode: [''],
       mobileNumber: [''],
       status: [''],
       orderBy: ['createdAt'],
-      descending: [true],
+      sortDirection: ['desc'],
       startTime: [''],
       endTime: [''],
       filterConditions: {
-        textSearch: QUERY_CONDITION_TYPE.LIKE,
+        keyword: QUERY_CONDITION_TYPE.LIKE,
         companyId: QUERY_CONDITION_TYPE.EQUAL,
         // status: QUERY_CONDITION_TYPE.EQUAL,
         // loanCode: QUERY_CONDITION_TYPE.LIKE,
@@ -160,7 +170,7 @@ export class LoanListComponent implements OnInit {
 
     this.filterForm.controls.filterConditions.setValue(filterConditionsValue);
     this.filterForm.controls.orderBy.setValue(params.orderBy || 'createdAt');
-    this.filterForm.controls.descending.setValue(params.descending || true);
+    this.filterForm.controls.sortDirection.setValue(params.sortDirection || 'desc');
     this.filterForm.controls.startTime.setValue(params.startTime || '');
     this.filterForm.controls.endTime.setValue(params.endTime || '');
     this.pageIndex = params.pageIndex || 0;
@@ -214,15 +224,15 @@ export class LoanListComponent implements OnInit {
     this.dataSource.data = rawData?.searchPaydayLoanResult || [];
   }
 
-  onPageChanged(event: PageEvent) {
+  onPageChange(event: PageEvent) {
     this.pageSize = event.pageSize;
     this.pageIndex = event.pageIndex;
     this._onFilterChange();
   }
 
-  onSortChanged(sortState: Sort) {
+  onSortChange(sortState: Sort) {
     this.filterForm.controls.orderBy.setValue(sortState.active);
-    this.filterForm.controls.descending.setValue(sortState.direction);
+    this.filterForm.controls.sortDirection.setValue(sortState.direction);
     this._onFilterChange();
   }
 

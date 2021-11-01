@@ -22,31 +22,33 @@ h2.op-breadcrumb-title {
   color: $grey-10;
 }
 
-.input-icons .icon {
-  position: absolute;
-}
-
-.input-icons {
+.breadcrumb-search-input {
   width: 100%;
-  min-width: 360px;
-}
 
-.icon {
-  padding: 10px;
-  color: green;
-}
+  .breadcrumb-input-icon {
+    position: absolute;
+    padding: 10px;
+    cursor: pointer;
+  }
 
-.input-field {
-  width: 100%;
-  padding: 10px 10px 10px 36px;
-  background: $white;
-  border-radius: 8px;
-  border: none;
-  text-overflow: ellipsis;
+  .breadcrumb-input {
+    width: 100%;
+    padding: 10px 10px 10px 36px;
+    background: $white;
+    border-radius: 8px;
+    border: none;
+    text-overflow: ellipsis;
 
-  &:focus,
-  &:active {
-    outline: none;
+    &::placeholder {
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
+    }
+
+    &:focus,
+    &:active {
+      outline: none;
+    }
   }
 }
 

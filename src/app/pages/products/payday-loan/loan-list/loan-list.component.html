@@ -1,6 +1,5 @@
 <app-base-management-layout
   [detailElementTemplate]="detailElementTemplate"
-  titlePage="Danh sách khoản vay"
   [pageSize]="pageSize"
   [pageIndex]="pageIndex"
   [pageSizeOptions]="pageSizeOptions"
@@ -10,10 +9,10 @@
   [pageLength]="pageLength"
   [dataSource]="dataSource"
   [orderBy]="this.filterForm.controls.orderBy?.value"
-  [descending]="this.filterForm.controls.descending?.value"
+  [sortDirection]="this.filterForm.controls.sortDirection?.value"
   [breadcrumbOptions]="breadcrumbOptions"
-  (onPageChanged)="onPageChanged($event)"
-  (onSortChange)="onSortChanged($event)"
+  (onPageChange)="onPageChange($event)"
+  (onSortChange)="onSortChange($event)"
 >
 </app-base-management-layout>
 

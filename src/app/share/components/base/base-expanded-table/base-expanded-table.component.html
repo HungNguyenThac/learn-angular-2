@@ -64,7 +64,7 @@
         class="expanded-table"
         (matSortChange)="announceSortChange($event)"
         [matSortActive]="orderBy"
-        [matSortDirection]="descending"
+        [matSortDirection]="sortDirection"
         matSortDisableClear
       >
         <ng-container
@@ -94,7 +94,7 @@
               </app-pl-status-element>
             </div>
 
-            <div *ngIf="!column?.type || column?.type === 'TEXT'">
+            <div *ngIf="!column?.type || column?.type === 'TEXT'" class="op-table-cell-data">
               {{ element[column?.key] || "-" }}
             </div>
           </td>

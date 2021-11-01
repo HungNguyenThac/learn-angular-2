@@ -1,6 +1,6 @@
-import { ApplicationControllerService } from './../../../../../../open-api-modules/loanapp-hmg-api-docs/api/applicationController.service';
-import { ApplicationHmgControllerService } from './../../../../../../open-api-modules/dashboard-api-docs/api/applicationHmgController.service';
-import { PaydayLoanControllerService } from './../../../../../../open-api-modules/loanapp-hmg-api-docs/api/paydayLoanController.service';
+import { ApplicationControllerService } from '../../../../../../open-api-modules/loanapp-hmg-api-docs';
+import { ApplicationHmgControllerService } from '../../../../../../open-api-modules/dashboard-api-docs';
+import { PaydayLoanControllerService } from '../../../../../../open-api-modules/loanapp-hmg-api-docs';
 import { Injectable } from '@angular/core';
 import { CustomerControllerService } from 'open-api-modules/dashboard-api-docs';
 import * as _ from 'lodash';
