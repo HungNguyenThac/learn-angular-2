@@ -75,9 +75,9 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   allColumns: any[] = [];
   dataSource = new MatTableDataSource([]);
 
-  pageSize: number = 5;
+  pageSize: number = 10;
   pageIndex: number = 0;
-  pageSizeOptions: number[] = [5, 10, 25, 100];
+  pageSizeOptions: number[] = [10, 20, 50];
   totalItems: number = 0;
 
   constructor(

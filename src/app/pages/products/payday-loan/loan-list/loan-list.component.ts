@@ -95,10 +95,10 @@ export class LoanListComponent implements OnInit {
   ];
   dataSource: MatTableDataSource<any> = new MatTableDataSource([]);
   pages: Array<number>;
-  pageSize: number = 5;
+  pageSize: number = 10;
   pageIndex: number = 0;
   pageLength: number = 0;
-  pageSizeOptions: number[] = [5, 10, 25, 100];
+  pageSizeOptions: number[] = [10, 20, 50];
   totalItems: number = 0;
   filterForm: FormGroup;
   private readonly routeAllState$: Observable<Params>;
