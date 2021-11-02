@@ -16,8 +16,7 @@
           filter-child-item
         "
         [ngClass]="{
-          'filter-child-item-active':
-            filterOption.value && filterItem.value === filterOption.value
+          'filter-child-item-active': filterItem.value === filterOption.value
         }"
         *ngFor="let filterItem of filterOption.options"
       >
@@ -128,7 +127,13 @@
           <span class="filter-status-count" *ngIf="filterItem.count">{{
             filterItem.count
           }}</span>
-          <span class="sprite-group-5-chevron-right-grey"></span>
+          <span
+            [ngClass]="
+              filterItem.value === filterOption.value
+                ? 'sprite-group-5-chevron-right-blue'
+                : 'sprite-group-5-chevron-right-grey'
+            "
+          ></span>
         </div>
       </li>
     </ul>

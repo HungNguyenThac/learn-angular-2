@@ -63,7 +63,9 @@
     "loading_content": "Quá trình sẽ mất khoảng một vài giây, vui lòng không thoát ứng dụng",
     "reset": "Đặt lại",
     "field": "Trường thông tin",
-    "no_matching_records": "Không có bản ghi nào!"
+    "no_matching_records": "Không có bản ghi nào!",
+    "active": "Đang hoạt động",
+    "inactive": "Ngừng hoạt động"
   },
   "auth": {
     "phone_number": "Số điện thoại",
@@ -386,6 +388,8 @@
     "selected_date": "{{date}} ngày {{day}}",
     "company": "Công ty",
     "choose_company": "Chọn công ty",
+    "pl_ui_status": "Trạng thái tài khoản",
+    "account_status": "Trạng thái hoạt động",
     "options": {
       "by_day": "Theo ngày",
       "to_day": "Hôm nay",
