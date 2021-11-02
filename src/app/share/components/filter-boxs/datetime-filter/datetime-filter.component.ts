@@ -166,23 +166,6 @@ export class DatetimeFilterComponent implements OnInit {
   ];
 
   selectedTimeFilterMethod: FILTER_DATETIME_TYPE;
-
-  get chosenTimeFrameMethod(): string {
-    return this.filterOption.value &&
-      this.filterOption.value?.type === FILTER_DATETIME_TYPE.TIME_FRAME
-      ? this.filterOption.value?.title ||
-          this.multiLanguageService.instant('filter.all_time')
-      : this.multiLanguageService.instant('filter.all_time');
-  }
-
-  get chosenTimeRangeMethod(): string {
-    return this.filterOption.value &&
-      this.filterOption.value?.type === FILTER_DATETIME_TYPE.TIME_RANGE
-      ? this.filterOption.value?.title ||
-          this.multiLanguageService.instant('filter.choose_range_time')
-      : this.multiLanguageService.instant('filter.choose_range_time');
-  }
-
   selectedStartDate: Date | null;
   selectedEndDate: Date | null;
 
@@ -190,16 +173,36 @@ export class DatetimeFilterComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  formatTime(time) {
+  get filterOptionValue() {
+    return this.filterOption.value;
+  }
+
+  get chosenTimeFrameMethod(): string {
+    return this.filterOptionValue &&
+      this.filterOptionValue.type === FILTER_DATETIME_TYPE.TIME_FRAME
+      ? this.filterOptionValue.title ||
+          this.multiLanguageService.instant('filter.all_time')
+      : this.multiLanguageService.instant('filter.all_time');
+  }
+
+  get chosenTimeRangeMethod(): string {
+    return this.filterOptionValue &&
+      this.filterOptionValue.type === FILTER_DATETIME_TYPE.TIME_RANGE
+      ? this.filterOptionValue.title ||
+          this.multiLanguageService.instant('filter.choose_range_time')
+      : this.multiLanguageService.instant('filter.choose_range_time');
+  }
+
+  public formatTime(time) {
     if (!time) return;
     return new Date(new Date(time).getTime()).toISOString();
   }
 
-  startDate(time) {
+  public startDate(time) {
     return this.formatTime(moment(time).set({ h: 0, m: 0, s: 0 }));
   }
 
-  endDate(time) {
+  public endDate(time) {
     return this.formatTime(moment(time).set({ h: 23, m: 59, s: 59 }));
   }
 
@@ -380,7 +383,7 @@ export class DatetimeFilterComponent implements OnInit {
     return { startDate, endDate };
   }
 
-  chooseTimeFilter(startDate, endDate, title, element) {
+  public chooseTimeFilter(startDate, endDate, title, element) {
     element.style.display = 'none';
     let dateFormat = this.formatDateBeforeFilter(startDate, endDate);
 
@@ -396,7 +399,7 @@ export class DatetimeFilterComponent implements OnInit {
     });
   }
 
-  formatDateBeforeFilter(startTime, endTime) {
+  public formatDateBeforeFilter(startTime, endTime) {
     let startDate = startTime
       ? new Date(new Date(startTime).getTime() + 25200000).toISOString()
       : null;
@@ -416,7 +419,7 @@ export class DatetimeFilterComponent implements OnInit {
     };
   }
 
-  displayDetailOption(currentElement) {
+  public displayDetailOption(currentElement) {
     const filterFormList = document.querySelectorAll(
       '.filter-form-container-expand'
     );
@@ -462,7 +465,7 @@ export class DatetimeFilterComponent implements OnInit {
     return endDay.charAt(0).toUpperCase() + endDay.slice(1);
   }
 
-  onSelectStartDate(event, currentEle) {
+  public onSelectStartDate(event, currentEle) {
     if (
       new Date(this.selectedStartDate).getTime() != new Date(event).getTime()
     ) {
@@ -480,7 +483,7 @@ export class DatetimeFilterComponent implements OnInit {
     // }
   }
 
-  onSelectEndDate(event, currentEle) {
+  public onSelectEndDate(event, currentEle) {
     this.selectedEndDate = event;
     const selectedTimeShowOnRadioButton = `${this.selectedStartDateDisplay} - ${this.selectedEndDateDisplay}`;
     this.chooseTimeFilter(
@@ -491,7 +494,7 @@ export class DatetimeFilterComponent implements OnInit {
     );
   }
 
-  resetSelectedDate() {
+  public resetSelectedDate() {
     this.selectedStartDate = null;
     this.selectedEndDate = null;
 
@@ -501,7 +504,10 @@ export class DatetimeFilterComponent implements OnInit {
       value: {
         startDate: null,
         endDate: null,
-        title: null,
+        title:
+          this.selectedTimeFilterMethod === FILTER_DATETIME_TYPE.TIME_FRAME
+            ? this.multiLanguageService.instant('filter.all_time')
+            : this.multiLanguageService.instant('filter.choose_range_time'),
         type: this.selectedTimeFilterMethod,
       },
     });
