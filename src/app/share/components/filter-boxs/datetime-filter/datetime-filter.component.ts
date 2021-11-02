@@ -12,6 +12,8 @@ import {
 import { MultiLanguageService } from '../../../translate/multiLanguageService';
 import { FilterEventModel } from '../../../../public/models/filter-event.model';
 import { FilterOptionModel } from '../../../../public/models/filter-option.model';
+import { FILTER_DATETIME_TYPE } from '../../../../core/common/enum/operator';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-datetime-filter',
@@ -28,7 +30,18 @@ import { FilterOptionModel } from '../../../../public/models/filter-option.model
   ],
 })
 export class DatetimeFilterComponent implements OnInit {
-  @Input() filterOption: FilterOptionModel;
+  _filterOption: FilterOptionModel;
+  @Input()
+  get filterOption(): FilterOptionModel {
+    return this._filterOption;
+  }
+
+  set filterOption(filterOptionModel: FilterOptionModel) {
+    this.selectedTimeFilterMethod = filterOptionModel.value
+      ? filterOptionModel.value?.type || FILTER_DATETIME_TYPE.TIME_FRAME
+      : FILTER_DATETIME_TYPE.TIME_FRAME;
+    this._filterOption = filterOptionModel;
+  }
 
   @Output() completeFilter = new EventEmitter<FilterEventModel>();
 
@@ -151,14 +164,27 @@ export class DatetimeFilterComponent implements OnInit {
       ],
     },
   ];
-  chooseTimeFilterMethod: number;
-  choosenStaticMethod: string =
-    this.multiLanguageService.instant('filter.all_time');
-  choosenStateMethod: string = this.multiLanguageService.instant(
-    'filter.choose_range_time'
-  );
+
+  selectedTimeFilterMethod: FILTER_DATETIME_TYPE;
+
+  get chosenTimeFrameMethod(): string {
+    return this.filterOption.value &&
+      this.filterOption.value?.type === FILTER_DATETIME_TYPE.TIME_FRAME
+      ? this.filterOption.value?.title ||
+          this.multiLanguageService.instant('filter.all_time')
+      : this.multiLanguageService.instant('filter.all_time');
+  }
+
+  get chosenTimeRangeMethod(): string {
+    return this.filterOption.value &&
+      this.filterOption.value?.type === FILTER_DATETIME_TYPE.TIME_RANGE
+      ? this.filterOption.value?.title ||
+          this.multiLanguageService.instant('filter.choose_range_time')
+      : this.multiLanguageService.instant('filter.choose_range_time');
+  }
+
   selectedStartDate: Date | null;
-  selectedEndDate: Date | null = this.currentTime;
+  selectedEndDate: Date | null;
 
   constructor(private multiLanguageService: MultiLanguageService) {}
 
@@ -166,9 +192,7 @@ export class DatetimeFilterComponent implements OnInit {
 
   formatTime(time) {
     if (!time) return;
-    return moment(new Date(time), 'YYYY-MM-DD HH:mm:ss').format(
-      'DD-MM-YYYY HH:mm'
-    );
+    return new Date(new Date(time).getTime()).toISOString();
   }
 
   startDate(time) {
@@ -357,14 +381,39 @@ export class DatetimeFilterComponent implements OnInit {
   }
 
   chooseTimeFilter(startDate, endDate, title, element) {
-    //Call api filter
-    console.log({ startDate, endDate, title, element });
-    if (this.chooseTimeFilterMethod == 1) {
-      this.choosenStaticMethod = title;
-    } else {
-      this.choosenStateMethod = title;
-    }
     element.style.display = 'none';
+    let dateFormat = this.formatDateBeforeFilter(startDate, endDate);
+
+    this.completeFilter.emit({
+      type: this.filterOption.type,
+      controlName: this.filterOption.controlName,
+      value: {
+        startDate: dateFormat.startDate,
+        endDate: dateFormat.endDate,
+        title: title,
+        type: this.selectedTimeFilterMethod,
+      },
+    });
+  }
+
+  formatDateBeforeFilter(startTime, endTime) {
+    let startDate = startTime
+      ? new Date(new Date(startTime).getTime() + 25200000).toISOString()
+      : null;
+    let endDate = endTime
+      ? new Date(new Date(endTime).getTime() + 25200000).toISOString()
+      : null;
+
+    //If is same day filter between 00:00:00 and 23:59:59
+    if (!_.isEmpty(startDate) && !_.isEmpty(endDate) && startDate == endDate) {
+      endDate = new Date(
+        new Date(endDate).getTime() + 86400000 - 1
+      ).toISOString();
+    }
+    return {
+      startDate: startDate,
+      endDate: endDate,
+    };
   }
 
   displayDetailOption(currentElement) {
@@ -413,16 +462,22 @@ export class DatetimeFilterComponent implements OnInit {
     return endDay.charAt(0).toUpperCase() + endDay.slice(1);
   }
 
-  onSelectStartDate(event) {
-    this.selectedStartDate = event;
-
+  onSelectStartDate(event, currentEle) {
     if (
-      this.selectedEndDate &&
-      new Date(this.selectedEndDate).getTime() <
-        new Date(this.selectedStartDate).getTime()
+      new Date(this.selectedStartDate).getTime() != new Date(event).getTime()
     ) {
       this.selectedEndDate = null;
     }
+
+    this.selectedStartDate = event;
+
+    // if (
+    //   this.selectedEndDate &&
+    //   new Date(this.selectedEndDate).getTime() <
+    //     new Date(this.selectedStartDate).getTime()
+    // ) {
+    //   this.selectedEndDate = null;
+    // }
   }
 
   onSelectEndDate(event, currentEle) {
@@ -439,8 +494,16 @@ export class DatetimeFilterComponent implements OnInit {
   resetSelectedDate() {
     this.selectedStartDate = null;
     this.selectedEndDate = null;
-    this.choosenStateMethod = this.multiLanguageService.instant(
-      'filter.choose_range_time'
-    );
+
+    this.completeFilter.emit({
+      type: this.filterOption.type,
+      controlName: this.filterOption.controlName,
+      value: {
+        startDate: null,
+        endDate: null,
+        title: null,
+        type: this.selectedTimeFilterMethod,
+      },
+    });
   }
 }

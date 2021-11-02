@@ -7,7 +7,7 @@
       <mat-radio-group
         aria-labelledby="example-radio-group-label"
         class="example-radio-group"
-        [(ngModel)]="chooseTimeFilterMethod"
+        [(ngModel)]="selectedTimeFilterMethod"
       >
         <li
           class="
@@ -21,10 +21,10 @@
         >
           <div>
             <mat-radio-button
-              value="1"
+              [value]="'TIME_FRAME'"
               color="primary"
               (click)="displayDetailOption(staticMethodEle)"
-              >{{ choosenStaticMethod }}</mat-radio-button
+              >{{ chosenTimeFrameMethod }}</mat-radio-button
             >
             <div
               class="filter-form-container-expand"
@@ -86,7 +86,7 @@
               gap-1
             "
           >
-            <span class="sprite-group-5-chevron-right-blue"></span>
+            <span class="sprite-group-5-chevron-right-grey"></span>
           </div>
         </li>
         <li
@@ -102,9 +102,9 @@
           <div>
             <mat-radio-button
               color="primary"
-              value="2"
+              [value]="'TIME_RANGE'"
               (click)="displayDetailOption(stateMethodEle)"
-              >{{ choosenStateMethod }}</mat-radio-button
+              >{{ chosenTimeRangeMethod }}</mat-radio-button
             >
             <div
               class="filter-form-container-expand"
@@ -156,7 +156,9 @@
                         <mat-calendar
                           [selected]="selectedStartDate"
                           [maxDate]="currentTime"
-                          (selectedChange)="onSelectStartDate($event)"
+                          (selectedChange)="
+                            onSelectStartDate($event, stateMethodEle)
+                          "
                         ></mat-calendar>
                       </mat-card>
                     </div>
