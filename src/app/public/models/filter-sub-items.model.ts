@@ -3,5 +3,6 @@ export interface FilterSubItemsModel {
   value: string;
   selected?: boolean;
   imgSrc?: string;
+  code?: string;
   showAction?: boolean;
 }

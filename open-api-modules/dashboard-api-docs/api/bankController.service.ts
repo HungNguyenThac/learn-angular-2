@@ -17,11 +17,8 @@ import { HttpClient, HttpHeaders, HttpParams,
 import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
-import { ApiResponseGetTokenResponse } from '../model/models';
-import { ApiResponseObject } from '../model/models';
-import { ChangePassProviderRequest } from '../model/models';
-import { CreateProviderAccountRequest } from '../model/models';
-import { GetTokenRequest } from '../model/models';
+import { ApiResponseBank } from '../model/models';
+import { ApiResponseSearchAndPaginationResponseBank } from '../model/models';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
 import { Configuration }                                     from '../configuration';
@@ -31,7 +28,7 @@ import { Configuration }                                     from '../configurat
 @Injectable({
   providedIn: 'root'
 })
-export class ServiceCredentialControllerService {
+export class BankControllerService {
 
     protected basePath = 'http://localhost:8004';
     public defaultHeaders = new HttpHeaders();
@@ -89,16 +86,44 @@ export class ServiceCredentialControllerService {
     }
 
     /**
-     * @param changePassProviderRequest 
+     * @param pageSize 
+     * @param pageNumber 
+     * @param requestBody 
+     * @param sortField 
+     * @param descending 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public changePass(changePassProviderRequest: ChangePassProviderRequest, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseObject>;
-    public changePass(changePassProviderRequest: ChangePassProviderRequest, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseObject>>;
-    public changePass(changePassProviderRequest: ChangePassProviderRequest, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseObject>>;
-    public changePass(changePassProviderRequest: ChangePassProviderRequest, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
-        if (changePassProviderRequest === null || changePassProviderRequest === undefined) {
-            throw new Error('Required parameter changePassProviderRequest was null or undefined when calling changePass.');
+    public getBank(pageSize: number, pageNumber: number, requestBody: { [key: string]: object; }, sortField?: string, descending?: boolean, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseSearchAndPaginationResponseBank>;
+    public getBank(pageSize: number, pageNumber: number, requestBody: { [key: string]: object; }, sortField?: string, descending?: boolean, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseSearchAndPaginationResponseBank>>;
+    public getBank(pageSize: number, pageNumber: number, requestBody: { [key: string]: object; }, sortField?: string, descending?: boolean, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseSearchAndPaginationResponseBank>>;
+    public getBank(pageSize: number, pageNumber: number, requestBody: { [key: string]: object; }, sortField?: string, descending?: boolean, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
+        if (pageSize === null || pageSize === undefined) {
+            throw new Error('Required parameter pageSize was null or undefined when calling getBank.');
+        }
+        if (pageNumber === null || pageNumber === undefined) {
+            throw new Error('Required parameter pageNumber was null or undefined when calling getBank.');
+        }
+        if (requestBody === null || requestBody === undefined) {
+            throw new Error('Required parameter requestBody was null or undefined when calling getBank.');
+        }
+
+        let queryParameters = new HttpParams({encoder: this.encoder});
+        if (pageSize !== undefined && pageSize !== null) {
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>pageSize, 'pageSize');
+        }
+        if (pageNumber !== undefined && pageNumber !== null) {
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>pageNumber, 'pageNumber');
+        }
+        if (sortField !== undefined && sortField !== null) {
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>sortField, 'sortField');
+        }
+        if (descending !== undefined && descending !== null) {
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>descending, 'descending');
         }
 
         let headers = this.defaultHeaders;
@@ -130,9 +155,10 @@ export class ServiceCredentialControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.post<ApiResponseObject>(`${this.configuration.basePath}/credential/v1/change-pass`,
-            changePassProviderRequest,
+        return this.httpClient.post<ApiResponseSearchAndPaginationResponseBank>(`${this.configuration.basePath}/v1/bank`,
+            requestBody,
             {
+                params: queryParameters,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -143,16 +169,16 @@ export class ServiceCredentialControllerService {
     }
 
     /**
-     * @param createProviderAccountRequest 
+     * @param bankId 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public createToken(createProviderAccountRequest: CreateProviderAccountRequest, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseObject>;
-    public createToken(createProviderAccountRequest: CreateProviderAccountRequest, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseObject>>;
-    public createToken(createProviderAccountRequest: CreateProviderAccountRequest, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseObject>>;
-    public createToken(createProviderAccountRequest: CreateProviderAccountRequest, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
-        if (createProviderAccountRequest === null || createProviderAccountRequest === undefined) {
-            throw new Error('Required parameter createProviderAccountRequest was null or undefined when calling createToken.');
+    public getBankById(bankId: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseBank>;
+    public getBankById(bankId: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseBank>>;
+    public getBankById(bankId: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseBank>>;
+    public getBankById(bankId: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
+        if (bankId === null || bankId === undefined) {
+            throw new Error('Required parameter bankId was null or undefined when calling getBankById.');
         }
 
         let headers = this.defaultHeaders;
@@ -170,76 +196,12 @@ export class ServiceCredentialControllerService {
         }
 
 
-        // to determine the Content-Type header
-        const consumes: string[] = [
-            'application/json'
-        ];
-        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
-        if (httpContentTypeSelected !== undefined) {
-            headers = headers.set('Content-Type', httpContentTypeSelected);
-        }
-
         let responseType_: 'text' | 'json' = 'json';
         if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
             responseType_ = 'text';
         }
 
-        return this.httpClient.post<ApiResponseObject>(`${this.configuration.basePath}/credential/v1/create`,
-            createProviderAccountRequest,
-            {
-                responseType: <any>responseType_,
-                withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress
-            }
-        );
-    }
-
-    /**
-     * @param getTokenRequest 
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public getToken(getTokenRequest: GetTokenRequest, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseGetTokenResponse>;
-    public getToken(getTokenRequest: GetTokenRequest, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseGetTokenResponse>>;
-    public getToken(getTokenRequest: GetTokenRequest, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseGetTokenResponse>>;
-    public getToken(getTokenRequest: GetTokenRequest, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
-        if (getTokenRequest === null || getTokenRequest === undefined) {
-            throw new Error('Required parameter getTokenRequest was null or undefined when calling getToken.');
-        }
-
-        let headers = this.defaultHeaders;
-
-        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-        if (httpHeaderAcceptSelected === undefined) {
-            // to determine the Accept header
-            const httpHeaderAccepts: string[] = [
-                '*/*'
-            ];
-            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        }
-        if (httpHeaderAcceptSelected !== undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
-        }
-
-
-        // to determine the Content-Type header
-        const consumes: string[] = [
-            'application/json'
-        ];
-        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
-        if (httpContentTypeSelected !== undefined) {
-            headers = headers.set('Content-Type', httpContentTypeSelected);
-        }
-
-        let responseType_: 'text' | 'json' = 'json';
-        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
-            responseType_ = 'text';
-        }
-
-        return this.httpClient.post<ApiResponseGetTokenResponse>(`${this.configuration.basePath}/credential/v1/get-token`,
-            getTokenRequest,
+        return this.httpClient.get<ApiResponseBank>(`${this.configuration.basePath}/v1/bank/${encodeURIComponent(String(bankId))}`,
             {
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,

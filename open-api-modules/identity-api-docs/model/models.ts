@@ -1,6 +1,7 @@
 export * from './apiResponseGetTokenResponse';
 export * from './apiResponseLoginResponse';
 export * from './apiResponseObject';
+export * from './changePassProviderRequest';
 export * from './createCustomerAccountRequest';
 export * from './createProviderAccountRequest';
 export * from './createVerifiedAccountRequest';

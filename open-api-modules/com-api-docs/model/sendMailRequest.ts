@@ -16,5 +16,8 @@ export interface SendMailRequest {
     to: Array<string>;
     subject: string;
     content: string;
+    documentPath?: string;
+    fileName?: string;
+    withFooter?: boolean;
 }
 

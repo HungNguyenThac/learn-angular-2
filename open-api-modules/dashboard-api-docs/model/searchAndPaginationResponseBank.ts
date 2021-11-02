@@ -9,13 +9,12 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { GetTokenResponse } from './getTokenResponse';
+import { Pagination } from './pagination';
+import { Bank } from './bank';
 
 
-export interface ApiResponseGetTokenResponse { 
-    result?: GetTokenResponse;
-    errorCode?: string;
-    message?: object;
-    responseCode?: number;
+export interface SearchAndPaginationResponseBank { 
+    pagination?: Pagination;
+    data?: Array<Bank>;
 }
 

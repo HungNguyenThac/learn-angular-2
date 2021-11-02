@@ -47,7 +47,6 @@ export interface CustomerInfo {
     stepThreeEmployment?: string;
     paydayLoanStatus?: string;
     errorGetTngInfo?: boolean;
-    isValidTngInfo?: boolean;
     collateralDocument?: string;
     salaryDocument1?: string;
     salaryDocument2?: string;

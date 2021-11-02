@@ -384,6 +384,8 @@
     "choose_range_time": "Chọn khoảng thời gian",
     "from_day": "Từ ngày",
     "selected_date": "{{date}} ngày {{day}}",
+    "company": "Công ty",
+    "choose_company": "Chọn công ty",
     "options": {
       "by_day": "Theo ngày",
       "to_day": "Hôm nay",

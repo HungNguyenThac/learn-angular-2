@@ -17,6 +17,7 @@ import {
   ApiResponseSearchAndPaginationResponseCompanyInfo,
   ApiResponseSearchAndPaginationResponseCustomerInfo,
   CompanyControllerService,
+  CompanyInfo,
   SearchAndPaginationResponseCompanyInfo,
 } from '../../../../../open-api-modules/dashboard-api-docs';
 import { CustomerListService } from './customer-list.service';
@@ -37,7 +38,7 @@ import { FilterActionEventModel } from '../../../public/models/filter-action-eve
   styleUrls: ['./customer-list.component.scss'],
 })
 export class CustomerListComponent implements OnInit, OnDestroy {
-  companyList: SearchAndPaginationResponseCompanyInfo;
+  companyList: Array<CompanyInfo>;
   subManager = new Subscription();
 
   tableTitle: string = this.multiLanguageService.instant(
@@ -60,112 +61,83 @@ export class CustomerListComponent implements OnInit, OnDestroy {
       value: null,
     },
     {
-      title: this.multiLanguageService.instant('filter.time'),
+      title: this.multiLanguageService.instant('filter.company'),
       type: FILTER_TYPE.SELECT,
       controlName: 'companyId',
       value: null,
-      titleAction: 'áda',
-      actionIconClass: 'sprite-group-5-home-white',
-      showAction: true,
       options: [
         {
-          title: 'adas',
-          value: 'ádas',
-          showAction: true,
-          actionTitle: 'ádas',
-          actionIconClass: 'sprite-group-5-home-white',
-          disabled: false,
-          count: 10,
-        },
-        {
-          title: 'vcasvsa',
-          value: 'váva',
-          showAction: true,
-          actionTitle: 'vvasva',
-          actionIconClass: 'sprite-group-5-home-white',
-          subTitle: 'váv',
-          disabled: false,
-          count: 10,
-        },
-      ],
-    },
-    {
-      title: this.multiLanguageService.instant('filter.time'),
-      type: FILTER_TYPE.SELECT,
-      controlName: 'paydayLoanStatus',
-      value: null,
-      options: [
-        {
-          title: 'adas',
-          value: 'ádas',
-          showAction: true,
-          actionTitle: 'ádas',
-          actionIconClass: 'sprite-group-5-home-white',
-          subTitle: 'ádas',
-          subOptions: [
-            {
-              title: 'ádas',
-              value: 'ádfa',
-              selected: true,
-              imgSrc: 'assets/img/icon/group-5/pl-24-available.png',
-              showAction: true,
-            },
-          ],
-          disabled: false,
-          count: 0,
-        },
-        {
-          title: 'vcasvsa',
-          value: 'váva',
-          showAction: true,
-          actionTitle: 'vvasva',
-          actionIconClass: 'sprite-group-5-home-white',
-          subTitle: 'váv',
-          subOptions: [
-            {
-              title: 'ádas',
-              value: 'ádfa',
-              selected: true,
-              imgSrc: 'assets/img/icon/group-5/pl-24-available.png',
-              showAction: true,
-            },
-          ],
-          disabled: false,
-          count: 10,
-        },
-      ],
-    },
-    {
-      title: this.multiLanguageService.instant('filter.time'),
-      type: FILTER_TYPE.MULTIPLE_CHOICE,
-      controlName: 'companyId',
-      value: null,
-      showAction: true,
-      titleAction: 'them moi ',
-      actionIconClass: 'sprite-group-5-home',
-      options: [
-        {
-          title: 'cvas',
-          value: 'avs',
-          showAction: true,
-          actionTitle: 'Toi la day',
-          actionIconClass: 'sprite-group-5-coin',
-          subTitle: 'casca',
-          disabled: false,
-          count: 0,
-        },
-        {
-          title: 'vcasvsa',
-          value: 'váva',
+          title: this.multiLanguageService.instant('filter.choose_company'),
+          value: null,
           showAction: false,
-          actionTitle: 'DDay la toi',
-          actionIconClass: 'sprite-group-5-coin',
-          subTitle: 'váv',
+          subTitle: this.multiLanguageService.instant('filter.choose_company'),
+          subOptions: [],
           disabled: false,
           count: 0,
         },
       ],
     },
+    // {
+    //   title: this.multiLanguageService.instant('filter.time'),
+    //   type: FILTER_TYPE.SELECT,
+    //   controlName: 'companyId1',
+    //   value: null,
+    //   titleAction: 'áda',
+    //   actionIconClass: 'sprite-group-5-home-white',
+    //   showAction: true,
+    //   options: [
+    //     {
+    //       title: 'adas',
+    //       value: 'ádas',
+    //       showAction: true,
+    //       actionTitle: 'ádas',
+    //       actionIconClass: 'sprite-group-5-home-white',
+    //       disabled: false,
+    //       count: 10,
+    //     },
+    //     {
+    //       title: 'vcasvsa',
+    //       value: 'váva',
+    //       showAction: true,
+    //       actionTitle: 'vvasva',
+    //       actionIconClass: 'sprite-group-5-home-white',
+    //       subTitle: 'váv',
+    //       disabled: false,
+    //       count: 10,
+    //     },
+    //   ],
+    // },
+    // {
+    //   title: this.multiLanguageService.instant('filter.time'),
+    //   type: FILTER_TYPE.MULTIPLE_CHOICE,
+    //   controlName: 'companyId',
+    //   value: null,
+    //   showAction: true,
+    //   titleAction: 'them moi ',
+    //   actionIconClass: 'sprite-group-5-home',
+    //   options: [
+    //     {
+    //       title: 'cvas',
+    //       value: 'avs',
+    //       showAction: true,
+    //       actionTitle: 'Toi la day',
+    //       actionIconClass: 'sprite-group-5-coin',
+    //       subTitle: 'casca',
+    //       disabled: false,
+    //       count: 0,
+    //     },
+    //     {
+    //       title: 'vcasvsa',
+    //       value: 'váva',
+    //       showAction: false,
+    //       actionTitle: 'DDay la toi',
+    //       actionIconClass: 'sprite-group-5-coin',
+    //       subTitle: 'váv',
+    //       disabled: false,
+    //       count: 0,
+    //     },
+    //   ],
+    // },
   ];
 
   allColumns: any[] = [
@@ -332,7 +304,7 @@ export class CustomerListComponent implements OnInit, OnDestroy {
       dateFilterType: [''],
       dateFilterTitle: [''],
       filterConditions: {
-        companyId: QUERY_CONDITION_TYPE.EQUAL,
+        companyId: QUERY_CONDITION_TYPE.IN,
         paydayLoanStatus: QUERY_CONDITION_TYPE.EQUAL,
       },
     });
@@ -366,18 +338,19 @@ export class CustomerListComponent implements OnInit, OnDestroy {
       endTime: params.endTime,
       dateFilterType: params.dateFilterType,
       dateFilterTitle: params.dateFilterTitle,
+      companyId: params.companyId,
     });
 
     this.filterOptions.forEach((filterOption) => {
-      if (
-        filterOption.type === FILTER_TYPE.DATETIME &&
-        params.dateFilterType &&
-        params.dateFilterTitle
-      ) {
+      if (filterOption.type === FILTER_TYPE.DATETIME) {
         filterOption.value = {
           type: params.dateFilterType,
           title: params.dateFilterTitle,
         };
+      } else if (filterOption.controlName === 'companyId') {
+        filterOption.value = params.companyId
+          ? params.companyId.split(',')
+          : [];
       }
     });
 
@@ -415,10 +388,29 @@ export class CustomerListComponent implements OnInit, OnDestroy {
         .getCompanies(10, 0, {})
         .subscribe(
           (data: ApiResponseSearchAndPaginationResponseCompanyInfo) => {
-            this.companyList = data?.result;
+            this.companyList = data?.result?.data;
+            this._initCompanyOptions();
           }
         )
     );
+  }
+
+  private _initCompanyOptions() {
+    this.filterOptions.forEach((filterOption: FilterOptionModel) => {
+      if (filterOption.controlName !== 'companyId') {
+        return;
+      }
+      filterOption.options[0].subOptions = this.companyList.map(
+        (company: CompanyInfo) => {
+          return {
+            title: company.name + ' (' + company.code + ')',
+            value: company.id,
+            imgSrc: company.avatar,
+            code: company.code,
+          };
+        }
+      );
+    });
   }
 
   private _buildParams() {
@@ -468,6 +460,11 @@ export class CustomerListComponent implements OnInit, OnDestroy {
       case FILTER_TYPE.MULTIPLE_CHOICE:
         break;
       case FILTER_TYPE.SELECT:
+        if (event.controlName === 'companyId') {
+          this.filterForm.controls.companyId.setValue(
+            event.value ? event.value.join(',') : ''
+          );
+        }
         break;
       default:
         break;
@@ -506,6 +503,8 @@ export class CustomerListComponent implements OnInit, OnDestroy {
     queryParams['pageIndex'] = this.pageIndex;
     queryParams['pageSize'] = this.pageSize;
     queryParams['keyword'] = data.keyword;
+
+    queryParams['companyId'] = data.companyId;
 
     this.router
       .navigate([], {

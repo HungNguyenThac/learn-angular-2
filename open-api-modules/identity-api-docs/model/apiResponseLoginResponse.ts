@@ -15,7 +15,7 @@ import { LoginResponse } from './loginResponse';
 export interface ApiResponseLoginResponse { 
     result?: LoginResponse;
     errorCode?: string;
-    message?: string;
+    message?: object;
     responseCode?: number;
 }
 

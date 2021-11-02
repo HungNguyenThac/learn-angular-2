@@ -2,10 +2,11 @@ import { NgModule, ModuleWithProviders, SkipSelf, Optional } from '@angular/core
 import { Configuration } from './configuration';
 import { HttpClient } from '@angular/common/http';
 
-import { ApiControllerService } from './api/apiController.service';
 import { ApiResourceControllerService } from './api/apiResourceController.service';
 import { ApplicationControllerService } from './api/applicationController.service';
 import { ApplicationHmgControllerService } from './api/applicationHmgController.service';
+import { ApprovalLetterControllerService } from './api/approvalLetterController.service';
+import { BankControllerService } from './api/bankController.service';
 import { CompanyControllerService } from './api/companyController.service';
 import { CustomerControllerService } from './api/customerController.service';
 import { OpenApiControllerWebMvcService } from './api/openApiControllerWebMvc.service';

@@ -9,11 +9,11 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { GetTokenResponse } from './getTokenResponse';
+import { ApprovalLetter } from './approvalLetter';
 
 
-export interface ApiResponseGetTokenResponse { 
-    result?: GetTokenResponse;
+export interface ApiResponseApprovalLetter { 
+    result?: ApprovalLetter;
     errorCode?: string;
     message?: object;
     responseCode?: number;

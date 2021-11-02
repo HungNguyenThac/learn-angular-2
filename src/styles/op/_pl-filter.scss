@@ -21,7 +21,8 @@
     letter-spacing: 0.1px;
     color: $grey-10;
     position: relative;
-    &:hover {
+    &:hover,
+    &.filter-child-item-active {
       background: $dim-light-blue;
     }
   }
@@ -85,6 +86,12 @@
     width: 20px;
     line-height: 20px;
   }
+}
+
+.filter-child-item-title {
+  cursor: pointer;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .filter-form-container-expand {

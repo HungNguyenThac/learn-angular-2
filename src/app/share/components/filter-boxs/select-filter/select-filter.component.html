@@ -1,6 +1,8 @@
 <div class="filter-boxes pb-5">
   <div class="d-flex justify-content-between align-items-center px-3 py-2">
-    <h3 class="filter-title">{{ filterOption.title }}</h3>
+    <h3 class="filter-title">
+      {{ filterOption.title }}
+    </h3>
   </div>
   <div>
     <ul>
@@ -13,6 +15,10 @@
           align-items-center
           filter-child-item
         "
+        [ngClass]="{
+          'filter-child-item-active':
+            filterOption.value && filterItem.value === filterOption.value
+        }"
         *ngFor="let filterItem of filterOption.options"
       >
         <div
@@ -23,11 +29,10 @@
           "
         >
           <p
-            class="w-100"
-            style="cursor: pointer"
+            class="w-100 filter-child-item-title"
             (click)="displayDetailOption(selectFieldListEle)"
           >
-            {{ filterItem.title }}
+            {{ displayTitle ? displayTitle : filterItem.title }}
           </p>
           <div
             class="filter-form-container-expand col-lg-4 col-12 col-sm-12"
@@ -76,7 +81,7 @@
                     </div>
                     <div
                       [ngClass]="
-                        selectedItem.includes(subItem.value)
+                        selectedItems.includes(subItem.value)
                           ? 'visible'
                           : 'invisible'
                       "
