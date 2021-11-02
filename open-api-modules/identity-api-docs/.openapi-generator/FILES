@@ -11,6 +11,7 @@ index.ts
 model/apiResponseGetTokenResponse.ts
 model/apiResponseLoginResponse.ts
 model/apiResponseObject.ts
+model/changePassProviderRequest.ts
 model/createCustomerAccountRequest.ts
 model/createProviderAccountRequest.ts
 model/createVerifiedAccountRequest.ts

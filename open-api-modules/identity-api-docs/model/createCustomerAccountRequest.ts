@@ -13,6 +13,14 @@
 
 export interface CreateCustomerAccountRequest { 
     mobile: string;
-    provider: string;
+    provider?: CreateCustomerAccountRequest.ProviderEnum;
 }
+export namespace CreateCustomerAccountRequest {
+    export type ProviderEnum = 'Zalo' | 'CMC';
+    export const ProviderEnum = {
+        Zalo: 'Zalo' as ProviderEnum,
+        Cmc: 'CMC' as ProviderEnum
+    };
+}
+
 

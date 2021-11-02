@@ -14,6 +14,18 @@
 export interface SendTemplateRequest { 
     templateName: string;
     customerId: string;
+    email: string;
+    mobile: string;
+    fullName: string;
     amount?: string;
+    loanCode?: string;
+    voucherType?: string;
+    voucherValue?: string;
+    promotionalCode?: string;
+    giftName?: string;
+    pathImage?: string;
+    addressCompany?: string;
+    giftGivingTime?: string;
+    giftGivingDay?: string;
 }
 

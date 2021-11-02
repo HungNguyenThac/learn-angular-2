@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FilterOptionModel } from '../../../../public/models/filter-option.model';
 import { FilterEventModel } from '../../../../public/models/filter-event.model';
 import { FilterItemModel } from '../../../../public/models/filter-item.model';
+import { FILTER_DATETIME_TYPE } from '../../../../core/common/enum/operator';
 
 @Component({
   selector: 'app-select-filter',
@@ -10,28 +11,52 @@ import { FilterItemModel } from '../../../../public/models/filter-item.model';
   styleUrls: ['./select-filter.component.scss'],
 })
 export class SelectFilterComponent implements OnInit {
-  @Input() filterOption: FilterOptionModel;
+  _filterOption: FilterOptionModel;
+  @Input()
+  get filterOption(): FilterOptionModel {
+    return this._filterOption;
+  }
+
+  set filterOption(filterOptionModel: FilterOptionModel) {
+    this.selectedItems = filterOptionModel.value || [];
+    this._filterOption = filterOptionModel;
+  }
 
   @Output() completeFilter = new EventEmitter<FilterEventModel>();
 
-  selectedItem: string[] = [];
+  selectedItems: string[] = [];
 
   constructor() {}
 
   ngOnInit(): void {}
 
-  selectSubItem(item) {
-    const index = this.selectedItem.findIndex((ele) => ele === item);
+  public selectSubItem(item) {
+    const index = this.selectedItems.findIndex((ele) => ele === item);
     if (index < 0) {
-      this.selectedItem.push(item);
+      this.selectedItems.push(item);
     } else {
-      this.selectedItem.splice(index, 1);
+      this.selectedItems.splice(index, 1);
     }
 
-    console.log('this.selectedItem', this.selectedItem);
+    this.completeFilter.emit({
+      type: this.filterOption.type,
+      controlName: this.filterOption.controlName,
+      value: this.selectedItems,
+    });
   }
 
-  selectSingleItem(item: FilterItemModel) {
+  get displayTitle() {
+    return this._filterOption.options[0].subOptions
+      .filter((subOption) => {
+        return this.selectedItems.includes(subOption.value);
+      })
+      .map((subOption) => {
+        return subOption.code;
+      })
+      .join(',');
+  }
+
+  public selectSingleItem(item: FilterItemModel) {
     this.completeFilter.emit({
       type: this.filterOption.type,
       controlName: this.filterOption.controlName,
@@ -39,11 +64,16 @@ export class SelectFilterComponent implements OnInit {
     });
   }
 
-  resetSelectedItem() {
-    this.selectedItem = [];
+  public resetSelectedItem() {
+    this.selectedItems = [];
+    this.completeFilter.emit({
+      type: this.filterOption.type,
+      controlName: this.filterOption.controlName,
+      value: this.selectedItems,
+    });
   }
 
-  displayDetailOption(currentElement) {
+  public displayDetailOption(currentElement) {
     const filterFormList = document.querySelectorAll(
       '.filter-form-container-expand'
     );

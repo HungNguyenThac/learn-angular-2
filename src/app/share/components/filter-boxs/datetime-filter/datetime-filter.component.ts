@@ -504,10 +504,7 @@ export class DatetimeFilterComponent implements OnInit {
       value: {
         startDate: null,
         endDate: null,
-        title:
-          this.selectedTimeFilterMethod === FILTER_DATETIME_TYPE.TIME_FRAME
-            ? this.multiLanguageService.instant('filter.all_time')
-            : this.multiLanguageService.instant('filter.choose_range_time'),
+        title: null,
         type: this.selectedTimeFilterMethod,
       },
     });

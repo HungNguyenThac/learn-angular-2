@@ -23,6 +23,7 @@ model/apiResponseListDocumentSigningLocationEntity.ts
 model/apiResponseListTemplateNotificationEntity.ts
 model/apiResponseListTransactionNotificationEntity.ts
 model/apiResponseObject.ts
+model/apiResponseOtpResponse.ts
 model/apiResponseSignWithOTPResponse.ts
 model/apiResponseString.ts
 model/confirmOTPResponse.ts
@@ -38,6 +39,7 @@ model/dataCreateToken.ts
 model/documentSigningLocationEntity.ts
 model/downloadFileRequest.ts
 model/models.ts
+model/otpResponse.ts
 model/seenNotificationRequest.ts
 model/sendContractOTPRequest.ts
 model/sendLetterOTPRequest.ts

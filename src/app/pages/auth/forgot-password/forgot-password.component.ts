@@ -78,7 +78,7 @@ export class ForgotPasswordComponent implements OnInit {
   getOtp() {
     const createCustomerAccountRequest: CreateCustomerAccountRequest = {
       mobile: this.passwordForgotForm.controls.mobileNumber.value,
-      provider: 'cmc',
+      provider: CreateCustomerAccountRequest.ProviderEnum.Cmc,
     };
 
     this.subManager.add(

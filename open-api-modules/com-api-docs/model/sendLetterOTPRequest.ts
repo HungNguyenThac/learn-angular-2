@@ -22,5 +22,16 @@ export interface SendLetterOTPRequest {
     employeeCode?: string;
     idIssuePlace: string;
     documentPath: string;
+    otpType: SendLetterOTPRequest.OtpTypeEnum;
+    gender: string;
 }
+export namespace SendLetterOTPRequest {
+    export type OtpTypeEnum = 'EMAIL' | 'SMS' | 'VOICE';
+    export const OtpTypeEnum = {
+        Email: 'EMAIL' as OtpTypeEnum,
+        Sms: 'SMS' as OtpTypeEnum,
+        Voice: 'VOICE' as OtpTypeEnum
+    };
+}
+
 

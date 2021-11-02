@@ -9,11 +9,11 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { GetTokenResponse } from './getTokenResponse';
+import { Bank } from './bank';
 
 
-export interface ApiResponseGetTokenResponse { 
-    result?: GetTokenResponse;
+export interface ApiResponseBank { 
+    result?: Bank;
     errorCode?: string;
     message?: object;
     responseCode?: number;
