@@ -17,57 +17,8 @@ export class LoanListService {
     private customerControllerService: CustomerControllerService
   ) {}
 
-  public getData(params) {
-    let requestBody = {};
-
-    if (params.filterConditions) {
-      for (const [paramName, paramValue] of Object.entries(
-        params.filterConditions
-      )) {
-        if (!_.isEmpty(params[paramName])) {
-          requestBody[paramName + paramValue] = params[paramName] || '';
-        }
-      }
-    }
-
-    if (params.startTime || params.endTime) {
-      let startTime = params.startTime
-        ? new Date(
-            new Date(params.startTime).getTime() + 25200000
-          ).toISOString()
-        : null;
-      let endTime = params.endTime
-        ? new Date(new Date(params.endTime).getTime() + 25200000).toISOString()
-        : null;
-
-      //If is same day filter between 00:00:00 and 23:59:59
-      if (
-        !_.isEmpty(startTime) &&
-        !_.isEmpty(endTime) &&
-        startTime == endTime
-      ) {
-        endTime = new Date(
-          new Date(endTime).getTime() + 86400000 - 1
-        ).toISOString();
-      }
-
-      requestBody['createdAt' + QUERY_CONDITION_TYPE.BETWEEN] = {
-        start: startTime,
-        end: endTime,
-      };
-    }
-
-    return this.paydayLoanControllerService.getLoanByStatus(
-      params.limit,
-      params.pageIndex,
-      // requestBody,
-      params.orderBy
-      // params.descending
-    );
-  }
-
   public getLoanDataHmg(params) {
-    console.log('getData(params)', params);
+    console.log('getData(params)-----------------------', params);
     let requestBody = {};
     if (params.filterConditions) {
       for (const [paramName, paramValue] of Object.entries(
@@ -111,15 +62,13 @@ export class LoanListService {
       mobileNumber: params.mobileNumber,
     };
     if (!params.status) delete queryParams.status;
-    console.log('queryParams', queryParams);
-    return this.applicationHmgControllerService
-      .findApplication1(
-        queryParams,
-        params.pageSize,
-        params.pageNumber,
-        params.orderBy,
-        params.desc
-      )
+    return this.applicationHmgControllerService.findApplication1(
+      queryParams,
+      params.pageSize,
+      params.pageNumber,
+      params.orderBy,
+      params.sortDirection === 'desc'
+    );
   }
 
   public getLoanDataTng(params) {

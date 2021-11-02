@@ -170,13 +170,17 @@ export class LoanListComponent implements OnInit {
       }
     }
 
-    this.filterForm.controls.filterConditions.setValue(filterConditionsValue);
-    this.filterForm.controls.orderBy.setValue(params.orderBy || 'createdAt');
-    this.filterForm.controls.sortDirection.setValue(
-      params.sortDirection || 'desc'
-    );
-    this.filterForm.controls.startTime.setValue(params.startTime || '');
-    this.filterForm.controls.endTime.setValue(params.endTime || '');
+
+    this.filterForm.patchValue({
+      filterConditions: filterConditionsValue,
+      keyword: params.keyword,
+      orderBy: params.orderBy || 'createdAt',
+      sortDirection: params.sortDirection || 'desc',
+      startTime: params.startTime,
+      endTime: params.endTime,
+    });
+
+    this.breadcrumbOptions.keyword = params.keyword;
     this.pageIndex = params.pageIndex || 0;
     this.pageSize = params.pageSize || 20;
   }
@@ -242,7 +246,6 @@ export class LoanListComponent implements OnInit {
 
   private _onFilterChange() {
     const data = this.filterForm.getRawValue();
-    //convert time to ISO and set end time
     let queryParams = {};
 
     for (const [formControlName, queryCondition] of Object.entries(
@@ -258,7 +261,7 @@ export class LoanListComponent implements OnInit {
       ? data.startTime.toISOString()
       : null;
     queryParams['endTime'] = data.endTime ? data.endTime.toISOString() : null;
-
+    queryParams['sortDirection'] = data.sortDirection;
     queryParams['orderBy'] = data.orderBy;
     queryParams['pageIndex'] = this.pageIndex;
     queryParams['pageSize'] = this.pageSize;
