@@ -7,6 +7,7 @@ import * as fromStore from '../../../core/store';
 import {
   DATA_CELL_TYPE,
   DATA_STATUS_TYPE,
+  FILTER_TYPE,
   NAV_ITEM,
   QUERY_CONDITION_TYPE,
 } from '../../../core/common/enum/operator';
@@ -26,6 +27,10 @@ import * as fromSelectors from '../../../core/store/selectors';
 import { BreadcrumbOptionsModel } from '../../../public/models/breadcrumb-options.model';
 import { PageEvent } from '@angular/material/paginator/public-api';
 import { Sort } from '@angular/material/sort';
+import { FilterOptionModel } from 'src/app/public/models/filter-option.model';
+import { FilterSubItemsModel } from '../../../public/models/filter-sub-items.model';
+import { FilterEventModel } from '../../../public/models/filter-event.model';
+import { FilterActionEventModel } from '../../../public/models/filter-action-event.model';
 
 @Component({
   selector: 'app-customer-list',
@@ -47,6 +52,122 @@ export class CustomerListComponent implements OnInit, OnDestroy {
     showBtnAdd: false,
     keyword: '',
   };
+
+  filterOptions: FilterOptionModel[] = [
+    {
+      title: this.multiLanguageService.instant('filter.time'),
+      type: FILTER_TYPE.DATETIME,
+      controlName: 'createdAt',
+      value: null,
+    },
+    {
+      title: this.multiLanguageService.instant('filter.time'),
+      type: FILTER_TYPE.SELECT,
+      controlName: 'companyId',
+      value: null,
+      titleAction: 'áda',
+      actionIconClass: 'sprite-group-5-home-white',
+      showAction: true,
+      options: [
+        {
+          title: 'adas',
+          value: 'ádas',
+          showAction: true,
+          actionTitle: 'ádas',
+          actionIconClass: 'sprite-group-5-home-white',
+          disabled: false,
+          count: 10,
+        },
+        {
+          title: 'vcasvsa',
+          value: 'váva',
+          showAction: true,
+          actionTitle: 'vvasva',
+          actionIconClass: 'sprite-group-5-home-white',
+          subTitle: 'váv',
+          disabled: false,
+          count: 10,
+        },
+      ],
+    },
+    {
+      title: this.multiLanguageService.instant('filter.time'),
+      type: FILTER_TYPE.SELECT,
+      controlName: 'paydayLoanStatus',
+      value: null,
+      options: [
+        {
+          title: 'adas',
+          value: 'ádas',
+          showAction: true,
+          actionTitle: 'ádas',
+          actionIconClass: 'sprite-group-5-home-white',
+          subTitle: 'ádas',
+          subOptions: [
+            {
+              title: 'ádas',
+              value: 'ádfa',
+              selected: true,
+              imgSrc: 'assets/img/icon/group-5/pl-24-available.png',
+              showAction: true,
+            },
+          ],
+          disabled: false,
+          count: 0,
+        },
+        {
+          title: 'vcasvsa',
+          value: 'váva',
+          showAction: true,
+          actionTitle: 'vvasva',
+          actionIconClass: 'sprite-group-5-home-white',
+          subTitle: 'váv',
+          subOptions: [
+            {
+              title: 'ádas',
+              value: 'ádfa',
+              selected: true,
+              imgSrc: 'assets/img/icon/group-5/pl-24-available.png',
+              showAction: true,
+            },
+          ],
+          disabled: false,
+          count: 10,
+        },
+      ],
+    },
+    {
+      title: this.multiLanguageService.instant('filter.time'),
+      type: FILTER_TYPE.MULTIPLE_CHOICE,
+      controlName: 'companyId',
+      value: null,
+      showAction: true,
+      titleAction: 'them moi ',
+      actionIconClass: 'sprite-group-5-home',
+      options: [
+        {
+          title: 'cvas',
+          value: 'avs',
+          showAction: true,
+          actionTitle: 'Toi la day',
+          actionIconClass: 'sprite-group-5-coin',
+          subTitle: 'casca',
+          disabled: false,
+          count: 0,
+        },
+        {
+          title: 'vcasvsa',
+          value: 'váva',
+          showAction: false,
+          actionTitle: 'DDay la toi',
+          actionIconClass: 'sprite-group-5-coin',
+          subTitle: 'váv',
+          disabled: false,
+          count: 0,
+        },
+      ],
+    },
+  ];
 
   allColumns: any[] = [
     {
@@ -317,6 +438,14 @@ export class CustomerListComponent implements OnInit, OnDestroy {
   public onSubmitSearchForm(event) {
     this.filterForm.controls.keyword.setValue(event.keyword);
     this._onFilterChange();
+  }
+
+  public onFilterChange(event: FilterEventModel) {
+    console.log('FilterEventModel', event);
+  }
+
+  public onFilterActionTrigger(event: FilterActionEventModel) {
+    console.log('FilterActionEventModel', event);
   }
 
   private _onFilterChange() {
