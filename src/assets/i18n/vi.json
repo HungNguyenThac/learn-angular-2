@@ -378,6 +378,35 @@
       "completed_cde": "Đã bổ sung thông tin"
     }
   },
+  "filter": {
+    "time": "Thời gian",
+    "all_time": "Toàn thời gian",
+    "choose_range_time": "Chọn khoảng thời gian",
+    "from_day": "Từ ngày",
+    "selected_date": "{{date}} ngày {{day}}",
+    "options": {
+      "by_day": "Theo ngày",
+      "to_day": "Hôm nay",
+      "yesterday": "Hôm qua",
+      "by_week": "Theo tuần",
+      "this_week": "Tuần này",
+      "last_week": "Tuần trước",
+      "last_7_days": "7 ngày qua",
+      "by_month": "Theo tháng",
+      "this_month": "Tháng này",
+      "last_month": "Tháng trước",
+      "last_30_days": "30 ngày qua",
+      "by_quarterly": "Theo quý",
+      "first_quarterly": "Quý I",
+      "second_quarterly": "Quý II",
+      "third_quarterly": "Quý III",
+      "fourth_quarterly": "Quý IV",
+      "by_year": "Theo năm",
+      "this_year": "Năm nay",
+      "last_year": "Năm trước",
+      "all_time": "Toàn thời gian"
+    }
+  },
   "error_code": {
     "account_not_exist": "Số điện thoại hoặc mật khẩu không chính xác!",
     "account_not_existed": "Số điện thoại không chính xác!",

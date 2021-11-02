@@ -9,6 +9,11 @@ import {
 import { MatTableDataSource } from '@angular/material/table';
 import { BreadcrumbOptionsModel } from '../../../../public/models/breadcrumb-options.model';
 import { SortDirection } from '@angular/material/sort/sort-direction';
+import { FilterOptionModel } from '../../../../public/models/filter-option.model';
+import {FilterEventModel} from "../../../../public/models/filter-event.model";
+import {FilterActionEventModel} from "../../../../public/models/filter-action-event.model";
+import {Sort} from "@angular/material/sort";
+import {PageEvent} from "@angular/material/paginator/public-api";
 
 @Component({
   selector: 'app-base-management-layout',
@@ -18,6 +23,7 @@ import { SortDirection } from '@angular/material/sort/sort-direction';
 export class BaseManagementLayoutComponent implements OnInit {
   @Input() detailElementTemplate: TemplateRef<any>;
 
+  @Input() filterOptions: FilterOptionModel[] = [];
   @Input() allColumns: any[] = [];
   @Input() tableTitle: string;
   @Input() dataSource: MatTableDataSource<any> = new MatTableDataSource([]);
@@ -30,11 +36,13 @@ export class BaseManagementLayoutComponent implements OnInit {
   @Input() sortDirection: SortDirection = 'desc';
   @Input() breadcrumbOptions: BreadcrumbOptionsModel;
 
-  @Output() onPageChange = new EventEmitter<any>();
-  @Output() onSortChange = new EventEmitter<any>();
+  @Output() onPageChange = new EventEmitter<PageEvent>();
+  @Output() onSortChange = new EventEmitter<Sort>();
   @Output() onExpandElementChange = new EventEmitter<any>();
   @Output() onClickBtnAdd = new EventEmitter<any>();
   @Output() onSubmitSearchForm = new EventEmitter<any>();
+  @Output() onFilterChange = new EventEmitter<FilterEventModel>();
+  @Output() onFilterActionTrigger = new EventEmitter<FilterActionEventModel>();
 
   constructor() {}
 
@@ -48,15 +56,23 @@ export class BaseManagementLayoutComponent implements OnInit {
     this.onSubmitSearchForm.emit(event);
   }
 
-  triggerPageChange(event) {
+  triggerPageChange(event: PageEvent) {
     this.onPageChange.emit(event);
   }
 
-  triggerSortChange(event) {
+  triggerSortChange(event: Sort) {
     this.onSortChange.emit(event);
   }
 
   triggerExpandElementChange(event) {
     this.onExpandElementChange.emit(event);
+  }
+
+  triggerFilterChange(event: FilterEventModel) {
+    this.onFilterChange.emit(event);
+  }
+
+  triggerFilterAction(event: FilterActionEventModel) {
+    this.onFilterActionTrigger.emit(event);
   }
 }
