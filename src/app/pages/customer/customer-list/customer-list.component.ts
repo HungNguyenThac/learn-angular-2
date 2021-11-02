@@ -28,7 +28,6 @@ import { BreadcrumbOptionsModel } from '../../../public/models/breadcrumb-option
 import { PageEvent } from '@angular/material/paginator/public-api';
 import { Sort } from '@angular/material/sort';
 import { FilterOptionModel } from 'src/app/public/models/filter-option.model';
-import { FilterSubItemsModel } from '../../../public/models/filter-sub-items.model';
 import { FilterEventModel } from '../../../public/models/filter-event.model';
 import { FilterActionEventModel } from '../../../public/models/filter-action-event.model';
 
@@ -330,6 +329,8 @@ export class CustomerListComponent implements OnInit, OnDestroy {
       sortDirection: ['desc'],
       startTime: [''],
       endTime: [''],
+      dateFilterType: [''],
+      dateFilterTitle: [''],
       filterConditions: {
         companyId: QUERY_CONDITION_TYPE.EQUAL,
         paydayLoanStatus: QUERY_CONDITION_TYPE.EQUAL,
@@ -363,6 +364,21 @@ export class CustomerListComponent implements OnInit, OnDestroy {
       sortDirection: params.sortDirection || 'desc',
       startTime: params.startTime,
       endTime: params.endTime,
+      dateFilterType: params.dateFilterType,
+      dateFilterTitle: params.dateFilterTitle,
+    });
+
+    this.filterOptions.forEach((filterOption) => {
+      if (
+        filterOption.type === FILTER_TYPE.DATETIME &&
+        params.dateFilterType &&
+        params.dateFilterTitle
+      ) {
+        filterOption.value = {
+          type: params.dateFilterType,
+          title: params.dateFilterTitle,
+        };
+      }
     });
 
     this.breadcrumbOptions.keyword = params.keyword;
@@ -440,8 +456,24 @@ export class CustomerListComponent implements OnInit, OnDestroy {
     this._onFilterChange();
   }
 
-  public onFilterChange(event: FilterEventModel) {
+  public onFilterFormChange(event: FilterEventModel) {
     console.log('FilterEventModel', event);
+    switch (event.type) {
+      case FILTER_TYPE.DATETIME:
+        this.filterForm.controls.startTime.setValue(event.value.startDate);
+        this.filterForm.controls.endTime.setValue(event.value.endDate);
+        this.filterForm.controls.dateFilterType.setValue(event.value.type);
+        this.filterForm.controls.dateFilterTitle.setValue(event.value.title);
+        break;
+      case FILTER_TYPE.MULTIPLE_CHOICE:
+        break;
+      case FILTER_TYPE.SELECT:
+        break;
+      default:
+        break;
+    }
+
+    this._onFilterChange();
   }
 
   public onFilterActionTrigger(event: FilterActionEventModel) {
@@ -450,6 +482,7 @@ export class CustomerListComponent implements OnInit, OnDestroy {
 
   private _onFilterChange() {
     const data = this.filterForm.getRawValue();
+    console.log('_onFilterChange', data);
     //convert time to ISO and set end time
     let queryParams = {};
 
@@ -462,10 +495,11 @@ export class CustomerListComponent implements OnInit, OnDestroy {
         ? data[formControlName].trim()
         : '';
     }
-    queryParams['startTime'] = data.startTime
-      ? data.startTime.toISOString()
-      : null;
-    queryParams['endTime'] = data.endTime ? data.endTime.toISOString() : null;
+
+    queryParams['startTime'] = data.startTime;
+    queryParams['endTime'] = data.endTime;
+    queryParams['dateFilterType'] = data.dateFilterType;
+    queryParams['dateFilterTitle'] = data.dateFilterTitle;
 
     queryParams['orderBy'] = data.orderBy;
     queryParams['sortDirection'] = data.sortDirection;
