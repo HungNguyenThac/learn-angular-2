@@ -14,7 +14,7 @@ import {Pipe, PipeTransform} from '@angular/core';
   name: 'formatPrice'
 })
 export class FormatPricePipe implements PipeTransform {
-  vndText: string = "₫";
+  vndText: string = "";
   constructor() {
   }
 
