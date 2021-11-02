@@ -18,6 +18,7 @@ export class SelectFilterComponent implements OnInit {
   }
 
   set filterOption(filterOptionModel: FilterOptionModel) {
+    console.log("filterOption", filterOptionModel.value)
     this.selectedItems = filterOptionModel.value || [];
     this._filterOption = filterOptionModel;
   }

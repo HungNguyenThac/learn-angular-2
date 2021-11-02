@@ -18,7 +18,6 @@ import {
   ApiResponseSearchAndPaginationResponseCustomerInfo,
   CompanyControllerService,
   CompanyInfo,
-  SearchAndPaginationResponseCompanyInfo,
 } from '../../../../../open-api-modules/dashboard-api-docs';
 import { CustomerListService } from './customer-list.service';
 import { MatTableDataSource } from '@angular/material/table';
@@ -31,6 +30,10 @@ import { Sort } from '@angular/material/sort';
 import { FilterOptionModel } from 'src/app/public/models/filter-option.model';
 import { FilterEventModel } from '../../../public/models/filter-event.model';
 import { FilterActionEventModel } from '../../../public/models/filter-action-event.model';
+import {
+  PAYDAY_LOAN_UI_STATUS,
+  PAYDAY_LOAN_UI_STATUS_TEXT,
+} from '../../../core/common/enum/payday-loan';
 
 @Component({
   selector: 'app-customer-list',
@@ -47,7 +50,7 @@ export class CustomerListComponent implements OnInit, OnDestroy {
   breadcrumbOptions: BreadcrumbOptionsModel = {
     title: this.multiLanguageService.instant('breadcrumb.manage_customer'),
     iconClass: 'sprite-group-5-customer-green-medium',
-    searchPlaceholder: 'Họ tên, Mã nhân viên, Số điện thoại, Email...',
+    searchPlaceholder: 'Họ tên, Mã nhân viên, Số điện thoại, Email',
     searchable: true,
     showBtnAdd: false,
     keyword: '',
@@ -77,36 +80,68 @@ export class CustomerListComponent implements OnInit, OnDestroy {
         },
       ],
     },
-    // {
-    //   title: this.multiLanguageService.instant('filter.time'),
-    //   type: FILTER_TYPE.SELECT,
-    //   controlName: 'companyId1',
-    //   value: null,
-    //   titleAction: 'áda',
-    //   actionIconClass: 'sprite-group-5-home-white',
-    //   showAction: true,
-    //   options: [
-    //     {
-    //       title: 'adas',
-    //       value: 'ádas',
-    //       showAction: true,
-    //       actionTitle: 'ádas',
-    //       actionIconClass: 'sprite-group-5-home-white',
-    //       disabled: false,
-    //       count: 10,
-    //     },
-    //     {
-    //       title: 'vcasvsa',
-    //       value: 'váva',
-    //       showAction: true,
-    //       actionTitle: 'vvasva',
-    //       actionIconClass: 'sprite-group-5-home-white',
-    //       subTitle: 'váv',
-    //       disabled: false,
-    //       count: 10,
-    //     },
-    //   ],
-    // },
+    {
+      title: this.multiLanguageService.instant('filter.pl_ui_status'),
+      type: FILTER_TYPE.SELECT,
+      controlName: 'paydayLoanStatus',
+      value: null,
+      options: [
+        {
+          title: this.multiLanguageService.instant('common.all'),
+          value: null,
+        },
+        {
+          title: this.multiLanguageService.instant(
+            PAYDAY_LOAN_UI_STATUS_TEXT.NOT_COMPLETE_EKYC_YET
+          ),
+          value: PAYDAY_LOAN_UI_STATUS.NOT_COMPLETE_EKYC_YET,
+        },
+        {
+          title: this.multiLanguageService.instant(
+            PAYDAY_LOAN_UI_STATUS_TEXT.NOT_COMPLETE_FILL_EKYC_YET
+          ),
+          value: PAYDAY_LOAN_UI_STATUS.NOT_COMPLETE_FILL_EKYC_YET,
+        },
+        {
+          title: this.multiLanguageService.instant(
+            PAYDAY_LOAN_UI_STATUS_TEXT.NOT_ACCEPTING_TERM_YET
+          ),
+          value: PAYDAY_LOAN_UI_STATUS.NOT_ACCEPTING_TERM_YET,
+        },
+        {
+          title: this.multiLanguageService.instant(
+            PAYDAY_LOAN_UI_STATUS_TEXT.NOT_COMPLETE_CDE_YET
+          ),
+          value: PAYDAY_LOAN_UI_STATUS.NOT_COMPLETE_CDE_YET,
+        },
+        {
+          title: this.multiLanguageService.instant(
+            PAYDAY_LOAN_UI_STATUS_TEXT.COMPLETED_CDE
+          ),
+          value: PAYDAY_LOAN_UI_STATUS.COMPLETED_CDE,
+        },
+      ],
+    },
+    {
+      title: this.multiLanguageService.instant('filter.pl_ui_status'),
+      type: FILTER_TYPE.SELECT,
+      controlName: 'unknow',
+      value: null,
+      options: [
+        {
+          title: this.multiLanguageService.instant('common.all'),
+          value: null,
+        },
+        {
+          title: this.multiLanguageService.instant('common.active'),
+          value: PAYDAY_LOAN_UI_STATUS.NOT_COMPLETE_EKYC_YET,
+        },
+        {
+          title: this.multiLanguageService.instant('common.inactive'),
+          value: PAYDAY_LOAN_UI_STATUS.NOT_COMPLETE_FILL_EKYC_YET,
+        },
+      ],
+    },
     // {
     //   title: this.multiLanguageService.instant('filter.time'),
     //   type: FILTER_TYPE.MULTIPLE_CHOICE,
@@ -299,8 +334,8 @@ export class CustomerListComponent implements OnInit, OnDestroy {
       paydayLoanStatus: [''],
       orderBy: ['createdAt'],
       sortDirection: ['desc'],
-      startTime: [''],
-      endTime: [''],
+      startTime: [null],
+      endTime: [null],
       dateFilterType: [''],
       dateFilterTitle: [''],
       filterConditions: {
@@ -329,17 +364,7 @@ export class CustomerListComponent implements OnInit, OnDestroy {
       }
     }
 
-    this.filterForm.patchValue({
-      filterConditions: filterConditionsValue,
-      keyword: params.keyword,
-      orderBy: params.orderBy || 'createdAt',
-      sortDirection: params.sortDirection || 'desc',
-      startTime: params.startTime,
-      endTime: params.endTime,
-      dateFilterType: params.dateFilterType,
-      dateFilterTitle: params.dateFilterTitle,
-      companyId: params.companyId,
-    });
+    this.filterForm.controls.filterConditions.setValue(filterConditionsValue);
 
     this.filterOptions.forEach((filterOption) => {
       if (filterOption.type === FILTER_TYPE.DATETIME) {
@@ -348,9 +373,11 @@ export class CustomerListComponent implements OnInit, OnDestroy {
           title: params.dateFilterTitle,
         };
       } else if (filterOption.controlName === 'companyId') {
-        filterOption.value = params.companyId
-          ? params.companyId.split(',')
+        filterOption.value = this.filterForm.controls.companyId.value
+          ? this.filterForm.controls.companyId.value.split(',')
           : [];
+      } else if (filterOption.controlName === 'paydayLoanStatus') {
+        filterOption.value = this.filterForm.controls.paydayLoanStatus.value;
       }
     });
 
@@ -464,6 +491,8 @@ export class CustomerListComponent implements OnInit, OnDestroy {
           this.filterForm.controls.companyId.setValue(
             event.value ? event.value.join(',') : ''
           );
+        } else if (event.controlName === 'paydayLoanStatus') {
+          this.filterForm.controls.paydayLoanStatus.setValue(event.value);
         }
         break;
       default:
@@ -503,8 +532,6 @@ export class CustomerListComponent implements OnInit, OnDestroy {
     queryParams['pageIndex'] = this.pageIndex;
     queryParams['pageSize'] = this.pageSize;
     queryParams['keyword'] = data.keyword;
-
-    queryParams['companyId'] = data.companyId;
 
     this.router
       .navigate([], {
