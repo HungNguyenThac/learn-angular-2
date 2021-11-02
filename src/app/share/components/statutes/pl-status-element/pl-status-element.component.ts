@@ -1,3 +1,4 @@
+import { PAYDAY_LOAN_OTHER_STATUS } from './../../../../core/common/enum/payday-loan';
 import { Component, Input, OnInit } from '@angular/core';
 import { DATA_STATUS_TYPE } from '../../../../core/common/enum/operator';
 import {
@@ -24,6 +25,10 @@ export class PlStatusElementComponent implements OnInit {
         return this.loanStatusContent(this.statusValue);
       case DATA_STATUS_TYPE.PL_UI_STATUS:
         return this.loanUIStatusContent(this.statusValue);
+      case DATA_STATUS_TYPE.PL_OTHER_STATUS:
+        return this.loanOtherStatusContent(this.statusValue);
+      case DATA_STATUS_TYPE.PL_REPAYMENT_STATUS:
+        return this.loanRepaymentStatusContent(this.statusValue);
       default:
         return {
           label: this.statusValue,
@@ -77,6 +82,41 @@ export class PlStatusElementComponent implements OnInit {
         return {
           label: status,
           labelStatus: PL_LABEL_STATUS.REJECT,
+        };
+    }
+  }
+
+  loanOtherStatusContent(status) {
+    switch (status) {
+      case PAYDAY_LOAN_OTHER_STATUS.NOT_RECEIVED_SALARY_YET:
+        return {
+          label: this.statusValue,
+          labelStatus: PL_LABEL_STATUS.PENDING,
+        };
+      case PAYDAY_LOAN_OTHER_STATUS.RECEIVED_SALARY:
+        return {
+          label: this.statusValue,
+          labelStatus: PL_LABEL_STATUS.SUCCESS,
+        };
+      default:
+        return {
+          label: 'N/A',
+          labelStatus: PL_LABEL_STATUS.REJECT,
+        };
+    }
+  }
+
+  loanRepaymentStatusContent(status) {
+    switch (status) {
+      case PAYDAY_LOAN_OTHER_STATUS.COMPLETED_PAID:
+        return {
+          label: this.multiLanguageService.instant('loan_app.loan_info.paid'),
+          labelStatus: PL_LABEL_STATUS.SUCCESS,
+        };
+      default:
+        return {
+          label: this.multiLanguageService.instant('loan_app.loan_info.unpaid'),
+          labelStatus: PL_LABEL_STATUS.PENDING,
         };
     }
   }

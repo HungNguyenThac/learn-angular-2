@@ -11,7 +11,19 @@
                 {{ leftColumnEle.title }}
               </p>
               <p class="pl-list-item-content">
-                {{ leftColumnEle.value }}
+                <!-- {{ leftColumnEle.value }} -->
+                <app-format-data
+                  *ngIf="leftColumnEle?.type != 'STATUS'"
+                  [type]="leftColumnEle?.type"
+                  [format]="leftColumnEle?.format"
+                  [value]="leftColumnEle?.value"
+                ></app-format-data>
+                <app-pl-status-element
+                  *ngIf="leftColumnEle?.type === 'STATUS'"
+                  [statusType]="leftColumnEle?.format"
+                  [statusValue]="leftColumnEle?.value"
+                >
+                </app-pl-status-element>
               </p>
             </li>
           </ul>
@@ -28,7 +40,18 @@
                 {{ middleColumnEle.title }}
               </p>
               <p class="pl-list-item-content">
-                {{ middleColumnEle.value }}
+                <app-format-data
+                  *ngIf="middleColumnEle?.type != 'STATUS'"
+                  [type]="middleColumnEle?.type"
+                  [format]="middleColumnEle?.format"
+                  [value]="middleColumnEle?.value"
+                ></app-format-data>
+                <app-pl-status-element
+                  *ngIf="middleColumnEle?.type === 'STATUS'"
+                  [statusType]="middleColumnEle?.format"
+                  [statusValue]="middleColumnEle?.value"
+                >
+                </app-pl-status-element>
               </p>
             </li>
           </ul>
@@ -42,7 +65,18 @@
                 {{ rightColumnEle.title }}
               </p>
               <p class="pl-list-item-content">
-                {{ rightColumnEle.value }}
+                <app-format-data
+                  *ngIf="rightColumnEle?.type != 'STATUS'"
+                  [type]="rightColumnEle?.type"
+                  [format]="rightColumnEle?.format"
+                  [value]="rightColumnEle?.value"
+                ></app-format-data>
+                <app-pl-status-element
+                  *ngIf="rightColumnEle?.type === 'STATUS'"
+                  [statusType]="rightColumnEle?.format"
+                  [statusValue]="rightColumnEle?.value"
+                >
+                </app-pl-status-element>
               </p>
             </li>
             <li>

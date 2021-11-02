@@ -142,3 +142,11 @@ export enum PAYDAY_LOAN_UI_STATUS_TEXT {
   NOT_COMPLETE_CDE_YET = 'Chưa bổ sung thông tin',
   COMPLETED_CDE = 'Đã bổ sung thông tin',
 }
+
+export enum PAYDAY_LOAN_OTHER_STATUS {
+  NOT_RECEIVED_SALARY_YET = 'Chưa được trả lương',
+  RECEIVED_SALARY = 'Đã được trả lương',
+  NOT_PAID_YET = 'Chưa thanh toán',
+  COMPLETED_PAID = 'success',
+  COMPLETED_CDE = 'COMPLETED_CDE',
+}
