@@ -51,21 +51,21 @@ export class LoanListComponent implements OnInit {
       title: this.multiLanguageService.instant('loan_app.loan_info.loan_code'),
       type: DATA_CELL_TYPE.TEXT,
       format: null,
-      showed: true
+      showed: true,
     },
     {
       key: 'status',
       title: this.multiLanguageService.instant('loan_app.loan_info.status'),
       type: DATA_CELL_TYPE.STATUS,
       format: DATA_STATUS_TYPE.PL_HMG_STATUS,
-      showed: true
+      showed: true,
     },
     {
       key: 'customerName',
       title: this.multiLanguageService.instant('loan_app.loan_info.customer'),
       type: DATA_CELL_TYPE.TEXT,
       format: null,
-      showed: true
+      showed: true,
     },
     {
       key: 'mobileNumber',
@@ -74,14 +74,14 @@ export class LoanListComponent implements OnInit {
       ),
       type: DATA_CELL_TYPE.TEXT,
       format: null,
-      showed: true
+      showed: true,
     },
     {
       key: 'tenure',
       title: this.multiLanguageService.instant('loan_app.loan_info.loan_term'),
       type: DATA_CELL_TYPE.TEXT,
       format: null,
-      showed: true
+      showed: true,
     },
     {
       key: 'createdAt',
@@ -90,10 +90,12 @@ export class LoanListComponent implements OnInit {
       ),
       type: DATA_CELL_TYPE.DATETIME,
       format: 'dd/MM/yyyy HH:mm',
-      showed: true
+      showed: true,
     },
   ];
   dataSource: MatTableDataSource<any> = new MatTableDataSource([]);
+  expandedElementLoanId: string;
+  expandedElementCustomerId: string;
   pages: Array<number>;
   pageSize: number = 10;
   pageIndex: number = 0;
@@ -168,11 +170,17 @@ export class LoanListComponent implements OnInit {
       }
     }
 
-    this.filterForm.controls.filterConditions.setValue(filterConditionsValue);
-    this.filterForm.controls.orderBy.setValue(params.orderBy || 'createdAt');
-    this.filterForm.controls.sortDirection.setValue(params.sortDirection || 'desc');
-    this.filterForm.controls.startTime.setValue(params.startTime || '');
-    this.filterForm.controls.endTime.setValue(params.endTime || '');
+
+    this.filterForm.patchValue({
+      filterConditions: filterConditionsValue,
+      keyword: params.keyword,
+      orderBy: params.orderBy || 'createdAt',
+      sortDirection: params.sortDirection || 'desc',
+      startTime: params.startTime,
+      endTime: params.endTime,
+    });
+
+    this.breadcrumbOptions.keyword = params.keyword;
     this.pageIndex = params.pageIndex || 0;
     this.pageSize = params.pageSize || 20;
   }
@@ -238,7 +246,6 @@ export class LoanListComponent implements OnInit {
 
   private _onFilterChange() {
     const data = this.filterForm.getRawValue();
-    //convert time to ISO and set end time
     let queryParams = {};
 
     for (const [formControlName, queryCondition] of Object.entries(
@@ -254,7 +261,7 @@ export class LoanListComponent implements OnInit {
       ? data.startTime.toISOString()
       : null;
     queryParams['endTime'] = data.endTime ? data.endTime.toISOString() : null;
-
+    queryParams['sortDirection'] = data.sortDirection;
     queryParams['orderBy'] = data.orderBy;
     queryParams['pageIndex'] = this.pageIndex;
     queryParams['pageSize'] = this.pageSize;
@@ -265,6 +272,16 @@ export class LoanListComponent implements OnInit {
         queryParams,
       })
       .then((r) => {});
+  }
+
+  public onExpandElementChange(element: any) {
+    this.expandedElementLoanId = element.loanId;
+    this.expandedElementCustomerId = element.customerId;
+  }
+
+  public onSubmitSearchForm(event) {
+    this.filterForm.controls.keyword.setValue(event.keyword);
+    this._onFilterChange();
   }
 
   ngOnDestroy(): void {

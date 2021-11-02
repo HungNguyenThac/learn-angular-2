@@ -13,9 +13,14 @@
   [breadcrumbOptions]="breadcrumbOptions"
   (onPageChange)="onPageChange($event)"
   (onSortChange)="onSortChange($event)"
+  (onExpandElementChange)="onExpandElementChange($event)"
+  (onSubmitSearchForm)="onSubmitSearchForm($event)"
 >
 </app-base-management-layout>
 
 <ng-template #detailElementTemplate>
-  <app-loan-detail class="w-100"></app-loan-detail>
+  <app-loan-detail class="w-100"
+  [loanId]="expandedElementLoanId"
+  [customerId]="expandedElementCustomerId"
+  ></app-loan-detail>
 </ng-template>

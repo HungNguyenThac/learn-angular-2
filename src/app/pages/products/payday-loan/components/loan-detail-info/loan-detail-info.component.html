@@ -11,7 +11,12 @@
                 {{ leftColumnEle.title }}
               </p>
               <p class="pl-list-item-content">
-                {{ leftColumnEle.value }}
+                <!-- {{ leftColumnEle.value }} -->
+                <app-format-data
+                  [type]="leftColumnEle?.type"
+                  [format]="leftColumnEle?.format"
+                  [value]="leftColumnEle?.value"
+                ></app-format-data>
               </p>
             </li>
           </ul>
@@ -28,7 +33,11 @@
                 {{ middleColumnEle.title }}
               </p>
               <p class="pl-list-item-content">
-                {{ middleColumnEle.value }}
+                <app-format-data
+                  [type]="middleColumnEle?.type"
+                  [format]="middleColumnEle?.format"
+                  [value]="middleColumnEle?.value"
+                ></app-format-data>
               </p>
             </li>
           </ul>
@@ -42,7 +51,11 @@
                 {{ rightColumnEle.title }}
               </p>
               <p class="pl-list-item-content">
-                {{ rightColumnEle.value }}
+                <app-format-data
+                  [type]="rightColumnEle?.type"
+                  [format]="rightColumnEle?.format"
+                  [value]="rightColumnEle?.value"
+                ></app-format-data>
               </p>
             </li>
             <li>
