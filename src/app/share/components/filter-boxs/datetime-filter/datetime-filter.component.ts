@@ -37,7 +37,6 @@ export class DatetimeFilterComponent implements OnInit {
   }
 
   set filterOption(filterOptionModel: FilterOptionModel) {
-    console.log('filterOptionModel', filterOptionModel);
     this.selectedTimeFilterMethod = filterOptionModel.value
       ? filterOptionModel.value?.type || FILTER_DATETIME_TYPE.TIME_FRAME
       : FILTER_DATETIME_TYPE.TIME_FRAME;
