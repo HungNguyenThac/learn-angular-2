@@ -5,6 +5,8 @@
       <app-customer-individual-info
         [customerId]="customerId"
         [customerInfo]="userInfo"
+        [bankOptions]="bankOptions"
+        (triggerUpdateInfo)="updateCustomerInfo($event)"
       ></app-customer-individual-info> </ng-template
   ></mat-tab>
 
@@ -23,6 +25,9 @@
       <app-customer-company-info
         [customerId]="customerId"
         [customerInfo]="userInfo"
+        [bankOptions]="bankOptions"
+        [companyOptions]="companyOptions"
+        (triggerUpdateInfo)="updateCustomerInfo($event)"
       ></app-customer-company-info> </ng-template
   ></mat-tab>
 

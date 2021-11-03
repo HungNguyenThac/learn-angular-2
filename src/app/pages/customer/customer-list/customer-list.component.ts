@@ -412,7 +412,7 @@ export class CustomerListComponent implements OnInit, OnDestroy {
   private _getCompanyList() {
     this.subManager.add(
       this.companyControllerService
-        .getCompanies(10, 0, {})
+        .getCompanies(100, 0, {})
         .subscribe(
           (data: ApiResponseSearchAndPaginationResponseCompanyInfo) => {
             this.companyList = data?.result?.data;

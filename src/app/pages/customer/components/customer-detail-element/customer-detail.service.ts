@@ -86,7 +86,6 @@ export class CustomerDetailService {
         }),
         // catch errors
         catchError((err) => {
-          console.log(err);
           return of(null);
         })
       );
@@ -97,12 +96,10 @@ export class CustomerDetailService {
       .uploadSingleFile(documentType, file, customerId)
       .pipe(
         map((results) => {
-          console.log('upload ok', results);
           return results;
         }),
         // catch errors
         catchError((err) => {
-          console.log(err);
           return of(null);
         })
       );
@@ -123,33 +120,6 @@ export class CustomerDetailService {
         return results;
       }),
       catchError((err) => {
-        return of(null);
-      })
-    );
-  }
-
-  public updateCustomerFinalcialData(
-    customerId: string,
-    updateInfoRequest: Object
-  ) {
-    const infoData: UpdateInfoRequest = {
-      info: {},
-    };
-    for (const key in updateInfoRequest) {
-      if (updateInfoRequest[key] === null) {
-        infoData.info[`financialData.${key}`] = null;
-      } else {
-        infoData.info[`financialData.${key}`] = new Object(
-          updateInfoRequest[key]
-        );
-      }
-    }
-    return this.customerService.putInfo(customerId, infoData).pipe(
-      map((results) => {
-        return results;
-      }),
-      catchError((err) => {
-        console.log(err);
         return of(null);
       })
     );

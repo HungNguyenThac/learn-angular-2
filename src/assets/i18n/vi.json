@@ -178,7 +178,9 @@
       "gender_female": "Nữ",
       "gender_other": "Khác",
       "company": "Công ty",
-      "status": "Trạng thái tài khoản"
+      "status": "Trạng thái tài khoản",
+      "update_individual_info": "Cập nhật thông tin khách hàng",
+      "update_company_info": "Cập nhật thông tin công ty"
     },
     "identity": {
       "front_id": "CMND/CCCD mặt trước",
@@ -199,7 +201,8 @@
     "company_info": {
       "company_name": "Tên công ty",
       "employee_code": "Mã nhân viên",
-      "last_name": "Họ và tên đệm",
+      "full_name": "Họ và tên đệm",
+      "last_name": "Họ",
       "first_name": "Tên",
       "office_code": "Mã đơn vị",
       "office_name": "Tên đơn vị ",

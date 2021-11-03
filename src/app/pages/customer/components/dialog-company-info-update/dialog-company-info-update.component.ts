@@ -2,6 +2,13 @@ import { MultiLanguageService } from './../../../../share/translate/multiLanguag
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { VirtualAccount } from '../../../../../../open-api-modules/payment-api-docs';
+import {
+  Bank,
+  CompanyInfo,
+  CustomerInfo,
+} from '../../../../../../open-api-modules/dashboard-api-docs';
+import { BUTTON_TYPE } from '../../../../core/common/enum/operator';
 
 @Component({
   selector: 'app-dialog-company-info-update',
@@ -9,42 +16,78 @@ import { FormBuilder, FormGroup } from '@angular/forms';
   styleUrls: ['./dialog-company-info-update.component.scss'],
 })
 export class DialogCompanyInfoUpdateComponent implements OnInit {
+  customerInfo: CustomerInfo = {};
+  bankOptions: Array<Bank>;
+  companyOptions: Array<CompanyInfo>;
+  customerId: string;
+
   companyInfoForm: FormGroup;
-  bankNameOptions = {
-    fieldName: 'Ngân hàng',
-    options: [
-      'Ngân hàng Việt Nam Thịnh Vượng (VPBank)',
-      'Ngân hàng Công thương Việt Nam (VietinBank)',
-      'Ngân hàng Đầu tư và Phát triển Việt Nam (BIDV)',
-      'Ngân hàng Ngoại Thương Việt Nam (Vietcombank)',
-    ],
-  };
   constructor(
     private dialogRef: MatDialogRef<DialogCompanyInfoUpdateComponent>,
     @Inject(MAT_DIALOG_DATA) data: any,
     private multiLanguageService: MultiLanguageService,
     private formBuilder: FormBuilder
   ) {
-    //Build form
-    const companyInfoControlsConfig = {
-      companyName: [''],
-      employeeCode: [''],
-      lastName: [''],
-      firstName: [''],
-      officeCode: [''],
-      officeName: [''],
-      annualIncome: [''],
-      workingDays: [''],
-      accountNumber: [''],
-      bankCode: [''],
-    };
-    this.companyInfoForm = this.formBuilder.group(companyInfoControlsConfig);
+    this.buildCompanyInfoForm();
+    if (data) {
+      this.initDialogData(data);
+    }
   }
 
   ngOnInit(): void {}
 
-  submit() {
-    console.log('form info', this.companyInfoForm.getRawValue());
-    this.dialogRef.close();
+  buildCompanyInfoForm() {
+    this.companyInfoForm = this.formBuilder.group({
+      companyId: [''],
+      employeeCode: [''],
+      tngFirstName: [''],
+      firstName: [''],
+      officeCode: [''],
+      officeName: [''],
+      annualIncome: [''],
+      workingDay: [''],
+      accountNumber: [''],
+      bankCode: [''],
+      bankName: [''],
+    });
+  }
+
+  initDialogData(data: any) {
+    this.customerInfo = data?.customerInfo;
+    this.customerId = data?.customerId;
+    this.bankOptions = data?.bankOptions ? data?.bankOptions : [];
+    this.companyOptions = data?.companyOptions ? data?.companyOptions : [];
+
+    this.companyInfoForm.patchValue({
+      companyId: this.customerInfo.companyId,
+      employeeCode: this.customerInfo.organizationName,
+      tngFirstName: this.customerInfo.tngData.ten,
+      firstName: this.customerInfo.firstName,
+      officeCode: this.customerInfo.officeCode,
+      officeName: this.customerInfo.officeName,
+      annualIncome: this.customerInfo.annualIncome,
+      workingDay: this.customerInfo.workingDay,
+      accountNumber: this.customerInfo.accountNumber,
+      bankCode: this.customerInfo.bankCode,
+      bankName: this.customerInfo.bankName,
+    });
+  }
+
+  changeBank(event) {
+    if (!event.value) {
+      return;
+    }
+    let seletedBank = this.bankOptions.filter(
+      (bank) => bank.bankName === event.value
+    );
+    if (!seletedBank) return;
+    this.companyInfoForm.controls.bankCode.setValue(seletedBank[0].bankCode);
+  }
+
+  submitForm() {
+    this.dialogRef.close({
+      type: BUTTON_TYPE.PRIMARY,
+      data: this.companyInfoForm.getRawValue(),
+    });
   }
 }
