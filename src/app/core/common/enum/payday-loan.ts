@@ -136,11 +136,11 @@ export enum PAYDAY_LOAN_UI_STATUS {
 }
 
 export enum PAYDAY_LOAN_UI_STATUS_TEXT {
-  NOT_COMPLETE_EKYC_YET = 'Chưa EKYC',
-  NOT_COMPLETE_FILL_EKYC_YET = 'Chưa xác thực thông tin',
-  NOT_ACCEPTING_TERM_YET = 'Chưa ký thư chấp thuận',
-  NOT_COMPLETE_CDE_YET = 'Chưa bổ sung thông tin',
-  COMPLETED_CDE = 'Đã bổ sung thông tin',
+  NOT_COMPLETE_EKYC_YET = 'payday_loan.pl_ui_status.not_complete_ekyc_yet',
+  NOT_COMPLETE_FILL_EKYC_YET = 'payday_loan.pl_ui_status.not_complete_fill_ekyc_yet',
+  NOT_ACCEPTING_TERM_YET = 'payday_loan.pl_ui_status.not_accepting_term_yet',
+  NOT_COMPLETE_CDE_YET = 'payday_loan.pl_ui_status.not_complete_cde_yet',
+  COMPLETED_CDE = 'payday_loan.pl_ui_status.completed_cde',
 }
 
 export enum PAYDAY_LOAN_OTHER_STATUS {

@@ -15,6 +15,12 @@ export interface CompanyInfo {
     id?: string;
     name?: string;
     groupName?: string;
+    code?: string;
+    businessCode?: string;
+    mobile?: string;
+    owner?: string;
+    address?: string;
+    payday?: number;
     avatar?: string;
     createdBy?: string;
     updatedBy?: string;

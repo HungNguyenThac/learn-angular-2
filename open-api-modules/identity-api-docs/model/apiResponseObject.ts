@@ -14,7 +14,7 @@
 export interface ApiResponseObject { 
     result?: object;
     errorCode?: string;
-    message?: string;
+    message?: object;
     responseCode?: number;
 }
 

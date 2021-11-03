@@ -21,5 +21,15 @@ export interface SendContractOTPRequest {
     documentPath: string;
     loanCode: string;
     loanId: string;
+    otpType: SendContractOTPRequest.OtpTypeEnum;
 }
+export namespace SendContractOTPRequest {
+    export type OtpTypeEnum = 'EMAIL' | 'SMS' | 'VOICE';
+    export const OtpTypeEnum = {
+        Email: 'EMAIL' as OtpTypeEnum,
+        Sms: 'SMS' as OtpTypeEnum,
+        Voice: 'VOICE' as OtpTypeEnum
+    };
+}
+
 

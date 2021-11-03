@@ -21,6 +21,7 @@ import { NotificationService } from '../../../../../core/services/notification.s
 import { Prompt } from '../../../../../public/models/prompt.model';
 import { PlPromptComponent } from '../../../../../share/components';
 import { MatDialog } from '@angular/material/dialog';
+import {RESPONSE_CODE} from "../../../../../core/common/enum/operator";
 
 @Component({
   selector: 'ekyc-upload',
@@ -160,7 +161,7 @@ export class EkycUploadComponent implements OnInit, AfterViewInit {
         )
         .subscribe(
           (ekycResponse: ApiResponseKalapaResponse) => {
-            if (!ekycResponse.result || ekycResponse.responseCode !== 200) {
+            if (!ekycResponse.result || ekycResponse.responseCode !== RESPONSE_CODE.SUCCESS) {
               this.handleEkycError(ekycResponse);
             }
 
@@ -180,7 +181,7 @@ export class EkycUploadComponent implements OnInit, AfterViewInit {
   }
 
   handleEkycError(ekycInfo) {
-    if (ekycInfo.responseCode !== 200) {
+    if (ekycInfo.responseCode !== RESPONSE_CODE.SUCCESS) {
       this.showErrorModal({
         title: this.multiLanguageService.instant(
           'payday_loan.ekyc.ekyc_failed_title'

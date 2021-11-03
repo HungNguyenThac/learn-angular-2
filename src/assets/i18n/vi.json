@@ -64,7 +64,10 @@
     "loading_content": "Quá trình sẽ mất khoảng một vài giây, vui lòng không thoát ứng dụng",
     "reset": "Đặt lại",
     "field": "Trường thông tin",
-    "no_matching_records": "Không có bản ghi nào!"
+    "no_matching_records": "Không có bản ghi nào!",
+    "active": "Đang hoạt động",
+    "inactive": "Ngừng hoạt động",
+    "update_success": "Cập nhật dữ liệu thành công"
   },
   "auth": {
     "phone_number": "Số điện thoại",
@@ -378,6 +381,39 @@
       "not_accepting_term_yet": "Chưa ký thư chấp thuận",
       "not_complete_cde_yet": "Chưa bổ sung thông tin",
       "completed_cde": "Đã bổ sung thông tin"
+    }
+  },
+  "filter": {
+    "time": "Thời gian",
+    "all_time": "Toàn thời gian",
+    "choose_range_time": "Chọn khoảng thời gian",
+    "from_day": "Từ ngày",
+    "selected_date": "{{date}} ngày {{day}}",
+    "company": "Công ty",
+    "choose_company": "Chọn công ty",
+    "pl_ui_status": "Trạng thái tài khoản",
+    "account_status": "Trạng thái hoạt động",
+    "options": {
+      "by_day": "Theo ngày",
+      "to_day": "Hôm nay",
+      "yesterday": "Hôm qua",
+      "by_week": "Theo tuần",
+      "this_week": "Tuần này",
+      "last_week": "Tuần trước",
+      "last_7_days": "7 ngày qua",
+      "by_month": "Theo tháng",
+      "this_month": "Tháng này",
+      "last_month": "Tháng trước",
+      "last_30_days": "30 ngày qua",
+      "by_quarterly": "Theo quý",
+      "first_quarterly": "Quý I",
+      "second_quarterly": "Quý II",
+      "third_quarterly": "Quý III",
+      "fourth_quarterly": "Quý IV",
+      "by_year": "Theo năm",
+      "this_year": "Năm nay",
+      "last_year": "Năm trước",
+      "all_time": "Toàn thời gian"
     }
   },
   "error_code": {

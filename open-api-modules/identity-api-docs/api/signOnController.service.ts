@@ -95,9 +95,9 @@ export class SignOnControllerService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public createCustomerAccount(createCustomerAccountRequest: CreateCustomerAccountRequest, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<object>;
-    public createCustomerAccount(createCustomerAccountRequest: CreateCustomerAccountRequest, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<object>>;
-    public createCustomerAccount(createCustomerAccountRequest: CreateCustomerAccountRequest, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<object>>;
+    public createCustomerAccount(createCustomerAccountRequest: CreateCustomerAccountRequest, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseObject>;
+    public createCustomerAccount(createCustomerAccountRequest: CreateCustomerAccountRequest, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseObject>>;
+    public createCustomerAccount(createCustomerAccountRequest: CreateCustomerAccountRequest, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseObject>>;
     public createCustomerAccount(createCustomerAccountRequest: CreateCustomerAccountRequest, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
         if (createCustomerAccountRequest === null || createCustomerAccountRequest === undefined) {
             throw new Error('Required parameter createCustomerAccountRequest was null or undefined when calling createCustomerAccount.');
@@ -132,7 +132,7 @@ export class SignOnControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.post<object>(`${this.configuration.basePath}/sign-on/v1/create-customer-account`,
+        return this.httpClient.post<ApiResponseObject>(`${this.configuration.basePath}/sign-on/v1/create-customer-account`,
             createCustomerAccountRequest,
             {
                 responseType: <any>responseType_,

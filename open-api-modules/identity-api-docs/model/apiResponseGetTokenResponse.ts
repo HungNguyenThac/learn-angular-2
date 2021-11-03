@@ -15,7 +15,7 @@ import { GetTokenResponse } from './getTokenResponse';
 export interface ApiResponseGetTokenResponse { 
     result?: GetTokenResponse;
     errorCode?: string;
-    message?: string;
+    message?: object;
     responseCode?: number;
 }
 

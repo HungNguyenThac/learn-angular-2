@@ -16,5 +16,15 @@ export interface SignWithOTPResponse {
     idDocument?: number;
     customerId?: string;
     unLockTime?: string;
+    otpType?: SignWithOTPResponse.OtpTypeEnum;
 }
+export namespace SignWithOTPResponse {
+    export type OtpTypeEnum = 'EMAIL' | 'SMS' | 'VOICE';
+    export const OtpTypeEnum = {
+        Email: 'EMAIL' as OtpTypeEnum,
+        Sms: 'SMS' as OtpTypeEnum,
+        Voice: 'VOICE' as OtpTypeEnum
+    };
+}
+
 

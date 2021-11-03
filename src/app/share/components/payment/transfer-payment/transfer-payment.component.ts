@@ -22,6 +22,7 @@ import { ERROR_CODE_KEY } from '../../../../core/common/enum/payday-loan';
 import { NotificationService } from '../../../../core/services/notification.service';
 import { MultiLanguageService } from '../../../translate/multiLanguageService';
 import * as moment from "moment";
+import {RESPONSE_CODE} from "../../../../core/common/enum/operator";
 
 @Component({
   selector: 'app-transfer-payment',
@@ -118,7 +119,7 @@ export class TransferPaymentComponent implements OnInit, OnDestroy {
           if (
             !response ||
             response.errorCode ||
-            response.responseCode !== 200
+            response.responseCode !== RESPONSE_CODE.SUCCESS
           ) {
             return this.handleResponseError(response?.errorCode);
           }

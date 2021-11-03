@@ -19,6 +19,9 @@ import { DocumentButtonComponent } from './button/document-button/document-butto
 import { UploadDocumentAreaComponent } from './upload-area/upload-document-area/upload-document-area.component';
 import { PlStatusElementComponent } from './statutes/pl-status-element/pl-status-element.component';
 import { FormatDataComponent } from './statutes/format-data/format-data.component';
+import { DatetimeFilterComponent } from './filter-boxs/datetime-filter/datetime-filter.component';
+import { MultipleChoiceFilterComponent } from './filter-boxs/multiple-choice-filter/multiple-choice-filter.component';
+import { SelectFilterComponent } from './filter-boxs/select-filter/select-filter.component';
 
 export const components: any[] = [
   ConfirmationDialog,
@@ -42,6 +45,9 @@ export const components: any[] = [
   UploadDocumentAreaComponent,
   PlStatusElementComponent,
   FormatDataComponent,
+  DatetimeFilterComponent,
+  MultipleChoiceFilterComponent,
+  SelectFilterComponent,
 ];
 
 export * from './dialogs/confirmation-dialog/confirmation-dialog.component';
@@ -65,3 +71,6 @@ export * from './button/document-button/document-button.component';
 export * from './upload-area/upload-document-area/upload-document-area.component';
 export * from './statutes/pl-status-element/pl-status-element.component';
 export * from './statutes/format-data/format-data.component';
+export * from './filter-boxs/datetime-filter/datetime-filter.component';
+export * from './filter-boxs/multiple-choice-filter/multiple-choice-filter.component';
+export * from './filter-boxs/select-filter/select-filter.component';
