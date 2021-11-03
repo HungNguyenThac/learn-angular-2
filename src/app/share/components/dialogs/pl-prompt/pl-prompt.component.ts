@@ -1,5 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { BUTTON_TYPE } from 'src/app/core/common/enum/operator';
 import { Prompt } from '../../../../public/models/prompt.model';
 
 @Component({
@@ -45,10 +46,10 @@ export class PlPromptComponent implements OnInit {
   ngOnInit(): void {}
 
   clickSecondary() {
-    this.dialogRef.close('clickSecondary');
+    this.dialogRef.close(BUTTON_TYPE.SECONDARY);
   }
 
   clickPrimary() {
-    this.dialogRef.close('clickPrimary');
+    this.dialogRef.close(BUTTON_TYPE.PRIMARY);
   }
 }
