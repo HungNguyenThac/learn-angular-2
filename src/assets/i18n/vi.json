@@ -65,7 +65,8 @@
     "field": "Trường thông tin",
     "no_matching_records": "Không có bản ghi nào!",
     "active": "Đang hoạt động",
-    "inactive": "Ngừng hoạt động"
+    "inactive": "Ngừng hoạt động",
+    "update_success": "Cập nhật dữ liệu thành công"
   },
   "auth": {
     "phone_number": "Số điện thoại",

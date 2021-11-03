@@ -56,5 +56,10 @@ export enum FILTER_ACTION_TYPE {
 
 export enum FILTER_DATETIME_TYPE {
   TIME_FRAME = 'TIME_FRAME',
-  TIME_RANGE = 'TIME_RANGE'
+  TIME_RANGE = 'TIME_RANGE',
+}
+
+export enum RESPONSE_CODE {
+  SUCCESS = 200,
+  ERROR = 400,
 }

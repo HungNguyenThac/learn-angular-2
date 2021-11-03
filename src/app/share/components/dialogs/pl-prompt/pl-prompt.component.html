@@ -31,7 +31,8 @@
   <div class="text-center d-flex pl-prompt-actions justify-content-center" *ngIf="promptContent">
     <button
       type="button"
-      class="pl-prompt-btn btn-secondary"
+      class="pl-prompt-btn"
+      [ngClass]="promptContent?.secondaryBtnClass"
       *ngIf="promptContent?.secondaryBtnText"
       [disabled]="promptContent?.disabledBtn"
       tabindex="1"
@@ -41,7 +42,8 @@
     </button>
     <button
       type="button"
-      class="pl-prompt-btn btn-primary"
+      class="pl-prompt-btn"
+      [ngClass]="promptContent?.primaryBtnClass"
       *ngIf="promptContent?.primaryBtnText"
       [disabled]="promptContent?.disabledBtn"
       mat-raised-button

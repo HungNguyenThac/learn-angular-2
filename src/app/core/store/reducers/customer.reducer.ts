@@ -4,6 +4,7 @@ import {
 } from '../../../../../open-api-modules/customer-api-docs';
 import * as fromActions from '../actions';
 import { HttpErrorResponse } from '@angular/common/http';
+import { RESPONSE_CODE } from '../../common/enum/operator';
 
 export interface CustomerState {
   customerInfo: CustomerInfoResponse;
@@ -12,7 +13,7 @@ export interface CustomerState {
 
 export const CUSTOMER_INITIAL_STATE: CustomerState = {
   customerInfo: null,
-  getCustomerError: null
+  getCustomerError: null,
 };
 
 class CustomerActions {
@@ -40,7 +41,11 @@ class CustomerActions {
   getCustomerInfoSuccess() {
     const payload = this.action.payload;
 
-    if (!payload || !payload.responseCode || payload.responseCode !== 200)
+    if (
+      !payload ||
+      !payload.responseCode ||
+      payload.responseCode !== RESPONSE_CODE.SUCCESS
+    )
       return this.state;
     return {
       ...this.state,
