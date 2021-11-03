@@ -1,10 +1,13 @@
+import { NotificationService } from 'src/app/core/services/notification.service';
 import { ToastrService } from 'ngx-toastr';
 import { UpdateLoanStatusRequest } from './../../../../../../../open-api-modules/loanapp-hmg-api-docs/model/updateLoanStatusRequest';
 import { Subscription } from 'rxjs';
 import { PlPromptComponent } from './../../../../../share/components/dialogs/pl-prompt/pl-prompt.component';
-import { PaydayLoanControllerService } from './../../../../../../../open-api-modules/loanapp-hmg-api-docs/api/paydayLoanController.service';
+import { PaydayLoanControllerService as PaydayLoanHmgControllerService } from './../../../../../../../open-api-modules/loanapp-hmg-api-docs/api/paydayLoanController.service';
+import { PaydayLoanControllerService as PaydayLoanTngControllerService } from './../../../../../../../open-api-modules/loanapp-api-docs/api/paydayLoanController.service';
 import { PAYDAY_LOAN_STATUS } from './../../../../../core/common/enum/payday-loan';
 import {
+  BUTTON_TYPE,
   DATA_CELL_TYPE,
   DATA_STATUS_TYPE,
 } from './../../../../../core/common/enum/operator';
@@ -207,7 +210,7 @@ export class LoanDetailInfoComponent implements OnInit {
 
   currentTime = new Date();
 
-  @Input() groupName:string;
+  @Input() groupName: string;
   nextLoanStatus: string;
   nextLoanStatusDisplay: string;
   rejectLoanStatus: string = PAYDAY_LOAN_STATUS.WITHDRAW;
@@ -218,7 +221,9 @@ export class LoanDetailInfoComponent implements OnInit {
   constructor(
     private multiLanguageService: MultiLanguageService,
     private dialog: MatDialog,
-    private paydayLoanControllerService: PaydayLoanControllerService,
+    private paydayLoanHmgControllerService: PaydayLoanHmgControllerService,
+    private paydayLoanTngControllerService: PaydayLoanTngControllerService,
+    private notificationService: NotificationService,
     private notifier: ToastrService
   ) {}
 
@@ -228,41 +233,56 @@ export class LoanDetailInfoComponent implements OnInit {
     const currentLoanStatusDisplay = this.multiLanguageService.instant(
       `payday_loan.status.${this.loanDetail.status.toLowerCase()}`
     );
-    const dialogRef = this.dialog.open(PlPromptComponent, {
-      panelClass: 'custom-dialog-container',
-      height: 'auto',
-      data: {
-        title: this.multiLanguageService.instant('common.notification'),
-        content: this.multiLanguageService.instant(
-          'loan_app.loan_info.confirm_change_status_description',
-          {
-            loan_code: this.loanDetail.loanCode,
-            current_loan_status: currentLoanStatusDisplay,
-            new_loan_status: newStatusDisplay,
-          }
-        ),
-        primaryBtnText: this.multiLanguageService.instant('common.confirm'),
-        secondaryBtnText: this.multiLanguageService.instant('common.skip'),
-      },
-    });
 
+    let promptDialogRef = this.notificationService.openPrompt({
+      title: this.multiLanguageService.instant('common.are_you_sure'),
+      imgUrl: 'assets/img/payday-loan/warning-prompt-icon.png',
+      content: this.multiLanguageService.instant(
+        'loan_app.loan_info.confirm_change_status_description',
+        {
+          loan_code: this.loanDetail.loanCode,
+          current_loan_status: currentLoanStatusDisplay,
+          new_loan_status: newStatusDisplay,
+        }
+      ),
+      primaryBtnText: this.multiLanguageService.instant('common.confirm'),
+      secondaryBtnText: this.multiLanguageService.instant('common.skip'),
+    });
+    let reload: any;
     this.subManager.add(
-      dialogRef.afterClosed().subscribe((button) => {
-        if (button === 'clickPrimary') {
+      promptDialogRef.afterClosed().subscribe((buttonType: BUTTON_TYPE) => {
+        if (buttonType === BUTTON_TYPE.PRIMARY) {
           const updateLoanStatusRequest: UpdateLoanStatusRequest = {
             customerId: this.loanDetail.customerId,
             status: newStatus,
           };
-          this.paydayLoanControllerService
-            .changeLoanStatus(this.loanDetail.id, updateLoanStatusRequest)
-            .subscribe((result) => {
-              if (result?.responseCode === 200) {
-                this.notifier.success('Cập nhật dữ liệu thành công');
-                this.loanDetailDetectChangeStatus.emit('fetching');
-              } else {
-                this.notifier.error(JSON.stringify(result?.message));
-              }
-            });
+          if (this.groupName === 'HMG') {
+            this.paydayLoanHmgControllerService
+              .changeLoanStatus(this.loanDetail.id, updateLoanStatusRequest)
+              .subscribe((result) => {
+                if (result?.responseCode === 200) {
+                  this.notifier.success('Cập nhật dữ liệu thành công');
+                  reload = setTimeout(() => {
+                    this.loanDetailDetectChangeStatus.emit('fetching');
+                  }, 1000);
+                } else {
+                  this.notifier.error(JSON.stringify(result?.message));
+                }
+              });
+          }
+
+          if (this.groupName === 'TNG') {
+            this.paydayLoanTngControllerService
+              .changeLoanStatus(this.loanDetail.id, updateLoanStatusRequest)
+              .subscribe((result) => {
+                if (result?.responseCode === 200) {
+                  this.notifier.success('Cập nhật dữ liệu thành công');
+                  this.loanDetailDetectChangeStatus.emit('fetching');
+                } else {
+                  this.notifier.error(JSON.stringify(result?.message));
+                }
+              });
+          }
         }
       })
     );
@@ -316,7 +336,7 @@ export class LoanDetailInfoComponent implements OnInit {
         break;
 
       case PAYDAY_LOAN_STATUS.FUNDED:
-        if (this.groupName === "TNG") {
+        if (this.groupName === 'TNG') {
           this.nextLoanStatus = PAYDAY_LOAN_STATUS.CONTRACT_ACCEPTED;
           break;
         }

@@ -9,14 +9,12 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { VoucherTransaction } from './voucherTransaction';
 
 
-export interface CreateApplicationRequest { 
-    coreToken: string;
-    customerId: string;
-    expectedAmount: number;
-    purpose?: string;
-    voucherTransaction?: VoucherTransaction;
+export interface ApiResponseObject { 
+    result?: object;
+    errorCode?: string;
+    message?: object;
+    responseCode?: number;
 }
 
