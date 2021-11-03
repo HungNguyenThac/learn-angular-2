@@ -1,18 +1,28 @@
 import { MatDialog } from '@angular/material/dialog';
-import { Component, Input, OnInit } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output,
+} from '@angular/core';
 import { MultiLanguageService } from '../../../../share/translate/multiLanguageService';
-import { CustomerInfo } from '../../../../../../open-api-modules/dashboard-api-docs';
+import {
+  Bank,
+  CustomerInfo,
+} from '../../../../../../open-api-modules/dashboard-api-docs';
 import { CustomerDetailUpdateDialogComponent } from '../customer-individual-info-update-dialog/customer-detail-update-dialog.component';
-import { OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { CustomerDetailService } from '../customer-detail-element/customer-detail.service';
 import {
+  BUTTON_TYPE,
   DATA_CELL_TYPE,
-  RESPONSE_CODE,
 } from '../../../../core/common/enum/operator';
-import { DOCUMENT_TYPE } from '../../../../core/common/enum/payday-loan';
 import { ToastrService } from 'ngx-toastr';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { VirtualAccount } from '../../../../../../open-api-modules/payment-api-docs';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-customer-individual-info',
@@ -20,6 +30,16 @@ import { FormBuilder, FormGroup } from '@angular/forms';
   styleUrls: ['./customer-individual-info.component.scss'],
 })
 export class CustomerIndividualInfoComponent implements OnInit, OnDestroy {
+  _virtualAccount: VirtualAccount;
+  @Input()
+  get virtualAccount(): VirtualAccount {
+    return this._virtualAccount;
+  }
+
+  set virtualAccount(value: VirtualAccount) {
+    this._virtualAccount = value;
+  }
+
   _customerInfo: CustomerInfo;
   @Input()
   get customerInfo(): CustomerInfo {
@@ -41,6 +61,18 @@ export class CustomerIndividualInfoComponent implements OnInit, OnDestroy {
   set customerId(value: string) {
     this._customerId = value;
   }
+
+  _bankOptions: Array<Bank>;
+  @Input()
+  get bankOptions(): Array<Bank> {
+    return this._bankOptions;
+  }
+
+  set bankOptions(value: Array<Bank>) {
+    this._bankOptions = value;
+  }
+
+  @Output() triggerUpdateInfo = new EventEmitter<any>();
 
   get leftIndividualInfos() {
     return [
@@ -209,12 +241,31 @@ export class CustomerIndividualInfoComponent implements OnInit, OnDestroy {
   ngOnInit(): void {}
 
   openUpdateDialog() {
-    const dialogRef = this.dialog.open(CustomerDetailUpdateDialogComponent, {
-      panelClass: 'custom-info-dialog-container',
-      maxWidth: '1200px',
-      width: '90%',
-      data: this.customerInfo,
-    });
+    const updateDialogRef = this.dialog.open(
+      CustomerDetailUpdateDialogComponent,
+      {
+        panelClass: 'custom-info-dialog-container',
+        maxWidth: '1200px',
+        width: '90%',
+        data: {
+          customerInfo: this.customerInfo,
+          customerId: this.customerId,
+          virtualAccount: this.virtualAccount,
+          bankOptions: this.bankOptions,
+          selfieSrc: this.selfieSrc,
+        },
+      }
+    );
+    this.subManager.add(
+      updateDialogRef.afterClosed().subscribe((result: any) => {
+        if (result && result.type === BUTTON_TYPE.PRIMARY) {
+          let updateInfoRequest = this._bindingDialogIndividualData(
+            result.data
+          );
+          this.triggerUpdateInfo.emit(updateInfoRequest);
+        }
+      })
+    );
   }
 
   private _initIndividualFormData(customerId, customerInfo) {
@@ -236,33 +287,40 @@ export class CustomerIndividualInfoComponent implements OnInit, OnDestroy {
     );
   }
 
-  private _updateCustomerInfo(updateInfoRequest: Object) {
-    this.subManager.add(
-      this.customerDetailService
-        .updateCustomerInfo(this.customerId, updateInfoRequest)
-        .subscribe((result) => {
-          if (result?.responseCode !== RESPONSE_CODE.SUCCESS) {
-            this.notifier.error(
-              JSON.stringify(result?.message),
-              result?.errorCode
-            );
-            return;
-          }
-
-          setTimeout(() => {
-            this.notifier.success(
-              this.multiLanguageService.instant('common.update_success')
-            );
-          }, 1000);
-        })
-    );
+  private _bindingDialogIndividualData(data) {
+    return {
+      'financialData.accountNumber': data?.accountNumber || null,
+      'financialData.bankCode': data?.bankCode || null,
+      'financialData.bankName': data?.bankName || null,
+      'personalData.addressOneLine1': data?.currentResidence,
+      'personalData.dateOfBirth': data?.dateOfBirth
+        ? this.formatTime(data?.dateOfBirth)
+        : null,
+      'personalData.emailAddress': data?.email,
+      'personalData.identityNumberSix': data?.email,
+      'personalData.firstName': data?.firstName,
+      'personalData.gender': data?.gender,
+      'personalData.idOrigin': data?.idOrigin,
+      'personalData.identityNumberOne': data?.identityNumberOne,
+      'personalData.maritalStatus': data?.maritalStatus,
+      'personalData.borrowerDetailTextVariable1': data?.numberOfDependents,
+      'personalData.addressTwoLine1': data?.permanentAddress,
+      'personalData.mobileNumber': data?.mobileNumber,
+    };
   }
 
   submitForm() {
     const data = this.customerIndividualForm.getRawValue();
-    this._updateCustomerInfo({
+    this.triggerUpdateInfo.emit({
       'personalData.note': data.note,
     });
+  }
+
+  formatTime(timeInput) {
+    if (!timeInput) return;
+    return moment(new Date(timeInput), 'YYYY-MM-DD HH:mm:ss').format(
+      'DD/MM/YYYY'
+    );
   }
 
   ngOnDestroy(): void {
