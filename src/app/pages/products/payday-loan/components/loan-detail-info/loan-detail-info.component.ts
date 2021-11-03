@@ -1,10 +1,16 @@
+import { ToastrService } from 'ngx-toastr';
+import { UpdateLoanStatusRequest } from './../../../../../../../open-api-modules/loanapp-hmg-api-docs/model/updateLoanStatusRequest';
+import { Subscription } from 'rxjs';
+import { PlPromptComponent } from './../../../../../share/components/dialogs/pl-prompt/pl-prompt.component';
+import { PaydayLoanControllerService } from './../../../../../../../open-api-modules/loanapp-hmg-api-docs/api/paydayLoanController.service';
+import { PAYDAY_LOAN_STATUS } from './../../../../../core/common/enum/payday-loan';
 import {
   DATA_CELL_TYPE,
   DATA_STATUS_TYPE,
 } from './../../../../../core/common/enum/operator';
 import { MultiLanguageService } from './../../../../../share/translate/multiLanguageService';
 import { MatDialog } from '@angular/material/dialog';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import * as moment from 'moment';
 import { CustomerInfo } from 'open-api-modules/dashboard-api-docs';
 import { PaydayLoan } from 'open-api-modules/loanapp-api-docs';
@@ -45,6 +51,7 @@ export class LoanDetailInfoComponent implements OnInit {
 
   set loanDetail(value: PaydayLoan) {
     this._loanDetail = value;
+    this.getChangeLoanStatus();
   }
 
   get leftColumn() {
@@ -199,14 +206,66 @@ export class LoanDetailInfoComponent implements OnInit {
   }
 
   currentTime = new Date();
+
+  nextLoanStatus: string;
+  nextLoanStatusDisplay: string;
+  rejectLoanStatus: string = PAYDAY_LOAN_STATUS.WITHDRAW;
+  rejectLoanStatusDisplay: string;
+
+  subManager = new Subscription();
+  @Output() loanDetailDetectChangeStatus = new EventEmitter<any>();
   constructor(
     private multiLanguageService: MultiLanguageService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private paydayLoanControllerService: PaydayLoanControllerService,
+    private notifier: ToastrService
   ) {}
 
   ngOnInit(): void {}
 
-  changeLoanStatus() {}
+  changeLoanStatus(newStatus, newStatusDisplay) {
+    const currentLoanStatusDisplay = this.multiLanguageService.instant(
+      `payday_loan.status.${this.loanDetail.status.toLowerCase()}`
+    );
+    const dialogRef = this.dialog.open(PlPromptComponent, {
+      panelClass: 'custom-dialog-container',
+      height: 'auto',
+      data: {
+        title: this.multiLanguageService.instant('common.notification'),
+        content: this.multiLanguageService.instant(
+          'loan_app.loan_info.confirm_change_status_description',
+          {
+            loan_code: this.loanDetail.loanCode,
+            current_loan_status: currentLoanStatusDisplay,
+            new_loan_status: newStatusDisplay,
+          }
+        ),
+        primaryBtnText: this.multiLanguageService.instant('common.confirm'),
+        secondaryBtnText: this.multiLanguageService.instant('common.skip'),
+      },
+    });
+
+    this.subManager.add(
+      dialogRef.afterClosed().subscribe((button) => {
+        if (button === 'clickPrimary') {
+          const updateLoanStatusRequest: UpdateLoanStatusRequest = {
+            customerId: this.loanDetail.customerId,
+            status: newStatus,
+          };
+          this.paydayLoanControllerService
+            .changeLoanStatus(this.loanDetail.id, updateLoanStatusRequest)
+            .subscribe((result) => {
+              if (result?.responseCode === 200) {
+                this.notifier.success('Cập nhật dữ liệu thành công');
+                this.loanDetailDetectChangeStatus.emit('fetching');
+              } else {
+                this.notifier.error(JSON.stringify(result?.message));
+              }
+            });
+        }
+      })
+    );
+  }
 
   //Trạng thái trả lương
   get salaryStatus() {
@@ -231,6 +290,69 @@ export class LoanDetailInfoComponent implements OnInit {
     return (
       this.loanDetail?.latePenaltyPayment + this.loanDetail?.expectedAmount
     );
+  }
+
+  //Trạng thái khoản vay được phép thay đổi
+  getChangeLoanStatus() {
+    if (!this.loanDetail?.status) return;
+    const currentLoanStatus = this.loanDetail?.status;
+    switch (currentLoanStatus) {
+      case PAYDAY_LOAN_STATUS.INITIALIZED:
+        this.nextLoanStatus = PAYDAY_LOAN_STATUS.DOCUMENT_AWAITING;
+        break;
+
+      case PAYDAY_LOAN_STATUS.DOCUMENT_AWAITING:
+        this.nextLoanStatus = PAYDAY_LOAN_STATUS.DOCUMENTATION_COMPLETE;
+        break;
+
+      case PAYDAY_LOAN_STATUS.DOCUMENTATION_COMPLETE:
+        this.nextLoanStatus = PAYDAY_LOAN_STATUS.AUCTION;
+        this.rejectLoanStatus = PAYDAY_LOAN_STATUS.REJECTED;
+        break;
+
+      case PAYDAY_LOAN_STATUS.AUCTION:
+        this.nextLoanStatus = PAYDAY_LOAN_STATUS.FUNDED;
+        break;
+
+      case PAYDAY_LOAN_STATUS.FUNDED:
+        this.nextLoanStatus = PAYDAY_LOAN_STATUS.CONTRACT_AWAITING;
+        break;
+
+      case PAYDAY_LOAN_STATUS.CONTRACT_AWAITING:
+        this.nextLoanStatus = PAYDAY_LOAN_STATUS.CONTRACT_ACCEPTED;
+        break;
+
+      case PAYDAY_LOAN_STATUS.CONTRACT_ACCEPTED:
+        this.nextLoanStatus = PAYDAY_LOAN_STATUS.AWAITING_DISBURSEMENT;
+        break;
+
+      case PAYDAY_LOAN_STATUS.AWAITING_DISBURSEMENT:
+        this.nextLoanStatus = PAYDAY_LOAN_STATUS.DISBURSED;
+        break;
+
+      case PAYDAY_LOAN_STATUS.DISBURSED:
+        this.nextLoanStatus = PAYDAY_LOAN_STATUS.IN_REPAYMENT;
+        break;
+
+      case PAYDAY_LOAN_STATUS.IN_REPAYMENT:
+        this.nextLoanStatus = PAYDAY_LOAN_STATUS.COMPLETED;
+        break;
+
+      default:
+        this.nextLoanStatus = PAYDAY_LOAN_STATUS.UNKNOWN_STATUS;
+        this.rejectLoanStatus = PAYDAY_LOAN_STATUS.UNKNOWN_STATUS;
+        break;
+    }
+
+    console.log('---------', this.nextLoanStatus, this.rejectLoanStatus);
+    this.nextLoanStatusDisplay = this.multiLanguageService.instant(
+      `payday_loan.status.${this.nextLoanStatus.toLowerCase()}`
+    );
+    this.rejectLoanStatusDisplay = this.multiLanguageService.instant(
+      `payday_loan.status.${this.rejectLoanStatus.toLowerCase()}`
+    );
+
+    return;
   }
 
   formatTime(time) {

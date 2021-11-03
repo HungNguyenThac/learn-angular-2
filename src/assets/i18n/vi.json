@@ -44,6 +44,7 @@
     "register": "Đăng ký",
     "home": "Trang chủ",
     "confirm": "Xác nhận",
+    "skip": "Bỏ qua",
     "change": "Thay đổi",
     "no_options": "Không có bản ghi nào",
     "no_search_result": "Không có kết quả phù hợp với ",
@@ -281,7 +282,8 @@
       "active": "Đang hoạt động",
       "lock": "Ngừng hoạt động",
       "cancel_update": "Hủy cập nhật",
-      "save_update": "Lưu hoạt động"
+      "save_update": "Lưu hoạt động",
+      "confirm_change_status_description": "Bạn có chắc chuyển trạng thái khoản vay {{loan_code}} từ {{current_loan_status}} → {{new_loan_status}}"
     },
     "loan_contract": {
       "loan_status": "Trạng thái khoản vay",

@@ -1,7 +1,7 @@
 import { ApiResponseCustomerInfo } from './../../../../../../../open-api-modules/dashboard-api-docs/model/apiResponseCustomerInfo';
 import { ApiResponsePaydayLoanHmg } from './../../../../../../../open-api-modules/dashboard-api-docs/model/apiResponsePaydayLoanHmg';
 import { Subscription } from 'rxjs';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { PaydayLoan } from 'open-api-modules/loanapp-api-docs';
 import { ApplicationHmgControllerService, CustomerInfo } from 'open-api-modules/dashboard-api-docs';
 import { CustomerDetailService } from 'src/app/pages/customer/components/customer-detail-element/customer-detail.service';
@@ -22,7 +22,6 @@ export class LoanDetailComponent implements OnInit {
     this._loanId = value;
   }
 
-
   _customerId: string;
   @Input()
   get customerId(): string {
@@ -35,6 +34,8 @@ export class LoanDetailComponent implements OnInit {
 
   loanDetail: PaydayLoan;
   userInfo: CustomerInfo;
+
+  @Output() loanDetailDetectChangeStatus = new EventEmitter<any>();
 
   subManager = new Subscription();
   constructor(
@@ -68,4 +69,8 @@ export class LoanDetailComponent implements OnInit {
         })
     );
   }
+
+  loanDetailDetectChangeStatusTrigger(event) {
+    this.loanDetailDetectChangeStatus.emit(event)
+  };
 }

@@ -170,7 +170,6 @@ export class LoanListComponent implements OnInit {
       }
     }
 
-
     this.filterForm.patchValue({
       filterConditions: filterConditionsValue,
       keyword: params.keyword,
@@ -282,6 +281,12 @@ export class LoanListComponent implements OnInit {
   public onSubmitSearchForm(event) {
     this.filterForm.controls.keyword.setValue(event.keyword);
     this._onFilterChange();
+  }
+
+  loanDetailDetectChangeStatusTrigger(event) {
+    if (event) {
+      this._getLoanList();
+    }
   }
 
   ngOnDestroy(): void {

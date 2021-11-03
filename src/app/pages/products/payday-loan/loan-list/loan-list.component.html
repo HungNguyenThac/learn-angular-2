@@ -15,12 +15,13 @@
   (onSortChange)="onSortChange($event)"
   (onExpandElementChange)="onExpandElementChange($event)"
   (onSubmitSearchForm)="onSubmitSearchForm($event)"
->
+  >
 </app-base-management-layout>
 
 <ng-template #detailElementTemplate>
   <app-loan-detail class="w-100"
   [loanId]="expandedElementLoanId"
   [customerId]="expandedElementCustomerId"
+  (loanDetailDetectChangeStatus)="loanDetailDetectChangeStatusTrigger($event)"
   ></app-loan-detail>
 </ng-template>

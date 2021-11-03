@@ -94,10 +94,10 @@
 
   <div class="row mt-3 mb-3">
     <div class="col-12 d-flex gap-2 justify-content-end">
-      <button mat-flat-button color="accent" (click)="changeLoanStatus()">
-        {{ "loan_app.loan_info.document_awaiting" | translate }}
+      <button mat-flat-button color="accent" (click)="changeLoanStatus(nextLoanStatus, nextLoanStatusDisplay)" [hidden]="nextLoanStatus === 'UNKNOWN_STATUS'">
+        {{ nextLoanStatusDisplay }}
       </button>
-      <button mat-flat-button color="warn">
+      <button mat-flat-button color="warn" (click)="changeLoanStatus(rejectLoanStatus, rejectLoanStatusDisplay)" [hidden]="rejectLoanStatus === 'UNKNOWN_STATUS'">
         <span>
           <svg
             width="16"
@@ -112,7 +112,7 @@
             />
           </svg>
         </span>
-        {{ "loan_app.loan_info.withdraw" | translate }}
+        {{ rejectLoanStatusDisplay }}
       </button>
     </div>
   </div>
