@@ -22,6 +22,7 @@
   <app-loan-detail class="w-100"
   [loanId]="expandedElementLoanId"
   [customerId]="expandedElementCustomerId"
+  [groupName]="filterForm.controls.groupName.value"
   (loanDetailDetectChangeStatus)="loanDetailDetectChangeStatusTrigger($event)"
   ></app-loan-detail>
 </ng-template>

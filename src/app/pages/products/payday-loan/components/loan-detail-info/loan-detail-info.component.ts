@@ -207,6 +207,7 @@ export class LoanDetailInfoComponent implements OnInit {
 
   currentTime = new Date();
 
+  @Input() groupName:string;
   nextLoanStatus: string;
   nextLoanStatusDisplay: string;
   rejectLoanStatus: string = PAYDAY_LOAN_STATUS.WITHDRAW;
@@ -315,6 +316,10 @@ export class LoanDetailInfoComponent implements OnInit {
         break;
 
       case PAYDAY_LOAN_STATUS.FUNDED:
+        if (this.groupName === "TNG") {
+          this.nextLoanStatus = PAYDAY_LOAN_STATUS.CONTRACT_ACCEPTED;
+          break;
+        }
         this.nextLoanStatus = PAYDAY_LOAN_STATUS.CONTRACT_AWAITING;
         break;
 

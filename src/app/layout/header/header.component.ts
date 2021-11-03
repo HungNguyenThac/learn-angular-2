@@ -50,13 +50,15 @@ export class HeaderComponent implements OnInit, OnDestroy {
           ),
           iconClass: 'sprite-group-5-pl-24',
           path: '/payday-loan/list',
+          queryParams: { groupName: 'HMG' },
         },
         {
           title: this.multiLanguageService.instant(
-            'header.navigation.loanapp_hmg'
+            'header.navigation.loanapp_tng'
           ),
           iconClass: 'sprite-group-5-pl-24',
           path: '/payday-loan/list',
+          queryParams: { groupName: 'TNG' },
         },
       ],
       path: '/payday-loan/list',

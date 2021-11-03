@@ -34,6 +34,7 @@ export class LoanDetailComponent implements OnInit {
 
   loanDetail: PaydayLoan;
   userInfo: CustomerInfo;
+  @Input() groupName: string;
 
   @Output() loanDetailDetectChangeStatus = new EventEmitter<any>();
 
@@ -71,6 +72,6 @@ export class LoanDetailComponent implements OnInit {
   }
 
   loanDetailDetectChangeStatusTrigger(event) {
-    this.loanDetailDetectChangeStatus.emit(event)
-  };
+    this.loanDetailDetectChangeStatus.emit(event);
+  }
 }
