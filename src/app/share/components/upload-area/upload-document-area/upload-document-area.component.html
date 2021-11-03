@@ -59,5 +59,15 @@
         (clickBtn)="changeDocument($event)"
       ></app-document-button>
     </ng-template>
+
+    <input type="reset" [id]="'reset-manual-upload-input-' + id" hidden />
+    <input
+      type="file"
+      [id]="'manual-upload-input-' + id"
+      #[{{id}}]
+      (change)="onFileChange($event);"
+      [accept]="acceptFileType"
+      hidden
+    />
   </div>
 </div>

@@ -5,6 +5,7 @@ import { Subscription } from 'rxjs';
 import { Prompt } from '../../public/models/prompt.model';
 import { PlLoadingComponent } from '../../share/components';
 import { PlLoading } from 'src/app/public/models/plloading.model';
+import { MultiLanguageService } from '../../share/translate/multiLanguageService';
 
 @Injectable({
   providedIn: 'root',
@@ -15,7 +16,8 @@ export class NotificationService {
   constructor(
     private dialog: MatDialog,
     private loadingDialogRef: MatDialogRef<PlLoadingComponent>,
-    private promptDialogRef: MatDialogRef<PlPromptComponent>
+    private promptDialogRef: MatDialogRef<PlPromptComponent>,
+    private multiLanguageService: MultiLanguageService
   ) {}
 
   openErrorModal(payload: Prompt): MatDialogRef<PlPromptComponent> {
@@ -64,10 +66,12 @@ export class NotificationService {
       minHeight: '194px',
       maxWidth: '290px',
       data: {
-        title: payload?.title || 'Thông tin của bạn đang được xử lý',
+        title:
+          payload?.title ||
+          this.multiLanguageService.instant('common.loading_title'),
         content:
           payload?.content ||
-          'Quá trình sẽ mất khoảng một vài giây, vui lòng không thoát ứng dụng',
+          this.multiLanguageService.instant('common.loading_content'),
         showContent: payload?.showContent,
       },
     });
@@ -76,7 +80,6 @@ export class NotificationService {
   }
 
   destroyAllDialog() {
-    console.log('destroyAllDialog');
     this.dialog.closeAll();
   }
 

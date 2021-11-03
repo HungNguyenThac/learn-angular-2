@@ -66,7 +66,8 @@
     "no_matching_records": "Không có bản ghi nào!",
     "active": "Đang hoạt động",
     "inactive": "Ngừng hoạt động",
-    "update_success": "Cập nhật dữ liệu thành công"
+    "update_success": "Cập nhật dữ liệu thành công",
+    "process_downloading": "Đang tải xuống tài liệu"
   },
   "auth": {
     "phone_number": "Số điện thoại",
