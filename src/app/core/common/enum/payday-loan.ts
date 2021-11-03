@@ -38,6 +38,17 @@ export enum DOCUMENT_TYPE {
   SALARY_INFORMATION_THREE = 'SALARY_INFORMATION_THREE',
 }
 
+export enum DOCUMENT_TYPE_MAPPING_FIELD {
+  FRONT_ID_CARD = 'personalData.frontId',
+  BACK_ID_CARD = 'personalData.backId',
+  FRONT_ID_CARD_TWO = 'personalData.frontIdTwo',
+  BACK_ID_CARD_TWO = 'personalData.backIdTwo',
+  VEHICLE_REGISTRATION = 'personalData.collateralDocument',
+  SALARY_INFORMATION_ONE = 'personalData.salaryDocument1',
+  SALARY_INFORMATION_TWO = 'personalData.salaryDocument2',
+  SALARY_INFORMATION_THREE = 'personalData.salaryDocument3',
+}
+
 export enum ERROR_CODE {
   ACCOUNT_EXISTED = 'ACCOUNT_EXISTED',
   EMAIL_ALREADY_EXISTS = 'EMAIL_ALREADY_EXISTS',

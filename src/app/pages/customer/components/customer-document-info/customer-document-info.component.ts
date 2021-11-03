@@ -2,7 +2,10 @@ import { Component, Input, OnInit } from '@angular/core';
 import { CustomerInfo } from '../../../../../../open-api-modules/dashboard-api-docs';
 import { Subscription } from 'rxjs';
 import { CustomerDetailService } from '../customer-detail-element/customer-detail.service';
-import { DOCUMENT_TYPE } from '../../../../core/common/enum/payday-loan';
+import {
+  DOCUMENT_TYPE,
+  DOCUMENT_TYPE_MAPPING_FIELD,
+} from '../../../../core/common/enum/payday-loan';
 import {
   BUTTON_TYPE,
   DOCUMENT_BTN_TYPE,
@@ -11,6 +14,7 @@ import {
 import { NotificationService } from '../../../../core/services/notification.service';
 import { MultiLanguageService } from '../../../../share/translate/multiLanguageService';
 import { ToastrService } from 'ngx-toastr';
+import { UpdatedDocumentModel } from '../../../../public/models/updated-document.model';
 
 @Component({
   selector: 'app-customer-document-info',
@@ -150,50 +154,81 @@ export class CustomerDocumentInfoComponent implements OnInit {
       this.customerDetailService
         .downloadSingleFileDocument(customerId, documentPath)
         .subscribe((data) => {
-          switch (documentType) {
-            case DOCUMENT_TYPE.BACK_ID_CARD:
-              this.backIdSrc = data;
-              break;
-            case DOCUMENT_TYPE.BACK_ID_CARD_TWO:
-              this.backId2Src = data;
-              break;
-            case DOCUMENT_TYPE.FRONT_ID_CARD:
-              this.frontIdSrc = data;
-              break;
-            case DOCUMENT_TYPE.FRONT_ID_CARD_TWO:
-              this.frontId2Src = data;
-              break;
-            case DOCUMENT_TYPE.SELFIE:
-              this.selfieSrc = data;
-              break;
-            case DOCUMENT_TYPE.SALARY_INFORMATION_ONE:
-              this.salary1Src = data;
-              break;
-            case DOCUMENT_TYPE.SALARY_INFORMATION_TWO:
-              this.salary2Src = data;
-              break;
-            case DOCUMENT_TYPE.SALARY_INFORMATION_THREE:
-              this.salary3Src = data;
-              break;
-            case DOCUMENT_TYPE.VEHICLE_REGISTRATION:
-              this.collateralSrc = data;
-              break;
-            default:
-              break;
+          this._mapDocumentSrc(data, documentType);
+        })
+    );
+  }
+
+  private _mapDocumentSrc(data: any, documentType: DOCUMENT_TYPE) {
+    switch (documentType) {
+      case DOCUMENT_TYPE.BACK_ID_CARD:
+        this.backIdSrc = data;
+        break;
+      case DOCUMENT_TYPE.BACK_ID_CARD_TWO:
+        this.backId2Src = data;
+        break;
+      case DOCUMENT_TYPE.FRONT_ID_CARD:
+        this.frontIdSrc = data;
+        break;
+      case DOCUMENT_TYPE.FRONT_ID_CARD_TWO:
+        this.frontId2Src = data;
+        break;
+      case DOCUMENT_TYPE.SELFIE:
+        this.selfieSrc = data;
+        break;
+      case DOCUMENT_TYPE.SALARY_INFORMATION_ONE:
+        this.salary1Src = data;
+        break;
+      case DOCUMENT_TYPE.SALARY_INFORMATION_TWO:
+        this.salary2Src = data;
+        break;
+      case DOCUMENT_TYPE.SALARY_INFORMATION_THREE:
+        this.salary3Src = data;
+        break;
+      case DOCUMENT_TYPE.VEHICLE_REGISTRATION:
+        this.collateralSrc = data;
+        break;
+      default:
+        break;
+    }
+  }
+
+  private _updateDocument(
+    documentType: DOCUMENT_TYPE,
+    updatedDocumentModel: UpdatedDocumentModel
+  ) {
+    this.subManager.add(
+      this.customerDetailService
+        .uploadFileDocument(
+          documentType,
+          updatedDocumentModel.file,
+          this.customerId
+        )
+        .subscribe((result) => {
+          if (result?.responseCode !== RESPONSE_CODE.SUCCESS) {
+            this.notifier.error(JSON.stringify(result?.message));
+            return;
           }
+          this._mapDocumentSrc(updatedDocumentModel.imgSrc, documentType);
+          this.notifier.success(
+            this.multiLanguageService.instant('common.update_success')
+          );
         })
     );
   }
 
   private _downloadDocumentByPath(documentPath) {
+    this.notifier.info(
+      this.multiLanguageService.instant('common.process_downloading')
+    );
     this.subManager.add(
       this.customerDetailService
         .downloadFileDocument(this.customerId, documentPath)
-        .subscribe((data) => {})
+        .subscribe((result) => {})
     );
   }
 
-  private _deleteDocumentPath(path, documentType: DOCUMENT_TYPE) {
+  private _deleteDocumentPath(documentType: DOCUMENT_TYPE) {
     let promptDialogRef = this.notificationService.openPrompt({
       title: this.multiLanguageService.instant('common.are_you_sure'),
       content: this.multiLanguageService.instant('common.cant_revert'),
@@ -202,25 +237,29 @@ export class CustomerDocumentInfoComponent implements OnInit {
       secondaryBtnText: this.multiLanguageService.instant('common.cancel'),
     });
 
-    const updateInfoRequest = {};
-    updateInfoRequest[documentType] = null;
+    let updateInfoRequest = {};
+    updateInfoRequest[DOCUMENT_TYPE_MAPPING_FIELD[documentType]] = null;
 
     this.subManager.add(
       promptDialogRef.afterClosed().subscribe((buttonType: BUTTON_TYPE) => {
         if (buttonType === BUTTON_TYPE.PRIMARY) {
-          this._updateCustomerInfo(updateInfoRequest);
+          this._updateDocumentCustomerInfo(updateInfoRequest, documentType);
         }
       })
     );
   }
 
-  private _updateCustomerInfo(updateInfoRequest: Object) {
+  private _updateDocumentCustomerInfo(
+    updateInfoRequest: Object,
+    documentType: DOCUMENT_TYPE
+  ) {
     this.subManager.add(
       this.customerDetailService
         .updateCustomerInfo(this.customerId, updateInfoRequest)
         .subscribe((result) => {
           if (result?.responseCode !== RESPONSE_CODE.SUCCESS) {
             this.notifier.error(JSON.stringify(result?.message));
+            return;
           }
 
           setTimeout(() => {
@@ -228,22 +267,26 @@ export class CustomerDocumentInfoComponent implements OnInit {
               this.multiLanguageService.instant('common.update_success')
             );
           }, 1000);
+          this._mapDocumentSrc(null, documentType);
         })
     );
   }
 
   public onChangeDocument(
-    documentBtnType: DOCUMENT_BTN_TYPE,
-    path,
+    updatedDocumentModel: UpdatedDocumentModel,
+    documentPath: string,
     documentType: DOCUMENT_TYPE
   ) {
-    console.log('onChangeDocument', documentBtnType, path, documentType);
-    switch (documentBtnType) {
+    switch (updatedDocumentModel.type) {
+      case DOCUMENT_BTN_TYPE.UPLOAD:
+      case DOCUMENT_BTN_TYPE.UPDATE:
+        this._updateDocument(documentType, updatedDocumentModel);
+        break;
       case DOCUMENT_BTN_TYPE.DOWNLOAD:
-        this._downloadDocumentByPath(path);
+        this._downloadDocumentByPath(documentPath);
         break;
       case DOCUMENT_BTN_TYPE.DELETE:
-        this._deleteDocumentPath(path, documentType);
+        this._deleteDocumentPath(documentType);
         break;
       default:
         break;
