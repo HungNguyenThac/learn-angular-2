@@ -3,7 +3,13 @@ import { CustomerInfo } from '../../../../../../open-api-modules/dashboard-api-d
 import { Subscription } from 'rxjs';
 import { CustomerDetailService } from '../customer-detail-element/customer-detail.service';
 import { DOCUMENT_TYPE } from '../../../../core/common/enum/payday-loan';
-import { DOCUMENT_BTN_TYPE } from '../../../../core/common/enum/operator';
+import {
+  DOCUMENT_BTN_TYPE,
+  RESPONSE_CODE,
+} from '../../../../core/common/enum/operator';
+import { NotificationService } from '../../../../core/services/notification.service';
+import { MultiLanguageService } from '../../../../share/translate/multiLanguageService';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-customer-document-info',
@@ -42,8 +48,14 @@ export class CustomerDocumentInfoComponent implements OnInit {
   salary2Src: string;
   salary3Src: string;
   collateralSrc: string;
+  documentTypes = DOCUMENT_TYPE;
 
-  constructor(private customerDetailService: CustomerDetailService) {}
+  constructor(
+    private customerDetailService: CustomerDetailService,
+    private notificationService: NotificationService,
+    private multiLanguageService: MultiLanguageService,
+    private notifier: ToastrService
+  ) {}
 
   ngOnInit(): void {}
 
@@ -180,10 +192,59 @@ export class CustomerDocumentInfoComponent implements OnInit {
     );
   }
 
-  onChangeDocument(documentBtnType: DOCUMENT_BTN_TYPE, path) {
+  private _deleteDocumentPath(path, documentType: DOCUMENT_TYPE) {
+    let promptDialogRef = this.notificationService.openPrompt({
+      title: this.multiLanguageService.instant('common.are_you_sure'),
+      content: this.multiLanguageService.instant('common.cant_revert'),
+      imgUrl: 'assets/img/payday-loan/warning-prompt-icon.png',
+      primaryBtnText: this.multiLanguageService.instant('common.ok'),
+      secondaryBtnText: this.multiLanguageService.instant('common.cancel'),
+    });
+
+    const updateInfoRequest = {};
+    updateInfoRequest[documentType] = null;
+
+    this.subManager.add(
+      promptDialogRef.afterClosed().subscribe((confirmed: boolean) => {
+        if (!confirmed) {
+          return;
+        }
+
+        this._updateCustomerInfo(updateInfoRequest);
+      })
+    );
+  }
+
+  private _updateCustomerInfo(updateInfoRequest: Object) {
+    this.subManager.add(
+      this.customerDetailService
+        .updateCustomerInfo(this.customerId, updateInfoRequest)
+        .subscribe((result) => {
+          if (result?.responseCode !== RESPONSE_CODE.SUCCESS) {
+            this.notifier.error(JSON.stringify(result?.message));
+          }
+
+          setTimeout(() => {
+            this.notifier.success(
+              this.multiLanguageService.instant('common.update_success')
+            );
+          }, 1000);
+        })
+    );
+  }
+
+  public onChangeDocument(
+    documentBtnType: DOCUMENT_BTN_TYPE,
+    path,
+    documentType: DOCUMENT_TYPE
+  ) {
+    console.log('onChangeDocument', documentBtnType, path, documentType);
     switch (documentBtnType) {
       case DOCUMENT_BTN_TYPE.DOWNLOAD:
         this._downloadDocumentByPath(path);
+        break;
+      case DOCUMENT_BTN_TYPE.DELETE:
+        this._deleteDocumentPath(path, documentType);
         break;
       default:
         break;

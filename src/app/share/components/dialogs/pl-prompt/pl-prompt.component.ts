@@ -12,7 +12,9 @@ export class PlPromptComponent implements OnInit {
     title: '',
     content: '',
     secondaryBtnText: '',
+    secondaryBtnClass: 'btn-secondary',
     primaryBtnText: '',
+    primaryBtnClass: 'btn-primary',
     disabledBtn: false,
     imgGroupUrl: null,
     imgUrl: null,
@@ -25,7 +27,18 @@ export class PlPromptComponent implements OnInit {
   ) {
     dialogRef.disableClose = true;
     if (data) {
-      this.promptContent = data;
+      this.promptContent = {
+        title: data.title,
+        content: data.content,
+        secondaryBtnText: data.secondaryBtnText,
+        secondaryBtnClass: data.secondaryBtnClass || 'btn-secondary',
+        primaryBtnText: data.primaryBtnText,
+        primaryBtnClass: data.primaryBtnClass || 'btn-primary',
+        disabledBtn: data.disabledBtn,
+        imgGroupUrl: data.imgGroupUrl,
+        imgUrl: data.imgUrl,
+        imgBackgroundClass: data.imgBackgroundClass,
+      };
     }
   }
 

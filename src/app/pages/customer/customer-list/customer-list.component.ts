@@ -123,7 +123,7 @@ export class CustomerListComponent implements OnInit, OnDestroy {
       ],
     },
     {
-      title: this.multiLanguageService.instant('filter.pl_ui_status'),
+      title: this.multiLanguageService.instant('filter.account_status'),
       type: FILTER_TYPE.SELECT,
       controlName: 'unknow',
       value: null,

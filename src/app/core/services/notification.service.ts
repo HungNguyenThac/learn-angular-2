@@ -18,15 +18,21 @@ export class NotificationService {
     private promptDialogRef: MatDialogRef<PlPromptComponent>
   ) {}
 
-  openErrorModal(payload: Prompt) {
-    this.openPrompt(payload, 'assets/img/payday-loan/warning-prompt-icon.png');
+  openErrorModal(payload: Prompt): MatDialogRef<PlPromptComponent> {
+    return this.openPrompt({
+      ...payload,
+      imgUrl: 'assets/img/payday-loan/warning-prompt-icon.png',
+    });
   }
 
-  openSuccessModal(payload: Prompt) {
-    this.openPrompt(payload, 'assets/img/payday-loan/success-prompt-icon.png');
+  openSuccessModal(payload: Prompt): MatDialogRef<PlPromptComponent> {
+    return this.openPrompt({
+      ...payload,
+      imgUrl: 'assets/img/payday-loan/success-prompt-icon.png',
+    });
   }
 
-  openPrompt(payload: Prompt, imgUrl?: string) {
+  openPrompt(payload: Prompt): MatDialogRef<PlPromptComponent> {
     this.promptDialogRef = this.dialog.open(PlPromptComponent, {
       panelClass: 'custom-dialog-container',
       height: 'auto',
@@ -36,24 +42,20 @@ export class NotificationService {
         imgBackgroundClass: payload?.imgBackgroundClass
           ? payload?.imgBackgroundClass + ' text-center'
           : 'text-center',
-        imgUrl: !payload?.imgGroupUrl ? payload?.imgUrl || imgUrl : null,
+        imgUrl: !payload?.imgGroupUrl ? payload?.imgUrl : null,
         imgGroupUrl: payload?.imgGroupUrl || null,
         title: payload?.title,
         content: payload?.content,
         primaryBtnText: payload?.primaryBtnText,
+        primaryBtnClass: payload?.primaryBtnClass,
         secondaryBtnText: payload?.secondaryBtnText,
+        secondaryBtnClass: payload?.secondaryBtnClass,
       },
     });
-
-    this.subManager.add(
-      this.promptDialogRef.afterClosed().subscribe((confirmed: boolean) => {
-        console.log(confirmed);
-        this.subManager.unsubscribe();
-      })
-    );
+    return this.promptDialogRef;
   }
 
-  showLoading(payload?: PlLoading) {
+  showLoading(payload?: PlLoading): MatDialogRef<PlLoadingComponent> {
     this.loadingDialogRef = this.dialog.open(PlLoadingComponent, {
       panelClass: payload?.showContent
         ? 'custom-dialog-container'
@@ -70,12 +72,7 @@ export class NotificationService {
       },
     });
 
-    this.subManager.add(
-      this.loadingDialogRef.afterClosed().subscribe((confirmed: boolean) => {
-        console.log(confirmed);
-        this.subManager.unsubscribe();
-      })
-    );
+    return this.loadingDialogRef;
   }
 
   destroyAllDialog() {

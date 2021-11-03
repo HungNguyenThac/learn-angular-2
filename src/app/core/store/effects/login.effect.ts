@@ -27,6 +27,7 @@ import { ERROR_CODE_KEY } from '../../common/enum/payday-loan';
 import { NotificationService } from '../../services/notification.service';
 import { MultiLanguageService } from '../../../share/translate/multiLanguageService';
 import { ToastrService } from 'ngx-toastr';
+import {RESPONSE_CODE} from "../../common/enum/operator";
 
 @Injectable()
 export class LoginEffects {
@@ -99,7 +100,7 @@ export class LoginEffects {
             map((result: ApiResponseGetTokenResponse) => {
               //
               this.loginInput = login;
-              if (!result || result.responseCode !== 200) {
+              if (!result || result.responseCode !== RESPONSE_CODE.SUCCESS) {
                 return new fromActions.SigninError(result.errorCode);
               }
               return new fromActions.SigninSuccess(result);
