@@ -63,3 +63,9 @@ export enum RESPONSE_CODE {
   SUCCESS = 200,
   ERROR = 400,
 }
+
+export enum BUTTON_TYPE {
+  PRIMARY = "PRIMARY",
+  SECONDARY = "SECONDARY"
+}
+

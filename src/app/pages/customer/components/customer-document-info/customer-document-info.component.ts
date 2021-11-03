@@ -4,6 +4,7 @@ import { Subscription } from 'rxjs';
 import { CustomerDetailService } from '../customer-detail-element/customer-detail.service';
 import { DOCUMENT_TYPE } from '../../../../core/common/enum/payday-loan';
 import {
+  BUTTON_TYPE,
   DOCUMENT_BTN_TYPE,
   RESPONSE_CODE,
 } from '../../../../core/common/enum/operator';
@@ -205,12 +206,10 @@ export class CustomerDocumentInfoComponent implements OnInit {
     updateInfoRequest[documentType] = null;
 
     this.subManager.add(
-      promptDialogRef.afterClosed().subscribe((confirmed: boolean) => {
-        if (!confirmed) {
-          return;
+      promptDialogRef.afterClosed().subscribe((buttonType: BUTTON_TYPE) => {
+        if (buttonType === BUTTON_TYPE.PRIMARY) {
+          this._updateCustomerInfo(updateInfoRequest);
         }
-
-        this._updateCustomerInfo(updateInfoRequest);
       })
     );
   }
