@@ -6,54 +6,6 @@ servers:
 - url: http://localhost:8004
   description: Generated server url
 paths:
-  /v1/{loanId}/update-loan:
-    post:
-      tags:
-      - op-controller
-      operationId: updateInfo
-      parameters:
-      - name: loanId
-        in: path
-        required: true
-        schema:
-          type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/UpdateLoanRequest'
-        required: true
-      responses:
-        "200":
-          description: OK
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/ApiResponseString'
-  /v1/{loanId}/change-status:
-    post:
-      tags:
-      - op-controller
-      operationId: changeLoanStatus
-      parameters:
-      - name: loanId
-        in: path
-        required: true
-        schema:
-          type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/UpdateLoanStatusRequest'
-        required: true
-      responses:
-        "200":
-          description: OK
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/ApiResponseString'
   /v1/promotion/voucher/validate:
     post:
       tags:
@@ -126,18 +78,66 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ApiResponseString'
-  /v1/get-service-token:
+  /v1/payday/{loanId}/update-loan:
     post:
       tags:
-      - op-controller
+      - payday-loan-controller
+      operationId: updateInfo
+      parameters:
+      - name: loanId
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateLoanRequest'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseObject'
+  /v1/payday/{loanId}/change-status:
+    post:
+      tags:
+      - payday-loan-controller
+      operationId: changeLoanStatus
+      parameters:
+      - name: loanId
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateLoanStatusRequest'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseString'
+  /v1/payday/get-service-token:
+    post:
+      tags:
+      - payday-loan-controller
       operationId: getServiceToken
       responses:
         "200":
           description: OK
-  /v1/cronjob/withdraw-loan:
+  /v1/payday/cronjob/withdraw-loan:
     post:
       tags:
-      - op-controller
+      - payday-loan-controller
       operationId: withdraw
       responses:
         "200":
@@ -146,10 +146,10 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ApiResponseString'
-  /v1/cronjob/overdue:
+  /v1/payday/cronjob/overdue:
     post:
       tags:
-      - op-controller
+      - payday-loan-controller
       operationId: setLoanOverdue
       responses:
         "200":
@@ -158,10 +158,10 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ApiResponseString'
-  /v1/cronjob/notify-loan-inrepayment:
+  /v1/payday/cronjob/notify-loan-inrepayment:
     post:
       tags:
-      - op-controller
+      - payday-loan-controller
       operationId: notifyInRepaymentLoan
       responses:
         "200":
@@ -170,10 +170,10 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ApiResponseString'
-  /v1/cronjob/notify-before-get-salary:
+  /v1/payday/cronjob/notify-before-get-salary:
     post:
       tags:
-      - op-controller
+      - payday-loan-controller
       operationId: notifyBeforeGetSalary
       responses:
         "200":
@@ -182,11 +182,11 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ApiResponseString'
-  /v1/create-application:
+  /v1/payday/create-application:
     post:
       tags:
-      - op-controller
-      operationId: createLoan
+      - payday-loan-controller
+      operationId: createAccount
       requestBody:
         content:
           application/json:
@@ -200,65 +200,6 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ApiResponseApplyResponse'
-  /v1/{loanId}:
-    get:
-      tags:
-      - op-controller
-      operationId: changeLoanStatus_1
-      parameters:
-      - name: loanId
-        in: path
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          description: OK
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/ApiResponsePaydayLoan'
-  /v1/{customerId}/get-loan:
-    get:
-      tags:
-      - op-controller
-      operationId: getLoan
-      parameters:
-      - name: customerId
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: loanId
-        in: query
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          description: OK
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/ApiResponsePaydayLoan'
-  /v1/{customerId}/get-active-loan:
-    get:
-      tags:
-      - op-controller
-      operationId: getActivePaydayLoan
-      parameters:
-      - name: customerId
-        in: path
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          description: OK
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/ApiResponsePaydayLoan'
   /v1/{customerId}/all-loan:
     get:
       tags:
@@ -281,7 +222,7 @@ paths:
     get:
       tags:
       - application-controller
-      operationId: getActiveLoan
+      operationId: getActivePaydayLoan
       parameters:
       - name: customerId
         in: path
@@ -300,24 +241,6 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ApiResponsePaydayLoan'
-  /v1/status:
-    get:
-      tags:
-      - op-controller
-      operationId: getLoanByStatus
-      parameters:
-      - name: status
-        in: query
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          description: OK
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/ApiResponseListPaydayLoan'
   /v1/promotion/voucher:
     get:
       tags:
@@ -348,24 +271,6 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ApiResponseVoucher'
-  /v1/promotion/voucher-transaction:
-    get:
-      tags:
-      - promotion-controller
-      operationId: getVoucherTransaction
-      parameters:
-      - name: voucherTransactionId
-        in: query
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          description: OK
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/ApiResponseVoucherTransaction'
   /v1/promotion/all-event:
     get:
       tags:
@@ -384,11 +289,88 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ApiResponseListPromotionEvent'
-  /v1/contract/Contract:
+  /v1/payday/{loanId}:
+    get:
+      tags:
+      - payday-loan-controller
+      operationId: changeLoanStatus_1
+      parameters:
+      - name: loanId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponsePaydayLoan'
+  /v1/payday/{customerId}/get-loan:
+    get:
+      tags:
+      - payday-loan-controller
+      operationId: getLoan
+      parameters:
+      - name: customerId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: loanId
+        in: query
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponsePaydayLoan'
+  /v1/payday/{customerId}/get-active-loan:
+    get:
+      tags:
+      - payday-loan-controller
+      operationId: getActivePaydayLoan_1
+      parameters:
+      - name: customerId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponsePaydayLoan'
+  /v1/payday/status:
+    get:
+      tags:
+      - payday-loan-controller
+      operationId: getLoanByStatus
+      parameters:
+      - name: status
+        in: query
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseListPaydayLoan'
+  /v1/contract/detail:
     get:
       tags:
       - contract-controller
-      operationId: getContract
+      operationId: getActivePaydayLoan_2
       parameters:
       - name: loanId
         in: query
@@ -409,34 +391,6 @@ paths:
                 $ref: '#/components/schemas/ApiResponseContract'
 components:
   schemas:
-    UpdateLoanRequest:
-      type: object
-      properties:
-        customerId:
-          type: string
-        updateInfo:
-          type: object
-          additionalProperties:
-            type: object
-    ApiResponseString:
-      type: object
-      properties:
-        result:
-          type: string
-        errorCode:
-          type: string
-        message:
-          type: object
-        responseCode:
-          type: integer
-          format: int32
-    UpdateLoanStatusRequest:
-      type: object
-      properties:
-        customerId:
-          type: string
-        status:
-          type: string
     CheckValidVoucherRequest:
       type: object
       properties:
@@ -483,6 +437,18 @@ components:
           type: string
         expiredAt:
           type: string
+    ApiResponseString:
+      type: object
+      properties:
+        result:
+          type: string
+        errorCode:
+          type: string
+        message:
+          type: object
+        responseCode:
+          type: integer
+          format: int32
     CreateVoucherRequest:
       type: object
       properties:
@@ -557,9 +523,39 @@ components:
           type: string
         expiredAt:
           type: string
+    UpdateLoanRequest:
+      type: object
+      properties:
+        customerId:
+          type: string
+        updateInfo:
+          type: object
+          additionalProperties:
+            type: object
+    ApiResponseObject:
+      type: object
+      properties:
+        result:
+          type: object
+        errorCode:
+          type: string
+        message:
+          type: object
+        responseCode:
+          type: integer
+          format: int32
+    UpdateLoanStatusRequest:
+      type: object
+      properties:
+        customerId:
+          type: string
+        status:
+          type: string
     CreateApplicationRequest:
       required:
+      - coreToken
       - customerId
+      - expectedAmount
       type: object
       properties:
         coreToken:
@@ -604,11 +600,13 @@ components:
           type: string
         epayLoanId:
           type: string
-    ApiResponsePaydayLoan:
+    ApiResponseListPaydayLoan:
       type: object
       properties:
         result:
-          $ref: '#/components/schemas/PaydayLoan'
+          type: array
+          items:
+            $ref: '#/components/schemas/PaydayLoan'
         errorCode:
           type: string
         message:
@@ -660,13 +658,11 @@ components:
           type: string
         createdAt:
           type: string
-    ApiResponseListPaydayLoan:
+    ApiResponsePaydayLoan:
       type: object
       properties:
         result:
-          type: array
-          items:
-            $ref: '#/components/schemas/PaydayLoan'
+          $ref: '#/components/schemas/PaydayLoan'
         errorCode:
           type: string
         message:

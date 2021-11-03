@@ -91,15 +91,15 @@ export class ApplicationControllerService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getActiveLoan(customerId: string, coreToken: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponsePaydayLoan>;
-    public getActiveLoan(customerId: string, coreToken: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponsePaydayLoan>>;
-    public getActiveLoan(customerId: string, coreToken: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponsePaydayLoan>>;
-    public getActiveLoan(customerId: string, coreToken: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
+    public getActivePaydayLoan(customerId: string, coreToken: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponsePaydayLoan>;
+    public getActivePaydayLoan(customerId: string, coreToken: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponsePaydayLoan>>;
+    public getActivePaydayLoan(customerId: string, coreToken: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponsePaydayLoan>>;
+    public getActivePaydayLoan(customerId: string, coreToken: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
         if (customerId === null || customerId === undefined) {
-            throw new Error('Required parameter customerId was null or undefined when calling getActiveLoan.');
+            throw new Error('Required parameter customerId was null or undefined when calling getActivePaydayLoan.');
         }
         if (coreToken === null || coreToken === undefined) {
-            throw new Error('Required parameter coreToken was null or undefined when calling getActiveLoan.');
+            throw new Error('Required parameter coreToken was null or undefined when calling getActivePaydayLoan.');
         }
 
         let queryParameters = new HttpParams({encoder: this.encoder});

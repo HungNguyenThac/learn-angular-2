@@ -16,6 +16,7 @@ model/apiResponseContract.ts
 model/apiResponseListPaydayLoan.ts
 model/apiResponseListPromotionEvent.ts
 model/apiResponseListVoucher.ts
+model/apiResponseObject.ts
 model/apiResponsePaydayLoan.ts
 model/apiResponseString.ts
 model/apiResponseVoucher.ts

@@ -3,6 +3,7 @@ export * from './apiResponseContract';
 export * from './apiResponseListPaydayLoan';
 export * from './apiResponseListPromotionEvent';
 export * from './apiResponseListVoucher';
+export * from './apiResponseObject';
 export * from './apiResponsePaydayLoan';
 export * from './apiResponseString';
 export * from './apiResponseVoucher';

@@ -121,6 +121,7 @@
                       active: selectedNavItem === menuItem.navItem
                     }"
                     [routerLink]="menuItem.path"
+                    [queryParams]="menuItem.queryParams"
                   >
                     <span
                       [ngClass]="[
@@ -152,6 +153,7 @@
                   >
                     <a
                       [routerLink]="menuItem.path"
+                      [queryParams]="menuItem.queryParams"
                       class="
                         nav-link
                         d-inline-flex
@@ -193,6 +195,7 @@
                             align-items-center
                           "
                           [routerLink]="subItem.path"
+                          [queryParams]="subItem.queryParams"
                         >
                           <span [ngClass]="subItem.iconClass"></span>
                           <span>{{ subItem.title }}</span>
@@ -207,6 +210,7 @@
                   <ng-template #hasNotSubItems>
                     <a
                       [routerLink]="menuItem.path"
+                      [queryParams]="menuItem.queryParams"
                       class="
                         nav-link
                         d-inline-flex

@@ -134,6 +134,7 @@ export class LoanListComponent implements OnInit {
     this.filterForm = this.formBuilder.group({
       keyword: [''],
       companyId: [''],
+      groupName: [''],
       loanCode: [''],
       mobileNumber: [''],
       status: [''],
@@ -170,7 +171,6 @@ export class LoanListComponent implements OnInit {
       }
     }
 
-
     this.filterForm.patchValue({
       filterConditions: filterConditionsValue,
       keyword: params.keyword,
@@ -197,13 +197,27 @@ export class LoanListComponent implements OnInit {
 
   private _getLoanList() {
     const params = this._buildParams();
-    this.subManager.add(
-      this.loanListService
-        .getLoanDataHmg(params)
-        .subscribe((data: ApiResponseSearchPaydayLoanResponse) => {
-          this._parseData(data?.result);
-        })
-    );
+    console.log('params ne:', params);
+
+    if (params.groupName === "HMG") {
+      this.subManager.add(
+        this.loanListService
+          .getLoanDataHmg(params)
+          .subscribe((data: ApiResponseSearchPaydayLoanResponse) => {
+            this._parseData(data?.result);
+          })
+      );
+    }
+
+    if (params.groupName === 'TNG') {
+      this.subManager.add(
+        this.loanListService
+          .getLoanDataTng(params)
+          .subscribe((data: ApiResponseSearchPaydayLoanResponse) => {
+            this._parseData(data?.result);
+          })
+      );
+    }
   }
 
   private _getCompanyList() {
@@ -282,6 +296,12 @@ export class LoanListComponent implements OnInit {
   public onSubmitSearchForm(event) {
     this.filterForm.controls.keyword.setValue(event.keyword);
     this._onFilterChange();
+  }
+
+  loanDetailDetectChangeStatusTrigger(event) {
+    if (event) {
+      this._getLoanList();
+    }
   }
 
   ngOnDestroy(): void {

@@ -19,6 +19,7 @@ import { Observable }                                        from 'rxjs';
 
 import { ApiResponseApplyResponse } from '../model/models';
 import { ApiResponseListPaydayLoan } from '../model/models';
+import { ApiResponseObject } from '../model/models';
 import { ApiResponsePaydayLoan } from '../model/models';
 import { ApiResponseString } from '../model/models';
 import { CreateApplicationRequest } from '../model/models';
@@ -136,7 +137,7 @@ export class PaydayLoanControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.post<ApiResponseString>(`${this.configuration.basePath}/v1/${encodeURIComponent(String(loanId))}/change-status`,
+        return this.httpClient.post<ApiResponseString>(`${this.configuration.basePath}/v1/payday/${encodeURIComponent(String(loanId))}/change-status`,
             updateLoanStatusRequest,
             {
                 responseType: <any>responseType_,
@@ -181,7 +182,7 @@ export class PaydayLoanControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.get<ApiResponsePaydayLoan>(`${this.configuration.basePath}/v1/${encodeURIComponent(String(loanId))}`,
+        return this.httpClient.get<ApiResponsePaydayLoan>(`${this.configuration.basePath}/v1/payday/${encodeURIComponent(String(loanId))}`,
             {
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
@@ -197,12 +198,12 @@ export class PaydayLoanControllerService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public createLoan(createApplicationRequest: CreateApplicationRequest, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseApplyResponse>;
-    public createLoan(createApplicationRequest: CreateApplicationRequest, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseApplyResponse>>;
-    public createLoan(createApplicationRequest: CreateApplicationRequest, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseApplyResponse>>;
-    public createLoan(createApplicationRequest: CreateApplicationRequest, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
+    public createAccount(createApplicationRequest: CreateApplicationRequest, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseApplyResponse>;
+    public createAccount(createApplicationRequest: CreateApplicationRequest, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseApplyResponse>>;
+    public createAccount(createApplicationRequest: CreateApplicationRequest, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseApplyResponse>>;
+    public createAccount(createApplicationRequest: CreateApplicationRequest, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
         if (createApplicationRequest === null || createApplicationRequest === undefined) {
-            throw new Error('Required parameter createApplicationRequest was null or undefined when calling createLoan.');
+            throw new Error('Required parameter createApplicationRequest was null or undefined when calling createAccount.');
         }
 
         let headers = this.defaultHeaders;
@@ -234,7 +235,7 @@ export class PaydayLoanControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.post<ApiResponseApplyResponse>(`${this.configuration.basePath}/v1/create-application`,
+        return this.httpClient.post<ApiResponseApplyResponse>(`${this.configuration.basePath}/v1/payday/create-application`,
             createApplicationRequest,
             {
                 responseType: <any>responseType_,
@@ -251,12 +252,12 @@ export class PaydayLoanControllerService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getActivePaydayLoan(customerId: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponsePaydayLoan>;
-    public getActivePaydayLoan(customerId: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponsePaydayLoan>>;
-    public getActivePaydayLoan(customerId: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponsePaydayLoan>>;
-    public getActivePaydayLoan(customerId: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
+    public getActivePaydayLoan1(customerId: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponsePaydayLoan>;
+    public getActivePaydayLoan1(customerId: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponsePaydayLoan>>;
+    public getActivePaydayLoan1(customerId: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponsePaydayLoan>>;
+    public getActivePaydayLoan1(customerId: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
         if (customerId === null || customerId === undefined) {
-            throw new Error('Required parameter customerId was null or undefined when calling getActivePaydayLoan.');
+            throw new Error('Required parameter customerId was null or undefined when calling getActivePaydayLoan1.');
         }
 
         let headers = this.defaultHeaders;
@@ -279,7 +280,7 @@ export class PaydayLoanControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.get<ApiResponsePaydayLoan>(`${this.configuration.basePath}/v1/${encodeURIComponent(String(customerId))}/get-active-loan`,
+        return this.httpClient.get<ApiResponsePaydayLoan>(`${this.configuration.basePath}/v1/payday/${encodeURIComponent(String(customerId))}/get-active-loan`,
             {
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
@@ -333,7 +334,7 @@ export class PaydayLoanControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.get<ApiResponsePaydayLoan>(`${this.configuration.basePath}/v1/${encodeURIComponent(String(customerId))}/get-loan`,
+        return this.httpClient.get<ApiResponsePaydayLoan>(`${this.configuration.basePath}/v1/payday/${encodeURIComponent(String(customerId))}/get-loan`,
             {
                 params: queryParameters,
                 responseType: <any>responseType_,
@@ -384,7 +385,7 @@ export class PaydayLoanControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.get<ApiResponseListPaydayLoan>(`${this.configuration.basePath}/v1/status`,
+        return this.httpClient.get<ApiResponseListPaydayLoan>(`${this.configuration.basePath}/v1/payday/status`,
             {
                 params: queryParameters,
                 responseType: <any>responseType_,
@@ -424,7 +425,7 @@ export class PaydayLoanControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.post<any>(`${this.configuration.basePath}/v1/get-service-token`,
+        return this.httpClient.post<any>(`${this.configuration.basePath}/v1/payday/get-service-token`,
             null,
             {
                 responseType: <any>responseType_,
@@ -465,7 +466,7 @@ export class PaydayLoanControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.post<ApiResponseString>(`${this.configuration.basePath}/v1/cronjob/notify-before-get-salary`,
+        return this.httpClient.post<ApiResponseString>(`${this.configuration.basePath}/v1/payday/cronjob/notify-before-get-salary`,
             null,
             {
                 responseType: <any>responseType_,
@@ -506,7 +507,7 @@ export class PaydayLoanControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.post<ApiResponseString>(`${this.configuration.basePath}/v1/cronjob/notify-loan-inrepayment`,
+        return this.httpClient.post<ApiResponseString>(`${this.configuration.basePath}/v1/payday/cronjob/notify-loan-inrepayment`,
             null,
             {
                 responseType: <any>responseType_,
@@ -547,7 +548,7 @@ export class PaydayLoanControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.post<ApiResponseString>(`${this.configuration.basePath}/v1/cronjob/overdue`,
+        return this.httpClient.post<ApiResponseString>(`${this.configuration.basePath}/v1/payday/cronjob/overdue`,
             null,
             {
                 responseType: <any>responseType_,
@@ -565,9 +566,9 @@ export class PaydayLoanControllerService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public updateInfo(loanId: string, updateLoanRequest: UpdateLoanRequest, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseString>;
-    public updateInfo(loanId: string, updateLoanRequest: UpdateLoanRequest, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseString>>;
-    public updateInfo(loanId: string, updateLoanRequest: UpdateLoanRequest, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseString>>;
+    public updateInfo(loanId: string, updateLoanRequest: UpdateLoanRequest, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseObject>;
+    public updateInfo(loanId: string, updateLoanRequest: UpdateLoanRequest, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseObject>>;
+    public updateInfo(loanId: string, updateLoanRequest: UpdateLoanRequest, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseObject>>;
     public updateInfo(loanId: string, updateLoanRequest: UpdateLoanRequest, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
         if (loanId === null || loanId === undefined) {
             throw new Error('Required parameter loanId was null or undefined when calling updateInfo.');
@@ -605,7 +606,7 @@ export class PaydayLoanControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.post<ApiResponseString>(`${this.configuration.basePath}/v1/${encodeURIComponent(String(loanId))}/update-loan`,
+        return this.httpClient.post<ApiResponseObject>(`${this.configuration.basePath}/v1/payday/${encodeURIComponent(String(loanId))}/update-loan`,
             updateLoanRequest,
             {
                 responseType: <any>responseType_,
@@ -646,7 +647,7 @@ export class PaydayLoanControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.post<ApiResponseString>(`${this.configuration.basePath}/v1/cronjob/withdraw-loan`,
+        return this.httpClient.post<ApiResponseString>(`${this.configuration.basePath}/v1/payday/cronjob/withdraw-loan`,
             null,
             {
                 responseType: <any>responseType_,

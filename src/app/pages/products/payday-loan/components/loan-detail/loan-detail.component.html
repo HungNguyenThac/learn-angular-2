@@ -6,6 +6,8 @@
         [loanId]="loanId"
         [loanDetail]="loanDetail"
         [customerInfo]="userInfo"
+        [groupName]="groupName"
+        (loanDetailDetectChangeStatus)="loanDetailDetectChangeStatusTrigger($event)"
       ></app-loan-detail-info> </ng-template
   ></mat-tab>
 

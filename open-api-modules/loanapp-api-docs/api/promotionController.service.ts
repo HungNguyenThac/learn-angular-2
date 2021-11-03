@@ -292,57 +292,6 @@ export class PromotionControllerService {
     }
 
     /**
-     * @param voucherTransactionId 
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public getVoucherTransaction(voucherTransactionId: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseVoucherTransaction>;
-    public getVoucherTransaction(voucherTransactionId: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseVoucherTransaction>>;
-    public getVoucherTransaction(voucherTransactionId: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseVoucherTransaction>>;
-    public getVoucherTransaction(voucherTransactionId: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
-        if (voucherTransactionId === null || voucherTransactionId === undefined) {
-            throw new Error('Required parameter voucherTransactionId was null or undefined when calling getVoucherTransaction.');
-        }
-
-        let queryParameters = new HttpParams({encoder: this.encoder});
-        if (voucherTransactionId !== undefined && voucherTransactionId !== null) {
-          queryParameters = this.addToHttpParams(queryParameters,
-            <any>voucherTransactionId, 'voucherTransactionId');
-        }
-
-        let headers = this.defaultHeaders;
-
-        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-        if (httpHeaderAcceptSelected === undefined) {
-            // to determine the Accept header
-            const httpHeaderAccepts: string[] = [
-                '*/*'
-            ];
-            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        }
-        if (httpHeaderAcceptSelected !== undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
-        }
-
-
-        let responseType_: 'text' | 'json' = 'json';
-        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
-            responseType_ = 'text';
-        }
-
-        return this.httpClient.get<ApiResponseVoucherTransaction>(`${this.configuration.basePath}/v1/promotion/voucher-transaction`,
-            {
-                params: queryParameters,
-                responseType: <any>responseType_,
-                withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress
-            }
-        );
-    }
-
-    /**
      * @param createPromotionEventRequest 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
