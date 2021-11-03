@@ -7,11 +7,11 @@ import {
   TemplateRef,
 } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
-import { BreadcrumbOptionsModel } from '../../../../public/models/breadcrumb-options.model';
+import { BreadcrumbOptionsModel } from '../../../../public/models/external/breadcrumb-options.model';
 import { SortDirection } from '@angular/material/sort/sort-direction';
-import { FilterOptionModel } from '../../../../public/models/filter-option.model';
-import {FilterEventModel} from "../../../../public/models/filter-event.model";
-import {FilterActionEventModel} from "../../../../public/models/filter-action-event.model";
+import { FilterOptionModel } from '../../../../public/models/filter/filter-option.model';
+import {FilterEventModel} from "../../../../public/models/filter/filter-event.model";
+import {FilterActionEventModel} from "../../../../public/models/filter/filter-action-event.model";
 import {Sort} from "@angular/material/sort";
 import {PageEvent} from "@angular/material/paginator/public-api";
 

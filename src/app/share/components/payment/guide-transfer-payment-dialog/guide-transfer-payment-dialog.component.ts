@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { TransferPaymentData } from '../../../../public/models/transfer-payment-data.model';
+import { TransferPaymentData } from '../../../../public/models/payment/transfer-payment-data.model';
 import {GlobalConstants} from "../../../../core/common/global-constants";
 
 @Component({

@@ -6,7 +6,13 @@ import { CustomerDetailUpdateDialogComponent } from '../customer-individual-info
 import { OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { CustomerDetailService } from '../customer-detail-element/customer-detail.service';
-import { DATA_CELL_TYPE } from '../../../../core/common/enum/operator';
+import {
+  DATA_CELL_TYPE,
+  RESPONSE_CODE,
+} from '../../../../core/common/enum/operator';
+import { DOCUMENT_TYPE } from '../../../../core/common/enum/payday-loan';
+import { ToastrService } from 'ngx-toastr';
+import { FormBuilder, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-customer-individual-info',
@@ -22,6 +28,7 @@ export class CustomerIndividualInfoComponent implements OnInit, OnDestroy {
 
   set customerInfo(value: CustomerInfo) {
     this._getSelfieDocument(this.customerId, value);
+    this._initIndividualFormData(this.customerId, value);
     this._customerInfo = value;
   }
 
@@ -140,7 +147,10 @@ export class CustomerIndividualInfoComponent implements OnInit, OnDestroy {
         title: this.multiLanguageService.instant(
           'customer.individual_info.bank_name'
         ),
-        value: `${this.customerInfo?.bankName} ( ${this.customerInfo?.bankCode} )`,
+        value:
+          this.customerInfo?.bankName || this.customerInfo?.bankCode
+            ? `${this.customerInfo?.bankName} ( ${this.customerInfo?.bankCode} )`
+            : null,
         type: DATA_CELL_TYPE.TEXT,
         format: null,
       },
@@ -168,14 +178,18 @@ export class CustomerIndividualInfoComponent implements OnInit, OnDestroy {
         type: DATA_CELL_TYPE.DATETIME,
         format: 'dd/MM/yyyy HH:mm',
       },
-      // {
-      //   title: this.multiLanguageService.instant(
-      //     'customer.individual_info.updated_by'
-      //   ),
-      //   value: this.customerInfo?.updatedBy,
-      // },
+      {
+        title: this.multiLanguageService.instant(
+          'customer.individual_info.updated_by'
+        ),
+        value: this.customerInfo?.updatedBy,
+        type: DATA_CELL_TYPE.TEXT,
+        format: null,
+      },
     ];
   }
+
+  customerIndividualForm: FormGroup;
 
   subManager = new Subscription();
   selfieSrc: string;
@@ -183,8 +197,14 @@ export class CustomerIndividualInfoComponent implements OnInit, OnDestroy {
   constructor(
     private multiLanguageService: MultiLanguageService,
     private dialog: MatDialog,
-    private customerDetailService: CustomerDetailService
-  ) {}
+    private customerDetailService: CustomerDetailService,
+    private notifier: ToastrService,
+    private formBuilder: FormBuilder
+  ) {
+    this.customerIndividualForm = this.formBuilder.group({
+      note: [''],
+    });
+  }
 
   ngOnInit(): void {}
 
@@ -194,6 +214,12 @@ export class CustomerIndividualInfoComponent implements OnInit, OnDestroy {
       maxWidth: '1200px',
       width: '90%',
       data: this.customerInfo,
+    });
+  }
+
+  private _initIndividualFormData(customerId, customerInfo) {
+    this.customerIndividualForm.patchValue({
+      note: customerInfo?.note,
     });
   }
 
@@ -208,6 +234,35 @@ export class CustomerIndividualInfoComponent implements OnInit, OnDestroy {
           this.selfieSrc = data;
         })
     );
+  }
+
+  private _updateCustomerInfo(updateInfoRequest: Object) {
+    this.subManager.add(
+      this.customerDetailService
+        .updateCustomerInfo(this.customerId, updateInfoRequest)
+        .subscribe((result) => {
+          if (result?.responseCode !== RESPONSE_CODE.SUCCESS) {
+            this.notifier.error(
+              JSON.stringify(result?.message),
+              result?.errorCode
+            );
+            return;
+          }
+
+          setTimeout(() => {
+            this.notifier.success(
+              this.multiLanguageService.instant('common.update_success')
+            );
+          }, 1000);
+        })
+    );
+  }
+
+  submitForm() {
+    const data = this.customerIndividualForm.getRawValue();
+    this._updateCustomerInfo({
+      'personalData.note': data.note,
+    });
   }
 
   ngOnDestroy(): void {

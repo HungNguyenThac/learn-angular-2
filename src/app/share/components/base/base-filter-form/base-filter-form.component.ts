@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FilterOptionModel } from '../../../../public/models/filter-option.model';
-import { FilterEventModel } from '../../../../public/models/filter-event.model';
-import { FilterActionEventModel } from '../../../../public/models/filter-action-event.model';
+import { FilterOptionModel } from '../../../../public/models/filter/filter-option.model';
+import { FilterEventModel } from '../../../../public/models/filter/filter-event.model';
+import { FilterActionEventModel } from '../../../../public/models/filter/filter-action-event.model';
 
 @Component({
   selector: 'app-base-filter-form',

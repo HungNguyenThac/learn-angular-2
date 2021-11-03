@@ -1,7 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { BUTTON_TYPE } from 'src/app/core/common/enum/operator';
-import { Prompt } from '../../../../public/models/prompt.model';
+import { Prompt } from '../../../../public/models/external/prompt.model';
 
 @Component({
   selector: 'pl-prompt',

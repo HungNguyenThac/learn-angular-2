@@ -10,8 +10,8 @@ import {
   MomentDateAdapter,
 } from '@angular/material-moment-adapter';
 import { MultiLanguageService } from '../../../translate/multiLanguageService';
-import { FilterEventModel } from '../../../../public/models/filter-event.model';
-import { FilterOptionModel } from '../../../../public/models/filter-option.model';
+import { FilterEventModel } from '../../../../public/models/filter/filter-event.model';
+import { FilterOptionModel } from '../../../../public/models/filter/filter-option.model';
 import { FILTER_DATETIME_TYPE } from '../../../../core/common/enum/operator';
 import * as _ from 'lodash';
 

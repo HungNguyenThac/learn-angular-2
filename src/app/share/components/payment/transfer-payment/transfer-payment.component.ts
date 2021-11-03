@@ -6,9 +6,9 @@ import {
   OnInit,
   Output,
 } from '@angular/core';
-import { PaymentVirtualAccount } from '../../../../public/models/payment-virtual-account.model';
-import { PaymentUserInfo } from '../../../../public/models/payment-user-info.model';
-import { PaymentProductInfo } from '../../../../public/models/payment-product-info.model';
+import { PaymentVirtualAccount } from '../../../../public/models/payment/payment-virtual-account.model';
+import { PaymentUserInfo } from '../../../../public/models/payment/payment-user-info.model';
+import { PaymentProductInfo } from '../../../../public/models/payment/payment-product-info.model';
 import { MatDialog } from '@angular/material/dialog';
 import { GuideTransferPaymentDialogComponent } from '../guide-transfer-payment-dialog/guide-transfer-payment-dialog.component';
 import { Observable, Subscription } from 'rxjs';
