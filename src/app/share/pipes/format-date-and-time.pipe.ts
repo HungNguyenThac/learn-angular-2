@@ -21,6 +21,6 @@ export class FormatDateAndTimePipe implements PipeTransform {
       ? moment(new Date(value)).format(
           'DD/MM/YYYY HH:mm:ss'
         )
-      : null;
+      : 'N/A';
   }
 }

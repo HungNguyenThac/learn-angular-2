@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { DOCUMENT_BTN_TYPE } from '../../../../core/common/enum/operator';
-import { UpdatedDocumentModel } from '../../../../public/models/updated-document.model';
+import { UpdatedDocumentModel } from '../../../../public/models/external/updated-document.model';
 
 @Component({
   selector: 'app-upload-document-area',
@@ -26,17 +26,17 @@ export class UploadDocumentAreaComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  changeDocument(documentType: DOCUMENT_BTN_TYPE) {
-    switch (documentType) {
+  changeDocument(documentBtnType: DOCUMENT_BTN_TYPE) {
+    this.currentDocumentBtnType = documentBtnType;
+    switch (documentBtnType) {
       case DOCUMENT_BTN_TYPE.UPDATE:
       case DOCUMENT_BTN_TYPE.UPLOAD:
-        this.currentDocumentBtnType = documentType;
         this.triggerClickUploadImg();
         break;
       case DOCUMENT_BTN_TYPE.DOWNLOAD:
       case DOCUMENT_BTN_TYPE.DELETE:
         this.onChangeDocument.emit({
-          type: documentType,
+          type: documentBtnType,
         });
         break;
       default:

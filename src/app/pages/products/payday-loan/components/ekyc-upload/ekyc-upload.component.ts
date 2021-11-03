@@ -18,7 +18,7 @@ import {
 import { Observable } from 'rxjs/Observable';
 import * as fromSelectors from '../../../../../core/store/selectors';
 import { NotificationService } from '../../../../../core/services/notification.service';
-import { Prompt } from '../../../../../public/models/prompt.model';
+import { Prompt } from '../../../../../public/models/external/prompt.model';
 import { PlPromptComponent } from '../../../../../share/components';
 import { MatDialog } from '@angular/material/dialog';
 import {RESPONSE_CODE} from "../../../../../core/common/enum/operator";

@@ -2,7 +2,7 @@ import * as actions from '../actions';
 import { Auth } from '../../../public/models';
 import { HttpErrorResponse } from '@angular/common/http';
 import jwt_decode from 'jwt-decode';
-import { Token } from '../../../public/models/token.model';
+import { Token } from '../../../public/models/auth/token.model';
 import { RESPONSE_CODE } from '../../common/enum/operator';
 
 export interface LoginState {

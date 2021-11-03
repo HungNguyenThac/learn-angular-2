@@ -5,7 +5,7 @@ import { ApiResponseSearchAndPaginationResponseCompanyInfo } from '../../../../.
 import { CustomerListService } from '../../../customer/customer-list/customer-list.service';
 import { CompanyControllerService } from '../../../../../../open-api-modules/dashboard-api-docs';
 import { ActivatedRoute, Router, Params } from '@angular/router';
-import { BreadcrumbOptionsModel } from '../../../../public/models/breadcrumb-options.model';
+import { BreadcrumbOptionsModel } from '../../../../public/models/external/breadcrumb-options.model';
 import { Subscription, Observable } from 'rxjs';
 import { SearchAndPaginationResponseCompanyInfo } from '../../../../../../open-api-modules/dashboard-api-docs';
 import {

@@ -2,9 +2,9 @@ import { Injectable } from '@angular/core';
 import { PlPromptComponent } from '../../share/components';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
-import { Prompt } from '../../public/models/prompt.model';
+import { Prompt } from '../../public/models/external/prompt.model';
 import { PlLoadingComponent } from '../../share/components';
-import { PlLoading } from 'src/app/public/models/plloading.model';
+import { PlLoading } from 'src/app/public/models/external/plloading.model';
 import { MultiLanguageService } from '../../share/translate/multiLanguageService';
 
 @Injectable({

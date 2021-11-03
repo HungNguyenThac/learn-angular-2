@@ -1,2 +1,2 @@
-export * from './auth.model';
-export * from './login-form.model';
+export * from './auth/auth.model';
+export * from './auth/login-form.model';

@@ -1,7 +1,7 @@
 import {
   DATA_CELL_TYPE,
   DATA_STATUS_TYPE,
-} from '../../core/common/enum/operator';
+} from '../../../core/common/enum/operator';
 
 export interface DisplayedFieldsModel {
   key: string;

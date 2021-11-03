@@ -14,7 +14,7 @@ import {
 import { NotificationService } from '../../../../core/services/notification.service';
 import { MultiLanguageService } from '../../../../share/translate/multiLanguageService';
 import { ToastrService } from 'ngx-toastr';
-import { UpdatedDocumentModel } from '../../../../public/models/updated-document.model';
+import { UpdatedDocumentModel } from '../../../../public/models/external/updated-document.model';
 
 @Component({
   selector: 'app-customer-document-info',
@@ -206,7 +206,7 @@ export class CustomerDocumentInfoComponent implements OnInit {
         )
         .subscribe((result) => {
           if (result?.responseCode !== RESPONSE_CODE.SUCCESS) {
-            this.notifier.error(JSON.stringify(result?.message));
+            this.notifier.error(JSON.stringify(result?.message), result?.errorCode);
             return;
           }
           this._mapDocumentSrc(updatedDocumentModel.imgSrc, documentType);
@@ -258,7 +258,7 @@ export class CustomerDocumentInfoComponent implements OnInit {
         .updateCustomerInfo(this.customerId, updateInfoRequest)
         .subscribe((result) => {
           if (result?.responseCode !== RESPONSE_CODE.SUCCESS) {
-            this.notifier.error(JSON.stringify(result?.message));
+            this.notifier.error(JSON.stringify(result?.message), result?.errorCode);
             return;
           }
 

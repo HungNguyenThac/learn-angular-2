@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { PaymentProductInfo } from '../../../../public/models/payment-product-info.model';
+import { PaymentProductInfo } from '../../../../public/models/payment/payment-product-info.model';
 import { GlobalConstants } from '../../../../core/common/global-constants';
-import { PaymentUserInfo } from '../../../../public/models/payment-user-info.model';
+import { PaymentUserInfo } from '../../../../public/models/payment/payment-user-info.model';
 import * as moment from 'moment';
 
 @Component({

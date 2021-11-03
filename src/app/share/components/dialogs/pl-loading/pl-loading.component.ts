@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import {PlLoading} from "../../../../public/models/plloading.model";
+import {PlLoading} from "../../../../public/models/external/plloading.model";
 
 @Component({
   selector: 'app-pl-loading',
