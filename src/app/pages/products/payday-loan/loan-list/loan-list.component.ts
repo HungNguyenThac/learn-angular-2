@@ -1,9 +1,8 @@
+import { FilterActionEventModel } from './../../../../public/models/filter/filter-action-event.model';
+import { FilterEventModel } from './../../../../public/models/filter/filter-event.model';
 import { CompanyInfo } from './../../../../../../open-api-modules/customer-api-docs/model/companyInfo';
 import { PAYDAY_LOAN_UI_STATUS_TEXT, PAYDAY_LOAN_STATUS } from './../../../../core/common/enum/payday-loan';
-import { FilterEventModel } from './../../../../public/models/filter-event.model';
-import { FilterActionEventModel } from './../../../../public/models/filter-action-event.model';
 import { FILTER_TYPE } from 'src/app/core/common/enum/operator';
-import { FilterOptionModel } from 'src/app/public/models/filter-option.model';
 import { LoanListService } from './loan-list.service';
 import { PageEvent } from '@angular/material/paginator/public-api';
 import { Sort } from '@angular/material/sort';
@@ -31,6 +30,7 @@ import { MultiLanguageService } from '../../../../share/translate/multiLanguageS
 import { MatTableDataSource } from '@angular/material/table';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ApiResponseSearchPaydayLoanResponse } from 'open-api-modules/dashboard-api-docs';
+import { FilterOptionModel } from 'src/app/public/models/filter/filter-option.model';
 @Component({
   selector: 'app-loan-list',
   templateUrl: './loan-list.component.html',
