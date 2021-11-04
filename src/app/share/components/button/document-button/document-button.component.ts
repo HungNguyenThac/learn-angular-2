@@ -10,7 +10,7 @@ import { MultiLanguageService } from '../../../translate/multiLanguageService';
 export class DocumentButtonComponent implements OnInit {
   @Input() documentType: DOCUMENT_BTN_TYPE;
   @Input() classes: string;
-  @Output() clickBtn = new EventEmitter<any>();
+  @Output() clickBtn = new EventEmitter<DOCUMENT_BTN_TYPE>();
 
   get documentBtnInfo() {
     switch (this.documentType) {

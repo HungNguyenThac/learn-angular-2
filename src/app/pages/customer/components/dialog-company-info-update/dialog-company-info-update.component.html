@@ -14,7 +14,9 @@
         />
       </svg>
     </button>
-    <div class="card-title title">Cập nhật thông tin công ty</div>
+    <div class="card-title title">
+      {{ "customer.individual_info.update_company_info" | translate }}
+    </div>
     <div class="card-body">
       <div class="row">
         <!--  Info  -->
@@ -28,12 +30,14 @@
                     <mat-label>{{
                       "customer.company_info.company_name" | translate
                     }}</mat-label>
-                    <mat-select formControlName="companyName">
+                    <mat-select formControlName="companyId">
                       <mat-option
-                        *ngFor="let bankNameOption of bankNameOptions.options"
-                        [value]="bankNameOption"
+                        *ngFor="let companyOption of companyOptions"
+                        [value]="companyOption.id"
                       >
-                        {{ bankNameOption }}
+                        {{
+                          companyOption.name + " (" + companyOption.code + ")"
+                        }}
                       </mat-option>
                     </mat-select>
                   </mat-form-field>
@@ -57,14 +61,14 @@
                 <div>
                   <mat-form-field appearance="outline" class="w-100">
                     <mat-label>{{
-                      "customer.company_info.last_name" | translate
+                      "customer.company_info.full_name" | translate
                     }}</mat-label>
                     <input
                       matInput
                       [placeholder]="
-                        'customer.company_info.last_name' | translate
+                        'customer.company_info.full_name' | translate
                       "
-                      formControlName="lastName"
+                      formControlName="firstName"
                     />
                   </mat-form-field>
                 </div>
@@ -79,7 +83,7 @@
                       [placeholder]="
                         'customer.company_info.first_name' | translate
                       "
-                      formControlName="firstName"
+                      formControlName="tngFirstName"
                     />
                   </mat-form-field>
                 </div>
@@ -142,7 +146,7 @@
                       [placeholder]="
                         'customer.company_info.working_days' | translate
                       "
-                      formControlName="workingDays"
+                      formControlName="workingDay"
                     />
                   </mat-form-field>
                 </div>
@@ -167,12 +171,20 @@
                     <mat-label>{{
                       "customer.individual_info.bank_name" | translate
                     }}</mat-label>
-                    <mat-select formControlName="bankName">
+                    <mat-select
+                      formControlName="bankName"
+                      (selectionChange)="changeBank($event)"
+                    >
                       <mat-option
-                        *ngFor="let bankNameOption of bankNameOptions.options"
-                        [value]="bankNameOption"
+                        *ngFor="let bankNameOption of bankOptions"
+                        [value]="bankNameOption.bankName"
                       >
-                        {{ bankNameOption }}
+                        {{
+                          bankNameOption.bankName +
+                            " (" +
+                            bankNameOption.bankCode +
+                            ")"
+                        }}
                       </mat-option>
                     </mat-select>
                   </mat-form-field>
@@ -188,7 +200,9 @@
                       [placeholder]="
                         'customer.company_info.bank_code' | translate
                       "
-                       [value]="companyInfoForm.controls.bankCode.value"
+                      [value]="companyInfoForm.controls.bankCode.value"
+                      disabled
+                      readonly
                     />
                   </mat-form-field>
                 </div>
@@ -201,10 +215,16 @@
 
       <div class="row mt-3">
         <div class="col-12 d-flex gap-2 justify-content-end">
-          <button mat-flat-button color="warn" autofocus mat-dialog-close cdkFocusInitial>
+          <button
+            mat-flat-button
+            color="warn"
+            autofocus
+            mat-dialog-close
+            cdkFocusInitial
+          >
             {{ "customer.individual_info.cancel_update" | translate }}
           </button>
-          <button mat-flat-button color="accent" (click)="submit()">
+          <button mat-flat-button color="accent" (click)="submitForm()">
             <span class="sprite-group-5-save-white"></span>
             {{ "customer.individual_info.save_update" | translate }}
           </button>

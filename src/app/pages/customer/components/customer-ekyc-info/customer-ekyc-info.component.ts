@@ -7,6 +7,7 @@ import { MultiLanguageService } from '../../../../share/translate/multiLanguageS
 import { CustomerDetailService } from '../customer-detail-element/customer-detail.service';
 import { Subscription } from 'rxjs';
 import { DATA_CELL_TYPE } from '../../../../core/common/enum/operator';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-customer-ekyc-info',
@@ -124,7 +125,8 @@ export class CustomerEkycInfoComponent implements OnInit {
 
   constructor(
     private multiLanguageService: MultiLanguageService,
-    private customerDetailService: CustomerDetailService
+    private customerDetailService: CustomerDetailService,
+    private notifier: ToastrService
   ) {}
 
   ngOnInit(): void {}
@@ -152,6 +154,9 @@ export class CustomerEkycInfoComponent implements OnInit {
   }
 
   downloadDocumentByPath(documentPath) {
+    this.notifier.info(
+      this.multiLanguageService.instant('common.process_downloading')
+    );
     this.subManager.add(
       this.customerDetailService
         .downloadFileDocument(this.customerId, documentPath)

@@ -24,12 +24,12 @@ import { MatTableDataSource } from '@angular/material/table';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import * as fromSelectors from '../../../core/store/selectors';
-import { BreadcrumbOptionsModel } from '../../../public/models/breadcrumb-options.model';
+import { BreadcrumbOptionsModel } from '../../../public/models/external/breadcrumb-options.model';
 import { PageEvent } from '@angular/material/paginator/public-api';
 import { Sort } from '@angular/material/sort';
-import { FilterOptionModel } from 'src/app/public/models/filter-option.model';
-import { FilterEventModel } from '../../../public/models/filter-event.model';
-import { FilterActionEventModel } from '../../../public/models/filter-action-event.model';
+import { FilterOptionModel } from 'src/app/public/models/filter/filter-option.model';
+import { FilterEventModel } from '../../../public/models/filter/filter-event.model';
+import { FilterActionEventModel } from '../../../public/models/filter/filter-action-event.model';
 import {
   PAYDAY_LOAN_UI_STATUS,
   PAYDAY_LOAN_UI_STATUS_TEXT,
@@ -412,7 +412,7 @@ export class CustomerListComponent implements OnInit, OnDestroy {
   private _getCompanyList() {
     this.subManager.add(
       this.companyControllerService
-        .getCompanies(10, 0, {})
+        .getCompanies(100, 0, {})
         .subscribe(
           (data: ApiResponseSearchAndPaginationResponseCompanyInfo) => {
             this.companyList = data?.result?.data;

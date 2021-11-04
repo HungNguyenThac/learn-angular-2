@@ -86,30 +86,20 @@ export class CustomerDetailService {
         }),
         // catch errors
         catchError((err) => {
-          console.log(err);
           return of(null);
         })
       );
   }
 
-  public uploadFileDocument(document_type: string, file, customerId: string) {
-    console.log(
-      'document_type, file, customerId',
-      document_type,
-      file,
-      customerId
-    );
-
+  public uploadFileDocument(documentType: string, file, customerId: string) {
     return this.fileControllerService
-      .uploadSingleFile(document_type, file, customerId)
+      .uploadSingleFile(documentType, file, customerId)
       .pipe(
         map((results) => {
-          console.log('upload ok', results);
           return results;
         }),
         // catch errors
         catchError((err) => {
-          console.log(err);
           return of(null);
         })
       );
@@ -120,49 +110,16 @@ export class CustomerDetailService {
       info: {},
     };
     for (const key in updateInfoRequest) {
-      if (updateInfoRequest[key] === null) {
-        infoData.info[`personalData.${key}`] = null;
-      } else {
-        infoData.info[`personalData.${key}`] = new Object(
-          updateInfoRequest[key]
-        );
-      }
+      infoData.info[key] = updateInfoRequest[key]
+        ? new Object(updateInfoRequest[key])
+        : null;
     }
-    console.log('infoData', infoData);
-    return this.customerService.putInfo(customerId, infoData).pipe(
-      map((results) => {
-        console.log('update ok', results);
-        return results;
-      }),
-      catchError((err) => {
-        console.log(err);
-        return of(null);
-      })
-    );
-  }
 
-  public updateCustomerFinalcialData(
-    customerId: string,
-    updateInfoRequest: Object
-  ) {
-    const infoData: UpdateInfoRequest = {
-      info: {},
-    };
-    for (const key in updateInfoRequest) {
-      if (updateInfoRequest[key] === null) {
-        infoData.info[`financialData.${key}`] = null;
-      } else {
-        infoData.info[`financialData.${key}`] = new Object(
-          updateInfoRequest[key]
-        );
-      }
-    }
     return this.customerService.putInfo(customerId, infoData).pipe(
       map((results) => {
         return results;
       }),
       catchError((err) => {
-        console.log(err);
         return of(null);
       })
     );

@@ -1,20 +1,41 @@
 import { MatDialog } from '@angular/material/dialog';
-import { Component, Input, OnInit } from '@angular/core';
-import { CustomerInfo } from '../../../../../../open-api-modules/dashboard-api-docs';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output,
+} from '@angular/core';
+import {
+  Bank,
+  CustomerInfo,
+} from '../../../../../../open-api-modules/dashboard-api-docs';
 import { CompanyInfo } from '../../../../../../open-api-modules/dashboard-api-docs';
 import { MultiLanguageService } from '../../../../share/translate/multiLanguageService';
 import { DialogCompanyInfoUpdateComponent } from '../dialog-company-info-update/dialog-company-info-update.component';
-import {DATA_CELL_TYPE} from "../../../../core/common/enum/operator";
+import {
+  BUTTON_TYPE,
+  DATA_CELL_TYPE,
+  RESPONSE_CODE,
+} from '../../../../core/common/enum/operator';
+import { Subscription } from 'rxjs';
+import { CustomerDetailService } from '../customer-detail-element/customer-detail.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-customer-company-info',
   templateUrl: './customer-company-info.component.html',
   styleUrls: ['./customer-company-info.component.scss'],
 })
-export class CustomerCompanyInfoComponent implements OnInit {
+export class CustomerCompanyInfoComponent implements OnInit, OnDestroy {
   @Input() customerInfo: CustomerInfo = {};
   @Input() customerId: string = '';
-  companyInfo: CompanyInfo = {};
+  @Input() companyInfo: CompanyInfo = {};
+  @Input() bankOptions: Array<Bank>;
+  @Input() companyOptions: Array<CompanyInfo>;
+
+  @Output() triggerUpdateInfo = new EventEmitter<any>();
 
   get leftCompanyInfos() {
     return [
@@ -24,7 +45,7 @@ export class CustomerCompanyInfoComponent implements OnInit {
         ),
         value: this.companyInfo.name,
         type: DATA_CELL_TYPE.TEXT,
-        format: null
+        format: null,
       },
       {
         title: this.multiLanguageService.instant(
@@ -32,15 +53,15 @@ export class CustomerCompanyInfoComponent implements OnInit {
         ),
         value: this.customerInfo.organizationName,
         type: DATA_CELL_TYPE.TEXT,
-        format: null
+        format: null,
       },
       {
         title: this.multiLanguageService.instant(
-          'customer.company_info.last_name'
+          'customer.company_info.full_name'
         ),
-        value: this.customerInfo.tngData?.hoDem,
+        value: this.customerInfo.firstName,
         type: DATA_CELL_TYPE.TEXT,
-        format: null
+        format: null,
       },
       {
         title: this.multiLanguageService.instant(
@@ -48,7 +69,7 @@ export class CustomerCompanyInfoComponent implements OnInit {
         ),
         value: this.customerInfo.tngData?.ten,
         type: DATA_CELL_TYPE.TEXT,
-        format: null
+        format: null,
       },
       {
         title: this.multiLanguageService.instant(
@@ -56,7 +77,7 @@ export class CustomerCompanyInfoComponent implements OnInit {
         ),
         value: this.customerInfo.officeCode,
         type: DATA_CELL_TYPE.TEXT,
-        format: null
+        format: null,
       },
       {
         title: this.multiLanguageService.instant(
@@ -64,7 +85,7 @@ export class CustomerCompanyInfoComponent implements OnInit {
         ),
         value: this.customerInfo.officeName,
         type: DATA_CELL_TYPE.TEXT,
-        format: null
+        format: null,
       },
     ];
   }
@@ -77,7 +98,7 @@ export class CustomerCompanyInfoComponent implements OnInit {
         ),
         value: this.customerInfo.annualIncome,
         type: DATA_CELL_TYPE.CURRENCY,
-        format: null
+        format: null,
       },
       {
         title: this.multiLanguageService.instant(
@@ -85,7 +106,7 @@ export class CustomerCompanyInfoComponent implements OnInit {
         ),
         value: this.customerInfo.workingDay,
         type: DATA_CELL_TYPE.TEXT,
-        format: null
+        format: null,
       },
       {
         title: this.multiLanguageService.instant(
@@ -93,7 +114,7 @@ export class CustomerCompanyInfoComponent implements OnInit {
         ),
         value: this.customerInfo.accountNumber,
         type: DATA_CELL_TYPE.TEXT,
-        format: null
+        format: null,
       },
       {
         title: this.multiLanguageService.instant(
@@ -101,7 +122,7 @@ export class CustomerCompanyInfoComponent implements OnInit {
         ),
         value: this.customerInfo.bankName,
         type: DATA_CELL_TYPE.TEXT,
-        format: null
+        format: null,
       },
       {
         title: this.multiLanguageService.instant(
@@ -109,7 +130,7 @@ export class CustomerCompanyInfoComponent implements OnInit {
         ),
         value: this.customerInfo.bankCode,
         type: DATA_CELL_TYPE.TEXT,
-        format: null
+        format: null,
       },
       {
         title: this.multiLanguageService.instant(
@@ -121,20 +142,59 @@ export class CustomerCompanyInfoComponent implements OnInit {
       },
     ];
   }
+  subManager = new Subscription();
 
   constructor(
     private multiLanguageService: MultiLanguageService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private customerDetailService: CustomerDetailService,
+    private notifier: ToastrService
   ) {}
 
   ngOnInit(): void {}
 
   openUpdateDialog() {
-    const dialogRef = this.dialog.open(DialogCompanyInfoUpdateComponent, {
+    const updateDialogRef = this.dialog.open(DialogCompanyInfoUpdateComponent, {
       panelClass: 'custom-info-dialog-container',
       maxWidth: '800px',
       width: '90%',
-      data: this.customerInfo,
+      data: {
+        customerInfo: this.customerInfo,
+        customerId: this.customerId,
+        bankOptions: this.bankOptions,
+        companyOptions: this.companyOptions,
+      },
     });
+
+    this.subManager.add(
+      updateDialogRef.afterClosed().subscribe((result: any) => {
+        if (result && result.type === BUTTON_TYPE.PRIMARY) {
+          let updateInfoRequest = this._bindingDialogCompanyInfoData(
+            result.data
+          );
+          this.triggerUpdateInfo.emit(updateInfoRequest);
+        }
+      })
+    );
+  }
+
+  private _bindingDialogCompanyInfoData(data) {
+    return {
+      'personalData.companyId': data?.companyId,
+      'personalData.organizationName': data?.employeeCode,
+      'tngData.ten': data?.tngFirstName || null,
+      'financialData.accountNumber': data?.accountNumber || null,
+      'financialData.bankCode': data?.bankCode || null,
+      'financialData.bankName': data?.bankName || null,
+      'personalData.firstName': data?.firstName,
+      'personalData.annualIncome': data?.annualIncome,
+      'personalData.workingDay': data?.workingDay,
+      'personalData.officeCode': data?.officeCode,
+      'personalData.officeName': data?.officeName,
+    };
+  }
+
+  ngOnDestroy(): void {
+    this.subManager.unsubscribe();
   }
 }

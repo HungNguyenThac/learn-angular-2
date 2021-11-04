@@ -1,9 +1,9 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { MultiLanguageService } from '../../../translate/multiLanguageService';
 import { PAYMENT_METHOD } from '../../../../core/common/enum/payment-method';
-import { PaymentProductInfo } from '../../../../public/models/payment-product-info.model';
-import { PaymentUserInfo } from '../../../../public/models/payment-user-info.model';
-import { PaymentVirtualAccount } from '../../../../public/models/payment-virtual-account.model';
+import { PaymentProductInfo } from '../../../../public/models/payment/payment-product-info.model';
+import { PaymentUserInfo } from '../../../../public/models/payment/payment-user-info.model';
+import { PaymentVirtualAccount } from '../../../../public/models/payment/payment-virtual-account.model';
 import { NotificationService } from '../../../../core/services/notification.service';
 
 @Component({
