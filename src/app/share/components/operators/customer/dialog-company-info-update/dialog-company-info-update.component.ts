@@ -1,14 +1,14 @@
-import { MultiLanguageService } from './../../../../share/translate/multiLanguageService';
+import { MultiLanguageService } from '../../../../translate/multiLanguageService';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { VirtualAccount } from '../../../../../../open-api-modules/payment-api-docs';
+import { VirtualAccount } from '../../../../../../../open-api-modules/payment-api-docs';
 import {
   Bank,
   CompanyInfo,
   CustomerInfo,
-} from '../../../../../../open-api-modules/dashboard-api-docs';
-import { BUTTON_TYPE } from '../../../../core/common/enum/operator';
+} from '../../../../../../../open-api-modules/dashboard-api-docs';
+import { BUTTON_TYPE } from '../../../../../core/common/enum/operator';
 
 @Component({
   selector: 'app-dialog-company-info-update',
