@@ -7,7 +7,9 @@
         [loanDetail]="loanDetail"
         [customerInfo]="userInfo"
         [groupName]="groupName"
-        (loanDetailDetectChangeStatus)="loanDetailDetectChangeStatusTrigger($event)"
+        (loanDetailDetectChangeStatus)="
+          loanDetailDetectChangeStatusTrigger($event)
+        "
       ></app-loan-detail-info> </ng-template
   ></mat-tab>
 
@@ -20,8 +22,12 @@
   <!--  Document Info-->
   <mat-tab [label]="'loan_app.tabs.documents' | translate">
     <ng-template matTabContent>
-      <app-loan-documents></app-loan-documents> </ng-template
-  ></mat-tab>
+      <app-customer-document-info
+        [customerId]="customerId"
+        [customerInfo]="userInfo"
+      ></app-customer-document-info>
+    </ng-template>
+  </mat-tab>
 
   <!--  Rating Info-->
   <mat-tab [label]="'loan_app.tabs.rating' | translate">

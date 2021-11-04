@@ -413,6 +413,7 @@ export class LoanListComponent implements OnInit {
     queryParams['dateFilterType'] = data.dateFilterType;
     queryParams['dateFilterTitle'] = data.dateFilterTitle;
 
+    queryParams['groupName'] = data.groupName;
     queryParams['orderBy'] = data.orderBy;
     queryParams['sortDirection'] = data.sortDirection;
     queryParams['pageIndex'] = this.pageIndex;
