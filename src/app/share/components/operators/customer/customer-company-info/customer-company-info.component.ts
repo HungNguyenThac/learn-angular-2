@@ -10,17 +10,17 @@ import {
 import {
   Bank,
   CustomerInfo,
-} from '../../../../../../open-api-modules/dashboard-api-docs';
-import { CompanyInfo } from '../../../../../../open-api-modules/dashboard-api-docs';
-import { MultiLanguageService } from '../../../../share/translate/multiLanguageService';
+} from '../../../../../../../open-api-modules/dashboard-api-docs';
+import { CompanyInfo } from '../../../../../../../open-api-modules/dashboard-api-docs';
+import { MultiLanguageService } from '../../../../translate/multiLanguageService';
 import { DialogCompanyInfoUpdateComponent } from '../dialog-company-info-update/dialog-company-info-update.component';
 import {
   BUTTON_TYPE,
   DATA_CELL_TYPE,
   RESPONSE_CODE,
-} from '../../../../core/common/enum/operator';
+} from '../../../../../core/common/enum/operator';
 import { Subscription } from 'rxjs';
-import { CustomerDetailService } from '../customer-detail-element/customer-detail.service';
+import { CustomerDetailService } from '../../../../../pages/customer/components/customer-detail-element/customer-detail.service';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
