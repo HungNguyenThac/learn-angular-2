@@ -355,7 +355,7 @@
   },
   "payday_loan": {
     "status": {
-      "documentation_complete": "Chờ duyệt hồ sơ",
+      "documentation_complete": "Chờ phê duyệt",
       "document_awaiting": "Chờ hồ sơ",
       "initialized": "Đã khởi tạo",
       "funded": "Chờ ký hợp đồng",
@@ -392,6 +392,7 @@
     "company": "Công ty",
     "choose_company": "Chọn công ty",
     "pl_ui_status": "Trạng thái tài khoản",
+    "loan_status": "Trạng thái khoản vay",
     "account_status": "Trạng thái hoạt động",
     "options": {
       "by_day": "Theo ngày",

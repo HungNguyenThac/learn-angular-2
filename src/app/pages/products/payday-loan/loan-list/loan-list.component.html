@@ -1,5 +1,6 @@
 <app-base-management-layout
   [detailElementTemplate]="detailElementTemplate"
+  [filterOptions]="filterOptions"
   [pageSize]="pageSize"
   [pageIndex]="pageIndex"
   [pageSizeOptions]="pageSizeOptions"
@@ -15,6 +16,8 @@
   (onSortChange)="onSortChange($event)"
   (onExpandElementChange)="onExpandElementChange($event)"
   (onSubmitSearchForm)="onSubmitSearchForm($event)"
+  (onFilterChange)="onFilterFormChange($event)"
+  (onFilterActionTrigger)="onFilterActionTrigger($event)"
   >
 </app-base-management-layout>
 
