@@ -38,6 +38,12 @@
   <!--  Company Info-->
   <mat-tab [label]="'loan_app.tabs.company_info' | translate">
     <ng-template matTabContent>
-      <app-loan-company-info></app-loan-company-info> </ng-template
+      <app-customer-company-info
+        [customerId]="customerId"
+        [customerInfo]="userInfo"
+        [bankOptions]="bankOptions"
+        [companyOptions]="companyOptions"
+        (triggerUpdateInfo)="updateCustomerInfo($event)"
+      ></app-customer-company-info>  </ng-template
   ></mat-tab>
 </mat-tab-group>

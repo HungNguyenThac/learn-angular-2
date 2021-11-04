@@ -1,4 +1,3 @@
-import { LoanCompanyInfoComponent } from './components/loan-company-info/loan-company-info.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
@@ -26,7 +25,6 @@ import { LoanDetailInfoComponent } from './components/loan-detail-info/loan-deta
     LoanContractComponent,
     LoanRatingComponent,
     LoanDetailInfoComponent,
-    LoanCompanyInfoComponent,
   ],
   imports: [
     CommonModule,

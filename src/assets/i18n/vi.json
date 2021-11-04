@@ -354,7 +354,9 @@
       "bank_code": "Mã ngân hàng",
       "update": "Cập nhật",
       "salary_info_confirmation": "Xác minh thông tin lương",
-      "received_date": "Ngày lấy thông tin"
+      "received_date": "Ngày lấy thông tin",
+      "is_payday": "Người lao động đã được trả lương",
+      "is_not_payday": "Người lao động chưa được trả lương"
     }
   },
   "payday_loan": {
