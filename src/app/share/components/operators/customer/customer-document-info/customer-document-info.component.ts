@@ -1,20 +1,20 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { CustomerInfo } from '../../../../../../open-api-modules/dashboard-api-docs';
+import { CustomerInfo } from '../../../../../../../open-api-modules/dashboard-api-docs';
 import { Subscription } from 'rxjs';
-import { CustomerDetailService } from '../customer-detail-element/customer-detail.service';
+import { CustomerDetailService } from '../../../../../pages/customer/components/customer-detail-element/customer-detail.service';
 import {
   DOCUMENT_TYPE,
   DOCUMENT_TYPE_MAPPING_FIELD,
-} from '../../../../core/common/enum/payday-loan';
+} from '../../../../../core/common/enum/payday-loan';
 import {
   BUTTON_TYPE,
   DOCUMENT_BTN_TYPE,
   RESPONSE_CODE,
-} from '../../../../core/common/enum/operator';
-import { NotificationService } from '../../../../core/services/notification.service';
-import { MultiLanguageService } from '../../../../share/translate/multiLanguageService';
+} from '../../../../../core/common/enum/operator';
+import { NotificationService } from '../../../../../core/services/notification.service';
+import { MultiLanguageService } from '../../../../translate/multiLanguageService';
 import { ToastrService } from 'ngx-toastr';
-import { UpdatedDocumentModel } from '../../../../public/models/external/updated-document.model';
+import { UpdatedDocumentModel } from '../../../../../public/models/external/updated-document.model';
 
 @Component({
   selector: 'app-customer-document-info',

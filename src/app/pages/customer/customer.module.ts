@@ -8,13 +8,10 @@ import { CustomerDetailElementComponent } from './components/customer-detail-ele
 import { TranslateModule } from '@ngx-translate/core';
 import { CustomerIndividualInfoComponent } from './components/customer-individual-info/customer-individual-info.component';
 import { CustomerEkycInfoComponent } from './components/customer-ekyc-info/customer-ekyc-info.component';
-import { CustomerCompanyInfoComponent } from './components/customer-company-info/customer-company-info.component';
-import { CustomerDocumentInfoComponent } from './components/customer-document-info/customer-document-info.component';
-import { CustomerCheckInfoComponent } from './components/customer-check-info/customer-check-info.component';
+import { CustomerCheckInfoComponent } from '../../share/components/operators/customer/customer-check-info/customer-check-info.component';
 import { CustomerTransactionHistoryComponent } from './components/customer-transaction-history/customer-transaction-history.component';
 import { CustomerActivityHistoryComponent } from './components/customer-activity-history/customer-activity-history.component';
 import { CustomerDetailUpdateDialogComponent } from './components/customer-individual-info-update-dialog/customer-detail-update-dialog.component';
-import { DialogCompanyInfoUpdateComponent } from './components/dialog-company-info-update/dialog-company-info-update.component';
 
 @NgModule({
   declarations: [
@@ -22,13 +19,10 @@ import { DialogCompanyInfoUpdateComponent } from './components/dialog-company-in
     CustomerDetailElementComponent,
     CustomerIndividualInfoComponent,
     CustomerEkycInfoComponent,
-    CustomerCompanyInfoComponent,
-    CustomerDocumentInfoComponent,
     CustomerCheckInfoComponent,
     CustomerTransactionHistoryComponent,
     CustomerActivityHistoryComponent,
     CustomerDetailUpdateDialogComponent,
-    DialogCompanyInfoUpdateComponent,
   ],
   imports: [
     CommonModule,

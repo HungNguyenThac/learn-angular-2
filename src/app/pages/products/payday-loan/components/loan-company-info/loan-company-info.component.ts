@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { CustomerInfo } from '../../../../../../../open-api-modules/dashboard-api-docs';
 import { CompanyInfo } from '../../../../../../../open-api-modules/dashboard-api-docs';
 import { MultiLanguageService } from '../../../../../share/translate/multiLanguageService';
-import { DialogCompanyInfoUpdateComponent } from 'src/app/pages/customer/components/dialog-company-info-update/dialog-company-info-update.component';
+import { DialogCompanyInfoUpdateComponent } from 'src/app/share/components/operators/customer/dialog-company-info-update/dialog-company-info-update.component';
 
 @Component({
   selector: 'app-loan-company-info',

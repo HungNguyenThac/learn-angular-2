@@ -22,6 +22,9 @@ import { FormatDataComponent } from './statutes/format-data/format-data.componen
 import { DatetimeFilterComponent } from './filter-boxs/datetime-filter/datetime-filter.component';
 import { MultipleChoiceFilterComponent } from './filter-boxs/multiple-choice-filter/multiple-choice-filter.component';
 import { SelectFilterComponent } from './filter-boxs/select-filter/select-filter.component';
+import { CustomerDocumentInfoComponent } from './operators/customer/customer-document-info/customer-document-info.component';
+import { CustomerCompanyInfoComponent } from './operators/customer/customer-company-info/customer-company-info.component';
+import { DialogCompanyInfoUpdateComponent } from './operators/customer/dialog-company-info-update/dialog-company-info-update.component';
 
 export const components: any[] = [
   ConfirmationDialog,
@@ -48,6 +51,9 @@ export const components: any[] = [
   DatetimeFilterComponent,
   MultipleChoiceFilterComponent,
   SelectFilterComponent,
+  CustomerDocumentInfoComponent,
+  CustomerCompanyInfoComponent,
+  DialogCompanyInfoUpdateComponent,
 ];
 
 export * from './dialogs/confirmation-dialog/confirmation-dialog.component';
@@ -74,3 +80,6 @@ export * from './statutes/format-data/format-data.component';
 export * from './filter-boxs/datetime-filter/datetime-filter.component';
 export * from './filter-boxs/multiple-choice-filter/multiple-choice-filter.component';
 export * from './filter-boxs/select-filter/select-filter.component';
+export * from './operators/customer/customer-document-info/customer-document-info.component';
+export * from './operators/customer/customer-company-info/customer-company-info.component';
+export * from './operators/customer/dialog-company-info-update/dialog-company-info-update.component';
