@@ -9,6 +9,9 @@ import { CustomerInfoResponse } from '../../../../open-api-modules/customer-api-
 import { Subscription } from 'rxjs';
 import { NAV_ITEM } from '../../core/common/enum/operator';
 import { MultiLanguageService } from '../../share/translate/multiLanguageService';
+import { DialogCompanyInfoUpdateComponent } from '../../share/components';
+import { MatDialog } from '@angular/material/dialog';
+import { DialogUserInfoUpdateComponent } from '../../share/components/operators/user-account/dialog-user-info-update/dialog-user-info-update.component';
 
 @Component({
   selector: 'app-header',
@@ -91,6 +94,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   constructor(
     private router: Router,
     private store: Store<fromStore.State>,
+    private dialog: MatDialog,
     private multiLanguageService: MultiLanguageService
   ) {
     this._subscribeHeaderInfo();
@@ -108,6 +112,22 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   onResponsiveInverted() {
     this.responsive = window.innerWidth < 768;
+  }
+
+  backToPrevPage() {
+    this.store.dispatch(new fromActions.ClickBackBtn());
+  }
+
+  openUpdateDialog() {
+    const updateDialogRef = this.dialog.open(DialogUserInfoUpdateComponent, {
+      panelClass: 'custom-info-dialog-container',
+      maxWidth: '800px',
+      width: '90%',
+    });
+  }
+
+  logout() {
+    this.store.dispatch(new fromActions.Logout(null));
   }
 
   private _subscribeHeaderInfo() {
@@ -143,13 +163,5 @@ export class HeaderComponent implements OnInit, OnDestroy {
         this.selectedNavItem = selectedNavItem;
       })
     );
-  }
-
-  backToPrevPage() {
-    this.store.dispatch(new fromActions.ClickBackBtn());
-  }
-
-  logout() {
-    this.store.dispatch(new fromActions.Logout(null));
   }
 }
