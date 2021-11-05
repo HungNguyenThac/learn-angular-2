@@ -98,7 +98,7 @@ export class LoanDetailComponent implements OnInit {
   private _getBankOptions() {
     this.subManager.add(
       this.bankControllerService
-        .getBank(200, 0, {})
+        .getBank1(200, 0, {})
         .subscribe((response: ApiResponseSearchAndPaginationResponseBank) => {
           if (response.responseCode !== RESPONSE_CODE.SUCCESS) {
             this.notifier.error(

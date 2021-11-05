@@ -11,20 +11,17 @@
  */
 
 
-export interface TNGInformationResponse { 
-    createdAt?: string;
-    hoDem?: string;
-    ten?: string;
-    maDonVi?: string;
-    tenDonVi?: string;
-    theATM?: string;
-    maNganHang?: string;
-    tenNganHang?: string;
-    thuNhap?: string;
-    soCong?: string;
+export interface RepaymentTransaction { 
+    id?: string;
+    applicationId?: string;
     customerId?: string;
-    status?: boolean;
-    result?: { [key: string]: object; };
-    maNS?: string;
+    applicationType?: string;
+    providerTransactionId?: string;
+    amount?: number;
+    paymentFee?: number;
+    status?: string;
+    provider?: string;
+    createdAt?: string;
+    updatedAt?: string;
 }
 

@@ -11,20 +11,19 @@
  */
 
 
-export interface TNGInformationResponse { 
-    createdAt?: string;
-    hoDem?: string;
-    ten?: string;
-    maDonVi?: string;
-    tenDonVi?: string;
-    theATM?: string;
-    maNganHang?: string;
-    tenNganHang?: string;
-    thuNhap?: string;
-    soCong?: string;
+export interface VirtualAccount { 
+    id?: string;
     customerId?: string;
-    status?: boolean;
-    result?: { [key: string]: object; };
-    maNS?: string;
+    accountNumber?: string;
+    accountName?: string;
+    bankCode?: string;
+    startAt?: string;
+    expireAt?: string;
+    balance?: number;
+    accountType?: string;
+    numberOfTransfer?: number;
+    maxAmount?: number;
+    minAmount?: number;
+    equalAmount?: number;
 }
 

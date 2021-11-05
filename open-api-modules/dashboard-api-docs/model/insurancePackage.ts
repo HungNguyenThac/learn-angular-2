@@ -11,20 +11,15 @@
  */
 
 
-export interface TNGInformationResponse { 
+export interface InsurancePackage { 
+    id?: string;
+    providerId?: string;
+    typeId?: string;
+    name?: string;
+    value?: string;
+    description?: string;
+    price?: number;
+    isActived?: boolean;
     createdAt?: string;
-    hoDem?: string;
-    ten?: string;
-    maDonVi?: string;
-    tenDonVi?: string;
-    theATM?: string;
-    maNganHang?: string;
-    tenNganHang?: string;
-    thuNhap?: string;
-    soCong?: string;
-    customerId?: string;
-    status?: boolean;
-    result?: { [key: string]: object; };
-    maNS?: string;
 }
 

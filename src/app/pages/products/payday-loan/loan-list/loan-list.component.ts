@@ -1,3 +1,5 @@
+import { ApiResponseSearchAndPaginationResponsePaydayLoanHmg } from './../../../../../../open-api-modules/dashboard-api-docs/model/apiResponseSearchAndPaginationResponsePaydayLoanHmg';
+import { ApiResponseSearchAndPaginationResponsePaydayLoanTng } from './../../../../../../open-api-modules/dashboard-api-docs/model/apiResponseSearchAndPaginationResponsePaydayLoanTng';
 import { FilterActionEventModel } from './../../../../public/models/filter/filter-action-event.model';
 import { FilterEventModel } from './../../../../public/models/filter/filter-event.model';
 import { CompanyInfo } from './../../../../../../open-api-modules/customer-api-docs/model/companyInfo';
@@ -29,7 +31,6 @@ import { NAV_ITEM } from '../../../../core/common/enum/operator';
 import { MultiLanguageService } from '../../../../share/translate/multiLanguageService';
 import { MatTableDataSource } from '@angular/material/table';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { ApiResponseSearchPaydayLoanResponse } from 'open-api-modules/dashboard-api-docs';
 import { FilterOptionModel } from 'src/app/public/models/filter/filter-option.model';
 @Component({
   selector: 'app-loan-list',
@@ -320,9 +321,11 @@ export class LoanListComponent implements OnInit {
       this.subManager.add(
         this.loanListService
           .getLoanDataHmg(params)
-          .subscribe((data: ApiResponseSearchPaydayLoanResponse) => {
-            this._parseData(data?.result);
-          })
+          .subscribe(
+            (data: ApiResponseSearchAndPaginationResponsePaydayLoanHmg) => {
+              this._parseData(data?.result);
+            }
+          )
       );
     }
 
@@ -330,9 +333,11 @@ export class LoanListComponent implements OnInit {
       this.subManager.add(
         this.loanListService
           .getLoanDataTng(params)
-          .subscribe((data: ApiResponseSearchPaydayLoanResponse) => {
-            this._parseData(data?.result);
-          })
+          .subscribe(
+            (data: ApiResponseSearchAndPaginationResponsePaydayLoanTng) => {
+              this._parseData(data?.result);
+            }
+          )
       );
     }
   }

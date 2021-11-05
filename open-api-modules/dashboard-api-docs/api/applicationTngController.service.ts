@@ -17,8 +17,9 @@ import { HttpClient, HttpHeaders, HttpParams,
 import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
-import { ApiResponseBank } from '../model/models';
-import { ApiResponseSearchAndPaginationResponseBank } from '../model/models';
+import { ApiResponsePaydayLoanTng } from '../model/models';
+import { ApiResponseSearchAndPaginationResponsePaydayLoanTng } from '../model/models';
+import { ApiResponseSearchVoucherInfoResponse } from '../model/models';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
 import { Configuration }                                     from '../configuration';
@@ -28,7 +29,7 @@ import { Configuration }                                     from '../configurat
 @Injectable({
   providedIn: 'root'
 })
-export class BankControllerService {
+export class ApplicationTngControllerService {
 
     protected basePath = 'http://localhost:8004';
     public defaultHeaders = new HttpHeaders();
@@ -86,29 +87,33 @@ export class BankControllerService {
     }
 
     /**
+     * @param query 
      * @param pageSize 
      * @param pageNumber 
-     * @param requestBody 
      * @param sortField 
      * @param descending 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getBank1(pageSize: number, pageNumber: number, requestBody: { [key: string]: object; }, sortField?: string, descending?: boolean, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseSearchAndPaginationResponseBank>;
-    public getBank1(pageSize: number, pageNumber: number, requestBody: { [key: string]: object; }, sortField?: string, descending?: boolean, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseSearchAndPaginationResponseBank>>;
-    public getBank1(pageSize: number, pageNumber: number, requestBody: { [key: string]: object; }, sortField?: string, descending?: boolean, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseSearchAndPaginationResponseBank>>;
-    public getBank1(pageSize: number, pageNumber: number, requestBody: { [key: string]: object; }, sortField?: string, descending?: boolean, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
+    public findApplications(query: { [key: string]: object; }, pageSize: number, pageNumber: number, sortField?: string, descending?: boolean, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseSearchAndPaginationResponsePaydayLoanTng>;
+    public findApplications(query: { [key: string]: object; }, pageSize: number, pageNumber: number, sortField?: string, descending?: boolean, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseSearchAndPaginationResponsePaydayLoanTng>>;
+    public findApplications(query: { [key: string]: object; }, pageSize: number, pageNumber: number, sortField?: string, descending?: boolean, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseSearchAndPaginationResponsePaydayLoanTng>>;
+    public findApplications(query: { [key: string]: object; }, pageSize: number, pageNumber: number, sortField?: string, descending?: boolean, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
+        if (query === null || query === undefined) {
+            throw new Error('Required parameter query was null or undefined when calling findApplications.');
+        }
         if (pageSize === null || pageSize === undefined) {
-            throw new Error('Required parameter pageSize was null or undefined when calling getBank1.');
+            throw new Error('Required parameter pageSize was null or undefined when calling findApplications.');
         }
         if (pageNumber === null || pageNumber === undefined) {
-            throw new Error('Required parameter pageNumber was null or undefined when calling getBank1.');
-        }
-        if (requestBody === null || requestBody === undefined) {
-            throw new Error('Required parameter requestBody was null or undefined when calling getBank1.');
+            throw new Error('Required parameter pageNumber was null or undefined when calling findApplications.');
         }
 
         let queryParameters = new HttpParams({encoder: this.encoder});
+        if (query !== undefined && query !== null) {
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>query, 'query');
+        }
         if (pageSize !== undefined && pageSize !== null) {
           queryParameters = this.addToHttpParams(queryParameters,
             <any>pageSize, 'pageSize');
@@ -141,22 +146,12 @@ export class BankControllerService {
         }
 
 
-        // to determine the Content-Type header
-        const consumes: string[] = [
-            'application/json'
-        ];
-        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
-        if (httpContentTypeSelected !== undefined) {
-            headers = headers.set('Content-Type', httpContentTypeSelected);
-        }
-
         let responseType_: 'text' | 'json' = 'json';
         if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
             responseType_ = 'text';
         }
 
-        return this.httpClient.post<ApiResponseSearchAndPaginationResponseBank>(`${this.configuration.basePath}/v1/bank`,
-            requestBody,
+        return this.httpClient.get<ApiResponseSearchAndPaginationResponsePaydayLoanTng>(`${this.configuration.basePath}/v1/application/list`,
             {
                 params: queryParameters,
                 responseType: <any>responseType_,
@@ -169,16 +164,16 @@ export class BankControllerService {
     }
 
     /**
-     * @param bankId 
+     * @param loanId 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getBankById1(bankId: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseBank>;
-    public getBankById1(bankId: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseBank>>;
-    public getBankById1(bankId: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseBank>>;
-    public getBankById1(bankId: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
-        if (bankId === null || bankId === undefined) {
-            throw new Error('Required parameter bankId was null or undefined when calling getBankById1.');
+    public getLoanById(loanId: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponsePaydayLoanTng>;
+    public getLoanById(loanId: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponsePaydayLoanTng>>;
+    public getLoanById(loanId: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponsePaydayLoanTng>>;
+    public getLoanById(loanId: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
+        if (loanId === null || loanId === undefined) {
+            throw new Error('Required parameter loanId was null or undefined when calling getLoanById.');
         }
 
         let headers = this.defaultHeaders;
@@ -201,8 +196,63 @@ export class BankControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.get<ApiResponseBank>(`${this.configuration.basePath}/v1/bank/${encodeURIComponent(String(bankId))}`,
+        return this.httpClient.get<ApiResponsePaydayLoanTng>(`${this.configuration.basePath}/v1/application/${encodeURIComponent(String(loanId))}`,
             {
+                responseType: <any>responseType_,
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * @param loanId 
+     * @param voucherTransactionId 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getVoucherInfo(loanId: string, voucherTransactionId: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseSearchVoucherInfoResponse>;
+    public getVoucherInfo(loanId: string, voucherTransactionId: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseSearchVoucherInfoResponse>>;
+    public getVoucherInfo(loanId: string, voucherTransactionId: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseSearchVoucherInfoResponse>>;
+    public getVoucherInfo(loanId: string, voucherTransactionId: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
+        if (loanId === null || loanId === undefined) {
+            throw new Error('Required parameter loanId was null or undefined when calling getVoucherInfo.');
+        }
+        if (voucherTransactionId === null || voucherTransactionId === undefined) {
+            throw new Error('Required parameter voucherTransactionId was null or undefined when calling getVoucherInfo.');
+        }
+
+        let queryParameters = new HttpParams({encoder: this.encoder});
+        if (voucherTransactionId !== undefined && voucherTransactionId !== null) {
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>voucherTransactionId, 'voucherTransactionId');
+        }
+
+        let headers = this.defaultHeaders;
+
+        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (httpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                '*/*'
+            ];
+            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
+        if (httpHeaderAcceptSelected !== undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+
+        let responseType_: 'text' | 'json' = 'json';
+        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+            responseType_ = 'text';
+        }
+
+        return this.httpClient.get<ApiResponseSearchVoucherInfoResponse>(`${this.configuration.basePath}/v1/application/${encodeURIComponent(String(loanId))}/voucher`,
+            {
+                params: queryParameters,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,

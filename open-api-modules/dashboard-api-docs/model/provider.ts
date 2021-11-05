@@ -11,20 +11,12 @@
  */
 
 
-export interface TNGInformationResponse { 
+export interface Provider { 
+    id?: string;
+    name?: string;
+    value?: string;
+    isActived?: boolean;
+    icon?: string;
     createdAt?: string;
-    hoDem?: string;
-    ten?: string;
-    maDonVi?: string;
-    tenDonVi?: string;
-    theATM?: string;
-    maNganHang?: string;
-    tenNganHang?: string;
-    thuNhap?: string;
-    soCong?: string;
-    customerId?: string;
-    status?: boolean;
-    result?: { [key: string]: object; };
-    maNS?: string;
 }
 

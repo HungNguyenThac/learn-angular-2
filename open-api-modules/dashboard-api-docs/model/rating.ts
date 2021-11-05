@@ -11,20 +11,13 @@
  */
 
 
-export interface TNGInformationResponse { 
-    createdAt?: string;
-    hoDem?: string;
-    ten?: string;
-    maDonVi?: string;
-    tenDonVi?: string;
-    theATM?: string;
-    maNganHang?: string;
-    tenNganHang?: string;
-    thuNhap?: string;
-    soCong?: string;
+export interface Rating { 
+    id?: string;
+    applicationId?: string;
+    applicationType?: string;
+    rate?: string;
+    customerOpinion?: string;
+    isRated?: boolean;
     customerId?: string;
-    status?: boolean;
-    result?: { [key: string]: object; };
-    maNS?: string;
 }
 

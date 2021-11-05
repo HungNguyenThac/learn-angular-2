@@ -18,9 +18,8 @@ import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
 import { ApiResponsePaydayLoanHmg } from '../model/models';
-import { ApiResponseSearchPaydayLoanResponse } from '../model/models';
+import { ApiResponseSearchAndPaginationResponsePaydayLoanHmg } from '../model/models';
 import { ApiResponseSearchVoucherInfoResponse } from '../model/models';
-import { SearchPaydayLoanRequest } from '../model/models';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
 import { Configuration }                                     from '../configuration';
@@ -91,26 +90,23 @@ export class ApplicationHmgControllerService {
      * @param query 
      * @param pageSize 
      * @param pageNumber 
-     * @param orderBy 
-     * @param desc 
+     * @param sortField 
+     * @param descending 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public findApplication1(query: SearchPaydayLoanRequest, pageSize: number, pageNumber: number, orderBy: string, desc?: boolean, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseSearchPaydayLoanResponse>;
-    public findApplication1(query: SearchPaydayLoanRequest, pageSize: number, pageNumber: number, orderBy: string, desc?: boolean, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseSearchPaydayLoanResponse>>;
-    public findApplication1(query: SearchPaydayLoanRequest, pageSize: number, pageNumber: number, orderBy: string, desc?: boolean, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseSearchPaydayLoanResponse>>;
-    public findApplication1(query: SearchPaydayLoanRequest, pageSize: number, pageNumber: number, orderBy: string, desc?: boolean, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
+    public findApplications1(query: { [key: string]: object; }, pageSize: number, pageNumber: number, sortField?: string, descending?: boolean, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseSearchAndPaginationResponsePaydayLoanHmg>;
+    public findApplications1(query: { [key: string]: object; }, pageSize: number, pageNumber: number, sortField?: string, descending?: boolean, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseSearchAndPaginationResponsePaydayLoanHmg>>;
+    public findApplications1(query: { [key: string]: object; }, pageSize: number, pageNumber: number, sortField?: string, descending?: boolean, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseSearchAndPaginationResponsePaydayLoanHmg>>;
+    public findApplications1(query: { [key: string]: object; }, pageSize: number, pageNumber: number, sortField?: string, descending?: boolean, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
         if (query === null || query === undefined) {
-            throw new Error('Required parameter query was null or undefined when calling findApplication1.');
+            throw new Error('Required parameter query was null or undefined when calling findApplications1.');
         }
         if (pageSize === null || pageSize === undefined) {
-            throw new Error('Required parameter pageSize was null or undefined when calling findApplication1.');
+            throw new Error('Required parameter pageSize was null or undefined when calling findApplications1.');
         }
         if (pageNumber === null || pageNumber === undefined) {
-            throw new Error('Required parameter pageNumber was null or undefined when calling findApplication1.');
-        }
-        if (orderBy === null || orderBy === undefined) {
-            throw new Error('Required parameter orderBy was null or undefined when calling findApplication1.');
+            throw new Error('Required parameter pageNumber was null or undefined when calling findApplications1.');
         }
 
         let queryParameters = new HttpParams({encoder: this.encoder});
@@ -126,13 +122,13 @@ export class ApplicationHmgControllerService {
           queryParameters = this.addToHttpParams(queryParameters,
             <any>pageNumber, 'pageNumber');
         }
-        if (orderBy !== undefined && orderBy !== null) {
+        if (sortField !== undefined && sortField !== null) {
           queryParameters = this.addToHttpParams(queryParameters,
-            <any>orderBy, 'orderBy');
+            <any>sortField, 'sortField');
         }
-        if (desc !== undefined && desc !== null) {
+        if (descending !== undefined && descending !== null) {
           queryParameters = this.addToHttpParams(queryParameters,
-            <any>desc, 'desc');
+            <any>descending, 'descending');
         }
 
         let headers = this.defaultHeaders;
@@ -155,7 +151,7 @@ export class ApplicationHmgControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.get<ApiResponseSearchPaydayLoanResponse>(`${this.configuration.basePath}/v1/application/hmg/list`,
+        return this.httpClient.get<ApiResponseSearchAndPaginationResponsePaydayLoanHmg>(`${this.configuration.basePath}/v1/application/hmg/list`,
             {
                 params: queryParameters,
                 responseType: <any>responseType_,
@@ -168,16 +164,16 @@ export class ApplicationHmgControllerService {
     }
 
     /**
-     * @param id 
+     * @param loanId 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getLoanById1(id: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponsePaydayLoanHmg>;
-    public getLoanById1(id: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponsePaydayLoanHmg>>;
-    public getLoanById1(id: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponsePaydayLoanHmg>>;
-    public getLoanById1(id: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
-        if (id === null || id === undefined) {
-            throw new Error('Required parameter id was null or undefined when calling getLoanById1.');
+    public getLoanById1(loanId: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponsePaydayLoanHmg>;
+    public getLoanById1(loanId: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponsePaydayLoanHmg>>;
+    public getLoanById1(loanId: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponsePaydayLoanHmg>>;
+    public getLoanById1(loanId: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
+        if (loanId === null || loanId === undefined) {
+            throw new Error('Required parameter loanId was null or undefined when calling getLoanById1.');
         }
 
         let headers = this.defaultHeaders;
@@ -200,7 +196,7 @@ export class ApplicationHmgControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.get<ApiResponsePaydayLoanHmg>(`${this.configuration.basePath}/v1/application/hmg/${encodeURIComponent(String(id))}`,
+        return this.httpClient.get<ApiResponsePaydayLoanHmg>(`${this.configuration.basePath}/v1/application/hmg/${encodeURIComponent(String(loanId))}`,
             {
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,

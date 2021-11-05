@@ -17,8 +17,8 @@ import { HttpClient, HttpHeaders, HttpParams,
 import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
-import { ApiResponseBank } from '../model/models';
-import { ApiResponseSearchAndPaginationResponseBank } from '../model/models';
+import { ApiResponseSearchAndPaginationResponseTNGInformationResponse } from '../model/models';
+import { ApiResponseTNGInformationResponse } from '../model/models';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
 import { Configuration }                                     from '../configuration';
@@ -28,7 +28,7 @@ import { Configuration }                                     from '../configurat
 @Injectable({
   providedIn: 'root'
 })
-export class BankControllerService {
+export class TngDataTransactionControllerService {
 
     protected basePath = 'http://localhost:8004';
     public defaultHeaders = new HttpHeaders();
@@ -86,33 +86,29 @@ export class BankControllerService {
     }
 
     /**
-     * @param pageSize 
      * @param pageNumber 
+     * @param pageSize 
      * @param requestBody 
      * @param sortField 
      * @param descending 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getBank1(pageSize: number, pageNumber: number, requestBody: { [key: string]: object; }, sortField?: string, descending?: boolean, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseSearchAndPaginationResponseBank>;
-    public getBank1(pageSize: number, pageNumber: number, requestBody: { [key: string]: object; }, sortField?: string, descending?: boolean, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseSearchAndPaginationResponseBank>>;
-    public getBank1(pageSize: number, pageNumber: number, requestBody: { [key: string]: object; }, sortField?: string, descending?: boolean, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseSearchAndPaginationResponseBank>>;
-    public getBank1(pageSize: number, pageNumber: number, requestBody: { [key: string]: object; }, sortField?: string, descending?: boolean, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
-        if (pageSize === null || pageSize === undefined) {
-            throw new Error('Required parameter pageSize was null or undefined when calling getBank1.');
-        }
+    public geTngDataTransaction(pageNumber: number, pageSize: number, requestBody: { [key: string]: object; }, sortField?: string, descending?: boolean, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseSearchAndPaginationResponseTNGInformationResponse>;
+    public geTngDataTransaction(pageNumber: number, pageSize: number, requestBody: { [key: string]: object; }, sortField?: string, descending?: boolean, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseSearchAndPaginationResponseTNGInformationResponse>>;
+    public geTngDataTransaction(pageNumber: number, pageSize: number, requestBody: { [key: string]: object; }, sortField?: string, descending?: boolean, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseSearchAndPaginationResponseTNGInformationResponse>>;
+    public geTngDataTransaction(pageNumber: number, pageSize: number, requestBody: { [key: string]: object; }, sortField?: string, descending?: boolean, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
         if (pageNumber === null || pageNumber === undefined) {
-            throw new Error('Required parameter pageNumber was null or undefined when calling getBank1.');
+            throw new Error('Required parameter pageNumber was null or undefined when calling geTngDataTransaction.');
+        }
+        if (pageSize === null || pageSize === undefined) {
+            throw new Error('Required parameter pageSize was null or undefined when calling geTngDataTransaction.');
         }
         if (requestBody === null || requestBody === undefined) {
-            throw new Error('Required parameter requestBody was null or undefined when calling getBank1.');
+            throw new Error('Required parameter requestBody was null or undefined when calling geTngDataTransaction.');
         }
 
         let queryParameters = new HttpParams({encoder: this.encoder});
-        if (pageSize !== undefined && pageSize !== null) {
-          queryParameters = this.addToHttpParams(queryParameters,
-            <any>pageSize, 'pageSize');
-        }
         if (pageNumber !== undefined && pageNumber !== null) {
           queryParameters = this.addToHttpParams(queryParameters,
             <any>pageNumber, 'pageNumber');
@@ -120,6 +116,10 @@ export class BankControllerService {
         if (sortField !== undefined && sortField !== null) {
           queryParameters = this.addToHttpParams(queryParameters,
             <any>sortField, 'sortField');
+        }
+        if (pageSize !== undefined && pageSize !== null) {
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>pageSize, 'pageSize');
         }
         if (descending !== undefined && descending !== null) {
           queryParameters = this.addToHttpParams(queryParameters,
@@ -155,7 +155,7 @@ export class BankControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.post<ApiResponseSearchAndPaginationResponseBank>(`${this.configuration.basePath}/v1/bank`,
+        return this.httpClient.post<ApiResponseSearchAndPaginationResponseTNGInformationResponse>(`${this.configuration.basePath}/v1/tng-data-transaction`,
             requestBody,
             {
                 params: queryParameters,
@@ -169,16 +169,16 @@ export class BankControllerService {
     }
 
     /**
-     * @param bankId 
+     * @param tngId 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getBankById1(bankId: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseBank>;
-    public getBankById1(bankId: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseBank>>;
-    public getBankById1(bankId: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseBank>>;
-    public getBankById1(bankId: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
-        if (bankId === null || bankId === undefined) {
-            throw new Error('Required parameter bankId was null or undefined when calling getBankById1.');
+    public getTngTransactionById(tngId: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseTNGInformationResponse>;
+    public getTngTransactionById(tngId: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseTNGInformationResponse>>;
+    public getTngTransactionById(tngId: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseTNGInformationResponse>>;
+    public getTngTransactionById(tngId: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
+        if (tngId === null || tngId === undefined) {
+            throw new Error('Required parameter tngId was null or undefined when calling getTngTransactionById.');
         }
 
         let headers = this.defaultHeaders;
@@ -201,7 +201,7 @@ export class BankControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.get<ApiResponseBank>(`${this.configuration.basePath}/v1/bank/${encodeURIComponent(String(bankId))}`,
+        return this.httpClient.get<ApiResponseTNGInformationResponse>(`${this.configuration.basePath}/v1/tng-data-transaction/${encodeURIComponent(String(tngId))}`,
             {
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
