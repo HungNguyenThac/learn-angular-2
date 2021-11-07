@@ -1,4 +1,4 @@
-import { ApplicationControllerService } from '../../../../../../open-api-modules/dashboard-api-docs';
+import { ApplicationTngControllerService } from '../../../../../../open-api-modules/dashboard-api-docs';
 import { ApplicationHmgControllerService } from '../../../../../../open-api-modules/dashboard-api-docs';
 import { PaydayLoanControllerService } from '../../../../../../open-api-modules/loanapp-hmg-api-docs';
 import { Injectable } from '@angular/core';
@@ -12,7 +12,7 @@ import { QUERY_CONDITION_TYPE } from '../../../../core/common/enum/operator';
 export class LoanListService {
   constructor(
     private paydayLoanControllerService: PaydayLoanControllerService,
-    private applicationTngControllerService: ApplicationControllerService,
+    private applicationTngControllerService: ApplicationTngControllerService,
     private applicationHmgControllerService: ApplicationHmgControllerService,
     private customerControllerService: CustomerControllerService
   ) {}
@@ -61,7 +61,7 @@ export class LoanListService {
       mobileNumber: params.mobileNumber,
     };
     if (!params.status) delete queryParams.status;
-    return this.applicationHmgControllerService.findApplication1(
+    return this.applicationHmgControllerService.findApplications1(
       queryParams,
       params.pageSize,
       params.pageNumber,
@@ -114,7 +114,7 @@ export class LoanListService {
        mobileNumber: params.mobileNumber,
      };
      if (!params.status) delete queryParams.status;
-    return this.applicationTngControllerService.findApplication(
+    return this.applicationTngControllerService.findApplications(
       queryParams,
       params.pageSize,
       params.pageNumber,

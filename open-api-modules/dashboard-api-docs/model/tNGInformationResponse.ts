@@ -9,23 +9,22 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { FraudCheck } from './fraudCheck';
-import { IdCardInfo } from './idCardInfo';
-import { SelfieCheck } from './selfieCheck';
 
 
-export interface KalapaResponse { 
+export interface TNGInformationResponse { 
     createdAt?: string;
-    taxName?: string;
-    verified?: boolean;
-    skipValidate?: boolean;
-    idCardInfo?: IdCardInfo;
-    selfieCheck?: SelfieCheck;
-    fraudCheck?: FraudCheck;
+    hoDem?: string;
+    ten?: string;
+    maDonVi?: string;
+    tenDonVi?: string;
+    theATM?: string;
+    maNganHang?: string;
+    tenNganHang?: string;
+    thuNhap?: string;
+    soCong?: string;
     customerId?: string;
-    createdBy?: string;
-    provider?: string;
     status?: boolean;
     result?: { [key: string]: object; };
+    maNS?: string;
 }
 

@@ -29,6 +29,17 @@ export class CustomerListService {
       };
     }
 
+    if (params.keyword) {
+      requestBody['firstName' + QUERY_CONDITION_TYPE.LIKE_KEYWORD] =
+        params.keyword;
+      requestBody['mobileNumber' + QUERY_CONDITION_TYPE.LIKE_KEYWORD] =
+        params.keyword;
+      requestBody['emailAddress' + QUERY_CONDITION_TYPE.LIKE_KEYWORD] =
+        params.keyword;
+      requestBody['organizationName' + QUERY_CONDITION_TYPE.LIKE_KEYWORD] =
+        params.keyword;
+    }
+
     return this.customerControllerService.getCustomers(
       params.limit,
       params.pageIndex,

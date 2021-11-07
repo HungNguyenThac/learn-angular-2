@@ -9,19 +9,13 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { SearchAndPaginationResponseKalapaResponse } from './searchAndPaginationResponseKalapaResponse';
 
 
-export interface SearchPaydayLoanResult { 
-    customerId?: string;
-    loanId?: string;
-    loanCode?: string;
-    tenure?: number;
-    status?: string;
-    repaymentStatus?: string;
-    amount?: number;
-    createdAt?: string;
-    customerName?: string;
-    mobileNumber?: string;
-    emailAddress?: string;
+export interface ApiResponseSearchAndPaginationResponseKalapaResponse { 
+    result?: SearchAndPaginationResponseKalapaResponse;
+    errorCode?: string;
+    message?: object;
+    responseCode?: number;
 }
 

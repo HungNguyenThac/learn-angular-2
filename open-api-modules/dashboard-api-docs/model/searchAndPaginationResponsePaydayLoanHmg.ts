@@ -10,11 +10,11 @@
  * Do not edit the class manually.
  */
 import { Pagination } from './pagination';
-import { SearchPaydayLoanResult } from './searchPaydayLoanResult';
+import { PaydayLoanHmg } from './paydayLoanHmg';
 
 
-export interface SearchPaydayLoanResponse { 
+export interface SearchAndPaginationResponsePaydayLoanHmg { 
     pagination?: Pagination;
-    searchPaydayLoanResult?: Array<SearchPaydayLoanResult>;
+    data?: Array<PaydayLoanHmg>;
 }
 

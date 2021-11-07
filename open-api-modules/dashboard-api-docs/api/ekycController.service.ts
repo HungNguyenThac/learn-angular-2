@@ -17,9 +17,8 @@ import { HttpClient, HttpHeaders, HttpParams,
 import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
-import { ApiResponsePaydayLoanHmg } from '../model/models';
-import { ApiResponseSearchAndPaginationResponsePaydayLoanHmg } from '../model/models';
-import { ApiResponseSearchVoucherInfoResponse } from '../model/models';
+import { ApiResponseKalapaResponse } from '../model/models';
+import { ApiResponseSearchAndPaginationResponseKalapaResponse } from '../model/models';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
 import { Configuration }                                     from '../configuration';
@@ -29,7 +28,7 @@ import { Configuration }                                     from '../configurat
 @Injectable({
   providedIn: 'root'
 })
-export class ApplicationHmgControllerService {
+export class EkycControllerService {
 
     protected basePath = 'http://localhost:8004';
     public defaultHeaders = new HttpHeaders();
@@ -87,33 +86,29 @@ export class ApplicationHmgControllerService {
     }
 
     /**
-     * @param query 
      * @param pageSize 
      * @param pageNumber 
+     * @param requestBody 
      * @param sortField 
      * @param descending 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public findApplications1(query: { [key: string]: object; }, pageSize: number, pageNumber: number, sortField?: string, descending?: boolean, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseSearchAndPaginationResponsePaydayLoanHmg>;
-    public findApplications1(query: { [key: string]: object; }, pageSize: number, pageNumber: number, sortField?: string, descending?: boolean, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseSearchAndPaginationResponsePaydayLoanHmg>>;
-    public findApplications1(query: { [key: string]: object; }, pageSize: number, pageNumber: number, sortField?: string, descending?: boolean, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseSearchAndPaginationResponsePaydayLoanHmg>>;
-    public findApplications1(query: { [key: string]: object; }, pageSize: number, pageNumber: number, sortField?: string, descending?: boolean, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
-        if (query === null || query === undefined) {
-            throw new Error('Required parameter query was null or undefined when calling findApplications1.');
-        }
+    public getEkycInfo(pageSize: number, pageNumber: number, requestBody: { [key: string]: object; }, sortField?: string, descending?: boolean, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseSearchAndPaginationResponseKalapaResponse>;
+    public getEkycInfo(pageSize: number, pageNumber: number, requestBody: { [key: string]: object; }, sortField?: string, descending?: boolean, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseSearchAndPaginationResponseKalapaResponse>>;
+    public getEkycInfo(pageSize: number, pageNumber: number, requestBody: { [key: string]: object; }, sortField?: string, descending?: boolean, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseSearchAndPaginationResponseKalapaResponse>>;
+    public getEkycInfo(pageSize: number, pageNumber: number, requestBody: { [key: string]: object; }, sortField?: string, descending?: boolean, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
         if (pageSize === null || pageSize === undefined) {
-            throw new Error('Required parameter pageSize was null or undefined when calling findApplications1.');
+            throw new Error('Required parameter pageSize was null or undefined when calling getEkycInfo.');
         }
         if (pageNumber === null || pageNumber === undefined) {
-            throw new Error('Required parameter pageNumber was null or undefined when calling findApplications1.');
+            throw new Error('Required parameter pageNumber was null or undefined when calling getEkycInfo.');
+        }
+        if (requestBody === null || requestBody === undefined) {
+            throw new Error('Required parameter requestBody was null or undefined when calling getEkycInfo.');
         }
 
         let queryParameters = new HttpParams({encoder: this.encoder});
-        if (query !== undefined && query !== null) {
-          queryParameters = this.addToHttpParams(queryParameters,
-            <any>query, 'query');
-        }
         if (pageSize !== undefined && pageSize !== null) {
           queryParameters = this.addToHttpParams(queryParameters,
             <any>pageSize, 'pageSize');
@@ -146,12 +141,22 @@ export class ApplicationHmgControllerService {
         }
 
 
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'application/json'
+        ];
+        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
+        if (httpContentTypeSelected !== undefined) {
+            headers = headers.set('Content-Type', httpContentTypeSelected);
+        }
+
         let responseType_: 'text' | 'json' = 'json';
         if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
             responseType_ = 'text';
         }
 
-        return this.httpClient.get<ApiResponseSearchAndPaginationResponsePaydayLoanHmg>(`${this.configuration.basePath}/v1/application/hmg/list`,
+        return this.httpClient.post<ApiResponseSearchAndPaginationResponseKalapaResponse>(`${this.configuration.basePath}/v1/ekyc`,
+            requestBody,
             {
                 params: queryParameters,
                 responseType: <any>responseType_,
@@ -164,16 +169,16 @@ export class ApplicationHmgControllerService {
     }
 
     /**
-     * @param loanId 
+     * @param ekycId 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getLoanById1(loanId: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponsePaydayLoanHmg>;
-    public getLoanById1(loanId: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponsePaydayLoanHmg>>;
-    public getLoanById1(loanId: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponsePaydayLoanHmg>>;
-    public getLoanById1(loanId: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
-        if (loanId === null || loanId === undefined) {
-            throw new Error('Required parameter loanId was null or undefined when calling getLoanById1.');
+    public getEkycInfoById(ekycId: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseKalapaResponse>;
+    public getEkycInfoById(ekycId: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseKalapaResponse>>;
+    public getEkycInfoById(ekycId: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseKalapaResponse>>;
+    public getEkycInfoById(ekycId: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
+        if (ekycId === null || ekycId === undefined) {
+            throw new Error('Required parameter ekycId was null or undefined when calling getEkycInfoById.');
         }
 
         let headers = this.defaultHeaders;
@@ -196,63 +201,8 @@ export class ApplicationHmgControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.get<ApiResponsePaydayLoanHmg>(`${this.configuration.basePath}/v1/application/hmg/${encodeURIComponent(String(loanId))}`,
+        return this.httpClient.get<ApiResponseKalapaResponse>(`${this.configuration.basePath}/v1/ekyc/${encodeURIComponent(String(ekycId))}`,
             {
-                responseType: <any>responseType_,
-                withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress
-            }
-        );
-    }
-
-    /**
-     * @param loanId 
-     * @param voucherTransactionId 
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public getVoucherInfo1(loanId: string, voucherTransactionId: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseSearchVoucherInfoResponse>;
-    public getVoucherInfo1(loanId: string, voucherTransactionId: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseSearchVoucherInfoResponse>>;
-    public getVoucherInfo1(loanId: string, voucherTransactionId: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseSearchVoucherInfoResponse>>;
-    public getVoucherInfo1(loanId: string, voucherTransactionId: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
-        if (loanId === null || loanId === undefined) {
-            throw new Error('Required parameter loanId was null or undefined when calling getVoucherInfo1.');
-        }
-        if (voucherTransactionId === null || voucherTransactionId === undefined) {
-            throw new Error('Required parameter voucherTransactionId was null or undefined when calling getVoucherInfo1.');
-        }
-
-        let queryParameters = new HttpParams({encoder: this.encoder});
-        if (voucherTransactionId !== undefined && voucherTransactionId !== null) {
-          queryParameters = this.addToHttpParams(queryParameters,
-            <any>voucherTransactionId, 'voucherTransactionId');
-        }
-
-        let headers = this.defaultHeaders;
-
-        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-        if (httpHeaderAcceptSelected === undefined) {
-            // to determine the Accept header
-            const httpHeaderAccepts: string[] = [
-                '*/*'
-            ];
-            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        }
-        if (httpHeaderAcceptSelected !== undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
-        }
-
-
-        let responseType_: 'text' | 'json' = 'json';
-        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
-            responseType_ = 'text';
-        }
-
-        return this.httpClient.get<ApiResponseSearchVoucherInfoResponse>(`${this.configuration.basePath}/v1/application/hmg/${encodeURIComponent(String(loanId))}/voucher`,
-            {
-                params: queryParameters,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,

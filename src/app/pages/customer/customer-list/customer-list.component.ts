@@ -265,7 +265,7 @@ export class CustomerListComponent implements OnInit, OnDestroy {
       showed: true,
     },
     {
-      key: 'companyId',
+      key: 'companyName',
       title: this.multiLanguageService.instant(
         'customer.individual_info.company'
       ),
@@ -472,11 +472,14 @@ export class CustomerListComponent implements OnInit, OnDestroy {
 
   public onSubmitSearchForm(event) {
     this.filterForm.controls.keyword.setValue(event.keyword);
+    this.pageIndex = 0;
     this._onFilterChange();
   }
 
   public onFilterFormChange(event: FilterEventModel) {
     console.log('FilterEventModel', event);
+    this.pageIndex = 0;
+
     switch (event.type) {
       case FILTER_TYPE.DATETIME:
         this.filterForm.controls.startTime.setValue(event.value.startDate);
