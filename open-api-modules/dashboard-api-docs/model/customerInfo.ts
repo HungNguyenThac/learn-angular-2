@@ -9,8 +9,9 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { TngInformationResponse } from './tngInformationResponse';
 import { KalapaResponse } from './kalapaResponse';
+import { VirtualAccount } from './virtualAccount';
+import { TNGInformationResponse } from './tNGInformationResponse';
 
 
 export interface CustomerInfo { 
@@ -36,6 +37,9 @@ export interface CustomerInfo {
     idExpiredDate?: string;
     idOrigin?: string;
     companyId?: string;
+    companyName?: string;
+    companyGroupName?: string;
+    companyCode?: string;
     officeCode?: string;
     organizationName?: string;
     officeName?: string;
@@ -60,8 +64,9 @@ export interface CustomerInfo {
     bankName?: string;
     bankCode?: string;
     accountNumber?: string;
-    tngData?: TngInformationResponse;
+    tngData?: TNGInformationResponse;
     kalapaData?: KalapaResponse;
+    virtualAccount?: VirtualAccount;
     createdAt?: string;
     updatedBy?: string;
     updatedAt?: string;
