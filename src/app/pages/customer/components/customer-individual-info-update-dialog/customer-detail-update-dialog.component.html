@@ -81,6 +81,14 @@
                       "
                       formControlName="firstName"
                     />
+                    <show-errors
+                      [control]="customerIndividualForm.controls['firstName']"
+                      [controlLabel]="
+                        'customer.individual_info.fullname' | translate
+                      "
+                      [hasIconPrefix]="false"
+                    >
+                    </show-errors>
                   </mat-form-field>
                 </div>
 
@@ -91,11 +99,23 @@
                     }}</mat-label>
                     <input
                       matInput
+                      appPhoneNumberOnly
+                      phone-number-validate
                       [placeholder]="
                         'customer.individual_info.phone_number' | translate
                       "
                       formControlName="mobileNumber"
                     />
+                    <show-errors
+                      [control]="
+                        customerIndividualForm.controls['mobileNumber']
+                      "
+                      [controlLabel]="
+                        'customer.individual_info.phone_number' | translate
+                      "
+                      [hasIconPrefix]="false"
+                    >
+                    </show-errors>
                   </mat-form-field>
                 </div>
 
@@ -111,6 +131,14 @@
                       "
                       formControlName="email"
                     />
+                    <show-errors
+                      [control]="customerIndividualForm.controls['email']"
+                      [controlLabel]="
+                        'customer.individual_info.email' | translate
+                      "
+                      [hasIconPrefix]="false"
+                    >
+                    </show-errors>
                   </mat-form-field>
                 </div>
 
@@ -126,6 +154,8 @@
                         'customer.individual_info.date_of_birth' | translate
                       "
                       formControlName="dateOfBirth"
+                      [min]="minDateTime"
+                      [max]="maxDateTime"
                     />
                     <mat-datepicker-toggle
                       matSuffix
@@ -142,6 +172,7 @@
                       <mat-option
                         *ngFor="let gender of genderOptions"
                         [value]="gender"
+                        [matTooltip]="gender"
                       >
                         {{ gender }}
                       </mat-option>
@@ -156,11 +187,22 @@
                     }}</mat-label>
                     <input
                       matInput
+                      appNumberOnly
                       [placeholder]="
                         'customer.individual_info.cmnd' | translate
                       "
                       formControlName="identityNumberOne"
                     />
+                    <show-errors
+                      [control]="
+                        customerIndividualForm.controls['identityNumberOne']
+                      "
+                      [controlLabel]="
+                        'customer.individual_info.cmnd' | translate
+                      "
+                      [hasIconPrefix]="false"
+                    >
+                    </show-errors>
                   </mat-form-field>
                 </div>
 
@@ -176,6 +218,16 @@
                       "
                       formControlName="permanentAddress"
                     />
+                    <show-errors
+                      [control]="
+                        customerIndividualForm.controls['permanentAddress']
+                      "
+                      [controlLabel]="
+                        'customer.individual_info.permanent_address' | translate
+                      "
+                      [hasIconPrefix]="false"
+                    >
+                    </show-errors>
                   </mat-form-field>
                 </div>
 
@@ -191,6 +243,16 @@
                       "
                       formControlName="currentResidence"
                     />
+                    <show-errors
+                      [control]="
+                        customerIndividualForm.controls['currentResidence']
+                      "
+                      [controlLabel]="
+                        'customer.individual_info.current_residence' | translate
+                      "
+                      [hasIconPrefix]="false"
+                    >
+                    </show-errors>
                   </mat-form-field>
                 </div>
 
@@ -206,6 +268,14 @@
                       "
                       formControlName="idOrigin"
                     />
+                    <show-errors
+                      [control]="customerIndividualForm.controls['idOrigin']"
+                      [controlLabel]="
+                        'customer.individual_info.id_origin' | translate
+                      "
+                      [hasIconPrefix]="false"
+                    >
+                    </show-errors>
                   </mat-form-field>
                 </div>
               </div>
@@ -224,10 +294,22 @@
                           let numberOfDependentsOption of numberOfDependentsOptions.options
                         "
                         [value]="numberOfDependentsOption"
+                        [matTooltip]="numberOfDependentsOption"
                       >
                         {{ numberOfDependentsOption }}
                       </mat-option>
                     </mat-select>
+                    <show-errors
+                      [control]="
+                        customerIndividualForm.controls['numberOfDependents']
+                      "
+                      [controlLabel]="
+                        'customer.individual_info.number_of_dependents'
+                          | translate
+                      "
+                      [hasIconPrefix]="false"
+                    >
+                    </show-errors>
                   </mat-form-field>
                 </div>
 
@@ -242,10 +324,21 @@
                           let maritalStatusOption of maritalStatusOptions.options
                         "
                         [value]="maritalStatusOption"
+                        [matTooltip]="maritalStatusOption"
                       >
                         {{ maritalStatusOption }}
                       </mat-option>
                     </mat-select>
+                    <show-errors
+                      [control]="
+                        customerIndividualForm.controls['maritalStatus']
+                      "
+                      [controlLabel]="
+                        'customer.individual_info.marital_status' | translate
+                      "
+                      [hasIconPrefix]="false"
+                    >
+                    </show-errors>
                   </mat-form-field>
                 </div>
 
@@ -256,12 +349,24 @@
                     }}</mat-label>
                     <input
                       matInput
+                      appNumberOnly
                       [placeholder]="
                         'customer.individual_info.bank_account_number'
                           | translate
                       "
                       formControlName="accountNumber"
                     />
+                    <show-errors
+                      [control]="
+                        customerIndividualForm.controls['accountNumber']
+                      "
+                      [controlLabel]="
+                        'customer.individual_info.bank_account_number'
+                          | translate
+                      "
+                      [hasIconPrefix]="false"
+                    >
+                    </show-errors>
                   </mat-form-field>
                 </div>
 
@@ -277,6 +382,12 @@
                       <mat-option
                         *ngFor="let bankNameOption of bankOptions"
                         [value]="bankNameOption.bankCode"
+                        [matTooltip]="
+                          bankNameOption.bankName +
+                          ' (' +
+                          bankNameOption.bankCode +
+                          ')'
+                        "
                       >
                         {{
                           bankNameOption.bankName +
@@ -286,6 +397,14 @@
                         }}
                       </mat-option>
                     </mat-select>
+                    <show-errors
+                      [control]="customerIndividualForm.controls['bankCode']"
+                      [controlLabel]="
+                        'customer.individual_info.bank_name' | translate
+                      "
+                      [hasIconPrefix]="false"
+                    >
+                    </show-errors>
                   </mat-form-field>
                 </div>
 
@@ -304,6 +423,23 @@
                       "
                       disabled
                     />
+                  </mat-form-field>
+                </div>
+
+                <div>
+                  <mat-form-field appearance="standard" class="w-100">
+                    <mat-label class="d-flex align-items-center gap-2">
+                      {{ "customer.individual_info.note" | translate }}
+                    </mat-label>
+                    <textarea
+                      matInput
+                      id="review"
+                      name="review"
+                      formControlName="note"
+                      [placeholder]="
+                        'customer.individual_info.type_note' | translate
+                      "
+                    ></textarea>
                   </mat-form-field>
                 </div>
 

@@ -1,4 +1,4 @@
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CustomerInfo } from '../../../../../../open-api-modules/dashboard-api-docs';
 import { MultiLanguageService } from '../../../../share/translate/multiLanguageService';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
@@ -40,6 +40,14 @@ export class CustomerDetailUpdateDialogComponent implements OnInit {
 
   customerIndividualForm: FormGroup;
 
+  maxDateTime = moment(new Date(), 'YYYY-MM-DD')
+    .subtract(18, 'years')
+    .toISOString();
+
+  minDateTime = moment(new Date(), 'YYYY-MM-DD')
+    .subtract(70, 'years')
+    .toISOString();
+
   genderOptions: string[] = [
     this.multiLanguageService.instant('customer.individual_info.gender_male'),
     this.multiLanguageService.instant('customer.individual_info.gender_female'),
@@ -74,21 +82,36 @@ export class CustomerDetailUpdateDialogComponent implements OnInit {
   buildIndividualForm() {
     this.customerIndividualForm = this.formBuilder.group({
       id: [''],
-      firstName: [''],
-      mobileNumber: [''],
-      email: [''],
-      dateOfBirth: [''],
-      gender: [''],
-      identityNumberOne: [''],
-      permanentAddress: [''],
-      currentResidence: [''],
-      idOrigin: [''],
-      numberOfDependents: [''],
-      maritalStatus: [''],
+      firstName: ['', [Validators.required, Validators.maxLength(250)]],
+      mobileNumber: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(10),
+          Validators.maxLength(12),
+        ],
+      ],
+      email: ['', [Validators.required, Validators.email]],
+      dateOfBirth: ['', [Validators.required]],
+      gender: ['', [Validators.required]],
+      identityNumberOne: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(9),
+          Validators.maxLength(10),
+        ],
+      ],
+      permanentAddress: ['', [Validators.required, Validators.maxLength(250)]],
+      currentResidence: ['', [Validators.required, Validators.maxLength(250)]],
+      idOrigin: ['', Validators.maxLength(250)],
+      numberOfDependents: ['', [Validators.required]],
+      maritalStatus: ['', [Validators.required]],
       accountNumber: [''],
       bankCode: [''],
       bankName: [''],
       vaAccountNumber: [''],
+      note: [''],
       createdAt: [''],
       updatedAt: [''],
     });
@@ -114,20 +137,24 @@ export class CustomerDetailUpdateDialogComponent implements OnInit {
       idOrigin: this.customerInfo?.idOrigin,
       numberOfDependents: this.customerInfo?.borrowerDetailTextVariable1,
       maritalStatus: this.customerInfo?.maritalStatus,
+      accountNumber: this.customerInfo?.accountNumber || null,
+      note: this.customerInfo?.note || null,
+      bankCode: this.customerInfo?.bankCode || null,
+      bankName: this.customerInfo?.bankName || null,
+      vaAccountNumber: this.virtualAccount?.accountNumber || null,
       createdAt: this.customerInfo?.createdAt
         ? this.formatTime(this.customerInfo?.createdAt)
         : null,
       updatedAt: this.customerInfo?.updatedAt
         ? this.formatTime(this.customerInfo?.updatedAt)
         : null,
-      accountNumber: this.customerInfo?.accountNumber || null,
-      bankCode: this.customerInfo?.bankCode || null,
-      bankName: this.customerInfo?.bankName || null,
-      vaAccountNumber: this.virtualAccount?.accountNumber || null,
     });
   }
 
   submitForm() {
+    if (this.customerIndividualForm.invalid) {
+      return;
+    }
     this.dialogRef.close({
       type: BUTTON_TYPE.PRIMARY,
       data: this.customerIndividualForm.getRawValue(),
