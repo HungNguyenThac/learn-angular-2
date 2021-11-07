@@ -56,6 +56,14 @@ export class CustomerCompanyInfoComponent implements OnInit, OnDestroy {
       },
       {
         title: this.multiLanguageService.instant(
+          'customer.company_info.full_name'
+        ),
+        value: this.customerInfo.firstName,
+        type: DATA_CELL_TYPE.TEXT,
+        format: null,
+      },
+      {
+        title: this.multiLanguageService.instant(
           'customer.company_info.last_name'
         ),
         value: this.customerInfo.tngData?.hoDem,
