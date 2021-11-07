@@ -9,11 +9,13 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { SearchAndPaginationResponseVirtualAccount } from './searchAndPaginationResponseVirtualAccount';
 
 
-export interface SearchPaydayLoanRequest { 
-    loanCode?: string;
-    mobileNumber?: string;
-    status?: string;
+export interface ApiResponseSearchAndPaginationResponseVirtualAccount { 
+    result?: SearchAndPaginationResponseVirtualAccount;
+    errorCode?: string;
+    message?: object;
+    responseCode?: number;
 }
 

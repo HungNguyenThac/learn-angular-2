@@ -9,11 +9,11 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { SearchPaydayLoanResponse } from './searchPaydayLoanResponse';
+import { SearchAndPaginationResponseInsuranceType } from './searchAndPaginationResponseInsuranceType';
 
 
-export interface ApiResponseSearchPaydayLoanResponse { 
-    result?: SearchPaydayLoanResponse;
+export interface ApiResponseSearchAndPaginationResponseInsuranceType { 
+    result?: SearchAndPaginationResponseInsuranceType;
     errorCode?: string;
     message?: object;
     responseCode?: number;

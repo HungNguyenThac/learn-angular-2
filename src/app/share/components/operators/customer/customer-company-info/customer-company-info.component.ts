@@ -31,7 +31,6 @@ import { ToastrService } from 'ngx-toastr';
 export class CustomerCompanyInfoComponent implements OnInit, OnDestroy {
   @Input() customerInfo: CustomerInfo = {};
   @Input() customerId: string = '';
-  @Input() companyInfo: CompanyInfo = {};
   @Input() bankOptions: Array<Bank>;
   @Input() companyOptions: Array<CompanyInfo>;
 
@@ -43,7 +42,7 @@ export class CustomerCompanyInfoComponent implements OnInit, OnDestroy {
         title: this.multiLanguageService.instant(
           'customer.company_info.company_name'
         ),
-        value: this.companyInfo.name,
+        value: this.customerInfo.companyName,
         type: DATA_CELL_TYPE.TEXT,
         format: null,
       },
@@ -57,9 +56,9 @@ export class CustomerCompanyInfoComponent implements OnInit, OnDestroy {
       },
       {
         title: this.multiLanguageService.instant(
-          'customer.company_info.full_name'
+          'customer.company_info.last_name'
         ),
-        value: this.customerInfo.firstName,
+        value: this.customerInfo.tngData?.hoDem,
         type: DATA_CELL_TYPE.TEXT,
         format: null,
       },
@@ -186,7 +185,7 @@ export class CustomerCompanyInfoComponent implements OnInit, OnDestroy {
       'financialData.accountNumber': data?.accountNumber || null,
       'financialData.bankCode': data?.bankCode || null,
       'financialData.bankName': data?.bankName || null,
-      'personalData.firstName': data?.firstName,
+      'tngData.ho': data?.tngLastName || null,
       'personalData.annualIncome': data?.annualIncome,
       'personalData.workingDay': data?.workingDay,
       'personalData.officeCode': data?.officeCode,

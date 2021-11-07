@@ -1,7 +1,11 @@
 import { LoanListService } from './loan-list.service';
 import { PageEvent } from '@angular/material/paginator/public-api';
 import { Sort } from '@angular/material/sort';
-import { ApiResponseSearchAndPaginationResponseCompanyInfo } from '../../../../../../open-api-modules/dashboard-api-docs';
+import {
+  ApiResponseSearchAndPaginationResponseCompanyInfo,
+  ApiResponseSearchAndPaginationResponsePaydayLoanHmg,
+  ApiResponseSearchAndPaginationResponsePaydayLoanTng
+} from '../../../../../../open-api-modules/dashboard-api-docs';
 import { CustomerListService } from '../../../customer/customer-list/customer-list.service';
 import { CompanyControllerService } from '../../../../../../open-api-modules/dashboard-api-docs';
 import { ActivatedRoute, Router, Params } from '@angular/router';
@@ -24,7 +28,6 @@ import { NAV_ITEM } from '../../../../core/common/enum/operator';
 import { MultiLanguageService } from '../../../../share/translate/multiLanguageService';
 import { MatTableDataSource } from '@angular/material/table';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { ApiResponseSearchPaydayLoanResponse } from 'open-api-modules/dashboard-api-docs';
 @Component({
   selector: 'app-loan-list',
   templateUrl: './loan-list.component.html',
@@ -197,13 +200,11 @@ export class LoanListComponent implements OnInit {
 
   private _getLoanList() {
     const params = this._buildParams();
-    console.log('params ne:', params);
-
     if (params.groupName === "HMG") {
       this.subManager.add(
         this.loanListService
           .getLoanDataHmg(params)
-          .subscribe((data: ApiResponseSearchPaydayLoanResponse) => {
+          .subscribe((data: ApiResponseSearchAndPaginationResponsePaydayLoanHmg) => {
             this._parseData(data?.result);
           })
       );
@@ -213,7 +214,7 @@ export class LoanListComponent implements OnInit {
       this.subManager.add(
         this.loanListService
           .getLoanDataTng(params)
-          .subscribe((data: ApiResponseSearchPaydayLoanResponse) => {
+          .subscribe((data: ApiResponseSearchAndPaginationResponsePaydayLoanTng) => {
             this._parseData(data?.result);
           })
       );

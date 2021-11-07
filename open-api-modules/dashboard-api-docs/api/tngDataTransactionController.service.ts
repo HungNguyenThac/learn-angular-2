@@ -17,9 +17,8 @@ import { HttpClient, HttpHeaders, HttpParams,
 import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
-import { ApiResponsePaydayLoanHmg } from '../model/models';
-import { ApiResponseSearchAndPaginationResponsePaydayLoanHmg } from '../model/models';
-import { ApiResponseSearchVoucherInfoResponse } from '../model/models';
+import { ApiResponseSearchAndPaginationResponseTNGInformationResponse } from '../model/models';
+import { ApiResponseTNGInformationResponse } from '../model/models';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
 import { Configuration }                                     from '../configuration';
@@ -29,7 +28,7 @@ import { Configuration }                                     from '../configurat
 @Injectable({
   providedIn: 'root'
 })
-export class ApplicationHmgControllerService {
+export class TngDataTransactionControllerService {
 
     protected basePath = 'http://localhost:8004';
     public defaultHeaders = new HttpHeaders();
@@ -87,37 +86,29 @@ export class ApplicationHmgControllerService {
     }
 
     /**
-     * @param query 
-     * @param pageSize 
      * @param pageNumber 
+     * @param pageSize 
+     * @param requestBody 
      * @param sortField 
      * @param descending 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public findApplications1(query: { [key: string]: object; }, pageSize: number, pageNumber: number, sortField?: string, descending?: boolean, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseSearchAndPaginationResponsePaydayLoanHmg>;
-    public findApplications1(query: { [key: string]: object; }, pageSize: number, pageNumber: number, sortField?: string, descending?: boolean, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseSearchAndPaginationResponsePaydayLoanHmg>>;
-    public findApplications1(query: { [key: string]: object; }, pageSize: number, pageNumber: number, sortField?: string, descending?: boolean, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseSearchAndPaginationResponsePaydayLoanHmg>>;
-    public findApplications1(query: { [key: string]: object; }, pageSize: number, pageNumber: number, sortField?: string, descending?: boolean, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
-        if (query === null || query === undefined) {
-            throw new Error('Required parameter query was null or undefined when calling findApplications1.');
+    public geTngDataTransaction(pageNumber: number, pageSize: number, requestBody: { [key: string]: object; }, sortField?: string, descending?: boolean, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseSearchAndPaginationResponseTNGInformationResponse>;
+    public geTngDataTransaction(pageNumber: number, pageSize: number, requestBody: { [key: string]: object; }, sortField?: string, descending?: boolean, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseSearchAndPaginationResponseTNGInformationResponse>>;
+    public geTngDataTransaction(pageNumber: number, pageSize: number, requestBody: { [key: string]: object; }, sortField?: string, descending?: boolean, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseSearchAndPaginationResponseTNGInformationResponse>>;
+    public geTngDataTransaction(pageNumber: number, pageSize: number, requestBody: { [key: string]: object; }, sortField?: string, descending?: boolean, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
+        if (pageNumber === null || pageNumber === undefined) {
+            throw new Error('Required parameter pageNumber was null or undefined when calling geTngDataTransaction.');
         }
         if (pageSize === null || pageSize === undefined) {
-            throw new Error('Required parameter pageSize was null or undefined when calling findApplications1.');
+            throw new Error('Required parameter pageSize was null or undefined when calling geTngDataTransaction.');
         }
-        if (pageNumber === null || pageNumber === undefined) {
-            throw new Error('Required parameter pageNumber was null or undefined when calling findApplications1.');
+        if (requestBody === null || requestBody === undefined) {
+            throw new Error('Required parameter requestBody was null or undefined when calling geTngDataTransaction.');
         }
 
         let queryParameters = new HttpParams({encoder: this.encoder});
-        if (query !== undefined && query !== null) {
-          queryParameters = this.addToHttpParams(queryParameters,
-            <any>query, 'query');
-        }
-        if (pageSize !== undefined && pageSize !== null) {
-          queryParameters = this.addToHttpParams(queryParameters,
-            <any>pageSize, 'pageSize');
-        }
         if (pageNumber !== undefined && pageNumber !== null) {
           queryParameters = this.addToHttpParams(queryParameters,
             <any>pageNumber, 'pageNumber');
@@ -125,6 +116,10 @@ export class ApplicationHmgControllerService {
         if (sortField !== undefined && sortField !== null) {
           queryParameters = this.addToHttpParams(queryParameters,
             <any>sortField, 'sortField');
+        }
+        if (pageSize !== undefined && pageSize !== null) {
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>pageSize, 'pageSize');
         }
         if (descending !== undefined && descending !== null) {
           queryParameters = this.addToHttpParams(queryParameters,
@@ -146,12 +141,22 @@ export class ApplicationHmgControllerService {
         }
 
 
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'application/json'
+        ];
+        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
+        if (httpContentTypeSelected !== undefined) {
+            headers = headers.set('Content-Type', httpContentTypeSelected);
+        }
+
         let responseType_: 'text' | 'json' = 'json';
         if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
             responseType_ = 'text';
         }
 
-        return this.httpClient.get<ApiResponseSearchAndPaginationResponsePaydayLoanHmg>(`${this.configuration.basePath}/v1/application/hmg/list`,
+        return this.httpClient.post<ApiResponseSearchAndPaginationResponseTNGInformationResponse>(`${this.configuration.basePath}/v1/tng-data-transaction`,
+            requestBody,
             {
                 params: queryParameters,
                 responseType: <any>responseType_,
@@ -164,16 +169,16 @@ export class ApplicationHmgControllerService {
     }
 
     /**
-     * @param loanId 
+     * @param tngId 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getLoanById1(loanId: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponsePaydayLoanHmg>;
-    public getLoanById1(loanId: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponsePaydayLoanHmg>>;
-    public getLoanById1(loanId: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponsePaydayLoanHmg>>;
-    public getLoanById1(loanId: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
-        if (loanId === null || loanId === undefined) {
-            throw new Error('Required parameter loanId was null or undefined when calling getLoanById1.');
+    public getTngTransactionById(tngId: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseTNGInformationResponse>;
+    public getTngTransactionById(tngId: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseTNGInformationResponse>>;
+    public getTngTransactionById(tngId: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseTNGInformationResponse>>;
+    public getTngTransactionById(tngId: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
+        if (tngId === null || tngId === undefined) {
+            throw new Error('Required parameter tngId was null or undefined when calling getTngTransactionById.');
         }
 
         let headers = this.defaultHeaders;
@@ -196,63 +201,8 @@ export class ApplicationHmgControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.get<ApiResponsePaydayLoanHmg>(`${this.configuration.basePath}/v1/application/hmg/${encodeURIComponent(String(loanId))}`,
+        return this.httpClient.get<ApiResponseTNGInformationResponse>(`${this.configuration.basePath}/v1/tng-data-transaction/${encodeURIComponent(String(tngId))}`,
             {
-                responseType: <any>responseType_,
-                withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress
-            }
-        );
-    }
-
-    /**
-     * @param loanId 
-     * @param voucherTransactionId 
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public getVoucherInfo1(loanId: string, voucherTransactionId: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseSearchVoucherInfoResponse>;
-    public getVoucherInfo1(loanId: string, voucherTransactionId: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseSearchVoucherInfoResponse>>;
-    public getVoucherInfo1(loanId: string, voucherTransactionId: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseSearchVoucherInfoResponse>>;
-    public getVoucherInfo1(loanId: string, voucherTransactionId: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
-        if (loanId === null || loanId === undefined) {
-            throw new Error('Required parameter loanId was null or undefined when calling getVoucherInfo1.');
-        }
-        if (voucherTransactionId === null || voucherTransactionId === undefined) {
-            throw new Error('Required parameter voucherTransactionId was null or undefined when calling getVoucherInfo1.');
-        }
-
-        let queryParameters = new HttpParams({encoder: this.encoder});
-        if (voucherTransactionId !== undefined && voucherTransactionId !== null) {
-          queryParameters = this.addToHttpParams(queryParameters,
-            <any>voucherTransactionId, 'voucherTransactionId');
-        }
-
-        let headers = this.defaultHeaders;
-
-        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-        if (httpHeaderAcceptSelected === undefined) {
-            // to determine the Accept header
-            const httpHeaderAccepts: string[] = [
-                '*/*'
-            ];
-            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        }
-        if (httpHeaderAcceptSelected !== undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
-        }
-
-
-        let responseType_: 'text' | 'json' = 'json';
-        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
-            responseType_ = 'text';
-        }
-
-        return this.httpClient.get<ApiResponseSearchVoucherInfoResponse>(`${this.configuration.basePath}/v1/application/hmg/${encodeURIComponent(String(loanId))}/voucher`,
-            {
-                params: queryParameters,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,

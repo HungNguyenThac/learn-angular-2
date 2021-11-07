@@ -25,6 +25,7 @@ export enum QUERY_CONDITION_TYPE {
   EQUAL = '__e',
   IN = '__in',
   LIKE = '__~',
+  LIKE_KEYWORD = '__lk',
 }
 
 export enum DATA_CELL_TYPE {
