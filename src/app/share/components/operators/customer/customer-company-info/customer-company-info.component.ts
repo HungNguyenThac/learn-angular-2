@@ -189,11 +189,12 @@ export class CustomerCompanyInfoComponent implements OnInit, OnDestroy {
     return {
       'personalData.companyId': data?.companyId,
       'personalData.organizationName': data?.employeeCode,
+      'personalData.firstName': data?.firstName,
       'tngData.ten': data?.tngFirstName || null,
+      'tngData.ho': data?.tngLastName || null,
       'financialData.accountNumber': data?.accountNumber || null,
       'financialData.bankCode': data?.bankCode || null,
       'financialData.bankName': data?.bankName || null,
-      'tngData.ho': data?.tngLastName || null,
       'personalData.annualIncome': data?.annualIncome,
       'personalData.workingDay': data?.workingDay,
       'personalData.officeCode': data?.officeCode,

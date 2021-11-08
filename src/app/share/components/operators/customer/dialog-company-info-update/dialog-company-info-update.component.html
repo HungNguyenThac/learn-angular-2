@@ -119,6 +119,7 @@
                     }}</mat-label>
                     <input
                       matInput
+                      required
                       [placeholder]="
                         'customer.company_info.full_name' | translate
                       "
@@ -366,6 +367,7 @@
       <div class="row mt-3">
         <div class="col-12 d-flex gap-2 justify-content-end">
           <button
+            type="button"
             mat-flat-button
             color="warn"
             autofocus
@@ -374,7 +376,7 @@
           >
             {{ "customer.individual_info.cancel_update" | translate }}
           </button>
-          <button mat-flat-button color="accent" (click)="submitForm()">
+          <button type="submit" mat-flat-button color="accent">
             <span class="sprite-group-5-save-white"></span>
             {{ "customer.individual_info.save_update" | translate }}
           </button>

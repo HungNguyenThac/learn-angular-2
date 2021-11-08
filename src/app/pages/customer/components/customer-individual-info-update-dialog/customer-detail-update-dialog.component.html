@@ -40,7 +40,7 @@
 
             <div class="op-customer-name">
               <p class="op-customer-name-content">
-                {{ customerInfo.firstName }}
+                {{ customerInfo?.firstName }}
               </p>
               <p class="op-customer-name-title">
                 {{ "customer.individual_info.avatar" | translate }}
@@ -76,6 +76,7 @@
                     }}</mat-label>
                     <input
                       matInput
+                      required
                       [placeholder]="
                         'customer.individual_info.fullname' | translate
                       "
@@ -99,6 +100,7 @@
                     }}</mat-label>
                     <input
                       matInput
+                      required
                       appPhoneNumberOnly
                       phone-number-validate
                       [placeholder]="
@@ -126,6 +128,7 @@
                     }}</mat-label>
                     <input
                       matInput
+                      required
                       [placeholder]="
                         'customer.individual_info.email' | translate
                       "
@@ -149,6 +152,7 @@
                     }}</mat-label>
                     <input
                       matInput
+                      required
                       [matDatepicker]="picker"
                       [placeholder]="
                         'customer.individual_info.date_of_birth' | translate
@@ -157,6 +161,14 @@
                       [min]="minDateTime"
                       [max]="maxDateTime"
                     />
+                    <show-errors
+                      [control]="customerIndividualForm.controls['dateOfBirth']"
+                      [controlLabel]="
+                        'customer.individual_info.date_of_birth' | translate
+                      "
+                      [hasIconPrefix]="false"
+                    >
+                    </show-errors>
                     <mat-datepicker-toggle
                       matSuffix
                       [for]="picker"
@@ -168,7 +180,7 @@
                     <mat-label>{{
                       "customer.individual_info.gender" | translate
                     }}</mat-label>
-                    <mat-select formControlName="gender">
+                    <mat-select formControlName="gender" required>
                       <mat-option
                         *ngFor="let gender of genderOptions"
                         [value]="gender"
@@ -177,6 +189,14 @@
                         {{ gender }}
                       </mat-option>
                     </mat-select>
+                    <show-errors
+                      [control]="customerIndividualForm.controls['gender']"
+                      [controlLabel]="
+                        'customer.individual_info.gender' | translate
+                      "
+                      [hasIconPrefix]="false"
+                    >
+                    </show-errors>
                   </mat-form-field>
                 </div>
 
@@ -187,6 +207,7 @@
                     }}</mat-label>
                     <input
                       matInput
+                      required
                       appNumberOnly
                       [placeholder]="
                         'customer.individual_info.cmnd' | translate
@@ -213,6 +234,7 @@
                     }}</mat-label>
                     <input
                       matInput
+                      required
                       [placeholder]="
                         'customer.individual_info.permanent_address' | translate
                       "
@@ -238,6 +260,7 @@
                     }}</mat-label>
                     <input
                       matInput
+                      required
                       [placeholder]="
                         'customer.individual_info.current_residence' | translate
                       "
@@ -288,7 +311,7 @@
                       "customer.individual_info.number_of_dependents"
                         | translate
                     }}</mat-label>
-                    <mat-select formControlName="numberOfDependents">
+                    <mat-select formControlName="numberOfDependents" required>
                       <mat-option
                         *ngFor="
                           let numberOfDependentsOption of numberOfDependentsOptions.options
@@ -318,7 +341,7 @@
                     <mat-label>{{
                       "customer.individual_info.marital_status" | translate
                     }}</mat-label>
-                    <mat-select formControlName="maritalStatus">
+                    <mat-select formControlName="maritalStatus" required>
                       <mat-option
                         *ngFor="
                           let maritalStatusOption of maritalStatusOptions.options
@@ -483,10 +506,16 @@
 
       <div class="row mt-3">
         <div class="col-12 d-flex gap-2 justify-content-end">
-          <button mat-flat-button color="warn" autofocus mat-dialog-close>
+          <button
+            type="button"
+            mat-flat-button
+            color="warn"
+            autofocus
+            mat-dialog-close
+          >
             {{ "customer.individual_info.cancel_update" | translate }}
           </button>
-          <button mat-flat-button color="accent" (click)="submitForm()">
+          <button type="submit" mat-flat-button color="accent">
             <span class="sprite-group-5-save-white"></span>
             {{ "customer.individual_info.save_update" | translate }}
           </button>
