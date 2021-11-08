@@ -439,7 +439,9 @@ export class LoanListComponent implements OnInit {
   }
 
   public onExpandElementChange(element: any) {
-    this.expandedElementLoanId = element.loanId;
+    console.log("---------------------------element", element);
+
+    this.expandedElementLoanId = element.id;
     this.expandedElementCustomerId = element.customerId;
   }
 

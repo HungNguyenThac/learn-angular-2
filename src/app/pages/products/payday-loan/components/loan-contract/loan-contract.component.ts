@@ -1,4 +1,7 @@
+import { DomSanitizer } from '@angular/platform-browser';
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { ToastrService } from 'ngx-toastr';
 import { PaydayLoan } from 'open-api-modules/loanapp-api-docs';
 
 @Component({
@@ -15,7 +18,11 @@ export class LoanContractComponent implements OnInit {
   contractStatus: string;
   loanContractFile: any;
   enableSign: boolean = false;
-  constructor() {}
+  constructor(
+    private notifier: ToastrService,
+    private dialog: MatDialog,
+    private domSanitizer: DomSanitizer
+  ) {}
 
   ngOnInit(): void {}
 }

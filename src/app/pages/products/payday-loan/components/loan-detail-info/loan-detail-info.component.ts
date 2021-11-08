@@ -211,9 +211,9 @@ export class LoanDetailInfoComponent implements OnInit {
   currentTime = new Date();
 
   @Input() groupName: string;
-  nextLoanStatus: string;
+  nextLoanStatus: string = PAYDAY_LOAN_STATUS.UNKNOWN_STATUS;
   nextLoanStatusDisplay: string;
-  rejectLoanStatus: string = PAYDAY_LOAN_STATUS.WITHDRAW;
+  rejectLoanStatus: string = PAYDAY_LOAN_STATUS.UNKNOWN_STATUS;
   rejectLoanStatusDisplay: string;
 
   subManager = new Subscription();
@@ -320,10 +320,12 @@ export class LoanDetailInfoComponent implements OnInit {
     switch (currentLoanStatus) {
       case PAYDAY_LOAN_STATUS.INITIALIZED:
         this.nextLoanStatus = PAYDAY_LOAN_STATUS.DOCUMENT_AWAITING;
+        this.rejectLoanStatus = PAYDAY_LOAN_STATUS.WITHDRAW;
         break;
 
       case PAYDAY_LOAN_STATUS.DOCUMENT_AWAITING:
         this.nextLoanStatus = PAYDAY_LOAN_STATUS.DOCUMENTATION_COMPLETE;
+        this.rejectLoanStatus = PAYDAY_LOAN_STATUS.WITHDRAW;
         break;
 
       case PAYDAY_LOAN_STATUS.DOCUMENTATION_COMPLETE:
@@ -333,34 +335,42 @@ export class LoanDetailInfoComponent implements OnInit {
 
       case PAYDAY_LOAN_STATUS.AUCTION:
         this.nextLoanStatus = PAYDAY_LOAN_STATUS.FUNDED;
+        this.rejectLoanStatus = PAYDAY_LOAN_STATUS.WITHDRAW;
         break;
 
       case PAYDAY_LOAN_STATUS.FUNDED:
         if (this.groupName === 'TNG') {
           this.nextLoanStatus = PAYDAY_LOAN_STATUS.CONTRACT_ACCEPTED;
+          this.rejectLoanStatus = PAYDAY_LOAN_STATUS.WITHDRAW;
           break;
         }
         this.nextLoanStatus = PAYDAY_LOAN_STATUS.CONTRACT_AWAITING;
+        this.rejectLoanStatus = PAYDAY_LOAN_STATUS.WITHDRAW;
         break;
 
       case PAYDAY_LOAN_STATUS.CONTRACT_AWAITING:
         this.nextLoanStatus = PAYDAY_LOAN_STATUS.CONTRACT_ACCEPTED;
+        this.rejectLoanStatus = PAYDAY_LOAN_STATUS.WITHDRAW;
         break;
 
       case PAYDAY_LOAN_STATUS.CONTRACT_ACCEPTED:
         this.nextLoanStatus = PAYDAY_LOAN_STATUS.AWAITING_DISBURSEMENT;
+        this.rejectLoanStatus = PAYDAY_LOAN_STATUS.WITHDRAW;
         break;
 
       case PAYDAY_LOAN_STATUS.AWAITING_DISBURSEMENT:
         this.nextLoanStatus = PAYDAY_LOAN_STATUS.DISBURSED;
+        this.rejectLoanStatus = PAYDAY_LOAN_STATUS.WITHDRAW;
         break;
 
       case PAYDAY_LOAN_STATUS.DISBURSED:
         this.nextLoanStatus = PAYDAY_LOAN_STATUS.IN_REPAYMENT;
+        this.rejectLoanStatus = PAYDAY_LOAN_STATUS.WITHDRAW;
         break;
 
       case PAYDAY_LOAN_STATUS.IN_REPAYMENT:
         this.nextLoanStatus = PAYDAY_LOAN_STATUS.COMPLETED;
+        this.rejectLoanStatus = PAYDAY_LOAN_STATUS.WITHDRAW;
         break;
 
       default:

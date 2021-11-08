@@ -1,3 +1,5 @@
+import { ApiResponsePaydayLoanTng } from './../../../../../../../open-api-modules/dashboard-api-docs/model/apiResponsePaydayLoanTng';
+import { ApplicationTngControllerService } from './../../../../../../../open-api-modules/dashboard-api-docs/api/applicationTngController.service';
 import { ApiResponseSearchAndPaginationResponseCompanyInfo } from './../../../../../../../open-api-modules/dashboard-api-docs/model/apiResponseSearchAndPaginationResponseCompanyInfo';
 import { ApiResponseSearchAndPaginationResponseBank } from './../../../../../../../open-api-modules/dashboard-api-docs/model/apiResponseSearchAndPaginationResponseBank';
 import { BankControllerService } from './../../../../../../../open-api-modules/dashboard-api-docs/api/bankController.service';
@@ -44,7 +46,7 @@ export class LoanDetailComponent implements OnInit {
     this._customerId = value;
   }
 
-  loanDetail: PaydayLoan;
+  loanDetail;
   userInfo: CustomerInfo;
   bankOptions: Array<Bank>;
   companyOptions: Array<CompanyInfo>;
@@ -55,6 +57,7 @@ export class LoanDetailComponent implements OnInit {
   subManager = new Subscription();
   constructor(
     private applicationHmgControllerService: ApplicationHmgControllerService,
+    private applicationTngControllerService: ApplicationTngControllerService,
     private customerDetailService: CustomerDetailService,
     private notifier: ToastrService,
     private multiLanguageService: MultiLanguageService,
@@ -71,13 +74,24 @@ export class LoanDetailComponent implements OnInit {
 
   private _getLoanById(loanId) {
     if (!loanId) return;
-    this.subManager.add(
-      this.applicationHmgControllerService
-        .getLoanById1(this.loanId)
-        .subscribe((data: ApiResponsePaydayLoanHmg) => {
-          this.loanDetail = data?.result;
-        })
-    );
+    if (this.groupName === "HMG") {
+      this.subManager.add(
+        this.applicationHmgControllerService
+          .getLoanById1(this.loanId)
+          .subscribe((data: ApiResponsePaydayLoanHmg) => {
+            this.loanDetail = data?.result;
+          })
+      );
+    }
+    if (this.groupName === 'TNG') {
+      this.subManager.add(
+        this.applicationTngControllerService
+          .getLoanById(this.loanId)
+          .subscribe((data: ApiResponsePaydayLoanTng) => {
+            this.loanDetail = data?.result;
+          })
+      );
+    }
   }
 
   private _getCustomerInfoById(customerId) {
