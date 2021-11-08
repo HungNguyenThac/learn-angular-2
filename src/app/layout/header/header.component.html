@@ -22,6 +22,7 @@
               </a>
 
               <div *ngIf="showProfileBtn" class="d-flex gap-3">
+                <!--Notification button-->
                 <section *ngIf="!responsive">
                   <button class="header-nav-btn gap-1">
                     <span>{{ "header.notification" | translate }}</span>
@@ -119,10 +120,10 @@
                       "
                     >
                       <div>
-                        <p id="manager-name">{{ fullName }}</p>
+                        <p id="manager-name">{{ accountInfo.fullName }}</p>
                         <p class="d-flex gap-1" id="manager-role">
                           <span class="sprite-group-5-personal-roll"></span>
-                          <span>{{ roleName }}</span>
+                          <span>{{ accountInfo.roleName }}</span>
                         </p>
                       </div>
                       <div class="avatar">{{ shortName }}</div>

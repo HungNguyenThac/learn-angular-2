@@ -147,6 +147,17 @@
       "note": "Ghi chú",
       "cancel_update": "Bỏ qua",
       "save_update": "Lưu cập nhật"
+    },
+    "setting": {
+      "security_title": "Đăng nhập và bảo mật",
+      "change_password": "Đổi mật khẩu",
+      "password_des": "Bạn nên sử dụng mật khẩu mạnh và chưa sử dụng ở nơi khác"
+    },
+    "logged_device": {
+      "title": "Thiết bị đã đăng nhập",
+      "log_out": "Đăng xuất",
+      "status_logout": "Đã đăng xuất",
+      "status_current": "Đang sử dụng"
     }
   },
   "customer": {

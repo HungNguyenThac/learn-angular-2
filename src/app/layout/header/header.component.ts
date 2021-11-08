@@ -13,6 +13,15 @@ import { DialogCompanyInfoUpdateComponent } from '../../share/components';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogUserInfoUpdateComponent } from '../../share/components/operators/user-account/dialog-user-info-update/dialog-user-info-update.component';
 
+export interface AccountInfo {
+  fullName?: string;
+  loginName?: string;
+  roleName?: string;
+  phoneNum?: string;
+  email?: string;
+  note?: string;
+}
+
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
@@ -28,8 +37,15 @@ export class HeaderComponent implements OnInit, OnDestroy {
   logoSrc: string = 'assets/img/monex-logo.svg';
   showProfileBtn: boolean = false;
   shortName: string = '0';
-  fullName: string = 'Nguyễn Văn A';
-  roleName: string = 'Super admin';
+
+  accountInfo: AccountInfo = {
+    fullName: 'Nguyễn Văn A',
+    loginName: 'ngvana',
+    roleName: 'Super Admin',
+    phoneNum: '0943777294',
+    email: 'a.nguyen@epay.vn',
+    note: '',
+  };
 
   selectedNavItem: NAV_ITEM = NAV_ITEM.DASHBOARD;
 
@@ -123,6 +139,14 @@ export class HeaderComponent implements OnInit, OnDestroy {
       panelClass: 'custom-info-dialog-container',
       maxWidth: '800px',
       width: '90%',
+      data: {
+        accountName: this.accountInfo.fullName,
+        accountLogin: this.accountInfo.loginName,
+        accountRole: this.accountInfo.roleName,
+        accountPhone: this.accountInfo.phoneNum,
+        accountEmail: this.accountInfo.email,
+        accountNote: this.accountInfo.note,
+      },
     });
   }
 
