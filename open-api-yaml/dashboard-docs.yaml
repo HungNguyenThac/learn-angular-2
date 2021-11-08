@@ -779,7 +779,7 @@ paths:
                 $ref: '#/components/schemas/ApiResponseRepaymentTransaction'
       security:
       - bearerAuth: []
-  /v1/payment/{customerId}:
+  /v1/payment/virtual-account/{customerId}:
     get:
       tags:
       - payment-controller
