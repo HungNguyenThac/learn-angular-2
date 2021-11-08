@@ -1,3 +1,4 @@
+import { SearchAndPaginationResponsePaydayLoanHmg } from './../../../../../../open-api-modules/dashboard-api-docs/model/searchAndPaginationResponsePaydayLoanHmg';
 import { FilterActionEventModel } from './../../../../public/models/filter/filter-action-event.model';
 import { FilterEventModel } from './../../../../public/models/filter/filter-event.model';
 import { CompanyInfo } from './../../../../../../open-api-modules/customer-api-docs/model/companyInfo';
@@ -321,13 +322,15 @@ export class LoanListComponent implements OnInit {
 
   private _getLoanList() {
     const params = this._buildParams();
-    if (params.groupName === "HMG") {
+    if (params.groupName === 'HMG') {
       this.subManager.add(
         this.loanListService
           .getLoanDataHmg(params)
-          .subscribe((data: ApiResponseSearchAndPaginationResponsePaydayLoanHmg) => {
-            this._parseData(data?.result);
-          })
+          .subscribe(
+            (data: ApiResponseSearchAndPaginationResponsePaydayLoanHmg) => {
+              this._parseData(data?.result);
+            }
+          )
       );
     }
 
@@ -335,9 +338,11 @@ export class LoanListComponent implements OnInit {
       this.subManager.add(
         this.loanListService
           .getLoanDataTng(params)
-          .subscribe((data: ApiResponseSearchAndPaginationResponsePaydayLoanTng) => {
-            this._parseData(data?.result);
-          })
+          .subscribe(
+            (data: ApiResponseSearchAndPaginationResponsePaydayLoanTng) => {
+              this._parseData(data?.result);
+            }
+          )
       );
     }
   }
@@ -381,10 +386,10 @@ export class LoanListComponent implements OnInit {
     return data;
   }
 
-  private _parseData(rawData) {
+  private _parseData(rawData: SearchAndPaginationResponsePaydayLoanHmg) {
     this.pageLength = rawData?.pagination?.maxPage || 0;
     this.totalItems = rawData?.pagination?.total || 0;
-    this.dataSource.data = rawData?.searchPaydayLoanResult || [];
+    this.dataSource.data = rawData?.data || [];
   }
 
   onPageChange(event: PageEvent) {

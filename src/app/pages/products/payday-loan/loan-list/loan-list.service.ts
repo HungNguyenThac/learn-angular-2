@@ -38,8 +38,6 @@ export class LoanListService {
       };
     }
     requestBody['status'] = params.status;
-    requestBody['loanCode'] = params.loanCode;
-    requestBody['mobileNumber'] = params.mobileNumber;
 
     if (!params.status) delete requestBody['status'];
     if (params.keyword) {
@@ -85,8 +83,6 @@ export class LoanListService {
     }
 
     requestBody['status'] = params.status;
-    requestBody['loanCode'] = params.loanCode;
-    requestBody['mobileNumber'] = params.mobileNumber;
 
     if (!params.status) delete requestBody['status'];
     if (params.keyword) {
