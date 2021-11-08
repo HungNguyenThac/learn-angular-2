@@ -39,11 +39,21 @@ export class LoanListService {
     requestBody['loanCode'] = params.loanCode;
     requestBody['mobileNumber'] = params.mobileNumber;
     if (!params.status) delete requestBody['status'];
-    // let queryParams = {
-    //   status: params.status,
-    //   loanCode: params.loanCode,
-    //   mobileNumber: params.mobileNumber,
-    // };
+    if (params.keyword) {
+      requestBody['loanCode' + QUERY_CONDITION_TYPE.LIKE_KEYWORD] =
+        params.keyword;
+      requestBody['mobileNumber' + QUERY_CONDITION_TYPE.LIKE_KEYWORD] =
+        params.keyword;
+      requestBody['emailAddress' + QUERY_CONDITION_TYPE.LIKE_KEYWORD] =
+        params.keyword;
+      requestBody['officeCode' + QUERY_CONDITION_TYPE.LIKE_KEYWORD] =
+        params.keyword;
+      requestBody['identityNumberOne' + QUERY_CONDITION_TYPE.LIKE_KEYWORD] =
+        params.keyword;
+    }
+    console.log('requestBody--------------------------------', requestBody);
+     requestBody = {}
+
     return this.applicationHmgControllerService.findApplications1(
       requestBody,
       params.pageSize,

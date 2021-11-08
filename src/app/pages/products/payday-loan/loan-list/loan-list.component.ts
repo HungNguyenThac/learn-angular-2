@@ -1,5 +1,3 @@
-import { ApiResponseSearchAndPaginationResponsePaydayLoanHmg } from './../../../../../../open-api-modules/dashboard-api-docs/model/apiResponseSearchAndPaginationResponsePaydayLoanHmg';
-import { ApiResponseSearchAndPaginationResponsePaydayLoanTng } from './../../../../../../open-api-modules/dashboard-api-docs/model/apiResponseSearchAndPaginationResponsePaydayLoanTng';
 import { FilterActionEventModel } from './../../../../public/models/filter/filter-action-event.model';
 import { FilterEventModel } from './../../../../public/models/filter/filter-event.model';
 import { CompanyInfo } from './../../../../../../open-api-modules/customer-api-docs/model/companyInfo';
@@ -8,7 +6,11 @@ import { FILTER_TYPE } from 'src/app/core/common/enum/operator';
 import { LoanListService } from './loan-list.service';
 import { PageEvent } from '@angular/material/paginator/public-api';
 import { Sort } from '@angular/material/sort';
-import { ApiResponseSearchAndPaginationResponseCompanyInfo } from '../../../../../../open-api-modules/dashboard-api-docs';
+import {
+  ApiResponseSearchAndPaginationResponseCompanyInfo,
+  ApiResponseSearchAndPaginationResponsePaydayLoanHmg,
+  ApiResponseSearchAndPaginationResponsePaydayLoanTng
+} from '../../../../../../open-api-modules/dashboard-api-docs';
 import { CustomerListService } from '../../../customer/customer-list/customer-list.service';
 import { CompanyControllerService } from '../../../../../../open-api-modules/dashboard-api-docs';
 import { ActivatedRoute, Router, Params } from '@angular/router';
@@ -53,7 +55,7 @@ export class LoanListComponent implements OnInit {
     keyword: '',
   };
 
-  filterOptions: FilterOptionModel[] = [
+  filterOptions = [
     {
       title: this.multiLanguageService.instant('filter.time'),
       type: FILTER_TYPE.DATETIME,
@@ -248,6 +250,8 @@ export class LoanListComponent implements OnInit {
       loanCode: [''],
       mobileNumber: [''],
       status: [''],
+      officeCode: [''],
+      identityNumberOne: [''],
       orderBy: ['createdAt'],
       sortDirection: ['desc'],
       startTime: [''],
@@ -317,15 +321,13 @@ export class LoanListComponent implements OnInit {
 
   private _getLoanList() {
     const params = this._buildParams();
-    if (params.groupName === 'HMG') {
+    if (params.groupName === "HMG") {
       this.subManager.add(
         this.loanListService
           .getLoanDataHmg(params)
-          .subscribe(
-            (data: ApiResponseSearchAndPaginationResponsePaydayLoanHmg) => {
-              this._parseData(data?.result);
-            }
-          )
+          .subscribe((data: ApiResponseSearchAndPaginationResponsePaydayLoanHmg) => {
+            this._parseData(data?.result);
+          })
       );
     }
 
@@ -333,11 +335,9 @@ export class LoanListComponent implements OnInit {
       this.subManager.add(
         this.loanListService
           .getLoanDataTng(params)
-          .subscribe(
-            (data: ApiResponseSearchAndPaginationResponsePaydayLoanTng) => {
-              this._parseData(data?.result);
-            }
-          )
+          .subscribe((data: ApiResponseSearchAndPaginationResponsePaydayLoanTng) => {
+            this._parseData(data?.result);
+          })
       );
     }
   }

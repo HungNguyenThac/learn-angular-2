@@ -55,7 +55,7 @@ paths:
     post:
       tags:
       - rating-controller
-      operationId: getBank
+      operationId: getRating
       parameters:
       - name: pageSize
         in: query
@@ -505,7 +505,7 @@ paths:
     post:
       tags:
       - bank-controller
-      operationId: getBank_1
+      operationId: getBank
       parameters:
       - name: pageSize
         in: query
@@ -657,7 +657,7 @@ paths:
     get:
       tags:
       - rating-controller
-      operationId: getBankById
+      operationId: getRatingByApplicationId
       parameters:
       - name: applicationId
         in: path
@@ -869,7 +869,7 @@ paths:
     get:
       tags:
       - bank-controller
-      operationId: getBankById_1
+      operationId: getBankById
       parameters:
       - name: bankId
         in: path

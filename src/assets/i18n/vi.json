@@ -201,8 +201,9 @@
     "company_info": {
       "company_name": "Tên công ty",
       "employee_code": "Mã nhân viên",
-      "full_name": "Họ và tên đệm",
-      "last_name": "Họ",
+      "working_time": "Thời gian làm việc ở công ty hiện tại",
+      "full_name": "Họ và tên",
+      "last_name": "Họ và tên đệm",
       "first_name": "Tên",
       "office_code": "Mã đơn vị",
       "office_name": "Tên đơn vị ",
