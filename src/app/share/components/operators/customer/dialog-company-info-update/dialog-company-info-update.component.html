@@ -18,10 +18,10 @@
       {{ "customer.individual_info.update_company_info" | translate }}
     </div>
     <div class="card-body">
-      <div class="row">
-        <!--  Info  -->
-        <section class="col-12">
-          <form [formGroup]="companyInfoForm">
+      <form [formGroup]="companyInfoForm" (ngSubmit)="submitForm()">
+        <div class="row">
+          <!--  Info  -->
+          <section class="col-12">
             <div class="row">
               <!-- Left Individual Info -->
               <div class="col-12 col-sm-12 col-md-6 col-lg-6 pr-2">
@@ -359,29 +359,29 @@
                 </div>
               </div>
             </div>
-          </form>
-        </section>
-      </div>
-      <!--  Actions -->
-
-      <div class="row mt-3">
-        <div class="col-12 d-flex gap-2 justify-content-end">
-          <button
-            type="button"
-            mat-flat-button
-            color="warn"
-            autofocus
-            mat-dialog-close
-            cdkFocusInitial
-          >
-            {{ "customer.individual_info.cancel_update" | translate }}
-          </button>
-          <button type="submit" mat-flat-button color="accent">
-            <span class="sprite-group-5-save-white"></span>
-            {{ "customer.individual_info.save_update" | translate }}
-          </button>
+          </section>
         </div>
-      </div>
+        <!--  Actions -->
+
+        <div class="row mt-3">
+          <div class="col-12 d-flex gap-2 justify-content-end">
+            <button
+              type="button"
+              mat-flat-button
+              color="warn"
+              autofocus
+              mat-dialog-close
+              cdkFocusInitial
+            >
+              {{ "customer.individual_info.cancel_update" | translate }}
+            </button>
+            <button type="submit" mat-flat-button color="accent">
+              <span class="sprite-group-5-save-white"></span>
+              {{ "customer.individual_info.save_update" | translate }}
+            </button>
+          </div>
+        </div>
+      </form>
     </div>
   </div>
 </div>

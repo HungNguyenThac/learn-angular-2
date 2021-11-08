@@ -82,28 +82,17 @@ export class CustomerDetailUpdateDialogComponent implements OnInit {
   buildIndividualForm() {
     this.customerIndividualForm = this.formBuilder.group({
       id: [''],
-      firstName: ['', [Validators.required, Validators.maxLength(250)]],
-      mobileNumber: [
-        '',
-        [
-          Validators.required,
-          Validators.minLength(10),
-          Validators.maxLength(12),
-        ],
-      ],
-      email: ['', [Validators.required, Validators.email]],
+      firstName: ['', [Validators.maxLength(250)]],
+      mobileNumber: ['', [Validators.minLength(10), Validators.maxLength(12)]],
+      email: ['', [Validators.email]],
       dateOfBirth: ['', [Validators.required]],
       gender: ['', [Validators.required]],
       identityNumberOne: [
         '',
-        [
-          Validators.required,
-          Validators.minLength(9),
-          Validators.maxLength(12),
-        ],
+        [Validators.minLength(9), Validators.maxLength(12)],
       ],
-      permanentAddress: ['', [Validators.required, Validators.maxLength(250)]],
-      currentResidence: ['', [Validators.required, Validators.maxLength(250)]],
+      permanentAddress: ['', [Validators.maxLength(250)]],
+      currentResidence: ['', [Validators.maxLength(250)]],
       idOrigin: ['', Validators.maxLength(250)],
       numberOfDependents: ['', [Validators.required]],
       maritalStatus: ['', [Validators.required]],
@@ -152,6 +141,9 @@ export class CustomerDetailUpdateDialogComponent implements OnInit {
   }
 
   submitForm() {
+    if (this.customerIndividualForm.invalid) {
+      return;
+    }
     this.dialogRef.close({
       type: BUTTON_TYPE.PRIMARY,
       data: this.customerIndividualForm.getRawValue(),
