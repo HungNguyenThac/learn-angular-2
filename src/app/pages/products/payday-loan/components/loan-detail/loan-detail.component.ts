@@ -1,9 +1,21 @@
+import { ApiResponseSearchAndPaginationResponseCompanyInfo } from './../../../../../../../open-api-modules/dashboard-api-docs/model/apiResponseSearchAndPaginationResponseCompanyInfo';
+import { ApiResponseSearchAndPaginationResponseBank } from './../../../../../../../open-api-modules/dashboard-api-docs/model/apiResponseSearchAndPaginationResponseBank';
+import { BankControllerService } from './../../../../../../../open-api-modules/dashboard-api-docs/api/bankController.service';
+import { CompanyInfo } from './../../../../../../../open-api-modules/customer-api-docs/model/companyInfo';
+import { Bank } from './../../../../../../../open-api-modules/dashboard-api-docs/model/bank';
+import { MultiLanguageService } from './../../../../../share/translate/multiLanguageService';
+import { ToastrService } from 'ngx-toastr';
+import { RESPONSE_CODE } from './../../../../../core/common/enum/operator';
 import { ApiResponseCustomerInfo } from './../../../../../../../open-api-modules/dashboard-api-docs/model/apiResponseCustomerInfo';
 import { ApiResponsePaydayLoanHmg } from './../../../../../../../open-api-modules/dashboard-api-docs/model/apiResponsePaydayLoanHmg';
 import { Subscription } from 'rxjs';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { PaydayLoan } from 'open-api-modules/loanapp-api-docs';
-import { ApplicationHmgControllerService, CustomerInfo } from 'open-api-modules/dashboard-api-docs';
+import {
+  ApplicationHmgControllerService,
+  CompanyControllerService,
+  CustomerInfo,
+} from 'open-api-modules/dashboard-api-docs';
 import { CustomerDetailService } from 'src/app/pages/customer/components/customer-detail-element/customer-detail.service';
 
 @Component({
@@ -34,6 +46,8 @@ export class LoanDetailComponent implements OnInit {
 
   loanDetail: PaydayLoan;
   userInfo: CustomerInfo;
+  bankOptions: Array<Bank>;
+  companyOptions: Array<CompanyInfo>;
   @Input() groupName: string;
 
   @Output() loanDetailDetectChangeStatus = new EventEmitter<any>();
@@ -41,12 +55,18 @@ export class LoanDetailComponent implements OnInit {
   subManager = new Subscription();
   constructor(
     private applicationHmgControllerService: ApplicationHmgControllerService,
-    private customerDetailService: CustomerDetailService
+    private customerDetailService: CustomerDetailService,
+    private notifier: ToastrService,
+    private multiLanguageService: MultiLanguageService,
+    private bankControllerService: BankControllerService,
+    private companyControllerService: CompanyControllerService
   ) {}
 
   ngOnInit(): void {
     this._getLoanById(this.loanId);
     this._getCustomerInfoById(this.customerId);
+    this._getBankOptions();
+    this._getCompanyList();
   }
 
   private _getLoanById(loanId) {
@@ -73,5 +93,57 @@ export class LoanDetailComponent implements OnInit {
 
   loanDetailDetectChangeStatusTrigger(event) {
     this.loanDetailDetectChangeStatus.emit(event);
+  }
+
+  private _getBankOptions() {
+    this.subManager.add(
+      this.bankControllerService
+        .getBank(200, 0, {})
+        .subscribe((response: ApiResponseSearchAndPaginationResponseBank) => {
+          if (response.responseCode !== RESPONSE_CODE.SUCCESS) {
+            this.notifier.error(
+              JSON.stringify(response?.message),
+              response?.errorCode
+            );
+            return;
+          }
+          this.bankOptions = response?.result?.data;
+        })
+    );
+  }
+
+  private _getCompanyList() {
+    this.subManager.add(
+      this.companyControllerService
+        .getCompanies(100, 0, {})
+        .subscribe(
+          (data: ApiResponseSearchAndPaginationResponseCompanyInfo) => {
+            this.companyOptions = data?.result?.data;
+          }
+        )
+    );
+  }
+
+  public updateCustomerInfo(updateInfoRequest: Object) {
+    this.subManager.add(
+      this.customerDetailService
+        .updateCustomerInfo(this.customerId, updateInfoRequest)
+        .subscribe((result) => {
+          if (result?.responseCode !== RESPONSE_CODE.SUCCESS) {
+            this.notifier.error(
+              JSON.stringify(result?.message),
+              result?.errorCode
+            );
+            return;
+          }
+
+          setTimeout(() => {
+            this.notifier.success(
+              this.multiLanguageService.instant('common.update_success')
+            );
+            this._getCustomerInfoById(this.customerId);
+          }, 1000);
+        })
+    );
   }
 }

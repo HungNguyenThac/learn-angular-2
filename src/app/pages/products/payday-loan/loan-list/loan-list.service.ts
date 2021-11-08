@@ -1,3 +1,4 @@
+import { query } from '@angular/animations';
 import { ApplicationTngControllerService } from '../../../../../../open-api-modules/dashboard-api-docs';
 import { ApplicationHmgControllerService } from '../../../../../../open-api-modules/dashboard-api-docs';
 import { PaydayLoanControllerService } from '../../../../../../open-api-modules/loanapp-hmg-api-docs';
@@ -19,6 +20,7 @@ export class LoanListService {
 
   public getLoanDataHmg(params) {
     let requestBody = {};
+
     if (params.filterConditions) {
       for (const [paramName, paramValue] of Object.entries(
         params.filterConditions
@@ -30,94 +32,76 @@ export class LoanListService {
     }
 
     if (params.startTime || params.endTime) {
-      let startTime = params.startTime
-        ? new Date(
-            new Date(params.startTime).getTime() + 25200000
-          ).toISOString()
-        : null;
-      let endTime = params.endTime
-        ? new Date(new Date(params.endTime).getTime() + 25200000).toISOString()
-        : null;
-
-      //If is same day filter between 00:00:00 and 23:59:59
-      if (
-        !_.isEmpty(startTime) &&
-        !_.isEmpty(endTime) &&
-        startTime == endTime
-      ) {
-        endTime = new Date(
-          new Date(endTime).getTime() + 86400000 - 1
-        ).toISOString();
-      }
-
       requestBody['createdAt' + QUERY_CONDITION_TYPE.BETWEEN] = {
-        start: startTime,
-        end: endTime,
+        start: params.startTime,
+        end: params.endTime,
       };
     }
-    let queryParams = {
-      status: params.status,
-      loanCode: params.loanCode,
-      mobileNumber: params.mobileNumber,
-    };
-    if (!params.status) delete queryParams.status;
+    requestBody['status'] = params.status;
+
+    if (!params.status) delete requestBody['status'];
+    if (params.keyword) {
+      requestBody['loanCode' + QUERY_CONDITION_TYPE.LIKE_KEYWORD] =
+        params.keyword;
+      requestBody['mobileNumber' + QUERY_CONDITION_TYPE.LIKE_KEYWORD] =
+        params.keyword;
+      requestBody['emailAddress' + QUERY_CONDITION_TYPE.LIKE_KEYWORD] =
+        params.keyword;
+      requestBody['officeCode' + QUERY_CONDITION_TYPE.LIKE_KEYWORD] =
+        params.keyword;
+      requestBody['identityNumberOne' + QUERY_CONDITION_TYPE.LIKE_KEYWORD] =
+        params.keyword;
+    }
+    console.log('requestBody--------------------------------', requestBody);
+
     return this.applicationHmgControllerService.findApplications1(
-      queryParams,
       params.pageSize,
       params.pageNumber,
+      requestBody,
       params.orderBy,
       params.sortDirection === 'desc'
     );
   }
 
   public getLoanDataTng(params) {
-     let requestBody = {};
-     if (params.filterConditions) {
-       for (const [paramName, paramValue] of Object.entries(
-         params.filterConditions
-       )) {
-         if (!_.isEmpty(params[paramName])) {
-           requestBody[paramName + paramValue] = params[paramName] || '';
-         }
-       }
-     }
+    let requestBody = {};
+    if (params.filterConditions) {
+      for (const [paramName, paramValue] of Object.entries(
+        params.filterConditions
+      )) {
+        if (!_.isEmpty(params[paramName])) {
+          requestBody[paramName + paramValue] = params[paramName] || '';
+        }
+      }
+    }
 
-     if (params.startTime || params.endTime) {
-       let startTime = params.startTime
-         ? new Date(
-             new Date(params.startTime).getTime() + 25200000
-           ).toISOString()
-         : null;
-       let endTime = params.endTime
-         ? new Date(new Date(params.endTime).getTime() + 25200000).toISOString()
-         : null;
+    if (params.startTime || params.endTime) {
+      requestBody['createdAt' + QUERY_CONDITION_TYPE.BETWEEN] = {
+        start: params.startTime,
+        end: params.endTime,
+      };
+    }
 
-       //If is same day filter between 00:00:00 and 23:59:59
-       if (
-         !_.isEmpty(startTime) &&
-         !_.isEmpty(endTime) &&
-         startTime == endTime
-       ) {
-         endTime = new Date(
-           new Date(endTime).getTime() + 86400000 - 1
-         ).toISOString();
-       }
+    requestBody['status'] = params.status;
 
-       requestBody['createdAt' + QUERY_CONDITION_TYPE.BETWEEN] = {
-         start: startTime,
-         end: endTime,
-       };
-     }
-     let queryParams = {
-       status: params.status,
-       loanCode: params.loanCode,
-       mobileNumber: params.mobileNumber,
-     };
-     if (!params.status) delete queryParams.status;
+    if (!params.status) delete requestBody['status'];
+    if (params.keyword) {
+      requestBody['loanCode' + QUERY_CONDITION_TYPE.LIKE_KEYWORD] =
+        params.keyword;
+      requestBody['mobileNumber' + QUERY_CONDITION_TYPE.LIKE_KEYWORD] =
+        params.keyword;
+      requestBody['emailAddress' + QUERY_CONDITION_TYPE.LIKE_KEYWORD] =
+        params.keyword;
+      requestBody['officeCode' + QUERY_CONDITION_TYPE.LIKE_KEYWORD] =
+        params.keyword;
+      requestBody['identityNumberOne' + QUERY_CONDITION_TYPE.LIKE_KEYWORD] =
+        params.keyword;
+    }
+    console.log('requestBody--------------------------------', requestBody);
     return this.applicationTngControllerService.findApplications(
-      queryParams,
       params.pageSize,
       params.pageNumber,
+      requestBody,
       params.orderBy,
       params.sortDirection === 'desc'
     );

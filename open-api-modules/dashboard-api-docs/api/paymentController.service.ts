@@ -247,7 +247,7 @@ export class PaymentControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.get<ApiResponseVirtualAccount>(`${this.configuration.basePath}/v1/payment/${encodeURIComponent(String(customerId))}`,
+        return this.httpClient.get<ApiResponseVirtualAccount>(`${this.configuration.basePath}/v1/payment/virtual-account/${encodeURIComponent(String(customerId))}`,
             {
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,

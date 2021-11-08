@@ -591,6 +591,92 @@ paths:
                 $ref: '#/components/schemas/ApiResponseSearchAndPaginationResponseApprovalLetter'
       security:
       - bearerAuth: []
+  /v1/application/list:
+    post:
+      tags:
+      - application-tng-controller
+      operationId: findApplications
+      parameters:
+      - name: pageSize
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: pageNumber
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: sortField
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: descending
+        in: query
+        required: false
+        schema:
+          type: boolean
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties:
+                type: object
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseSearchAndPaginationResponsePaydayLoanTng'
+  /v1/application/hmg/list:
+    post:
+      tags:
+      - application-hmg-controller
+      operationId: findApplications_1
+      parameters:
+      - name: pageSize
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: pageNumber
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: sortField
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: descending
+        in: query
+        required: false
+        schema:
+          type: boolean
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties:
+                type: object
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseSearchAndPaginationResponsePaydayLoanHmg'
   /v3/api-docs:
     get:
       tags:
@@ -693,7 +779,7 @@ paths:
                 $ref: '#/components/schemas/ApiResponseRepaymentTransaction'
       security:
       - bearerAuth: []
-  /v1/payment/{customerId}:
+  /v1/payment/virtual-account/{customerId}:
     get:
       tags:
       - payment-controller
@@ -946,48 +1032,6 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ApiResponseSearchVoucherInfoResponse'
-  /v1/application/list:
-    get:
-      tags:
-      - application-tng-controller
-      operationId: findApplications
-      parameters:
-      - name: query
-        in: query
-        required: true
-        schema:
-          type: object
-          additionalProperties:
-            type: object
-      - name: pageSize
-        in: query
-        required: true
-        schema:
-          type: integer
-          format: int32
-      - name: pageNumber
-        in: query
-        required: true
-        schema:
-          type: integer
-          format: int32
-      - name: sortField
-        in: query
-        required: false
-        schema:
-          type: string
-      - name: descending
-        in: query
-        required: false
-        schema:
-          type: boolean
-      responses:
-        "200":
-          description: OK
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/ApiResponseSearchAndPaginationResponsePaydayLoanTng'
   /v1/application/hmg/{loanId}:
     get:
       tags:
@@ -1029,48 +1073,6 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ApiResponseSearchVoucherInfoResponse'
-  /v1/application/hmg/list:
-    get:
-      tags:
-      - application-hmg-controller
-      operationId: findApplications_1
-      parameters:
-      - name: query
-        in: query
-        required: true
-        schema:
-          type: object
-          additionalProperties:
-            type: object
-      - name: pageSize
-        in: query
-        required: true
-        schema:
-          type: integer
-          format: int32
-      - name: pageNumber
-        in: query
-        required: true
-        schema:
-          type: integer
-          format: int32
-      - name: sortField
-        in: query
-        required: false
-        schema:
-          type: string
-      - name: descending
-        in: query
-        required: false
-        schema:
-          type: boolean
-      responses:
-        "200":
-          description: OK
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/ApiResponseSearchAndPaginationResponsePaydayLoanHmg'
   /swagger-resources:
     get:
       tags:
@@ -1886,6 +1888,229 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ApprovalLetter'
+    ApiResponseSearchAndPaginationResponsePaydayLoanTng:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/SearchAndPaginationResponsePaydayLoanTng'
+        errorCode:
+          type: string
+        message:
+          type: object
+        responseCode:
+          type: integer
+          format: int32
+    PaydayLoanTng:
+      type: object
+      properties:
+        id:
+          type: string
+        coreLoanUuid:
+          type: string
+        customerId:
+          type: string
+        expectedAmount:
+          type: integer
+          format: int32
+        expectedTenure:
+          type: integer
+          format: int32
+        actualAmount:
+          type: integer
+          format: int32
+        status:
+          type: string
+        oldStatus:
+          type: string
+        appTypeUuid:
+          type: string
+        appType:
+          type: string
+        loanCode:
+          type: string
+        purpose:
+          type: string
+        voucherTransactionId:
+          type: string
+        repaymentStatus:
+          type: string
+        latePenaltyPayment:
+          type: integer
+          format: int32
+        totalServiceFees:
+          type: integer
+          format: int32
+        getSalaryAt:
+          type: string
+        createdAt:
+          type: string
+        customerName:
+          type: string
+        customerMobileNumber:
+          type: string
+        customerEmail:
+          type: string
+        customerOrganizationName:
+          type: string
+        customerIdentityNumberOne:
+          type: string
+        companyId:
+          type: string
+        companyName:
+          type: string
+        companyCode:
+          type: string
+        companyGroupName:
+          type: string
+        ratingInfo:
+          $ref: '#/components/schemas/Rating'
+        voucherTransaction:
+          $ref: '#/components/schemas/VoucherTransaction'
+        voucher:
+          $ref: '#/components/schemas/Voucher'
+    SearchAndPaginationResponsePaydayLoanTng:
+      type: object
+      properties:
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/PaydayLoanTng'
+    Voucher:
+      type: object
+      properties:
+        id:
+          type: string
+        promotionEventId:
+          type: string
+        code:
+          type: string
+        maxValue:
+          type: integer
+          format: int32
+        percentage:
+          type: number
+          format: float
+        maxAmount:
+          type: integer
+          format: int32
+        remainAmount:
+          type: integer
+          format: int32
+        activedTime:
+          type: array
+          items:
+            type: string
+        description:
+          type: string
+        createdAt:
+          type: string
+    VoucherTransaction:
+      type: object
+      properties:
+        id:
+          type: string
+        voucherId:
+          type: string
+        customerId:
+          type: string
+        loanId:
+          type: string
+        discountValue:
+          type: integer
+          format: int32
+        createdAt:
+          type: string
+    ApiResponseSearchAndPaginationResponsePaydayLoanHmg:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/SearchAndPaginationResponsePaydayLoanHmg'
+        errorCode:
+          type: string
+        message:
+          type: object
+        responseCode:
+          type: integer
+          format: int32
+    PaydayLoanHmg:
+      type: object
+      properties:
+        id:
+          type: string
+        coreLoanUuid:
+          type: string
+        customerId:
+          type: string
+        expectedAmount:
+          type: integer
+          format: int32
+        expectedTenure:
+          type: integer
+          format: int32
+        actualAmount:
+          type: integer
+          format: int32
+        status:
+          type: string
+        oldStatus:
+          type: string
+        appTypeUuid:
+          type: string
+        appType:
+          type: string
+        loanCode:
+          type: string
+        purpose:
+          type: string
+        voucherTransactionId:
+          type: string
+        repaymentStatus:
+          type: string
+        latePenaltyPayment:
+          type: integer
+          format: int32
+        totalServiceFees:
+          type: integer
+          format: int32
+        getSalaryAt:
+          type: string
+        createdAt:
+          type: string
+        customerName:
+          type: string
+        customerMobileNumber:
+          type: string
+        customerEmail:
+          type: string
+        customerOrganizationName:
+          type: string
+        customerIdentityNumberOne:
+          type: string
+        companyId:
+          type: string
+        companyName:
+          type: string
+        companyCode:
+          type: string
+        companyGroupName:
+          type: string
+        ratingInfo:
+          $ref: '#/components/schemas/Rating'
+        voucherTransaction:
+          $ref: '#/components/schemas/VoucherTransaction'
+        voucher:
+          $ref: '#/components/schemas/Voucher'
+    SearchAndPaginationResponsePaydayLoanHmg:
+      type: object
+      properties:
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/PaydayLoanHmg'
     ApiResponseTNGInformationResponse:
       type: object
       properties:
@@ -2070,119 +2295,6 @@ components:
         responseCode:
           type: integer
           format: int32
-    PaydayLoanTng:
-      type: object
-      properties:
-        id:
-          type: string
-        coreLoanUuid:
-          type: string
-        customerId:
-          type: string
-        expectedAmount:
-          type: integer
-          format: int32
-        expectedTenure:
-          type: integer
-          format: int32
-        actualAmount:
-          type: integer
-          format: int32
-        status:
-          type: string
-        oldStatus:
-          type: string
-        appTypeUuid:
-          type: string
-        appType:
-          type: string
-        loanCode:
-          type: string
-        purpose:
-          type: string
-        voucherTransactionId:
-          type: string
-        repaymentStatus:
-          type: string
-        latePenaltyPayment:
-          type: integer
-          format: int32
-        totalServiceFees:
-          type: integer
-          format: int32
-        getSalaryAt:
-          type: string
-        createdAt:
-          type: string
-        customerName:
-          type: string
-        customerMobileNumber:
-          type: string
-        customerEmail:
-          type: string
-        customerOrganizationName:
-          type: string
-        customerIdentityNumberOne:
-          type: string
-        companyId:
-          type: string
-        companyName:
-          type: string
-        companyCode:
-          type: string
-        companyGroupName:
-          type: string
-        ratingInfo:
-          $ref: '#/components/schemas/Rating'
-        voucherTransaction:
-          $ref: '#/components/schemas/VoucherTransaction'
-        voucher:
-          $ref: '#/components/schemas/Voucher'
-    Voucher:
-      type: object
-      properties:
-        id:
-          type: string
-        promotionEventId:
-          type: string
-        code:
-          type: string
-        maxValue:
-          type: integer
-          format: int32
-        percentage:
-          type: number
-          format: float
-        maxAmount:
-          type: integer
-          format: int32
-        remainAmount:
-          type: integer
-          format: int32
-        activedTime:
-          type: array
-          items:
-            type: string
-        description:
-          type: string
-        createdAt:
-          type: string
-    VoucherTransaction:
-      type: object
-      properties:
-        id:
-          type: string
-        voucherId:
-          type: string
-        customerId:
-          type: string
-        loanId:
-          type: string
-        discountValue:
-          type: integer
-          format: int32
-        createdAt:
-          type: string
     ApiResponseSearchVoucherInfoResponse:
       type: object
       properties:
@@ -2217,27 +2329,6 @@ components:
           $ref: '#/components/schemas/Voucher'
         voucherTransaction:
           $ref: '#/components/schemas/VoucherTransaction'
-    ApiResponseSearchAndPaginationResponsePaydayLoanTng:
-      type: object
-      properties:
-        result:
-          $ref: '#/components/schemas/SearchAndPaginationResponsePaydayLoanTng'
-        errorCode:
-          type: string
-        message:
-          type: object
-        responseCode:
-          type: integer
-          format: int32
-    SearchAndPaginationResponsePaydayLoanTng:
-      type: object
-      properties:
-        pagination:
-          $ref: '#/components/schemas/Pagination'
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/PaydayLoanTng'
     ApiResponsePaydayLoanHmg:
       type: object
       properties:
@@ -2250,95 +2341,6 @@ components:
         responseCode:
           type: integer
           format: int32
-    PaydayLoanHmg:
-      type: object
-      properties:
-        id:
-          type: string
-        coreLoanUuid:
-          type: string
-        customerId:
-          type: string
-        expectedAmount:
-          type: integer
-          format: int32
-        expectedTenure:
-          type: integer
-          format: int32
-        actualAmount:
-          type: integer
-          format: int32
-        status:
-          type: string
-        oldStatus:
-          type: string
-        appTypeUuid:
-          type: string
-        appType:
-          type: string
-        loanCode:
-          type: string
-        purpose:
-          type: string
-        voucherTransactionId:
-          type: string
-        repaymentStatus:
-          type: string
-        latePenaltyPayment:
-          type: integer
-          format: int32
-        totalServiceFees:
-          type: integer
-          format: int32
-        getSalaryAt:
-          type: string
-        createdAt:
-          type: string
-        customerName:
-          type: string
-        customerMobileNumber:
-          type: string
-        customerEmail:
-          type: string
-        customerOrganizationName:
-          type: string
-        customerIdentityNumberOne:
-          type: string
-        companyId:
-          type: string
-        companyName:
-          type: string
-        companyCode:
-          type: string
-        companyGroupName:
-          type: string
-        ratingInfo:
-          $ref: '#/components/schemas/Rating'
-        voucherTransaction:
-          $ref: '#/components/schemas/VoucherTransaction'
-        voucher:
-          $ref: '#/components/schemas/Voucher'
-    ApiResponseSearchAndPaginationResponsePaydayLoanHmg:
-      type: object
-      properties:
-        result:
-          $ref: '#/components/schemas/SearchAndPaginationResponsePaydayLoanHmg'
-        errorCode:
-          type: string
-        message:
-          type: object
-        responseCode:
-          type: integer
-          format: int32
-    SearchAndPaginationResponsePaydayLoanHmg:
-      type: object
-      properties:
-        pagination:
-          $ref: '#/components/schemas/Pagination'
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/PaydayLoanHmg'
     SwaggerResource:
       type: object
       properties:

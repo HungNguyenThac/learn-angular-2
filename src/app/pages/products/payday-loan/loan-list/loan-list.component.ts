@@ -1,3 +1,9 @@
+import { SearchAndPaginationResponsePaydayLoanHmg } from './../../../../../../open-api-modules/dashboard-api-docs/model/searchAndPaginationResponsePaydayLoanHmg';
+import { FilterActionEventModel } from './../../../../public/models/filter/filter-action-event.model';
+import { FilterEventModel } from './../../../../public/models/filter/filter-event.model';
+import { CompanyInfo } from './../../../../../../open-api-modules/customer-api-docs/model/companyInfo';
+import { PAYDAY_LOAN_UI_STATUS_TEXT, PAYDAY_LOAN_STATUS } from './../../../../core/common/enum/payday-loan';
+import { FILTER_TYPE } from 'src/app/core/common/enum/operator';
 import { LoanListService } from './loan-list.service';
 import { PageEvent } from '@angular/material/paginator/public-api';
 import { Sort } from '@angular/material/sort';
@@ -28,13 +34,14 @@ import { NAV_ITEM } from '../../../../core/common/enum/operator';
 import { MultiLanguageService } from '../../../../share/translate/multiLanguageService';
 import { MatTableDataSource } from '@angular/material/table';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { FilterOptionModel } from 'src/app/public/models/filter/filter-option.model';
 @Component({
   selector: 'app-loan-list',
   templateUrl: './loan-list.component.html',
   styleUrls: ['./loan-list.component.scss'],
 })
 export class LoanListComponent implements OnInit {
-  companyList: SearchAndPaginationResponseCompanyInfo;
+  companyList: Array<CompanyInfo>;
   subManager = new Subscription();
   tableTitle: string = this.multiLanguageService.instant(
     'page_title.loan_list'
@@ -44,9 +51,112 @@ export class LoanListComponent implements OnInit {
     iconImgSrc: 'assets/img/icon/group-5/pl-24-available.png',
     searchPlaceholder: 'Mã khoản vay, Tên, Số điện thoại...',
     searchable: true,
-    showBtnAdd: true,
-    btnAddText: 'Thêm nhà cung cấp',
+    showBtnAdd: false,
+    // btnAddText: 'Thêm nhà cung cấp',
+    keyword: '',
   };
+
+  filterOptions = [
+    {
+      title: this.multiLanguageService.instant('filter.time'),
+      type: FILTER_TYPE.DATETIME,
+      controlName: 'createdAt',
+      value: null,
+    },
+    {
+      title: this.multiLanguageService.instant('filter.company'),
+      type: FILTER_TYPE.SELECT,
+      controlName: 'companyId',
+      value: null,
+      options: [
+        {
+          title: this.multiLanguageService.instant('filter.choose_company'),
+          value: null,
+          showAction: false,
+          subTitle: this.multiLanguageService.instant('filter.choose_company'),
+          subOptions: [],
+          disabled: false,
+          count: 0,
+        },
+      ],
+    },
+    {
+      title: this.multiLanguageService.instant('filter.loan_status'),
+      type: FILTER_TYPE.SELECT,
+      controlName: 'status',
+      value: null,
+      options: [
+        {
+          title: this.multiLanguageService.instant('common.all'),
+          value: null,
+        },
+        {
+          title: this.multiLanguageService.instant(
+            'loan_app.loan_info.initialized'
+          ),
+          value: PAYDAY_LOAN_STATUS.INITIALIZED,
+        },
+        {
+          title: this.multiLanguageService.instant(
+            'loan_app.loan_info.document_awaiting'
+          ),
+          value: PAYDAY_LOAN_STATUS.DOCUMENT_AWAITING,
+        },
+        {
+          title: this.multiLanguageService.instant(
+            'payday_loan.status.documentation_complete'
+          ),
+          value: PAYDAY_LOAN_STATUS.DOCUMENTATION_COMPLETE,
+        },
+        {
+          title: this.multiLanguageService.instant(
+            'loan_app.loan_info.auction'
+          ),
+          value: PAYDAY_LOAN_STATUS.AUCTION,
+        },
+        {
+          title: this.multiLanguageService.instant('payday_loan.status.funded'),
+          value: PAYDAY_LOAN_STATUS.FUNDED,
+        },
+        {
+          title: this.multiLanguageService.instant(
+            'loan_app.loan_info.disbursement_awaiting'
+          ),
+          value: PAYDAY_LOAN_STATUS.AWAITING_DISBURSEMENT,
+        },
+        {
+          title: this.multiLanguageService.instant(
+            'loan_app.loan_info.disbursed'
+          ),
+          value: PAYDAY_LOAN_STATUS.DISBURSED,
+        },
+        {
+          title: this.multiLanguageService.instant(
+            'loan_app.loan_info.ỉn_repayment'
+          ),
+          value: PAYDAY_LOAN_STATUS.IN_REPAYMENT,
+        },
+        {
+          title: this.multiLanguageService.instant(
+            'loan_app.loan_info.completed'
+          ),
+          value: PAYDAY_LOAN_STATUS.COMPLETED,
+        },
+        {
+          title: this.multiLanguageService.instant(
+            'loan_app.loan_info.rejected'
+          ),
+          value: PAYDAY_LOAN_STATUS.REJECTED,
+        },
+        {
+          title: this.multiLanguageService.instant(
+            'loan_app.loan_info.withdrew'
+          ),
+          value: PAYDAY_LOAN_STATUS.WITHDRAW,
+        },
+      ],
+    },
+  ];
 
   allColumns: any[] = [
     {
@@ -141,14 +251,18 @@ export class LoanListComponent implements OnInit {
       loanCode: [''],
       mobileNumber: [''],
       status: [''],
+      officeCode: [''],
+      identityNumberOne: [''],
       orderBy: ['createdAt'],
       sortDirection: ['desc'],
       startTime: [''],
       endTime: [''],
+      dateFilterType: [''],
+      dateFilterTitle: [''],
       filterConditions: {
-        keyword: QUERY_CONDITION_TYPE.LIKE,
-        companyId: QUERY_CONDITION_TYPE.EQUAL,
-        // status: QUERY_CONDITION_TYPE.EQUAL,
+        // keyword: QUERY_CONDITION_TYPE.LIKE,
+        companyId: QUERY_CONDITION_TYPE.IN,
+        status: QUERY_CONDITION_TYPE.EQUAL,
         // loanCode: QUERY_CONDITION_TYPE.LIKE,
         // mobileNumber: QUERY_CONDITION_TYPE.LIKE,
       },
@@ -174,13 +288,21 @@ export class LoanListComponent implements OnInit {
       }
     }
 
-    this.filterForm.patchValue({
-      filterConditions: filterConditionsValue,
-      keyword: params.keyword,
-      orderBy: params.orderBy || 'createdAt',
-      sortDirection: params.sortDirection || 'desc',
-      startTime: params.startTime,
-      endTime: params.endTime,
+    this.filterForm.controls.filterConditions.setValue(filterConditionsValue);
+
+    this.filterOptions.forEach((filterOption) => {
+      if (filterOption.type === FILTER_TYPE.DATETIME) {
+        filterOption.value = {
+          type: params.dateFilterType,
+          title: params.dateFilterTitle,
+        };
+      } else if (filterOption.controlName === 'companyId') {
+        filterOption.value = this.filterForm.controls.companyId.value
+          ? this.filterForm.controls.companyId.value.split(',')
+          : [];
+      } else if (filterOption.controlName === 'status') {
+        filterOption.value = this.filterForm.controls.status.value;
+      }
     });
 
     this.breadcrumbOptions.keyword = params.keyword;
@@ -200,13 +322,15 @@ export class LoanListComponent implements OnInit {
 
   private _getLoanList() {
     const params = this._buildParams();
-    if (params.groupName === "HMG") {
+    if (params.groupName === 'HMG') {
       this.subManager.add(
         this.loanListService
           .getLoanDataHmg(params)
-          .subscribe((data: ApiResponseSearchAndPaginationResponsePaydayLoanHmg) => {
-            this._parseData(data?.result);
-          })
+          .subscribe(
+            (data: ApiResponseSearchAndPaginationResponsePaydayLoanHmg) => {
+              this._parseData(data?.result);
+            }
+          )
       );
     }
 
@@ -214,9 +338,11 @@ export class LoanListComponent implements OnInit {
       this.subManager.add(
         this.loanListService
           .getLoanDataTng(params)
-          .subscribe((data: ApiResponseSearchAndPaginationResponsePaydayLoanTng) => {
-            this._parseData(data?.result);
-          })
+          .subscribe(
+            (data: ApiResponseSearchAndPaginationResponsePaydayLoanTng) => {
+              this._parseData(data?.result);
+            }
+          )
       );
     }
   }
@@ -227,10 +353,29 @@ export class LoanListComponent implements OnInit {
         .getCompanies(10, 0, {})
         .subscribe(
           (data: ApiResponseSearchAndPaginationResponseCompanyInfo) => {
-            this.companyList = data?.result;
+            this.companyList = data?.result?.data;
+            this._initCompanyOptions();
           }
         )
     );
+  }
+
+  private _initCompanyOptions() {
+    this.filterOptions.forEach((filterOption: FilterOptionModel) => {
+      if (filterOption.controlName !== 'companyId') {
+        return;
+      }
+      filterOption.options[0].subOptions = this.companyList.map(
+        (company: CompanyInfo) => {
+          return {
+            title: company.name + ' (' + company.code + ')',
+            value: company.id,
+            imgSrc: company.avatar,
+            code: company.code,
+          };
+        }
+      );
+    });
   }
 
   private _buildParams() {
@@ -241,10 +386,10 @@ export class LoanListComponent implements OnInit {
     return data;
   }
 
-  private _parseData(rawData) {
+  private _parseData(rawData: SearchAndPaginationResponsePaydayLoanHmg) {
     this.pageLength = rawData?.pagination?.maxPage || 0;
     this.totalItems = rawData?.pagination?.total || 0;
-    this.dataSource.data = rawData?.searchPaydayLoanResult || [];
+    this.dataSource.data = rawData?.data || [];
   }
 
   onPageChange(event: PageEvent) {
@@ -272,14 +417,18 @@ export class LoanListComponent implements OnInit {
         ? data[formControlName].trim()
         : '';
     }
-    queryParams['startTime'] = data.startTime
-      ? data.startTime.toISOString()
-      : null;
-    queryParams['endTime'] = data.endTime ? data.endTime.toISOString() : null;
-    queryParams['sortDirection'] = data.sortDirection;
+
+    queryParams['startTime'] = data.startTime;
+    queryParams['endTime'] = data.endTime;
+    queryParams['dateFilterType'] = data.dateFilterType;
+    queryParams['dateFilterTitle'] = data.dateFilterTitle;
+
+    queryParams['groupName'] = data.groupName;
     queryParams['orderBy'] = data.orderBy;
+    queryParams['sortDirection'] = data.sortDirection;
     queryParams['pageIndex'] = this.pageIndex;
     queryParams['pageSize'] = this.pageSize;
+    queryParams['keyword'] = data.keyword;
 
     this.router
       .navigate([], {
@@ -303,6 +452,36 @@ export class LoanListComponent implements OnInit {
     if (event) {
       this._getLoanList();
     }
+  }
+
+  public onFilterFormChange(event: FilterEventModel) {
+    switch (event.type) {
+      case FILTER_TYPE.DATETIME:
+        this.filterForm.controls.startTime.setValue(event.value.startDate);
+        this.filterForm.controls.endTime.setValue(event.value.endDate);
+        this.filterForm.controls.dateFilterType.setValue(event.value.type);
+        this.filterForm.controls.dateFilterTitle.setValue(event.value.title);
+        break;
+      case FILTER_TYPE.MULTIPLE_CHOICE:
+        break;
+      case FILTER_TYPE.SELECT:
+        if (event.controlName === 'companyId') {
+          this.filterForm.controls.companyId.setValue(
+            event.value ? event.value.join(',') : ''
+          );
+        } else if (event.controlName === 'status') {
+          this.filterForm.controls.status.setValue(event.value);
+        }
+        break;
+      default:
+        break;
+    }
+
+    this._onFilterChange();
+  }
+
+  public onFilterActionTrigger(event: FilterActionEventModel) {
+    console.log('FilterActionEventModel', event);
   }
 
   ngOnDestroy(): void {
