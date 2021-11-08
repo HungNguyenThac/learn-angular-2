@@ -94,18 +94,18 @@ export class BankControllerService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getBank1(pageSize: number, pageNumber: number, requestBody: { [key: string]: object; }, sortField?: string, descending?: boolean, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseSearchAndPaginationResponseBank>;
-    public getBank1(pageSize: number, pageNumber: number, requestBody: { [key: string]: object; }, sortField?: string, descending?: boolean, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseSearchAndPaginationResponseBank>>;
-    public getBank1(pageSize: number, pageNumber: number, requestBody: { [key: string]: object; }, sortField?: string, descending?: boolean, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseSearchAndPaginationResponseBank>>;
-    public getBank1(pageSize: number, pageNumber: number, requestBody: { [key: string]: object; }, sortField?: string, descending?: boolean, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
+    public getBank(pageSize: number, pageNumber: number, requestBody: { [key: string]: object; }, sortField?: string, descending?: boolean, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseSearchAndPaginationResponseBank>;
+    public getBank(pageSize: number, pageNumber: number, requestBody: { [key: string]: object; }, sortField?: string, descending?: boolean, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseSearchAndPaginationResponseBank>>;
+    public getBank(pageSize: number, pageNumber: number, requestBody: { [key: string]: object; }, sortField?: string, descending?: boolean, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseSearchAndPaginationResponseBank>>;
+    public getBank(pageSize: number, pageNumber: number, requestBody: { [key: string]: object; }, sortField?: string, descending?: boolean, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
         if (pageSize === null || pageSize === undefined) {
-            throw new Error('Required parameter pageSize was null or undefined when calling getBank1.');
+            throw new Error('Required parameter pageSize was null or undefined when calling getBank.');
         }
         if (pageNumber === null || pageNumber === undefined) {
-            throw new Error('Required parameter pageNumber was null or undefined when calling getBank1.');
+            throw new Error('Required parameter pageNumber was null or undefined when calling getBank.');
         }
         if (requestBody === null || requestBody === undefined) {
-            throw new Error('Required parameter requestBody was null or undefined when calling getBank1.');
+            throw new Error('Required parameter requestBody was null or undefined when calling getBank.');
         }
 
         let queryParameters = new HttpParams({encoder: this.encoder});
@@ -173,12 +173,12 @@ export class BankControllerService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getBankById1(bankId: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseBank>;
-    public getBankById1(bankId: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseBank>>;
-    public getBankById1(bankId: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseBank>>;
-    public getBankById1(bankId: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
+    public getBankById(bankId: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseBank>;
+    public getBankById(bankId: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseBank>>;
+    public getBankById(bankId: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseBank>>;
+    public getBankById(bankId: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
         if (bankId === null || bankId === undefined) {
-            throw new Error('Required parameter bankId was null or undefined when calling getBankById1.');
+            throw new Error('Required parameter bankId was null or undefined when calling getBankById.');
         }
 
         let headers = this.defaultHeaders;

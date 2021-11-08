@@ -1,3 +1,4 @@
+import { query } from '@angular/animations';
 import { ApplicationTngControllerService } from '../../../../../../open-api-modules/dashboard-api-docs';
 import { ApplicationHmgControllerService } from '../../../../../../open-api-modules/dashboard-api-docs';
 import { PaydayLoanControllerService } from '../../../../../../open-api-modules/loanapp-hmg-api-docs';
@@ -19,6 +20,7 @@ export class LoanListService {
 
   public getLoanDataHmg(params) {
     let requestBody = {};
+
     if (params.filterConditions) {
       for (const [paramName, paramValue] of Object.entries(
         params.filterConditions
@@ -38,6 +40,7 @@ export class LoanListService {
     requestBody['status'] = params.status;
     requestBody['loanCode'] = params.loanCode;
     requestBody['mobileNumber'] = params.mobileNumber;
+
     if (!params.status) delete requestBody['status'];
     if (params.keyword) {
       requestBody['loanCode' + QUERY_CONDITION_TYPE.LIKE_KEYWORD] =
@@ -52,12 +55,11 @@ export class LoanListService {
         params.keyword;
     }
     console.log('requestBody--------------------------------', requestBody);
-     requestBody = {}
 
     return this.applicationHmgControllerService.findApplications1(
-      requestBody,
       params.pageSize,
       params.pageNumber,
+      requestBody,
       params.orderBy,
       params.sortDirection === 'desc'
     );
@@ -82,16 +84,28 @@ export class LoanListService {
       };
     }
 
-    let queryParams = {
-      status: params.status,
-      loanCode: params.loanCode,
-      mobileNumber: params.mobileNumber,
-    };
-    if (!params.status) delete queryParams.status;
+    requestBody['status'] = params.status;
+    requestBody['loanCode'] = params.loanCode;
+    requestBody['mobileNumber'] = params.mobileNumber;
+
+    if (!params.status) delete requestBody['status'];
+    if (params.keyword) {
+      requestBody['loanCode' + QUERY_CONDITION_TYPE.LIKE_KEYWORD] =
+        params.keyword;
+      requestBody['mobileNumber' + QUERY_CONDITION_TYPE.LIKE_KEYWORD] =
+        params.keyword;
+      requestBody['emailAddress' + QUERY_CONDITION_TYPE.LIKE_KEYWORD] =
+        params.keyword;
+      requestBody['officeCode' + QUERY_CONDITION_TYPE.LIKE_KEYWORD] =
+        params.keyword;
+      requestBody['identityNumberOne' + QUERY_CONDITION_TYPE.LIKE_KEYWORD] =
+        params.keyword;
+    }
+    console.log('requestBody--------------------------------', requestBody);
     return this.applicationTngControllerService.findApplications(
-      queryParams,
       params.pageSize,
       params.pageNumber,
+      requestBody,
       params.orderBy,
       params.sortDirection === 'desc'
     );

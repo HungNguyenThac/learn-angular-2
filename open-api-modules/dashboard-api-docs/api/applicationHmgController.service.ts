@@ -87,33 +87,29 @@ export class ApplicationHmgControllerService {
     }
 
     /**
-     * @param query 
      * @param pageSize 
      * @param pageNumber 
+     * @param requestBody 
      * @param sortField 
      * @param descending 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public findApplications1(query: { [key: string]: object; }, pageSize: number, pageNumber: number, sortField?: string, descending?: boolean, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseSearchAndPaginationResponsePaydayLoanHmg>;
-    public findApplications1(query: { [key: string]: object; }, pageSize: number, pageNumber: number, sortField?: string, descending?: boolean, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseSearchAndPaginationResponsePaydayLoanHmg>>;
-    public findApplications1(query: { [key: string]: object; }, pageSize: number, pageNumber: number, sortField?: string, descending?: boolean, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseSearchAndPaginationResponsePaydayLoanHmg>>;
-    public findApplications1(query: { [key: string]: object; }, pageSize: number, pageNumber: number, sortField?: string, descending?: boolean, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
-        if (query === null || query === undefined) {
-            throw new Error('Required parameter query was null or undefined when calling findApplications1.');
-        }
+    public findApplications1(pageSize: number, pageNumber: number, requestBody: { [key: string]: object; }, sortField?: string, descending?: boolean, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseSearchAndPaginationResponsePaydayLoanHmg>;
+    public findApplications1(pageSize: number, pageNumber: number, requestBody: { [key: string]: object; }, sortField?: string, descending?: boolean, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseSearchAndPaginationResponsePaydayLoanHmg>>;
+    public findApplications1(pageSize: number, pageNumber: number, requestBody: { [key: string]: object; }, sortField?: string, descending?: boolean, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseSearchAndPaginationResponsePaydayLoanHmg>>;
+    public findApplications1(pageSize: number, pageNumber: number, requestBody: { [key: string]: object; }, sortField?: string, descending?: boolean, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
         if (pageSize === null || pageSize === undefined) {
             throw new Error('Required parameter pageSize was null or undefined when calling findApplications1.');
         }
         if (pageNumber === null || pageNumber === undefined) {
             throw new Error('Required parameter pageNumber was null or undefined when calling findApplications1.');
         }
+        if (requestBody === null || requestBody === undefined) {
+            throw new Error('Required parameter requestBody was null or undefined when calling findApplications1.');
+        }
 
         let queryParameters = new HttpParams({encoder: this.encoder});
-        if (query !== undefined && query !== null) {
-          queryParameters = this.addToHttpParams(queryParameters,
-            <any>query, 'query');
-        }
         if (pageSize !== undefined && pageSize !== null) {
           queryParameters = this.addToHttpParams(queryParameters,
             <any>pageSize, 'pageSize');
@@ -146,12 +142,22 @@ export class ApplicationHmgControllerService {
         }
 
 
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'application/json'
+        ];
+        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
+        if (httpContentTypeSelected !== undefined) {
+            headers = headers.set('Content-Type', httpContentTypeSelected);
+        }
+
         let responseType_: 'text' | 'json' = 'json';
         if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
             responseType_ = 'text';
         }
 
-        return this.httpClient.get<ApiResponseSearchAndPaginationResponsePaydayLoanHmg>(`${this.configuration.basePath}/v1/application/hmg/list`,
+        return this.httpClient.post<ApiResponseSearchAndPaginationResponsePaydayLoanHmg>(`${this.configuration.basePath}/v1/application/hmg/list`,
+            requestBody,
             {
                 params: queryParameters,
                 responseType: <any>responseType_,
