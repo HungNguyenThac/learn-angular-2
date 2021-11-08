@@ -48,7 +48,10 @@ export class DialogCompanyInfoUpdateComponent implements OnInit {
     this.companyInfoForm = this.formBuilder.group({
       companyId: [''],
       employeeCode: ['', [Validators.maxLength(50)]],
-      borrowerEmploymentHistoryTextVariable1: ['', [Validators.required, Validators.maxLength(20)]],
+      borrowerEmploymentHistoryTextVariable1: [
+        '',
+        [Validators.required, Validators.maxLength(20)],
+      ],
       firstName: ['', [Validators.required, Validators.maxLength(256)]],
       tngFirstName: ['', [Validators.maxLength(256)]],
       tngLastName: ['', [Validators.maxLength(256)]],
@@ -98,6 +101,9 @@ export class DialogCompanyInfoUpdateComponent implements OnInit {
   }
 
   submitForm() {
+    if (this.companyInfoForm.invalid) {
+      return;
+    }
     this.dialogRef.close({
       type: BUTTON_TYPE.PRIMARY,
       data: this.companyInfoForm.getRawValue(),
