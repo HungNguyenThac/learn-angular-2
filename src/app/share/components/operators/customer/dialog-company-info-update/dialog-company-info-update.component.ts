@@ -48,7 +48,7 @@ export class DialogCompanyInfoUpdateComponent implements OnInit {
     this.companyInfoForm = this.formBuilder.group({
       companyId: [''],
       employeeCode: ['', [Validators.maxLength(50)]],
-      borrowerEmploymentHistoryTextVariable1: ['', [Validators.maxLength(20)]],
+      borrowerEmploymentHistoryTextVariable1: ['', [Validators.required, Validators.maxLength(20)]],
       firstName: ['', [Validators.required, Validators.maxLength(256)]],
       tngFirstName: ['', [Validators.maxLength(256)]],
       tngLastName: ['', [Validators.maxLength(256)]],

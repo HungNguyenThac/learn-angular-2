@@ -99,7 +99,7 @@ export class CustomerDetailUpdateDialogComponent implements OnInit {
         [
           Validators.required,
           Validators.minLength(9),
-          Validators.maxLength(10),
+          Validators.maxLength(12),
         ],
       ],
       permanentAddress: ['', [Validators.required, Validators.maxLength(250)]],
@@ -152,9 +152,6 @@ export class CustomerDetailUpdateDialogComponent implements OnInit {
   }
 
   submitForm() {
-    if (this.customerIndividualForm.invalid) {
-      return;
-    }
     this.dialogRef.close({
       type: BUTTON_TYPE.PRIMARY,
       data: this.customerIndividualForm.getRawValue(),
