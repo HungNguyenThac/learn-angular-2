@@ -16,7 +16,10 @@
   <!--  Contract-->
   <mat-tab [label]="'loan_app.tabs.loan_contract' | translate">
     <ng-template matTabContent>
-      <app-loan-contract></app-loan-contract> </ng-template
+      <app-loan-contract
+      [loanId]="loanId"
+        [loanDetail]="loanDetail"
+      ></app-loan-contract> </ng-template
   ></mat-tab>
 
   <!--  Document Info-->

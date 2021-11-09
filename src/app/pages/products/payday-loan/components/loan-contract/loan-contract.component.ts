@@ -1,5 +1,5 @@
 import { DomSanitizer } from '@angular/platform-browser';
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
 import { PaydayLoan } from 'open-api-modules/loanapp-api-docs';
@@ -10,8 +10,25 @@ import { PaydayLoan } from 'open-api-modules/loanapp-api-docs';
   styleUrls: ['./loan-contract.component.scss'],
 })
 export class LoanContractComponent implements OnInit {
-  loanId: string;
-  loanDetail: PaydayLoan;
+  _loanId: string;
+  @Input()
+  get loanId(): string {
+    return this._loanId;
+  }
+
+  set loanId(value: string) {
+    this._loanId = value;
+  }
+  
+  _loanDetail: PaydayLoan;
+  @Input()
+  get loanDetail(): PaydayLoan {
+    return this._loanDetail;
+  }
+
+  set loanDetail(value: PaydayLoan) {
+    this._loanDetail = value;
+  }
 
   loanContractView: any;
   loanContractData: any;
