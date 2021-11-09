@@ -17,7 +17,7 @@
   <mat-tab [label]="'loan_app.tabs.loan_contract' | translate">
     <ng-template matTabContent>
       <app-loan-contract
-      [loanId]="loanId"
+        [loanId]="loanId"
         [loanDetail]="loanDetail"
       ></app-loan-contract> </ng-template
   ></mat-tab>
@@ -33,9 +33,12 @@
   </mat-tab>
 
   <!--  Rating Info-->
-  <mat-tab [label]="'loan_app.tabs.rating' | translate">
+  <mat-tab [label]="'loan_app.tabs.rating' | translate" *ngIf="loanDetail?.ratingInfo?.isRated">
     <ng-template matTabContent>
-      <app-loan-rating></app-loan-rating> </ng-template
+      <app-loan-rating
+        [loanId]="loanId"
+        [loanDetail]="loanDetail"
+      ></app-loan-rating> </ng-template
   ></mat-tab>
 
   <!--  Company Info-->
@@ -47,6 +50,6 @@
         [bankOptions]="bankOptions"
         [companyOptions]="companyOptions"
         (triggerUpdateInfo)="updateCustomerInfo($event)"
-      ></app-customer-company-info>  </ng-template
+      ></app-customer-company-info> </ng-template
   ></mat-tab>
 </mat-tab-group>
