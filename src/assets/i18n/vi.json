@@ -158,6 +158,17 @@
       "log_out": "Đăng xuất",
       "status_logout": "Đã đăng xuất",
       "status_current": "Đang sử dụng"
+    },
+    "add": {
+      "title": "Thêm người dùng mới",
+      "name": "Tên người dùng",
+      "log_in": "Tên đăng nhập",
+      "password": "Mật khẩu",
+      "re_password": "Nhắc lại mật khẩu",
+      "role": "Vai trò",
+      "phone": "Số điện thoại",
+      "email": "Email",
+      "note": "Ghi chú"
     }
   },
   "customer": {

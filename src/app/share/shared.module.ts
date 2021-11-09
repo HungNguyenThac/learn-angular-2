@@ -10,6 +10,7 @@ import * as fromDirectives from './directives';
 import { FormsModule } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { DialogUserInfoUpdateComponent } from './components/operators/user-account/dialog-user-info-update/dialog-user-info-update.component';
+import { AddNewUserDialogComponent } from './components/operators/user-account/add-new-user-dialog/add-new-user-dialog.component';
 
 @NgModule({
   declarations: [
@@ -18,6 +19,7 @@ import { DialogUserInfoUpdateComponent } from './components/operators/user-accou
     ...fromDirectives.directives,
     ...fromPipes.pipes,
     DialogUserInfoUpdateComponent,
+    AddNewUserDialogComponent,
   ],
   imports: [CommonModule, MaterialModule, TranslateModule, FormsModule],
   exports: [

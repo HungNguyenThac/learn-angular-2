@@ -24,7 +24,7 @@
               <div *ngIf="showProfileBtn" class="d-flex gap-3">
                 <!--Notification button-->
                 <section *ngIf="!responsive">
-                  <button class="header-nav-btn gap-1">
+                  <button (click)="openAddUserDialog()" class="header-nav-btn gap-1">
                     <span>{{ "header.notification" | translate }}</span>
                     <div class="sprite-group-5-notification-on-white"></div>
                   </button>

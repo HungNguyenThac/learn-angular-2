@@ -1,6 +1,7 @@
 @import "../../../../../../styles/variables";
 @import "../../../../../../styles/op/common";
 @import "../../../../../../styles/op/pl-form";
+//@import "../../../../../../styles/op/pl-button";
 
 .text-area {
   width: 100%;
@@ -123,7 +124,7 @@
   width: 123.77px;
 }
 
-.profile-icon, .role-icon, .phone-icon, .email-icon, .note-icon {
+.profile-icon, .role-icon, .phone-icon, .email-icon, .note-icon, .password-icon {
   width: 20px;
   height: 20px;
   background-color: $grey-06;
@@ -156,6 +157,11 @@
 .note-icon {
   -webkit-mask: url('../../../../../../assets/img/icon/group-5/edit.svg') no-repeat center;
   mask: url('../../../../../../assets/img/icon/group-5/edit.svg') no-repeat center;
+}
+
+.password-icon {
+  -webkit-mask: url('../../../../../../assets/img/icon/group-5/password.svg') no-repeat center;
+  mask: url('../../../../../../assets/img/icon/group-5/password.svg') no-repeat center;
 }
 
 .caption {
@@ -194,6 +200,10 @@
   .logged_out {
     color: $system-color-orange;
   }
+}
+
+.mat-form-field-outline-start {
+  width: 36px !important;
 }
 
 

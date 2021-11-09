@@ -1,6 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { BUTTON_TYPE } from '../../../../../core/common/enum/operator';
 
 @Component({
   selector: 'app-dialog-user-info-update',
@@ -9,6 +10,11 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 })
 export class DialogUserInfoUpdateComponent implements OnInit {
   accountInfoForm: FormGroup;
+  isAccountNameInputFocus: boolean = false;
+  isPhoneInputFocus: boolean = false;
+  isEmailInputFocus: boolean = false;
+  isNoteInputFocus: boolean = false;
+
   roleOptions = {
     fieldName: 'Vai trò',
     options: ['Super Admin', '2', '3'],
@@ -46,6 +52,13 @@ export class DialogUserInfoUpdateComponent implements OnInit {
       accountPhone: data.accountPhone,
       accountEmail: data.accountEmail,
       accountNote: data.accountNote,
+    });
+  }
+
+  submitForm() {
+    this.dialogRef.close({
+      type: BUTTON_TYPE.PRIMARY,
+      data: this.accountInfoForm.getRawValue(),
     });
   }
 }

@@ -7,11 +7,12 @@ import * as fromSelectors from '../../core/store/selectors';
 import { Observable } from 'rxjs/Observable';
 import { CustomerInfoResponse } from '../../../../open-api-modules/customer-api-docs';
 import { Subscription } from 'rxjs';
-import { NAV_ITEM } from '../../core/common/enum/operator';
+import { BUTTON_TYPE, NAV_ITEM } from '../../core/common/enum/operator';
 import { MultiLanguageService } from '../../share/translate/multiLanguageService';
 import { DialogCompanyInfoUpdateComponent } from '../../share/components';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogUserInfoUpdateComponent } from '../../share/components/operators/user-account/dialog-user-info-update/dialog-user-info-update.component';
+import { AddNewUserDialogComponent } from '../../share/components/operators/user-account/add-new-user-dialog/add-new-user-dialog.component';
 
 export interface AccountInfo {
   fullName?: string;
@@ -148,6 +149,28 @@ export class HeaderComponent implements OnInit, OnDestroy {
         accountNote: this.accountInfo.note,
       },
     });
+    this.subManager.add(
+      updateDialogRef.afterClosed().subscribe((result: any) => {
+        if (result && result.type === BUTTON_TYPE.PRIMARY) {
+          console.log(result);
+        }
+      })
+    );
+  }
+
+  openAddUserDialog() {
+    const updateDialogRef = this.dialog.open(AddNewUserDialogComponent, {
+      panelClass: 'custom-info-dialog-container',
+      maxWidth: '800px',
+      width: '90%',
+    });
+    this.subManager.add(
+      updateDialogRef.afterClosed().subscribe((result: any) => {
+        if (result && result.type === BUTTON_TYPE.PRIMARY) {
+          console.log(result);
+        }
+      })
+    );
   }
 
   logout() {
