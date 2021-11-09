@@ -1,8 +1,7 @@
 import { MultiLanguageService } from '../../../../translate/multiLanguageService';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { VirtualAccount } from '../../../../../../../open-api-modules/payment-api-docs';
 import {
   Bank,
   CompanyInfo,
@@ -30,6 +29,7 @@ export class DialogCompanyInfoUpdateComponent implements OnInit {
   ];
 
   companyInfoForm: FormGroup;
+
   constructor(
     private dialogRef: MatDialogRef<DialogCompanyInfoUpdateComponent>,
     @Inject(MAT_DIALOG_DATA) data: any,
@@ -42,7 +42,9 @@ export class DialogCompanyInfoUpdateComponent implements OnInit {
     }
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.formatAnnualIncomeInputWithSeparator();
+  }
 
   buildCompanyInfoForm() {
     this.companyInfoForm = this.formBuilder.group({
@@ -104,9 +106,27 @@ export class DialogCompanyInfoUpdateComponent implements OnInit {
     if (this.companyInfoForm.invalid) {
       return;
     }
+    if (this.companyInfoForm.controls.annualIncome.value) {
+      this.convertAnnualIncomeInputWithoutSeparator();
+    }
     this.dialogRef.close({
       type: BUTTON_TYPE.PRIMARY,
       data: this.companyInfoForm.getRawValue(),
     });
+  }
+
+  formatAnnualIncomeInputWithSeparator() {
+    let numberValWithSeparator = parseInt(
+      this.companyInfoForm.controls.annualIncome.value
+    ).toLocaleString('de-de');
+    this.companyInfoForm.controls.annualIncome.setValue(numberValWithSeparator);
+  }
+
+  convertAnnualIncomeInputWithoutSeparator() {
+    let numberVal = this.companyInfoForm.controls.annualIncome.value.replace(
+      /\D/g,
+      ''
+    );
+    this.companyInfoForm.controls.annualIncome.setValue(numberVal);
   }
 }
