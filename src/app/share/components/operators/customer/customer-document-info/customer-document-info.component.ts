@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { CustomerInfo } from '../../../../../../../open-api-modules/dashboard-api-docs';
 import { Subscription } from 'rxjs';
 import { CustomerDetailService } from '../../../../../pages/customer/components/customer-detail-element/customer-detail.service';
@@ -42,6 +42,8 @@ export class CustomerDocumentInfoComponent implements OnInit {
   set customerId(value: string) {
     this._customerId = value;
   }
+
+  @Output() refreshContent = new EventEmitter<any>();
 
   subManager = new Subscription();
   selfieSrc: string;
@@ -206,13 +208,17 @@ export class CustomerDocumentInfoComponent implements OnInit {
         )
         .subscribe((result) => {
           if (result?.responseCode !== RESPONSE_CODE.SUCCESS) {
-            this.notifier.error(JSON.stringify(result?.message), result?.errorCode);
+            this.notifier.error(
+              JSON.stringify(result?.message),
+              result?.errorCode
+            );
             return;
           }
           this._mapDocumentSrc(updatedDocumentModel.imgSrc, documentType);
           this.notifier.success(
             this.multiLanguageService.instant('common.update_success')
           );
+          this.refreshDocumentInfo();
         })
     );
   }
@@ -258,18 +264,26 @@ export class CustomerDocumentInfoComponent implements OnInit {
         .updateCustomerInfo(this.customerId, updateInfoRequest)
         .subscribe((result) => {
           if (result?.responseCode !== RESPONSE_CODE.SUCCESS) {
-            this.notifier.error(JSON.stringify(result?.message), result?.errorCode);
+            this.notifier.error(
+              JSON.stringify(result?.message),
+              result?.errorCode
+            );
             return;
           }
 
-          setTimeout(() => {
-            this.notifier.success(
-              this.multiLanguageService.instant('common.update_success')
-            );
-          }, 1000);
           this._mapDocumentSrc(null, documentType);
+          this.notifier.success(
+            this.multiLanguageService.instant('common.update_success')
+          );
+          this.refreshDocumentInfo();
         })
     );
+  }
+
+  private refreshDocumentInfo() {
+    setTimeout(() => {
+      this.refreshContent.emit();
+    }, 2000);
   }
 
   public onChangeDocument(
