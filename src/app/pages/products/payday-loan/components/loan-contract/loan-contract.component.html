@@ -7,11 +7,11 @@
             {{ "loan_app.loan_contract.loan_status" | translate }}
           </p>
           <p class="pl-list-item-content highlight">
-            <!-- <app-format-data
-              [type]="rightColumnEle?.type"
-              [format]="rightColumnEle?.format"
-              [value]="rightColumnEle?.value"
-            ></app-format-data> -->
+            <app-format-data
+              [type]="displayStatus?.type"
+              [format]="displayStatus?.format"
+              [value]="displayStatus?.value"
+            ></app-format-data>
           </p>
         </li>
       </ul>
