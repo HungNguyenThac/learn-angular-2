@@ -199,27 +199,34 @@ export class CustomerDocumentInfoComponent implements OnInit {
     documentType: DOCUMENT_TYPE,
     updatedDocumentModel: UpdatedDocumentModel
   ) {
+    this.notificationService.showLoading({ showContent: true });
     this.subManager.add(
       this.customerDetailService
         .uploadFileDocument(
           documentType,
           updatedDocumentModel.file,
-          this.customerId
+          this.customerId,
+          null,
+          true
         )
-        .subscribe((result) => {
-          if (result?.responseCode !== RESPONSE_CODE.SUCCESS) {
-            this.notifier.error(
-              JSON.stringify(result?.message),
-              result?.errorCode
-            );
-            return;
+        .subscribe(
+          (result) => {
+            if (result?.responseCode !== RESPONSE_CODE.SUCCESS) {
+              this.notifier.error(
+                JSON.stringify(result?.message),
+                result?.errorCode
+              );
+              return;
+            }
+
+            this._mapDocumentSrc(null, documentType);
+            this.refreshDocumentInfo();
+          },
+          (error) => {
+            this.notifier.error(JSON.stringify(error));
+            this.notificationService.hideLoading();
           }
-          this._mapDocumentSrc(updatedDocumentModel.imgSrc, documentType);
-          this.notifier.success(
-            this.multiLanguageService.instant('common.update_success')
-          );
-          this.refreshDocumentInfo();
-        })
+        )
     );
   }
 
@@ -259,31 +266,39 @@ export class CustomerDocumentInfoComponent implements OnInit {
     updateInfoRequest: Object,
     documentType: DOCUMENT_TYPE
   ) {
+    this.notificationService.showLoading({ showContent: true });
     this.subManager.add(
       this.customerDetailService
-        .updateCustomerInfo(this.customerId, updateInfoRequest)
-        .subscribe((result) => {
-          if (result?.responseCode !== RESPONSE_CODE.SUCCESS) {
-            this.notifier.error(
-              JSON.stringify(result?.message),
-              result?.errorCode
-            );
-            return;
-          }
+        .updateCustomerInfo(this.customerId, updateInfoRequest, null, true)
+        .subscribe(
+          (result) => {
+            if (result?.responseCode !== RESPONSE_CODE.SUCCESS) {
+              this.notifier.error(
+                JSON.stringify(result?.message),
+                result?.errorCode
+              );
+              return;
+            }
 
-          this._mapDocumentSrc(null, documentType);
-          this.notifier.success(
-            this.multiLanguageService.instant('common.update_success')
-          );
-          this.refreshDocumentInfo();
-        })
+            this._mapDocumentSrc(null, documentType);
+            this.refreshDocumentInfo();
+          },
+          (error) => {
+            this.notifier.error(JSON.stringify(error));
+            this.notificationService.hideLoading();
+          }
+        )
     );
   }
 
   private refreshDocumentInfo() {
     setTimeout(() => {
       this.refreshContent.emit();
-    }, 2000);
+      this.notifier.success(
+        this.multiLanguageService.instant('common.update_success')
+      );
+      this.notificationService.hideLoading();
+    }, 3000);
   }
 
   public onChangeDocument(
