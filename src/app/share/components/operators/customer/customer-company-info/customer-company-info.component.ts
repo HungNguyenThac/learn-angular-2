@@ -1,6 +1,6 @@
 import { NotificationService } from 'src/app/core/services/notification.service';
-import { ApiResponseCheckIsPaydayByCustomerIdResponse } from './../../../../../../../open-api-modules/customer-api-docs/model/apiResponseCheckIsPaydayByCustomerIdResponse';
-import { TngControllerService } from './../../../../../../../open-api-modules/customer-api-docs/api/tngController.service';
+import { ApiResponseCheckIsPaydayByCustomerIdResponse } from '../../../../../../../open-api-modules/customer-api-docs';
+import { TngControllerService } from '../../../../../../../open-api-modules/customer-api-docs';
 import { MatDialog } from '@angular/material/dialog';
 import {
   Component,
@@ -20,12 +20,10 @@ import { DialogCompanyInfoUpdateComponent } from '../dialog-company-info-update/
 import {
   BUTTON_TYPE,
   DATA_CELL_TYPE,
-  RESPONSE_CODE,
 } from '../../../../../core/common/enum/operator';
 import { Subscription } from 'rxjs';
 import { CustomerDetailService } from '../../../../../pages/customer/components/customer-detail-element/customer-detail.service';
 import { ToastrService } from 'ngx-toastr';
-``;
 
 @Component({
   selector: 'app-customer-company-info',
@@ -33,16 +31,47 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./customer-company-info.component.scss'],
 })
 export class CustomerCompanyInfoComponent implements OnInit, OnDestroy {
-  @Input() customerInfo: CustomerInfo = {};
   @Input() customerId: string = '';
   @Input() bankOptions: Array<Bank>;
   @Input() companyOptions: Array<CompanyInfo>;
+
+  _customerInfo: CustomerInfo;
+  @Input()
+  get customerInfo(): CustomerInfo {
+    return this._customerInfo;
+  }
+
+  set customerInfo(value: CustomerInfo) {
+    this._customerInfo = value;
+    this.leftCompanyInfos = this._initLeftCompanyInfos();
+    this.rightCompanyInfos = this._initRightCompanyInfos();
+  }
 
   @Output() triggerUpdateInfo = new EventEmitter<any>();
 
   isCanCheckSalary: boolean = false;
 
-  get leftCompanyInfos() {
+  leftCompanyInfos: any[] = [];
+  rightCompanyInfos: any[] = [];
+
+  subManager = new Subscription();
+
+  constructor(
+    private multiLanguageService: MultiLanguageService,
+    private dialog: MatDialog,
+    private customerDetailService: CustomerDetailService,
+    private notifier: ToastrService,
+    private tngControllerService: TngControllerService,
+    private notificationService: NotificationService
+  ) {}
+
+  ngOnInit(): void {
+    if (this.customerInfo.companyGroupName === 'TNG') {
+      this.isCanCheckSalary = true;
+    }
+  }
+
+  private _initLeftCompanyInfos() {
     return [
       {
         title: this.multiLanguageService.instant(
@@ -111,7 +140,7 @@ export class CustomerCompanyInfoComponent implements OnInit, OnDestroy {
     ];
   }
 
-  get rightCompanyInfos() {
+  private _initRightCompanyInfos() {
     return [
       {
         title: this.multiLanguageService.instant(
@@ -163,22 +192,6 @@ export class CustomerCompanyInfoComponent implements OnInit, OnDestroy {
       },
     ];
   }
-  subManager = new Subscription();
-
-  constructor(
-    private multiLanguageService: MultiLanguageService,
-    private dialog: MatDialog,
-    private customerDetailService: CustomerDetailService,
-    private notifier: ToastrService,
-    private tngControllerService: TngControllerService,
-    private notificationService: NotificationService
-  ) {}
-
-  ngOnInit(): void {
-    if (this.customerInfo.companyGroupName === 'TNG') {
-      this.isCanCheckSalary = true;
-    }
-  }
 
   openUpdateDialog() {
     const updateDialogRef = this.dialog.open(DialogCompanyInfoUpdateComponent, {
@@ -229,7 +242,7 @@ export class CustomerCompanyInfoComponent implements OnInit, OnDestroy {
         .subscribe((response: ApiResponseCheckIsPaydayByCustomerIdResponse) => {
           if (response && response.responseCode === 200) {
             let paydayNotification: string;
-            let imgNotification : string;
+            let imgNotification: string;
             if (response.result.isPayday === 'false') {
               paydayNotification = this.multiLanguageService.instant(
                 'loan_app.company_info.is_not_payday'

@@ -50,6 +50,8 @@ export class CustomerIndividualInfoComponent implements OnInit, OnDestroy {
     this._getSelfieDocument(this.customerId, value);
     this._initIndividualFormData(this.customerId, value);
     this._customerInfo = value;
+    this.leftIndividualInfos = this._initLeftIndividualInfos();
+    this.rightIndividualInfos = this._initRightIndividualInfos();
   }
 
   _customerId: string;
@@ -74,7 +76,30 @@ export class CustomerIndividualInfoComponent implements OnInit, OnDestroy {
 
   @Output() triggerUpdateInfo = new EventEmitter<any>();
 
-  get leftIndividualInfos() {
+  leftIndividualInfos: any[] = [];
+
+  rightIndividualInfos: any[] = [];
+
+  customerIndividualForm: FormGroup;
+
+  subManager = new Subscription();
+  selfieSrc: string;
+
+  constructor(
+    private multiLanguageService: MultiLanguageService,
+    private dialog: MatDialog,
+    private customerDetailService: CustomerDetailService,
+    private notifier: ToastrService,
+    private formBuilder: FormBuilder
+  ) {
+    this.customerIndividualForm = this.formBuilder.group({
+      note: [''],
+    });
+  }
+
+  ngOnInit(): void {}
+
+  private _initLeftIndividualInfos() {
     return [
       {
         title: this.multiLanguageService.instant('customer.individual_info.id'),
@@ -149,7 +174,7 @@ export class CustomerIndividualInfoComponent implements OnInit, OnDestroy {
     ];
   }
 
-  get rightIndividualInfos() {
+  private _initRightIndividualInfos() {
     return [
       {
         title: this.multiLanguageService.instant(
@@ -220,25 +245,6 @@ export class CustomerIndividualInfoComponent implements OnInit, OnDestroy {
       },
     ];
   }
-
-  customerIndividualForm: FormGroup;
-
-  subManager = new Subscription();
-  selfieSrc: string;
-
-  constructor(
-    private multiLanguageService: MultiLanguageService,
-    private dialog: MatDialog,
-    private customerDetailService: CustomerDetailService,
-    private notifier: ToastrService,
-    private formBuilder: FormBuilder
-  ) {
-    this.customerIndividualForm = this.formBuilder.group({
-      note: [''],
-    });
-  }
-
-  ngOnInit(): void {}
 
   openUpdateDialog() {
     const updateDialogRef = this.dialog.open(
