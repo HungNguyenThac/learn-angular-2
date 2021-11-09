@@ -80,6 +80,7 @@ export class ApiHttpInterceptor implements HttpInterceptor {
 
   private _handleAuthError(err: HttpErrorResponse): Observable<any> | null {
     this.notifier.error(err?.error?.message);
+    this.notificationService.hideLoading();
 
     switch (err.status) {
       case 401:
