@@ -238,7 +238,10 @@
                     }}</mat-label>
                     <input
                       matInput
+                      id="annualIncome"
                       appNumberOnly
+                      (focusin)="convertAnnualIncomeInputWithoutSeparator()"
+                      (focusout)="formatAnnualIncomeInputWithSeparator()"
                       [placeholder]="
                         'customer.company_info.annual_income' | translate
                       "

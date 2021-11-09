@@ -91,9 +91,15 @@ export class CustomerDetailService {
       );
   }
 
-  public uploadFileDocument(documentType: string, file, customerId: string) {
+  public uploadFileDocument(
+    documentType: string,
+    file,
+    customerId: string,
+    observe?: any,
+    reportProgress?: boolean
+  ) {
     return this.fileControllerService
-      .uploadSingleFile(documentType, file, customerId)
+      .uploadSingleFile(documentType, file, customerId, observe, reportProgress)
       .pipe(
         map((results) => {
           return results;
@@ -105,7 +111,12 @@ export class CustomerDetailService {
       );
   }
 
-  public updateCustomerInfo(customerId: string, updateInfoRequest: Object) {
+  public updateCustomerInfo(
+    customerId: string,
+    updateInfoRequest: Object,
+    observe?: any,
+    reportProgress?: boolean
+  ) {
     const infoData: UpdateInfoRequest = {
       info: {},
     };
@@ -115,13 +126,15 @@ export class CustomerDetailService {
         : null;
     }
 
-    return this.customerService.putInfo(customerId, infoData).pipe(
-      map((results) => {
-        return results;
-      }),
-      catchError((err) => {
-        return of(null);
-      })
-    );
+    return this.customerService
+      .putInfo(customerId, infoData, observe, reportProgress)
+      .pipe(
+        map((results) => {
+          return results;
+        }),
+        catchError((err) => {
+          return of(null);
+        })
+      );
   }
 }
