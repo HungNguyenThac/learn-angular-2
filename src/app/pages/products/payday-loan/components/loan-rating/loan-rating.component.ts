@@ -1,8 +1,6 @@
 import { PaydayLoanHmg } from './../../../../../../../open-api-modules/dashboard-api-docs/model/paydayLoanHmg';
 import { MultiLanguageService } from 'src/app/share/translate/multiLanguageService';
 import { Component, Input, OnInit } from '@angular/core';
-import { CustomerInfo } from 'open-api-modules/dashboard-api-docs';
-import { PaydayLoan } from 'open-api-modules/loanapp-api-docs';
 import {
   DATA_CELL_TYPE,
   DATA_STATUS_TYPE,
@@ -53,7 +51,7 @@ export class LoanRatingComponent implements OnInit {
     },
     {
       title: this.multiLanguageService.instant('loan_app.rating.other_comment'),
-      value: 'Mình muốn có thông báo in app',
+      value: '',
       type: DATA_CELL_TYPE.TEXT,
       format: null,
     },

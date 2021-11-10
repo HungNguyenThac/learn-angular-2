@@ -65,9 +65,12 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
   set loanDetail(value: PaydayLoanHmg) {
     this._loanDetail = value;
     this.getChangeLoanStatus();
+    this.leftColumn = this._initLeftColumn();
+    this.middleColumn = this._initMiddleColumn();
+    this.rightColumn = this._initRightColumn();
   }
 
-  get leftColumn() {
+  private _initLeftColumn() {
     return [
       {
         title: this.multiLanguageService.instant(
@@ -120,7 +123,7 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
     ];
   }
 
-  get middleColumn() {
+  private _initMiddleColumn() {
     return [
       {
         title: this.multiLanguageService.instant(
@@ -181,7 +184,7 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
     ];
   }
 
-  get rightColumn() {
+  private _initRightColumn() {
     return [
       {
         title: this.multiLanguageService.instant(
@@ -217,6 +220,10 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
       },
     ];
   }
+
+  leftColumn: any[] = [];
+  middleColumn: any[] = [];
+  rightColumn: any[] = [];
 
   currentTime = new Date();
 
