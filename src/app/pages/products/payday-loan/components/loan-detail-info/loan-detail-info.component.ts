@@ -13,9 +13,19 @@ import {
 } from './../../../../../core/common/enum/operator';
 import { MultiLanguageService } from './../../../../../share/translate/multiLanguageService';
 import { MatDialog } from '@angular/material/dialog';
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  OnDestroy,
+} from '@angular/core';
 import * as moment from 'moment';
-import { CustomerInfo } from 'open-api-modules/dashboard-api-docs';
+import {
+  CustomerInfo,
+  PaydayLoanHmg,
+} from 'open-api-modules/dashboard-api-docs';
 import { PaydayLoan } from 'open-api-modules/loanapp-api-docs';
 
 @Component({
@@ -23,7 +33,7 @@ import { PaydayLoan } from 'open-api-modules/loanapp-api-docs';
   templateUrl: './loan-detail-info.component.html',
   styleUrls: ['./loan-detail-info.component.scss'],
 })
-export class LoanDetailInfoComponent implements OnInit {
+export class LoanDetailInfoComponent implements OnInit, OnDestroy {
   _loanId: string;
   @Input()
   get loanId(): string {
@@ -44,20 +54,26 @@ export class LoanDetailInfoComponent implements OnInit {
 
   set customerInfo(value: CustomerInfo) {
     this._customerInfo = value;
+    this.leftColumn = this._initLeftColumn();
+    this.middleColumn = this._initMiddleColumn();
+    this.rightColumn = this._initRightColumn();
   }
 
-  _loanDetail: PaydayLoan;
+  _loanDetail: PaydayLoanHmg;
   @Input()
-  get loanDetail(): PaydayLoan {
+  get loanDetail(): PaydayLoanHmg {
     return this._loanDetail;
   }
 
-  set loanDetail(value: PaydayLoan) {
+  set loanDetail(value: PaydayLoanHmg) {
     this._loanDetail = value;
     this.getChangeLoanStatus();
+    this.leftColumn = this._initLeftColumn();
+    this.middleColumn = this._initMiddleColumn();
+    this.rightColumn = this._initRightColumn();
   }
 
-  get leftColumn() {
+  private _initLeftColumn() {
     return [
       {
         title: this.multiLanguageService.instant(
@@ -87,7 +103,7 @@ export class LoanDetailInfoComponent implements OnInit {
         title: this.multiLanguageService.instant(
           'loan_app.loan_info.salary_status'
         ),
-        value: this.salaryStatus,
+        value: this.getSalaryStatus(this.loanDetail?.expectedTenure),
         type: DATA_CELL_TYPE.STATUS,
         format: DATA_STATUS_TYPE.PL_OTHER_STATUS,
       },
@@ -110,7 +126,7 @@ export class LoanDetailInfoComponent implements OnInit {
     ];
   }
 
-  get middleColumn() {
+  private _initMiddleColumn() {
     return [
       {
         title: this.multiLanguageService.instant(
@@ -171,7 +187,7 @@ export class LoanDetailInfoComponent implements OnInit {
     ];
   }
 
-  get rightColumn() {
+  private _initRightColumn() {
     return [
       {
         title: this.multiLanguageService.instant(
@@ -208,6 +224,10 @@ export class LoanDetailInfoComponent implements OnInit {
     ];
   }
 
+  leftColumn: any[] = [];
+  middleColumn: any[] = [];
+  rightColumn: any[] = [];
+
   currentTime = new Date();
 
   @Input() groupName: string;
@@ -215,6 +235,7 @@ export class LoanDetailInfoComponent implements OnInit {
   nextLoanStatusDisplay: string;
   rejectLoanStatus: string = PAYDAY_LOAN_STATUS.UNKNOWN_STATUS;
   rejectLoanStatusDisplay: string;
+  salaryStatus: string;
 
   subManager = new Subscription();
   @Output() loanDetailDetectChangeStatus = new EventEmitter<any>();
@@ -289,16 +310,18 @@ export class LoanDetailInfoComponent implements OnInit {
   }
 
   //Trạng thái trả lương
-  get salaryStatus() {
-    if (!this.loanDetail?.expectedTenure) return;
-    if (this.loanDetail?.expectedTenure === 0) {
-      return this.multiLanguageService.instant(
+  getSalaryStatus(expectedTenure) {
+    if (!expectedTenure) return;
+    if (expectedTenure === 0) {
+      this.salaryStatus = this.multiLanguageService.instant(
         'loan_app.loan_info.received_salary'
       );
+      return this.salaryStatus;
     }
-    return this.multiLanguageService.instant(
+    this.salaryStatus = this.multiLanguageService.instant(
       'loan_app.loan_info.not_received_salary'
     );
+    return this.salaryStatus;
   }
 
   //Số tiền vay tối đa
@@ -379,7 +402,6 @@ export class LoanDetailInfoComponent implements OnInit {
         break;
     }
 
-    console.log('---------', this.nextLoanStatus, this.rejectLoanStatus);
     this.nextLoanStatusDisplay = this.multiLanguageService.instant(
       `payday_loan.status.${this.nextLoanStatus.toLowerCase()}`
     );
@@ -395,5 +417,8 @@ export class LoanDetailInfoComponent implements OnInit {
     return moment(new Date(time), 'YYYY-MM-DD HH:mm:ss').format(
       'DD/MM/YYYY HH:mm A'
     );
+  }
+  ngOnDestroy() {
+    this.subManager.unsubscribe();
   }
 }

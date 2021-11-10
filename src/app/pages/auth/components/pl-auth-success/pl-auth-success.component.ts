@@ -11,7 +11,7 @@ export class PlAuthSuccessComponent implements OnInit {
   @Input() disabledBtn: boolean = false;
   @Input() showBtn: boolean = true;
   @Input() btnText: string = 'Tiếp tục';
-  @Output() btnClick: EventEmitter<string>;
+  @Output() btnClick= new EventEmitter<string>();
 
   constructor() {
   }

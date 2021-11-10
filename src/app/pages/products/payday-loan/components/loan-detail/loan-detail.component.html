@@ -37,11 +37,13 @@
   </mat-tab>
 
   <!--  Rating Info-->
-  <mat-tab [label]="'loan_app.tabs.rating' | translate">
-    <ng-template matTabContent>
-      <app-loan-rating></app-loan-rating>
-    </ng-template
-    >
+  <mat-tab *ngIf="loanDetail?.ratingInfo?.isRated" [label]="'loan_app.tabs.rating' | translate">
+    <ng-template>
+      <app-loan-rating
+        [loanDetail]="loanDetail"
+        [loanId]="loanId"
+      ></app-loan-rating>
+    </ng-template>
   </mat-tab>
 
   <!--  Company Info-->
@@ -54,7 +56,8 @@
         [customerId]="customerId"
         [customerInfo]="userInfo"
       ></app-customer-company-info>
-    </ng-template
+    </ng-template>
     >
   </mat-tab>
+
 </mat-tab-group>

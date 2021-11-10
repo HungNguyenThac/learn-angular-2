@@ -49,7 +49,7 @@ export class LoanListComponent implements OnInit {
   breadcrumbOptions: BreadcrumbOptionsModel = {
     title: 'Vay ứng lương - HMG',
     iconImgSrc: 'assets/img/icon/group-5/pl-24-available.png',
-    searchPlaceholder: 'Mã khoản vay, Tên, Số điện thoại...',
+    searchPlaceholder: 'Mã khoản vay, Số điện thoại...',
     searchable: true,
     showBtnAdd: false,
     // btnAddText: 'Thêm nhà cung cấp',
@@ -365,7 +365,7 @@ export class LoanListComponent implements OnInit {
       if (filterOption.controlName !== 'companyId') {
         return;
       }
-      filterOption.options[0].subOptions = this.companyList.map(
+      filterOption.options[0].subOptions = this.companyList?.map(
         (company: CompanyInfo) => {
           return {
             title: company.name + ' (' + company.code + ')',

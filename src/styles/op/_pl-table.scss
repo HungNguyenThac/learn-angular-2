@@ -94,6 +94,11 @@ table.mat-table {
     overflow: hidden;
     text-overflow: ellipsis;
   }
+
+  .table-cell-format-data {
+    display: contents;
+  }
+
 }
 
 ::ng-deep .mat-sort-header-arrow {

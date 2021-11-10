@@ -1,3 +1,4 @@
+import { PaydayLoanHmg } from './../../../../../../../open-api-modules/dashboard-api-docs/model/paydayLoanHmg';
 import { ApiResponsePaydayLoanTng } from './../../../../../../../open-api-modules/dashboard-api-docs/model/apiResponsePaydayLoanTng';
 import { ApplicationTngControllerService } from './../../../../../../../open-api-modules/dashboard-api-docs/api/applicationTngController.service';
 import { ApiResponseSearchAndPaginationResponseCompanyInfo } from './../../../../../../../open-api-modules/dashboard-api-docs/model/apiResponseSearchAndPaginationResponseCompanyInfo';
@@ -46,7 +47,7 @@ export class LoanDetailComponent implements OnInit {
     this._customerId = value;
   }
 
-  loanDetail;
+  loanDetail: PaydayLoanHmg;
   userInfo: CustomerInfo;
   bankOptions: Array<Bank>;
   companyOptions: Array<CompanyInfo>;
