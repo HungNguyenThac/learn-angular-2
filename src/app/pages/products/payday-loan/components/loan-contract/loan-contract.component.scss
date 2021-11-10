@@ -1,4 +1,9 @@
 @import "src/styles/variables";
+
+iframe #scroller {
+  overflow-x: hidden !important;
+}
+
 .no-contract {
   width: 100%;
   height: 100%;
