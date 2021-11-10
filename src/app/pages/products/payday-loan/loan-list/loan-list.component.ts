@@ -2,7 +2,10 @@ import { SearchAndPaginationResponsePaydayLoanHmg } from './../../../../../../op
 import { FilterActionEventModel } from './../../../../public/models/filter/filter-action-event.model';
 import { FilterEventModel } from './../../../../public/models/filter/filter-event.model';
 import { CompanyInfo } from './../../../../../../open-api-modules/customer-api-docs/model/companyInfo';
-import { PAYDAY_LOAN_UI_STATUS_TEXT, PAYDAY_LOAN_STATUS } from './../../../../core/common/enum/payday-loan';
+import {
+  PAYDAY_LOAN_UI_STATUS_TEXT,
+  PAYDAY_LOAN_STATUS,
+} from './../../../../core/common/enum/payday-loan';
 import { FILTER_TYPE } from 'src/app/core/common/enum/operator';
 import { LoanListService } from './loan-list.service';
 import { PageEvent } from '@angular/material/paginator/public-api';
@@ -10,7 +13,7 @@ import { Sort } from '@angular/material/sort';
 import {
   ApiResponseSearchAndPaginationResponseCompanyInfo,
   ApiResponseSearchAndPaginationResponsePaydayLoanHmg,
-  ApiResponseSearchAndPaginationResponsePaydayLoanTng
+  ApiResponseSearchAndPaginationResponsePaydayLoanTng,
 } from '../../../../../../open-api-modules/dashboard-api-docs';
 import { CustomerListService } from '../../../customer/customer-list/customer-list.service';
 import { CompanyControllerService } from '../../../../../../open-api-modules/dashboard-api-docs';
@@ -35,6 +38,7 @@ import { MultiLanguageService } from '../../../../share/translate/multiLanguageS
 import { MatTableDataSource } from '@angular/material/table';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { FilterOptionModel } from 'src/app/public/models/filter/filter-option.model';
+
 @Component({
   selector: 'app-loan-list',
   templateUrl: './loan-list.component.html',
@@ -49,7 +53,7 @@ export class LoanListComponent implements OnInit {
   breadcrumbOptions: BreadcrumbOptionsModel = {
     title: 'Vay ứng lương - HMG',
     iconImgSrc: 'assets/img/icon/group-5/pl-24-available.png',
-    searchPlaceholder: 'Mã khoản vay, Tên, Số điện thoại...',
+    searchPlaceholder: 'Mã khoản vay, Số điện thoại...',
     searchable: true,
     showBtnAdd: false,
     // btnAddText: 'Thêm nhà cung cấp',
@@ -243,6 +247,76 @@ export class LoanListComponent implements OnInit {
     this._initSubscription();
   }
 
+  detectUpdateLoanAfterSign() {
+    this._getLoanList();
+  }
+
+  onPageChange(event: PageEvent) {
+    this.pageSize = event.pageSize;
+    this.pageIndex = event.pageIndex;
+    this._onFilterChange();
+  }
+
+  onSortChange(sortState: Sort) {
+    this.filterForm.controls.orderBy.setValue(sortState.active);
+    this.filterForm.controls.sortDirection.setValue(sortState.direction);
+    this._onFilterChange();
+  }
+
+  public onExpandElementChange(element: any) {
+    console.log('---------------------------element', element);
+
+    this.expandedElementLoanId = element.id;
+    this.expandedElementCustomerId = element.customerId;
+  }
+
+  public onSubmitSearchForm(event) {
+    this.filterForm.controls.keyword.setValue(event.keyword);
+    this._onFilterChange();
+  }
+
+  loanDetailDetectChangeStatusTrigger(event) {
+    if (event) {
+      this._getLoanList();
+    }
+  }
+
+  public onFilterFormChange(event: FilterEventModel) {
+    switch (event.type) {
+      case FILTER_TYPE.DATETIME:
+        this.filterForm.controls.startTime.setValue(event.value.startDate);
+        this.filterForm.controls.endTime.setValue(event.value.endDate);
+        this.filterForm.controls.dateFilterType.setValue(event.value.type);
+        this.filterForm.controls.dateFilterTitle.setValue(event.value.title);
+        break;
+      case FILTER_TYPE.MULTIPLE_CHOICE:
+        break;
+      case FILTER_TYPE.SELECT:
+        if (event.controlName === 'companyId') {
+          this.filterForm.controls.companyId.setValue(
+            event.value ? event.value.join(',') : ''
+          );
+        } else if (event.controlName === 'status') {
+          this.filterForm.controls.status.setValue(event.value);
+        }
+        break;
+      default:
+        break;
+    }
+
+    this._onFilterChange();
+  }
+
+  public onFilterActionTrigger(event: FilterActionEventModel) {
+    console.log('FilterActionEventModel', event);
+  }
+
+  ngOnDestroy(): void {
+    // if (this.subManager !== null) {
+    // this.subManager.unsubscribe();
+    // }
+  }
+
   private _initFilterForm() {
     this.filterForm = this.formBuilder.group({
       keyword: [''],
@@ -365,7 +439,7 @@ export class LoanListComponent implements OnInit {
       if (filterOption.controlName !== 'companyId') {
         return;
       }
-      filterOption.options[0].subOptions = this.companyList.map(
+      filterOption.options[0].subOptions = this.companyList?.map(
         (company: CompanyInfo) => {
           return {
             title: company.name + ' (' + company.code + ')',
@@ -390,18 +464,6 @@ export class LoanListComponent implements OnInit {
     this.pageLength = rawData?.pagination?.maxPage || 0;
     this.totalItems = rawData?.pagination?.total || 0;
     this.dataSource.data = rawData?.data || [];
-  }
-
-  onPageChange(event: PageEvent) {
-    this.pageSize = event.pageSize;
-    this.pageIndex = event.pageIndex;
-    this._onFilterChange();
-  }
-
-  onSortChange(sortState: Sort) {
-    this.filterForm.controls.orderBy.setValue(sortState.active);
-    this.filterForm.controls.sortDirection.setValue(sortState.direction);
-    this._onFilterChange();
   }
 
   private _onFilterChange() {
@@ -436,57 +498,5 @@ export class LoanListComponent implements OnInit {
         queryParams,
       })
       .then((r) => {});
-  }
-
-  public onExpandElementChange(element: any) {
-    this.expandedElementLoanId = element.loanId;
-    this.expandedElementCustomerId = element.customerId;
-  }
-
-  public onSubmitSearchForm(event) {
-    this.filterForm.controls.keyword.setValue(event.keyword);
-    this._onFilterChange();
-  }
-
-  loanDetailDetectChangeStatusTrigger(event) {
-    if (event) {
-      this._getLoanList();
-    }
-  }
-
-  public onFilterFormChange(event: FilterEventModel) {
-    switch (event.type) {
-      case FILTER_TYPE.DATETIME:
-        this.filterForm.controls.startTime.setValue(event.value.startDate);
-        this.filterForm.controls.endTime.setValue(event.value.endDate);
-        this.filterForm.controls.dateFilterType.setValue(event.value.type);
-        this.filterForm.controls.dateFilterTitle.setValue(event.value.title);
-        break;
-      case FILTER_TYPE.MULTIPLE_CHOICE:
-        break;
-      case FILTER_TYPE.SELECT:
-        if (event.controlName === 'companyId') {
-          this.filterForm.controls.companyId.setValue(
-            event.value ? event.value.join(',') : ''
-          );
-        } else if (event.controlName === 'status') {
-          this.filterForm.controls.status.setValue(event.value);
-        }
-        break;
-      default:
-        break;
-    }
-
-    this._onFilterChange();
-  }
-
-  public onFilterActionTrigger(event: FilterActionEventModel) {
-    console.log('FilterActionEventModel', event);
-  }
-
-  ngOnDestroy(): void {
-    // if (this.subManager !== null) {
-    // this.subManager.unsubscribe();
-    // }
   }
 }
