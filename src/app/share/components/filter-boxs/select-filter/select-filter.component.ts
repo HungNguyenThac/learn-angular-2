@@ -18,7 +18,7 @@ export class SelectFilterComponent implements OnInit {
   }
 
   set filterOption(filterOptionModel: FilterOptionModel) {
-    console.log("filterOption", filterOptionModel.value)
+    console.log('filterOption', filterOptionModel.value);
     this.selectedItems = filterOptionModel.value || [];
     this._filterOption = filterOptionModel;
   }
@@ -38,12 +38,6 @@ export class SelectFilterComponent implements OnInit {
     } else {
       this.selectedItems.splice(index, 1);
     }
-
-    this.completeFilter.emit({
-      type: this.filterOption.type,
-      controlName: this.filterOption.controlName,
-      value: this.selectedItems,
-    });
   }
 
   get displayTitle() {
@@ -67,6 +61,15 @@ export class SelectFilterComponent implements OnInit {
 
   public resetSelectedItem() {
     this.selectedItems = [];
+    this.completeFilter.emit({
+      type: this.filterOption.type,
+      controlName: this.filterOption.controlName,
+      value: this.selectedItems,
+    });
+  }
+
+  public completeSelectSubOptionsFilter(element) {
+    element.style.display = 'none';
     this.completeFilter.emit({
       type: this.filterOption.type,
       controlName: this.filterOption.controlName,

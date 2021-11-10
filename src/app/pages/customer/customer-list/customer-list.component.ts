@@ -84,11 +84,11 @@ export class CustomerListComponent implements OnInit, OnDestroy {
       title: this.multiLanguageService.instant('filter.pl_ui_status'),
       type: FILTER_TYPE.SELECT,
       controlName: 'paydayLoanStatus',
-      value: null,
+      value: "",
       options: [
         {
           title: this.multiLanguageService.instant('common.all'),
-          value: null,
+          value: "",
         },
         {
           title: this.multiLanguageService.instant(
