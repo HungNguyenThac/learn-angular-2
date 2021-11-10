@@ -185,7 +185,7 @@ export class LoanListComponent implements OnInit {
       showed: true,
     },
     {
-      key: 'mobileNumber',
+      key: 'customerMobileNumber',
       title: this.multiLanguageService.instant(
         'loan_app.loan_info.phone_number'
       ),
@@ -194,7 +194,7 @@ export class LoanListComponent implements OnInit {
       showed: true,
     },
     {
-      key: 'tenure',
+      key: 'expectedTenure',
       title: this.multiLanguageService.instant('loan_app.loan_info.loan_term'),
       type: DATA_CELL_TYPE.TEXT,
       format: null,
@@ -323,7 +323,7 @@ export class LoanListComponent implements OnInit {
       companyId: [''],
       groupName: [''],
       loanCode: [''],
-      mobileNumber: [''],
+      customerMobileNumber: [''],
       status: [''],
       officeCode: [''],
       identityNumberOne: [''],
@@ -338,7 +338,7 @@ export class LoanListComponent implements OnInit {
         companyId: QUERY_CONDITION_TYPE.IN,
         status: QUERY_CONDITION_TYPE.EQUAL,
         // loanCode: QUERY_CONDITION_TYPE.LIKE,
-        // mobileNumber: QUERY_CONDITION_TYPE.LIKE,
+        // customerMobileNumber: QUERY_CONDITION_TYPE.LIKE,
       },
     });
   }
