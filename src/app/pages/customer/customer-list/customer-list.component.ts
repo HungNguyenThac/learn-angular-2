@@ -84,11 +84,12 @@ export class CustomerListComponent implements OnInit, OnDestroy {
       title: this.multiLanguageService.instant('filter.pl_ui_status'),
       type: FILTER_TYPE.SELECT,
       controlName: 'paydayLoanStatus',
-      value: "",
+      multiple: true,
+      value: null,
       options: [
         {
           title: this.multiLanguageService.instant('common.all'),
-          value: "",
+          value: null,
         },
         {
           title: this.multiLanguageService.instant(
@@ -340,7 +341,7 @@ export class CustomerListComponent implements OnInit, OnDestroy {
       dateFilterTitle: [''],
       filterConditions: {
         companyId: QUERY_CONDITION_TYPE.IN,
-        paydayLoanStatus: QUERY_CONDITION_TYPE.EQUAL,
+        paydayLoanStatus: QUERY_CONDITION_TYPE.IN,
       },
     });
   }
@@ -377,7 +378,9 @@ export class CustomerListComponent implements OnInit, OnDestroy {
           ? this.filterForm.controls.companyId.value.split(',')
           : [];
       } else if (filterOption.controlName === 'paydayLoanStatus') {
-        filterOption.value = this.filterForm.controls.paydayLoanStatus.value;
+        filterOption.value = this.filterForm.controls.paydayLoanStatus.value
+          ? this.filterForm.controls.paydayLoanStatus.value.split(',')
+          : [];
       }
     });
 
@@ -495,7 +498,9 @@ export class CustomerListComponent implements OnInit, OnDestroy {
             event.value ? event.value.join(',') : ''
           );
         } else if (event.controlName === 'paydayLoanStatus') {
-          this.filterForm.controls.paydayLoanStatus.setValue(event.value);
+          this.filterForm.controls.paydayLoanStatus.setValue(
+            event.value ? event.value.join(',') : ''
+          );
         }
         break;
       default:

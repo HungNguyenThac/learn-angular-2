@@ -6,6 +6,7 @@ export interface FilterOptionModel {
   type: FILTER_TYPE;
   controlName: string;
   value: any;
+  multiple?: boolean;
   titleAction?: string;
   actionIconClass?: string;
   showAction?: boolean;
