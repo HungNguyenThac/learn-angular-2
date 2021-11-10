@@ -424,7 +424,7 @@ export class CustomerListComponent implements OnInit, OnDestroy {
 
   private _initCompanyOptions() {
     this.filterOptions.forEach((filterOption: FilterOptionModel) => {
-      if (filterOption.controlName !== 'companyId') {
+      if (filterOption.controlName !== 'companyId' || !this.companyList) {
         return;
       }
       filterOption.options[0].subOptions = this.companyList.map(

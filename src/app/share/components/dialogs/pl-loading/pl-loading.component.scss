@@ -6,19 +6,24 @@
 }
 
 ::ng-deep .custom-dialog-container {
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: auto;
 
   .mat-dialog-container {
     padding: 0;
     border-radius: 12px;
     overflow: inherit;
     box-shadow: none;
+    background: transparent;
   }
 
   .mat-dialog-content {
     padding: 0;
     margin: 0;
+    max-height: 100vh;
     min-width: 300px;
+    overflow: inherit;
+    height: 100%;
   }
 }
 
@@ -63,7 +68,6 @@
     min-width: 300px;
   }
 }
-
 
 .mat-dialog-actions {
   padding: 0;

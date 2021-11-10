@@ -26,6 +26,7 @@ import { CustomerDocumentInfoComponent } from './operators/customer/customer-doc
 import { CustomerCompanyInfoComponent } from './operators/customer/customer-company-info/customer-company-info.component';
 import { DialogCompanyInfoUpdateComponent } from './operators/customer/dialog-company-info-update/dialog-company-info-update.component';
 import { TableCellFormatDataComponent } from './statutes/table-cell-format-data/table-cell-format-data.component';
+import { FullsizeImageDialogComponent } from './dialogs/fullsize-image-dialog/fullsize-image-dialog.component';
 
 export const components: any[] = [
   ConfirmationDialog,
@@ -56,6 +57,7 @@ export const components: any[] = [
   CustomerCompanyInfoComponent,
   DialogCompanyInfoUpdateComponent,
   TableCellFormatDataComponent,
+  FullsizeImageDialogComponent,
 ];
 
 export * from './dialogs/confirmation-dialog/confirmation-dialog.component';
@@ -86,3 +88,5 @@ export * from './operators/customer/customer-document-info/customer-document-inf
 export * from './operators/customer/customer-company-info/customer-company-info.component';
 export * from './operators/customer/dialog-company-info-update/dialog-company-info-update.component';
 export * from './statutes/table-cell-format-data/table-cell-format-data.component';
+export * from './dialogs/fullsize-image-dialog/fullsize-image-dialog.component';
+

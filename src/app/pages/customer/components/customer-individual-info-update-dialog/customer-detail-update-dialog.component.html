@@ -23,34 +23,17 @@
           <!-- Avatar -->
           <section class="col-12 col-sm-12 col-md-4 col-lg-3">
             <div class="d-flex gap-2">
-              <div class="op-customer-avatar">
-                <img
-                  *ngIf="!selfieSrc; else hasSelfieImg"
-                  class="op-customer-avatar-img"
-                  src="assets/img/payday-loan/avatar-default.png"
-                  alt=""
-                />
-                <ng-template #hasSelfieImg>
-                  <img
-                    class="op-customer-avatar-img"
-                    [src]="selfieSrc"
-                    alt=""
-                  />
-                </ng-template>
-
-                <div class="op-customer-avatar-img-zoom">
-                  <span class="sprite-group-5-Zoom"></span>
-                </div>
-              </div>
-
-              <div class="op-customer-name">
-                <p class="op-customer-name-content">
-                  {{ customerInfo?.firstName }}
-                </p>
-                <p class="op-customer-name-title">
-                  {{ "customer.individual_info.avatar" | translate }}
-                </p>
-              </div>
+              <app-upload-document-area
+                [id]="'selfieSrc'"
+                name="selfieSrc"
+                [classes]="'p-0'"
+                [title]="customerInfo?.firstName"
+                [description]="'customer.individual_info.avatar' | translate"
+                [imgSrc]="selfieSrc"
+                [hiddenDeleteBtn]="true"
+                [hiddenUploadBtn]="true"
+                [hiddenDownloadBtn]="true"
+              ></app-upload-document-area>
             </div>
           </section>
 
