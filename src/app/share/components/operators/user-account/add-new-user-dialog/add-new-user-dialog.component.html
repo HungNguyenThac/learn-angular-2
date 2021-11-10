@@ -1,0 +1,249 @@
+<div class="container-fluid">
+  <div class="card op-card">
+    <button class="close-btn" mat-dialog-close mat-icon-button tabindex="-1">
+      <svg
+        fill="none"
+        height="24"
+        viewBox="0 0 24 24"
+        width="24"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M4.2097 4.3871L4.29289 4.29289C4.65338 3.93241 5.22061 3.90468 5.6129 4.2097L5.70711 4.29289L12 10.585L18.2929 4.29289C18.6834 3.90237 19.3166 3.90237 19.7071 4.29289C20.0976 4.68342 20.0976 5.31658 19.7071 5.70711L13.415 12L19.7071 18.2929C20.0676 18.6534 20.0953 19.2206 19.7903 19.6129L19.7071 19.7071C19.3466 20.0676 18.7794 20.0953 18.3871 19.7903L18.2929 19.7071L12 13.415L5.70711 19.7071C5.31658 20.0976 4.68342 20.0976 4.29289 19.7071C3.90237 19.3166 3.90237 18.6834 4.29289 18.2929L10.585 12L4.29289 5.70711C3.93241 5.34662 3.90468 4.77939 4.2097 4.3871L4.29289 4.29289L4.2097 4.3871Z"
+          fill="#8E8E93"
+        />
+      </svg>
+    </button>
+
+    <div class="card-title title">
+      {{ "account.add.title" | translate }}
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <!--  Info  -->
+        <section class="col-12">
+          <form [formGroup]="addAccountForm">
+            <div class="row">
+
+              <!-- Left Individual Info -->
+              <div class="col-12 col-sm-12 col-md-6 col-lg-6 pr-2">
+                <div>
+                  <mat-form-field appearance="outline" class="w-100" floatLabel="never">
+                    <mat-label>{{ "account.add.name" | translate}}</mat-label>
+                    <div
+                      [ngClass]="addAccountForm.controls.accountName.value != '' || isAccountNameInputFocus ? 'is-focused-icon' : ''"
+                      class="profile-icon icon-prefix-padding" matPrefix>
+                    </div>
+                    <input (blur)="isAccountNameInputFocus = false"
+                           (focus)="isAccountNameInputFocus = true"
+                           [ngClass]="
+                        isAccountNameInputFocus ? 'is-focused-input' : ''
+                      " [placeholder]="'account.add.name' | translate"
+                           formControlName="accountName"
+                           matInput
+                    >
+                  </mat-form-field>
+                </div>
+
+                <div>
+                  <mat-form-field appearance="outline" class="w-100" floatLabel="never">
+                    <mat-label>{{
+                      "account.add.log_in" | translate
+                      }}</mat-label>
+                    <mat-icon [ngClass]="
+                        addAccountForm.controls.accountLogin.value != '' ||
+                        isLoginInputFocus
+                          ? 'is-focused-icon'
+                          : ''
+                      "
+                              class="profile-icon" matPrefix>
+                    </mat-icon>
+                    <input
+                      (blur)="isLoginInputFocus = false"
+                      (focus)="isLoginInputFocus = true"
+                      [ngClass]="
+                        isLoginInputFocus ? 'is-focused-input' : ''
+                      "
+                      [placeholder]="'account.add.log_in' | translate"
+                      formControlName="accountLogin"
+                      matInput
+                    />
+                  </mat-form-field>
+                </div>
+
+                <div>
+                  <mat-form-field appearance="outline" class="w-100" floatLabel="never">
+                    <mat-label>{{
+                      "account.add.password" | translate
+                      }}</mat-label>
+                    <mat-icon [ngClass]="
+                        addAccountForm.controls.accountPassword.value != '' ||
+                        isPasswordInputFocus
+                          ? 'is-focused-icon'
+                          : ''
+                      "
+                              class="password-icon" matPrefix>
+                    </mat-icon>
+                    <input
+                      (blur)="isPasswordInputFocus = false"
+                      (focus)="isPasswordInputFocus = true"
+                      [ngClass]="
+                        isPasswordInputFocus ? 'is-focused-input' : ''
+                      "
+                      [placeholder]="'account.add.password' | translate"
+                      formControlName="accountPassword"
+                      matInput
+                      type="password"
+                    />
+                  </mat-form-field>
+                </div>
+
+                <div>
+                  <mat-form-field appearance="outline" class="w-100" floatLabel="never">
+                    <mat-label>{{
+                      "account.add.re_password" | translate
+                      }}</mat-label>
+                    <mat-icon [ngClass]="
+                        addAccountForm.controls.accountRePassword.value != '' ||
+                        isRePasswordInputFocus
+                          ? 'is-focused-icon'
+                          : ''
+                      "
+                              class="password-icon" matPrefix>
+                    </mat-icon>
+                    <input
+                      (blur)="isRePasswordInputFocus = false"
+                      (focus)="isRePasswordInputFocus = true"
+                      [ngClass]="
+                        isRePasswordInputFocus ? 'is-focused-input' : ''
+                      "
+                      [placeholder]="'account.add.re_password' | translate"
+                      formControlName="accountRePassword"
+                      matInput
+                      type="password"
+                    />
+                  </mat-form-field>
+                </div>
+
+                <div>
+                  <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>{{
+                      "account.info.role" | translate
+                      }}</mat-label>
+                    <mat-icon [ngClass]="
+                        addAccountForm.controls.accountRole.value != '' ||
+                        isRoleInputFocus
+                          ? 'is-focused-icon'
+                          : ''
+                      "
+                              class="role-icon" matPrefix></mat-icon>
+                    <mat-select formControlName="accountRole">
+                      <mat-option
+                        *ngFor="let roleOption of roleOptions.options"
+                        [value]="roleOption">{{roleOption}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </div>
+
+              <!-- Right Individual Info -->
+              <div class="col-12 col-sm-12 col-md-6 col-lg-6 pr-2">
+                <div>
+                  <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>{{
+                      "account.add.phone" | translate
+                      }}</mat-label>
+                    <mat-icon [ngClass]="
+                        addAccountForm.controls.accountPhone.value != '' ||
+                        isPhoneInputFocus
+                          ? 'is-focused-icon'
+                          : ''
+                      "
+                              class="phone-icon"
+                              matPrefix></mat-icon>
+                    <input
+                      (blur)="isPhoneInputFocus = false"
+                      (focus)="isPhoneInputFocus = true"
+                      [ngClass]="isPhoneInputFocus ? 'is-focused-input' : ''"
+                      [placeholder]="'account.add.phone' | translate"
+                      formControlName="accountPhone"
+                      matInput
+                      type="tel"
+                    />
+                  </mat-form-field>
+                </div>
+
+                <div>
+                  <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>{{
+                      "account.add.email" | translate
+                      }}</mat-label>
+                    <mat-icon [ngClass]="
+                        addAccountForm.controls.accountEmail.value != '' ||
+                        isEmailInputFocus
+                          ? 'is-focused-icon'
+                          : ''
+                      "
+                              class="email-icon" matPrefix></mat-icon>
+                    <input
+                      (blur)="isEmailInputFocus = false"
+                      (focus)="isEmailInputFocus = true"
+                      [ngClass]="isEmailInputFocus ? 'is-focused-input' : ''"
+                      [placeholder]="'account.add.email' | translate"
+                      formControlName="accountEmail"
+                      matInput
+                      type="email"
+                    />
+                  </mat-form-field>
+                </div>
+
+                <div>
+                  <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>{{
+                      "account.add.note" | translate
+                      }}</mat-label>
+                    <mat-icon [ngClass]="
+                        addAccountForm.controls.accountNote.value != '' ||
+                        isNoteInputFocus
+                          ? 'is-focused-icon'
+                          : ''
+                      "
+                              class="note-icon" matPrefix></mat-icon>
+                    <input
+                      (blur)="isNoteInputFocus = false"
+                      (focus)="isNoteInputFocus = true"
+                      [ngClass]="isNoteInputFocus ? 'is-focused-input' : ''"
+                      [placeholder]="'account.add.note' | translate"
+                      formControlName="accountNote"
+                      matInput
+                    />
+                  </mat-form-field>
+                </div>
+              </div>
+            </div>
+          </form>
+        </section>
+      </div>
+
+      <!--  Actions -->
+      <div class="row mt-2">
+        <div class="col-12 d-flex gap-2 justify-content-end">
+          <button class="bg-grey"
+                  mat-button
+                  mat-dialog-close
+          >
+            {{ "account.info.cancel_update" | translate }}
+          </button>
+          <button (click)="submitForm()"
+                  color="accent"
+                  mat-flat-button>
+            <span class="sprite-group-5-save-white"></span>
+            <span class="ms-1">{{ "account.info.save_update" | translate }}</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
