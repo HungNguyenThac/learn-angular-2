@@ -1,4 +1,7 @@
-import { PAYDAY_LOAN_OTHER_STATUS } from './../../../../core/common/enum/payday-loan';
+import {
+  PAYDAY_LOAN_OTHER_STATUS,
+  PAYDAY_LOAN_RATING_STATUS,
+} from './../../../../core/common/enum/payday-loan';
 import { Component, Input, OnInit } from '@angular/core';
 import { DATA_STATUS_TYPE } from '../../../../core/common/enum/operator';
 import {
@@ -16,7 +19,17 @@ import { MultiLanguageService } from '../../../translate/multiLanguageService';
 })
 export class PlStatusElementComponent implements OnInit {
   @Input() statusType: DATA_STATUS_TYPE;
-  @Input() statusValue: string;
+  // @Input() statusValue: string;
+
+  _statusValue: string;
+  @Input()
+  get statusValue(): string {
+    return this._statusValue;
+  }
+
+  set statusValue(value: string) {
+    this._statusValue = value;
+  }
 
   get dataStatus() {
     switch (this.statusType) {
@@ -29,6 +42,8 @@ export class PlStatusElementComponent implements OnInit {
         return this.loanOtherStatusContent(this.statusValue);
       case DATA_STATUS_TYPE.PL_REPAYMENT_STATUS:
         return this.loanRepaymentStatusContent(this.statusValue);
+      case DATA_STATUS_TYPE.PL_RATING_STATUS:
+        return this.loanRatingStatusContent(this.statusValue);
       default:
         return {
           label: this.statusValue,
@@ -88,15 +103,60 @@ export class PlStatusElementComponent implements OnInit {
 
   loanOtherStatusContent(status) {
     switch (status) {
-      case PAYDAY_LOAN_OTHER_STATUS.NOT_RECEIVED_SALARY_YET:
+      case this.multiLanguageService.instant(
+        PAYDAY_LOAN_OTHER_STATUS.NOT_RECEIVED_SALARY_YET
+      ):
         return {
           label: this.statusValue,
           labelStatus: PL_LABEL_STATUS.PENDING,
         };
-      case PAYDAY_LOAN_OTHER_STATUS.RECEIVED_SALARY:
+      case this.multiLanguageService.instant(
+        PAYDAY_LOAN_OTHER_STATUS.RECEIVED_SALARY
+      ):
         return {
           label: this.statusValue,
           labelStatus: PL_LABEL_STATUS.SUCCESS,
+        };
+      default:
+        return {
+          label: 'N/A',
+          labelStatus: PL_LABEL_STATUS.REJECT,
+        };
+    }
+  }
+
+  loanRatingStatusContent(status) {
+    switch (status) {
+      case PAYDAY_LOAN_RATING_STATUS.VERY_SATISFIED:
+        return {
+          label: this.multiLanguageService.instant(
+            'loan_app.rating.very_satisfied'
+          ),
+          labelStatus: PL_LABEL_STATUS.SUCCESS,
+        };
+      case PAYDAY_LOAN_RATING_STATUS.SATISFIED:
+        return {
+          label: this.multiLanguageService.instant('loan_app.rating.satisfied'),
+          labelStatus: PL_LABEL_STATUS.SUCCESS,
+        };
+      case PAYDAY_LOAN_RATING_STATUS.NORMAL:
+        return {
+          label: this.multiLanguageService.instant('loan_app.rating.normal'),
+          labelStatus: PL_LABEL_STATUS.SUCCESS,
+        };
+      case PAYDAY_LOAN_RATING_STATUS.SEMI_SATISFIED:
+        return {
+          label: this.multiLanguageService.instant(
+            'loan_app.rating.semi_satisfied'
+          ),
+          labelStatus: PL_LABEL_STATUS.PENDING,
+        };
+      case PAYDAY_LOAN_RATING_STATUS.NOT_SATISFIED:
+        return {
+          label: this.multiLanguageService.instant(
+            'loan_app.rating.not_satisfied'
+          ),
+          labelStatus: PL_LABEL_STATUS.PENDING,
         };
       default:
         return {

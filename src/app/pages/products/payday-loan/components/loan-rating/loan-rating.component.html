@@ -1,13 +1,17 @@
 <div class="container-fluid">
   <div class="row p-3 justify-content-center">
-    <div class="col-12 col-sm-6 col-md-4 col-lg-4">
+    <div class="col-12 col-sm-6 col-md-6 col-lg-5">
       <ul class="pl-list">
         <li class="pl-list-item">
           <p class="pl-list-item-label">
             {{ middleColumn[0].title }}
           </p>
           <p class="pl-list-item-content highlight">
-            {{ middleColumn[0].value }}
+            <app-format-data
+              [type]="middleColumn[0]?.type"
+              [format]="middleColumn[0]?.format"
+              [value]="loanDetail?.ratingInfo?.rate"
+            ></app-format-data>
           </p>
         </li>
 
@@ -16,8 +20,8 @@
             {{ middleColumn[1].title }}
           </p>
           <div class="pl-list-item-content">
-            <p *ngFor="let ele of middleColumn[1].value">
-              {{ ele }}
+            <p *ngFor="let customerOpinion of customerOpinionsArray">
+              {{ customerOpinion }}
             </p>
           </div>
         </li>
@@ -27,7 +31,7 @@
             {{ middleColumn[2].title }}
           </p>
           <p class="pl-list-item-content">
-            {{ middleColumn[2].value }}
+            {{ customerOtherOpinion }}
           </p>
         </li>
       </ul>

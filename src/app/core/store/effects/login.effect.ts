@@ -10,7 +10,6 @@ import {
   ApiResponseGetTokenResponse,
   ServiceCredentialControllerService,
 } from '../../../../../open-api-modules/identity-api-docs';
-import * as Sentry from '@sentry/angular';
 import {
   CustomerInfoResponse,
   InfoControllerService,
@@ -77,7 +76,6 @@ export class LoginEffects {
         tap(() => {
           this.notificationService.destroyAllDialog();
           this.store$.dispatch(new fromActions.ResetCustomerInfo());
-          Sentry.configureScope((scope) => scope.setUser(null));
           this.router.navigateByUrl('/auth/sign-in');
         })
       ),
@@ -116,9 +114,6 @@ export class LoginEffects {
         ofType(fromActions.LOGIN_SIGNIN_SUCCESS),
         map((action: fromActions.SigninSuccess) => action.payload),
         tap(() => {
-          Sentry.setUser({
-            id: this.customerId,
-          });
           this.router.navigateByUrl('/');
         })
       ),
