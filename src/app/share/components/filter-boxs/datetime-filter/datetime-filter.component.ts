@@ -419,7 +419,8 @@ export class DatetimeFilterComponent implements OnInit {
     };
   }
 
-  public displayDetailOption(currentElement) {
+  public displayDetailOption(currentElement, type) {
+    this.selectedTimeFilterMethod = type;
     const filterFormList = document.querySelectorAll(
       '.filter-form-container-expand'
     );
@@ -473,14 +474,6 @@ export class DatetimeFilterComponent implements OnInit {
     }
 
     this.selectedStartDate = event;
-
-    // if (
-    //   this.selectedEndDate &&
-    //   new Date(this.selectedEndDate).getTime() <
-    //     new Date(this.selectedStartDate).getTime()
-    // ) {
-    //   this.selectedEndDate = null;
-    // }
   }
 
   public onSelectEndDate(event, currentEle) {

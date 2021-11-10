@@ -27,16 +27,39 @@
             else hasNotSubOptions
           "
         >
-          <p
-            class="w-100 filter-child-item-title"
+          <div
+            class="w-100 d-flex justify-content-between align-items-center"
             (click)="displayDetailOption(selectFieldListEle)"
           >
-            {{ displayTitle ? displayTitle : filterItem.title }}
-          </p>
+            <p class="w-100 filter-child-item-title">
+              {{ displayTitle ? displayTitle : filterItem.title }}
+            </p>
+            <div
+              class="
+                d-inline-flex
+                justify-content-between
+                align-items-center
+                gap-1
+                cursor-pointer
+              "
+            >
+              <span class="filter-status-count" *ngIf="filterItem.count">{{
+                filterItem.count
+              }}</span>
+              <span
+                [ngClass]="
+                  filterItem.value === filterOption.value
+                    ? 'sprite-group-5-chevron-right-blue'
+                    : 'sprite-group-5-chevron-right-grey'
+                "
+              ></span>
+            </div>
+          </div>
+
           <div
             class="filter-form-container-expand col-lg-4 col-12 col-sm-12"
             id="selectFieldListEle"
-            (mouseleave)="selectFieldListEle.style.display = 'none'"
+            (mouseleave)="completeSelectSubOptionsFilter(selectFieldListEle)"
             #selectFieldListEle
           >
             <div class="arrow">
@@ -106,34 +129,35 @@
         </div>
 
         <ng-template #hasNotSubOptions>
-          <p
-            class="w-100 filter-child-item-title"
+          <div
             (click)="selectSingleItem(filterItem)"
+            class="w-100 d-flex justify-content-between align-items-center"
           >
-            {{ filterItem.title }}
-          </p>
+            <p class="w-100 filter-child-item-title">
+              {{ filterItem.title }}
+            </p>
+            <div
+              class="
+                d-inline-flex
+                justify-content-between
+                align-items-center
+                gap-1
+                cursor-pointer
+              "
+            >
+              <span class="filter-status-count" *ngIf="filterItem.count">{{
+                filterItem.count
+              }}</span>
+              <span
+                [ngClass]="
+                  filterItem.value === filterOption.value
+                    ? 'sprite-group-5-chevron-right-blue'
+                    : 'sprite-group-5-chevron-right-grey'
+                "
+              ></span>
+            </div>
+          </div>
         </ng-template>
-
-        <div
-          class="
-            d-inline-flex
-            justify-content-between
-            align-items-center
-            filter-child-item
-            gap-1
-          "
-        >
-          <span class="filter-status-count" *ngIf="filterItem.count">{{
-            filterItem.count
-          }}</span>
-          <span
-            [ngClass]="
-              filterItem.value === filterOption.value
-                ? 'sprite-group-5-chevron-right-blue'
-                : 'sprite-group-5-chevron-right-grey'
-            "
-          ></span>
-        </div>
       </li>
     </ul>
   </div>
