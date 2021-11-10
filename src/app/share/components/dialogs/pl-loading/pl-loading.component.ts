@@ -1,6 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import {PlLoading} from "../../../../public/models/external/plloading.model";
+import { PlLoading } from '../../../../public/models/external/plloading.model';
+import { BUTTON_TYPE } from '../../../../core/common/enum/operator';
 
 @Component({
   selector: 'app-pl-loading',
@@ -11,7 +12,7 @@ export class PlLoadingComponent implements OnInit {
   promptContent: PlLoading = {
     title: '',
     content: '',
-    showContent: false
+    showContent: false,
   };
 
   constructor(
@@ -27,10 +28,10 @@ export class PlLoadingComponent implements OnInit {
   ngOnInit(): void {}
 
   clickSecondary() {
-    this.dialogRef.close('clickSecondary');
+    this.dialogRef.close(BUTTON_TYPE.SECONDARY);
   }
 
   clickPrimary() {
-    this.dialogRef.close('clickPrimary');
+    this.dialogRef.close(BUTTON_TYPE.PRIMARY);
   }
 }

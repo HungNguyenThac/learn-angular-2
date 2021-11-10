@@ -15,6 +15,7 @@
                     class="op-customer-ekyc-img"
                     [src]="frontIdSrc"
                     alt=""
+                    (click)="openFullSizeImg(frontIdSrc)"
                   />
 
                   <ng-template #hasNotFrontId>
@@ -57,6 +58,7 @@
                     class="op-customer-ekyc-img"
                     [src]="backIdSrc"
                     alt=""
+                    (click)="openFullSizeImg(backIdSrc)"
                   />
 
                   <ng-template #hasNotBackId>
