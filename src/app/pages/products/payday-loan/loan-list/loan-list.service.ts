@@ -1,18 +1,18 @@
-import { query } from '@angular/animations';
-import { ApplicationTngControllerService } from '../../../../../../open-api-modules/dashboard-api-docs';
-import { ApplicationHmgControllerService } from '../../../../../../open-api-modules/dashboard-api-docs';
-import { PaydayLoanControllerService } from '../../../../../../open-api-modules/loanapp-hmg-api-docs';
-import { Injectable } from '@angular/core';
-import { catchError, map } from 'rxjs/operators';
-import { CustomerControllerService } from 'open-api-modules/dashboard-api-docs';
+import {query} from '@angular/animations';
+import {ApplicationTngControllerService} from '../../../../../../open-api-modules/dashboard-api-docs';
+import {ApplicationHmgControllerService} from '../../../../../../open-api-modules/dashboard-api-docs';
+import {PaydayLoanControllerService} from '../../../../../../open-api-modules/loanapp-hmg-api-docs';
+import {Injectable} from '@angular/core';
+import {catchError, map} from 'rxjs/operators';
+import {CustomerControllerService} from 'open-api-modules/dashboard-api-docs';
 import * as _ from 'lodash';
-import { QUERY_CONDITION_TYPE } from '../../../../core/common/enum/operator';
+import {QUERY_CONDITION_TYPE} from '../../../../core/common/enum/operator';
 import {
   ApiResponseContract,
   ContractControllerService,
 } from '../../../../../../open-api-modules/loanapp-api-docs';
-import { FileControllerService } from '../../../../../../open-api-modules/com-api-docs';
-import { SignDocumentControllerService } from '../../../../../../open-api-modules/contract-api-docs';
+import {FileControllerService} from '../../../../../../open-api-modules/com-api-docs';
+import {SignDocumentControllerService} from '../../../../../../open-api-modules/contract-api-docs';
 
 @Injectable({
   providedIn: 'root',
@@ -26,7 +26,8 @@ export class LoanListService {
     private contractControllerService: ContractControllerService,
     private signContractAutomation: SignDocumentControllerService,
     private fileControllerService: FileControllerService
-  ) {}
+  ) {
+  }
 
   public getLoanDataHmg(params) {
     let requestBody = {};
@@ -138,7 +139,7 @@ export class LoanListService {
     idDocument: number
   ) {
     return this.signContractAutomation
-      .v1SignAdminSignContractPost({ customerId, idRequest, idDocument })
+      .v1SignAdminSignContractPost({customerId, idRequest, idDocument})
       .pipe(
         map((results) => {
           return results;
@@ -152,7 +153,7 @@ export class LoanListService {
 
   public downloadSingleFileContract(documentPath: string, customerId: string) {
     return this.fileControllerService
-      .downloadFile({ documentPath, customerId })
+      .downloadFile({documentPath, customerId})
       .pipe(
         map((results) => {
           return this.convertBlobType(results, 'application/pdf');
@@ -175,8 +176,9 @@ export class LoanListService {
     console.log(src);
   }
 
+
   public convertBlobType(data: any, type: string) {
-    let blob = new Blob([data], { type: type });
+    let blob = new Blob([data], {type: type});
     let url = window.URL.createObjectURL(blob);
     return url;
   }

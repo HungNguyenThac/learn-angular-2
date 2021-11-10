@@ -19,6 +19,7 @@
   <mat-tab [label]="'loan_app.tabs.loan_contract' | translate">
     <ng-template matTabContent>
       <app-loan-contract
+        (triggerUpdateLoanAfterSign)="triggerUpdateLoanAfterSign()"
         [loanDetail]="loanDetail"
         [loanId]="loanId"
       ></app-loan-contract>

@@ -20,7 +20,7 @@
     <!--ACTION-->
     <div class="col-6 col-sm-6 col-md-3 col-lg-3">
       <div class="d-flex justify-content-end gap-1">
-        <button (click)="onClickSign()" color="primary" mat-flat-button>
+        <button (click)="onClickSign()" *ngIf="enableSign" color="primary" mat-flat-button>
           <svg
             fill="none"
             height="16"

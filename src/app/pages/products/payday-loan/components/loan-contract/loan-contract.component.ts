@@ -1,22 +1,29 @@
-import {MultiLanguageService} from 'src/app/share/translate/multiLanguageService';
-import {DomSanitizer} from '@angular/platform-browser';
-import {Component, Input, OnInit} from '@angular/core';
-import {MatDialog} from '@angular/material/dialog';
-import {ToastrService} from 'ngx-toastr';
-import {PaydayLoan} from 'open-api-modules/loanapp-api-docs';
+import { MultiLanguageService } from 'src/app/share/translate/multiLanguageService';
+import { DomSanitizer } from '@angular/platform-browser';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output,
+} from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { ToastrService } from 'ngx-toastr';
+import { PaydayLoan } from 'open-api-modules/loanapp-api-docs';
 import {
   DATA_CELL_TYPE,
   DATA_STATUS_TYPE,
 } from 'src/app/core/common/enum/operator';
-import {LoanListService} from '../../loan-list/loan-list.service';
-import {Subscription} from 'rxjs';
+import { LoanListService } from '../../loan-list/loan-list.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-loan-contract',
   templateUrl: './loan-contract.component.html',
   styleUrls: ['./loan-contract.component.scss'],
 })
-export class LoanContractComponent implements OnInit {
+export class LoanContractComponent implements OnInit, OnDestroy {
   loanContractView: any;
   loanContractData: any;
   loanContractFile: any;
@@ -25,6 +32,7 @@ export class LoanContractComponent implements OnInit {
   downloadable: boolean = false;
 
   subManager = new Subscription();
+  @Output() triggerUpdateLoanAfterSign = new EventEmitter();
 
   constructor(
     private notifier: ToastrService,
@@ -32,8 +40,7 @@ export class LoanContractComponent implements OnInit {
     private domSanitizer: DomSanitizer,
     private multiLanguageService: MultiLanguageService,
     private LoanListService: LoanListService
-  ) {
-  }
+  ) {}
 
   _loanId: string;
 
@@ -91,7 +98,14 @@ export class LoanContractComponent implements OnInit {
         idRequest,
         idDocument
       ).subscribe((result) => {
-        console.log(result);
+        if (result?.result === 'Ký thành công') {
+          this.notifier.success(`Ký hợp đồng thành công`);
+          setTimeout(() => {
+            this.triggerUpdateLoanAfterSign.emit();
+          }, 2000);
+        } else {
+          this.notifier.error(JSON.stringify(result?.message));
+        }
       })
     );
   }
@@ -116,13 +130,17 @@ export class LoanContractComponent implements OnInit {
     pdfurl += '#toolbar=0&navpanes=0&scrollbar=0&zoom=90';
     this.loanContractView = this.domSanitizer.bypassSecurityTrustHtml(
       "<iframe  src='" +
-      pdfurl +
-      "' type='application/pdf' style='width:100%; height: 70vh; background-color:white;'>" +
-      'Object ' +
-      pdfurl +
-      ' failed' +
-      '</iframe>'
+        pdfurl +
+        "' type='application/pdf' style='width:100%; height: 70vh; background-color:white;'>" +
+        'Object ' +
+        pdfurl +
+        ' failed' +
+        '</iframe>'
     );
+  }
+
+  ngOnDestroy() {
+    this.subManager.unsubscribe();
   }
 
   private _getLoanContractData() {
