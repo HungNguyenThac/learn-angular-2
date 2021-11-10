@@ -8,7 +8,7 @@
           <ul class="pl-list">
             <li class="pl-list-item" *ngFor="let leftColumnEle of leftColumn">
               <p class="pl-list-item-label">
-                {{ leftColumnEle.title }}
+                {{ leftColumnEle?.title }}
               </p>
               <p class="pl-list-item-content">
                 <!-- {{ leftColumnEle.value }} -->
@@ -30,7 +30,7 @@
               *ngFor="let middleColumnEle of middleColumn"
             >
               <p class="pl-list-item-label">
-                {{ middleColumnEle.title }}
+                {{ middleColumnEle?.title }}
               </p>
               <p class="pl-list-item-content">
                 <app-format-data
@@ -48,7 +48,7 @@
           <ul class="pl-list">
             <li class="pl-list-item" *ngFor="let rightColumnEle of rightColumn">
               <p class="pl-list-item-label">
-                {{ rightColumnEle.title }}
+                {{ rightColumnEle?.title }}
               </p>
               <p class="pl-list-item-content">
                 <app-format-data

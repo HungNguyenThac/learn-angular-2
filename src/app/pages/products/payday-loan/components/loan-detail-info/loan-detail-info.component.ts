@@ -54,6 +54,9 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
 
   set customerInfo(value: CustomerInfo) {
     this._customerInfo = value;
+    this.leftColumn = this._initLeftColumn();
+    this.middleColumn = this._initMiddleColumn();
+    this.rightColumn = this._initRightColumn();
   }
 
   _loanDetail: PaydayLoanHmg;

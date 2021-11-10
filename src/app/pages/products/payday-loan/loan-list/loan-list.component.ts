@@ -365,7 +365,7 @@ export class LoanListComponent implements OnInit {
       if (filterOption.controlName !== 'companyId') {
         return;
       }
-      filterOption.options[0].subOptions = this.companyList.map(
+      filterOption.options[0].subOptions = this.companyList?.map(
         (company: CompanyInfo) => {
           return {
             title: company.name + ' (' + company.code + ')',
