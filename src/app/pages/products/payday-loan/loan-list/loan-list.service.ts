@@ -54,14 +54,15 @@ export class LoanListService {
     if (params.keyword) {
       requestBody['loanCode' + QUERY_CONDITION_TYPE.LIKE_KEYWORD] =
         params.keyword;
-      requestBody['mobileNumber' + QUERY_CONDITION_TYPE.LIKE_KEYWORD] =
+      requestBody['customerMobileNumber' + QUERY_CONDITION_TYPE.LIKE_KEYWORD] =
         params.keyword;
-      requestBody['emailAddress' + QUERY_CONDITION_TYPE.LIKE_KEYWORD] =
+      requestBody['customerEmail' + QUERY_CONDITION_TYPE.LIKE_KEYWORD] =
         params.keyword;
       requestBody['officeCode' + QUERY_CONDITION_TYPE.LIKE_KEYWORD] =
         params.keyword;
-      requestBody['identityNumberOne' + QUERY_CONDITION_TYPE.LIKE_KEYWORD] =
-        params.keyword;
+      requestBody[
+        'customerIdentityNumberOne' + QUERY_CONDITION_TYPE.LIKE_KEYWORD
+      ] = params.keyword;
     }
     console.log('requestBody--------------------------------', requestBody);
 
