@@ -29,6 +29,7 @@
           [checked]="selectedItem.selected"
           color="primary"
           (change)="filterChange($event, selectedItem)"
+          [matTooltip]="selectedItem.filterItem?.title"
           >{{ selectedItem.filterItem?.title }}</mat-checkbox
         >
         <div
