@@ -6,15 +6,12 @@
 }
 
 ::ng-deep .custom-dialog-container {
-  overflow-x: hidden;
-  overflow-y: auto;
-
   .mat-dialog-container {
     padding: 0;
     border-radius: 12px;
     overflow: inherit;
     box-shadow: none;
-    background: transparent;
+    background: white;
   }
 
   .mat-dialog-content {
