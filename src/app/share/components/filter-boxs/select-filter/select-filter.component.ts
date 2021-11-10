@@ -18,7 +18,6 @@ export class SelectFilterComponent implements OnInit {
   }
 
   set filterOption(filterOptionModel: FilterOptionModel) {
-    console.log('filterOption', filterOptionModel.value);
     this.selectedItems = filterOptionModel.value || [];
     this._filterOption = filterOptionModel;
   }
@@ -52,29 +51,48 @@ export class SelectFilterComponent implements OnInit {
   }
 
   public selectSingleItem(item: FilterItemModel) {
+    //Single select filter
+    if (!this.filterOption.multiple) {
+      this._completeSingleFilter(item.value);
+      return;
+    }
+
+
+    //Get all
+    if (!item.value) {
+      this.resetSelectedItem();
+      return;
+    }
+
+    //Multiple select filter
+    this.selectSubItem(item.value);
+    this._completeMultipleFilter();
+  }
+
+  private _completeMultipleFilter() {
     this.completeFilter.emit({
       type: this.filterOption.type,
       controlName: this.filterOption.controlName,
-      value: item.value,
+      value: this.selectedItems,
+    });
+  }
+
+  private _completeSingleFilter(value) {
+    this.completeFilter.emit({
+      type: this.filterOption.type,
+      controlName: this.filterOption.controlName,
+      value: value,
     });
   }
 
   public resetSelectedItem() {
     this.selectedItems = [];
-    this.completeFilter.emit({
-      type: this.filterOption.type,
-      controlName: this.filterOption.controlName,
-      value: this.selectedItems,
-    });
+    this._completeMultipleFilter();
   }
 
   public completeSelectSubOptionsFilter(element) {
     element.style.display = 'none';
-    this.completeFilter.emit({
-      type: this.filterOption.type,
-      controlName: this.filterOption.controlName,
-      value: this.selectedItems,
-    });
+    this._completeMultipleFilter();
   }
 
   public displayDetailOption(currentElement) {

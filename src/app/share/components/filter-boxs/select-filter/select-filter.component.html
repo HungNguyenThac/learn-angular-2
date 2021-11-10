@@ -16,12 +16,13 @@
           filter-child-item
         "
         [ngClass]="{
-          'filter-child-item-active': filterItem.value === filterOption.value
+          'filter-child-item-active':
+            selectedItems.includes(filterItem.value) ||
+            filterItem.value === filterOption.value
         }"
         *ngFor="let filterItem of filterOption.options"
       >
-        <div
-          class="w-100"
+        <ng-container
           *ngIf="
             filterItem.subOptions && filterItem.subOptions.length > 0;
             else hasNotSubOptions
@@ -126,7 +127,7 @@
               </div>
             </div>
           </div>
-        </div>
+        </ng-container>
 
         <ng-template #hasNotSubOptions>
           <div
@@ -150,6 +151,7 @@
               }}</span>
               <span
                 [ngClass]="
+                  selectedItems.includes(filterItem.value) ||
                   filterItem.value === filterOption.value
                     ? 'sprite-group-5-chevron-right-blue'
                     : 'sprite-group-5-chevron-right-grey'
