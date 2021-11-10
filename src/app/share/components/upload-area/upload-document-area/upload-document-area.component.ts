@@ -12,6 +12,7 @@ import isBase64 from '../../../../core/utils/is-base-64';
 import urlToFile from '../../../../core/utils/url-to-file';
 import getUrlFileName from '../../../../core/utils/get-url-file-name';
 import getUrlExtension from '../../../../core/utils/get-url-extension';
+import { NotificationService } from '../../../../core/services/notification.service';
 
 @Component({
   selector: 'app-upload-document-area',
@@ -21,6 +22,8 @@ import getUrlExtension from '../../../../core/utils/get-url-extension';
 export class UploadDocumentAreaComponent implements OnInit, AfterViewInit {
   @Input() id: string;
   @Input() title: string;
+  @Input() classes: string;
+  @Input() description: string;
   @Input() name: string = 'image-upload-area';
   @Input() hiddenUploadBtn: boolean = false;
   @Input() hiddenDownloadBtn: boolean = false;
@@ -47,7 +50,7 @@ export class UploadDocumentAreaComponent implements OnInit, AfterViewInit {
 
   currentDocumentBtnType: DOCUMENT_BTN_TYPE;
 
-  constructor() {}
+  constructor(private notificationService: NotificationService) {}
 
   ngOnInit(): void {}
 
@@ -108,11 +111,15 @@ export class UploadDocumentAreaComponent implements OnInit, AfterViewInit {
 
   initImgSrc(value): void {
     if (!value) {
-      this.file = null
+      this.file = null;
     }
   }
 
   ngAfterViewInit(): void {
     this.initImgSrc(this.imgSrc);
+  }
+
+  openFullSizeImg(imageSrc) {
+    this.notificationService.openImgFullsizeDiaglog({ imageSrc: imageSrc });
   }
 }

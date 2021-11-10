@@ -1,4 +1,4 @@
-<div class="p-3 d-flex gap-2">
+<div class="d-flex gap-2" [ngClass]="classes">
   <div>
     <div class="op-customer-avatar">
       <img
@@ -6,6 +6,7 @@
         [src]="imgSrc"
         alt="img"
         *ngIf="imgSrc; else isNotImg"
+        (click)="openFullSizeImg(imgSrc)"
       />
       <ng-template #isNotImg>
         <img
@@ -21,9 +22,18 @@
     </div>
   </div>
   <div>
-    <p class="mt-1 upload-img-area-title">
-      {{ title }}
-    </p>
+    <div class="op-upload-img-area-desc" *ngIf="description; else hasNotDesc">
+      <p class="op-upload-img-area-desc-content">{{ description }}</p>
+      <p class="op-upload-img-area-desc-title">
+        {{ "customer.individual_info.avatar" | translate }}
+      </p>
+    </div>
+
+    <ng-template #hasNotDesc>
+      <p class="mt-1 upload-img-area-title">
+        {{ title }}
+      </p>
+    </ng-template>
 
     <!--  Upload  -->
     <app-document-button
@@ -60,13 +70,13 @@
       ></app-document-button>
     </ng-template>
 
-    <input type="reset" [id]="'reset-manual-upload-input-' + id" hidden/>
+    <input type="reset" [id]="'reset-manual-upload-input-' + id" hidden />
     <input
       type="file"
       [(ngModel)]="file"
       [id]="'manual-upload-input-' + id"
       #[{{id}}]
-      (change)="onFileChange($event);"
+      (change)="onFileChange($event)"
       [accept]="acceptFileType"
       [name]="name"
       hidden

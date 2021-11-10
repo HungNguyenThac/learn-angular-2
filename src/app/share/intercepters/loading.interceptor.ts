@@ -10,10 +10,14 @@ import 'rxjs/add/operator/do';
 import { PlLoadingComponent } from '../components';
 import { MatDialog } from '@angular/material/dialog';
 import { finalize } from 'rxjs/operators';
+import { NotificationService } from '../../core/services/notification.service';
 
 @Injectable()
 export class LoadingInterceptor implements HttpInterceptor {
-  constructor(private dialog: MatDialog) {}
+  constructor(
+    private dialog: MatDialog,
+    private notificationService: NotificationService
+  ) {}
 
   intercept(
     req: HttpRequest<any>,
@@ -22,18 +26,11 @@ export class LoadingInterceptor implements HttpInterceptor {
     let dialogRef = null;
 
     if (!req.reportProgress) {
-      Promise.resolve(null).then(
-        () =>
-          (dialogRef = this.dialog.open(PlLoadingComponent, {
-            panelClass: 'hide-content-dialog',
-            height: 'auto',
-            minHeight: '194px',
-            maxWidth: '290px',
-            data: {
-              showContent: false,
-            },
-          }))
-      );
+      Promise.resolve(null).then(() => {
+        dialogRef = this.notificationService.showLoading({
+          showContent: false,
+        });
+      });
     }
 
     return next.handle(req).pipe(

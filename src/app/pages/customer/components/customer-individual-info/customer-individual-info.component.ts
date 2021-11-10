@@ -23,6 +23,7 @@ import { ToastrService } from 'ngx-toastr';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { VirtualAccount } from '../../../../../../open-api-modules/payment-api-docs';
 import * as moment from 'moment';
+import { NotificationService } from '../../../../core/services/notification.service';
 
 @Component({
   selector: 'app-customer-individual-info',
@@ -90,6 +91,7 @@ export class CustomerIndividualInfoComponent implements OnInit, OnDestroy {
     private dialog: MatDialog,
     private customerDetailService: CustomerDetailService,
     private notifier: ToastrService,
+    private notificationService: NotificationService,
     private formBuilder: FormBuilder
   ) {
     this.customerIndividualForm = this.formBuilder.group({
@@ -327,6 +329,10 @@ export class CustomerIndividualInfoComponent implements OnInit, OnDestroy {
     return moment(new Date(timeInput), 'YYYY-MM-DD HH:mm:ss').format(
       'DD/MM/YYYY'
     );
+  }
+
+  openFullSizeImg(imageSrc) {
+    this.notificationService.openImgFullsizeDiaglog({ imageSrc: imageSrc });
   }
 
   ngOnDestroy(): void {

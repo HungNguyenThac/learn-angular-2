@@ -222,6 +222,7 @@ export class CustomerCompanyInfoComponent implements OnInit, OnDestroy {
     return {
       'personalData.companyId': data?.companyId,
       'personalData.organizationName': data?.employeeCode,
+      'personalData.borrowerEmploymentHistoryTextVariable1': data?.borrowerEmploymentHistoryTextVariable1,
       'personalData.firstName': data?.firstName,
       'tngData.ten': data?.tngFirstName || null,
       'tngData.ho': data?.tngLastName || null,
@@ -235,7 +236,7 @@ export class CustomerCompanyInfoComponent implements OnInit, OnDestroy {
     };
   }
 
-  checkSalaryInfo() {
+  public checkSalaryInfo() {
     this.subManager.add(
       this.tngControllerService
         .checkCustomerInformationSalaryReceiptDate(this.customerId)
