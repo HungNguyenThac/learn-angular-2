@@ -1,3 +1,4 @@
+import { PaydayLoanHmg } from './../../../../../../open-api-modules/dashboard-api-docs/model/paydayLoanHmg';
 import { SearchAndPaginationResponsePaydayLoanHmg } from './../../../../../../open-api-modules/dashboard-api-docs/model/searchAndPaginationResponsePaydayLoanHmg';
 import { FilterActionEventModel } from './../../../../public/models/filter/filter-action-event.model';
 import { FilterEventModel } from './../../../../public/models/filter/filter-event.model';
@@ -89,6 +90,7 @@ export class LoanListComponent implements OnInit {
       type: FILTER_TYPE.SELECT,
       controlName: 'status',
       value: null,
+      multiple: true,
       options: [
         {
           title: this.multiLanguageService.instant('common.all'),
@@ -121,6 +123,12 @@ export class LoanListComponent implements OnInit {
         {
           title: this.multiLanguageService.instant('payday_loan.status.funded'),
           value: PAYDAY_LOAN_STATUS.FUNDED,
+        },
+        {
+          title: this.multiLanguageService.instant(
+            'payday_loan.status.contract_awaiting'
+          ),
+          value: PAYDAY_LOAN_STATUS.CONTRACT_AWAITING,
         },
         {
           title: this.multiLanguageService.instant(
@@ -247,10 +255,6 @@ export class LoanListComponent implements OnInit {
     this._initSubscription();
   }
 
-  detectUpdateLoanAfterSign() {
-    this._getLoanList();
-  }
-
   onPageChange(event: PageEvent) {
     this.pageSize = event.pageSize;
     this.pageIndex = event.pageIndex;
@@ -276,9 +280,18 @@ export class LoanListComponent implements OnInit {
   }
 
   loanDetailDetectChangeStatusTrigger(event) {
-    if (event) {
-      this._getLoanList();
-    }
+    this.updateElementInfo(event);
+  }
+
+  public updateElementInfo(updatedLoan: PaydayLoanHmg) {
+    this.dataSource.data.map((item) => {
+      if (item.id === updatedLoan.id) {
+        this.allColumns.forEach((column) => {
+          item[column.key] = updatedLoan[column.key];
+        });
+      }
+      return item;
+    });
   }
 
   public onFilterFormChange(event: FilterEventModel) {
@@ -297,7 +310,9 @@ export class LoanListComponent implements OnInit {
             event.value ? event.value.join(',') : ''
           );
         } else if (event.controlName === 'status') {
-          this.filterForm.controls.status.setValue(event.value);
+          this.filterForm.controls.status.setValue(
+            event.value ? event.value.join(',') : ''
+          );
         }
         break;
       default:
@@ -336,7 +351,7 @@ export class LoanListComponent implements OnInit {
       filterConditions: {
         // keyword: QUERY_CONDITION_TYPE.LIKE,
         companyId: QUERY_CONDITION_TYPE.IN,
-        status: QUERY_CONDITION_TYPE.EQUAL,
+        status: QUERY_CONDITION_TYPE.IN,
         // loanCode: QUERY_CONDITION_TYPE.LIKE,
         // customerMobileNumber: QUERY_CONDITION_TYPE.LIKE,
       },
@@ -409,6 +424,8 @@ export class LoanListComponent implements OnInit {
     }
 
     if (params.groupName === 'TNG') {
+      // Remove status CONTRACT_AWAITING from Filter sidebar
+      this.filterOptions[2].options.splice(6, 1);
       this.subManager.add(
         this.loanListService
           .getLoanDataTng(params)
@@ -422,9 +439,12 @@ export class LoanListComponent implements OnInit {
   }
 
   private _getCompanyList() {
+    const params = this._buildParams();
+    const requestBody = {};
+    requestBody['groupName'] = params.groupName;
     this.subManager.add(
       this.companyControllerService
-        .getCompanies(10, 0, {})
+        .getCompanies(10, 0, requestBody)
         .subscribe(
           (data: ApiResponseSearchAndPaginationResponseCompanyInfo) => {
             this.companyList = data?.result?.data;

@@ -1,38 +1,39 @@
-import {PaydayLoanHmg} from './../../../../../../../open-api-modules/dashboard-api-docs/model/paydayLoanHmg';
-import {ApiResponsePaydayLoanTng} from './../../../../../../../open-api-modules/dashboard-api-docs/model/apiResponsePaydayLoanTng';
-import {ApplicationTngControllerService} from './../../../../../../../open-api-modules/dashboard-api-docs/api/applicationTngController.service';
-import {ApiResponseSearchAndPaginationResponseCompanyInfo} from './../../../../../../../open-api-modules/dashboard-api-docs/model/apiResponseSearchAndPaginationResponseCompanyInfo';
-import {ApiResponseSearchAndPaginationResponseBank} from './../../../../../../../open-api-modules/dashboard-api-docs/model/apiResponseSearchAndPaginationResponseBank';
-import {BankControllerService} from './../../../../../../../open-api-modules/dashboard-api-docs/api/bankController.service';
-import {CompanyInfo} from './../../../../../../../open-api-modules/customer-api-docs/model/companyInfo';
-import {Bank} from './../../../../../../../open-api-modules/dashboard-api-docs/model/bank';
-import {MultiLanguageService} from './../../../../../share/translate/multiLanguageService';
-import {ToastrService} from 'ngx-toastr';
-import {RESPONSE_CODE} from './../../../../../core/common/enum/operator';
-import {ApiResponseCustomerInfo} from './../../../../../../../open-api-modules/dashboard-api-docs/model/apiResponseCustomerInfo';
-import {ApiResponsePaydayLoanHmg} from './../../../../../../../open-api-modules/dashboard-api-docs/model/apiResponsePaydayLoanHmg';
-import {Subscription} from 'rxjs';
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {PaydayLoan} from 'open-api-modules/loanapp-api-docs';
+import { NotificationService } from 'src/app/core/services/notification.service';
+import { PaydayLoanHmg } from './../../../../../../../open-api-modules/dashboard-api-docs/model/paydayLoanHmg';
+import { ApiResponsePaydayLoanTng } from './../../../../../../../open-api-modules/dashboard-api-docs/model/apiResponsePaydayLoanTng';
+import { ApplicationTngControllerService } from './../../../../../../../open-api-modules/dashboard-api-docs/api/applicationTngController.service';
+import { ApiResponseSearchAndPaginationResponseCompanyInfo } from './../../../../../../../open-api-modules/dashboard-api-docs/model/apiResponseSearchAndPaginationResponseCompanyInfo';
+import { ApiResponseSearchAndPaginationResponseBank } from './../../../../../../../open-api-modules/dashboard-api-docs/model/apiResponseSearchAndPaginationResponseBank';
+import { BankControllerService } from './../../../../../../../open-api-modules/dashboard-api-docs/api/bankController.service';
+import { CompanyInfo } from './../../../../../../../open-api-modules/customer-api-docs/model/companyInfo';
+import { Bank } from './../../../../../../../open-api-modules/dashboard-api-docs/model/bank';
+import { MultiLanguageService } from './../../../../../share/translate/multiLanguageService';
+import { ToastrService } from 'ngx-toastr';
+import { RESPONSE_CODE } from './../../../../../core/common/enum/operator';
+import { ApiResponseCustomerInfo } from './../../../../../../../open-api-modules/dashboard-api-docs/model/apiResponseCustomerInfo';
+import { ApiResponsePaydayLoanHmg } from './../../../../../../../open-api-modules/dashboard-api-docs/model/apiResponsePaydayLoanHmg';
+import { Subscription } from 'rxjs';
+import { Component, EventEmitter, Input, OnInit, Output, OnDestroy } from '@angular/core';
+import { PaydayLoan } from 'open-api-modules/loanapp-api-docs';
 import {
   ApplicationHmgControllerService,
   CompanyControllerService,
   CustomerInfo,
 } from 'open-api-modules/dashboard-api-docs';
-import {CustomerDetailService} from 'src/app/pages/customer/components/customer-detail-element/customer-detail.service';
+import { CustomerDetailService } from 'src/app/pages/customer/components/customer-detail-element/customer-detail.service';
 
 @Component({
   selector: 'app-loan-detail',
   templateUrl: './loan-detail.component.html',
   styleUrls: ['./loan-detail.component.scss'],
 })
-export class LoanDetailComponent implements OnInit {
+export class LoanDetailComponent implements OnInit, OnDestroy {
   loanDetail: PaydayLoanHmg;
   userInfo: CustomerInfo;
   bankOptions: Array<Bank>;
   companyOptions: Array<CompanyInfo>;
   @Input() groupName: string;
-  @Output() loanDetailDetectChangeStatus = new EventEmitter<any>();
+  @Output() loanDetailTriggerUpdateStatus = new EventEmitter<any>();
   @Output() detectUpdateLoanAfterSign = new EventEmitter();
   subManager = new Subscription();
 
@@ -43,9 +44,9 @@ export class LoanDetailComponent implements OnInit {
     private notifier: ToastrService,
     private multiLanguageService: MultiLanguageService,
     private bankControllerService: BankControllerService,
-    private companyControllerService: CompanyControllerService
-  ) {
-  }
+    private companyControllerService: CompanyControllerService,
+    private notificationService: NotificationService
+  ) {}
 
   _loanId: string;
 
@@ -69,6 +70,8 @@ export class LoanDetailComponent implements OnInit {
     this._customerId = value;
   }
 
+  timeOut;
+
   ngOnInit(): void {
     this._getLoanById(this.loanId);
     this._getCustomerInfoById(this.customerId);
@@ -76,45 +79,33 @@ export class LoanDetailComponent implements OnInit {
     this._getCompanyList();
   }
 
-  loanDetailDetectChangeStatusTrigger(event) {
-    this.loanDetailDetectChangeStatus.emit(event);
+  loanDetailDetectChangeStatusTrigger() {
+    this.triggerUpdateLoanElement()
   }
 
   triggerUpdateLoanAfterSign() {
-    this.detectUpdateLoanAfterSign.emit();
+    this.triggerUpdateLoanElement()
   }
 
-  public updateCustomerInfo(updateInfoRequest: Object) {
-    this.subManager.add(
-      this.customerDetailService
-        .updateCustomerInfo(this.customerId, updateInfoRequest)
-        .subscribe((result) => {
-          if (result?.responseCode !== RESPONSE_CODE.SUCCESS) {
-            this.notifier.error(
-              JSON.stringify(result?.message),
-              result?.errorCode
-            );
-            return;
-          }
-
-          setTimeout(() => {
-            this.notifier.success(
-              this.multiLanguageService.instant('common.update_success')
-            );
-            this._getCustomerInfoById(this.customerId);
-          }, 1000);
-        })
-    );
+  triggerUpdateLoanElement() {
+    this.notificationService.showLoading({ showContent: true });
+    this.timeOut = setTimeout(() => {
+      this._getLoanById(this.loanId);
+      this.notificationService.hideLoading();
+    }, 3000);
   }
 
   private _getLoanById(loanId) {
     if (!loanId) return;
-    if (this.groupName === "HMG") {
+    if (this.groupName === 'HMG') {
       this.subManager.add(
         this.applicationHmgControllerService
           .getLoanById1(this.loanId)
           .subscribe((data: ApiResponsePaydayLoanHmg) => {
             this.loanDetail = data?.result;
+            this.loanDetailTriggerUpdateStatus.emit(this.loanDetail);
+            this.detectUpdateLoanAfterSign.emit(this.loanDetail);
+            console.log(this.loanDetail, 'loanDetail----------------------');
           })
       );
     }
@@ -124,6 +115,8 @@ export class LoanDetailComponent implements OnInit {
           .getLoanById(this.loanId)
           .subscribe((data: ApiResponsePaydayLoanTng) => {
             this.loanDetail = data?.result;
+            this.loanDetailTriggerUpdateStatus.emit(this.loanDetail);
+            console.log(this.loanDetail, 'loanDetail----------------------');
           })
       );
     }
@@ -167,5 +160,10 @@ export class LoanDetailComponent implements OnInit {
           }
         )
     );
+  }
+
+  ngOnDestroy() {
+    this.subManager.unsubscribe();
+    clearTimeout(this.timeOut);
   }
 }

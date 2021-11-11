@@ -115,6 +115,7 @@
     "op": "OPERATOR",
     "notification": "Thông báo",
     "setting": "Thiết lập hệ thống",
+    "account": "Tài khoản",
     "navigation": {
       "dashboard": "Tổng quan",
       "loanapp": "Khoản vay",
@@ -123,7 +124,8 @@
       "customer": "Khách hàng",
       "insurance": "Bảo hiểm",
       "saving": "Đầu tư"
-    }
+    },
+    "mange_user": "Quản lý người dùng"
   },
   "mat_paginator_intl": {
     "items_per_page": "Số dòng một trang",
@@ -133,6 +135,41 @@
     "last_page": "Trang cuối",
     "next_page": "Trang sau",
     "previous_page": "Trang trước"
+  },
+  "account": {
+    "info": {
+      "_info": "Thông tin tài khoản",
+      "name": "Tên người dùng",
+      "log_in": "Tên đăng nhập",
+      "role": "Vai trò",
+      "phone": "Số điện thoại",
+      "email": "Email",
+      "note": "Ghi chú",
+      "cancel_update": "Bỏ qua",
+      "save_update": "Lưu cập nhật"
+    },
+    "setting": {
+      "security_title": "Đăng nhập và bảo mật",
+      "change_password": "Đổi mật khẩu",
+      "password_des": "Bạn nên sử dụng mật khẩu mạnh và chưa sử dụng ở nơi khác"
+    },
+    "logged_device": {
+      "title": "Thiết bị đã đăng nhập",
+      "log_out": "Đăng xuất",
+      "status_logout": "Đã đăng xuất",
+      "status_current": "Đang sử dụng"
+    },
+    "add": {
+      "title": "Thêm người dùng mới",
+      "name": "Tên người dùng",
+      "log_in": "Tên đăng nhập",
+      "password": "Mật khẩu",
+      "re_password": "Nhắc lại mật khẩu",
+      "role": "Vai trò",
+      "phone": "Số điện thoại",
+      "email": "Email",
+      "note": "Ghi chú"
+    }
   },
   "customer": {
     "tabs": {
@@ -308,7 +345,8 @@
       "completed": "Đã hoàn thành",
       "rejected": "Bị từ chối",
       "withdrew": "Đã hủy",
-      "download": "Tải xuống"
+      "download": "Tải xuống",
+      "no_contract": "Không có hợp đồng"
     },
     "documents": {
       "ekyc_info": "Thông tin EKYC",

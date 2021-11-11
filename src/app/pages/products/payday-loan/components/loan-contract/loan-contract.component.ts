@@ -1,3 +1,9 @@
+import { Contract } from './../../../../../../../open-api-modules/loanapp-api-docs/model/contract';
+import { ApiResponseContract } from './../../../../../../../open-api-modules/loanapp-api-docs/model/apiResponseContract';
+import {
+  CustomerInfo,
+  PaydayLoanHmg,
+} from 'open-api-modules/dashboard-api-docs';
 import { MultiLanguageService } from 'src/app/share/translate/multiLanguageService';
 import { DomSanitizer } from '@angular/platform-browser';
 import {
@@ -25,7 +31,7 @@ import { Subscription } from 'rxjs';
 })
 export class LoanContractComponent implements OnInit, OnDestroy {
   loanContractView: any;
-  loanContractData: any;
+  loanContractData: Contract;
   loanContractFile: any;
   enableSign: boolean = false;
   displayStatus;
@@ -53,16 +59,26 @@ export class LoanContractComponent implements OnInit, OnDestroy {
     this._loanId = value;
   }
 
-  _loanDetail: PaydayLoan;
+  _loanDetail: PaydayLoanHmg;
 
   @Input()
-  get loanDetail(): PaydayLoan {
+  get loanDetail(): PaydayLoanHmg {
     return this._loanDetail;
   }
 
-  set loanDetail(value: PaydayLoan) {
+  set loanDetail(value: PaydayLoanHmg) {
     this._loanDetail = value;
     this.getDisplayStatus();
+  }
+
+  _customerInfo: CustomerInfo;
+  @Input()
+  get customerInfo(): CustomerInfo {
+    return this._customerInfo;
+  }
+
+  set customerInfo(value: CustomerInfo) {
+    this._customerInfo = value;
   }
 
   ngOnInit(): void {
@@ -82,7 +98,24 @@ export class LoanContractComponent implements OnInit, OnDestroy {
   }
 
   checkSignable() {
-    if (this.loanDetail.status === 'CONTRACT_AWAITING') {
+    console.log(
+      this.customerInfo.companyGroupName,
+      this.loanDetail.status,
+      this.loanContractData?.status
+    );
+
+    if (
+      this.customerInfo.companyGroupName === 'HMG' &&
+      this.loanDetail.status === 'CONTRACT_AWAITING'
+    ) {
+      this.enableSign = true;
+    }
+
+    if (
+      this.customerInfo.companyGroupName === 'TNG' &&
+      this.loanDetail.status === 'FUNDED' &&
+      this.loanContractData.status === 'AWAITING_EPAY_SIGNATURE'
+    ) {
       this.enableSign = true;
     }
   }
@@ -148,9 +181,9 @@ export class LoanContractComponent implements OnInit, OnDestroy {
       this.LoanListService.getContractData(
         this.loanDetail.id,
         this.loanDetail.customerId
-      ).subscribe((response) => {
+      ).subscribe((response: ApiResponseContract) => {
         if (response.result === null) {
-          return (this.loanContractData = 'no-contract');
+          return (this.loanContractData = null);
         }
         this.downloadable = true;
         this.loanContractData = response.result;
