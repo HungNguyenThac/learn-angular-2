@@ -125,6 +125,12 @@ export class LoanListComponent implements OnInit {
         },
         {
           title: this.multiLanguageService.instant(
+            'payday_loan.status.contract_awaiting'
+          ),
+          value: PAYDAY_LOAN_STATUS.CONTRACT_AWAITING,
+        },
+        {
+          title: this.multiLanguageService.instant(
             'loan_app.loan_info.disbursement_awaiting'
           ),
           value: PAYDAY_LOAN_STATUS.AWAITING_DISBURSEMENT,
@@ -412,6 +418,8 @@ export class LoanListComponent implements OnInit {
     }
 
     if (params.groupName === 'TNG') {
+      // Remove status CONTRACT_AWAITING from Filter sidebar
+      this.filterOptions[2].options.splice(6, 1);
       this.subManager.add(
         this.loanListService
           .getLoanDataTng(params)
