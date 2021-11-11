@@ -80,6 +80,9 @@
     border-radius: 8px;
     padding: 5px 10px;
   }
+  .mat-form-field-infix {
+    border-top: 0 !important;
+  }
 }
 
 ::ng-deep .mat-paginator {
