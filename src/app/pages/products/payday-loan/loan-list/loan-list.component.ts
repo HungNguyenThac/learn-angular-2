@@ -1,3 +1,4 @@
+import { PaydayLoanHmg } from './../../../../../../open-api-modules/dashboard-api-docs/model/paydayLoanHmg';
 import { SearchAndPaginationResponsePaydayLoanHmg } from './../../../../../../open-api-modules/dashboard-api-docs/model/searchAndPaginationResponsePaydayLoanHmg';
 import { FilterActionEventModel } from './../../../../public/models/filter/filter-action-event.model';
 import { FilterEventModel } from './../../../../public/models/filter/filter-event.model';
@@ -238,7 +239,7 @@ export class LoanListComponent implements OnInit {
     private formBuilder: FormBuilder,
     private router: Router,
     private activatedRoute: ActivatedRoute,
-    private loanListService: LoanListService
+    private loanListService: LoanListService,
   ) {
     this.routeAllState$ = store.select(fromSelectors.getRouterAllState);
     this._initFilterForm();
@@ -283,9 +284,18 @@ export class LoanListComponent implements OnInit {
   }
 
   loanDetailDetectChangeStatusTrigger(event) {
-    // if (event) {
-    //   this._getLoanList();
-    // }
+    this.updateElementInfo(event);
+  }
+
+  public updateElementInfo(updatedLoan: PaydayLoanHmg) {
+    this.dataSource.data.map((item) => {
+      if (item.id === updatedLoan.id) {
+        this.allColumns.forEach((column) => {
+          item[column.key] = updatedLoan[column.key];
+        });
+      }
+      return item;
+    });
   }
 
   public onFilterFormChange(event: FilterEventModel) {

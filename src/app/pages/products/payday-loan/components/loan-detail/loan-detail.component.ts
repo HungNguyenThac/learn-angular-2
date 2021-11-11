@@ -1,3 +1,4 @@
+import { NotificationService } from 'src/app/core/services/notification.service';
 import { PaydayLoanHmg } from './../../../../../../../open-api-modules/dashboard-api-docs/model/paydayLoanHmg';
 import { ApiResponsePaydayLoanTng } from './../../../../../../../open-api-modules/dashboard-api-docs/model/apiResponsePaydayLoanTng';
 import { ApplicationTngControllerService } from './../../../../../../../open-api-modules/dashboard-api-docs/api/applicationTngController.service';
@@ -43,7 +44,8 @@ export class LoanDetailComponent implements OnInit, OnDestroy {
     private notifier: ToastrService,
     private multiLanguageService: MultiLanguageService,
     private bankControllerService: BankControllerService,
-    private companyControllerService: CompanyControllerService
+    private companyControllerService: CompanyControllerService,
+    private notificationService: NotificationService
   ) {}
 
   _loanId: string;
@@ -77,18 +79,20 @@ export class LoanDetailComponent implements OnInit, OnDestroy {
     this._getCompanyList();
   }
 
-  loanDetailDetectChangeStatusTrigger(event) {
+  loanDetailDetectChangeStatusTrigger() {
+    this.notificationService.showLoading({ showContent: true });
     this.timeOut = setTimeout(() => {
       this._getLoanById(this.loanId);
-    }, 1000);
-    this.loanDetailTriggerUpdateStatus.emit();
+      this.notificationService.hideLoading();
+    }, 3000);
   }
 
   triggerUpdateLoanAfterSign() {
+    this.notificationService.showLoading({ showContent: true });
     this.timeOut = setTimeout(() => {
       this._getLoanById(this.loanId);
-    }, 1000);
-    this.detectUpdateLoanAfterSign.emit();
+       this.notificationService.hideLoading();
+    }, 3000);
   }
 
   private _getLoanById(loanId) {
@@ -99,6 +103,8 @@ export class LoanDetailComponent implements OnInit, OnDestroy {
           .getLoanById1(this.loanId)
           .subscribe((data: ApiResponsePaydayLoanHmg) => {
             this.loanDetail = data?.result;
+            this.loanDetailTriggerUpdateStatus.emit(this.loanDetail);
+            this.detectUpdateLoanAfterSign.emit(this.loanDetail);
             console.log(this.loanDetail, 'loanDetail----------------------');
           })
       );
@@ -109,7 +115,8 @@ export class LoanDetailComponent implements OnInit, OnDestroy {
           .getLoanById(this.loanId)
           .subscribe((data: ApiResponsePaydayLoanTng) => {
             this.loanDetail = data?.result;
-            console.log(this.loanDetail,"loanDetail----------------------");
+            this.loanDetailTriggerUpdateStatus.emit(this.loanDetail);
+            console.log(this.loanDetail, 'loanDetail----------------------');
           })
       );
     }
@@ -156,7 +163,7 @@ export class LoanDetailComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.subManager.unsubscribe()
+    this.subManager.unsubscribe();
     clearTimeout(this.timeOut);
   }
 }

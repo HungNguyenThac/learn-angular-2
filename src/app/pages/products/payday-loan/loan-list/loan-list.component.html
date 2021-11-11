@@ -22,8 +22,8 @@
 </app-base-management-layout>
 
 <ng-template #detailElementTemplate>
-  <app-loan-detail (detectUpdateLoanAfterSign)="detectUpdateLoanAfterSign()"
-                   (loanDetailDetectChangeStatus)="loanDetailDetectChangeStatusTrigger($event)"
+  <app-loan-detail (detectUpdateLoanAfterSign)="detectUpdateLoanAfterSign($event)"
+                   (loanDetailTriggerUpdateStatus)="loanDetailDetectChangeStatusTrigger($event)"
                    [customerId]="expandedElementCustomerId"
                    [groupName]="filterForm.controls.groupName.value"
                    [loanId]="expandedElementLoanId"
