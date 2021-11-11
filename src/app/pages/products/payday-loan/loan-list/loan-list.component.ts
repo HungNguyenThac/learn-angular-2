@@ -425,12 +425,19 @@ export class LoanListComponent implements OnInit {
   }
 
   private _getCompanyList() {
+    this.companyList = [];
     this.subManager.add(
       this.companyControllerService
         .getCompanies(10, 0, {})
         .subscribe(
           (data: ApiResponseSearchAndPaginationResponseCompanyInfo) => {
-            this.companyList = data?.result?.data;
+            const params = this._buildParams();
+            // this.companyList = data?.result?.data;
+            for (const ele of data?.result?.data) {
+              if (ele.groupName === params.groupName) {
+                this.companyList.push(ele);
+              }
+            }
             this._initCompanyOptions();
           }
         )
