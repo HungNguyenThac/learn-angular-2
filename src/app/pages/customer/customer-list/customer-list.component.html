@@ -25,5 +25,6 @@
   <app-customer-detail-element
     class="w-100"
     [customerId]="expandedElementId"
+    (updateElementInfo)="updateElementInfo($event)"
   ></app-customer-detail-element>
 </ng-template>

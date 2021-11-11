@@ -18,6 +18,7 @@ import {
   ApiResponseSearchAndPaginationResponseCustomerInfo,
   CompanyControllerService,
   CompanyInfo,
+  CustomerInfo,
 } from '../../../../../open-api-modules/dashboard-api-docs';
 import { CustomerListService } from './customer-list.service';
 import { MatTableDataSource } from '@angular/material/table';
@@ -547,6 +548,15 @@ export class CustomerListComponent implements OnInit, OnDestroy {
         queryParams,
       })
       .then((r) => {});
+  }
+
+  public updateElementInfo(updatedCustomerInfo: CustomerInfo) {
+    this.dataSource.data.map((item) => {
+      if (item.id === updatedCustomerInfo.id) {
+        item.firstName = updatedCustomerInfo.firstName;
+      }
+      return item;
+    });
   }
 
   ngOnDestroy(): void {
