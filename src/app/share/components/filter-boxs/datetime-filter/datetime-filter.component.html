@@ -17,76 +17,87 @@
             justify-content-between
             align-items-center
             filter-child-item
+            cursor-pointer
           "
         >
-          <div>
-            <mat-radio-button
-              [value]="'TIME_FRAME'"
-              color="primary"
-              (click)="displayDetailOption(staticMethodEle)"
-              >{{ chosenTimeFrameMethod }}</mat-radio-button
-            >
-            <div
-              class="filter-form-container-expand"
-              id="staticMethodEle"
-              (mouseleave)="staticMethodEle.style.display = 'none'"
-              #staticMethodEle
-            >
-              <div class="arrow">
-                <svg
-                  width="5"
-                  height="14"
-                  viewBox="0 0 5 14"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M0.408408 6.05719L4.38739 2.25245C4.77964 1.87738 5 1.36867 5 0.838239V13.1618C5 12.6313 4.77964 12.1226 4.38739 11.7475L0.408409 7.94281C-0.136136 7.42211 -0.136137 6.57789 0.408408 6.05719Z"
-                    fill="white"
-                  />
-                </svg>
+          <mat-radio-button
+            [value]="'TIME_FRAME'"
+            color="primary"
+            class="w-100"
+            (click)="displayDetailOption(timeFrameMethodEle, 'TIME_FRAME')"
+          >
+            <div class="d-flex justify-content-between align-items-center">
+              <p [matTooltip]="chosenTimeFrameMethod">
+                {{ chosenTimeFrameMethod }}
+              </p>
+              <div
+                class="
+                  d-inline-flex
+                  justify-content-between
+                  align-items-center
+                  gap-1
+                "
+              >
+                <span
+                  [ngClass]="
+                    selectedTimeFilterMethod === 'TIME_FRAME'
+                      ? 'sprite-group-5-chevron-right-blue'
+                      : 'sprite-group-5-chevron-right-grey'
+                  "
+                ></span>
               </div>
-              <div class="card op-card op-drop-shadow">
-                <div class="card-title d-flex align-items-center gap-1">
-                  {{ "filter.time" | translate }}
-                </div>
-                <div class="card-body">
-                  <div class="all-time-filter-container d-flex flex-wrap gap-3">
+            </div>
+          </mat-radio-button>
+
+          <div
+            class="filter-form-container-expand"
+            id="timeFrameMethodEle"
+            (mouseleave)="timeFrameMethodEle.style.display = 'none'"
+            #timeFrameMethodEle
+          >
+            <div class="arrow">
+              <svg
+                width="5"
+                height="14"
+                viewBox="0 0 5 14"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M0.408408 6.05719L4.38739 2.25245C4.77964 1.87738 5 1.36867 5 0.838239V13.1618C5 12.6313 4.77964 12.1226 4.38739 11.7475L0.408409 7.94281C-0.136136 7.42211 -0.136137 6.57789 0.408408 6.05719Z"
+                  fill="white"
+                />
+              </svg>
+            </div>
+            <div class="card op-card op-drop-shadow">
+              <div class="card-title d-flex align-items-center gap-1">
+                {{ "filter.time" | translate }}
+              </div>
+              <div class="card-body">
+                <div class="all-time-filter-container d-flex flex-wrap gap-3">
+                  <div
+                    class="column-options"
+                    *ngFor="let timeOption of timeFilterOptions"
+                  >
+                    <div class="thead">{{ timeOption.mainTitle }}</div>
                     <div
-                      class="column-options"
-                      *ngFor="let timeOption of timeFilterOptions"
+                      class="trow"
+                      *ngFor="let ele of timeOption.options"
+                      (click)="
+                        chooseTimeFilter(
+                          ele.startDate,
+                          ele.endDate,
+                          ele.title,
+                          timeFrameMethodEle
+                        )
+                      "
                     >
-                      <div class="thead">{{ timeOption.mainTitle }}</div>
-                      <div
-                        class="trow"
-                        *ngFor="let ele of timeOption.options"
-                        (click)="
-                          chooseTimeFilter(
-                            ele.startDate,
-                            ele.endDate,
-                            ele.title,
-                            staticMethodEle
-                          )
-                        "
-                      >
-                        {{ ele.title }}
-                      </div>
+                      {{ ele.title }}
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-          <div
-            class="
-              d-inline-flex
-              justify-content-between
-              align-items-center
-              filter-child-item
-              gap-1
-            "
-          >
-            <span class="sprite-group-5-chevron-right-grey"></span>
           </div>
         </li>
         <li
@@ -97,112 +108,122 @@
             justify-content-between
             align-items-center
             filter-child-item
+            cursor-pointer
           "
         >
-          <div>
-            <mat-radio-button
-              color="primary"
-              [value]="'TIME_RANGE'"
-              (click)="displayDetailOption(stateMethodEle)"
-              >{{ chosenTimeRangeMethod }}</mat-radio-button
-            >
-            <div
-              class="filter-form-container-expand"
-              id="stateMethodEle"
-              (mouseleave)="stateMethodEle.style.display = 'none'"
-              #stateMethodEle
-            >
-              <div class="arrow">
-                <svg
-                  width="5"
-                  height="14"
-                  viewBox="0 0 5 14"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M0.408408 6.05719L4.38739 2.25245C4.77964 1.87738 5 1.36867 5 0.838239V13.1618C5 12.6313 4.77964 12.1226 4.38739 11.7475L0.408409 7.94281C-0.136136 7.42211 -0.136137 6.57789 0.408408 6.05719Z"
-                    fill="white"
-                  />
-                </svg>
-              </div>
+          <mat-radio-button
+            color="primary"
+            [value]="'TIME_RANGE'"
+            class="w-100"
+            (click)="displayDetailOption(timeRangeMethodEle, 'TIME_RANGE')"
+          >
+            <div class="d-flex justify-content-between align-items-center">
+              <p [matTooltip]="chosenTimeRangeMethod">
+                {{ chosenTimeRangeMethod }}
+              </p>
 
-              <div class="card op-card op-drop-shadow">
-                <div class="card-title d-flex align-items-center gap-1 mb-0">
-                  {{ "filter.choose_range_time" | translate }}
-                  <button
-                    mat-button
-                    class="reset-btn"
-                    (click)="resetSelectedDate()"
-                  >
-                    {{ "common.reset" | translate }}
-                  </button>
-                </div>
-                <div class="card-body p-0">
-                  <div class="d-flex">
-                    <div class="datepicker-container">
-                      <div class="description d-flex gap-1">
-                        <span>{{ "filter.from_day" | translate }}</span>
-                        <span class="selected-date" *ngIf="selectedStartDate">{{
+              <div
+                class="
+                  d-inline-flex
+                  justify-content-between
+                  align-items-center
+                  gap-1
+                "
+              >
+                <span
+                  [ngClass]="
+                    selectedTimeFilterMethod === 'TIME_RANGE'
+                      ? 'sprite-group-5-chevron-right-blue'
+                      : 'sprite-group-5-chevron-right-grey'
+                  "
+                ></span>
+              </div></div
+          ></mat-radio-button>
+          <div
+            class="filter-form-container-expand"
+            id="timeRangeMethodEle"
+            (mouseleave)="timeRangeMethodEle.style.display = 'none'"
+            #timeRangeMethodEle
+          >
+            <div class="arrow">
+              <svg
+                width="5"
+                height="14"
+                viewBox="0 0 5 14"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M0.408408 6.05719L4.38739 2.25245C4.77964 1.87738 5 1.36867 5 0.838239V13.1618C5 12.6313 4.77964 12.1226 4.38739 11.7475L0.408409 7.94281C-0.136136 7.42211 -0.136137 6.57789 0.408408 6.05719Z"
+                  fill="white"
+                />
+              </svg>
+            </div>
+
+            <div class="card op-card op-drop-shadow">
+              <div class="card-title d-flex align-items-center gap-1 mb-0">
+                {{ "filter.choose_range_time" | translate }}
+                <button
+                  mat-button
+                  class="reset-btn"
+                  (click)="resetSelectedDate()"
+                >
+                  {{ "common.reset" | translate }}
+                </button>
+              </div>
+              <div class="card-body p-0">
+                <div class="d-flex">
+                  <div class="datepicker-container">
+                    <div class="description d-flex gap-1">
+                      <span>{{ "filter.from_day" | translate }}</span>
+                      <span class="selected-date" *ngIf="selectedStartDate">{{
+                        "filter.selected_date"
+                          | translate
+                            : {
+                                date: selectedStartDay,
+                                day: selectedStartDateDisplay
+                              }
+                      }}</span>
+                    </div>
+                    <mat-card class="calendar-card">
+                      <mat-calendar
+                        [selected]="selectedStartDate"
+                        [maxDate]="currentTime"
+                        (selectedChange)="
+                          onSelectStartDate($event, timeRangeMethodEle)
+                        "
+                      ></mat-calendar>
+                    </mat-card>
+                  </div>
+
+                  <div class="datepicker-container">
+                    <div class="description d-flex gap-1">
+                      <span>{{ "filter.from_day" | translate }}</span>
+                      <span class="selected-date" *ngIf="selectedEndDate">
+                        {{
                           "filter.selected_date"
                             | translate
                               : {
-                                  date: selectedStartDay,
-                                  day: selectedStartDateDisplay
+                                  date: selectedEndDay,
+                                  day: selectedEndDateDisplay
                                 }
-                        }}</span>
-                      </div>
-                      <mat-card class="calendar-card">
-                        <mat-calendar
-                          [selected]="selectedStartDate"
-                          [maxDate]="currentTime"
-                          (selectedChange)="
-                            onSelectStartDate($event, stateMethodEle)
-                          "
-                        ></mat-calendar>
-                      </mat-card>
+                        }}
+                      </span>
                     </div>
-
-                    <div class="datepicker-container">
-                      <div class="description d-flex gap-1">
-                        <span>{{ "filter.from_day" | translate }}</span>
-                        <span class="selected-date" *ngIf="selectedEndDate">
-                          {{
-                            "filter.selected_date"
-                              | translate
-                                : {
-                                    date: selectedEndDay,
-                                    day: selectedEndDateDisplay
-                                  }
-                          }}
-                        </span>
-                      </div>
-                      <mat-card class="calendar-card">
-                        <mat-calendar
-                          [selected]="selectedEndDate"
-                          [maxDate]="currentTime"
-                          [minDate]="selectedStartDate"
-                          (selectedChange)="
-                            onSelectEndDate($event, stateMethodEle)
-                          "
-                        ></mat-calendar>
-                      </mat-card>
-                    </div>
+                    <mat-card class="calendar-card">
+                      <mat-calendar
+                        [selected]="selectedEndDate"
+                        [maxDate]="currentTime"
+                        [minDate]="selectedStartDate"
+                        (selectedChange)="
+                          onSelectEndDate($event, timeRangeMethodEle)
+                        "
+                      ></mat-calendar>
+                    </mat-card>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-          <div
-            class="
-              d-inline-flex
-              justify-content-between
-              align-items-center
-              filter-child-item
-              gap-1
-            "
-          >
-            <span class="sprite-group-5-chevron-right-grey"></span>
           </div>
         </li>
       </mat-radio-group>
