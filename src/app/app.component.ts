@@ -15,6 +15,7 @@ export class AppComponent {
   title = 'monex-op';
 
   constructor(private multiLanguageService: MultiLanguageService) {
+    sessionStorage.clear();
     multiLanguageService.changeLanguage('vi');
     this.multiLanguageService.onSetupMultiLanguage("payment")
   }
