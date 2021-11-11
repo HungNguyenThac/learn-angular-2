@@ -62,7 +62,7 @@
   <div class="row pb-3">
     <div class="col-12">
       <div *ngIf="loanContractData" [innerHTML]="loanContractView" class="pdfView"></div>
-      <div *ngIf="loanContractData === 'no-contract'" class="no-contract">Không có hợp đồng</div>
+      <div *ngIf="!loanContractData" class="no-contract">Không có hợp đồng</div>
     </div>
   </div>
 </div>
