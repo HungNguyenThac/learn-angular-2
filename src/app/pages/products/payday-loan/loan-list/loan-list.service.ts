@@ -48,7 +48,7 @@ export class LoanListService {
         end: params.endTime,
       };
     }
-    requestBody['status'] = params.status;
+    // requestBody['status'] = params.status;
 
     if (!params.status) delete requestBody['status'];
     if (params.keyword) {
@@ -94,7 +94,7 @@ export class LoanListService {
       };
     }
 
-    requestBody['status'] = params.status;
+    // requestBody['status'] = params.status;
 
     if (!params.status) delete requestBody['status'];
     if (params.keyword) {

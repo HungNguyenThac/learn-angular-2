@@ -89,6 +89,7 @@ export class LoanListComponent implements OnInit {
       type: FILTER_TYPE.SELECT,
       controlName: 'status',
       value: null,
+      multiple: true,
       options: [
         {
           title: this.multiLanguageService.instant('common.all'),
@@ -297,7 +298,9 @@ export class LoanListComponent implements OnInit {
             event.value ? event.value.join(',') : ''
           );
         } else if (event.controlName === 'status') {
-          this.filterForm.controls.status.setValue(event.value);
+          this.filterForm.controls.status.setValue(
+            event.value ? event.value.join(',') : ''
+          );
         }
         break;
       default:
@@ -336,7 +339,7 @@ export class LoanListComponent implements OnInit {
       filterConditions: {
         // keyword: QUERY_CONDITION_TYPE.LIKE,
         companyId: QUERY_CONDITION_TYPE.IN,
-        status: QUERY_CONDITION_TYPE.EQUAL,
+        status: QUERY_CONDITION_TYPE.IN,
         // loanCode: QUERY_CONDITION_TYPE.LIKE,
         // customerMobileNumber: QUERY_CONDITION_TYPE.LIKE,
       },
