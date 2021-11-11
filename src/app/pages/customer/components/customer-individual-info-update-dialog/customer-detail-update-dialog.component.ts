@@ -4,15 +4,6 @@ import { MultiLanguageService } from '../../../../share/translate/multiLanguageS
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Component, Inject, OnInit } from '@angular/core';
 import * as moment from 'moment';
-import {
-  MAT_MOMENT_DATE_FORMATS,
-  MomentDateAdapter,
-} from '@angular/material-moment-adapter';
-import {
-  DateAdapter,
-  MAT_DATE_FORMATS,
-  MAT_DATE_LOCALE,
-} from '@angular/material/core';
 import { VirtualAccount } from '../../../../../../open-api-modules/payment-api-docs';
 import { Bank } from 'open-api-modules/dashboard-api-docs';
 import { BUTTON_TYPE } from '../../../../core/common/enum/operator';
@@ -21,15 +12,6 @@ import { BUTTON_TYPE } from '../../../../core/common/enum/operator';
   selector: 'app-customer-detail-update-dialog',
   templateUrl: './customer-detail-update-dialog.component.html',
   styleUrls: ['./customer-detail-update-dialog.component.scss'],
-  providers: [
-    { provide: MAT_DATE_LOCALE, useValue: 'vi-VN' },
-    {
-      provide: DateAdapter,
-      useClass: MomentDateAdapter,
-      deps: [MAT_DATE_LOCALE],
-    },
-    { provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS },
-  ],
 })
 export class CustomerDetailUpdateDialogComponent implements OnInit {
   customerInfo: CustomerInfo = {};

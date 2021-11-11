@@ -1,14 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import * as moment from 'moment';
-import {
-  DateAdapter,
-  MAT_DATE_FORMATS,
-  MAT_DATE_LOCALE,
-} from '@angular/material/core';
-import {
-  MAT_MOMENT_DATE_FORMATS,
-  MomentDateAdapter,
-} from '@angular/material-moment-adapter';
 import { MultiLanguageService } from '../../../translate/multiLanguageService';
 import { FilterEventModel } from '../../../../public/models/filter/filter-event.model';
 import { FilterOptionModel } from '../../../../public/models/filter/filter-option.model';
@@ -19,15 +10,6 @@ import * as _ from 'lodash';
   selector: 'app-datetime-filter',
   templateUrl: './datetime-filter.component.html',
   styleUrls: ['./datetime-filter.component.scss'],
-  providers: [
-    { provide: MAT_DATE_LOCALE, useValue: 'vi-VN' },
-    {
-      provide: DateAdapter,
-      useClass: MomentDateAdapter,
-      deps: [MAT_DATE_LOCALE],
-    },
-    { provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS },
-  ],
 })
 export class DatetimeFilterComponent implements OnInit {
   _filterOption: FilterOptionModel;
