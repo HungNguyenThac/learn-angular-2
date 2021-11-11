@@ -553,17 +553,9 @@ export class CustomerListComponent implements OnInit, OnDestroy {
   public updateElementInfo(updatedCustomerInfo: CustomerInfo) {
     this.dataSource.data.map((item) => {
       if (item.id === updatedCustomerInfo.id) {
-        item.firstName = updatedCustomerInfo.firstName;
-        item.mobileNumber = updatedCustomerInfo.mobileNumber;
-        item.emailAddress = updatedCustomerInfo.emailAddress;
-        item.gender = updatedCustomerInfo.gender;
-        item.dateOfBirth = updatedCustomerInfo.dateOfBirth;
-        item.addressTwoLine1 = updatedCustomerInfo.addressTwoLine1;
-        item.addressOneLine1 = updatedCustomerInfo.addressOneLine1;
-        item.identityNumberOne = updatedCustomerInfo.identityNumberOne;
-        item.companyName = updatedCustomerInfo.companyName;
-        item.organizationName = updatedCustomerInfo.organizationName;
-        item.paydayLoanStatus = updatedCustomerInfo.paydayLoanStatus;
+        this.allColumns.forEach((column) => {
+          item[column.key] = updatedCustomerInfo[column.key];
+        });
       }
       return item;
     });
