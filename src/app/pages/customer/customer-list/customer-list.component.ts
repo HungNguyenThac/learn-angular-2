@@ -557,8 +557,6 @@ export class CustomerListComponent implements OnInit, OnDestroy {
       }
       return item;
     });
-    console.log('this.dataSource.data', this.dataSource.data);
-    console.log('updateElementInfo', updatedCustomerInfo);
   }
 
   ngOnDestroy(): void {
