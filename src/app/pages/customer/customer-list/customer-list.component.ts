@@ -18,6 +18,7 @@ import {
   ApiResponseSearchAndPaginationResponseCustomerInfo,
   CompanyControllerService,
   CompanyInfo,
+  CustomerInfo,
 } from '../../../../../open-api-modules/dashboard-api-docs';
 import { CustomerListService } from './customer-list.service';
 import { MatTableDataSource } from '@angular/material/table';
@@ -239,7 +240,7 @@ export class CustomerListComponent implements OnInit, OnDestroy {
       showed: false,
     },
     {
-      key: 'addressTwoLine2',
+      key: 'addressOneLine1',
       title: this.multiLanguageService.instant(
         'customer.individual_info.current_residence'
       ),
@@ -547,6 +548,17 @@ export class CustomerListComponent implements OnInit, OnDestroy {
         queryParams,
       })
       .then((r) => {});
+  }
+
+  public updateElementInfo(updatedCustomerInfo: CustomerInfo) {
+    this.dataSource.data.map((item) => {
+      if (item.id === updatedCustomerInfo.id) {
+        this.allColumns.forEach((column) => {
+          item[column.key] = updatedCustomerInfo[column.key];
+        });
+      }
+      return item;
+    });
   }
 
   ngOnDestroy(): void {
