@@ -269,7 +269,6 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
       primaryBtnText: this.multiLanguageService.instant('common.confirm'),
       secondaryBtnText: this.multiLanguageService.instant('common.skip'),
     });
-    let reload: any;
     this.subManager.add(
       promptDialogRef.afterClosed().subscribe((buttonType: BUTTON_TYPE) => {
         if (buttonType === BUTTON_TYPE.PRIMARY) {
@@ -283,9 +282,7 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
               .subscribe((result) => {
                 if (result?.responseCode === 200) {
                   this.notifier.success('Cập nhật dữ liệu thành công');
-                  reload = setTimeout(() => {
-                    this.loanDetailDetectChangeStatus.emit('fetching');
-                  }, 1000);
+                  this.loanDetailDetectChangeStatus.emit();
                 } else {
                   this.notifier.error(JSON.stringify(result?.message));
                 }
@@ -298,7 +295,7 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
               .subscribe((result) => {
                 if (result?.responseCode === 200) {
                   this.notifier.success('Cập nhật dữ liệu thành công');
-                  this.loanDetailDetectChangeStatus.emit('fetching');
+                  this.loanDetailDetectChangeStatus.emit();
                 } else {
                   this.notifier.error(JSON.stringify(result?.message));
                 }

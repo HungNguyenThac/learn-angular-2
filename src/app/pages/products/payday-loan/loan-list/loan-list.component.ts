@@ -249,7 +249,7 @@ export class LoanListComponent implements OnInit {
   }
 
   detectUpdateLoanAfterSign() {
-    this._getLoanList();
+    // this._getLoanList();
   }
 
   onPageChange(event: PageEvent) {
@@ -277,9 +277,9 @@ export class LoanListComponent implements OnInit {
   }
 
   loanDetailDetectChangeStatusTrigger(event) {
-    if (event) {
-      this._getLoanList();
-    }
+    // if (event) {
+    //   this._getLoanList();
+    // }
   }
 
   public onFilterFormChange(event: FilterEventModel) {

@@ -11,8 +11,7 @@
         [loanDetail]="loanDetail"
         [loanId]="loanId"
       ></app-loan-detail-info>
-    </ng-template
-    >
+    </ng-template>
   </mat-tab>
 
   <!--  Contract-->
@@ -24,8 +23,7 @@
         [loanId]="loanId"
         [customerInfo]="userInfo"
       ></app-loan-contract>
-    </ng-template
-    >
+    </ng-template>
   </mat-tab>
 
   <!--  Document Info-->
@@ -39,7 +37,10 @@
   </mat-tab>
 
   <!--  Rating Info-->
-  <mat-tab *ngIf="loanDetail?.ratingInfo?.isRated" [label]="'loan_app.tabs.rating' | translate">
+  <mat-tab
+    *ngIf="loanDetail?.ratingInfo?.isRated"
+    [label]="'loan_app.tabs.rating' | translate"
+  >
     <ng-template>
       <app-loan-rating
         [loanDetail]="loanDetail"
@@ -61,5 +62,4 @@
     </ng-template>
     >
   </mat-tab>
-
 </mat-tab-group>
