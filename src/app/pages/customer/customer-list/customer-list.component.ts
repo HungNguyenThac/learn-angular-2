@@ -240,7 +240,7 @@ export class CustomerListComponent implements OnInit, OnDestroy {
       showed: false,
     },
     {
-      key: 'addressTwoLine2',
+      key: 'addressOneLine1',
       title: this.multiLanguageService.instant(
         'customer.individual_info.current_residence'
       ),
@@ -553,7 +553,9 @@ export class CustomerListComponent implements OnInit, OnDestroy {
   public updateElementInfo(updatedCustomerInfo: CustomerInfo) {
     this.dataSource.data.map((item) => {
       if (item.id === updatedCustomerInfo.id) {
-        item.firstName = updatedCustomerInfo.firstName;
+        this.allColumns.forEach((column) => {
+          item[column.key] = updatedCustomerInfo[column.key];
+        });
       }
       return item;
     });
