@@ -239,7 +239,7 @@ export class LoanListComponent implements OnInit {
     private formBuilder: FormBuilder,
     private router: Router,
     private activatedRoute: ActivatedRoute,
-    private loanListService: LoanListService,
+    private loanListService: LoanListService
   ) {
     this.routeAllState$ = store.select(fromSelectors.getRouterAllState);
     this._initFilterForm();
@@ -253,10 +253,6 @@ export class LoanListComponent implements OnInit {
     );
     this.store.dispatch(new fromActions.SetOperatorInfo(NAV_ITEM.LOANAPP));
     this._initSubscription();
-  }
-
-  detectUpdateLoanAfterSign() {
-    // this._getLoanList();
   }
 
   onPageChange(event: PageEvent) {
@@ -443,19 +439,15 @@ export class LoanListComponent implements OnInit {
   }
 
   private _getCompanyList() {
-    this.companyList = [];
+    const params = this._buildParams();
+    const requestBody = {};
+    requestBody['groupName'] = params.groupName;
     this.subManager.add(
       this.companyControllerService
-        .getCompanies(10, 0, {})
+        .getCompanies(10, 0, requestBody)
         .subscribe(
           (data: ApiResponseSearchAndPaginationResponseCompanyInfo) => {
-            const params = this._buildParams();
-            // this.companyList = data?.result?.data;
-            for (const ele of data?.result?.data) {
-              if (ele.groupName === params.groupName) {
-                this.companyList.push(ele);
-              }
-            }
+            this.companyList = data?.result?.data;
             this._initCompanyOptions();
           }
         )

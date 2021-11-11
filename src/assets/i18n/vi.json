@@ -345,7 +345,8 @@
       "completed": "Đã hoàn thành",
       "rejected": "Bị từ chối",
       "withdrew": "Đã hủy",
-      "download": "Tải xuống"
+      "download": "Tải xuống",
+      "no_contract": "Không có hợp đồng"
     },
     "documents": {
       "ekyc_info": "Thông tin EKYC",

@@ -80,18 +80,18 @@ export class LoanDetailComponent implements OnInit, OnDestroy {
   }
 
   loanDetailDetectChangeStatusTrigger() {
+    this.triggerUpdateLoanElement()
+  }
+
+  triggerUpdateLoanAfterSign() {
+    this.triggerUpdateLoanElement()
+  }
+
+  triggerUpdateLoanElement() {
     this.notificationService.showLoading({ showContent: true });
     this.timeOut = setTimeout(() => {
       this._getLoanById(this.loanId);
       this.notificationService.hideLoading();
-    }, 3000);
-  }
-
-  triggerUpdateLoanAfterSign() {
-    this.notificationService.showLoading({ showContent: true });
-    this.timeOut = setTimeout(() => {
-      this._getLoanById(this.loanId);
-       this.notificationService.hideLoading();
     }, 3000);
   }
 
