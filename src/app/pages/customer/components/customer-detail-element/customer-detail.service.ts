@@ -45,11 +45,19 @@ export class CustomerDetailService {
   }
 
   public downloadSingleFileDocument(customerId: string, documentPath: string) {
+    if (sessionStorage.getItem(documentPath)) {
+      return of(
+        this.domSanitizer.bypassSecurityTrustUrl(
+          sessionStorage.getItem(documentPath)
+        )
+      );
+    }
     return this.fileControllerService
       .downloadFile({ customerId, documentPath })
       .pipe(
         map((results) => {
           const imageUrl = this.convertBlobType(results, 'application/image');
+          sessionStorage.setItem(documentPath, imageUrl);
           return this.domSanitizer.bypassSecurityTrustUrl(imageUrl);
         }),
         // catch errors
