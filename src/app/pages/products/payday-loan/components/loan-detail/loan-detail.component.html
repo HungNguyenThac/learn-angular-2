@@ -6,6 +6,7 @@
         (loanDetailDetectChangeStatus)="
           loanDetailDetectChangeStatusTrigger($event)
         "
+        (triggerUpdateInfo)="updateCustomerInfo($event)"
         [customerInfo]="userInfo"
         [groupName]="groupName"
         [loanDetail]="loanDetail"
@@ -58,6 +59,8 @@
         [companyOptions]="companyOptions"
         [customerId]="customerId"
         [customerInfo]="userInfo"
+        [disabledColumns]="disabledColumns"
+        [hiddenColumns]="hiddenColumns"
       ></app-customer-company-info>
     </ng-template>
     >

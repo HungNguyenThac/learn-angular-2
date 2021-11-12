@@ -170,6 +170,77 @@ export class LoanListComponent implements OnInit {
     },
   ];
 
+  statusFilterOptionsHmg = [
+    {
+      title: this.multiLanguageService.instant('common.all'),
+      value: null,
+    },
+    {
+      title: this.multiLanguageService.instant(
+        'loan_app.loan_info.initialized'
+      ),
+      value: PAYDAY_LOAN_STATUS.INITIALIZED,
+    },
+    {
+      title: this.multiLanguageService.instant(
+        'loan_app.loan_info.document_awaiting'
+      ),
+      value: PAYDAY_LOAN_STATUS.DOCUMENT_AWAITING,
+    },
+    {
+      title: this.multiLanguageService.instant(
+        'payday_loan.status.documentation_complete'
+      ),
+      value: PAYDAY_LOAN_STATUS.DOCUMENTATION_COMPLETE,
+    },
+    {
+      title: this.multiLanguageService.instant('loan_app.loan_info.auction'),
+      value: PAYDAY_LOAN_STATUS.AUCTION,
+    },
+    {
+      title: this.multiLanguageService.instant('payday_loan.status.funded'),
+      value: PAYDAY_LOAN_STATUS.FUNDED,
+    },
+    {
+      title: this.multiLanguageService.instant(
+        'payday_loan.status.contract_awaiting'
+      ),
+      value: PAYDAY_LOAN_STATUS.CONTRACT_AWAITING,
+    },
+    {
+      title: this.multiLanguageService.instant(
+        'loan_app.loan_info.disbursement_awaiting'
+      ),
+      value: PAYDAY_LOAN_STATUS.AWAITING_DISBURSEMENT,
+    },
+    {
+      title: this.multiLanguageService.instant('loan_app.loan_info.disbursed'),
+      value: PAYDAY_LOAN_STATUS.DISBURSED,
+    },
+    {
+      title: this.multiLanguageService.instant(
+        'loan_app.loan_info.ỉn_repayment'
+      ),
+      value: PAYDAY_LOAN_STATUS.IN_REPAYMENT,
+    },
+    {
+      title: this.multiLanguageService.instant('loan_app.loan_info.completed'),
+      value: PAYDAY_LOAN_STATUS.COMPLETED,
+    },
+    {
+      title: this.multiLanguageService.instant('loan_app.loan_info.rejected'),
+      value: PAYDAY_LOAN_STATUS.REJECTED,
+    },
+    {
+      title: this.multiLanguageService.instant('loan_app.loan_info.withdrew'),
+      value: PAYDAY_LOAN_STATUS.WITHDRAW,
+    },
+  ];
+
+  statusFilterOptionsTng = this.statusFilterOptionsHmg
+    .slice(0, 6)
+    .concat(this.statusFilterOptionsHmg.slice(7));
+
   allColumns: any[] = [
     {
       key: 'loanCode',
@@ -413,6 +484,7 @@ export class LoanListComponent implements OnInit {
   private _getLoanList() {
     const params = this._buildParams();
     if (params.groupName === 'HMG') {
+      this.filterOptions[2].options = this.statusFilterOptionsHmg;
       this.subManager.add(
         this.loanListService
           .getLoanDataHmg(params)
@@ -426,7 +498,7 @@ export class LoanListComponent implements OnInit {
 
     if (params.groupName === 'TNG') {
       // Remove status CONTRACT_AWAITING from Filter sidebar
-      this.filterOptions[2].options.splice(6, 1);
+      this.filterOptions[2].options = this.statusFilterOptionsTng;
       this.subManager.add(
         this.loanListService
           .getLoanDataTng(params)
