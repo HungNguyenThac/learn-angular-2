@@ -36,6 +36,8 @@ export class LoanDetailComponent implements OnInit, OnDestroy {
   @Output() loanDetailTriggerUpdateStatus = new EventEmitter<any>();
   @Output() detectUpdateLoanAfterSign = new EventEmitter<any>();
   subManager = new Subscription();
+  hiddenColumns: string[] = [];
+  disabledColumns: string[] = ['companyId'];
 
   constructor(
     private applicationHmgControllerService: ApplicationHmgControllerService,
@@ -176,12 +178,11 @@ export class LoanDetailComponent implements OnInit, OnDestroy {
               );
               return;
             }
-
             setTimeout(() => {
               this.notifier.success(
                 this.multiLanguageService.instant('common.update_success')
               );
-              this.triggerUpdateLoanElement();
+              this._getCustomerInfoById(this.customerId);
               this.notificationService.hideLoading();
             }, 3000);
           },

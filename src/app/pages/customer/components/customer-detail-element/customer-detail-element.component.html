@@ -1,4 +1,4 @@
-<mat-tab-group dynamicHeight>
+<mat-tab-group dynamicHeight class="op-tab-group">
   <!--  Individual Info-->
   <mat-tab [label]="'customer.tabs.individual_info' | translate">
     <ng-template matTabContent>
@@ -28,6 +28,8 @@
         [customerInfo]="userInfo"
         [bankOptions]="bankOptions"
         [companyOptions]="companyOptions"
+        [disabledColumns]="disabledColumns"
+        [hiddenColumns]="hiddenColumns"
         (triggerUpdateInfo)="updateCustomerInfo($event)"
       ></app-customer-company-info> </ng-template
   ></mat-tab>
