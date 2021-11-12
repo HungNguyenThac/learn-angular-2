@@ -1,6 +1,6 @@
 import { MultiLanguageService } from '../../../../translate/multiLanguageService';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {
   Bank,
@@ -15,6 +15,8 @@ import { BUTTON_TYPE } from '../../../../../core/common/enum/operator';
   styleUrls: ['./dialog-company-info-update.component.scss'],
 })
 export class DialogCompanyInfoUpdateComponent implements OnInit {
+  disabledColumns: string[];
+  hiddenColumns: string[];
   customerInfo: CustomerInfo = {};
   bankOptions: Array<Bank>;
   companyOptions: Array<CompanyInfo>;
@@ -69,6 +71,8 @@ export class DialogCompanyInfoUpdateComponent implements OnInit {
     this.customerId = data?.customerId;
     this.bankOptions = data?.bankOptions ? data?.bankOptions : [];
     this.companyOptions = data?.companyOptions ? data?.companyOptions : [];
+    this.disabledColumns = data?.disabledColumns ? data?.disabledColumns : [];
+    this.hiddenColumns = data?.hiddenColumns ? data?.hiddenColumns : [];
 
     this.companyInfoForm.patchValue({
       companyId: this.customerInfo.companyId,
@@ -113,6 +117,10 @@ export class DialogCompanyInfoUpdateComponent implements OnInit {
   }
 
   formatAnnualIncomeInputWithSeparator() {
+    if (!this.companyInfoForm.controls.annualIncome.value) {
+      return null;
+    }
+
     let numberValWithSeparator = parseInt(
       this.companyInfoForm.controls.annualIncome.value
     ).toLocaleString('de-de');
@@ -120,6 +128,10 @@ export class DialogCompanyInfoUpdateComponent implements OnInit {
   }
 
   convertAnnualIncomeInputWithoutSeparator() {
+    if (!this.companyInfoForm.controls.annualIncome.value) {
+      return null;
+    }
+
     let numberVal = this.companyInfoForm.controls.annualIncome.value.replace(
       /\D/g,
       ''
