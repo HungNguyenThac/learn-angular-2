@@ -29,6 +29,7 @@ export class DialogCompanyInfoUpdateComponent implements OnInit {
   ];
 
   companyInfoForm: FormGroup;
+  isDisableCompanySelect: boolean = false;
 
   constructor(
     private dialogRef: MatDialogRef<DialogCompanyInfoUpdateComponent>,
@@ -40,6 +41,7 @@ export class DialogCompanyInfoUpdateComponent implements OnInit {
     if (data) {
       this.initDialogData(data);
     }
+    this.isDisableCompanySelect = data.isDisableCompanySelect;
   }
 
   ngOnInit(): void {

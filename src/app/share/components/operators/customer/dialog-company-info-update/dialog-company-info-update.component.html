@@ -30,7 +30,7 @@
                     <mat-label>{{
                       "customer.company_info.company_name" | translate
                     }}</mat-label>
-                    <mat-select formControlName="companyId">
+                    <mat-select formControlName="companyId" [disabled]="isDisableCompanySelect">
                       <mat-option
                         *ngFor="let companyOption of companyOptions"
                         [matTooltip]="
