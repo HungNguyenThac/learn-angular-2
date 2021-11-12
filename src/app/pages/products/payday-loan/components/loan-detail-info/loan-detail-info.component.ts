@@ -399,7 +399,7 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
 
       case PAYDAY_LOAN_STATUS.IN_REPAYMENT:
         this.nextLoanStatus = PAYDAY_LOAN_STATUS.COMPLETED;
-        this.rejectLoanStatus = PAYDAY_LOAN_STATUS.WITHDRAW;
+        this.rejectLoanStatus = PAYDAY_LOAN_STATUS.UNKNOWN_STATUS;
         break;
 
       default:
@@ -412,7 +412,7 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
       `payday_loan.status.${this.nextLoanStatus.toLowerCase()}`
     );
     this.rejectLoanStatusDisplay = this.multiLanguageService.instant(
-      `payday_loan.status.${this.rejectLoanStatus.toLowerCase()}`
+      `payday_loan.status.${this.rejectLoanStatus.toLowerCase()}_action`
     );
 
     return;
