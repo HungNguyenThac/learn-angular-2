@@ -27,6 +27,7 @@ import {
   PaydayLoanHmg,
 } from 'open-api-modules/dashboard-api-docs';
 import { PaydayLoan } from 'open-api-modules/loanapp-api-docs';
+import { FormBuilder, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-loan-detail-info',
@@ -236,6 +237,7 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
   rejectLoanStatus: string = PAYDAY_LOAN_STATUS.UNKNOWN_STATUS;
   rejectLoanStatusDisplay: string;
   salaryStatus: string;
+  customerIndividualForm: FormGroup;
 
   subManager = new Subscription();
   @Output() loanDetailDetectChangeStatus = new EventEmitter<any>();
@@ -245,8 +247,13 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
     private paydayLoanHmgControllerService: PaydayLoanHmgControllerService,
     private paydayLoanTngControllerService: PaydayLoanTngControllerService,
     private notificationService: NotificationService,
-    private notifier: ToastrService
-  ) {}
+    private notifier: ToastrService,
+    private formBuilder: FormBuilder
+  ) {
+    this.customerIndividualForm = this.formBuilder.group({
+      note: [''],
+    });
+  }
 
   ngOnInit(): void {}
 
@@ -417,6 +424,18 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
       'DD/MM/YYYY HH:mm A'
     );
   }
+
+  private _initIndividualFormData(customerId, customerInfo) {
+    this.customerIndividualForm.patchValue({
+      note: customerInfo?.note,
+    });
+  }
+
+  submitForm() {
+    // const data = this.customerIndividualForm.getRawValue();
+    // this.loanDetailDetectChangeStatus.emit();
+  }
+
   ngOnDestroy() {
     this.subManager.unsubscribe();
   }

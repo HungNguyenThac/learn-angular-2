@@ -59,7 +59,9 @@
               </p>
             </li>
             <li>
-              <form class="note-form">
+              <form [formGroup]="customerIndividualForm"
+                class="note-form"
+                (submit)="submitForm()">
                 <mat-form-field appearance="standard" class="w-100">
                   <mat-label
                     class="
@@ -79,6 +81,9 @@
                     class="text-area"
                     id="review"
                     name="review"
+                    formControlName="note"
+                    (blur)="submitForm()"
+                    (keyup.enter)="submitForm()"
                     [placeholder]="'loan_app.loan_info.type_note' | translate"
                   ></textarea>
                 </mat-form-field>
