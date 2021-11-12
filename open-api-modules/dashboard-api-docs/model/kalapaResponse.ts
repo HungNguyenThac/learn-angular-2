@@ -18,8 +18,14 @@ export interface KalapaResponse {
     createdAt?: string;
     taxName?: string;
     verified?: boolean;
+    skipValidate?: boolean;
     idCardInfo?: IdCardInfo;
     selfieCheck?: SelfieCheck;
     fraudCheck?: FraudCheck;
+    customerId?: string;
+    createdBy?: string;
+    provider?: string;
+    status?: boolean;
+    result?: { [key: string]: object; };
 }
 

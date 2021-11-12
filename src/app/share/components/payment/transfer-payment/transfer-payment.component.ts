@@ -6,9 +6,9 @@ import {
   OnInit,
   Output,
 } from '@angular/core';
-import { PaymentVirtualAccount } from '../../../../public/models/payment-virtual-account.model';
-import { PaymentUserInfo } from '../../../../public/models/payment-user-info.model';
-import { PaymentProductInfo } from '../../../../public/models/payment-product-info.model';
+import { PaymentVirtualAccount } from '../../../../public/models/payment/payment-virtual-account.model';
+import { PaymentUserInfo } from '../../../../public/models/payment/payment-user-info.model';
+import { PaymentProductInfo } from '../../../../public/models/payment/payment-product-info.model';
 import { MatDialog } from '@angular/material/dialog';
 import { GuideTransferPaymentDialogComponent } from '../guide-transfer-payment-dialog/guide-transfer-payment-dialog.component';
 import { Observable, Subscription } from 'rxjs';
@@ -22,6 +22,7 @@ import { ERROR_CODE_KEY } from '../../../../core/common/enum/payday-loan';
 import { NotificationService } from '../../../../core/services/notification.service';
 import { MultiLanguageService } from '../../../translate/multiLanguageService';
 import * as moment from "moment";
+import {RESPONSE_CODE} from "../../../../core/common/enum/operator";
 
 @Component({
   selector: 'app-transfer-payment',
@@ -118,7 +119,7 @@ export class TransferPaymentComponent implements OnInit, OnDestroy {
           if (
             !response ||
             response.errorCode ||
-            response.responseCode !== 200
+            response.responseCode !== RESPONSE_CODE.SUCCESS
           ) {
             return this.handleResponseError(response?.errorCode);
           }

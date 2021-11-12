@@ -38,6 +38,17 @@ export enum DOCUMENT_TYPE {
   SALARY_INFORMATION_THREE = 'SALARY_INFORMATION_THREE',
 }
 
+export enum DOCUMENT_TYPE_MAPPING_FIELD {
+  FRONT_ID_CARD = 'personalData.frontId',
+  BACK_ID_CARD = 'personalData.backId',
+  FRONT_ID_CARD_TWO = 'personalData.frontIdTwo',
+  BACK_ID_CARD_TWO = 'personalData.backIdTwo',
+  VEHICLE_REGISTRATION = 'personalData.collateralDocument',
+  SALARY_INFORMATION_ONE = 'personalData.salaryDocument1',
+  SALARY_INFORMATION_TWO = 'personalData.salaryDocument2',
+  SALARY_INFORMATION_THREE = 'personalData.salaryDocument3',
+}
+
 export enum ERROR_CODE {
   ACCOUNT_EXISTED = 'ACCOUNT_EXISTED',
   EMAIL_ALREADY_EXISTS = 'EMAIL_ALREADY_EXISTS',
@@ -136,9 +147,24 @@ export enum PAYDAY_LOAN_UI_STATUS {
 }
 
 export enum PAYDAY_LOAN_UI_STATUS_TEXT {
-  NOT_COMPLETE_EKYC_YET = 'Chưa EKYC',
-  NOT_COMPLETE_FILL_EKYC_YET = 'Chưa xác thực thông tin',
-  NOT_ACCEPTING_TERM_YET = 'Chưa ký thư chấp thuận',
-  NOT_COMPLETE_CDE_YET = 'Chưa bổ sung thông tin',
-  COMPLETED_CDE = 'Đã bổ sung thông tin',
+  NOT_COMPLETE_EKYC_YET = 'payday_loan.pl_ui_status.not_complete_ekyc_yet',
+  NOT_COMPLETE_FILL_EKYC_YET = 'payday_loan.pl_ui_status.not_complete_fill_ekyc_yet',
+  NOT_ACCEPTING_TERM_YET = 'payday_loan.pl_ui_status.not_accepting_term_yet',
+  NOT_COMPLETE_CDE_YET = 'payday_loan.pl_ui_status.not_complete_cde_yet',
+  COMPLETED_CDE = 'payday_loan.pl_ui_status.completed_cde',
+}
+
+export enum PAYDAY_LOAN_OTHER_STATUS {
+  NOT_RECEIVED_SALARY_YET = 'loan_app.loan_info.not_received_salary',
+  RECEIVED_SALARY = 'loan_app.loan_info.received_salary',
+  NOT_PAID_YET = 'loan_app.loan_info.unpaid',
+  COMPLETED_PAID = 'success',
+}
+
+export enum PAYDAY_LOAN_RATING_STATUS {
+  NOT_SATISFIED = 'NOT_SATISFIED',
+  SEMI_SATISFIED = 'SEMI_SATISFIED',
+  NORMAL = 'NORMAL',
+  SATISFIED = 'SATISFIED',
+  VERY_SATISFIED = 'VERY_SATISFIED',
 }

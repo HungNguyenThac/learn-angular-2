@@ -7,6 +7,8 @@ import { MultiLanguageService } from '../../../../share/translate/multiLanguageS
 import { CustomerDetailService } from '../customer-detail-element/customer-detail.service';
 import { Subscription } from 'rxjs';
 import { DATA_CELL_TYPE } from '../../../../core/common/enum/operator';
+import { ToastrService } from 'ngx-toastr';
+import { NotificationService } from '../../../../core/services/notification.service';
 
 @Component({
   selector: 'app-customer-ekyc-info',
@@ -22,6 +24,7 @@ export class CustomerEkycInfoComponent implements OnInit {
 
   set customerInfo(value: CustomerInfo) {
     this._getEKYCDocument(this.customerId, value);
+    this.rightEkycInfos = this._initRightEkycInfos();
     this._customerInfo = value;
   }
 
@@ -39,17 +42,28 @@ export class CustomerEkycInfoComponent implements OnInit {
   backIdSrc: string;
   frontIdSrc: string;
 
-  get rightEkycInfos() {
+  rightEkycInfos: any[];
+
+  constructor(
+    private multiLanguageService: MultiLanguageService,
+    private customerDetailService: CustomerDetailService,
+    private notifier: ToastrService,
+    private notificationService: NotificationService
+  ) {}
+
+  ngOnInit(): void {}
+
+  private _initRightEkycInfos() {
     return [
       {
         title: this.multiLanguageService.instant('customer.identity.id_number'),
-        value: this.customerInfo.kalapaData?.idCardInfo?.id,
+        value: this.customerInfo?.kalapaData?.idCardInfo?.id,
         type: DATA_CELL_TYPE.TEXT,
         format: null,
       },
       {
         title: this.multiLanguageService.instant('customer.identity.fullname'),
-        value: this.customerInfo.kalapaData?.idCardInfo?.name,
+        value: this.customerInfo?.kalapaData?.idCardInfo?.name,
         type: DATA_CELL_TYPE.TEXT,
         format: null,
       },
@@ -57,7 +71,7 @@ export class CustomerEkycInfoComponent implements OnInit {
         title: this.multiLanguageService.instant(
           'customer.identity.date_of_birth'
         ),
-        value: this.customerInfo.kalapaData?.idCardInfo?.dob,
+        value: this.customerInfo?.kalapaData?.idCardInfo?.dob,
         type: DATA_CELL_TYPE.TEXT,
         format: null,
       },
@@ -65,13 +79,13 @@ export class CustomerEkycInfoComponent implements OnInit {
         title: this.multiLanguageService.instant(
           'customer.identity.phone_number'
         ),
-        value: this.customerInfo.mobileNumber,
+        value: this.customerInfo?.mobileNumber,
         type: DATA_CELL_TYPE.TEXT,
         format: null,
       },
       {
         title: this.multiLanguageService.instant('customer.identity.id_origin'),
-        value: this.customerInfo.kalapaData?.idCardInfo?.home,
+        value: this.customerInfo?.kalapaData?.idCardInfo?.home,
         type: DATA_CELL_TYPE.TEXT,
         format: null,
       },
@@ -91,7 +105,7 @@ export class CustomerEkycInfoComponent implements OnInit {
         title: this.multiLanguageService.instant(
           'customer.identity.id_features'
         ),
-        value: this.customerInfo.kalapaData?.idCardInfo?.features,
+        value: this.customerInfo?.kalapaData?.idCardInfo?.features,
         type: DATA_CELL_TYPE.TEXT,
         format: null,
       },
@@ -99,7 +113,7 @@ export class CustomerEkycInfoComponent implements OnInit {
         title: this.multiLanguageService.instant(
           'customer.identity.id_issue_date'
         ),
-        value: this.customerInfo.kalapaData?.idCardInfo?.dateOfIssue,
+        value: this.customerInfo?.kalapaData?.idCardInfo?.dateOfIssue,
         type: DATA_CELL_TYPE.TEXT,
         format: null,
       },
@@ -107,7 +121,7 @@ export class CustomerEkycInfoComponent implements OnInit {
         title: this.multiLanguageService.instant(
           'customer.identity.id_issue_place'
         ),
-        value: this.customerInfo.kalapaData?.idCardInfo?.placeOfIssue,
+        value: this.customerInfo?.kalapaData?.idCardInfo?.placeOfIssue,
         type: DATA_CELL_TYPE.TEXT,
         format: null,
       },
@@ -115,19 +129,12 @@ export class CustomerEkycInfoComponent implements OnInit {
         title: this.multiLanguageService.instant(
           'customer.identity.received_date'
         ),
-        value: this.customerInfo.kalapaData?.createdAt,
+        value: this.customerInfo?.kalapaData?.createdAt,
         type: DATA_CELL_TYPE.DATETIME,
         format: 'dd/MM/yyyy HH:mm',
       },
     ];
   }
-
-  constructor(
-    private multiLanguageService: MultiLanguageService,
-    private customerDetailService: CustomerDetailService
-  ) {}
-
-  ngOnInit(): void {}
 
   private _getEKYCDocument(customerId, customerInfo) {
     if (customerInfo?.frontId) {
@@ -152,10 +159,17 @@ export class CustomerEkycInfoComponent implements OnInit {
   }
 
   downloadDocumentByPath(documentPath) {
+    this.notifier.info(
+      this.multiLanguageService.instant('common.process_downloading')
+    );
     this.subManager.add(
       this.customerDetailService
         .downloadFileDocument(this.customerId, documentPath)
         .subscribe((data) => {})
     );
+  }
+
+  openFullSizeImg(imageSrc) {
+    this.notificationService.openImgFullsizeDiaglog({ imageSrc: imageSrc });
   }
 }

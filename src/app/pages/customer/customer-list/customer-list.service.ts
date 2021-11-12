@@ -23,30 +23,21 @@ export class CustomerListService {
     }
 
     if (params.startTime || params.endTime) {
-      let startTime = params.startTime
-        ? new Date(
-            new Date(params.startTime).getTime() + 25200000
-          ).toISOString()
-        : null;
-      let endTime = params.endTime
-        ? new Date(new Date(params.endTime).getTime() + 25200000).toISOString()
-        : null;
-
-      //If is same day filter between 00:00:00 and 23:59:59
-      if (
-        !_.isEmpty(startTime) &&
-        !_.isEmpty(endTime) &&
-        startTime == endTime
-      ) {
-        endTime = new Date(
-          new Date(endTime).getTime() + 86400000 - 1
-        ).toISOString();
-      }
-
       requestBody['createdAt' + QUERY_CONDITION_TYPE.BETWEEN] = {
-        start: startTime,
-        end: endTime,
+        start: params.startTime,
+        end: params.endTime,
       };
+    }
+
+    if (params.keyword) {
+      requestBody['firstName' + QUERY_CONDITION_TYPE.LIKE_KEYWORD] =
+        params.keyword;
+      requestBody['mobileNumber' + QUERY_CONDITION_TYPE.LIKE_KEYWORD] =
+        params.keyword;
+      requestBody['emailAddress' + QUERY_CONDITION_TYPE.LIKE_KEYWORD] =
+        params.keyword;
+      requestBody['organizationName' + QUERY_CONDITION_TYPE.LIKE_KEYWORD] =
+        params.keyword;
     }
 
     return this.customerControllerService.getCustomers(

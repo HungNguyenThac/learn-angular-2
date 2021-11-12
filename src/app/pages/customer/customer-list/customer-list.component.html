@@ -1,5 +1,6 @@
 <app-base-management-layout
   [detailElementTemplate]="detailElementTemplate"
+  [filterOptions]="filterOptions"
   [pageSize]="pageSize"
   [pageIndex]="pageIndex"
   [pageSizeOptions]="pageSizeOptions"
@@ -8,13 +9,15 @@
   [tableTitle]="tableTitle"
   [pageLength]="pageLength"
   [dataSource]="dataSource"
-  [orderBy]="this.filterForm.controls.orderBy?.value"
-  [sortDirection]="this.filterForm.controls.sortDirection?.value"
+  [orderBy]="filterForm.controls.orderBy?.value"
+  [sortDirection]="filterForm.controls.sortDirection?.value"
   [breadcrumbOptions]="breadcrumbOptions"
   (onPageChange)="onPageChange($event)"
   (onSortChange)="onSortChange($event)"
   (onExpandElementChange)="onExpandElementChange($event)"
   (onSubmitSearchForm)="onSubmitSearchForm($event)"
+  (onFilterChange)="onFilterFormChange($event)"
+  (onFilterActionTrigger)="onFilterActionTrigger($event)"
 >
 </app-base-management-layout>
 
@@ -22,5 +25,6 @@
   <app-customer-detail-element
     class="w-100"
     [customerId]="expandedElementId"
+    (updateElementInfo)="updateElementInfo($event)"
   ></app-customer-detail-element>
 </ng-template>

@@ -1,0 +1,390 @@
+<div class="container-fluid">
+  <div class="card op-card">
+    <button mat-icon-button tabindex="-1" class="close-btn" mat-dialog-close>
+      <svg
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M4.2097 4.3871L4.29289 4.29289C4.65338 3.93241 5.22061 3.90468 5.6129 4.2097L5.70711 4.29289L12 10.585L18.2929 4.29289C18.6834 3.90237 19.3166 3.90237 19.7071 4.29289C20.0976 4.68342 20.0976 5.31658 19.7071 5.70711L13.415 12L19.7071 18.2929C20.0676 18.6534 20.0953 19.2206 19.7903 19.6129L19.7071 19.7071C19.3466 20.0676 18.7794 20.0953 18.3871 19.7903L18.2929 19.7071L12 13.415L5.70711 19.7071C5.31658 20.0976 4.68342 20.0976 4.29289 19.7071C3.90237 19.3166 3.90237 18.6834 4.29289 18.2929L10.585 12L4.29289 5.70711C3.93241 5.34662 3.90468 4.77939 4.2097 4.3871L4.29289 4.29289L4.2097 4.3871Z"
+          fill="#8E8E93"
+        />
+      </svg>
+    </button>
+    <div class="card-title title">
+      {{ "customer.individual_info.update_company_info" | translate }}
+    </div>
+    <div class="card-body">
+      <form [formGroup]="companyInfoForm" (ngSubmit)="submitForm()">
+        <div class="row">
+          <!--  Info  -->
+          <section class="col-12">
+            <div class="row">
+              <!-- Left Individual Info -->
+              <div class="col-12 col-sm-12 col-md-6 col-lg-6 pr-2">
+                <div>
+                  <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>{{
+                      "customer.company_info.company_name" | translate
+                    }}</mat-label>
+                    <mat-select formControlName="companyId">
+                      <mat-option
+                        *ngFor="let companyOption of companyOptions"
+                        [matTooltip]="
+                          companyOption.name + ' (' + companyOption.code + ')'
+                        "
+                        [value]="companyOption.id"
+                        [disabled]="companyOption.code === 'TNG'"
+                      >
+                        {{
+                          companyOption.name + " (" + companyOption.code + ")"
+                        }}
+                      </mat-option>
+                    </mat-select>
+                    <show-errors
+                      [control]="companyInfoForm.controls['companyId']"
+                      [controlLabel]="
+                        'customer.company_info.company_name' | translate
+                      "
+                      [hasIconPrefix]="false"
+                    >
+                    </show-errors>
+                  </mat-form-field>
+                </div>
+
+                <div>
+                  <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>{{
+                      "customer.company_info.employee_code" | translate
+                    }}</mat-label>
+                    <input
+                      matInput
+                      [placeholder]="
+                        'customer.company_info.employee_code' | translate
+                      "
+                      formControlName="employeeCode"
+                    />
+                    <show-errors
+                      [control]="companyInfoForm.controls['employeeCode']"
+                      [controlLabel]="
+                        'customer.company_info.employee_code' | translate
+                      "
+                      [hasIconPrefix]="false"
+                    >
+                    </show-errors>
+                  </mat-form-field>
+                </div>
+
+                <div>
+                  <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>{{
+                      "customer.company_info.working_time" | translate
+                    }}</mat-label>
+                    <mat-select
+                      formControlName="borrowerEmploymentHistoryTextVariable1"
+                      [placeholder]="
+                        'customer.company_info.working_time' | translate
+                      "
+                      required
+                    >
+                      <div *ngFor="let option of workingTimeOptions">
+                        <mat-option [value]="option" [matTooltip]="option">
+                          {{ option }}
+                        </mat-option>
+                        <mat-divider></mat-divider>
+                      </div>
+                    </mat-select>
+                    <show-errors
+                      [control]="
+                        companyInfoForm.controls[
+                          'borrowerEmploymentHistoryTextVariable1'
+                        ]
+                      "
+                      [controlLabel]="
+                        'customer.company_info.working_time' | translate
+                      "
+                      [hasIconPrefix]="false"
+                    >
+                    </show-errors>
+                  </mat-form-field>
+                </div>
+
+                <div>
+                  <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>{{
+                      "customer.company_info.full_name" | translate
+                    }}</mat-label>
+                    <input
+                      matInput
+                      required
+                      [placeholder]="
+                        'customer.company_info.full_name' | translate
+                      "
+                      formControlName="firstName"
+                    />
+                    <show-errors
+                      [control]="companyInfoForm.controls['firstName']"
+                      [controlLabel]="
+                        'customer.company_info.full_name' | translate
+                      "
+                      [hasIconPrefix]="false"
+                    >
+                    </show-errors>
+                  </mat-form-field>
+                </div>
+
+                <div>
+                  <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>{{
+                      "customer.company_info.last_name" | translate
+                    }}</mat-label>
+                    <input
+                      matInput
+                      [placeholder]="
+                        'customer.company_info.last_name' | translate
+                      "
+                      formControlName="tngLastName"
+                    />
+                    <show-errors
+                      [control]="companyInfoForm.controls['tngLastName']"
+                      [controlLabel]="
+                        'customer.company_info.last_name' | translate
+                      "
+                      [hasIconPrefix]="false"
+                    >
+                    </show-errors>
+                  </mat-form-field>
+                </div>
+
+                <div>
+                  <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>{{
+                      "customer.company_info.first_name" | translate
+                    }}</mat-label>
+                    <input
+                      matInput
+                      [placeholder]="
+                        'customer.company_info.first_name' | translate
+                      "
+                      formControlName="tngFirstName"
+                    />
+                    <show-errors
+                      [control]="companyInfoForm.controls['tngFirstName']"
+                      [controlLabel]="
+                        'customer.company_info.first_name' | translate
+                      "
+                      [hasIconPrefix]="false"
+                    >
+                    </show-errors>
+                  </mat-form-field>
+                </div>
+
+                <div>
+                  <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>{{
+                      "customer.company_info.office_code" | translate
+                    }}</mat-label>
+                    <input
+                      matInput
+                      [placeholder]="
+                        'customer.company_info.office_code' | translate
+                      "
+                      formControlName="officeCode"
+                    />
+                    <show-errors
+                      [control]="companyInfoForm.controls['officeCode']"
+                      [controlLabel]="
+                        'customer.company_info.office_code' | translate
+                      "
+                      [hasIconPrefix]="false"
+                    >
+                    </show-errors>
+                  </mat-form-field>
+                </div>
+
+                <div>
+                  <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>{{
+                      "customer.company_info.office_name" | translate
+                    }}</mat-label>
+                    <input
+                      matInput
+                      [placeholder]="
+                        'customer.company_info.office_name' | translate
+                      "
+                      formControlName="officeName"
+                    />
+                    <show-errors
+                      [control]="companyInfoForm.controls['officeName']"
+                      [controlLabel]="
+                        'customer.company_info.office_name' | translate
+                      "
+                      [hasIconPrefix]="false"
+                    >
+                    </show-errors>
+                  </mat-form-field>
+                </div>
+              </div>
+
+              <!-- Right Individual Info -->
+              <div class="col-12 col-sm-12 col-md-6 col-lg-6 pr-2">
+                <div>
+                  <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>{{
+                      "customer.company_info.annual_income" | translate
+                    }}</mat-label>
+                    <input
+                      matInput
+                      id="annualIncome"
+                      appNumberOnly
+                      (focusin)="convertAnnualIncomeInputWithoutSeparator()"
+                      (focusout)="formatAnnualIncomeInputWithSeparator()"
+                      [placeholder]="
+                        'customer.company_info.annual_income' | translate
+                      "
+                      formControlName="annualIncome"
+                    />
+                    <show-errors
+                      [control]="companyInfoForm.controls['annualIncome']"
+                      [controlLabel]="
+                        'customer.company_info.annual_income' | translate
+                      "
+                      [hasIconPrefix]="false"
+                    >
+                    </show-errors>
+                  </mat-form-field>
+                </div>
+
+                <div>
+                  <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>{{
+                      "customer.company_info.working_days" | translate
+                    }}</mat-label>
+                    <input
+                      matInput
+                      appNumberOnly
+                      [placeholder]="
+                        'customer.company_info.working_days' | translate
+                      "
+                      formControlName="workingDay"
+                    />
+                    <show-errors
+                      [control]="companyInfoForm.controls['workingDay']"
+                      [controlLabel]="
+                        'customer.company_info.working_days' | translate
+                      "
+                      [hasIconPrefix]="false"
+                    >
+                    </show-errors>
+                  </mat-form-field>
+                </div>
+
+                <div>
+                  <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>{{
+                      "customer.company_info.account_number" | translate
+                    }}</mat-label>
+                    <input
+                      matInput
+                      appNumberOnly
+                      [placeholder]="
+                        'customer.company_info.account_number' | translate
+                      "
+                      formControlName="accountNumber"
+                    />
+                    <show-errors
+                      [control]="companyInfoForm.controls['accountNumber']"
+                      [controlLabel]="
+                        'customer.company_info.account_number' | translate
+                      "
+                      [hasIconPrefix]="false"
+                    >
+                    </show-errors>
+                  </mat-form-field>
+                </div>
+
+                <div>
+                  <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>{{
+                      "customer.individual_info.bank_name" | translate
+                    }}</mat-label>
+                    <mat-select
+                      formControlName="bankCode"
+                      (selectionChange)="changeBank($event)"
+                    >
+                      <mat-option
+                        *ngFor="let bankNameOption of bankOptions"
+                        [matTooltip]="
+                          bankNameOption.bankName +
+                          ' (' +
+                          bankNameOption.bankCode +
+                          ')'
+                        "
+                        [value]="bankNameOption.bankCode"
+                      >
+                        {{
+                          bankNameOption.bankName +
+                            " (" +
+                            bankNameOption.bankCode +
+                            ")"
+                        }}
+                      </mat-option>
+                    </mat-select>
+                    <show-errors
+                      [control]="companyInfoForm.controls['bankCode']"
+                      [controlLabel]="
+                        'customer.individual_info.bank_name' | translate
+                      "
+                      [hasIconPrefix]="false"
+                    >
+                    </show-errors>
+                  </mat-form-field>
+                </div>
+
+                <div>
+                  <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>{{
+                      "customer.company_info.bank_code" | translate
+                    }}</mat-label>
+                    <input
+                      matInput
+                      [placeholder]="
+                        'customer.company_info.bank_code' | translate
+                      "
+                      [value]="companyInfoForm.controls.bankCode.value"
+                      disabled
+                      readonly
+                    />
+                  </mat-form-field>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+        <!--  Actions -->
+
+        <div class="row mt-3">
+          <div class="col-12 d-flex gap-2 justify-content-end">
+            <button
+              type="button"
+              mat-flat-button
+              color="warn"
+              autofocus
+              mat-dialog-close
+              cdkFocusInitial
+            >
+              {{ "customer.individual_info.cancel_update" | translate }}
+            </button>
+            <button type="submit" mat-flat-button color="accent">
+              <span class="sprite-group-5-save-white"></span>
+              {{ "customer.individual_info.save_update" | translate }}
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

@@ -13,9 +13,9 @@ import { VoucherTransaction } from './voucherTransaction';
 
 
 export interface CreateApplicationRequest { 
-    coreToken?: string;
+    coreToken: string;
     customerId: string;
-    expectedAmount?: number;
+    expectedAmount: number;
     purpose?: string;
     voucherTransaction?: VoucherTransaction;
 }

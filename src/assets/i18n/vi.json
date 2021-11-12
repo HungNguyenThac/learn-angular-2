@@ -44,6 +44,7 @@
     "register": "Đăng ký",
     "home": "Trang chủ",
     "confirm": "Xác nhận",
+    "skip": "Bỏ qua",
     "change": "Thay đổi",
     "no_options": "Không có bản ghi nào",
     "no_search_result": "Không có kết quả phù hợp với ",
@@ -63,7 +64,11 @@
     "loading_content": "Quá trình sẽ mất khoảng một vài giây, vui lòng không thoát ứng dụng",
     "reset": "Đặt lại",
     "field": "Trường thông tin",
-    "no_matching_records": "Không có bản ghi nào!"
+    "no_matching_records": "Không có bản ghi nào!",
+    "active": "Đang hoạt động",
+    "inactive": "Ngừng hoạt động",
+    "update_success": "Cập nhật dữ liệu thành công",
+    "process_downloading": "Đang tải xuống tài liệu"
   },
   "auth": {
     "phone_number": "Số điện thoại",
@@ -110,6 +115,7 @@
     "op": "OPERATOR",
     "notification": "Thông báo",
     "setting": "Thiết lập hệ thống",
+    "account": "Tài khoản",
     "navigation": {
       "dashboard": "Tổng quan",
       "loanapp": "Khoản vay",
@@ -118,7 +124,8 @@
       "customer": "Khách hàng",
       "insurance": "Bảo hiểm",
       "saving": "Đầu tư"
-    }
+    },
+    "mange_user": "Quản lý người dùng"
   },
   "mat_paginator_intl": {
     "items_per_page": "Số dòng một trang",
@@ -128,6 +135,41 @@
     "last_page": "Trang cuối",
     "next_page": "Trang sau",
     "previous_page": "Trang trước"
+  },
+  "account": {
+    "info": {
+      "_info": "Thông tin tài khoản",
+      "name": "Tên người dùng",
+      "log_in": "Tên đăng nhập",
+      "role": "Vai trò",
+      "phone": "Số điện thoại",
+      "email": "Email",
+      "note": "Ghi chú",
+      "cancel_update": "Bỏ qua",
+      "save_update": "Lưu cập nhật"
+    },
+    "setting": {
+      "security_title": "Đăng nhập và bảo mật",
+      "change_password": "Đổi mật khẩu",
+      "password_des": "Bạn nên sử dụng mật khẩu mạnh và chưa sử dụng ở nơi khác"
+    },
+    "logged_device": {
+      "title": "Thiết bị đã đăng nhập",
+      "log_out": "Đăng xuất",
+      "status_logout": "Đã đăng xuất",
+      "status_current": "Đang sử dụng"
+    },
+    "add": {
+      "title": "Thêm người dùng mới",
+      "name": "Tên người dùng",
+      "log_in": "Tên đăng nhập",
+      "password": "Mật khẩu",
+      "re_password": "Nhắc lại mật khẩu",
+      "role": "Vai trò",
+      "phone": "Số điện thoại",
+      "email": "Email",
+      "note": "Ghi chú"
+    }
   },
   "customer": {
     "tabs": {
@@ -167,13 +209,15 @@
       "update": "Cập nhật",
       "lock": "Ngừng hoạt động",
       "cancel_update": "Hủy cập nhật",
-      "save_update": "Lưu hoạt động",
+      "save_update": "Lưu cập nhật",
       "gender": "Giới tính",
       "gender_male": "Nam",
       "gender_female": "Nữ",
       "gender_other": "Khác",
       "company": "Công ty",
-      "status": "Trạng thái tài khoản"
+      "status": "Trạng thái tài khoản",
+      "update_individual_info": "Cập nhật thông tin khách hàng",
+      "update_company_info": "Cập nhật thông tin công ty"
     },
     "identity": {
       "front_id": "CMND/CCCD mặt trước",
@@ -194,6 +238,8 @@
     "company_info": {
       "company_name": "Tên công ty",
       "employee_code": "Mã nhân viên",
+      "working_time": "Thời gian làm việc ở công ty hiện tại",
+      "full_name": "Họ và tên",
       "last_name": "Họ và tên đệm",
       "first_name": "Tên",
       "office_code": "Mã đơn vị",
@@ -281,7 +327,8 @@
       "active": "Đang hoạt động",
       "lock": "Ngừng hoạt động",
       "cancel_update": "Hủy cập nhật",
-      "save_update": "Lưu hoạt động"
+      "save_update": "Lưu hoạt động",
+      "confirm_change_status_description": "Bạn có chắc chuyển trạng thái khoản vay {{loan_code}} từ {{current_loan_status}} → {{new_loan_status}}"
     },
     "loan_contract": {
       "loan_status": "Trạng thái khoản vay",
@@ -298,7 +345,8 @@
       "completed": "Đã hoàn thành",
       "rejected": "Bị từ chối",
       "withdrew": "Đã hủy",
-      "download": "Tải xuống"
+      "download": "Tải xuống",
+      "no_contract": "Không có hợp đồng"
     },
     "documents": {
       "ekyc_info": "Thông tin EKYC",
@@ -345,12 +393,14 @@
       "bank_code": "Mã ngân hàng",
       "update": "Cập nhật",
       "salary_info_confirmation": "Xác minh thông tin lương",
-      "received_date": "Ngày lấy thông tin"
+      "received_date": "Ngày lấy thông tin",
+      "is_payday": "Người lao động đã được trả lương",
+      "is_not_payday": "Người lao động chưa được trả lương"
     }
   },
   "payday_loan": {
     "status": {
-      "documentation_complete": "Chờ duyệt hồ sơ",
+      "documentation_complete": "Chờ phê duyệt",
       "document_awaiting": "Chờ hồ sơ",
       "initialized": "Đã khởi tạo",
       "funded": "Chờ ký hợp đồng",
@@ -376,6 +426,40 @@
       "not_accepting_term_yet": "Chưa ký thư chấp thuận",
       "not_complete_cde_yet": "Chưa bổ sung thông tin",
       "completed_cde": "Đã bổ sung thông tin"
+    }
+  },
+  "filter": {
+    "time": "Thời gian",
+    "all_time": "Toàn thời gian",
+    "choose_range_time": "Chọn khoảng thời gian",
+    "from_day": "Từ ngày",
+    "selected_date": "{{date}} ngày {{day}}",
+    "company": "Công ty",
+    "choose_company": "Chọn công ty",
+    "pl_ui_status": "Trạng thái tài khoản",
+    "loan_status": "Trạng thái khoản vay",
+    "account_status": "Trạng thái hoạt động",
+    "options": {
+      "by_day": "Theo ngày",
+      "to_day": "Hôm nay",
+      "yesterday": "Hôm qua",
+      "by_week": "Theo tuần",
+      "this_week": "Tuần này",
+      "last_week": "Tuần trước",
+      "last_7_days": "7 ngày qua",
+      "by_month": "Theo tháng",
+      "this_month": "Tháng này",
+      "last_month": "Tháng trước",
+      "last_30_days": "30 ngày qua",
+      "by_quarterly": "Theo quý",
+      "first_quarterly": "Quý I",
+      "second_quarterly": "Quý II",
+      "third_quarterly": "Quý III",
+      "fourth_quarterly": "Quý IV",
+      "by_year": "Theo năm",
+      "this_year": "Năm nay",
+      "last_year": "Năm trước",
+      "all_time": "Toàn thời gian"
     }
   },
   "error_code": {

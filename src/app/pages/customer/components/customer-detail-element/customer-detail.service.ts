@@ -45,11 +45,19 @@ export class CustomerDetailService {
   }
 
   public downloadSingleFileDocument(customerId: string, documentPath: string) {
+    if (sessionStorage.getItem(documentPath)) {
+      return of(
+        this.domSanitizer.bypassSecurityTrustUrl(
+          sessionStorage.getItem(documentPath)
+        )
+      );
+    }
     return this.fileControllerService
       .downloadFile({ customerId, documentPath })
       .pipe(
         map((results) => {
           const imageUrl = this.convertBlobType(results, 'application/image');
+          sessionStorage.setItem(documentPath, imageUrl);
           return this.domSanitizer.bypassSecurityTrustUrl(imageUrl);
         }),
         // catch errors
@@ -86,85 +94,55 @@ export class CustomerDetailService {
         }),
         // catch errors
         catchError((err) => {
-          console.log(err);
           return of(null);
         })
       );
   }
 
-  public uploadFileDocument(document_type: string, file, customerId: string) {
-    console.log(
-      'document_type, file, customerId',
-      document_type,
-      file,
-      customerId
-    );
-
+  public uploadFileDocument(
+    documentType: string,
+    file,
+    customerId: string,
+    observe?: any,
+    reportProgress?: boolean
+  ) {
     return this.fileControllerService
-      .uploadSingleFile(document_type, file, customerId)
+      .uploadSingleFile(documentType, file, customerId, observe, reportProgress)
       .pipe(
         map((results) => {
-          console.log('upload ok', results);
           return results;
         }),
         // catch errors
         catchError((err) => {
-          console.log(err);
           return of(null);
         })
       );
   }
 
-  public updateCustomerInfo(customerId: string, updateInfoRequest: Object) {
-    const infoData: UpdateInfoRequest = {
-      info: {},
-    };
-    for (const key in updateInfoRequest) {
-      if (updateInfoRequest[key] === null) {
-        infoData.info[`personalData.${key}`] = null;
-      } else {
-        infoData.info[`personalData.${key}`] = new Object(
-          updateInfoRequest[key]
-        );
-      }
-    }
-    console.log('infoData', infoData);
-    return this.customerService.putInfo(customerId, infoData).pipe(
-      map((results) => {
-        console.log('update ok', results);
-        return results;
-      }),
-      catchError((err) => {
-        console.log(err);
-        return of(null);
-      })
-    );
-  }
-
-  public updateCustomerFinalcialData(
+  public updateCustomerInfo(
     customerId: string,
-    updateInfoRequest: Object
+    updateInfoRequest: Object,
+    observe?: any,
+    reportProgress?: boolean
   ) {
     const infoData: UpdateInfoRequest = {
       info: {},
     };
     for (const key in updateInfoRequest) {
-      if (updateInfoRequest[key] === null) {
-        infoData.info[`financialData.${key}`] = null;
-      } else {
-        infoData.info[`financialData.${key}`] = new Object(
-          updateInfoRequest[key]
-        );
-      }
+      infoData.info[key] = updateInfoRequest[key]
+        ? new Object(updateInfoRequest[key])
+        : null;
     }
-    return this.customerService.putInfo(customerId, infoData).pipe(
-      map((results) => {
-        return results;
-      }),
-      catchError((err) => {
-        console.log(err);
-        return of(null);
-      })
-    );
+
+    return this.customerService
+      .putInfo(customerId, infoData, observe, reportProgress)
+      .pipe(
+        map((results) => {
+          return results;
+        }),
+        catchError((err) => {
+          return of(null);
+        })
+      );
   }
 }

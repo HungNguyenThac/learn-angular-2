@@ -6,6 +6,8 @@ import { APP_INITIALIZER, Injector } from '@angular/core';
 import { appInitializerFactory } from '../share/translate/appInitializerFactory';
 import {MatPaginatorIntl} from "@angular/material/paginator";
 import {CustomMatPaginatorIntl} from "./common/providers/mat-paginator-custom";
+import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from "@angular/material/core";
+import {MAT_MOMENT_DATE_FORMATS, MomentDateAdapter} from "@angular/material-moment-adapter";
 
 export const _providers = [
   CookieService,
@@ -35,4 +37,11 @@ export const _providers = [
     useClass: fromInterceptors.LoadingInterceptor,
     multi: true,
   },
+  { provide: MAT_DATE_LOCALE, useValue: 'vi-VN' },
+  {
+    provide: DateAdapter,
+    useClass: MomentDateAdapter,
+    deps: [MAT_DATE_LOCALE],
+  },
+  { provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS },
 ];

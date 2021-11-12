@@ -8,7 +8,7 @@
         <span *ngIf="iconClass; else isIconImgSrc" [ngClass]="iconClass"></span>
         <ng-template #isIconImgSrc>
           <span>
-            <img [src]="iconImgSrc" class="op-breadcrumb-icon" alt="" />
+            <img [src]="iconImgSrc" class="op-breadcrumb-icon" alt=""/>
           </span>
         </ng-template>
         <h2 class="op-breadcrumb-title d-inline-flex align-items-center">
@@ -24,7 +24,7 @@
         >
           <div class="row">
             <div class="col-md-12">
-              <div class="breadcrumb-search-input">
+              <div class="breadcrumb-search-input" [matTooltip]="searchPlaceholder">
                 <div class="breadcrumb-input-icon" (click)="submitSearch()">
                   <span class="sprite-group-5-search"></span>
                 </div>

@@ -2,7 +2,8 @@ import * as actions from '../actions';
 import { Auth } from '../../../public/models';
 import { HttpErrorResponse } from '@angular/common/http';
 import jwt_decode from 'jwt-decode';
-import { Token } from '../../../public/models/token.model';
+import { Token } from '../../../public/models/auth/token.model';
+import { RESPONSE_CODE } from '../../common/enum/operator';
 
 export interface LoginState {
   authorization: Auth;
@@ -13,7 +14,7 @@ export interface LoginState {
 export const LOGIN_INITIAL_STATE: LoginState = {
   authorization: null,
   loginProcess: null,
-  loginError: null
+  loginError: null,
 };
 
 class LoginActions {
@@ -36,12 +37,10 @@ class LoginActions {
     if (
       !this.action.payload ||
       !this.action.payload.responseCode ||
-      this.action.payload.responseCode !== 200
+      this.action.payload.responseCode !== RESPONSE_CODE.SUCCESS
     )
       return this.state;
-    const decodedResult: Token = jwt_decode(
-      this.action.payload.result?.token
-    );
+    const decodedResult: Token = jwt_decode(this.action.payload.result?.token);
     const payload: Auth = {
       token: this.action.payload.result?.token,
       exp: decodedResult.exp,

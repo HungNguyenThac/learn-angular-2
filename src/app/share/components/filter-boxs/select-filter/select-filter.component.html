@@ -1,0 +1,169 @@
+<div class="filter-boxes pb-5">
+  <div class="d-flex justify-content-between align-items-center px-3 py-2">
+    <h3 class="filter-title">
+      {{ filterOption.title }}
+    </h3>
+  </div>
+  <div>
+    <ul>
+      <li
+        class="
+          px-3
+          py-2
+          d-flex
+          justify-content-between
+          align-items-center
+          filter-child-item
+        "
+        [ngClass]="{
+          'filter-child-item-active':
+            selectedItems.includes(filterItem.value) ||
+            filterItem.value === filterOption.value
+        }"
+        *ngFor="let filterItem of filterOption.options"
+      >
+        <ng-container
+          *ngIf="
+            filterItem.subOptions && filterItem.subOptions.length > 0;
+            else hasNotSubOptions
+          "
+        >
+          <div
+            class="w-100 d-flex justify-content-between align-items-center"
+            (click)="displayDetailOption(selectFieldListEle)"
+          >
+            <p
+              class="w-100 filter-child-item-title"
+              [matTooltip]="displayTitle ? displayTitle : filterItem.title"
+            >
+              {{ displayTitle ? displayTitle : filterItem.title }}
+            </p>
+            <div
+              class="
+                d-inline-flex
+                justify-content-between
+                align-items-center
+                gap-1
+                cursor-pointer
+              "
+            >
+              <span class="filter-status-count" *ngIf="filterItem.count">{{
+                filterItem.count
+              }}</span>
+              <span
+                [ngClass]="
+                  filterItem.value === filterOption.value
+                    ? 'sprite-group-5-chevron-right-blue'
+                    : 'sprite-group-5-chevron-right-grey'
+                "
+              ></span>
+            </div>
+          </div>
+
+          <div
+            class="filter-form-container-expand col-lg-4 col-12 col-sm-12"
+            id="selectFieldListEle"
+            (mouseleave)="completeSelectSubOptionsFilter(selectFieldListEle)"
+            #selectFieldListEle
+          >
+            <div class="arrow">
+              <svg
+                width="5"
+                height="14"
+                viewBox="0 0 5 14"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M0.408408 6.05719L4.38739 2.25245C4.77964 1.87738 5 1.36867 5 0.838239V13.1618C5 12.6313 4.77964 12.1226 4.38739 11.7475L0.408409 7.94281C-0.136136 7.42211 -0.136137 6.57789 0.408408 6.05719Z"
+                  fill="white"
+                />
+              </svg>
+            </div>
+
+            <div class="card op-card op-drop-shadow">
+              <div class="card-title d-flex align-items-center gap-1 mb-0">
+                {{ filterItem.subTitle }}
+                <button
+                  mat-button
+                  class="reset-btn"
+                  (click)="resetSelectedItem()"
+                >
+                  {{ "common.reset" | translate }}
+                </button>
+              </div>
+              <div class="card-body p-0">
+                <div class="d-flex flex-column w-100">
+                  <div
+                    class="d-flex align-items-center select-field-option"
+                    *ngFor="let subItem of filterItem.subOptions"
+                    (click)="selectSubItem(subItem.value)"
+                  >
+                    <div class="select-field-option-img" *ngIf="subItem.imgSrc">
+                      <img [src]="subItem.imgSrc" class="h-100 w-auto" alt="" />
+                    </div>
+                    <div class="select-field-option-name w-100">
+                      {{ subItem.title }}
+                    </div>
+                    <div
+                      [ngClass]="
+                        selectedItems.includes(subItem.value)
+                          ? 'visible'
+                          : 'invisible'
+                      "
+                    >
+                      <svg
+                        width="20"
+                        height="20"
+                        viewBox="0 0 20 20"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M7.08333 13.8215L3.92259 10.6607C3.59715 10.3353 3.06952 10.3353 2.74408 10.6607C2.41864 10.9862 2.41864 11.5138 2.74408 11.8392L6.49408 15.5892C6.81952 15.9147 7.34715 15.9147 7.67259 15.5892L16.8393 6.42259C17.1647 6.09715 17.1647 5.56952 16.8393 5.24408C16.5138 4.91864 15.9862 4.91864 15.6608 5.24408L7.08333 13.8215Z"
+                          fill="#007AFF"
+                        />
+                      </svg>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+
+        <ng-template #hasNotSubOptions>
+          <div
+            (click)="selectSingleItem(filterItem)"
+            class="w-100 d-flex justify-content-between align-items-center"
+          >
+            <p class="w-100 filter-child-item-title" [matTooltip]="filterItem.title">
+              {{ filterItem.title }}
+            </p>
+            <div
+              class="
+                d-inline-flex
+                justify-content-between
+                align-items-center
+                gap-1
+                cursor-pointer
+              "
+            >
+              <span class="filter-status-count" *ngIf="filterItem.count">{{
+                filterItem.count
+              }}</span>
+              <span
+                [ngClass]="
+                  selectedItems.includes(filterItem.value) ||
+                  filterItem.value === filterOption.value
+                    ? 'sprite-group-5-chevron-right-blue'
+                    : 'sprite-group-5-chevron-right-grey'
+                "
+              ></span>
+            </div>
+          </div>
+        </ng-template>
+      </li>
+    </ul>
+  </div>
+</div>

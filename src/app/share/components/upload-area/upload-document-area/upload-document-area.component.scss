@@ -35,6 +35,27 @@
   }
 }
 
+.op-upload-img-area-desc {
+  .op-upload-img-area-desc-content {
+    font-family: $sfPro;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 24px;
+    color: $grey-10;
+    word-break: break-word;
+  }
+  .op-upload-img-area-description {
+    font-family: $sfPro;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 18px;
+    letter-spacing: 0.1px;
+    color: $grey-06;
+  }
+}
+
 .upload-img-area-title {
   font-family: $sfPro;
   font-style: normal;

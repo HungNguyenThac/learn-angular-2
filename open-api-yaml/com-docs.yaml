@@ -42,6 +42,24 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ApiResponseString'
+  /v1/template-notification/delete-template/{idTemplate}:
+    post:
+      tags:
+      - template-notification-controller
+      operationId: deleteTemplate
+      parameters:
+      - name: idTemplate
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseString'
   /v1/template-notification/create:
     post:
       tags:
@@ -136,7 +154,7 @@ paths:
     post:
       tags:
       - otp-controller
-      operationId: createCustomerAccount
+      operationId: sendOtp
       requestBody:
         content:
           application/json:
@@ -149,7 +167,7 @@ paths:
           content:
             '*/*':
               schema:
-                $ref: '#/components/schemas/ApiResponseObject'
+                $ref: '#/components/schemas/ApiResponseOtpResponse'
   /v1/notification/update-fcm-token:
     post:
       tags:
@@ -497,6 +515,9 @@ components:
     SendTemplateRequest:
       required:
       - customerId
+      - email
+      - fullName
+      - mobile
       - templateName
       type: object
       properties:
@@ -504,7 +525,31 @@ components:
           type: string
         customerId:
           type: string
+        email:
+          type: string
+        mobile:
+          type: string
+        fullName:
+          type: string
         amount:
+          type: string
+        loanCode:
+          type: string
+        voucherType:
+          type: string
+        voucherValue:
+          type: string
+        promotionalCode:
+          type: string
+        giftName:
+          type: string
+        pathImage:
+          type: string
+        addressCompany:
+          type: string
+        giftGivingTime:
+          type: string
+        giftGivingDay:
           type: string
     ContentNotificationRequest:
       required:
@@ -632,6 +677,29 @@ components:
           type: string
         otp:
           type: string
+    ApiResponseOtpResponse:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/OtpResponse'
+        errorCode:
+          type: string
+        message:
+          type: object
+        responseCode:
+          type: integer
+          format: int32
+    OtpResponse:
+      type: object
+      properties:
+        provider:
+          type: string
+        method:
+          type: string
+        errorCode:
+          type: string
+        message:
+          type: string
     UpdateFcmTokenRequest:
       required:
       - customerId
@@ -707,6 +775,12 @@ components:
           type: string
         content:
           type: string
+        documentPath:
+          type: string
+        fileName:
+          type: string
+        withFooter:
+          type: boolean
     SendLetterOTPRequest:
       required:
       - address
@@ -714,10 +788,12 @@ components:
       - dateOfBirth
       - documentPath
       - email
+      - gender
       - idIssuePlace
       - mobile
       - name
       - nationalId
+      - otpType
       type: object
       properties:
         email:
@@ -739,6 +815,14 @@ components:
         idIssuePlace:
           type: string
         documentPath:
+          type: string
+        otpType:
+          type: string
+          enum:
+          - EMAIL
+          - SMS
+          - VOICE
+        gender:
           type: string
     ApiResponseSignWithOTPResponse:
       type: object
@@ -765,6 +849,12 @@ components:
           type: string
         unLockTime:
           type: string
+        otpType:
+          type: string
+          enum:
+          - EMAIL
+          - SMS
+          - VOICE
     SendContractOTPRequest:
       required:
       - address
@@ -776,6 +866,7 @@ components:
       - mobile
       - name
       - nationalId
+      - otpType
       type: object
       properties:
         email:
@@ -796,6 +887,12 @@ components:
           type: string
         loanId:
           type: string
+        otpType:
+          type: string
+          enum:
+          - EMAIL
+          - SMS
+          - VOICE
     ApiResponseCreateTokenResponse:
       type: object
       properties:
@@ -1008,10 +1105,10 @@ components:
     SigningPosition:
       type: object
       properties:
-        yposition:
+        xposition:
           type: integer
           format: int32
-        xposition:
+        yposition:
           type: integer
           format: int32
     ApiResponseListTransactionNotificationEntity:
@@ -1049,3 +1146,10 @@ components:
           type: string
         date:
           type: string
+  securitySchemes:
+    Bearer:
+      type: apiKey
+      name: Authorization
+      in: header
+      scheme: bearer
+      bearerFormat: JWT

@@ -10,7 +10,6 @@ import {
   ApiResponseGetTokenResponse,
   ServiceCredentialControllerService,
 } from '../../../../../open-api-modules/identity-api-docs';
-import * as Sentry from '@sentry/angular';
 import {
   CustomerInfoResponse,
   InfoControllerService,
@@ -27,6 +26,7 @@ import { ERROR_CODE_KEY } from '../../common/enum/payday-loan';
 import { NotificationService } from '../../services/notification.service';
 import { MultiLanguageService } from '../../../share/translate/multiLanguageService';
 import { ToastrService } from 'ngx-toastr';
+import {RESPONSE_CODE} from "../../common/enum/operator";
 
 @Injectable()
 export class LoginEffects {
@@ -76,7 +76,6 @@ export class LoginEffects {
         tap(() => {
           this.notificationService.destroyAllDialog();
           this.store$.dispatch(new fromActions.ResetCustomerInfo());
-          Sentry.configureScope((scope) => scope.setUser(null));
           this.router.navigateByUrl('/auth/sign-in');
         })
       ),
@@ -99,7 +98,7 @@ export class LoginEffects {
             map((result: ApiResponseGetTokenResponse) => {
               //
               this.loginInput = login;
-              if (!result || result.responseCode !== 200) {
+              if (!result || result.responseCode !== RESPONSE_CODE.SUCCESS) {
                 return new fromActions.SigninError(result.errorCode);
               }
               return new fromActions.SigninSuccess(result);
@@ -115,9 +114,6 @@ export class LoginEffects {
         ofType(fromActions.LOGIN_SIGNIN_SUCCESS),
         map((action: fromActions.SigninSuccess) => action.payload),
         tap(() => {
-          Sentry.setUser({
-            id: this.customerId,
-          });
           this.router.navigateByUrl('/');
         })
       ),

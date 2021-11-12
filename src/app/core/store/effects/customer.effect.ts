@@ -12,6 +12,7 @@ import {
 import { Store } from '@ngrx/store';
 import * as fromStore from '../index';
 import { Observable, Subscription } from 'rxjs';
+import { RESPONSE_CODE } from '../../common/enum/operator';
 
 @Injectable()
 export class CustomerEffects {
@@ -41,7 +42,7 @@ export class CustomerEffects {
         return this.infoControllerService.getInfo(customerId).pipe(
           map((response: ApiResponseCustomerInfoResponse) => {
             console.log('Effect Response:', response);
-            if (!response || response.responseCode !== 200) {
+            if (!response || response.responseCode !== RESPONSE_CODE.SUCCESS) {
               return new fromActions.GetCustomerInfoError(response.errorCode);
             }
             return new fromActions.GetCustomerInfoSuccess(response.result);

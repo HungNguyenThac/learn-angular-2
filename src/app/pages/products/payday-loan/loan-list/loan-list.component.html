@@ -1,21 +1,32 @@
 <app-base-management-layout
-  [detailElementTemplate]="detailElementTemplate"
-  [pageSize]="pageSize"
-  [pageIndex]="pageIndex"
-  [pageSizeOptions]="pageSizeOptions"
-  [allColumns]="allColumns"
-  [totalItems]="totalItems"
-  [tableTitle]="tableTitle"
-  [pageLength]="pageLength"
-  [dataSource]="dataSource"
-  [orderBy]="this.filterForm.controls.orderBy?.value"
-  [sortDirection]="this.filterForm.controls.sortDirection?.value"
-  [breadcrumbOptions]="breadcrumbOptions"
+  (onExpandElementChange)="onExpandElementChange($event)"
+  (onFilterActionTrigger)="onFilterActionTrigger($event)"
+  (onFilterChange)="onFilterFormChange($event)"
   (onPageChange)="onPageChange($event)"
   (onSortChange)="onSortChange($event)"
+  (onSubmitSearchForm)="onSubmitSearchForm($event)"
+  [allColumns]="allColumns"
+  [breadcrumbOptions]="breadcrumbOptions"
+  [dataSource]="dataSource"
+  [detailElementTemplate]="detailElementTemplate"
+  [filterOptions]="filterOptions"
+  [orderBy]="this.filterForm.controls.orderBy?.value"
+  [pageIndex]="pageIndex"
+  [pageLength]="pageLength"
+  [pageSizeOptions]="pageSizeOptions"
+  [pageSize]="pageSize"
+  [sortDirection]="this.filterForm.controls.sortDirection?.value"
+  [tableTitle]="tableTitle"
+  [totalItems]="totalItems"
 >
 </app-base-management-layout>
 
 <ng-template #detailElementTemplate>
-  <app-loan-detail class="w-100"></app-loan-detail>
+  <app-loan-detail (detectUpdateLoanAfterSign)="detectUpdateLoanAfterSign($event)"
+                   (loanDetailTriggerUpdateStatus)="loanDetailDetectChangeStatusTrigger($event)"
+                   [customerId]="expandedElementCustomerId"
+                   [groupName]="filterForm.controls.groupName.value"
+                   [loanId]="expandedElementLoanId"
+                   class="w-100"
+  ></app-loan-detail>
 </ng-template>

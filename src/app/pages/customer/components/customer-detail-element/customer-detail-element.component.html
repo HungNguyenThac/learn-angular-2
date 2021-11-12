@@ -1,10 +1,13 @@
-<mat-tab-group dynamicHeight>
+<mat-tab-group dynamicHeight class="op-tab-group">
   <!--  Individual Info-->
   <mat-tab [label]="'customer.tabs.individual_info' | translate">
     <ng-template matTabContent>
       <app-customer-individual-info
         [customerId]="customerId"
         [customerInfo]="userInfo"
+        [virtualAccount]="userInfo?.virtualAccount"
+        [bankOptions]="bankOptions"
+        (triggerUpdateInfo)="updateCustomerInfo($event)"
       ></app-customer-individual-info> </ng-template
   ></mat-tab>
 
@@ -23,6 +26,9 @@
       <app-customer-company-info
         [customerId]="customerId"
         [customerInfo]="userInfo"
+        [bankOptions]="bankOptions"
+        [companyOptions]="companyOptions"
+        (triggerUpdateInfo)="updateCustomerInfo($event)"
       ></app-customer-company-info> </ng-template
   ></mat-tab>
 
@@ -32,6 +38,7 @@
       <app-customer-document-info
         [customerId]="customerId"
         [customerInfo]="userInfo"
+        (refreshContent)="refreshContent()"
       ></app-customer-document-info> </ng-template
   ></mat-tab>
 

@@ -113,7 +113,7 @@ paths:
           content:
             '*/*':
               schema:
-                type: object
+                $ref: '#/components/schemas/ApiResponseObject'
   /credential/v1/get-token:
     post:
       tags:
@@ -150,18 +150,38 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ApiResponseObject'
+  /credential/v1/change-pass:
+    post:
+      tags:
+      - service-credential-controller
+      operationId: changePass
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChangePassProviderRequest'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseObject'
 components:
   schemas:
     CreateCustomerAccountRequest:
       required:
       - mobile
-      - provider
       type: object
       properties:
         mobile:
           type: string
         provider:
           type: string
+          enum:
+          - Zalo
+          - CMC
     ApiResponseObject:
       type: object
       properties:
@@ -170,7 +190,7 @@ components:
         errorCode:
           type: string
         message:
-          type: string
+          type: object
         responseCode:
           type: integer
           format: int32
@@ -230,7 +250,7 @@ components:
         errorCode:
           type: string
         message:
-          type: string
+          type: object
         responseCode:
           type: integer
           format: int32
@@ -279,7 +299,7 @@ components:
         errorCode:
           type: string
         message:
-          type: string
+          type: object
         responseCode:
           type: integer
           format: int32
@@ -300,6 +320,19 @@ components:
         secret:
           type: string
         group:
+          type: string
+    ChangePassProviderRequest:
+      required:
+      - newSecret
+      - oldSecret
+      - username
+      type: object
+      properties:
+        username:
+          type: string
+        oldSecret:
+          type: string
+        newSecret:
           type: string
   securitySchemes:
     Bearer:

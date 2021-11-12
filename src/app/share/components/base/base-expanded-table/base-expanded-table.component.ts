@@ -1,20 +1,18 @@
 import {
-  ChangeDetectorRef,
   Component,
   EventEmitter,
   Input,
   OnInit,
   Output,
   TemplateRef,
-  ViewChild,
 } from '@angular/core';
 import { detailExpandAnimation } from '../../../../core/common/animations/detail-expand.animation';
 import { Sort } from '@angular/material/sort';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
-import { DisplayedFieldsModel } from '../../../../public/models/displayed-fields.model';
+import { DisplayedFieldsModel } from '../../../../public/models/filter/displayed-fields.model';
 import { MatTableDataSource } from '@angular/material/table';
 import { PageEvent } from '@angular/material/paginator/public-api';
-import {SortDirection} from "@angular/material/sort/sort-direction";
+import { SortDirection } from '@angular/material/sort/sort-direction';
 
 @Component({
   selector: 'app-base-expanded-table',
@@ -58,19 +56,20 @@ export class BaseExpandedTableComponent implements OnInit {
     });
   }
 
-  constructor(
-    private _liveAnnouncer: LiveAnnouncer,
-    private changeDetectorRef: ChangeDetectorRef
-  ) {}
+  constructor(private _liveAnnouncer: LiveAnnouncer) {}
 
   ngOnInit(): void {
+    this._initSelectedFields();
+  }
+
+  private _initSelectedFields() {
     this.selectedFields = this.allColumns.map((item, index) => {
       return {
         key: item.key,
         title: item.title,
         type: item.type,
         format: item.format,
-        showed: item.showed
+        showed: item.showed,
       };
     });
   }
@@ -102,5 +101,9 @@ export class BaseExpandedTableComponent implements OnInit {
   public expandElement(element) {
     this.expandedElement = this.expandedElement === element ? null : element;
     this.triggerExpandedElementChange.emit(element);
+  }
+
+  public resetDisplayFields() {
+    this._initSelectedFields();
   }
 }

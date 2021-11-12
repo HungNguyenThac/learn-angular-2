@@ -1,0 +1,19 @@
+<div *ngIf="type === 'DATETIME'">
+  {{ value | date: format }}
+</div>
+
+<span *ngIf="type === 'CURRENCY'">
+  {{ value | formatPrice: null }}
+</span>
+
+<div *ngIf="type === 'STATUS'">
+  <app-pl-status-element
+    [statusType]="format"
+    [statusValue]="value"
+  >
+  </app-pl-status-element>
+</div>
+
+<div *ngIf="!type || type === 'TEXT'" class="op-table-cell-data">
+  {{ value || "-" }}
+</div>

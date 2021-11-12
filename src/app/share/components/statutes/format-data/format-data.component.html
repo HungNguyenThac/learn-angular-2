@@ -6,6 +6,11 @@
   {{ value | formatPrice: null }}
 </span>
 
+<span *ngIf="type === 'STATUS'">
+  <app-pl-status-element [statusType]="format" [statusValue]="value">
+  </app-pl-status-element>
+</span>
+
 <span *ngIf="!type || type === 'TEXT'">
   {{ value || "N/A" }}
 </span>

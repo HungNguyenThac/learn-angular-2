@@ -8,10 +8,15 @@
           <ul class="pl-list">
             <li class="pl-list-item" *ngFor="let leftColumnEle of leftColumn">
               <p class="pl-list-item-label">
-                {{ leftColumnEle.title }}
+                {{ leftColumnEle?.title }}
               </p>
               <p class="pl-list-item-content">
-                {{ leftColumnEle.value }}
+                <!-- {{ leftColumnEle.value }} -->
+                <app-format-data
+                  [type]="leftColumnEle?.type"
+                  [format]="leftColumnEle?.format"
+                  [value]="leftColumnEle?.value"
+                ></app-format-data>
               </p>
             </li>
           </ul>
@@ -25,10 +30,14 @@
               *ngFor="let middleColumnEle of middleColumn"
             >
               <p class="pl-list-item-label">
-                {{ middleColumnEle.title }}
+                {{ middleColumnEle?.title }}
               </p>
               <p class="pl-list-item-content">
-                {{ middleColumnEle.value }}
+                <app-format-data
+                  [type]="middleColumnEle?.type"
+                  [format]="middleColumnEle?.format"
+                  [value]="middleColumnEle?.value"
+                ></app-format-data>
               </p>
             </li>
           </ul>
@@ -39,10 +48,14 @@
           <ul class="pl-list">
             <li class="pl-list-item" *ngFor="let rightColumnEle of rightColumn">
               <p class="pl-list-item-label">
-                {{ rightColumnEle.title }}
+                {{ rightColumnEle?.title }}
               </p>
               <p class="pl-list-item-content">
-                {{ rightColumnEle.value }}
+                <app-format-data
+                  [type]="rightColumnEle?.type"
+                  [format]="rightColumnEle?.format"
+                  [value]="rightColumnEle?.value"
+                ></app-format-data>
               </p>
             </li>
             <li>
@@ -81,10 +94,10 @@
 
   <div class="row mt-3 mb-3">
     <div class="col-12 d-flex gap-2 justify-content-end">
-      <button mat-flat-button color="accent" (click)="changeLoanStatus()">
-        {{ "loan_app.loan_info.document_awaiting" | translate }}
+      <button mat-flat-button color="accent" (click)="changeLoanStatus(nextLoanStatus, nextLoanStatusDisplay)" [hidden]="nextLoanStatus === 'UNKNOWN_STATUS'">
+        {{ nextLoanStatusDisplay }}
       </button>
-      <button mat-flat-button color="warn">
+      <button mat-flat-button color="warn" (click)="changeLoanStatus(rejectLoanStatus, rejectLoanStatusDisplay)" [hidden]="rejectLoanStatus === 'UNKNOWN_STATUS'">
         <span>
           <svg
             width="16"
@@ -99,7 +112,7 @@
             />
           </svg>
         </span>
-        {{ "loan_app.loan_info.withdraw" | translate }}
+        {{ rejectLoanStatusDisplay }}
       </button>
     </div>
   </div>
