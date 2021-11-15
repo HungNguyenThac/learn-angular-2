@@ -1,11 +1,11 @@
 <div class="container-fluid">
   <div class="card op-card">
-    <button mat-icon-button tabindex="-1" class="close-btn" mat-dialog-close>
+    <button class="close-btn" mat-dialog-close mat-icon-button tabindex="-1">
       <svg
-        width="24"
+        fill="none"
         height="24"
         viewBox="0 0 24 24"
-        fill="none"
+        width="24"
         xmlns="http://www.w3.org/2000/svg"
       >
         <path
@@ -29,15 +29,17 @@
                   <mat-form-field appearance="outline" class="w-100">
                     <mat-label>{{
                       "customer.company_info.company_name" | translate
-                    }}</mat-label>
+                      }}</mat-label>
                     <mat-select formControlName="companyId">
-                      <mat-option
-                        *ngFor="let companyOption of companyOptions"
-                        [value]="companyOption.id"
+                      <mat-option *ngFor="let companyOption of companyOptions"
+                                  [value]="companyOption.id"
                       >
-                        {{
+                        <div class="d-flex align-items-center">
+                          <img [src]="companyOption.avatar" alt="" class="company-avatar">
+                          {{
                           companyOption.name + " (" + companyOption.code + ")"
-                        }}
+                          }}
+                        </div>
                       </mat-option>
                     </mat-select>
                   </mat-form-field>
@@ -47,13 +49,13 @@
                   <mat-form-field appearance="outline" class="w-100">
                     <mat-label>{{
                       "customer.company_info.employee_code" | translate
-                    }}</mat-label>
+                      }}</mat-label>
                     <input
-                      matInput
                       [placeholder]="
                         'customer.company_info.employee_code' | translate
                       "
                       formControlName="employeeCode"
+                      matInput
                     />
                   </mat-form-field>
                 </div>
@@ -62,13 +64,13 @@
                   <mat-form-field appearance="outline" class="w-100">
                     <mat-label>{{
                       "customer.company_info.full_name" | translate
-                    }}</mat-label>
+                      }}</mat-label>
                     <input
-                      matInput
                       [placeholder]="
                         'customer.company_info.full_name' | translate
                       "
                       formControlName="firstName"
+                      matInput
                     />
                   </mat-form-field>
                 </div>
@@ -77,13 +79,13 @@
                   <mat-form-field appearance="outline" class="w-100">
                     <mat-label>{{
                       "customer.company_info.first_name" | translate
-                    }}</mat-label>
+                      }}</mat-label>
                     <input
-                      matInput
                       [placeholder]="
                         'customer.company_info.first_name' | translate
                       "
                       formControlName="tngFirstName"
+                      matInput
                     />
                   </mat-form-field>
                 </div>
@@ -92,13 +94,13 @@
                   <mat-form-field appearance="outline" class="w-100">
                     <mat-label>{{
                       "customer.company_info.office_code" | translate
-                    }}</mat-label>
+                      }}</mat-label>
                     <input
-                      matInput
                       [placeholder]="
                         'customer.company_info.office_code' | translate
                       "
                       formControlName="officeCode"
+                      matInput
                     />
                   </mat-form-field>
                 </div>
@@ -107,13 +109,13 @@
                   <mat-form-field appearance="outline" class="w-100">
                     <mat-label>{{
                       "customer.company_info.office_name" | translate
-                    }}</mat-label>
+                      }}</mat-label>
                     <input
-                      matInput
                       [placeholder]="
                         'customer.company_info.office_name' | translate
                       "
                       formControlName="officeName"
+                      matInput
                     />
                   </mat-form-field>
                 </div>
@@ -125,13 +127,13 @@
                   <mat-form-field appearance="outline" class="w-100">
                     <mat-label>{{
                       "customer.company_info.annual_income" | translate
-                    }}</mat-label>
+                      }}</mat-label>
                     <input
-                      matInput
                       [placeholder]="
                         'customer.company_info.annual_income' | translate
                       "
                       formControlName="annualIncome"
+                      matInput
                     />
                   </mat-form-field>
                 </div>
@@ -140,13 +142,13 @@
                   <mat-form-field appearance="outline" class="w-100">
                     <mat-label>{{
                       "customer.company_info.working_days" | translate
-                    }}</mat-label>
+                      }}</mat-label>
                     <input
-                      matInput
                       [placeholder]="
                         'customer.company_info.working_days' | translate
                       "
                       formControlName="workingDay"
+                      matInput
                     />
                   </mat-form-field>
                 </div>
@@ -155,13 +157,13 @@
                   <mat-form-field appearance="outline" class="w-100">
                     <mat-label>{{
                       "customer.company_info.account_number" | translate
-                    }}</mat-label>
+                      }}</mat-label>
                     <input
-                      matInput
                       [placeholder]="
                         'customer.company_info.account_number' | translate
                       "
                       formControlName="accountNumber"
+                      matInput
                     />
                   </mat-form-field>
                 </div>
@@ -170,20 +172,20 @@
                   <mat-form-field appearance="outline" class="w-100">
                     <mat-label>{{
                       "customer.individual_info.bank_name" | translate
-                    }}</mat-label>
+                      }}</mat-label>
                     <mat-select
-                      formControlName="bankName"
                       (selectionChange)="changeBank($event)"
+                      formControlName="bankName"
                     >
                       <mat-option
                         *ngFor="let bankNameOption of bankOptions"
                         [value]="bankNameOption.bankName"
                       >
                         {{
-                          bankNameOption.bankName +
-                            " (" +
-                            bankNameOption.bankCode +
-                            ")"
+                        bankNameOption.bankName +
+                        " (" +
+                        bankNameOption.bankCode +
+                        ")"
                         }}
                       </mat-option>
                     </mat-select>
@@ -194,14 +196,14 @@
                   <mat-form-field appearance="outline" class="w-100">
                     <mat-label>{{
                       "customer.company_info.bank_code" | translate
-                    }}</mat-label>
+                      }}</mat-label>
                     <input
-                      matInput
                       [placeholder]="
                         'customer.company_info.bank_code' | translate
                       "
                       [value]="companyInfoForm.controls.bankCode.value"
                       disabled
+                      matInput
                       readonly
                     />
                   </mat-form-field>
@@ -216,15 +218,15 @@
       <div class="row mt-3">
         <div class="col-12 d-flex gap-2 justify-content-end">
           <button
-            mat-flat-button
-            color="warn"
             autofocus
-            mat-dialog-close
             cdkFocusInitial
+            color="warn"
+            mat-dialog-close
+            mat-flat-button
           >
             {{ "customer.individual_info.cancel_update" | translate }}
           </button>
-          <button mat-flat-button color="accent" (click)="submitForm()">
+          <button (click)="submitForm()" color="accent" mat-flat-button>
             <span class="sprite-group-5-save-white"></span>
             {{ "customer.individual_info.save_update" | translate }}
           </button>

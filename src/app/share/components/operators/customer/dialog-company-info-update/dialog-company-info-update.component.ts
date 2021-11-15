@@ -22,6 +22,7 @@ export class DialogCompanyInfoUpdateComponent implements OnInit {
   customerId: string;
 
   companyInfoForm: FormGroup;
+
   constructor(
     private dialogRef: MatDialogRef<DialogCompanyInfoUpdateComponent>,
     @Inject(MAT_DIALOG_DATA) data: any,

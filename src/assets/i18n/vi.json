@@ -45,6 +45,8 @@
     "home": "Trang chủ",
     "confirm": "Xác nhận",
     "skip": "Bỏ qua",
+    "lock": "Ngừng hoạt động",
+    "allow": "Cho phép",
     "change": "Thay đổi",
     "no_options": "Không có bản ghi nào",
     "no_search_result": "Không có kết quả phù hợp với ",
@@ -208,6 +210,7 @@
       "avatar": "Ảnh chân dung",
       "update": "Cập nhật",
       "lock": "Ngừng hoạt động",
+      "unlock": "Cho phép hoạt động",
       "cancel_update": "Hủy cập nhật",
       "save_update": "Lưu hoạt động",
       "gender": "Giới tính",
@@ -217,7 +220,16 @@
       "company": "Công ty",
       "status": "Trạng thái tài khoản",
       "update_individual_info": "Cập nhật thông tin khách hàng",
-      "update_company_info": "Cập nhật thông tin công ty"
+      "update_company_info": "Cập nhật thông tin công ty",
+      "disable_customer": {
+        "title": "Ngừng hoạt động",
+        "dialog_title": "Bạn có chắc chắn muốn dừng hoạt động khách hàng này trong {{time}} không?",
+        "dialog_title_permanent": "Bạn có chắc chắn muốn dừng hoạt động khách hàng này vĩnh viễn không?",
+        "dialog_content": "Thông tin và giao dịch của khách hàng này vẫn sẽ được giữ."
+      },
+      "enable_customer": {
+        "dialog_title": "Bạn có chắc chắn cho phép người dùng này hoạt động trở lại?"
+      }
     },
     "identity": {
       "front_id": "CMND/CCCD mặt trước",
@@ -504,5 +516,15 @@
   },
   "breadcrumb": {
     "manage_customer": "Quản lý khách hàng"
+  },
+  "lock_time_options": {
+    "1_hour": "1 giờ",
+    "2_hour": "2 giờ",
+    "4_hour": "4 giờ",
+    "8_hour": "8 giờ",
+    "1_day": "1 ngày",
+    "7_day": "7 ngày",
+    "30_day": "30 ngày",
+    "permanent": "Vĩnh viễn"
   }
 }

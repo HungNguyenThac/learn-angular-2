@@ -18,11 +18,16 @@ import { CustomerDetailService } from '../customer-detail-element/customer-detai
 import {
   BUTTON_TYPE,
   DATA_CELL_TYPE,
+  LOCK_TIME_OPTIONS,
+  LOCK_TIME_TEXT_OPTIONS,
 } from '../../../../core/common/enum/operator';
 import { ToastrService } from 'ngx-toastr';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { VirtualAccount } from '../../../../../../open-api-modules/payment-api-docs';
 import * as moment from 'moment';
+import { AddNewUserDialogComponent } from '../../../../share/components/operators/user-account/add-new-user-dialog/add-new-user-dialog.component';
+import { PlPromptComponent } from '../../../../share/components';
+import { NotificationService } from '../../../../core/services/notification.service';
 
 @Component({
   selector: 'app-customer-individual-info',
@@ -30,7 +35,93 @@ import * as moment from 'moment';
   styleUrls: ['./customer-individual-info.component.scss'],
 })
 export class CustomerIndividualInfoComponent implements OnInit, OnDestroy {
+  @Output() triggerUpdateInfo = new EventEmitter<any>();
+  customerIndividualForm: FormGroup;
+  subManager = new Subscription();
+  selfieSrc: string;
+  diableTime: string;
+  showDisableOption: boolean = true;
+  timeDisableOptions: any = [
+    {
+      mainTitle: 'Theo giờ',
+      options: [
+        {
+          title: this.multiLanguageService.instant(
+            LOCK_TIME_TEXT_OPTIONS.ONE_HOUR
+          ),
+          value: LOCK_TIME_OPTIONS.ONE_HOUR,
+        },
+        {
+          title: this.multiLanguageService.instant(
+            LOCK_TIME_TEXT_OPTIONS.TWO_HOUR
+          ),
+          value: LOCK_TIME_OPTIONS.TWO_HOUR,
+        },
+        {
+          title: this.multiLanguageService.instant(
+            LOCK_TIME_TEXT_OPTIONS.FOUR_HOUR
+          ),
+          value: LOCK_TIME_OPTIONS.FOUR_HOUR,
+        },
+        {
+          title: this.multiLanguageService.instant(
+            LOCK_TIME_TEXT_OPTIONS.EIGHT_HOUR
+          ),
+          value: LOCK_TIME_OPTIONS.EIGHT_HOUR,
+        },
+      ],
+    },
+    {
+      mainTitle: 'Theo ngày',
+      options: [
+        {
+          title: this.multiLanguageService.instant(
+            LOCK_TIME_TEXT_OPTIONS.ONE_DAY
+          ),
+          value: LOCK_TIME_OPTIONS.ONE_DAY,
+        },
+        {
+          title: this.multiLanguageService.instant(
+            LOCK_TIME_TEXT_OPTIONS.SEVEN_DAY
+          ),
+          value: LOCK_TIME_OPTIONS.SEVEN_DAY,
+        },
+        {
+          title: this.multiLanguageService.instant(
+            LOCK_TIME_TEXT_OPTIONS.THIRTY_DAY
+          ),
+          value: LOCK_TIME_OPTIONS.THIRTY_DAY,
+        },
+      ],
+    },
+    {
+      mainTitle: 'Vĩnh viễn',
+      options: [
+        {
+          title: this.multiLanguageService.instant(
+            LOCK_TIME_TEXT_OPTIONS.PERMANENT
+          ),
+          value: LOCK_TIME_OPTIONS.PERMANENT,
+        },
+      ],
+    },
+  ];
+
+  constructor(
+    private multiLanguageService: MultiLanguageService,
+    private dialog: MatDialog,
+    private customerDetailService: CustomerDetailService,
+    private notifier: ToastrService,
+    private formBuilder: FormBuilder,
+    private notificationService: NotificationService
+  ) {
+    this.customerIndividualForm = this.formBuilder.group({
+      note: [''],
+    });
+  }
+
   _virtualAccount: VirtualAccount;
+
   @Input()
   get virtualAccount(): VirtualAccount {
     return this._virtualAccount;
@@ -41,6 +132,7 @@ export class CustomerIndividualInfoComponent implements OnInit, OnDestroy {
   }
 
   _customerInfo: CustomerInfo;
+
   @Input()
   get customerInfo(): CustomerInfo {
     return this._customerInfo;
@@ -53,6 +145,7 @@ export class CustomerIndividualInfoComponent implements OnInit, OnDestroy {
   }
 
   _customerId: string;
+
   @Input()
   get customerId(): string {
     return this._customerId;
@@ -63,6 +156,7 @@ export class CustomerIndividualInfoComponent implements OnInit, OnDestroy {
   }
 
   _bankOptions: Array<Bank>;
+
   @Input()
   get bankOptions(): Array<Bank> {
     return this._bankOptions;
@@ -71,8 +165,6 @@ export class CustomerIndividualInfoComponent implements OnInit, OnDestroy {
   set bankOptions(value: Array<Bank>) {
     this._bankOptions = value;
   }
-
-  @Output() triggerUpdateInfo = new EventEmitter<any>();
 
   get leftIndividualInfos() {
     return [
@@ -221,23 +313,6 @@ export class CustomerIndividualInfoComponent implements OnInit, OnDestroy {
     ];
   }
 
-  customerIndividualForm: FormGroup;
-
-  subManager = new Subscription();
-  selfieSrc: string;
-
-  constructor(
-    private multiLanguageService: MultiLanguageService,
-    private dialog: MatDialog,
-    private customerDetailService: CustomerDetailService,
-    private notifier: ToastrService,
-    private formBuilder: FormBuilder
-  ) {
-    this.customerIndividualForm = this.formBuilder.group({
-      note: [''],
-    });
-  }
-
   ngOnInit(): void {}
 
   openUpdateDialog() {
@@ -266,6 +341,80 @@ export class CustomerIndividualInfoComponent implements OnInit, OnDestroy {
         }
       })
     );
+  }
+
+  public displayDisableOption() {
+    const disableForm = document.getElementById('disableMethod');
+    if (window.getComputedStyle(disableForm, null).display === 'none') {
+      disableForm.setAttribute('style', 'display:block');
+    } else {
+      disableForm.setAttribute('style', 'display:none');
+    }
+  }
+
+  public chooseDisableTime(title, value, element) {
+    element.style.display = 'none';
+    const confirmDisableRef = this.notificationService.openPrompt({
+      imgUrl: '../../../../../assets/img/icon/group-5/Alert.svg',
+      title:
+        value === LOCK_TIME_OPTIONS.PERMANENT
+          ? this.multiLanguageService.instant(
+              'customer.individual_info.disable_customer.dialog_title_permanent'
+            )
+          : this.multiLanguageService.instant(
+              'customer.individual_info.disable_customer.dialog_title',
+              {
+                time: title,
+              }
+            ),
+      content: this.multiLanguageService.instant(
+        'customer.individual_info.disable_customer.dialog_content'
+      ),
+      primaryBtnText: this.multiLanguageService.instant('common.lock'),
+      primaryBtnClass: 'btn-error',
+      secondaryBtnText: this.multiLanguageService.instant('common.skip'),
+    });
+    confirmDisableRef.afterClosed().subscribe((result) => {
+      if (result === 'PRIMARY') {
+        this.showDisableOption = false;
+      }
+    });
+  }
+
+  public displayEnableOption() {
+    const confirmEnableRef = this.notificationService.openPrompt({
+      imgUrl: '../../../../../assets/img/icon/group-5/unlock-dialog.svg',
+      title: this.multiLanguageService.instant(
+        'customer.individual_info.enable_customer.dialog_title'
+      ),
+      content: '',
+      primaryBtnText: this.multiLanguageService.instant('common.allow'),
+      primaryBtnClass: 'btn-primary',
+      secondaryBtnText: this.multiLanguageService.instant('common.skip'),
+    });
+    confirmEnableRef.afterClosed().subscribe((result) => {
+      if (result === 'PRIMARY') {
+        this.showDisableOption = true;
+      }
+    });
+  }
+
+  submitForm() {
+    const data = this.customerIndividualForm.getRawValue();
+    this.triggerUpdateInfo.emit({
+      'personalData.note': data.note,
+    });
+  }
+
+  formatTime(timeInput) {
+    if (!timeInput) return;
+    return moment(new Date(timeInput), 'YYYY-MM-DD HH:mm:ss').format(
+      'DD/MM/YYYY'
+    );
+  }
+
+  ngOnDestroy(): void {
+    this.subManager.unsubscribe();
   }
 
   private _initIndividualFormData(customerId, customerInfo) {
@@ -307,23 +456,5 @@ export class CustomerIndividualInfoComponent implements OnInit, OnDestroy {
       'personalData.addressTwoLine1': data?.permanentAddress,
       'personalData.mobileNumber': data?.mobileNumber,
     };
-  }
-
-  submitForm() {
-    const data = this.customerIndividualForm.getRawValue();
-    this.triggerUpdateInfo.emit({
-      'personalData.note': data.note,
-    });
-  }
-
-  formatTime(timeInput) {
-    if (!timeInput) return;
-    return moment(new Date(timeInput), 'YYYY-MM-DD HH:mm:ss').format(
-      'DD/MM/YYYY'
-    );
-  }
-
-  ngOnDestroy(): void {
-    this.subManager.unsubscribe();
   }
 }

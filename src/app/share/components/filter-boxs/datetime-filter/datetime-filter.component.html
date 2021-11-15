@@ -3,11 +3,13 @@
     <h3 class="filter-title">{{ filterOption.title }}</h3>
   </div>
   <div>
+
+
     <ul>
       <mat-radio-group
+        [(ngModel)]="selectedTimeFilterMethod"
         aria-labelledby="example-radio-group-label"
         class="example-radio-group"
-        [(ngModel)]="selectedTimeFilterMethod"
       >
         <li
           class="
@@ -21,23 +23,23 @@
         >
           <div>
             <mat-radio-button
+              (click)="displayDetailOption(staticMethodEle)"
               [value]="'TIME_FRAME'"
               color="primary"
-              (click)="displayDetailOption(staticMethodEle)"
-              >{{ chosenTimeFrameMethod }}</mat-radio-button
-            >
+            >{{ chosenTimeFrameMethod }}</mat-radio-button>
+
             <div
+              #staticMethodEle
+              (mouseleave)="staticMethodEle.style.display = 'none'"
               class="filter-form-container-expand"
               id="staticMethodEle"
-              (mouseleave)="staticMethodEle.style.display = 'none'"
-              #staticMethodEle
             >
               <div class="arrow">
                 <svg
-                  width="5"
+                  fill="none"
                   height="14"
                   viewBox="0 0 5 14"
-                  fill="none"
+                  width="5"
                   xmlns="http://www.w3.org/2000/svg"
                 >
                   <path
@@ -53,13 +55,11 @@
                 <div class="card-body">
                   <div class="all-time-filter-container d-flex flex-wrap gap-3">
                     <div
-                      class="column-options"
                       *ngFor="let timeOption of timeFilterOptions"
+                      class="column-options"
                     >
                       <div class="thead">{{ timeOption.mainTitle }}</div>
                       <div
-                        class="trow"
-                        *ngFor="let ele of timeOption.options"
                         (click)="
                           chooseTimeFilter(
                             ele.startDate,
@@ -68,6 +68,8 @@
                             staticMethodEle
                           )
                         "
+                        *ngFor="let ele of timeOption.options"
+                        class="trow"
                       >
                         {{ ele.title }}
                       </div>
@@ -88,6 +90,8 @@
           >
             <span class="sprite-group-5-chevron-right-grey"></span>
           </div>
+
+
         </li>
         <li
           class="
@@ -101,23 +105,23 @@
         >
           <div>
             <mat-radio-button
-              color="primary"
-              [value]="'TIME_RANGE'"
               (click)="displayDetailOption(stateMethodEle)"
-              >{{ chosenTimeRangeMethod }}</mat-radio-button
+              [value]="'TIME_RANGE'"
+              color="primary"
+            >{{ chosenTimeRangeMethod }}</mat-radio-button
             >
             <div
+              #stateMethodEle
+              (mouseleave)="stateMethodEle.style.display = 'none'"
               class="filter-form-container-expand"
               id="stateMethodEle"
-              (mouseleave)="stateMethodEle.style.display = 'none'"
-              #stateMethodEle
             >
               <div class="arrow">
                 <svg
-                  width="5"
+                  fill="none"
                   height="14"
                   viewBox="0 0 5 14"
-                  fill="none"
+                  width="5"
                   xmlns="http://www.w3.org/2000/svg"
                 >
                   <path
@@ -131,9 +135,9 @@
                 <div class="card-title d-flex align-items-center gap-1 mb-0">
                   {{ "filter.choose_range_time" | translate }}
                   <button
-                    mat-button
-                    class="reset-btn"
                     (click)="resetSelectedDate()"
+                    class="reset-btn"
+                    mat-button
                   >
                     {{ "common.reset" | translate }}
                   </button>
@@ -143,22 +147,22 @@
                     <div class="datepicker-container">
                       <div class="description d-flex gap-1">
                         <span>{{ "filter.from_day" | translate }}</span>
-                        <span class="selected-date" *ngIf="selectedStartDate">{{
+                        <span *ngIf="selectedStartDate" class="selected-date">{{
                           "filter.selected_date"
                             | translate
-                              : {
-                                  date: selectedStartDay,
-                                  day: selectedStartDateDisplay
-                                }
-                        }}</span>
+                            : {
+                              date: selectedStartDay,
+                              day: selectedStartDateDisplay
+                            }
+                          }}</span>
                       </div>
                       <mat-card class="calendar-card">
                         <mat-calendar
-                          [selected]="selectedStartDate"
-                          [maxDate]="currentTime"
                           (selectedChange)="
                             onSelectStartDate($event, stateMethodEle)
                           "
+                          [maxDate]="currentTime"
+                          [selected]="selectedStartDate"
                         ></mat-calendar>
                       </mat-card>
                     </div>
@@ -166,25 +170,25 @@
                     <div class="datepicker-container">
                       <div class="description d-flex gap-1">
                         <span>{{ "filter.from_day" | translate }}</span>
-                        <span class="selected-date" *ngIf="selectedEndDate">
+                        <span *ngIf="selectedEndDate" class="selected-date">
                           {{
-                            "filter.selected_date"
-                              | translate
-                                : {
-                                    date: selectedEndDay,
-                                    day: selectedEndDateDisplay
-                                  }
+                          "filter.selected_date"
+                            | translate
+                            : {
+                              date: selectedEndDay,
+                              day: selectedEndDateDisplay
+                            }
                           }}
                         </span>
                       </div>
                       <mat-card class="calendar-card">
                         <mat-calendar
-                          [selected]="selectedEndDate"
-                          [maxDate]="currentTime"
-                          [minDate]="selectedStartDate"
                           (selectedChange)="
                             onSelectEndDate($event, stateMethodEle)
                           "
+                          [maxDate]="currentTime"
+                          [minDate]="selectedStartDate"
+                          [selected]="selectedEndDate"
                         ></mat-calendar>
                       </mat-card>
                     </div>

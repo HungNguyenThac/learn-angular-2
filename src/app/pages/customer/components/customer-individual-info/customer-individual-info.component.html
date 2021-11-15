@@ -6,12 +6,12 @@
         <div class="op-customer-avatar">
           <img
             *ngIf="!selfieSrc; else hasSelfieImg"
+            alt=""
             class="op-customer-avatar-img"
             src="assets/img/payday-loan/avatar-default.png"
-            alt=""
           />
           <ng-template #hasSelfieImg>
-            <img class="op-customer-avatar-img" [src]="selfieSrc" alt="" />
+            <img [src]="selfieSrc" alt="" class="op-customer-avatar-img"/>
           </ng-template>
 
           <div class="op-customer-avatar-img-zoom">
@@ -43,16 +43,16 @@
         <div class="col-12 col-sm-12 col-md-6 col-lg-6">
           <ul class="pl-list">
             <li
-              class="pl-list-item"
               *ngFor="let leftIndividualInfo of leftIndividualInfos"
+              class="pl-list-item"
             >
               <p class="pl-list-item-label">
                 {{ leftIndividualInfo.title }}
               </p>
               <p class="pl-list-item-content">
                 <app-format-data
-                  [type]="leftIndividualInfo?.type"
                   [format]="leftIndividualInfo?.format"
+                  [type]="leftIndividualInfo?.type"
                   [value]="leftIndividualInfo?.value"
                 ></app-format-data>
               </p>
@@ -64,25 +64,25 @@
         <div class="col-12 col-sm-12 col-md-6 col-lg-6">
           <ul class="pl-list">
             <li
-              class="pl-list-item"
               *ngFor="let rightIndividualInfo of rightIndividualInfos"
+              class="pl-list-item"
             >
               <p class="pl-list-item-label">
                 {{ rightIndividualInfo.title }}
               </p>
               <p class="pl-list-item-content">
                 <app-format-data
-                  [type]="rightIndividualInfo?.type"
                   [format]="rightIndividualInfo?.format"
+                  [type]="rightIndividualInfo?.type"
                   [value]="rightIndividualInfo?.value"
                 ></app-format-data>
               </p>
             </li>
             <li>
               <form
+                (submit)="submitForm()"
                 [formGroup]="customerIndividualForm"
                 class="note-form"
-                (submit)="submitForm()"
               >
                 <mat-form-field appearance="standard" class="w-100">
                   <mat-label
@@ -96,19 +96,19 @@
                     <span class="sprite-group-5-pen-grey"></span>
                     <span class="op-text-area-label">{{
                       "customer.individual_info.note" | translate
-                    }}</span>
+                      }}</span>
                   </mat-label>
                   <textarea
-                    matInput
-                    class="text-area"
-                    id="review"
-                    name="review"
-                    formControlName="note"
                     (blur)="submitForm()"
                     (keyup.enter)="submitForm()"
                     [placeholder]="
                       'customer.individual_info.type_note' | translate
                     "
+                    class="text-area"
+                    formControlName="note"
+                    id="review"
+                    matInput
+                    name="review"
                   ></textarea>
                 </mat-form-field>
               </form>
@@ -123,14 +123,63 @@
 
   <div class="row mt-3 mb-3">
     <div class="col-12 d-flex gap-2 justify-content-end">
-      <button mat-flat-button color="accent" (click)="openUpdateDialog()">
+      <button (click)="openUpdateDialog()" color="accent" mat-flat-button>
         <span class="sprite-group-5-pen-white"></span>
         {{ "customer.individual_info.update" | translate }}
       </button>
-      <button mat-flat-button color="warn" disabled>
+      <button (click)="displayDisableOption()" *ngIf="showDisableOption else showEnableOption" color="warn"
+              mat-flat-button>
         <span class="sprite-group-5-lock-white"></span>
         {{ "customer.individual_info.lock" | translate }}
       </button>
+      <ng-template #showEnableOption>
+        <button (click)="displayEnableOption()" color="primary" mat-flat-button>
+          <svg fill="none" height="16" viewBox="0 0 16 16" width="16" xmlns="http://www.w3.org/2000/svg">
+            <path
+              d="M8.00033 1.33398C9.13926 1.33398 10.1411 2.05476 10.5145 3.11159C10.6372 3.45875 10.4552 3.83962 10.1081 3.96228C9.78566 4.07618 9.43426 3.9274 9.28746 3.62762L9.25733 3.5558C9.07079 3.02778 8.56973 2.66732 8.00033 2.66732C7.29779 2.66732 6.72219 3.21095 6.67133 3.9005L6.66766 3.99996V5.33265L11.8337 5.33329C12.6276 5.33329 13.2774 5.95006 13.3302 6.73062L13.3337 6.83329V13.1642C13.3337 13.958 12.7169 14.6079 11.9363 14.6607L11.8337 14.6642H4.16699C3.37309 14.6642 2.72323 14.0474 2.67045 13.2668L2.66699 13.1642V6.83329C2.66699 6.03938 3.28377 5.38953 4.06429 5.33675L4.16699 5.33329L5.33433 5.33265L5.33435 3.99996C5.33435 2.52758 6.52795 1.33398 8.00033 1.33398ZM8.00033 8.99963C7.44853 8.99963 7.00126 9.44696 7.00126 9.99869C7.00126 10.5505 7.44853 10.9978 8.00033 10.9978C8.55212 10.9978 8.99939 10.5505 8.99939 9.99869C8.99939 9.44696 8.55212 8.99963 8.00033 8.99963Z"
+              fill="white"/>
+          </svg>
+          {{ "customer.individual_info.unlock" | translate }}
+        </button>
+      </ng-template>
+      <div
+        #staticMethodEle
+        (mouseleave)="staticMethodEle.style.display = 'none'"
+        class="customer-disable-form-container-expand"
+        id="disableMethod"
+      >
+        <div class="arrow">
+          <svg fill="none" height="5" viewBox="0 0 14 5" width="14" xmlns="http://www.w3.org/2000/svg">
+            <path
+              d="M6.05719 4.59208L2.25245 0.613101C1.87738 0.220852 1.36867 0.000488281 0.83824 0.000488281H13.1618C12.6313 0.000488281 12.1226 0.220851 11.7475 0.613101L7.94281 4.59208C7.42211 5.13662 6.57789 5.13662 6.05719 4.59208Z"
+              fill="white"/>
+          </svg>
+
+        </div>
+        <div class="card op-card op-drop-shadow">
+          <div class="card-title d-flex align-items-center gap-1">
+            {{ "customer.individual_info.disable_customer.title" | translate }}
+          </div>
+          <div class="card-body">
+            <div class="all-time-filter-container d-flex flex-wrap gap-3">
+              <div
+                *ngFor="let timeOption of timeDisableOptions"
+                class="column-options"
+              >
+                <div class="thead">{{ timeOption.mainTitle }}</div>
+                <div
+                  (click)="chooseDisableTime(
+                  ele.title, ele.value,staticMethodEle)"
+                  *ngFor="let ele of timeOption.options"
+                  class="trow"
+                >
+                  {{ ele.title }}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
