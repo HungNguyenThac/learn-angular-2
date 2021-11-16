@@ -527,7 +527,6 @@ export class LoanListComponent implements OnInit, OnDestroy {
       this.groupName;
     if (params.groupName === 'HMG') {
       this.filterOptions[2].options = this.statusFilterOptionsHmg;
-      this.subManager.add(
         this.loanListService
           .getLoanDataHmg(params)
           .subscribe(
@@ -535,13 +534,11 @@ export class LoanListComponent implements OnInit, OnDestroy {
               this._parseData(data?.result);
             }
           )
-      );
     }
 
     if (params.groupName === 'TNG') {
       // Remove status CONTRACT_AWAITING from Filter sidebar
       this.filterOptions[2].options = this.statusFilterOptionsTng;
-      this.subManager.add(
         this.loanListService
           .getLoanDataTng(params)
           .subscribe(
@@ -549,7 +546,6 @@ export class LoanListComponent implements OnInit, OnDestroy {
               this._parseData(data?.result);
             }
           )
-      );
     }
   }
 
@@ -557,7 +553,6 @@ export class LoanListComponent implements OnInit, OnDestroy {
     const params = this._buildParams();
     const requestBody = {};
     requestBody['groupName'] = params.groupName;
-    this.subManager.add(
       this.companyControllerService
         .getCompanies(10, 0, requestBody)
         .subscribe(
@@ -566,7 +561,6 @@ export class LoanListComponent implements OnInit, OnDestroy {
             this._initCompanyOptions();
           }
         )
-    );
   }
 
   private _initCompanyOptions() {
@@ -635,8 +629,8 @@ export class LoanListComponent implements OnInit, OnDestroy {
       .then((r) => {});
   }
   ngOnDestroy(): void {
-    // if (this.subManager !== null) {
-    // this.subManager.unsubscribe();
-    // }
+    if (this.subManager !== null) {
+    this.subManager.unsubscribe();
+    }
   }
 }
