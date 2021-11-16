@@ -14,8 +14,11 @@ export class BaseFilterFormComponent implements OnInit {
     return this._filterOptions;
   }
   set filterOptions(value) {
-    this._filterOptions = value;
+    this._filterOptions = value
+    this.filterOptionsDisplay = this._filterOptionsEle();
   }
+
+  filterOptionsDisplay;
 
   @Output() triggerFilterChange = new EventEmitter<FilterEventModel>();
   @Output() triggerFilterAction = new EventEmitter<FilterActionEventModel>();
@@ -30,5 +33,11 @@ export class BaseFilterFormComponent implements OnInit {
 
   clickActionBtn(event: FilterActionEventModel) {
     this.triggerFilterAction.emit(event);
+  }
+
+  private _filterOptionsEle() {
+    console.log('set filter ne', this._filterOptions);
+
+    return this._filterOptions;
   }
 }

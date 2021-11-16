@@ -484,15 +484,23 @@ export class LoanListComponent implements OnInit, OnDestroy {
           params?.queryParams
         ) {
           this.groupName = params?.queryParams.groupName;
+          this._resetFilterOptions();
           this._initFilterForm();
           this.filterForm.controls['groupName'].setValue(this.groupName);
-          console.log('day la filter options',this.filterOptions);
         }
         this._parseQueryParams(params?.queryParams);
         this._getLoanList();
         this._getCompanyList();
       })
     );
+  }
+
+  private _resetFilterOptions() {
+    let newFilterOptions = JSON.parse(JSON.stringify(this.filterOptions));
+    newFilterOptions.forEach((filterOption) => {
+      filterOption.value = null;
+    });
+    this.filterOptions = newFilterOptions;
   }
 
   private _getLoanList() {
