@@ -510,6 +510,8 @@
     "dashboard": "Trang chủ"
   },
   "breadcrumb": {
-    "manage_customer": "Quản lý khách hàng"
+    "manage_customer": "Quản lý khách hàng",
+    "manage_payday_loan": "Quản lý khoản vay",
+    "search_field_payday_loan": "Mã khoản vay, Tên, Số điện thoại..."
   }
 }

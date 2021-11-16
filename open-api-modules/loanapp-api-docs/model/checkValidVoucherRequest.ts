@@ -12,7 +12,10 @@
 
 
 export interface CheckValidVoucherRequest { 
-    customerId?: string;
-    voucherCode?: string;
+    customerId: string;
+    voucherCode: string;
+    isEvent?: boolean;
+    mobileNumber?: string;
+    mobileProvider?: string;
 }
 

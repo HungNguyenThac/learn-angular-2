@@ -33,6 +33,9 @@ export interface PaydayLoanHmg {
     totalServiceFees?: number;
     getSalaryAt?: string;
     createdAt?: string;
+    updatedAt?: string;
+    note?: string;
+    personInChargeId?: string;
     customerName?: string;
     customerMobileNumber?: string;
     customerEmail?: string;

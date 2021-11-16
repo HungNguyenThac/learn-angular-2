@@ -237,7 +237,7 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
   rejectLoanStatus: string = PAYDAY_LOAN_STATUS.UNKNOWN_STATUS;
   rejectLoanStatusDisplay: string;
   salaryStatus: string;
-  customerIndividualForm: FormGroup;
+  loanInfoForm: FormGroup;
 
   subManager = new Subscription();
   @Output() loanDetailDetectChangeStatus = new EventEmitter<any>();
@@ -250,7 +250,7 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
     private notifier: ToastrService,
     private formBuilder: FormBuilder
   ) {
-    this.customerIndividualForm = this.formBuilder.group({
+    this.loanInfoForm = this.formBuilder.group({
       note: [''],
     });
   }
@@ -426,7 +426,7 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
   }
 
   private _initIndividualFormData(customerId, customerInfo) {
-    this.customerIndividualForm.patchValue({
+    this.loanInfoForm.patchValue({
       note: customerInfo?.note,
     });
   }

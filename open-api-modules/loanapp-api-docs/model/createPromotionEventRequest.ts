@@ -15,5 +15,6 @@ export interface CreatePromotionEventRequest {
     adminId?: string;
     purpose?: string;
     expiredAt?: string;
+    scope?: string;
 }
 

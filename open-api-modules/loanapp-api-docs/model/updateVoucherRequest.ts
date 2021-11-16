@@ -11,11 +11,16 @@
  */
 
 
-export interface CreateApplicationRequest { 
-    coreToken?: string;
-    customerId: string;
-    expectedAmount?: number;
-    purpose?: string;
-    voucherTransactionId?: string;
+export interface UpdateVoucherRequest { 
+    adminId?: string;
+    id?: string;
+    voucherCode?: string;
+    description?: string;
+    expiredAt?: string;
+    type?: string;
+    scope?: string;
+    limitPerDay?: number;
+    maxAmount?: number;
+    remainAmount?: number;
 }
 

@@ -10,10 +10,10 @@ import { MatTableDataSource } from '@angular/material/table';
 import { BreadcrumbOptionsModel } from '../../../../public/models/external/breadcrumb-options.model';
 import { SortDirection } from '@angular/material/sort/sort-direction';
 import { FilterOptionModel } from '../../../../public/models/filter/filter-option.model';
-import {FilterEventModel} from "../../../../public/models/filter/filter-event.model";
-import {FilterActionEventModel} from "../../../../public/models/filter/filter-action-event.model";
-import {Sort} from "@angular/material/sort";
-import {PageEvent} from "@angular/material/paginator/public-api";
+import { FilterEventModel } from '../../../../public/models/filter/filter-event.model';
+import { FilterActionEventModel } from '../../../../public/models/filter/filter-action-event.model';
+import { Sort } from '@angular/material/sort';
+import { PageEvent } from '@angular/material/paginator/public-api';
 
 @Component({
   selector: 'app-base-management-layout',
@@ -23,7 +23,14 @@ import {PageEvent} from "@angular/material/paginator/public-api";
 export class BaseManagementLayoutComponent implements OnInit {
   @Input() detailElementTemplate: TemplateRef<any>;
 
-  @Input() filterOptions: FilterOptionModel[] = [];
+  // filterOptions: FilterOptionModel[] = [];
+  _filterOptions: FilterOptionModel;
+  @Input() get filterOptions(): FilterOptionModel {
+    return this._filterOptions;
+  }
+  set filterOptions(value) {
+    this._breadcrumbOptions = value;
+  }
   @Input() allColumns: any[] = [];
   @Input() tableTitle: string;
   @Input() dataSource: MatTableDataSource<any> = new MatTableDataSource([]);
@@ -34,7 +41,14 @@ export class BaseManagementLayoutComponent implements OnInit {
   @Input() pageLength: number = 0;
   @Input() orderBy: string;
   @Input() sortDirection: SortDirection = 'desc';
-  @Input() breadcrumbOptions: BreadcrumbOptionsModel;
+  _breadcrumbOptions: BreadcrumbOptionsModel;
+  @Input() get breadcrumbOptions(): BreadcrumbOptionsModel {
+    return this._breadcrumbOptions;
+  }
+
+  set breadcrumbOptions(value) {
+    this._breadcrumbOptions = value;
+  }
 
   @Output() onPageChange = new EventEmitter<PageEvent>();
   @Output() onSortChange = new EventEmitter<Sort>();

@@ -9,13 +9,13 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { VoucherDTO } from './voucherDTO';
 
 
-export interface CreateApplicationRequest { 
-    coreToken?: string;
-    customerId: string;
-    expectedAmount?: number;
-    purpose?: string;
-    voucherTransactionId?: string;
+export interface ApiResponseListVoucherDTO { 
+    result?: Array<VoucherDTO>;
+    errorCode?: string;
+    message?: object;
+    responseCode?: number;
 }
 
