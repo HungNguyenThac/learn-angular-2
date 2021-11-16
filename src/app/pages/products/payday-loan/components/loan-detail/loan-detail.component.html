@@ -42,7 +42,7 @@
     *ngIf="loanDetail?.ratingInfo?.isRated"
     [label]="'loan_app.tabs.rating' | translate"
   >
-    <ng-template>
+    <ng-template matTabContent>
       <app-loan-rating
         [loanDetail]="loanDetail"
         [loanId]="loanId"
