@@ -9,7 +9,13 @@ import { FilterActionEventModel } from '../../../../public/models/filter/filter-
   styleUrls: ['./base-filter-form.component.scss'],
 })
 export class BaseFilterFormComponent implements OnInit {
-  @Input() filterOptions: FilterOptionModel[];
+  _filterOptions: FilterOptionModel;
+  @Input() get filterOptions(): FilterOptionModel {
+    return this._filterOptions;
+  }
+  set filterOptions(value) {
+    this._filterOptions = value;
+  }
 
   @Output() triggerFilterChange = new EventEmitter<FilterEventModel>();
   @Output() triggerFilterAction = new EventEmitter<FilterActionEventModel>();

@@ -432,6 +432,8 @@ export class LoanListComponent implements OnInit, OnDestroy {
   }
 
   private _parseQueryParams(params) {
+    console.log('day la param', params);
+
     let filterConditionsValue =
       this.filterForm.controls.filterConditions?.value;
 
@@ -477,16 +479,14 @@ export class LoanListComponent implements OnInit, OnDestroy {
   private _initSubscription() {
     this.subManager.add(
       this.routeAllState$.subscribe((params) => {
-        console.log("test thoi",params?.queryParams.groupName);
         if (
           this.groupName !== params?.queryParams.groupName &&
           params?.queryParams
         ) {
           this.groupName = params?.queryParams.groupName;
-          this._initFilterForm()
+          this._initFilterForm();
           this.filterForm.controls['groupName'].setValue(this.groupName);
-          // this._onFilterChange();
-          // return
+          console.log('day la filter options',this.filterOptions);
         }
         this._parseQueryParams(params?.queryParams);
         this._getLoanList();
