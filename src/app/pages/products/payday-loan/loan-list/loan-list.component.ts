@@ -294,12 +294,28 @@ export class LoanListComponent implements OnInit, OnDestroy {
       format: 'dd/MM/yyyy HH:mm',
       showed: true,
     },
+    {
+      key: 'customerEmail',
+      title: this.multiLanguageService.instant(
+        'customer.individual_info.email'
+      ),
+      type: DATA_CELL_TYPE.TEXT,
+      format: null,
+      showed: false,
+    },
+    {
+      key: 'customerIdentityNumberOne',
+      title: this.multiLanguageService.instant('customer.individual_info.cmnd'),
+      type: DATA_CELL_TYPE.TEXT,
+      format: null,
+      showed: false,
+    },
   ];
   dataSource: MatTableDataSource<any> = new MatTableDataSource([]);
   expandedElementLoanId: string;
   expandedElementCustomerId: string;
   pages: Array<number>;
-  pageSize: number = 20;
+  pageSize: number = 10;
   pageIndex: number = 0;
   pageLength: number = 0;
   pageSizeOptions: number[] = [10, 20, 50];
@@ -473,7 +489,7 @@ export class LoanListComponent implements OnInit, OnDestroy {
 
     this.breadcrumbOptions.keyword = params.keyword;
     this.pageIndex = params.pageIndex || 0;
-    this.pageSize = params.pageSize || 20;
+    this.pageSize = params.pageSize || 10;
   }
 
   private _initSubscription() {
