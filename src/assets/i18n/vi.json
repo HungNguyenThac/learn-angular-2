@@ -339,6 +339,7 @@
       "contract_signing": "Ký hợp đồng",
       "monex_sign_awaiting": "Chờ Monex ký",
       "sign_success": "Ký hợp đồng thành công",
+      "sign_fail": "Ký hợp đồng thất bại",
       "disbursement_awaiting": "Chờ giải ngân",
       "disbursed": "Đã giải ngân",
       "ỉn_repayment": "Trong hạn",
@@ -346,7 +347,8 @@
       "rejected": "Bị từ chối",
       "withdrew": "Đã hủy",
       "download": "Tải xuống",
-      "no_contract": "Không có hợp đồng"
+      "no_contract": "Không có hợp đồng",
+      "downloading": "Đang tải xuống tài liệu"
     },
     "documents": {
       "ekyc_info": "Thông tin EKYC",
