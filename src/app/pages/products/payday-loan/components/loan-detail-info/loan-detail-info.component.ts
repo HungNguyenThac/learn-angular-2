@@ -241,6 +241,7 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
 
   subManager = new Subscription();
   @Output() loanDetailDetectChangeStatus = new EventEmitter<any>();
+  @Output() triggerUpdateInfo = new EventEmitter<any>();
   constructor(
     private multiLanguageService: MultiLanguageService,
     private dialog: MatDialog,

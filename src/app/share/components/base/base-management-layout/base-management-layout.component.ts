@@ -29,7 +29,7 @@ export class BaseManagementLayoutComponent implements OnInit {
     return this._filterOptions;
   }
   set filterOptions(value) {
-    this._breadcrumbOptions = value;
+    this._filterOptions = value;
   }
   @Input() allColumns: any[] = [];
   @Input() tableTitle: string;
