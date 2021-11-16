@@ -10,10 +10,10 @@ import { MatTableDataSource } from '@angular/material/table';
 import { BreadcrumbOptionsModel } from '../../../../public/models/external/breadcrumb-options.model';
 import { SortDirection } from '@angular/material/sort/sort-direction';
 import { FilterOptionModel } from '../../../../public/models/filter/filter-option.model';
-import {FilterEventModel} from "../../../../public/models/filter/filter-event.model";
-import {FilterActionEventModel} from "../../../../public/models/filter/filter-action-event.model";
-import {Sort} from "@angular/material/sort";
-import {PageEvent} from "@angular/material/paginator/public-api";
+import { FilterEventModel } from '../../../../public/models/filter/filter-event.model';
+import { FilterActionEventModel } from '../../../../public/models/filter/filter-action-event.model';
+import { Sort } from '@angular/material/sort';
+import { PageEvent } from '@angular/material/paginator/public-api';
 
 @Component({
   selector: 'app-base-management-layout',
@@ -35,7 +35,6 @@ export class BaseManagementLayoutComponent implements OnInit {
   @Input() orderBy: string;
   @Input() sortDirection: SortDirection = 'desc';
   @Input() breadcrumbOptions: BreadcrumbOptionsModel;
-
   @Output() onPageChange = new EventEmitter<PageEvent>();
   @Output() onSortChange = new EventEmitter<Sort>();
   @Output() onExpandElementChange = new EventEmitter<any>();

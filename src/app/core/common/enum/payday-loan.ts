@@ -155,9 +155,10 @@ export enum PAYDAY_LOAN_UI_STATUS_TEXT {
 }
 
 export enum PAYDAY_LOAN_OTHER_STATUS {
-  NOT_RECEIVED_SALARY_YET = 'Chưa được trả lương',
-  RECEIVED_SALARY = 'Đã được trả lương',
-  NOT_PAID_YET = 'Chưa thanh toán',
+  NOT_RECEIVED_SALARY_YET = 'loan_app.loan_info.not_received_salary',
+  RECEIVED_SALARY = 'loan_app.loan_info.received_salary',
+  NOT_PAID_YET = 'loan_app.loan_info.unpaid',
+  ACTIVE_USER = 'system.system_management.active_user',
+  INACTIVE_USER = 'system.system_management.inactive_user',
   COMPLETED_PAID = 'success',
-  COMPLETED_CDE = 'COMPLETED_CDE',
 }

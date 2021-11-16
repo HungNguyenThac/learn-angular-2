@@ -18,6 +18,8 @@ export class PlStatusElementComponent implements OnInit {
   @Input() statusType: DATA_STATUS_TYPE;
   @Input() statusValue: string;
 
+  constructor(private multiLanguageService: MultiLanguageService) {}
+
   get dataStatus() {
     switch (this.statusType) {
       case DATA_STATUS_TYPE.PL_HMG_STATUS:
@@ -36,8 +38,6 @@ export class PlStatusElementComponent implements OnInit {
         };
     }
   }
-
-  constructor(private multiLanguageService: MultiLanguageService) {}
 
   ngOnInit(): void {}
 
@@ -88,15 +88,33 @@ export class PlStatusElementComponent implements OnInit {
 
   loanOtherStatusContent(status) {
     switch (status) {
-      case PAYDAY_LOAN_OTHER_STATUS.NOT_RECEIVED_SALARY_YET:
+      case this.multiLanguageService.instant(
+        PAYDAY_LOAN_OTHER_STATUS.NOT_RECEIVED_SALARY_YET
+      ):
         return {
           label: this.statusValue,
           labelStatus: PL_LABEL_STATUS.PENDING,
         };
-      case PAYDAY_LOAN_OTHER_STATUS.RECEIVED_SALARY:
+      case this.multiLanguageService.instant(
+        PAYDAY_LOAN_OTHER_STATUS.RECEIVED_SALARY
+      ):
         return {
           label: this.statusValue,
           labelStatus: PL_LABEL_STATUS.SUCCESS,
+        };
+      case this.multiLanguageService.instant(
+        PAYDAY_LOAN_OTHER_STATUS.ACTIVE_USER
+      ):
+        return {
+          label: this.statusValue,
+          labelStatus: PL_LABEL_STATUS.SUCCESS,
+        };
+      case this.multiLanguageService.instant(
+        PAYDAY_LOAN_OTHER_STATUS.INACTIVE_USER
+      ):
+        return {
+          label: this.statusValue,
+          labelStatus: PL_LABEL_STATUS.PENDING,
         };
       default:
         return {

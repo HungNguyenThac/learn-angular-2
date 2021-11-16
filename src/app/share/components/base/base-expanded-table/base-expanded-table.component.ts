@@ -35,7 +35,6 @@ export class BaseExpandedTableComponent implements OnInit {
   @Input() orderBy: string;
   @Input() sortDirection: SortDirection;
   @Input() allColumns: any[];
-
   @Output() triggerPageChange = new EventEmitter<any>();
   @Output() triggerSortChange = new EventEmitter<any>();
   @Output() triggerExpandedElementChange = new EventEmitter<any>();
@@ -43,6 +42,9 @@ export class BaseExpandedTableComponent implements OnInit {
   expandedElement: any;
   selectedFields: DisplayedFieldsModel[] = [];
   panelOpenState = false;
+  array;
+
+  constructor(private _liveAnnouncer: LiveAnnouncer) {}
 
   get displayedColumns() {
     return (
@@ -56,22 +58,8 @@ export class BaseExpandedTableComponent implements OnInit {
     });
   }
 
-  constructor(private _liveAnnouncer: LiveAnnouncer) {}
-
   ngOnInit(): void {
     this._initSelectedFields();
-  }
-
-  private _initSelectedFields() {
-    this.selectedFields = this.allColumns.map((item, index) => {
-      return {
-        key: item.key,
-        title: item.title,
-        type: item.type,
-        format: item.format,
-        showed: item.showed,
-      };
-    });
   }
 
   /** Announce the change in sort state for assistive technology. */
@@ -105,5 +93,17 @@ export class BaseExpandedTableComponent implements OnInit {
 
   public resetDisplayFields() {
     this._initSelectedFields();
+  }
+
+  private _initSelectedFields() {
+    this.selectedFields = this.allColumns.map((item, index) => {
+      return {
+        key: item.key,
+        title: item.title,
+        type: item.type,
+        format: item.format,
+        showed: item.showed,
+      };
+    });
   }
 }
