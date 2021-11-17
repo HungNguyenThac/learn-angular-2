@@ -30,5 +30,8 @@ export interface PaydayLoan {
     totalServiceFees?: number;
     getSalaryAt?: string;
     createdAt?: string;
+    updatedAt?: string;
+    note?: string;
+    personInChargeId?: string;
 }
 

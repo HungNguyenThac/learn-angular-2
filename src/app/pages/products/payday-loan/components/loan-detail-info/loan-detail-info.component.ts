@@ -2,7 +2,6 @@ import { NotificationService } from 'src/app/core/services/notification.service'
 import { ToastrService } from 'ngx-toastr';
 import { UpdateLoanStatusRequest } from './../../../../../../../open-api-modules/loanapp-hmg-api-docs/model/updateLoanStatusRequest';
 import { Subscription } from 'rxjs';
-import { PlPromptComponent } from './../../../../../share/components/dialogs/pl-prompt/pl-prompt.component';
 import { PaydayLoanControllerService as PaydayLoanHmgControllerService } from './../../../../../../../open-api-modules/loanapp-hmg-api-docs/api/paydayLoanController.service';
 import { PaydayLoanControllerService as PaydayLoanTngControllerService } from './../../../../../../../open-api-modules/loanapp-api-docs/api/paydayLoanController.service';
 import { PAYDAY_LOAN_STATUS } from './../../../../../core/common/enum/payday-loan';
@@ -26,8 +25,15 @@ import {
   CustomerInfo,
   PaydayLoanHmg,
 } from 'open-api-modules/dashboard-api-docs';
-import { PaydayLoan } from 'open-api-modules/loanapp-api-docs';
+import {
+  ApiResponseObject,
+  PaydayLoan,
+} from 'open-api-modules/loanapp-api-docs';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import {
+  ApiResponseString,
+  UpdateLoanRequest,
+} from 'open-api-modules/loanapp-hmg-api-docs';
 
 @Component({
   selector: 'app-loan-detail-info',
@@ -58,6 +64,7 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
     this.leftColumn = this._initLeftColumn();
     this.middleColumn = this._initMiddleColumn();
     this.rightColumn = this._initRightColumn();
+    this._initLoanInfoData();
   }
 
   _loanDetail: PaydayLoanHmg;
@@ -72,6 +79,7 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
     this.leftColumn = this._initLeftColumn();
     this.middleColumn = this._initMiddleColumn();
     this.rightColumn = this._initRightColumn();
+    this._initLoanInfoData();
   }
 
   private _initLeftColumn() {
@@ -120,7 +128,7 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
         title: this.multiLanguageService.instant(
           'loan_app.loan_info.updated_at'
         ),
-        value: this.loanDetail?.createdAt,
+        value: this.loanDetail?.updatedAt,
         type: DATA_CELL_TYPE.DATETIME,
         format: 'dd/MM/yyyy HH:mm',
       },
@@ -237,7 +245,7 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
   rejectLoanStatus: string = PAYDAY_LOAN_STATUS.UNKNOWN_STATUS;
   rejectLoanStatusDisplay: string;
   salaryStatus: string;
-  customerIndividualForm: FormGroup;
+  loanInfoForm: FormGroup;
 
   subManager = new Subscription();
   @Output() loanDetailDetectChangeStatus = new EventEmitter<any>();
@@ -250,7 +258,7 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
     private notifier: ToastrService,
     private formBuilder: FormBuilder
   ) {
-    this.customerIndividualForm = this.formBuilder.group({
+    this.loanInfoForm = this.formBuilder.group({
       note: [''],
     });
   }
@@ -425,15 +433,47 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
     );
   }
 
-  private _initIndividualFormData(customerId, customerInfo) {
-    this.customerIndividualForm.patchValue({
-      note: customerInfo?.note,
+  private _initLoanInfoData() {
+    this.loanInfoForm.patchValue({
+      note: this.loanDetail?.note,
     });
   }
 
   submitForm() {
-    // const data = this.customerIndividualForm.getRawValue();
-    // this.loanDetailDetectChangeStatus.emit();
+    const updateLoanRequest: UpdateLoanRequest = {
+      customerId: this.customerId,
+      updateInfo: {}
+    };
+    updateLoanRequest.updateInfo['note'] = this.loanInfoForm.controls.note.value;
+    console.log('updateLoanRequest', updateLoanRequest);
+
+    if (this.groupName === 'HMG') {
+      this.subManager.add(
+        this.paydayLoanHmgControllerService
+          .updateInfo(this.loanId, updateLoanRequest)
+          .subscribe((res: ApiResponseString) => {
+            if (res.responseCode !== 200) {
+              this.notifier.error(res.errorCode);
+              return
+            }
+             this.loanDetailDetectChangeStatus.emit();
+          })
+      );
+    }
+
+    if (this.groupName === 'TNG') {
+      this.subManager.add(
+        this.paydayLoanTngControllerService
+          .updateInfo(this.loanId, updateLoanRequest)
+          .subscribe((res: ApiResponseObject) => {
+            if (res.responseCode !== 200) {
+              this.notifier.error(res.errorCode);
+              return;
+            }
+             this.loanDetailDetectChangeStatus.emit();
+          })
+      );
+    }
   }
 
   ngOnDestroy() {

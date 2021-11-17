@@ -16,5 +16,6 @@ export interface UpdatePromotionEventRequest {
     id?: string;
     purpose?: string;
     expiredAt?: string;
+    scope?: string;
 }
 

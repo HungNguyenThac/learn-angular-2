@@ -27,7 +27,7 @@ import {
   DATA_STATUS_TYPE,
   QUERY_CONDITION_TYPE,
 } from '../../../../core/common/enum/operator';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { GlobalConstants } from 'src/app/core/common/global-constants';
 import { Store } from '@ngrx/store';
@@ -45,16 +45,22 @@ import { FilterOptionModel } from 'src/app/public/models/filter/filter-option.mo
   templateUrl: './loan-list.component.html',
   styleUrls: ['./loan-list.component.scss'],
 })
-export class LoanListComponent implements OnInit {
+export class LoanListComponent implements OnInit, OnDestroy {
   companyList: Array<CompanyInfo>;
   subManager = new Subscription();
   tableTitle: string = this.multiLanguageService.instant(
     'page_title.loan_list'
   );
+  groupName: string = '';
   breadcrumbOptions: BreadcrumbOptionsModel = {
-    title: 'Vay ứng lương - HMG',
+    title:
+      this.multiLanguageService.instant('breadcrumb.manage_payday_loan') +
+      ' - ' +
+      this.groupName,
     iconImgSrc: 'assets/img/icon/group-5/pl-24-available.png',
-    searchPlaceholder: 'Mã khoản vay, Số điện thoại...',
+    searchPlaceholder: this.multiLanguageService.instant(
+      'breadcrumb.search_field_payday_loan'
+    ),
     searchable: true,
     showBtnAdd: false,
     // btnAddText: 'Thêm nhà cung cấp',
@@ -288,6 +294,22 @@ export class LoanListComponent implements OnInit {
       format: 'dd/MM/yyyy HH:mm',
       showed: true,
     },
+    {
+      key: 'customerEmail',
+      title: this.multiLanguageService.instant(
+        'customer.individual_info.email'
+      ),
+      type: DATA_CELL_TYPE.TEXT,
+      format: null,
+      showed: false,
+    },
+    {
+      key: 'customerIdentityNumberOne',
+      title: this.multiLanguageService.instant('customer.individual_info.cmnd'),
+      type: DATA_CELL_TYPE.TEXT,
+      format: null,
+      showed: false,
+    },
   ];
   dataSource: MatTableDataSource<any> = new MatTableDataSource([]);
   expandedElementLoanId: string;
@@ -366,6 +388,7 @@ export class LoanListComponent implements OnInit {
   }
 
   public onFilterFormChange(event: FilterEventModel) {
+    this.pageIndex = 0;
     switch (event.type) {
       case FILTER_TYPE.DATETIME:
         this.filterForm.controls.startTime.setValue(event.value.startDate);
@@ -397,12 +420,6 @@ export class LoanListComponent implements OnInit {
     console.log('FilterActionEventModel', event);
   }
 
-  ngOnDestroy(): void {
-    // if (this.subManager !== null) {
-    // this.subManager.unsubscribe();
-    // }
-  }
-
   private _initFilterForm() {
     this.filterForm = this.formBuilder.group({
       keyword: [''],
@@ -431,6 +448,8 @@ export class LoanListComponent implements OnInit {
   }
 
   private _parseQueryParams(params) {
+    console.log('day la param', params);
+
     let filterConditionsValue =
       this.filterForm.controls.filterConditions?.value;
 
@@ -462,18 +481,29 @@ export class LoanListComponent implements OnInit {
           ? this.filterForm.controls.companyId.value.split(',')
           : [];
       } else if (filterOption.controlName === 'status') {
-        filterOption.value = this.filterForm.controls.status.value;
+        filterOption.value = this.filterForm.controls.status.value
+          ? this.filterForm.controls.status.value.split(',')
+          : [];
       }
     });
 
     this.breadcrumbOptions.keyword = params.keyword;
     this.pageIndex = params.pageIndex || 0;
-    this.pageSize = params.pageSize || 20;
+    this.pageSize = params.pageSize || 10;
   }
 
   private _initSubscription() {
     this.subManager.add(
       this.routeAllState$.subscribe((params) => {
+        if (
+          this.groupName !== params?.queryParams.groupName &&
+          params?.queryParams
+        ) {
+          this.groupName = params?.queryParams.groupName;
+          this._resetFilterOptions();
+          this._initFilterForm();
+          this.filterForm.controls['groupName'].setValue(this.groupName);
+        }
         this._parseQueryParams(params?.queryParams);
         this._getLoanList();
         this._getCompanyList();
@@ -481,11 +511,22 @@ export class LoanListComponent implements OnInit {
     );
   }
 
+  private _resetFilterOptions() {
+    let newFilterOptions = JSON.parse(JSON.stringify(this.filterOptions));
+    newFilterOptions.forEach((filterOption) => {
+      filterOption.value = null;
+    });
+    this.filterOptions = newFilterOptions;
+  }
+
   private _getLoanList() {
-    const params = this._buildParams();
+    let params = this._buildParams();
+    this.breadcrumbOptions.title =
+      this.multiLanguageService.instant('breadcrumb.manage_payday_loan') +
+      ' - ' +
+      this.groupName;
     if (params.groupName === 'HMG') {
       this.filterOptions[2].options = this.statusFilterOptionsHmg;
-      this.subManager.add(
         this.loanListService
           .getLoanDataHmg(params)
           .subscribe(
@@ -493,13 +534,11 @@ export class LoanListComponent implements OnInit {
               this._parseData(data?.result);
             }
           )
-      );
     }
 
     if (params.groupName === 'TNG') {
       // Remove status CONTRACT_AWAITING from Filter sidebar
       this.filterOptions[2].options = this.statusFilterOptionsTng;
-      this.subManager.add(
         this.loanListService
           .getLoanDataTng(params)
           .subscribe(
@@ -507,7 +546,6 @@ export class LoanListComponent implements OnInit {
               this._parseData(data?.result);
             }
           )
-      );
     }
   }
 
@@ -515,7 +553,6 @@ export class LoanListComponent implements OnInit {
     const params = this._buildParams();
     const requestBody = {};
     requestBody['groupName'] = params.groupName;
-    this.subManager.add(
       this.companyControllerService
         .getCompanies(10, 0, requestBody)
         .subscribe(
@@ -524,7 +561,6 @@ export class LoanListComponent implements OnInit {
             this._initCompanyOptions();
           }
         )
-    );
   }
 
   private _initCompanyOptions() {
@@ -591,5 +627,10 @@ export class LoanListComponent implements OnInit {
         queryParams,
       })
       .then((r) => {});
+  }
+  ngOnDestroy(): void {
+    if (this.subManager !== null) {
+    this.subManager.unsubscribe();
+    }
   }
 }

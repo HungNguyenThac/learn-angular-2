@@ -1944,6 +1944,12 @@ components:
           type: string
         createdAt:
           type: string
+        updatedAt:
+          type: string
+        note:
+          type: string
+        personInChargeId:
+          type: string
         customerName:
           type: string
         customerMobileNumber:
@@ -2077,6 +2083,12 @@ components:
         getSalaryAt:
           type: string
         createdAt:
+          type: string
+        updatedAt:
+          type: string
+        note:
+          type: string
+        personInChargeId:
           type: string
         customerName:
           type: string

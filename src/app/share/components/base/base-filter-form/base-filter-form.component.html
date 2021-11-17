@@ -1,5 +1,5 @@
 <div class="filter-form-container py-3">
-  <ng-container *ngFor="let filterOption of filterOptions">
+  <ng-container *ngFor="let filterOption of filterOptionsDisplay">
     <app-datetime-filter
       *ngIf="filterOption.type === 'DATETIME'"
       [filterOption]="filterOption"

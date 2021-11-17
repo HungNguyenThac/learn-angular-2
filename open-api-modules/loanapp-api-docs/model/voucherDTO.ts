@@ -9,13 +9,23 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { VoucherTransaction } from './voucherTransaction';
 
 
-export interface PromotionEvent { 
+export interface VoucherDTO { 
     id?: string;
-    purpose?: string;
+    code?: string;
+    maxValue?: number;
+    percentage?: number;
+    maxAmount?: number;
+    remainAmount?: number;
+    activedTime?: Array<string>;
+    description?: string;
+    type?: string;
     scope?: string;
-    createdAt?: string;
     expiredAt?: string;
+    limitPerDay?: number;
+    createdAt?: string;
+    voucherTransactionList?: Array<VoucherTransaction>;
 }
 

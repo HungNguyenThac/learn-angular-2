@@ -137,7 +137,9 @@ export class LoanContractComponent implements OnInit, OnDestroy {
             this.triggerUpdateLoanAfterSign.emit();
           }, 2000);
         } else {
-          this.notifier.error(JSON.stringify(result?.message));
+          this.notifier.error(
+            this.multiLanguageService.instant('loan_app.loan_contract.sign_fail')
+          );
         }
       })
     );
@@ -157,6 +159,9 @@ export class LoanContractComponent implements OnInit, OnDestroy {
 
   onClickDownload() {
     this.LoanListService.downloadBlobFile(this.loanContractFile);
+    this.notifier.info(
+      this.multiLanguageService.instant('loan_app.loan_contract.downloading')
+    );
   }
 
   pdfView(pdfurl: string) {

@@ -15,8 +15,12 @@ export interface VoucherTransaction {
     id?: string;
     voucherId?: string;
     customerId?: string;
-    loanId?: string;
+    applicationId?: string;
+    applicationType?: string;
     discountValue?: number;
+    status?: string;
+    mobileNumber?: string;
+    mobileProvider?: string;
     createdAt?: string;
 }
 

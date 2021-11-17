@@ -18,7 +18,11 @@ export interface CreateVoucherRequest {
     maxDiscount?: number;
     percentageDiscount?: number;
     description?: string;
+    expiredAt?: string;
     maxAmount?: number;
     activedTime?: Array<string>;
+    type?: string;
+    scope?: string;
+    limitPerDay?: number;
 }
 
