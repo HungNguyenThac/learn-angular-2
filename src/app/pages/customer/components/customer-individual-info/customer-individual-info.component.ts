@@ -20,6 +20,7 @@ import {
   DATA_CELL_TYPE,
   LOCK_TIME_OPTIONS,
   LOCK_TIME_TEXT_OPTIONS,
+  LOCK_TITLES,
 } from '../../../../core/common/enum/operator';
 import { ToastrService } from 'ngx-toastr';
 import { FormBuilder, FormGroup } from '@angular/forms';
@@ -42,7 +43,7 @@ export class CustomerIndividualInfoComponent implements OnInit, OnDestroy {
   showDisableOption: boolean = true;
   timeDisableOptions: any = [
     {
-      mainTitle: 'Theo giờ',
+      mainTitle: this.multiLanguageService.instant(LOCK_TITLES.BY_HOUR),
       options: [
         {
           title: this.multiLanguageService.instant(
@@ -71,7 +72,7 @@ export class CustomerIndividualInfoComponent implements OnInit, OnDestroy {
       ],
     },
     {
-      mainTitle: 'Theo ngày',
+      mainTitle: this.multiLanguageService.instant(LOCK_TITLES.BY_DAY),
       options: [
         {
           title: this.multiLanguageService.instant(
@@ -94,7 +95,7 @@ export class CustomerIndividualInfoComponent implements OnInit, OnDestroy {
       ],
     },
     {
-      mainTitle: 'Vĩnh viễn',
+      mainTitle: this.multiLanguageService.instant(LOCK_TITLES.PERMANENT),
       options: [
         {
           title: this.multiLanguageService.instant(

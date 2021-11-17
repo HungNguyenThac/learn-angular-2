@@ -71,6 +71,12 @@ export enum BUTTON_TYPE {
   SECONDARY = 'SECONDARY',
 }
 
+export enum LOCK_TITLES {
+  BY_HOUR = 'lock_title.by_hour',
+  BY_DAY = 'lock_title.by_day',
+  PERMANENT = 'lock_title.permanent',
+}
+
 export enum LOCK_TIME_OPTIONS {
   ONE_HOUR = 3600,
   TWO_HOUR = 7200,

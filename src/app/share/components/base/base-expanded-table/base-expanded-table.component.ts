@@ -42,7 +42,6 @@ export class BaseExpandedTableComponent implements OnInit {
   expandedElement: any;
   selectedFields: DisplayedFieldsModel[] = [];
   panelOpenState = false;
-  array;
 
   constructor(private _liveAnnouncer: LiveAnnouncer) {}
 

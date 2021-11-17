@@ -554,6 +554,7 @@
       },
       "delete_user": {
         "title": "Xóa người dùng",
+        "toast": "Xóa người dùng thành công",
         "content": "Hệ thống sẽ xóa người dùng được chọn nhưng vẫn giữ thông tin người dùng trong các lịch sử giao dịch nếu có. Bạn có chắc chắn muốn xóa?"
       }
     },
@@ -567,6 +568,11 @@
       "super_admin": "Super Admin",
       "developer": "Developer"
     }
+  },
+  "lock_title": {
+    "by_hour": "Theo giờ",
+    "by_day": "Theo ngày",
+    "permanent": "Vĩnh viễn"
   },
   "lock_time_options": {
     "1_hour": "1 giờ",

@@ -85,7 +85,9 @@ export class UserDetailComponent implements OnInit {
     });
     confirmDeleteRef.afterClosed().subscribe((result) => {
       if (result === 'PRIMARY') {
-        this.notifier.success('Xóa người dùng thành công');
+        this.notifier.success(
+          this.multiLanguageService.instant('system.delete_user.toast')
+        );
       }
     });
   }
