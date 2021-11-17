@@ -9,9 +9,13 @@ import * as fromPipes from './pipes';
 import * as fromDirectives from './directives';
 import { FormsModule } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { AddNewUserDialogComponent } from './components/operators/user-account/add-new-user-dialog/add-new-user-dialog.component';
+import { DialogUserInfoUpdateComponent } from './components/operators/user-account/dialog-user-info-update/dialog-user-info-update.component';
 
 @NgModule({
   declarations: [
+    AddNewUserDialogComponent,
+    DialogUserInfoUpdateComponent,
     ...fromComponents.components,
     ...fromValidators.validators,
     ...fromDirectives.directives,

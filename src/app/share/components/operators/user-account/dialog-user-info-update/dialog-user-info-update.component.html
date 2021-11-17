@@ -135,19 +135,11 @@
                     <mat-label>{{
                       "account.info.email" | translate
                       }}</mat-label>
-                    <mat-icon [ngClass]="
-                        accountInfoForm.controls.accountEmail.value != '' ||
-                        isEmailInputFocus
-                          ? 'is-focused-icon'
-                          : ''
-                      "
-                              class="email-icon" matPrefix></mat-icon>
+                    <mat-icon class="email-icon" matPrefix></mat-icon>
                     <input
-                      (blur)="isEmailInputFocus = false"
-                      (focus)="isEmailInputFocus = true"
-                      [ngClass]="isEmailInputFocus ? 'is-focused-input' : ''"
                       [placeholder]="'account.info.email' | translate"
-                      formControlName="accountEmail"
+                      [value]="accountInfoForm.controls.accountEmail.value"
+                      disabled
                       matInput
                       type="email"
                     />

@@ -19,7 +19,7 @@ import {
   ERROR_CODE,
   ERROR_CODE_KEY,
 } from '../../../core/common/enum/payday-loan';
-import {RESPONSE_CODE} from "../../../core/common/enum/operator";
+import { RESPONSE_CODE } from '../../../core/common/enum/operator';
 
 @Component({
   selector: 'app-forgot-password',
@@ -41,6 +41,11 @@ export class ForgotPasswordComponent implements OnInit {
   disabledOTP: boolean = false;
   //
   resetPasswordbyMobileOtpResult: any;
+
+  isPasswordInputFocus: boolean = false;
+  isPassVisible: boolean = false;
+  isConfirmPasswordInputFocus: boolean = false;
+  isConfirmPassVisible: boolean = false;
 
   subManager = new Subscription();
 
@@ -142,7 +147,10 @@ export class ForgotPasswordComponent implements OnInit {
       this.signOnControllerService
         .resetPasswordbyOtp(resetPasswordVerifiedAccountRequest)
         .subscribe((result) => {
-          if (result.errorCode != null || result.responseCode !== RESPONSE_CODE.SUCCESS) {
+          if (
+            result.errorCode != null ||
+            result.responseCode !== RESPONSE_CODE.SUCCESS
+          ) {
             return this.handleResponseError(result.errorCode);
           }
 
@@ -170,7 +178,10 @@ export class ForgotPasswordComponent implements OnInit {
       this.signOnControllerService
         .resetPasswordVerifiedOtp(resetVerifiedPasswordOtpRequest)
         .subscribe((result) => {
-          if (result.errorCode != null || result.responseCode !== RESPONSE_CODE.SUCCESS) {
+          if (
+            result.errorCode != null ||
+            result.responseCode !== RESPONSE_CODE.SUCCESS
+          ) {
             this.errorText = this.multiLanguageService.instant(
               result.errorCode && ERROR_CODE_KEY[result.errorCode]
                 ? ERROR_CODE_KEY[result.errorCode]

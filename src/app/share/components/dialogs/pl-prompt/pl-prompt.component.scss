@@ -177,6 +177,31 @@
   }
 }
 
+.pl-prompt-btn.btn-error {
+  letter-spacing: 0.1px;
+  color: $system-color-red;
+  border: none !important;
+  cursor: pointer;
+
+  &:hover,
+  &:active,
+  &:focus {
+    border: none !important;
+    color: $system-color-red;
+    background: $white;
+  }
+
+  &.btn-disabled {
+    background: $grey-11;
+    color: $grey-12;
+    border: none !important;
+  }
+
+  &.btn-disabled:hover {
+    cursor: auto;
+  }
+}
+
 .notification-info-img {
   .pl-prompt-image {
     width: 32px;

@@ -2,7 +2,6 @@ import { Component, OnInit, ViewChildren } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { BUTTON_TYPE } from '../../../../../core/common/enum/operator';
-import { MatFormFieldModule } from '@angular/material/form-field';
 
 @Component({
   selector: 'app-add-new-user-dialog',
@@ -24,22 +23,12 @@ export class AddNewUserDialogComponent implements OnInit {
     fieldName: 'Vai trò',
     options: ['Super Admin', '2', '3'],
   };
-  @ViewChildren(MatFormFieldModule) formFields;
 
   constructor(
     private dialogRef: MatDialogRef<AddNewUserDialogComponent>,
     private formBuilder: FormBuilder
   ) {
     this.buildAccountInfoForm();
-  }
-
-  ngAfterViewInit(): void {
-    setTimeout(() => {
-      this.formFields.forEach((ff) => {
-        ff.updateOutlineGap();
-        console.log('gap');
-      });
-    }, 100);
   }
 
   buildAccountInfoForm() {
