@@ -24,7 +24,10 @@
         >
           <div class="row">
             <div class="col-md-12">
-              <div class="breadcrumb-search-input">
+              <div
+                class="breadcrumb-search-input"
+                [matTooltip]="searchPlaceholder"
+              >
                 <div class="breadcrumb-input-icon" (click)="submitSearch()">
                   <span class="sprite-group-5-search"></span>
                 </div>
@@ -33,6 +36,7 @@
                   class="breadcrumb-input"
                   formControlName="keyword"
                   [placeholder]="searchPlaceholder"
+                  [maxlength]="maxLengthSearchInput"
                 />
               </div>
             </div>

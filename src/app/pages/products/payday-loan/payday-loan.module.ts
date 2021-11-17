@@ -1,4 +1,3 @@
-import { LoanCompanyInfoComponent } from './components/loan-company-info/loan-company-info.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
@@ -13,7 +12,6 @@ import { PdfViewerModule } from 'ng2-pdf-viewer';
 import { LoanListComponent } from './loan-list/loan-list.component';
 import { LoanDetailComponent } from './components/loan-detail/loan-detail.component';
 import { LoanContractComponent } from './components/loan-contract/loan-contract.component';
-import { LoanDocumentsComponent } from './components/loan-documents/loan-documents.component';
 import { LoanRatingComponent } from './components/loan-rating/loan-rating.component';
 import { LoanDetailInfoComponent } from './components/loan-detail-info/loan-detail-info.component';
 
@@ -25,10 +23,8 @@ import { LoanDetailInfoComponent } from './components/loan-detail-info/loan-deta
     LoanListComponent,
     LoanDetailComponent,
     LoanContractComponent,
-    LoanDocumentsComponent,
     LoanRatingComponent,
     LoanDetailInfoComponent,
-    LoanCompanyInfoComponent,
   ],
   imports: [
     CommonModule,

@@ -43,6 +43,7 @@ Generate api docs
 - openapi-generator-cli generate -i open-api-yaml/com-docs.yaml -g typescript-angular -o ./open-api-modules/com-api-docs
 - openapi-generator-cli generate -i open-api-yaml/core-docs.yaml -g typescript-angular -o ./open-api-modules/core-api-docs
 - openapi-generator-cli generate -i open-api-yaml/payment-docs.yaml -g typescript-angular -o ./open-api-modules/payment-api-docs
+- openapi-generator-cli generate -i open-api-yaml/contract-docs.yaml -g typescript-angular -o ./open-api-modules/contract-api-docs
 
 ## Note
 Reference https://github.com/OpenAPITools/openapi-generator/issues/10182

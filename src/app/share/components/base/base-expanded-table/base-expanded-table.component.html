@@ -82,21 +82,12 @@
           </th>
 
           <td mat-cell *matCellDef="let element">
-            <div *ngIf="column?.type === 'DATETIME'">
-              {{ element[column?.key] | date: column?.format }}
-            </div>
-
-            <div *ngIf="column?.type === 'STATUS'">
-              <app-pl-status-element
-                [statusType]="column?.format"
-                [statusValue]="element[column?.key]"
-              >
-              </app-pl-status-element>
-            </div>
-
-            <div *ngIf="!column?.type || column?.type === 'TEXT'" class="op-table-cell-data">
-              {{ element[column?.key] || "-" }}
-            </div>
+            <app-table-cell-format-data
+              [type]="column?.type"
+              [format]="column?.format"
+              [value]="element[column?.key]"
+              class="table-cell-format-data"
+            ></app-table-cell-format-data>
           </td>
         </ng-container>
 

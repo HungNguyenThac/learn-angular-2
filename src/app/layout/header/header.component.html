@@ -6,181 +6,83 @@
         <div class="header-container">
           <div class="container justify-content-center">
             <div
-              class="d-flex justify-content-between align-items-center"
               id="monex-op-header-content"
+              class="d-flex justify-content-between align-items-center"
             >
               <a
-                class="d-flex align-items-center"
                 href="javascript:void(0)"
                 id="logo-monex-container"
+                class="d-flex align-items-center"
               >
-                <img [src]="logoSrc" alt="logo-monex" id="logo-monex"/>
-                <span *ngIf="!responsive" class="divider-monex-logo">|</span>
-                <span *ngIf="!responsive" id="title-monex-op">{{
+                <img [src]="logoSrc" alt="logo-monex" id="logo-monex" />
+                <span class="divider-monex-logo" *ngIf="!responsive">|</span>
+                <span id="title-monex-op" *ngIf="!responsive">{{
                   "header.op" | translate
-                  }}</span>
+                }}</span>
               </a>
 
-              <div *ngIf="showProfileBtn" class="d-flex gap-3">
-                <!--Notification button-->
+              <div class="d-flex gap-3" *ngIf="showProfileBtn">
                 <section *ngIf="!responsive">
-                  <button (click)="openAddUserDialog()" class="header-nav-btn gap-1">
+                  <button class="header-nav-btn gap-1">
                     <span>{{ "header.notification" | translate }}</span>
                     <div class="sprite-group-5-notification-on-white"></div>
                   </button>
                 </section>
 
-                <!--Setting button-->
                 <section *ngIf="!responsive">
-                  <button
-                    #settingMenuTrigger="matMenuTrigger"
-                    (click)="settingMenuTrigger.openMenu()"
-                    [matMenuTriggerFor]="settingMenu"
-                    class="header-nav-btn gap-1"
-                  >
+                  <button class="header-nav-btn gap-1">
                     <span>{{ "header.setting" | translate }}</span>
                     <div class="sprite-group-5-setting-white"></div>
                   </button>
-
-                  <!--Setting pop-up menu-->
-                  <mat-menu #settingMenu="matMenu">
-                    <span (mouseleave)="settingMenuTrigger.closeMenu()">
-                      <button class="gap-1" mat-menu-item>
-                        <div class="d-flex gap-1 align-items-center">
-                          <svg
-                            fill="none"
-                            height="18"
-                            viewBox="0 0 18 18"
-                            width="18"
-                            xmlns="http://www.w3.org/2000/svg"
-                          >
-                            <path
-                              d="M2.54069 10.6621L7.43771 10.6619C7.14672 11.0142 6.95899 11.4548 6.92087 11.9376L6.91368 12.1205V15.8705C6.91368 16.4246 7.11035 16.9329 7.43771 17.3291L7.33034 17.3297C4.47953 17.3297 2.37707 16.4363 1.09193 14.6326C0.815301 14.2443 0.666626 13.7795 0.666626 13.3028V12.5362C0.666626 11.5012 1.50568 10.6621 2.54069 10.6621ZM11.2887 8.57885H13.7887C14.328 8.57885 14.7716 8.98868 14.825 9.51402L14.8304 9.62052L14.83 10.6618L15.872 10.6622C16.6775 10.6622 17.3304 11.3151 17.3304 12.1205V15.8705C17.3304 16.6759 16.6775 17.3288 15.872 17.3288H9.20538C8.39996 17.3288 7.74704 16.6759 7.74704 15.8705V12.1205C7.74704 11.3151 8.39996 10.6622 9.20538 10.6622L10.2466 10.6618L10.247 9.62052C10.247 9.08118 10.6569 8.63752 11.1822 8.58418L11.2887 8.57885H13.7887H11.2887ZM13.5804 9.82885H11.497L11.4966 10.6618H13.58L13.5804 9.82885ZM7.33034 0.666016C9.63154 0.666016 11.497 2.5315 11.497 4.83268C11.497 7.13387 9.63154 8.99935 7.33034 8.99935C5.02915 8.99935 3.16368 7.13387 3.16368 4.83268C3.16368 2.5315 5.02915 0.666016 7.33034 0.666016Z"
-                              fill="#8E8E93"
-                            />
-                          </svg>
-                          <span>{{ "header.mange_user" | translate }}</span>
-                        </div>
-                      </button>
-                      <button class="gap-1" mat-menu-item>
-                        <div class="d-flex gap-1 align-items-center">
-                          <svg
-                            fill="none"
-                            height="18"
-                            viewBox="0 0 16 18"
-                            width="16"
-                            xmlns="http://www.w3.org/2000/svg"
-                          >
-                            <path
-                              d="M8.01104 0.875C8.62263 0.88205 9.23188 0.952717 9.82896 1.08587C10.0895 1.14398 10.2845 1.36126 10.314 1.62663L10.4559 2.89901C10.52 3.48322 11.0133 3.9257 11.6014 3.92632C11.7595 3.92657 11.9158 3.89365 12.0619 3.82902L13.229 3.3163C13.4718 3.20966 13.7554 3.2678 13.9366 3.46135C14.7801 4.3622 15.4083 5.44262 15.774 6.62132C15.8528 6.87548 15.762 7.15169 15.5478 7.30958L14.5133 8.07212C14.2181 8.28896 14.0439 8.63338 14.0439 8.99954C14.0439 9.36579 14.2181 9.71012 14.5139 9.92737L15.5494 10.6902C15.7636 10.8481 15.8545 11.1244 15.7756 11.3785C15.4101 12.557 14.7823 13.6374 13.9393 14.5384C13.7582 14.732 13.4748 14.7902 13.2321 14.6839L12.0601 14.1705C11.7249 14.0237 11.3398 14.0452 11.023 14.2283C10.7061 14.4115 10.4952 14.7343 10.455 15.0981L10.3141 16.3704C10.285 16.6327 10.0943 16.8485 9.83754 16.9095C8.63054 17.1968 7.37296 17.1968 6.16588 16.9095C5.90911 16.8485 5.71839 16.6327 5.68934 16.3704L5.54866 15.1C5.50733 14.7369 5.29614 14.415 4.97954 14.2325C4.66295 14.05 4.27853 14.0285 3.94436 14.1745L2.77217 14.688C2.52938 14.7944 2.24588 14.736 2.06484 14.5425C1.22138 13.6404 0.593518 12.5588 0.228527 11.379C0.14991 11.1249 0.240743 10.8489 0.454893 10.691L1.491 9.92779C1.78612 9.71096 1.96042 9.36662 1.96042 9.00037C1.96042 8.63421 1.78612 8.28979 1.49062 8.07271L0.45516 7.31071C0.240685 7.15287 0.149768 6.87648 0.22866 6.62215C0.594293 5.44346 1.22248 4.36303 2.06596 3.46218C2.24718 3.26863 2.5308 3.21049 2.77356 3.31713L3.94054 3.82977C4.27633 3.97713 4.66236 3.95487 4.98067 3.76891C5.2976 3.58508 5.50859 3.26185 5.54933 2.89803L5.69106 1.62663C5.72066 1.36112 5.91574 1.14378 6.17653 1.08578C6.77429 0.95285 7.38413 0.882208 8.01104 0.875ZM8.00063 6.49996C6.61988 6.49996 5.5006 7.61921 5.5006 8.99996C5.5006 10.3807 6.61988 11.5 8.00063 11.5C9.38129 11.5 10.5006 10.3807 10.5006 8.99996C10.5006 7.61921 9.38129 6.49996 8.00063 6.49996Z"
-                              fill="#8E8E93"
-                            />
-                          </svg>
-                          <span>Setting Option</span>
-                        </div>
-                      </button>
-                      <button class="gap-1" mat-menu-item>
-                        <div class="d-flex gap-1 align-items-center">
-                          <svg
-                            fill="none"
-                            height="18"
-                            viewBox="0 0 16 18"
-                            width="16"
-                            xmlns="http://www.w3.org/2000/svg"
-                          >
-                            <path
-                              d="M8.01104 0.875C8.62263 0.88205 9.23188 0.952717 9.82896 1.08587C10.0895 1.14398 10.2845 1.36126 10.314 1.62663L10.4559 2.89901C10.52 3.48322 11.0133 3.9257 11.6014 3.92632C11.7595 3.92657 11.9158 3.89365 12.0619 3.82902L13.229 3.3163C13.4718 3.20966 13.7554 3.2678 13.9366 3.46135C14.7801 4.3622 15.4083 5.44262 15.774 6.62132C15.8528 6.87548 15.762 7.15169 15.5478 7.30958L14.5133 8.07212C14.2181 8.28896 14.0439 8.63338 14.0439 8.99954C14.0439 9.36579 14.2181 9.71012 14.5139 9.92737L15.5494 10.6902C15.7636 10.8481 15.8545 11.1244 15.7756 11.3785C15.4101 12.557 14.7823 13.6374 13.9393 14.5384C13.7582 14.732 13.4748 14.7902 13.2321 14.6839L12.0601 14.1705C11.7249 14.0237 11.3398 14.0452 11.023 14.2283C10.7061 14.4115 10.4952 14.7343 10.455 15.0981L10.3141 16.3704C10.285 16.6327 10.0943 16.8485 9.83754 16.9095C8.63054 17.1968 7.37296 17.1968 6.16588 16.9095C5.90911 16.8485 5.71839 16.6327 5.68934 16.3704L5.54866 15.1C5.50733 14.7369 5.29614 14.415 4.97954 14.2325C4.66295 14.05 4.27853 14.0285 3.94436 14.1745L2.77217 14.688C2.52938 14.7944 2.24588 14.736 2.06484 14.5425C1.22138 13.6404 0.593518 12.5588 0.228527 11.379C0.14991 11.1249 0.240743 10.8489 0.454893 10.691L1.491 9.92779C1.78612 9.71096 1.96042 9.36662 1.96042 9.00037C1.96042 8.63421 1.78612 8.28979 1.49062 8.07271L0.45516 7.31071C0.240685 7.15287 0.149768 6.87648 0.22866 6.62215C0.594293 5.44346 1.22248 4.36303 2.06596 3.46218C2.24718 3.26863 2.5308 3.21049 2.77356 3.31713L3.94054 3.82977C4.27633 3.97713 4.66236 3.95487 4.98067 3.76891C5.2976 3.58508 5.50859 3.26185 5.54933 2.89803L5.69106 1.62663C5.72066 1.36112 5.91574 1.14378 6.17653 1.08578C6.77429 0.95285 7.38413 0.882208 8.01104 0.875ZM8.00063 6.49996C6.61988 6.49996 5.5006 7.61921 5.5006 8.99996C5.5006 10.3807 6.61988 11.5 8.00063 11.5C9.38129 11.5 10.5006 10.3807 10.5006 8.99996C10.5006 7.61921 9.38129 6.49996 8.00063 6.49996Z"
-                              fill="#8E8E93"
-                            />
-                          </svg>
-                          <span>Setting Option</span>
-                        </div>
-                      </button>
-                    </span>
-                  </mat-menu>
                 </section>
 
-                <!--Profile button-->
                 <section>
                   <button
+                    id="profile-btn"
+                    [matMenuTriggerFor]="profileMenu"
                     #profileMenuTrigger="matMenuTrigger"
                     (click)="profileMenuTrigger.openMenu()"
-                    [matMenuTriggerFor]="profileMenu"
                     class="p-0"
-                    id="profile-btn"
                   >
                     <div
                       class="
                         d-flex
                         flex-row
                         text-center
-                        ustify-content-between
+                        justify-content-between
                         align-items-center
                         gap-2
                       "
                     >
                       <div>
-                        <p id="manager-name">{{ accountInfo.fullName }}</p>
-                        <p class="d-flex gap-1" id="manager-role">
+                        <p id="manager-name">{{ fullName }}</p>
+                        <p id="manager-role" class="d-flex gap-1">
                           <span class="sprite-group-5-personal-roll"></span>
-                          <span>{{ accountInfo.roleName }}</span>
+                          <span>{{ roleName }}</span>
                         </p>
                       </div>
                       <div class="avatar">{{ shortName }}</div>
                     </div>
                   </button>
 
-                  <!--Profile popup-menu-->
                   <mat-menu #profileMenu="matMenu">
                     <span (mouseleave)="profileMenuTrigger.closeMenu()">
-                      <button *ngIf="responsive" class="gap-1" mat-menu-item>
+                      <button mat-menu-item class="gap-1" *ngIf="responsive">
                         <div class="d-flex gap-1 align-items-center">
                           <span>{{ "header.notification" | translate }}</span>
                           <div class="sprite-group-5-notification-on"></div>
                         </div>
                       </button>
 
-                      <button *ngIf="responsive" class="gap-1" mat-menu-item>
+                      <button mat-menu-item class="gap-1" *ngIf="responsive">
                         <div class="d-flex gap-1 align-items-center">
                           <span>{{ "header.setting" | translate }}</span>
                           <div class="sprite-group-5-setting"></div>
                         </div>
                       </button>
 
-                      <button (click)="openUpdateDialog()" class="gap-1" mat-menu-item>
-                        <div class="d-flex gap-1 align-items-center">
-                          <svg
-                            fill="none"
-                            height="18"
-                            viewBox="0 0 14 18"
-                            width="14"
-                            xmlns="http://www.w3.org/2000/svg"
-                          >
-                            <path
-                              d="M11.7954 10.666C12.8305 10.666 13.6695 11.5051 13.6695 12.5401V13.3055C13.6695 13.7832 13.5201 14.2491 13.2423 14.6378C11.954 16.4406 9.85046 17.3337 7.00029 17.3337C4.14946 17.3337 2.04698 16.4402 0.761848 14.6366C0.485214 14.2483 0.336548 13.7834 0.336548 13.3067V12.5401C0.336548 11.5051 1.17559 10.666 2.21061 10.666H11.7954ZM7.00029 0.669922C9.30146 0.669922 11.167 2.53541 11.167 4.83659C11.167 7.13778 9.30146 9.00324 7.00029 9.00324C4.69907 9.00324 2.83359 7.13778 2.83359 4.83659C2.83359 2.53541 4.69907 0.669922 7.00029 0.669922Z"
-                              fill="#8E8E93"
-                            />
-                          </svg>
-                          <span>{{ "header.account" | translate }}</span>
-                        </div>
-                      </button>
-                      <button (click)="logout()" mat-menu-item>
-                        <div class="d-flex gap-1 align-items-center">
-                          <svg
-                            fill="none"
-                            height="14"
-                            viewBox="0 0 18 14"
-                            width="18"
-                            xmlns="http://www.w3.org/2000/svg"
-                          >
-                            <path
-                              d="M8.99996 0.629058V1.16724L10.4544 1.16725C10.7704 1.16725 11.0317 1.40185 11.0735 1.70651L11.0794 1.79122L11.085 5.33392H9.83496L9.83038 2.41725L8.99996 2.41724L9.00038 6.17133L9.83496 6.17058L9.83579 6.16725H11.0866L11.0858 6.17058H15.2016L13.7663 4.73412C13.5445 4.51219 13.5243 4.16497 13.7059 3.92032L13.7665 3.85023C13.9884 3.62838 14.3355 3.60827 14.5802 3.78986L14.6503 3.85038L17.1475 6.34842C17.3691 6.57017 17.3895 6.917 17.2083 7.16158L17.1479 7.23175L14.6507 9.73458C14.407 9.97892 14.0112 9.97942 13.7669 9.73558C13.5447 9.514 13.5241 9.16675 13.7054 8.92192L13.7659 8.85175L15.1933 7.42058L9.00038 7.42133L8.99996 11.1681L9.84488 11.1684L9.83913 8.25058H11.09L11.096 11.7924C11.0965 12.1092 10.8612 12.3713 10.5558 12.4128L10.471 12.4184L8.99996 12.4181V13.0423C8.99996 13.4309 8.64896 13.7253 8.26629 13.6578L1.18292 12.4067C0.884301 12.3539 0.666626 12.0944 0.666626 11.7912V1.79225C0.666626 1.48616 0.888301 1.22511 1.19035 1.17551L8.27371 0.0123167C8.65421 -0.0501667 8.99996 0.24345 8.99996 0.629058ZM6.08508 6.58392C5.62386 6.58392 5.24996 6.95783 5.24996 7.419C5.24996 7.88025 5.62386 8.25417 6.08508 8.25417C6.54631 8.25417 6.92021 7.88025 6.92021 7.419C6.92021 6.95783 6.54631 6.58392 6.08508 6.58392Z"
-                              fill="#8E8E93"
-                            />
-                          </svg>
-
-                          <span>{{ "auth.logout" | translate }}</span>
-                        </div>
+                      <button mat-menu-item (click)="logout()">
+                        {{ "auth.logout" | translate }}
                       </button>
                     </span>
                   </mat-menu>
@@ -193,33 +95,33 @@
       <!-- End: Top  Header  -->
 
       <!-- Top nav bar -->
-      <div *ngIf="showProfileBtn" id="navigation-bar">
+      <div id="navigation-bar" *ngIf="showProfileBtn">
         <div class="container p-0">
           <!-- Menu Mobile  -->
           <mat-toolbar
-            *ngIf="responsive; else desktopMenu"
             id="nav-toolbar-mobile"
+            *ngIf="responsive; else desktopMenu"
           >
             <span class="fill-remaining-space">
               <button
+                mat-icon-button
+                [matMenuTriggerFor]="menuMobile"
                 #menuTrigger="matMenuTrigger"
                 (click)="menuTrigger.openMenu()"
-                [matMenuTriggerFor]="menuMobile"
-                mat-icon-button
               >
                 <mat-icon>menu</mat-icon>
               </button>
               <mat-menu #menuMobile="matMenu" [overlapTrigger]="false">
                 <span (mouseleave)="menuTrigger.closeMenu()">
                   <button
+                    mat-menu-item
                     *ngFor="let menuItem of menuItems"
+                    class="mobile-menu-item gap-2 d-flex align-items-center"
                     [ngClass]="{
                       active: selectedNavItem === menuItem.navItem
                     }"
-                    [queryParams]="menuItem.queryParams"
                     [routerLink]="menuItem.path"
-                    class="mobile-menu-item gap-2 d-flex align-items-center"
-                    mat-menu-item
+                    [queryParams]="menuItem.queryParams"
                   >
                     <span
                       [ngClass]="[
@@ -239,9 +141,9 @@
 
           <!-- Menu Desktop -->
           <ng-template #desktopMenu>
-            <div class="justify-content-between" id="op-top-navigation">
+            <div id="op-top-navigation" class="justify-content-between">
               <ul class="nav m-auto gap-3">
-                <li *ngFor="let menuItem of menuItems" class="nav-item">
+                <li class="nav-item" *ngFor="let menuItem of menuItems">
                   <!--  Has sub items  -->
                   <div
                     *ngIf="
@@ -250,14 +152,8 @@
                     "
                   >
                     <a
-                      #subMenuTrigger="matMenuTrigger"
-                      (mousemove)="subMenuTrigger.openMenu()"
-                      [matMenuTriggerFor]="menuDesktop"
-                      [ngClass]="{
-                        active: selectedNavItem === menuItem.navItem
-                      }"
-                      [queryParams]="menuItem.queryParams"
                       [routerLink]="menuItem.path"
+                      [queryParams]="menuItem.queryParams"
                       class="
                         nav-link
                         d-inline-flex
@@ -265,6 +161,12 @@
                         gap-1
                         op-nav-link
                       "
+                      [ngClass]="{
+                        active: selectedNavItem === menuItem.navItem
+                      }"
+                      [matMenuTriggerFor]="menuDesktop"
+                      #subMenuTrigger="matMenuTrigger"
+                      (mousemove)="subMenuTrigger.openMenu()"
                     >
                       <span
                         [ngClass]="[
@@ -284,16 +186,16 @@
                     >
                       <span (mouseleave)="subMenuTrigger.closeMenu()">
                         <button
+                          mat-menu-item
                           *ngFor="let subItem of menuItem.subItems"
-                          [queryParams]="subItem.queryParams"
-                          [routerLink]="subItem.path"
                           class="
                             sub-menu-desktop-item
                             gap-2
                             d-flex
                             align-items-center
                           "
-                          mat-menu-item
+                          [routerLink]="subItem.path"
+                          [queryParams]="subItem.queryParams"
                         >
                           <span [ngClass]="subItem.iconClass"></span>
                           <span>{{ subItem.title }}</span>
@@ -307,11 +209,8 @@
                   <!--  Hasnot sub items  -->
                   <ng-template #hasNotSubItems>
                     <a
-                      [ngClass]="{
-                        active: selectedNavItem === menuItem.navItem
-                      }"
-                      [queryParams]="menuItem.queryParams"
                       [routerLink]="menuItem.path"
+                      [queryParams]="menuItem.queryParams"
                       class="
                         nav-link
                         d-inline-flex
@@ -319,6 +218,9 @@
                         gap-1
                         op-nav-link
                       "
+                      [ngClass]="{
+                        active: selectedNavItem === menuItem.navItem
+                      }"
                     >
                       <span
                         [ngClass]="[

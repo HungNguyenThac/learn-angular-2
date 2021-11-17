@@ -9,6 +9,7 @@ import * as customerApiDocs from "../../../../open-api-modules/customer-api-docs
 import * as identityApiDocs from "../../../../open-api-modules/identity-api-docs";
 import * as coreApiDocs from "../../../../open-api-modules/core-api-docs";
 import * as paymentApiDocs from "../../../../open-api-modules/payment-api-docs";
+import * as contractApiDocs from '../../../../open-api-modules/contract-api-docs';
 import {environment} from "../../../environments/environment";
 
 @NgModule({
@@ -56,6 +57,11 @@ import {environment} from "../../../environments/environment";
         basePath: environment.API_BASE_URL + environment.PAYMENT_API_PATH,
       });
     }),
-  ]
+    contractApiDocs.ApiModule.forRoot(() => {
+      return new contractApiDocs.Configuration({
+        basePath: environment.API_BASE_URL + environment.CONTRACT_API_PATH,
+      });
+    }),
+  ],
 })
-export class OpenApiModule { }
+export class OpenApiModule {}

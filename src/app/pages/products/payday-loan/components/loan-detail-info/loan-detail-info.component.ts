@@ -2,7 +2,6 @@ import { NotificationService } from 'src/app/core/services/notification.service'
 import { ToastrService } from 'ngx-toastr';
 import { UpdateLoanStatusRequest } from './../../../../../../../open-api-modules/loanapp-hmg-api-docs/model/updateLoanStatusRequest';
 import { Subscription } from 'rxjs';
-import { PlPromptComponent } from './../../../../../share/components/dialogs/pl-prompt/pl-prompt.component';
 import { PaydayLoanControllerService as PaydayLoanHmgControllerService } from './../../../../../../../open-api-modules/loanapp-hmg-api-docs/api/paydayLoanController.service';
 import { PaydayLoanControllerService as PaydayLoanTngControllerService } from './../../../../../../../open-api-modules/loanapp-api-docs/api/paydayLoanController.service';
 import { PAYDAY_LOAN_STATUS } from './../../../../../core/common/enum/payday-loan';
@@ -13,17 +12,35 @@ import {
 } from './../../../../../core/common/enum/operator';
 import { MultiLanguageService } from './../../../../../share/translate/multiLanguageService';
 import { MatDialog } from '@angular/material/dialog';
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  OnDestroy,
+} from '@angular/core';
 import * as moment from 'moment';
-import { CustomerInfo } from 'open-api-modules/dashboard-api-docs';
-import { PaydayLoan } from 'open-api-modules/loanapp-api-docs';
+import {
+  CustomerInfo,
+  PaydayLoanHmg,
+} from 'open-api-modules/dashboard-api-docs';
+import {
+  ApiResponseObject,
+  PaydayLoan,
+} from 'open-api-modules/loanapp-api-docs';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import {
+  ApiResponseString,
+  UpdateLoanRequest,
+} from 'open-api-modules/loanapp-hmg-api-docs';
 
 @Component({
   selector: 'app-loan-detail-info',
   templateUrl: './loan-detail-info.component.html',
   styleUrls: ['./loan-detail-info.component.scss'],
 })
-export class LoanDetailInfoComponent implements OnInit {
+export class LoanDetailInfoComponent implements OnInit, OnDestroy {
   _loanId: string;
   @Input()
   get loanId(): string {
@@ -44,20 +61,28 @@ export class LoanDetailInfoComponent implements OnInit {
 
   set customerInfo(value: CustomerInfo) {
     this._customerInfo = value;
+    this.leftColumn = this._initLeftColumn();
+    this.middleColumn = this._initMiddleColumn();
+    this.rightColumn = this._initRightColumn();
+    this._initLoanInfoData();
   }
 
-  _loanDetail: PaydayLoan;
+  _loanDetail: PaydayLoanHmg;
   @Input()
-  get loanDetail(): PaydayLoan {
+  get loanDetail(): PaydayLoanHmg {
     return this._loanDetail;
   }
 
-  set loanDetail(value: PaydayLoan) {
+  set loanDetail(value: PaydayLoanHmg) {
     this._loanDetail = value;
     this.getChangeLoanStatus();
+    this.leftColumn = this._initLeftColumn();
+    this.middleColumn = this._initMiddleColumn();
+    this.rightColumn = this._initRightColumn();
+    this._initLoanInfoData();
   }
 
-  get leftColumn() {
+  private _initLeftColumn() {
     return [
       {
         title: this.multiLanguageService.instant(
@@ -87,7 +112,7 @@ export class LoanDetailInfoComponent implements OnInit {
         title: this.multiLanguageService.instant(
           'loan_app.loan_info.salary_status'
         ),
-        value: this.salaryStatus,
+        value: this.getSalaryStatus(this.loanDetail?.expectedTenure),
         type: DATA_CELL_TYPE.STATUS,
         format: DATA_STATUS_TYPE.PL_OTHER_STATUS,
       },
@@ -103,14 +128,14 @@ export class LoanDetailInfoComponent implements OnInit {
         title: this.multiLanguageService.instant(
           'loan_app.loan_info.updated_at'
         ),
-        value: this.loanDetail?.createdAt,
+        value: this.loanDetail?.updatedAt,
         type: DATA_CELL_TYPE.DATETIME,
         format: 'dd/MM/yyyy HH:mm',
       },
     ];
   }
 
-  get middleColumn() {
+  private _initMiddleColumn() {
     return [
       {
         title: this.multiLanguageService.instant(
@@ -171,7 +196,7 @@ export class LoanDetailInfoComponent implements OnInit {
     ];
   }
 
-  get rightColumn() {
+  private _initRightColumn() {
     return [
       {
         title: this.multiLanguageService.instant(
@@ -208,13 +233,19 @@ export class LoanDetailInfoComponent implements OnInit {
     ];
   }
 
+  leftColumn: any[] = [];
+  middleColumn: any[] = [];
+  rightColumn: any[] = [];
+
   currentTime = new Date();
 
   @Input() groupName: string;
-  nextLoanStatus: string;
+  nextLoanStatus: string = PAYDAY_LOAN_STATUS.UNKNOWN_STATUS;
   nextLoanStatusDisplay: string;
-  rejectLoanStatus: string = PAYDAY_LOAN_STATUS.WITHDRAW;
+  rejectLoanStatus: string = PAYDAY_LOAN_STATUS.UNKNOWN_STATUS;
   rejectLoanStatusDisplay: string;
+  salaryStatus: string;
+  loanInfoForm: FormGroup;
 
   subManager = new Subscription();
   @Output() loanDetailDetectChangeStatus = new EventEmitter<any>();
@@ -224,8 +255,13 @@ export class LoanDetailInfoComponent implements OnInit {
     private paydayLoanHmgControllerService: PaydayLoanHmgControllerService,
     private paydayLoanTngControllerService: PaydayLoanTngControllerService,
     private notificationService: NotificationService,
-    private notifier: ToastrService
-  ) {}
+    private notifier: ToastrService,
+    private formBuilder: FormBuilder
+  ) {
+    this.loanInfoForm = this.formBuilder.group({
+      note: [''],
+    });
+  }
 
   ngOnInit(): void {}
 
@@ -248,7 +284,6 @@ export class LoanDetailInfoComponent implements OnInit {
       primaryBtnText: this.multiLanguageService.instant('common.confirm'),
       secondaryBtnText: this.multiLanguageService.instant('common.skip'),
     });
-    let reload: any;
     this.subManager.add(
       promptDialogRef.afterClosed().subscribe((buttonType: BUTTON_TYPE) => {
         if (buttonType === BUTTON_TYPE.PRIMARY) {
@@ -261,10 +296,10 @@ export class LoanDetailInfoComponent implements OnInit {
               .changeLoanStatus(this.loanDetail.id, updateLoanStatusRequest)
               .subscribe((result) => {
                 if (result?.responseCode === 200) {
-                  this.notifier.success('Cập nhật dữ liệu thành công');
-                  reload = setTimeout(() => {
-                    this.loanDetailDetectChangeStatus.emit('fetching');
-                  }, 1000);
+                  this.notifier.success(
+                    this.multiLanguageService.instant('common.update_success')
+                  );
+                  this.loanDetailDetectChangeStatus.emit();
                 } else {
                   this.notifier.error(JSON.stringify(result?.message));
                 }
@@ -276,8 +311,8 @@ export class LoanDetailInfoComponent implements OnInit {
               .changeLoanStatus(this.loanDetail.id, updateLoanStatusRequest)
               .subscribe((result) => {
                 if (result?.responseCode === 200) {
-                  this.notifier.success('Cập nhật dữ liệu thành công');
-                  this.loanDetailDetectChangeStatus.emit('fetching');
+                  this.multiLanguageService.instant('common.update_success');
+                  this.loanDetailDetectChangeStatus.emit();
                 } else {
                   this.notifier.error(JSON.stringify(result?.message));
                 }
@@ -289,16 +324,18 @@ export class LoanDetailInfoComponent implements OnInit {
   }
 
   //Trạng thái trả lương
-  get salaryStatus() {
-    if (!this.loanDetail?.expectedTenure) return;
-    if (this.loanDetail?.expectedTenure === 0) {
-      return this.multiLanguageService.instant(
+  getSalaryStatus(expectedTenure) {
+    if (!expectedTenure) return;
+    if (expectedTenure === 0) {
+      this.salaryStatus = this.multiLanguageService.instant(
         'loan_app.loan_info.received_salary'
       );
+      return this.salaryStatus;
     }
-    return this.multiLanguageService.instant(
+    this.salaryStatus = this.multiLanguageService.instant(
       'loan_app.loan_info.not_received_salary'
     );
+    return this.salaryStatus;
   }
 
   //Số tiền vay tối đa
@@ -320,10 +357,12 @@ export class LoanDetailInfoComponent implements OnInit {
     switch (currentLoanStatus) {
       case PAYDAY_LOAN_STATUS.INITIALIZED:
         this.nextLoanStatus = PAYDAY_LOAN_STATUS.DOCUMENT_AWAITING;
+        this.rejectLoanStatus = PAYDAY_LOAN_STATUS.WITHDRAW;
         break;
 
       case PAYDAY_LOAN_STATUS.DOCUMENT_AWAITING:
         this.nextLoanStatus = PAYDAY_LOAN_STATUS.DOCUMENTATION_COMPLETE;
+        this.rejectLoanStatus = PAYDAY_LOAN_STATUS.WITHDRAW;
         break;
 
       case PAYDAY_LOAN_STATUS.DOCUMENTATION_COMPLETE:
@@ -333,34 +372,42 @@ export class LoanDetailInfoComponent implements OnInit {
 
       case PAYDAY_LOAN_STATUS.AUCTION:
         this.nextLoanStatus = PAYDAY_LOAN_STATUS.FUNDED;
+        this.rejectLoanStatus = PAYDAY_LOAN_STATUS.WITHDRAW;
         break;
 
       case PAYDAY_LOAN_STATUS.FUNDED:
         if (this.groupName === 'TNG') {
           this.nextLoanStatus = PAYDAY_LOAN_STATUS.CONTRACT_ACCEPTED;
+          this.rejectLoanStatus = PAYDAY_LOAN_STATUS.WITHDRAW;
           break;
         }
         this.nextLoanStatus = PAYDAY_LOAN_STATUS.CONTRACT_AWAITING;
+        this.rejectLoanStatus = PAYDAY_LOAN_STATUS.WITHDRAW;
         break;
 
       case PAYDAY_LOAN_STATUS.CONTRACT_AWAITING:
         this.nextLoanStatus = PAYDAY_LOAN_STATUS.CONTRACT_ACCEPTED;
+        this.rejectLoanStatus = PAYDAY_LOAN_STATUS.WITHDRAW;
         break;
 
       case PAYDAY_LOAN_STATUS.CONTRACT_ACCEPTED:
         this.nextLoanStatus = PAYDAY_LOAN_STATUS.AWAITING_DISBURSEMENT;
+        this.rejectLoanStatus = PAYDAY_LOAN_STATUS.WITHDRAW;
         break;
 
       case PAYDAY_LOAN_STATUS.AWAITING_DISBURSEMENT:
         this.nextLoanStatus = PAYDAY_LOAN_STATUS.DISBURSED;
+        this.rejectLoanStatus = PAYDAY_LOAN_STATUS.WITHDRAW;
         break;
 
       case PAYDAY_LOAN_STATUS.DISBURSED:
         this.nextLoanStatus = PAYDAY_LOAN_STATUS.IN_REPAYMENT;
+        this.rejectLoanStatus = PAYDAY_LOAN_STATUS.WITHDRAW;
         break;
 
       case PAYDAY_LOAN_STATUS.IN_REPAYMENT:
         this.nextLoanStatus = PAYDAY_LOAN_STATUS.COMPLETED;
+        this.rejectLoanStatus = PAYDAY_LOAN_STATUS.UNKNOWN_STATUS;
         break;
 
       default:
@@ -369,12 +416,11 @@ export class LoanDetailInfoComponent implements OnInit {
         break;
     }
 
-    console.log('---------', this.nextLoanStatus, this.rejectLoanStatus);
     this.nextLoanStatusDisplay = this.multiLanguageService.instant(
       `payday_loan.status.${this.nextLoanStatus.toLowerCase()}`
     );
     this.rejectLoanStatusDisplay = this.multiLanguageService.instant(
-      `payday_loan.status.${this.rejectLoanStatus.toLowerCase()}`
+      `payday_loan.status.${this.rejectLoanStatus.toLowerCase()}_action`
     );
 
     return;
@@ -385,5 +431,52 @@ export class LoanDetailInfoComponent implements OnInit {
     return moment(new Date(time), 'YYYY-MM-DD HH:mm:ss').format(
       'DD/MM/YYYY HH:mm A'
     );
+  }
+
+  private _initLoanInfoData() {
+    this.loanInfoForm.patchValue({
+      note: this.loanDetail?.note,
+    });
+  }
+
+  submitForm() {
+    const updateLoanRequest: UpdateLoanRequest = {
+      customerId: this.customerId,
+      updateInfo: {}
+    };
+    updateLoanRequest.updateInfo['note'] = this.loanInfoForm.controls.note.value;
+    console.log('updateLoanRequest', updateLoanRequest);
+
+    if (this.groupName === 'HMG') {
+      this.subManager.add(
+        this.paydayLoanHmgControllerService
+          .updateInfo(this.loanId, updateLoanRequest)
+          .subscribe((res: ApiResponseString) => {
+            if (res.responseCode !== 200) {
+              this.notifier.error(res.errorCode);
+              return
+            }
+             this.loanDetailDetectChangeStatus.emit();
+          })
+      );
+    }
+
+    if (this.groupName === 'TNG') {
+      this.subManager.add(
+        this.paydayLoanTngControllerService
+          .updateInfo(this.loanId, updateLoanRequest)
+          .subscribe((res: ApiResponseObject) => {
+            if (res.responseCode !== 200) {
+              this.notifier.error(res.errorCode);
+              return;
+            }
+             this.loanDetailDetectChangeStatus.emit();
+          })
+      );
+    }
+  }
+
+  ngOnDestroy() {
+    this.subManager.unsubscribe();
   }
 }

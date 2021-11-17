@@ -7,21 +7,8 @@ import * as fromSelectors from '../../core/store/selectors';
 import { Observable } from 'rxjs/Observable';
 import { CustomerInfoResponse } from '../../../../open-api-modules/customer-api-docs';
 import { Subscription } from 'rxjs';
-import { BUTTON_TYPE, NAV_ITEM } from '../../core/common/enum/operator';
+import { NAV_ITEM } from '../../core/common/enum/operator';
 import { MultiLanguageService } from '../../share/translate/multiLanguageService';
-import { DialogCompanyInfoUpdateComponent } from '../../share/components';
-import { MatDialog } from '@angular/material/dialog';
-import { DialogUserInfoUpdateComponent } from '../../share/components/operators/user-account/dialog-user-info-update/dialog-user-info-update.component';
-import { AddNewUserDialogComponent } from '../../share/components/operators/user-account/add-new-user-dialog/add-new-user-dialog.component';
-
-export interface AccountInfo {
-  fullName?: string;
-  loginName?: string;
-  roleName?: string;
-  phoneNum?: string;
-  email?: string;
-  note?: string;
-}
 
 @Component({
   selector: 'app-header',
@@ -38,15 +25,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
   logoSrc: string = 'assets/img/monex-logo.svg';
   showProfileBtn: boolean = false;
   shortName: string = '0';
-
-  accountInfo: AccountInfo = {
-    fullName: 'Nguyễn Văn A',
-    loginName: 'ngvana',
-    roleName: 'Super Admin',
-    phoneNum: '0943777294',
-    email: 'a.nguyen@epay.vn',
-    note: '',
-  };
+  fullName: string = 'Nguyễn Văn A';
+  roleName: string = 'Super admin';
 
   selectedNavItem: NAV_ITEM = NAV_ITEM.DASHBOARD;
 
@@ -111,7 +91,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
   constructor(
     private router: Router,
     private store: Store<fromStore.State>,
-    private dialog: MatDialog,
     private multiLanguageService: MultiLanguageService
   ) {
     this._subscribeHeaderInfo();
@@ -129,52 +108,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   onResponsiveInverted() {
     this.responsive = window.innerWidth < 768;
-  }
-
-  backToPrevPage() {
-    this.store.dispatch(new fromActions.ClickBackBtn());
-  }
-
-  openUpdateDialog() {
-    const updateDialogRef = this.dialog.open(DialogUserInfoUpdateComponent, {
-      panelClass: 'custom-info-dialog-container',
-      maxWidth: '800px',
-      width: '90%',
-      data: {
-        accountName: this.accountInfo.fullName,
-        accountLogin: this.accountInfo.loginName,
-        accountRole: this.accountInfo.roleName,
-        accountPhone: this.accountInfo.phoneNum,
-        accountEmail: this.accountInfo.email,
-        accountNote: this.accountInfo.note,
-      },
-    });
-    this.subManager.add(
-      updateDialogRef.afterClosed().subscribe((result: any) => {
-        if (result && result.type === BUTTON_TYPE.PRIMARY) {
-          console.log(result);
-        }
-      })
-    );
-  }
-
-  openAddUserDialog() {
-    const updateDialogRef = this.dialog.open(AddNewUserDialogComponent, {
-      panelClass: 'custom-info-dialog-container',
-      maxWidth: '800px',
-      width: '90%',
-    });
-    this.subManager.add(
-      updateDialogRef.afterClosed().subscribe((result: any) => {
-        if (result && result.type === BUTTON_TYPE.PRIMARY) {
-          console.log(result);
-        }
-      })
-    );
-  }
-
-  logout() {
-    this.store.dispatch(new fromActions.Logout(null));
   }
 
   private _subscribeHeaderInfo() {
@@ -210,5 +143,13 @@ export class HeaderComponent implements OnInit, OnDestroy {
         this.selectedNavItem = selectedNavItem;
       })
     );
+  }
+
+  backToPrevPage() {
+    this.store.dispatch(new fromActions.ClickBackBtn());
+  }
+
+  logout() {
+    this.store.dispatch(new fromActions.Logout(null));
   }
 }

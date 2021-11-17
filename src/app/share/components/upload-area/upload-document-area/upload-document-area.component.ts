@@ -1,20 +1,48 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+} from '@angular/core';
 import { DOCUMENT_BTN_TYPE } from '../../../../core/common/enum/operator';
 import { UpdatedDocumentModel } from '../../../../public/models/external/updated-document.model';
+import isBase64 from '../../../../core/utils/is-base-64';
+import urlToFile from '../../../../core/utils/url-to-file';
+import getUrlFileName from '../../../../core/utils/get-url-file-name';
+import getUrlExtension from '../../../../core/utils/get-url-extension';
+import { NotificationService } from '../../../../core/services/notification.service';
 
 @Component({
   selector: 'app-upload-document-area',
   templateUrl: './upload-document-area.component.html',
   styleUrls: ['./upload-document-area.component.scss'],
 })
-export class UploadDocumentAreaComponent implements OnInit {
+export class UploadDocumentAreaComponent implements OnInit, AfterViewInit {
   @Input() id: string;
   @Input() title: string;
-  @Input() imgSrc: string;
+  @Input() classes: string;
+  @Input() description: string;
+  @Input() name: string = 'image-upload-area';
   @Input() hiddenUploadBtn: boolean = false;
   @Input() hiddenDownloadBtn: boolean = false;
   @Input() acceptFileType: string = 'image/*';
   @Input() hiddenDeleteBtn: boolean = false;
+
+  _imageSrc: any;
+  get imgSrc(): any {
+    return this._imageSrc;
+  }
+
+  @Input() set imgSrc(newVal: any) {
+    if (!newVal) {
+      this.file = null;
+    }
+    this._imageSrc = newVal;
+  }
+
+  file: any;
 
   @Output() onChangeDocument = new EventEmitter<UpdatedDocumentModel>();
 
@@ -22,7 +50,7 @@ export class UploadDocumentAreaComponent implements OnInit {
 
   currentDocumentBtnType: DOCUMENT_BTN_TYPE;
 
-  constructor() {}
+  constructor(private notificationService: NotificationService) {}
 
   ngOnInit(): void {}
 
@@ -79,5 +107,19 @@ export class UploadDocumentAreaComponent implements OnInit {
       });
     };
     reader.readAsDataURL(file);
+  }
+
+  initImgSrc(value): void {
+    if (!value) {
+      this.file = null;
+    }
+  }
+
+  ngAfterViewInit(): void {
+    this.initImgSrc(this.imgSrc);
+  }
+
+  openFullSizeImg(imageSrc) {
+    this.notificationService.openImgFullsizeDiaglog({ imageSrc: imageSrc });
   }
 }

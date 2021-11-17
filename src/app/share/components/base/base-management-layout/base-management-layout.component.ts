@@ -23,7 +23,14 @@ import { PageEvent } from '@angular/material/paginator/public-api';
 export class BaseManagementLayoutComponent implements OnInit {
   @Input() detailElementTemplate: TemplateRef<any>;
 
-  @Input() filterOptions: FilterOptionModel[] = [];
+  // filterOptions: FilterOptionModel[] = [];
+  _filterOptions: FilterOptionModel;
+  @Input() get filterOptions(): FilterOptionModel {
+    return this._filterOptions;
+  }
+  set filterOptions(value) {
+    this._filterOptions = value;
+  }
   @Input() allColumns: any[] = [];
   @Input() tableTitle: string;
   @Input() dataSource: MatTableDataSource<any> = new MatTableDataSource([]);
@@ -34,7 +41,15 @@ export class BaseManagementLayoutComponent implements OnInit {
   @Input() pageLength: number = 0;
   @Input() orderBy: string;
   @Input() sortDirection: SortDirection = 'desc';
-  @Input() breadcrumbOptions: BreadcrumbOptionsModel;
+  _breadcrumbOptions: BreadcrumbOptionsModel;
+  @Input() get breadcrumbOptions(): BreadcrumbOptionsModel {
+    return this._breadcrumbOptions;
+  }
+
+  set breadcrumbOptions(value) {
+    this._breadcrumbOptions = value;
+  }
+
   @Output() onPageChange = new EventEmitter<PageEvent>();
   @Output() onSortChange = new EventEmitter<Sort>();
   @Output() onExpandElementChange = new EventEmitter<any>();

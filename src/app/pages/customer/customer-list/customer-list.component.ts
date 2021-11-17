@@ -18,6 +18,7 @@ import {
   ApiResponseSearchAndPaginationResponseCustomerInfo,
   CompanyControllerService,
   CompanyInfo,
+  CustomerInfo,
 } from '../../../../../open-api-modules/dashboard-api-docs';
 import { CustomerListService } from './customer-list.service';
 import { MatTableDataSource } from '@angular/material/table';
@@ -84,6 +85,7 @@ export class CustomerListComponent implements OnInit, OnDestroy {
       title: this.multiLanguageService.instant('filter.pl_ui_status'),
       type: FILTER_TYPE.SELECT,
       controlName: 'paydayLoanStatus',
+      multiple: true,
       value: null,
       options: [
         {
@@ -238,7 +240,7 @@ export class CustomerListComponent implements OnInit, OnDestroy {
       showed: false,
     },
     {
-      key: 'addressTwoLine2',
+      key: 'addressOneLine1',
       title: this.multiLanguageService.instant(
         'customer.individual_info.current_residence'
       ),
@@ -265,7 +267,7 @@ export class CustomerListComponent implements OnInit, OnDestroy {
       showed: true,
     },
     {
-      key: 'companyId',
+      key: 'companyName',
       title: this.multiLanguageService.instant(
         'customer.individual_info.company'
       ),
@@ -340,7 +342,7 @@ export class CustomerListComponent implements OnInit, OnDestroy {
       dateFilterTitle: [''],
       filterConditions: {
         companyId: QUERY_CONDITION_TYPE.IN,
-        paydayLoanStatus: QUERY_CONDITION_TYPE.EQUAL,
+        paydayLoanStatus: QUERY_CONDITION_TYPE.IN,
       },
     });
   }
@@ -377,7 +379,9 @@ export class CustomerListComponent implements OnInit, OnDestroy {
           ? this.filterForm.controls.companyId.value.split(',')
           : [];
       } else if (filterOption.controlName === 'paydayLoanStatus') {
-        filterOption.value = this.filterForm.controls.paydayLoanStatus.value;
+        filterOption.value = this.filterForm.controls.paydayLoanStatus.value
+          ? this.filterForm.controls.paydayLoanStatus.value.split(',')
+          : [];
       }
     });
 
@@ -424,7 +428,7 @@ export class CustomerListComponent implements OnInit, OnDestroy {
 
   private _initCompanyOptions() {
     this.filterOptions.forEach((filterOption: FilterOptionModel) => {
-      if (filterOption.controlName !== 'companyId') {
+      if (filterOption.controlName !== 'companyId' || !this.companyList) {
         return;
       }
       filterOption.options[0].subOptions = this.companyList.map(
@@ -472,11 +476,14 @@ export class CustomerListComponent implements OnInit, OnDestroy {
 
   public onSubmitSearchForm(event) {
     this.filterForm.controls.keyword.setValue(event.keyword);
+    this.pageIndex = 0;
     this._onFilterChange();
   }
 
   public onFilterFormChange(event: FilterEventModel) {
     console.log('FilterEventModel', event);
+    this.pageIndex = 0;
+
     switch (event.type) {
       case FILTER_TYPE.DATETIME:
         this.filterForm.controls.startTime.setValue(event.value.startDate);
@@ -492,7 +499,9 @@ export class CustomerListComponent implements OnInit, OnDestroy {
             event.value ? event.value.join(',') : ''
           );
         } else if (event.controlName === 'paydayLoanStatus') {
-          this.filterForm.controls.paydayLoanStatus.setValue(event.value);
+          this.filterForm.controls.paydayLoanStatus.setValue(
+            event.value ? event.value.join(',') : ''
+          );
         }
         break;
       default:
@@ -539,6 +548,17 @@ export class CustomerListComponent implements OnInit, OnDestroy {
         queryParams,
       })
       .then((r) => {});
+  }
+
+  public updateElementInfo(updatedCustomerInfo: CustomerInfo) {
+    this.dataSource.data.map((item) => {
+      if (item.id === updatedCustomerInfo.id) {
+        this.allColumns.forEach((column) => {
+          item[column.key] = updatedCustomerInfo[column.key];
+        });
+      }
+      return item;
+    });
   }
 
   ngOnDestroy(): void {

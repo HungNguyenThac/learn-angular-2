@@ -3,35 +3,65 @@
   <mat-tab [label]="'loan_app.tabs.loan_info' | translate">
     <ng-template matTabContent>
       <app-loan-detail-info
-        [loanId]="loanId"
-        [loanDetail]="loanDetail"
+        (loanDetailDetectChangeStatus)="
+          loanDetailDetectChangeStatusTrigger()
+        "
         [customerInfo]="userInfo"
         [groupName]="groupName"
-        (loanDetailDetectChangeStatus)="loanDetailDetectChangeStatusTrigger($event)"
-      ></app-loan-detail-info> </ng-template
-  ></mat-tab>
+        [loanDetail]="loanDetail"
+        [loanId]="loanId"
+      ></app-loan-detail-info>
+    </ng-template>
+  </mat-tab>
 
   <!--  Contract-->
   <mat-tab [label]="'loan_app.tabs.loan_contract' | translate">
     <ng-template matTabContent>
-      <app-loan-contract></app-loan-contract> </ng-template
-  ></mat-tab>
+      <app-loan-contract
+        (triggerUpdateLoanAfterSign)="triggerUpdateLoanAfterSign()"
+        [loanDetail]="loanDetail"
+        [loanId]="loanId"
+        [customerInfo]="userInfo"
+      ></app-loan-contract>
+    </ng-template>
+  </mat-tab>
 
   <!--  Document Info-->
   <mat-tab [label]="'loan_app.tabs.documents' | translate">
     <ng-template matTabContent>
-      <app-loan-documents></app-loan-documents> </ng-template
-  ></mat-tab>
+      <app-customer-document-info
+        [customerId]="customerId"
+        [customerInfo]="userInfo"
+      ></app-customer-document-info>
+    </ng-template>
+  </mat-tab>
 
   <!--  Rating Info-->
-  <mat-tab [label]="'loan_app.tabs.rating' | translate">
+  <mat-tab
+    *ngIf="loanDetail?.ratingInfo?.isRated"
+    [label]="'loan_app.tabs.rating' | translate"
+  >
     <ng-template matTabContent>
-      <app-loan-rating></app-loan-rating> </ng-template
-  ></mat-tab>
+      <app-loan-rating
+        [loanDetail]="loanDetail"
+        [loanId]="loanId"
+      ></app-loan-rating>
+    </ng-template>
+  </mat-tab>
 
   <!--  Company Info-->
   <mat-tab [label]="'loan_app.tabs.company_info' | translate">
     <ng-template matTabContent>
-      <app-loan-company-info></app-loan-company-info> </ng-template
-  ></mat-tab>
+      <app-customer-company-info
+        (triggerUpdateInfo)="updateCustomerInfo($event)"
+        [bankOptions]="bankOptions"
+        [companyOptions]="companyOptions"
+        [customerId]="customerId"
+        [customerInfo]="userInfo"
+        [disabledColumns]="disabledColumns"
+        [hiddenColumns]="hiddenColumns"
+      ></app-customer-company-info>
+    </ng-template>
+    >
+  </mat-tab>
 </mat-tab-group>

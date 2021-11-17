@@ -1,18 +1,9 @@
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CustomerInfo } from '../../../../../../open-api-modules/dashboard-api-docs';
 import { MultiLanguageService } from '../../../../share/translate/multiLanguageService';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Component, Inject, OnInit } from '@angular/core';
 import * as moment from 'moment';
-import {
-  MAT_MOMENT_DATE_FORMATS,
-  MomentDateAdapter,
-} from '@angular/material-moment-adapter';
-import {
-  DateAdapter,
-  MAT_DATE_FORMATS,
-  MAT_DATE_LOCALE,
-} from '@angular/material/core';
 import { VirtualAccount } from '../../../../../../open-api-modules/payment-api-docs';
 import { Bank } from 'open-api-modules/dashboard-api-docs';
 import { BUTTON_TYPE } from '../../../../core/common/enum/operator';
@@ -21,15 +12,6 @@ import { BUTTON_TYPE } from '../../../../core/common/enum/operator';
   selector: 'app-customer-detail-update-dialog',
   templateUrl: './customer-detail-update-dialog.component.html',
   styleUrls: ['./customer-detail-update-dialog.component.scss'],
-  providers: [
-    { provide: MAT_DATE_LOCALE, useValue: 'vi-VN' },
-    {
-      provide: DateAdapter,
-      useClass: MomentDateAdapter,
-      deps: [MAT_DATE_LOCALE],
-    },
-    { provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS },
-  ],
 })
 export class CustomerDetailUpdateDialogComponent implements OnInit {
   customerInfo: CustomerInfo = {};
@@ -39,6 +21,14 @@ export class CustomerDetailUpdateDialogComponent implements OnInit {
   selfieSrc: string;
 
   customerIndividualForm: FormGroup;
+
+  maxDateTime = moment(new Date(), 'YYYY-MM-DD')
+    .subtract(18, 'years')
+    .toISOString();
+
+  minDateTime = moment(new Date(), 'YYYY-MM-DD')
+    .subtract(70, 'years')
+    .toISOString();
 
   genderOptions: string[] = [
     this.multiLanguageService.instant('customer.individual_info.gender_male'),
@@ -74,21 +64,25 @@ export class CustomerDetailUpdateDialogComponent implements OnInit {
   buildIndividualForm() {
     this.customerIndividualForm = this.formBuilder.group({
       id: [''],
-      firstName: [''],
-      mobileNumber: [''],
-      email: [''],
-      dateOfBirth: [''],
-      gender: [''],
-      identityNumberOne: [''],
-      permanentAddress: [''],
-      currentResidence: [''],
-      idOrigin: [''],
-      numberOfDependents: [''],
-      maritalStatus: [''],
+      firstName: ['', [Validators.maxLength(250)]],
+      mobileNumber: ['', [Validators.minLength(10), Validators.maxLength(12)]],
+      email: ['', [Validators.email]],
+      dateOfBirth: ['', [Validators.required]],
+      gender: ['', [Validators.required]],
+      identityNumberOne: [
+        '',
+        [Validators.minLength(9), Validators.maxLength(12)],
+      ],
+      permanentAddress: ['', [Validators.maxLength(250)]],
+      currentResidence: ['', [Validators.maxLength(250)]],
+      idOrigin: ['', Validators.maxLength(250)],
+      numberOfDependents: ['', [Validators.required]],
+      maritalStatus: ['', [Validators.required]],
       accountNumber: [''],
       bankCode: [''],
       bankName: [''],
       vaAccountNumber: [''],
+      note: [''],
       createdAt: [''],
       updatedAt: [''],
     });
@@ -114,20 +108,24 @@ export class CustomerDetailUpdateDialogComponent implements OnInit {
       idOrigin: this.customerInfo?.idOrigin,
       numberOfDependents: this.customerInfo?.borrowerDetailTextVariable1,
       maritalStatus: this.customerInfo?.maritalStatus,
+      accountNumber: this.customerInfo?.accountNumber || null,
+      note: this.customerInfo?.note || null,
+      bankCode: this.customerInfo?.bankCode || null,
+      bankName: this.customerInfo?.bankName || null,
+      vaAccountNumber: this.virtualAccount?.accountNumber || null,
       createdAt: this.customerInfo?.createdAt
         ? this.formatTime(this.customerInfo?.createdAt)
         : null,
       updatedAt: this.customerInfo?.updatedAt
         ? this.formatTime(this.customerInfo?.updatedAt)
         : null,
-      accountNumber: this.customerInfo?.accountNumber || null,
-      bankCode: this.customerInfo?.bankCode || null,
-      bankName: this.customerInfo?.bankName || null,
-      vaAccountNumber: this.virtualAccount?.accountNumber || null,
     });
   }
 
   submitForm() {
+    if (this.customerIndividualForm.invalid) {
+      return;
+    }
     this.dialogRef.close({
       type: BUTTON_TYPE.PRIMARY,
       data: this.customerIndividualForm.getRawValue(),

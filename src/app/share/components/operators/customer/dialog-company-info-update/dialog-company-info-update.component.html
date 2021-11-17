@@ -1,11 +1,11 @@
 <div class="container-fluid">
   <div class="card op-card">
-    <button class="close-btn" mat-dialog-close mat-icon-button tabindex="-1">
+    <button mat-icon-button tabindex="-1" class="close-btn" mat-dialog-close>
       <svg
-        fill="none"
+        width="24"
         height="24"
         viewBox="0 0 24 24"
-        width="24"
+        fill="none"
         xmlns="http://www.w3.org/2000/svg"
       >
         <path
@@ -29,19 +29,34 @@
                   <mat-form-field appearance="outline" class="w-100">
                     <mat-label>{{
                       "customer.company_info.company_name" | translate
-                      }}</mat-label>
-                    <mat-select formControlName="companyId">
-                      <mat-option *ngFor="let companyOption of companyOptions"
-                                  [value]="companyOption.id"
+                    }}</mat-label>
+                    <mat-select
+                      formControlName="companyId"
+                      [disabled]="disabledColumns.includes('companyId')"
+                    >
+                      <mat-option
+                        *ngFor="let companyOption of companyOptions"
+                        [matTooltip]="
+                          companyOption.name + ' (' + companyOption.code + ')'
+                        "
+                        [value]="companyOption.id"
+                        [disabled]="companyOption.code === 'TNG'"
                       >
                         <div class="d-flex align-items-center">
                           <img [src]="companyOption.avatar" alt="" class="company-avatar">
                           {{
                           companyOption.name + " (" + companyOption.code + ")"
-                          }}
-                        </div>
+                        }}
                       </mat-option>
                     </mat-select>
+                    <show-errors
+                      [control]="companyInfoForm.controls['companyId']"
+                      [controlLabel]="
+                        'customer.company_info.company_name' | translate
+                      "
+                      [hasIconPrefix]="false"
+                    >
+                    </show-errors>
                   </mat-form-field>
                 </div>
 
@@ -49,189 +64,344 @@
                   <mat-form-field appearance="outline" class="w-100">
                     <mat-label>{{
                       "customer.company_info.employee_code" | translate
-                      }}</mat-label>
+                    }}</mat-label>
                     <input
+                      matInput
+                      [disabled]="disabledColumns.includes('employeeCode')"
                       [placeholder]="
                         'customer.company_info.employee_code' | translate
                       "
                       formControlName="employeeCode"
-                      matInput
                     />
+                    <show-errors
+                      [control]="companyInfoForm.controls['employeeCode']"
+                      [controlLabel]="
+                        'customer.company_info.employee_code' | translate
+                      "
+                      [hasIconPrefix]="false"
+                    >
+                    </show-errors>
                   </mat-form-field>
                 </div>
 
-                <div>
+                <div *ngIf="!hiddenColumns.includes('employeeCode')">
+                  <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>{{
+                      "customer.company_info.working_time" | translate
+                    }}</mat-label>
+                    <mat-select
+                      [disabled]="disabledColumns.includes('employeeCode')"
+                      formControlName="borrowerEmploymentHistoryTextVariable1"
+                      [placeholder]="
+                        'customer.company_info.working_time' | translate
+                      "
+                      required
+                    >
+                      <div *ngFor="let option of workingTimeOptions">
+                        <mat-option [value]="option" [matTooltip]="option">
+                          {{ option }}
+                        </mat-option>
+                        <mat-divider></mat-divider>
+                      </div>
+                    </mat-select>
+                    <show-errors
+                      [control]="
+                        companyInfoForm.controls[
+                          'borrowerEmploymentHistoryTextVariable1'
+                        ]
+                      "
+                      [controlLabel]="
+                        'customer.company_info.working_time' | translate
+                      "
+                      [hasIconPrefix]="false"
+                    >
+                    </show-errors>
+                  </mat-form-field>
+                </div>
+
+                <div *ngIf="!hiddenColumns.includes('firstName')">
                   <mat-form-field appearance="outline" class="w-100">
                     <mat-label>{{
                       "customer.company_info.full_name" | translate
-                      }}</mat-label>
+                    }}</mat-label>
                     <input
+                      matInput
+                      required
                       [placeholder]="
                         'customer.company_info.full_name' | translate
                       "
                       formControlName="firstName"
-                      matInput
+                      [disabled]="disabledColumns.includes('firstName')"
                     />
+                    <show-errors
+                      [control]="companyInfoForm.controls['firstName']"
+                      [controlLabel]="
+                        'customer.company_info.full_name' | translate
+                      "
+                      [hasIconPrefix]="false"
+                    >
+                    </show-errors>
                   </mat-form-field>
                 </div>
 
-                <div>
+                <div *ngIf="!hiddenColumns.includes('tngLastName')">
+                  <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>{{
+                      "customer.company_info.last_name" | translate
+                    }}</mat-label>
+                    <input
+                      matInput
+                      [disabled]="disabledColumns.includes('tngLastName')"
+                      [placeholder]="
+                        'customer.company_info.last_name' | translate
+                      "
+                      formControlName="tngLastName"
+                    />
+                    <show-errors
+                      [control]="companyInfoForm.controls['tngLastName']"
+                      [controlLabel]="
+                        'customer.company_info.last_name' | translate
+                      "
+                      [hasIconPrefix]="false"
+                    >
+                    </show-errors>
+                  </mat-form-field>
+                </div>
+
+                <div *ngIf="!hiddenColumns.includes('tngFirstName')">
                   <mat-form-field appearance="outline" class="w-100">
                     <mat-label>{{
                       "customer.company_info.first_name" | translate
-                      }}</mat-label>
+                    }}</mat-label>
                     <input
+                      matInput
+                      [disabled]="disabledColumns.includes('tngFirstName')"
                       [placeholder]="
                         'customer.company_info.first_name' | translate
                       "
                       formControlName="tngFirstName"
-                      matInput
                     />
+                    <show-errors
+                      [control]="companyInfoForm.controls['tngFirstName']"
+                      [controlLabel]="
+                        'customer.company_info.first_name' | translate
+                      "
+                      [hasIconPrefix]="false"
+                    >
+                    </show-errors>
                   </mat-form-field>
                 </div>
 
-                <div>
+                <div *ngIf="!hiddenColumns.includes('officeCode')">
                   <mat-form-field appearance="outline" class="w-100">
                     <mat-label>{{
                       "customer.company_info.office_code" | translate
-                      }}</mat-label>
+                    }}</mat-label>
                     <input
+                      matInput
+                      [disabled]="disabledColumns.includes('officeCode')"
                       [placeholder]="
                         'customer.company_info.office_code' | translate
                       "
                       formControlName="officeCode"
-                      matInput
                     />
+                    <show-errors
+                      [control]="companyInfoForm.controls['officeCode']"
+                      [controlLabel]="
+                        'customer.company_info.office_code' | translate
+                      "
+                      [hasIconPrefix]="false"
+                    >
+                    </show-errors>
                   </mat-form-field>
                 </div>
 
-                <div>
+                <div *ngIf="!hiddenColumns.includes('officeName')">
                   <mat-form-field appearance="outline" class="w-100">
                     <mat-label>{{
                       "customer.company_info.office_name" | translate
-                      }}</mat-label>
+                    }}</mat-label>
                     <input
+                      matInput
+                      [disabled]="disabledColumns.includes('officeName')"
                       [placeholder]="
                         'customer.company_info.office_name' | translate
                       "
                       formControlName="officeName"
-                      matInput
                     />
+                    <show-errors
+                      [control]="companyInfoForm.controls['officeName']"
+                      [controlLabel]="
+                        'customer.company_info.office_name' | translate
+                      "
+                      [hasIconPrefix]="false"
+                    >
+                    </show-errors>
                   </mat-form-field>
                 </div>
               </div>
 
               <!-- Right Individual Info -->
               <div class="col-12 col-sm-12 col-md-6 col-lg-6 pr-2">
-                <div>
+                <div *ngIf="!hiddenColumns.includes('annualIncome')">
                   <mat-form-field appearance="outline" class="w-100">
                     <mat-label>{{
                       "customer.company_info.annual_income" | translate
-                      }}</mat-label>
+                    }}</mat-label>
                     <input
+                      matInput
+                      [disabled]="disabledColumns.includes('annualIncome')"
+                      id="annualIncome"
+                      appNumberOnly
+                      (focusin)="convertAnnualIncomeInputWithoutSeparator()"
+                      (focusout)="formatAnnualIncomeInputWithSeparator()"
                       [placeholder]="
                         'customer.company_info.annual_income' | translate
                       "
                       formControlName="annualIncome"
-                      matInput
                     />
+                    <show-errors
+                      [control]="companyInfoForm.controls['annualIncome']"
+                      [controlLabel]="
+                        'customer.company_info.annual_income' | translate
+                      "
+                      [hasIconPrefix]="false"
+                    >
+                    </show-errors>
                   </mat-form-field>
                 </div>
 
-                <div>
+                <div *ngIf="!hiddenColumns.includes('workingDay')">
                   <mat-form-field appearance="outline" class="w-100">
                     <mat-label>{{
                       "customer.company_info.working_days" | translate
-                      }}</mat-label>
+                    }}</mat-label>
                     <input
+                      matInput
+                      [disabled]="disabledColumns.includes('workingDay')"
+                      appNumberOnly
                       [placeholder]="
                         'customer.company_info.working_days' | translate
                       "
                       formControlName="workingDay"
-                      matInput
                     />
+                    <show-errors
+                      [control]="companyInfoForm.controls['workingDay']"
+                      [controlLabel]="
+                        'customer.company_info.working_days' | translate
+                      "
+                      [hasIconPrefix]="false"
+                    >
+                    </show-errors>
                   </mat-form-field>
                 </div>
 
-                <div>
+                <div *ngIf="!hiddenColumns.includes('accountNumber')">
                   <mat-form-field appearance="outline" class="w-100">
                     <mat-label>{{
                       "customer.company_info.account_number" | translate
-                      }}</mat-label>
+                    }}</mat-label>
                     <input
+                      matInput
+                      [disabled]="disabledColumns.includes('accountNumber')"
+                      appNumberOnly
                       [placeholder]="
                         'customer.company_info.account_number' | translate
                       "
                       formControlName="accountNumber"
-                      matInput
                     />
+                    <show-errors
+                      [control]="companyInfoForm.controls['accountNumber']"
+                      [controlLabel]="
+                        'customer.company_info.account_number' | translate
+                      "
+                      [hasIconPrefix]="false"
+                    >
+                    </show-errors>
                   </mat-form-field>
                 </div>
 
-                <div>
+                <div *ngIf="!hiddenColumns.includes('bankCode')">
                   <mat-form-field appearance="outline" class="w-100">
                     <mat-label>{{
                       "customer.individual_info.bank_name" | translate
-                      }}</mat-label>
+                    }}</mat-label>
                     <mat-select
+                      formControlName="bankCode"
+                      [disabled]="disabledColumns.includes('bankCode')"
                       (selectionChange)="changeBank($event)"
-                      formControlName="bankName"
                     >
                       <mat-option
                         *ngFor="let bankNameOption of bankOptions"
-                        [value]="bankNameOption.bankName"
+                        [matTooltip]="
+                          bankNameOption.bankName +
+                          ' (' +
+                          bankNameOption.bankCode +
+                          ')'
+                        "
+                        [value]="bankNameOption.bankCode"
                       >
                         {{
-                        bankNameOption.bankName +
-                        " (" +
-                        bankNameOption.bankCode +
-                        ")"
+                          bankNameOption.bankName +
+                            " (" +
+                            bankNameOption.bankCode +
+                            ")"
                         }}
                       </mat-option>
                     </mat-select>
+                    <show-errors
+                      [control]="companyInfoForm.controls['bankCode']"
+                      [controlLabel]="
+                        'customer.individual_info.bank_name' | translate
+                      "
+                      [hasIconPrefix]="false"
+                    >
+                    </show-errors>
                   </mat-form-field>
                 </div>
 
-                <div>
+                <div *ngIf="!hiddenColumns.includes('bankCode')">
                   <mat-form-field appearance="outline" class="w-100">
                     <mat-label>{{
                       "customer.company_info.bank_code" | translate
-                      }}</mat-label>
+                    }}</mat-label>
                     <input
+                      matInput
+                      [disabled]="disabledColumns.includes('bankCode')"
                       [placeholder]="
                         'customer.company_info.bank_code' | translate
                       "
                       [value]="companyInfoForm.controls.bankCode.value"
                       disabled
-                      matInput
                       readonly
                     />
                   </mat-form-field>
                 </div>
               </div>
             </div>
-          </form>
-        </section>
-      </div>
-      <!--  Actions -->
-
-      <div class="row mt-3">
-        <div class="col-12 d-flex gap-2 justify-content-end">
-          <button
-            autofocus
-            cdkFocusInitial
-            color="warn"
-            mat-dialog-close
-            mat-flat-button
-          >
-            {{ "customer.individual_info.cancel_update" | translate }}
-          </button>
-          <button (click)="submitForm()" color="accent" mat-flat-button>
-            <span class="sprite-group-5-save-white"></span>
-            {{ "customer.individual_info.save_update" | translate }}
-          </button>
+          </section>
         </div>
-      </div>
+        <!--  Actions -->
+
+        <div class="row mt-3">
+          <div class="col-12 d-flex gap-2 justify-content-end">
+            <button
+              type="button"
+              mat-flat-button
+              color="warn"
+              autofocus
+              mat-dialog-close
+              cdkFocusInitial
+            >
+              {{ "customer.individual_info.cancel_update" | translate }}
+            </button>
+            <button type="submit" mat-flat-button color="accent">
+              <span class="sprite-group-5-save-white"></span>
+              {{ "customer.individual_info.save_update" | translate }}
+            </button>
+          </div>
+        </div>
+      </form>
     </div>
   </div>
 </div>

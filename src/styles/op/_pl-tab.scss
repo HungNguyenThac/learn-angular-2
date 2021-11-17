@@ -27,3 +27,9 @@
     background-color: $system-color-blue;
   }
 }
+
+::ng-deep .op-tab-group {
+  .mat-tab-body {
+    min-height: 500px;
+  }
+}

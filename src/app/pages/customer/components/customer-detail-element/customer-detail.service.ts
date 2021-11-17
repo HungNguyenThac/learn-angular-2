@@ -45,11 +45,19 @@ export class CustomerDetailService {
   }
 
   public downloadSingleFileDocument(customerId: string, documentPath: string) {
+    if (sessionStorage.getItem(documentPath)) {
+      return of(
+        this.domSanitizer.bypassSecurityTrustUrl(
+          sessionStorage.getItem(documentPath)
+        )
+      );
+    }
     return this.fileControllerService
       .downloadFile({ customerId, documentPath })
       .pipe(
         map((results) => {
           const imageUrl = this.convertBlobType(results, 'application/image');
+          sessionStorage.setItem(documentPath, imageUrl);
           return this.domSanitizer.bypassSecurityTrustUrl(imageUrl);
         }),
         // catch errors
@@ -91,9 +99,15 @@ export class CustomerDetailService {
       );
   }
 
-  public uploadFileDocument(documentType: string, file, customerId: string) {
+  public uploadFileDocument(
+    documentType: string,
+    file,
+    customerId: string,
+    observe?: any,
+    reportProgress?: boolean
+  ) {
     return this.fileControllerService
-      .uploadSingleFile(documentType, file, customerId)
+      .uploadSingleFile(documentType, file, customerId, observe, reportProgress)
       .pipe(
         map((results) => {
           return results;
@@ -105,7 +119,12 @@ export class CustomerDetailService {
       );
   }
 
-  public updateCustomerInfo(customerId: string, updateInfoRequest: Object) {
+  public updateCustomerInfo(
+    customerId: string,
+    updateInfoRequest: Object,
+    observe?: any,
+    reportProgress?: boolean
+  ) {
     const infoData: UpdateInfoRequest = {
       info: {},
     };
@@ -115,13 +134,15 @@ export class CustomerDetailService {
         : null;
     }
 
-    return this.customerService.putInfo(customerId, infoData).pipe(
-      map((results) => {
-        return results;
-      }),
-      catchError((err) => {
-        return of(null);
-      })
-    );
+    return this.customerService
+      .putInfo(customerId, infoData, observe, reportProgress)
+      .pipe(
+        map((results) => {
+          return results;
+        }),
+        catchError((err) => {
+          return of(null);
+        })
+      );
   }
 }

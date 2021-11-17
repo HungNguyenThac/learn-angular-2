@@ -213,7 +213,7 @@
       "delete": "Xoá người dùng",
       "unlock": "Cho phép hoạt động",
       "cancel_update": "Hủy cập nhật",
-      "save_update": "Lưu hoạt động",
+      "save_update": "Lưu cập nhật",
       "gender": "Giới tính",
       "gender_male": "Nam",
       "gender_female": "Nữ",
@@ -251,8 +251,9 @@
     "company_info": {
       "company_name": "Tên công ty",
       "employee_code": "Mã nhân viên",
-      "full_name": "Họ và tên đệm",
-      "last_name": "Họ",
+      "working_time": "Thời gian làm việc ở công ty hiện tại",
+      "full_name": "Họ và tên",
+      "last_name": "Họ và tên đệm",
       "first_name": "Tên",
       "office_code": "Mã đơn vị",
       "office_name": "Tên đơn vị ",
@@ -351,13 +352,16 @@
       "contract_signing": "Ký hợp đồng",
       "monex_sign_awaiting": "Chờ Monex ký",
       "sign_success": "Ký hợp đồng thành công",
+      "sign_fail": "Ký hợp đồng thất bại",
       "disbursement_awaiting": "Chờ giải ngân",
       "disbursed": "Đã giải ngân",
       "ỉn_repayment": "Trong hạn",
       "completed": "Đã hoàn thành",
       "rejected": "Bị từ chối",
       "withdrew": "Đã hủy",
-      "download": "Tải xuống"
+      "download": "Tải xuống",
+      "no_contract": "Không có hợp đồng",
+      "downloading": "Đang tải xuống tài liệu"
     },
     "documents": {
       "ekyc_info": "Thông tin EKYC",
@@ -404,19 +408,23 @@
       "bank_code": "Mã ngân hàng",
       "update": "Cập nhật",
       "salary_info_confirmation": "Xác minh thông tin lương",
-      "received_date": "Ngày lấy thông tin"
+      "received_date": "Ngày lấy thông tin",
+      "is_payday": "Người lao động đã được trả lương",
+      "is_not_payday": "Người lao động chưa được trả lương"
     }
   },
   "payday_loan": {
     "status": {
-      "documentation_complete": "Chờ duyệt hồ sơ",
+      "documentation_complete": "Chờ phê duyệt",
       "document_awaiting": "Chờ hồ sơ",
       "initialized": "Đã khởi tạo",
       "funded": "Chờ ký hợp đồng",
       "auction": "Chờ đầu tư",
       "in_repayment": "Trong hạn",
       "rejected": "Đã từ chối",
-      "withdraw": "Rút hồ sơ",
+      "rejected_action": "Từ chối",
+      "withdraw": "Đã hủy",
+      "withdraw_action": "Hủy",
       "contract_awaiting": "Chờ Monex ký",
       "contract_accepted": "Ký hoàn thành",
       "contract_rejected": "Từ chối hợp đồng",
@@ -518,6 +526,8 @@
   },
   "breadcrumb": {
     "manage_customer": "Quản lý khách hàng",
+    "manage_payday_loan": "Quản lý khoản vay",
+    "search_field_payday_loan": "Mã khoản vay, Tên, Số điện thoại...",
     "manage_user": "Quản lý người dùng"
   },
   "system": {

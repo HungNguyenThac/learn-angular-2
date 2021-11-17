@@ -1,11 +1,11 @@
 <div class="container-fluid">
   <div class="card op-card">
-    <button class="close-btn" mat-dialog-close mat-icon-button tabindex="-1">
+    <button mat-icon-button tabindex="-1" class="close-btn" mat-dialog-close>
       <svg
-        fill="none"
+        width="24"
         height="24"
         viewBox="0 0 24 24"
-        width="24"
+        fill="none"
         xmlns="http://www.w3.org/2000/svg"
       >
         <path
@@ -18,40 +18,27 @@
       {{ "customer.individual_info.update_individual_info" | translate }}
     </div>
     <div class="card-body">
-      <div class="row">
-        <!-- Avatar -->
-        <section class="col-12 col-sm-12 col-md-4 col-lg-3">
-          <div class="d-flex gap-2">
-            <div class="op-customer-avatar">
-              <img
-                *ngIf="!selfieSrc; else hasSelfieImg"
-                alt=""
-                class="op-customer-avatar-img"
-                src="assets/img/payday-loan/avatar-default.png"
-              />
-              <ng-template #hasSelfieImg>
-                <img [src]="selfieSrc" alt="" class="op-customer-avatar-img"/>
-              </ng-template>
-
-              <div class="op-customer-avatar-img-zoom">
-                <span class="sprite-group-5-Zoom"></span>
-              </div>
+      <form [formGroup]="customerIndividualForm" (ngSubmit)="submitForm()">
+        <div class="row">
+          <!-- Avatar -->
+          <section class="col-12 col-sm-12 col-md-4 col-lg-3">
+            <div class="d-flex gap-2">
+              <app-upload-document-area
+                [id]="'selfieSrc'"
+                name="selfieSrc"
+                [classes]="'p-0'"
+                [title]="customerInfo?.firstName"
+                [description]="'customer.individual_info.avatar' | translate"
+                [imgSrc]="selfieSrc"
+                [hiddenDeleteBtn]="true"
+                [hiddenUploadBtn]="true"
+                [hiddenDownloadBtn]="true"
+              ></app-upload-document-area>
             </div>
+          </section>
 
-            <div class="op-customer-name">
-              <p class="op-customer-name-content">
-                {{ customerInfo.firstName }}
-              </p>
-              <p class="op-customer-name-title">
-                {{ "customer.individual_info.avatar" | translate }}
-              </p>
-            </div>
-          </div>
-        </section>
-
-        <!--  Info  -->
-        <section class="col-12 col-sm-12 col-md-8 col-lg-9">
-          <form (submit)="submitForm()" [formGroup]="customerIndividualForm">
+          <!--  Info  -->
+          <section class="col-12 col-sm-12 col-md-8 col-lg-9">
             <div class="row">
               <!-- Left Individual Info -->
               <div class="col-12 col-sm-12 col-md-6 col-lg-6 pr-2">
@@ -59,12 +46,12 @@
                   <mat-form-field appearance="outline" class="w-100">
                     <mat-label>{{
                       "customer.individual_info.id" | translate
-                      }}</mat-label>
+                    }}</mat-label>
                     <input
+                      matInput
                       [placeholder]="'customer.individual_info.id' | translate"
                       [value]="customerIndividualForm.controls.id.value"
                       disabled
-                      matInput
                     />
                   </mat-form-field>
                 </div>
@@ -73,14 +60,23 @@
                   <mat-form-field appearance="outline" class="w-100">
                     <mat-label>{{
                       "customer.individual_info.fullname" | translate
-                      }}</mat-label>
+                    }}</mat-label>
                     <input
+                      matInput
+                      required
                       [placeholder]="
                         'customer.individual_info.fullname' | translate
                       "
                       formControlName="firstName"
-                      matInput
                     />
+                    <show-errors
+                      [control]="customerIndividualForm.controls['firstName']"
+                      [controlLabel]="
+                        'customer.individual_info.fullname' | translate
+                      "
+                      [hasIconPrefix]="false"
+                    >
+                    </show-errors>
                   </mat-form-field>
                 </div>
 
@@ -88,14 +84,27 @@
                   <mat-form-field appearance="outline" class="w-100">
                     <mat-label>{{
                       "customer.individual_info.phone_number" | translate
-                      }}</mat-label>
+                    }}</mat-label>
                     <input
+                      matInput
+                      required
+                      appPhoneNumberOnly
+                      phone-number-validate
                       [placeholder]="
                         'customer.individual_info.phone_number' | translate
                       "
                       formControlName="mobileNumber"
-                      matInput
                     />
+                    <show-errors
+                      [control]="
+                        customerIndividualForm.controls['mobileNumber']
+                      "
+                      [controlLabel]="
+                        'customer.individual_info.phone_number' | translate
+                      "
+                      [hasIconPrefix]="false"
+                    >
+                    </show-errors>
                   </mat-form-field>
                 </div>
 
@@ -103,14 +112,23 @@
                   <mat-form-field appearance="outline" class="w-100">
                     <mat-label>{{
                       "customer.individual_info.email" | translate
-                      }}</mat-label>
+                    }}</mat-label>
                     <input
+                      matInput
+                      required
                       [placeholder]="
                         'customer.individual_info.email' | translate
                       "
                       formControlName="email"
-                      matInput
                     />
+                    <show-errors
+                      [control]="customerIndividualForm.controls['email']"
+                      [controlLabel]="
+                        'customer.individual_info.email' | translate
+                      "
+                      [hasIconPrefix]="false"
+                    >
+                    </show-errors>
                   </mat-form-field>
                 </div>
 
@@ -118,18 +136,29 @@
                   <mat-form-field appearance="outline" class="w-50">
                     <mat-label>{{
                       "customer.individual_info.date_of_birth" | translate
-                      }}</mat-label>
+                    }}</mat-label>
                     <input
+                      matInput
+                      required
                       [matDatepicker]="picker"
                       [placeholder]="
                         'customer.individual_info.date_of_birth' | translate
                       "
                       formControlName="dateOfBirth"
-                      matInput
+                      [min]="minDateTime"
+                      [max]="maxDateTime"
                     />
+                    <show-errors
+                      [control]="customerIndividualForm.controls['dateOfBirth']"
+                      [controlLabel]="
+                        'customer.individual_info.date_of_birth' | translate
+                      "
+                      [hasIconPrefix]="false"
+                    >
+                    </show-errors>
                     <mat-datepicker-toggle
-                      [for]="picker"
                       matSuffix
+                      [for]="picker"
                     ></mat-datepicker-toggle>
                     <mat-datepicker #picker></mat-datepicker>
                   </mat-form-field>
@@ -137,15 +166,24 @@
                   <mat-form-field appearance="outline" class="w-50">
                     <mat-label>{{
                       "customer.individual_info.gender" | translate
-                      }}</mat-label>
-                    <mat-select formControlName="gender">
+                    }}</mat-label>
+                    <mat-select formControlName="gender" required>
                       <mat-option
                         *ngFor="let gender of genderOptions"
                         [value]="gender"
+                        [matTooltip]="gender"
                       >
                         {{ gender }}
                       </mat-option>
                     </mat-select>
+                    <show-errors
+                      [control]="customerIndividualForm.controls['gender']"
+                      [controlLabel]="
+                        'customer.individual_info.gender' | translate
+                      "
+                      [hasIconPrefix]="false"
+                    >
+                    </show-errors>
                   </mat-form-field>
                 </div>
 
@@ -153,14 +191,26 @@
                   <mat-form-field appearance="outline" class="w-100">
                     <mat-label>{{
                       "customer.individual_info.cmnd" | translate
-                      }}</mat-label>
+                    }}</mat-label>
                     <input
+                      matInput
+                      required
+                      appNumberOnly
                       [placeholder]="
                         'customer.individual_info.cmnd' | translate
                       "
                       formControlName="identityNumberOne"
-                      matInput
                     />
+                    <show-errors
+                      [control]="
+                        customerIndividualForm.controls['identityNumberOne']
+                      "
+                      [controlLabel]="
+                        'customer.individual_info.cmnd' | translate
+                      "
+                      [hasIconPrefix]="false"
+                    >
+                    </show-errors>
                   </mat-form-field>
                 </div>
 
@@ -168,14 +218,25 @@
                   <mat-form-field appearance="outline" class="w-100">
                     <mat-label>{{
                       "customer.individual_info.permanent_address" | translate
-                      }}</mat-label>
+                    }}</mat-label>
                     <input
+                      matInput
+                      required
                       [placeholder]="
                         'customer.individual_info.permanent_address' | translate
                       "
                       formControlName="permanentAddress"
-                      matInput
                     />
+                    <show-errors
+                      [control]="
+                        customerIndividualForm.controls['permanentAddress']
+                      "
+                      [controlLabel]="
+                        'customer.individual_info.permanent_address' | translate
+                      "
+                      [hasIconPrefix]="false"
+                    >
+                    </show-errors>
                   </mat-form-field>
                 </div>
 
@@ -183,14 +244,25 @@
                   <mat-form-field appearance="outline" class="w-100">
                     <mat-label>{{
                       "customer.individual_info.current_residence" | translate
-                      }}</mat-label>
+                    }}</mat-label>
                     <input
+                      matInput
+                      required
                       [placeholder]="
                         'customer.individual_info.current_residence' | translate
                       "
                       formControlName="currentResidence"
-                      matInput
                     />
+                    <show-errors
+                      [control]="
+                        customerIndividualForm.controls['currentResidence']
+                      "
+                      [controlLabel]="
+                        'customer.individual_info.current_residence' | translate
+                      "
+                      [hasIconPrefix]="false"
+                    >
+                    </show-errors>
                   </mat-form-field>
                 </div>
 
@@ -198,14 +270,22 @@
                   <mat-form-field appearance="outline" class="w-100">
                     <mat-label>{{
                       "customer.individual_info.id_origin" | translate
-                      }}</mat-label>
+                    }}</mat-label>
                     <input
+                      matInput
                       [placeholder]="
                         'customer.individual_info.id_origin' | translate
                       "
                       formControlName="idOrigin"
-                      matInput
                     />
+                    <show-errors
+                      [control]="customerIndividualForm.controls['idOrigin']"
+                      [controlLabel]="
+                        'customer.individual_info.id_origin' | translate
+                      "
+                      [hasIconPrefix]="false"
+                    >
+                    </show-errors>
                   </mat-form-field>
                 </div>
               </div>
@@ -217,17 +297,29 @@
                     <mat-label>{{
                       "customer.individual_info.number_of_dependents"
                         | translate
-                      }}</mat-label>
-                    <mat-select formControlName="numberOfDependents">
+                    }}</mat-label>
+                    <mat-select formControlName="numberOfDependents" required>
                       <mat-option
                         *ngFor="
                           let numberOfDependentsOption of numberOfDependentsOptions.options
                         "
                         [value]="numberOfDependentsOption"
+                        [matTooltip]="numberOfDependentsOption"
                       >
                         {{ numberOfDependentsOption }}
                       </mat-option>
                     </mat-select>
+                    <show-errors
+                      [control]="
+                        customerIndividualForm.controls['numberOfDependents']
+                      "
+                      [controlLabel]="
+                        'customer.individual_info.number_of_dependents'
+                          | translate
+                      "
+                      [hasIconPrefix]="false"
+                    >
+                    </show-errors>
                   </mat-form-field>
                 </div>
 
@@ -235,17 +327,28 @@
                   <mat-form-field appearance="outline" class="w-100">
                     <mat-label>{{
                       "customer.individual_info.marital_status" | translate
-                      }}</mat-label>
-                    <mat-select formControlName="maritalStatus">
+                    }}</mat-label>
+                    <mat-select formControlName="maritalStatus" required>
                       <mat-option
                         *ngFor="
                           let maritalStatusOption of maritalStatusOptions.options
                         "
                         [value]="maritalStatusOption"
+                        [matTooltip]="maritalStatusOption"
                       >
                         {{ maritalStatusOption }}
                       </mat-option>
                     </mat-select>
+                    <show-errors
+                      [control]="
+                        customerIndividualForm.controls['maritalStatus']
+                      "
+                      [controlLabel]="
+                        'customer.individual_info.marital_status' | translate
+                      "
+                      [hasIconPrefix]="false"
+                    >
+                    </show-errors>
                   </mat-form-field>
                 </div>
 
@@ -253,15 +356,27 @@
                   <mat-form-field appearance="outline" class="w-100">
                     <mat-label>{{
                       "customer.individual_info.bank_account_number" | translate
-                      }}</mat-label>
+                    }}</mat-label>
                     <input
+                      matInput
+                      appNumberOnly
                       [placeholder]="
                         'customer.individual_info.bank_account_number'
                           | translate
                       "
                       formControlName="accountNumber"
-                      matInput
                     />
+                    <show-errors
+                      [control]="
+                        customerIndividualForm.controls['accountNumber']
+                      "
+                      [controlLabel]="
+                        'customer.individual_info.bank_account_number'
+                          | translate
+                      "
+                      [hasIconPrefix]="false"
+                    >
+                    </show-errors>
                   </mat-form-field>
                 </div>
 
@@ -269,23 +384,37 @@
                   <mat-form-field appearance="outline" class="w-100">
                     <mat-label>{{
                       "customer.individual_info.bank_name" | translate
-                      }}</mat-label>
+                    }}</mat-label>
                     <mat-select
-                      (selectionChange)="changeBank($event)"
                       formControlName="bankCode"
+                      (selectionChange)="changeBank($event)"
                     >
                       <mat-option
                         *ngFor="let bankNameOption of bankOptions"
                         [value]="bankNameOption.bankCode"
+                        [matTooltip]="
+                          bankNameOption.bankName +
+                          ' (' +
+                          bankNameOption.bankCode +
+                          ')'
+                        "
                       >
                         {{
-                        bankNameOption.bankName +
-                        " (" +
-                        bankNameOption.bankCode +
-                        ")"
+                          bankNameOption.bankName +
+                            " (" +
+                            bankNameOption.bankCode +
+                            ")"
                         }}
                       </mat-option>
                     </mat-select>
+                    <show-errors
+                      [control]="customerIndividualForm.controls['bankCode']"
+                      [controlLabel]="
+                        'customer.individual_info.bank_name' | translate
+                      "
+                      [hasIconPrefix]="false"
+                    >
+                    </show-errors>
                   </mat-form-field>
                 </div>
 
@@ -293,8 +422,9 @@
                   <mat-form-field appearance="outline" class="w-100">
                     <mat-label>{{
                       "customer.individual_info.va_account_number" | translate
-                      }}</mat-label>
+                    }}</mat-label>
                     <input
+                      matInput
                       [placeholder]="
                         'customer.individual_info.va_account_number' | translate
                       "
@@ -302,8 +432,24 @@
                         customerIndividualForm.controls.vaAccountNumber.value
                       "
                       disabled
-                      matInput
                     />
+                  </mat-form-field>
+                </div>
+
+                <div>
+                  <mat-form-field appearance="standard" class="w-100">
+                    <mat-label class="d-flex align-items-center gap-2">
+                      {{ "customer.individual_info.note" | translate }}
+                    </mat-label>
+                    <textarea
+                      matInput
+                      id="review"
+                      name="review"
+                      formControlName="note"
+                      [placeholder]="
+                        'customer.individual_info.type_note' | translate
+                      "
+                    ></textarea>
                   </mat-form-field>
                 </div>
 
@@ -311,14 +457,14 @@
                   <mat-form-field appearance="outline" class="w-100">
                     <mat-label>{{
                       "customer.individual_info.created_at" | translate
-                      }}</mat-label>
+                    }}</mat-label>
                     <input
+                      matInput
                       [placeholder]="
                         'customer.individual_info.created_at' | translate
                       "
                       [value]="customerIndividualForm.controls.createdAt.value"
                       disabled
-                      matInput
                     />
                   </mat-form-field>
                 </div>
@@ -327,35 +473,41 @@
                   <mat-form-field appearance="outline" class="w-100">
                     <mat-label>{{
                       "customer.individual_info.updated_at" | translate
-                      }}</mat-label>
+                    }}</mat-label>
                     <input
+                      matInput
                       [placeholder]="
                         'customer.individual_info.updated_at' | translate
                       "
                       [value]="customerIndividualForm.controls.updatedAt.value"
                       disabled
-                      matInput
                     />
                   </mat-form-field>
                 </div>
               </div>
             </div>
-          </form>
-        </section>
-      </div>
-      <!--  Actions -->
-
-      <div class="row mt-3">
-        <div class="col-12 d-flex gap-2 justify-content-end">
-          <button autofocus color="warn" mat-dialog-close mat-flat-button>
-            {{ "customer.individual_info.cancel_update" | translate }}
-          </button>
-          <button (click)="submitForm()" color="accent" mat-flat-button>
-            <span class="sprite-group-5-save-white"></span>
-            {{ "customer.individual_info.save_update" | translate }}
-          </button>
+          </section>
         </div>
-      </div>
+        <!--  Actions -->
+
+        <div class="row mt-3">
+          <div class="col-12 d-flex gap-2 justify-content-end">
+            <button
+              type="button"
+              mat-flat-button
+              color="warn"
+              autofocus
+              mat-dialog-close
+            >
+              {{ "customer.individual_info.cancel_update" | translate }}
+            </button>
+            <button type="submit" mat-flat-button color="accent">
+              <span class="sprite-group-5-save-white"></span>
+              {{ "customer.individual_info.save_update" | translate }}
+            </button>
+          </div>
+        </div>
+      </form>
     </div>
   </div>
 </div>

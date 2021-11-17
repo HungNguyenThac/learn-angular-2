@@ -1,9 +1,25 @@
+import { NotificationService } from 'src/app/core/services/notification.service';
+import { PaydayLoanHmg } from './../../../../../../../open-api-modules/dashboard-api-docs/model/paydayLoanHmg';
+import { ApiResponsePaydayLoanTng } from './../../../../../../../open-api-modules/dashboard-api-docs/model/apiResponsePaydayLoanTng';
+import { ApplicationTngControllerService } from './../../../../../../../open-api-modules/dashboard-api-docs/api/applicationTngController.service';
+import { ApiResponseSearchAndPaginationResponseCompanyInfo } from './../../../../../../../open-api-modules/dashboard-api-docs/model/apiResponseSearchAndPaginationResponseCompanyInfo';
+import { ApiResponseSearchAndPaginationResponseBank } from './../../../../../../../open-api-modules/dashboard-api-docs/model/apiResponseSearchAndPaginationResponseBank';
+import { BankControllerService } from './../../../../../../../open-api-modules/dashboard-api-docs/api/bankController.service';
+import { CompanyInfo } from './../../../../../../../open-api-modules/customer-api-docs/model/companyInfo';
+import { Bank } from './../../../../../../../open-api-modules/dashboard-api-docs/model/bank';
+import { MultiLanguageService } from './../../../../../share/translate/multiLanguageService';
+import { ToastrService } from 'ngx-toastr';
+import { RESPONSE_CODE } from './../../../../../core/common/enum/operator';
 import { ApiResponseCustomerInfo } from './../../../../../../../open-api-modules/dashboard-api-docs/model/apiResponseCustomerInfo';
 import { ApiResponsePaydayLoanHmg } from './../../../../../../../open-api-modules/dashboard-api-docs/model/apiResponsePaydayLoanHmg';
 import { Subscription } from 'rxjs';
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, OnDestroy } from '@angular/core';
 import { PaydayLoan } from 'open-api-modules/loanapp-api-docs';
-import { ApplicationHmgControllerService, CustomerInfo } from 'open-api-modules/dashboard-api-docs';
+import {
+  ApplicationHmgControllerService,
+  CompanyControllerService,
+  CustomerInfo,
+} from 'open-api-modules/dashboard-api-docs';
 import { CustomerDetailService } from 'src/app/pages/customer/components/customer-detail-element/customer-detail.service';
 
 @Component({
@@ -11,8 +27,31 @@ import { CustomerDetailService } from 'src/app/pages/customer/components/custome
   templateUrl: './loan-detail.component.html',
   styleUrls: ['./loan-detail.component.scss'],
 })
-export class LoanDetailComponent implements OnInit {
+export class LoanDetailComponent implements OnInit, OnDestroy {
+  loanDetail: PaydayLoanHmg;
+  userInfo: CustomerInfo;
+  bankOptions: Array<Bank>;
+  companyOptions: Array<CompanyInfo>;
+  @Input() groupName: string;
+  @Output() loanDetailTriggerUpdateStatus = new EventEmitter<any>();
+  @Output() detectUpdateLoanAfterSign = new EventEmitter<any>();
+  subManager = new Subscription();
+  hiddenColumns: string[] = [];
+  disabledColumns: string[] = ['companyId'];
+
+  constructor(
+    private applicationHmgControllerService: ApplicationHmgControllerService,
+    private applicationTngControllerService: ApplicationTngControllerService,
+    private customerDetailService: CustomerDetailService,
+    private notifier: ToastrService,
+    private multiLanguageService: MultiLanguageService,
+    private bankControllerService: BankControllerService,
+    private companyControllerService: CompanyControllerService,
+    private notificationService: NotificationService
+  ) {}
+
   _loanId: string;
+
   @Input()
   get loanId(): string {
     return this._loanId;
@@ -23,6 +62,7 @@ export class LoanDetailComponent implements OnInit {
   }
 
   _customerId: string;
+
   @Input()
   get customerId(): string {
     return this._customerId;
@@ -32,32 +72,56 @@ export class LoanDetailComponent implements OnInit {
     this._customerId = value;
   }
 
-  loanDetail: PaydayLoan;
-  userInfo: CustomerInfo;
-  @Input() groupName: string;
-
-  @Output() loanDetailDetectChangeStatus = new EventEmitter<any>();
-
-  subManager = new Subscription();
-  constructor(
-    private applicationHmgControllerService: ApplicationHmgControllerService,
-    private customerDetailService: CustomerDetailService
-  ) {}
+  timeOut;
 
   ngOnInit(): void {
     this._getLoanById(this.loanId);
     this._getCustomerInfoById(this.customerId);
+    this._getBankOptions();
+    this._getCompanyList();
+  }
+
+  loanDetailDetectChangeStatusTrigger() {
+    this.triggerUpdateLoanElement();
+  }
+
+  triggerUpdateLoanAfterSign() {
+    this.triggerUpdateLoanElement();
+  }
+
+  triggerUpdateLoanElement() {
+    this.notificationService.showLoading({ showContent: true });
+    this.timeOut = setTimeout(() => {
+      this._getLoanById(this.loanId);
+      this.notificationService.hideLoading();
+    }, 3000);
   }
 
   private _getLoanById(loanId) {
     if (!loanId) return;
-    this.subManager.add(
-      this.applicationHmgControllerService
-        .getLoanById1(this.loanId)
-        .subscribe((data: ApiResponsePaydayLoanHmg) => {
-          this.loanDetail = data?.result;
-        })
-    );
+    if (this.groupName === 'HMG') {
+      this.subManager.add(
+        this.applicationHmgControllerService
+          .getLoanById1(this.loanId)
+          .subscribe((data: ApiResponsePaydayLoanHmg) => {
+            this.loanDetail = data?.result;
+            this.loanDetailTriggerUpdateStatus.emit(this.loanDetail);
+            this.detectUpdateLoanAfterSign.emit(this.loanDetail);
+            console.log(this.loanDetail, 'loanDetail----------------------');
+          })
+      );
+    }
+    if (this.groupName === 'TNG') {
+      this.subManager.add(
+        this.applicationTngControllerService
+          .getLoanById(this.loanId)
+          .subscribe((data: ApiResponsePaydayLoanTng) => {
+            this.loanDetail = data?.result;
+            this.loanDetailTriggerUpdateStatus.emit(this.loanDetail);
+            console.log(this.loanDetail, 'loanDetail----------------------');
+          })
+      );
+    }
   }
 
   private _getCustomerInfoById(customerId) {
@@ -71,7 +135,67 @@ export class LoanDetailComponent implements OnInit {
     );
   }
 
-  loanDetailDetectChangeStatusTrigger(event) {
-    this.loanDetailDetectChangeStatus.emit(event);
+  private _getBankOptions() {
+    this.subManager.add(
+      this.bankControllerService
+        .getBank(200, 0, {})
+        .subscribe((response: ApiResponseSearchAndPaginationResponseBank) => {
+          if (response.responseCode !== RESPONSE_CODE.SUCCESS) {
+            this.notifier.error(
+              JSON.stringify(response?.message),
+              response?.errorCode
+            );
+            return;
+          }
+          this.bankOptions = response?.result?.data;
+        })
+    );
+  }
+
+  private _getCompanyList() {
+    this.subManager.add(
+      this.companyControllerService
+        .getCompanies(100, 0, {})
+        .subscribe(
+          (data: ApiResponseSearchAndPaginationResponseCompanyInfo) => {
+            this.companyOptions = data?.result?.data;
+          }
+        )
+    );
+  }
+
+  public updateCustomerInfo(updateInfoRequest: Object) {
+    this.notificationService.showLoading({ showContent: true });
+    this.subManager.add(
+      this.customerDetailService
+        .updateCustomerInfo(this.customerId, updateInfoRequest, null, true)
+        .subscribe(
+          (result) => {
+            if (result?.responseCode !== RESPONSE_CODE.SUCCESS) {
+              this.notifier.error(
+                JSON.stringify(result?.message),
+                result?.errorCode
+              );
+              return;
+            }
+            setTimeout(() => {
+              this.notifier.success(
+                this.multiLanguageService.instant('common.update_success')
+              );
+              this._getCustomerInfoById(this.customerId);
+              this.notificationService.hideLoading();
+            }, 3000);
+          },
+          (error) => {
+            this.notifier.error(JSON.stringify(error));
+            this.notificationService.hideLoading();
+          }
+        )
+    );
+  }
+
+  ngOnDestroy() {
+    this.subManager.unsubscribe();
+    clearTimeout(this.timeOut);
   }
 }

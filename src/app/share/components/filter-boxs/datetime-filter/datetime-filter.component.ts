@@ -1,14 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import * as moment from 'moment';
-import {
-  DateAdapter,
-  MAT_DATE_FORMATS,
-  MAT_DATE_LOCALE,
-} from '@angular/material/core';
-import {
-  MAT_MOMENT_DATE_FORMATS,
-  MomentDateAdapter,
-} from '@angular/material-moment-adapter';
 import { MultiLanguageService } from '../../../translate/multiLanguageService';
 import { FilterEventModel } from '../../../../public/models/filter/filter-event.model';
 import { FilterOptionModel } from '../../../../public/models/filter/filter-option.model';
@@ -19,15 +10,6 @@ import * as _ from 'lodash';
   selector: 'app-datetime-filter',
   templateUrl: './datetime-filter.component.html',
   styleUrls: ['./datetime-filter.component.scss'],
-  providers: [
-    { provide: MAT_DATE_LOCALE, useValue: 'vi-VN' },
-    {
-      provide: DateAdapter,
-      useClass: MomentDateAdapter,
-      deps: [MAT_DATE_LOCALE],
-    },
-    { provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS },
-  ],
 })
 export class DatetimeFilterComponent implements OnInit {
   _filterOption: FilterOptionModel;
@@ -208,7 +190,7 @@ export class DatetimeFilterComponent implements OnInit {
 
   get today() {
     const startDate = this.startDate(this.currentTime);
-    const endDate = this.formatTime(this.currentTime);
+    const endDate = this.endDate(this.currentTime);
     return { startDate, endDate };
   }
 
@@ -224,7 +206,7 @@ export class DatetimeFilterComponent implements OnInit {
       this.currentTime.getDate() - this.currentTime.getDay() + 1;
     const timeOptionStart = new Date().setDate(firstDayOfWeek);
     const startDate = this.startDate(timeOptionStart);
-    const endDate = this.formatTime(this.currentTime);
+    const endDate = this.endDate(this.currentTime);
     return { startDate, endDate };
   }
 
@@ -251,7 +233,7 @@ export class DatetimeFilterComponent implements OnInit {
   get currentMonth() {
     const timeOptionStart = new Date(new Date().setDate(1));
     const startDate = this.startDate(timeOptionStart);
-    const endDate = this.formatTime(this.currentTime);
+    const endDate = this.endDate(this.currentTime);
     return { startDate, endDate };
   }
 
@@ -284,12 +266,9 @@ export class DatetimeFilterComponent implements OnInit {
     if (this.currentQuarter > 1) {
       lastDayOfQuarter.setMonth(2);
       lastDayOfQuarter.setDate(31);
-      const timeOptionEnd = new Date(lastDayOfQuarter);
-      endDate = this.endDate(timeOptionEnd);
-    } else {
-      const timeOptionEnd = new Date(lastDayOfQuarter);
-      endDate = this.formatTime(timeOptionEnd);
     }
+    const timeOptionEnd = new Date(lastDayOfQuarter);
+    endDate = this.endDate(timeOptionEnd);
     const startDate = this.startDate(timeOptionStart);
     return { startDate, endDate };
   }
@@ -307,12 +286,9 @@ export class DatetimeFilterComponent implements OnInit {
     if (this.currentQuarter > 2) {
       lastDayOfQuarter.setMonth(5);
       lastDayOfQuarter.setDate(30);
-      const timeOptionEnd = new Date(lastDayOfQuarter);
-      endDate = this.endDate(timeOptionEnd);
-    } else if (this.currentQuarter === 2) {
-      const timeOptionEnd = new Date(lastDayOfQuarter);
-      endDate = this.formatTime(timeOptionEnd);
     }
+    const timeOptionEnd = new Date(lastDayOfQuarter);
+    endDate = this.endDate(timeOptionEnd);
     const startDate = this.startDate(timeOptionStart);
     return { startDate, endDate };
   }
@@ -330,12 +306,9 @@ export class DatetimeFilterComponent implements OnInit {
     if (this.currentQuarter > 3) {
       lastDayOfQuarter.setMonth(8);
       lastDayOfQuarter.setDate(30);
-      const timeOptionEnd = new Date(lastDayOfQuarter);
-      endDate = this.endDate(timeOptionEnd);
-    } else if (this.currentQuarter === 3) {
-      const timeOptionEnd = new Date(lastDayOfQuarter);
-      endDate = this.formatTime(timeOptionEnd);
     }
+    const timeOptionEnd = new Date(lastDayOfQuarter);
+    endDate = this.endDate(timeOptionEnd);
     const startDate = this.startDate(timeOptionStart);
     return { startDate, endDate };
   }
@@ -351,7 +324,7 @@ export class DatetimeFilterComponent implements OnInit {
     const lastDayOfQuarter = new Date();
     let endDate;
     const timeOptionEnd = new Date(lastDayOfQuarter);
-    endDate = this.formatTime(timeOptionEnd);
+    endDate = this.endDate(timeOptionEnd);
     const startDate = this.startDate(timeOptionStart);
     return { startDate, endDate };
   }
@@ -362,7 +335,7 @@ export class DatetimeFilterComponent implements OnInit {
     firstDayOfYear.setDate(1);
     const timeOptionStart = new Date(firstDayOfYear);
     const startDate = this.startDate(timeOptionStart);
-    const endDate = this.formatTime(this.currentTime);
+    const endDate = this.endDate(this.currentTime);
     return { startDate, endDate };
   }
 
@@ -419,7 +392,8 @@ export class DatetimeFilterComponent implements OnInit {
     };
   }
 
-  public displayDetailOption(currentElement) {
+  public displayDetailOption(currentElement, type) {
+    this.selectedTimeFilterMethod = type;
     const filterFormList = document.querySelectorAll(
       '.filter-form-container-expand'
     );
@@ -473,14 +447,6 @@ export class DatetimeFilterComponent implements OnInit {
     }
 
     this.selectedStartDate = event;
-
-    // if (
-    //   this.selectedEndDate &&
-    //   new Date(this.selectedEndDate).getTime() <
-    //     new Date(this.selectedStartDate).getTime()
-    // ) {
-    //   this.selectedEndDate = null;
-    // }
   }
 
   public onSelectEndDate(event, currentEle) {

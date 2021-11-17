@@ -9,6 +9,9 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { Rating } from './rating';
+import { Voucher } from './voucher';
+import { VoucherTransaction } from './voucherTransaction';
 
 
 export interface PaydayLoanHmg { 
@@ -30,5 +33,20 @@ export interface PaydayLoanHmg {
     totalServiceFees?: number;
     getSalaryAt?: string;
     createdAt?: string;
+    updatedAt?: string;
+    note?: string;
+    personInChargeId?: string;
+    customerName?: string;
+    customerMobileNumber?: string;
+    customerEmail?: string;
+    customerOrganizationName?: string;
+    customerIdentityNumberOne?: string;
+    companyId?: string;
+    companyName?: string;
+    companyCode?: string;
+    companyGroupName?: string;
+    ratingInfo?: Rating;
+    voucherTransaction?: VoucherTransaction;
+    voucher?: Voucher;
 }
 

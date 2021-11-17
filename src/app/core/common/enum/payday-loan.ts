@@ -158,7 +158,13 @@ export enum PAYDAY_LOAN_OTHER_STATUS {
   NOT_RECEIVED_SALARY_YET = 'loan_app.loan_info.not_received_salary',
   RECEIVED_SALARY = 'loan_app.loan_info.received_salary',
   NOT_PAID_YET = 'loan_app.loan_info.unpaid',
-  ACTIVE_USER = 'system.system_management.active_user',
-  INACTIVE_USER = 'system.system_management.inactive_user',
   COMPLETED_PAID = 'success',
+}
+
+export enum PAYDAY_LOAN_RATING_STATUS {
+  NOT_SATISFIED = 'NOT_SATISFIED',
+  SEMI_SATISFIED = 'SEMI_SATISFIED',
+  NORMAL = 'NORMAL',
+  SATISFIED = 'SATISFIED',
+  VERY_SATISFIED = 'VERY_SATISFIED',
 }

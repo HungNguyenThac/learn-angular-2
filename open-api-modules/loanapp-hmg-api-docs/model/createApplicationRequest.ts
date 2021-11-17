@@ -9,7 +9,6 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { VoucherTransaction } from './voucherTransaction';
 
 
 export interface CreateApplicationRequest { 
@@ -17,6 +16,6 @@ export interface CreateApplicationRequest {
     customerId: string;
     expectedAmount?: number;
     purpose?: string;
-    voucherTransaction?: VoucherTransaction;
+    voucherTransactionId?: string;
 }
 

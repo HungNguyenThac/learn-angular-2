@@ -1,3 +1,6 @@
+import { NotificationService } from 'src/app/core/services/notification.service';
+import { ApiResponseCheckIsPaydayByCustomerIdResponse } from '../../../../../../../open-api-modules/customer-api-docs';
+import { TngControllerService } from '../../../../../../../open-api-modules/customer-api-docs';
 import { MatDialog } from '@angular/material/dialog';
 import {
   Component,
@@ -17,7 +20,6 @@ import { DialogCompanyInfoUpdateComponent } from '../dialog-company-info-update/
 import {
   BUTTON_TYPE,
   DATA_CELL_TYPE,
-  RESPONSE_CODE,
 } from '../../../../../core/common/enum/operator';
 import { Subscription } from 'rxjs';
 import { CustomerDetailService } from '../../../../../pages/customer/components/customer-detail-element/customer-detail.service';
@@ -29,21 +31,56 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./customer-company-info.component.scss'],
 })
 export class CustomerCompanyInfoComponent implements OnInit, OnDestroy {
-  @Input() customerInfo: CustomerInfo = {};
   @Input() customerId: string = '';
-  @Input() companyInfo: CompanyInfo = {};
   @Input() bankOptions: Array<Bank>;
   @Input() companyOptions: Array<CompanyInfo>;
+  @Input() disabledColumns: string[];
+  @Input() hiddenColumns: string[];
+
+  _customerInfo: CustomerInfo;
+  @Input()
+  get customerInfo(): CustomerInfo {
+    return this._customerInfo;
+  }
+
+  set customerInfo(value: CustomerInfo) {
+    this._customerInfo = value;
+    this.leftCompanyInfos = this._initLeftCompanyInfos();
+    this.rightCompanyInfos = this._initRightCompanyInfos();
+  }
 
   @Output() triggerUpdateInfo = new EventEmitter<any>();
 
-  get leftCompanyInfos() {
+
+  isCanCheckSalary: boolean = false;
+
+  leftCompanyInfos: any[] = [];
+  rightCompanyInfos: any[] = [];
+
+  subManager = new Subscription();
+
+  constructor(
+    private multiLanguageService: MultiLanguageService,
+    private dialog: MatDialog,
+    private customerDetailService: CustomerDetailService,
+    private notifier: ToastrService,
+    private tngControllerService: TngControllerService,
+    private notificationService: NotificationService
+  ) {}
+
+  ngOnInit(): void {
+    if (this.customerInfo.companyGroupName === 'TNG') {
+      this.isCanCheckSalary = true;
+    }
+  }
+
+  private _initLeftCompanyInfos() {
     return [
       {
         title: this.multiLanguageService.instant(
           'customer.company_info.company_name'
         ),
-        value: this.companyInfo.name,
+        value: this.customerInfo.companyName,
         type: DATA_CELL_TYPE.TEXT,
         format: null,
       },
@@ -57,9 +94,25 @@ export class CustomerCompanyInfoComponent implements OnInit, OnDestroy {
       },
       {
         title: this.multiLanguageService.instant(
+          'loan_app.company_info.working_time'
+        ),
+        value: this.customerInfo.borrowerEmploymentHistoryTextVariable1,
+        type: DATA_CELL_TYPE.TEXT,
+        format: null,
+      },
+      {
+        title: this.multiLanguageService.instant(
           'customer.company_info.full_name'
         ),
         value: this.customerInfo.firstName,
+        type: DATA_CELL_TYPE.TEXT,
+        format: null,
+      },
+      {
+        title: this.multiLanguageService.instant(
+          'customer.company_info.last_name'
+        ),
+        value: this.customerInfo.tngData?.hoDem,
         type: DATA_CELL_TYPE.TEXT,
         format: null,
       },
@@ -90,7 +143,7 @@ export class CustomerCompanyInfoComponent implements OnInit, OnDestroy {
     ];
   }
 
-  get rightCompanyInfos() {
+  private _initRightCompanyInfos() {
     return [
       {
         title: this.multiLanguageService.instant(
@@ -142,16 +195,6 @@ export class CustomerCompanyInfoComponent implements OnInit, OnDestroy {
       },
     ];
   }
-  subManager = new Subscription();
-
-  constructor(
-    private multiLanguageService: MultiLanguageService,
-    private dialog: MatDialog,
-    private customerDetailService: CustomerDetailService,
-    private notifier: ToastrService
-  ) {}
-
-  ngOnInit(): void {}
 
   openUpdateDialog() {
     const updateDialogRef = this.dialog.open(DialogCompanyInfoUpdateComponent, {
@@ -163,6 +206,8 @@ export class CustomerCompanyInfoComponent implements OnInit, OnDestroy {
         customerId: this.customerId,
         bankOptions: this.bankOptions,
         companyOptions: this.companyOptions,
+        disabledColumns: this.disabledColumns,
+        hiddenColumns: this.hiddenColumns,
       },
     });
 
@@ -182,16 +227,52 @@ export class CustomerCompanyInfoComponent implements OnInit, OnDestroy {
     return {
       'personalData.companyId': data?.companyId,
       'personalData.organizationName': data?.employeeCode,
+      'personalData.borrowerEmploymentHistoryTextVariable1':
+        data?.borrowerEmploymentHistoryTextVariable1,
+      'personalData.firstName': data?.firstName,
       'tngData.ten': data?.tngFirstName || null,
+      'tngData.ho': data?.tngLastName || null,
       'financialData.accountNumber': data?.accountNumber || null,
       'financialData.bankCode': data?.bankCode || null,
       'financialData.bankName': data?.bankName || null,
-      'personalData.firstName': data?.firstName,
       'personalData.annualIncome': data?.annualIncome,
       'personalData.workingDay': data?.workingDay,
       'personalData.officeCode': data?.officeCode,
       'personalData.officeName': data?.officeName,
     };
+  }
+
+  public checkSalaryInfo() {
+    this.subManager.add(
+      this.tngControllerService
+        .checkCustomerInformationSalaryReceiptDate(this.customerId)
+        .subscribe((response: ApiResponseCheckIsPaydayByCustomerIdResponse) => {
+          if (response && response.responseCode === 200) {
+            let paydayNotification: string;
+            let imgNotification: string;
+            if (response.result.isPayday === 'false') {
+              paydayNotification = this.multiLanguageService.instant(
+                'loan_app.company_info.is_not_payday'
+              );
+              imgNotification =
+                'assets/img/payday-loan/warning-prompt-icon.png';
+            } else {
+              paydayNotification = this.multiLanguageService.instant(
+                'loan_app.company_info.is_payday'
+              );
+              imgNotification =
+                'assets/img/payday-loan/success-prompt-icon.png';
+            }
+
+            this.notificationService.openPrompt({
+              title: this.multiLanguageService.instant('common.error'),
+              content: paydayNotification,
+              imgUrl: imgNotification,
+              primaryBtnText: this.multiLanguageService.instant('common.ok'),
+            });
+          }
+        })
+    );
   }
 
   ngOnDestroy(): void {

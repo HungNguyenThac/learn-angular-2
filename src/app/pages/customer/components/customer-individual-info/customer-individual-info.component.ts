@@ -35,7 +35,6 @@ import { NotificationService } from '../../../../core/services/notification.serv
   styleUrls: ['./customer-individual-info.component.scss'],
 })
 export class CustomerIndividualInfoComponent implements OnInit, OnDestroy {
-  @Output() triggerUpdateInfo = new EventEmitter<any>();
   customerIndividualForm: FormGroup;
   subManager = new Subscription();
   selfieSrc: string;
@@ -121,7 +120,6 @@ export class CustomerIndividualInfoComponent implements OnInit, OnDestroy {
   }
 
   _virtualAccount: VirtualAccount;
-
   @Input()
   get virtualAccount(): VirtualAccount {
     return this._virtualAccount;
@@ -132,7 +130,6 @@ export class CustomerIndividualInfoComponent implements OnInit, OnDestroy {
   }
 
   _customerInfo: CustomerInfo;
-
   @Input()
   get customerInfo(): CustomerInfo {
     return this._customerInfo;
@@ -142,10 +139,11 @@ export class CustomerIndividualInfoComponent implements OnInit, OnDestroy {
     this._getSelfieDocument(this.customerId, value);
     this._initIndividualFormData(this.customerId, value);
     this._customerInfo = value;
+    this.leftIndividualInfos = this._initLeftIndividualInfos();
+    this.rightIndividualInfos = this._initRightIndividualInfos();
   }
 
   _customerId: string;
-
   @Input()
   get customerId(): string {
     return this._customerId;
@@ -156,7 +154,6 @@ export class CustomerIndividualInfoComponent implements OnInit, OnDestroy {
   }
 
   _bankOptions: Array<Bank>;
-
   @Input()
   get bankOptions(): Array<Bank> {
     return this._bankOptions;
@@ -166,7 +163,17 @@ export class CustomerIndividualInfoComponent implements OnInit, OnDestroy {
     this._bankOptions = value;
   }
 
-  get leftIndividualInfos() {
+  @Output() triggerUpdateInfo = new EventEmitter<any>();
+
+  leftIndividualInfos: any[] = [];
+
+  rightIndividualInfos: any[] = [];
+
+  customerIndividualForm: FormGroup;
+
+  ngOnInit(): void {}
+
+  private _initLeftIndividualInfos() {
     return [
       {
         title: this.multiLanguageService.instant('customer.individual_info.id'),
@@ -241,7 +248,7 @@ export class CustomerIndividualInfoComponent implements OnInit, OnDestroy {
     ];
   }
 
-  get rightIndividualInfos() {
+  private _initRightIndividualInfos() {
     return [
       {
         title: this.multiLanguageService.instant(
@@ -282,7 +289,7 @@ export class CustomerIndividualInfoComponent implements OnInit, OnDestroy {
         title: this.multiLanguageService.instant(
           'customer.individual_info.va_account_number'
         ),
-        value: null,
+        value: this.virtualAccount?.accountNumber,
         type: DATA_CELL_TYPE.TEXT,
         format: null,
       },
@@ -312,8 +319,6 @@ export class CustomerIndividualInfoComponent implements OnInit, OnDestroy {
       },
     ];
   }
-
-  ngOnInit(): void {}
 
   openUpdateDialog() {
     const updateDialogRef = this.dialog.open(
@@ -457,4 +462,23 @@ export class CustomerIndividualInfoComponent implements OnInit, OnDestroy {
       'personalData.mobileNumber': data?.mobileNumber,
     };
   }
+
+  submitForm() {
+    const data = this.customerIndividualForm.getRawValue();
+    this.triggerUpdateInfo.emit({
+      'personalData.note': data.note,
+    });
+  }
+
+  formatTime(timeInput) {
+    if (!timeInput) return;
+    return moment(new Date(timeInput), 'YYYY-MM-DD HH:mm:ss').format(
+      'DD/MM/YYYY'
+    );
+  }
+
+  openFullSizeImg(imageSrc) {
+    this.notificationService.openImgFullsizeDiaglog({ imageSrc: imageSrc });
+  }
+
 }

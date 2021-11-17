@@ -51,6 +51,7 @@
     line-height: 18px;
     letter-spacing: 0.1px;
     color: $grey-10;
+    width: 100%;
   }
 
   .mat-checkbox-label {
@@ -173,11 +174,11 @@
   }
 }
 
-#staticMethodEle {
+#timeFrameMethodEle {
   width: 596px;
 }
 
-#stateMethodEle {
+#timeRangeMethodEle {
   width: 704px;
 }
 

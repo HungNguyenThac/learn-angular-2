@@ -17,7 +17,6 @@ import * as fromActions from '../../core/store';
 import { environment } from '../../../environments/environment';
 import { NotificationService } from '../../core/services/notification.service';
 import { MultiLanguageService } from '../translate/multiLanguageService';
-import * as Sentry from '@sentry/angular';
 import { ToastrService } from 'ngx-toastr';
 
 const RESPONSE_CODE_401_CHANGE_PASSWORD_REQUIRED = 'change_password_required';
@@ -60,7 +59,6 @@ export class ApiHttpInterceptor implements HttpInterceptor {
         tap(
           (event) => {},
           (error) => {
-            Sentry.captureException(error);
             if (error instanceof HttpErrorResponse)
               return this._handleAuthError(error);
 
@@ -80,6 +78,7 @@ export class ApiHttpInterceptor implements HttpInterceptor {
 
   private _handleAuthError(err: HttpErrorResponse): Observable<any> | null {
     this.notifier.error(err?.error?.message);
+    this.notificationService.hideLoading();
 
     switch (err.status) {
       case 401:

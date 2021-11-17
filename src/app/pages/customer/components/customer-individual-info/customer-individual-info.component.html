@@ -3,28 +3,17 @@
     <!-- Avatar -->
     <section class="col-12 col-sm-12 col-md-4 col-lg-3">
       <div class="d-flex gap-2">
-        <div class="op-customer-avatar">
-          <img
-            *ngIf="!selfieSrc; else hasSelfieImg"
-            alt=""
-            class="op-customer-avatar-img"
-            src="assets/img/payday-loan/avatar-default.png"
-          />
-          <ng-template #hasSelfieImg>
-            <img [src]="selfieSrc" alt="" class="op-customer-avatar-img"/>
-          </ng-template>
-
-          <div class="op-customer-avatar-img-zoom">
-            <span class="sprite-group-5-Zoom"></span>
-          </div>
-        </div>
-
-        <div class="op-customer-name">
-          <p class="op-customer-name-content">{{ customerInfo?.firstName }}</p>
-          <p class="op-customer-name-title">
-            {{ "customer.individual_info.avatar" | translate }}
-          </p>
-        </div>
+        <app-upload-document-area
+          [id]="'selfieSrc'"
+          name="selfieSrc"
+          [classes]="'p-0'"
+          [title]="customerInfo?.firstName"
+          [description]="'customer.individual_info.avatar' | translate"
+          [imgSrc]="selfieSrc"
+          [hiddenDeleteBtn]="true"
+          [hiddenUploadBtn]="true"
+          [hiddenDownloadBtn]="true"
+        ></app-upload-document-area>
       </div>
       <div class="d-flex align-items-center gap-2 mt-4">
         <pl-status-label [statusType]="'INFO'">
@@ -43,16 +32,16 @@
         <div class="col-12 col-sm-12 col-md-6 col-lg-6">
           <ul class="pl-list">
             <li
-              *ngFor="let leftIndividualInfo of leftIndividualInfos"
               class="pl-list-item"
+              *ngFor="let leftIndividualInfo of leftIndividualInfos"
             >
               <p class="pl-list-item-label">
                 {{ leftIndividualInfo.title }}
               </p>
               <p class="pl-list-item-content">
                 <app-format-data
-                  [format]="leftIndividualInfo?.format"
                   [type]="leftIndividualInfo?.type"
+                  [format]="leftIndividualInfo?.format"
                   [value]="leftIndividualInfo?.value"
                 ></app-format-data>
               </p>
@@ -64,25 +53,25 @@
         <div class="col-12 col-sm-12 col-md-6 col-lg-6">
           <ul class="pl-list">
             <li
-              *ngFor="let rightIndividualInfo of rightIndividualInfos"
               class="pl-list-item"
+              *ngFor="let rightIndividualInfo of rightIndividualInfos"
             >
               <p class="pl-list-item-label">
                 {{ rightIndividualInfo.title }}
               </p>
               <p class="pl-list-item-content">
                 <app-format-data
-                  [format]="rightIndividualInfo?.format"
                   [type]="rightIndividualInfo?.type"
+                  [format]="rightIndividualInfo?.format"
                   [value]="rightIndividualInfo?.value"
                 ></app-format-data>
               </p>
             </li>
             <li>
               <form
-                (submit)="submitForm()"
                 [formGroup]="customerIndividualForm"
                 class="note-form"
+                (submit)="submitForm()"
               >
                 <mat-form-field appearance="standard" class="w-100">
                   <mat-label
@@ -96,19 +85,19 @@
                     <span class="sprite-group-5-pen-grey"></span>
                     <span class="op-text-area-label">{{
                       "customer.individual_info.note" | translate
-                      }}</span>
+                    }}</span>
                   </mat-label>
                   <textarea
+                    matInput
+                    class="text-area"
+                    id="review"
+                    name="review"
+                    formControlName="note"
                     (blur)="submitForm()"
                     (keyup.enter)="submitForm()"
                     [placeholder]="
                       'customer.individual_info.type_note' | translate
                     "
-                    class="text-area"
-                    formControlName="note"
-                    id="review"
-                    matInput
-                    name="review"
                   ></textarea>
                 </mat-form-field>
               </form>

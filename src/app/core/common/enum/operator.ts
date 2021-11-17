@@ -25,6 +25,7 @@ export enum QUERY_CONDITION_TYPE {
   EQUAL = '__e',
   IN = '__in',
   LIKE = '__~',
+  LIKE_KEYWORD = '__lk',
 }
 
 export enum DATA_CELL_TYPE {
@@ -40,6 +41,7 @@ export enum DATA_STATUS_TYPE {
   PL_TNG_STATUS = 'PL_TNG_STATUS',
   PL_OTHER_STATUS = 'PL_OTHER_STATUS',
   PL_REPAYMENT_STATUS = 'PL_REPAYMENT_STATUS',
+  PL_RATING_STATUS = 'PL_RATING_STATUS',
 }
 
 export enum FILTER_TYPE {

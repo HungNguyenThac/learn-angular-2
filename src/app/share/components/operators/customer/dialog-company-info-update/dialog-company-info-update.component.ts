@@ -1,8 +1,7 @@
 import { MultiLanguageService } from '../../../../translate/multiLanguageService';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
-import { VirtualAccount } from '../../../../../../../open-api-modules/payment-api-docs';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { Component, Inject, Input, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {
   Bank,
   CompanyInfo,
@@ -16,10 +15,20 @@ import { BUTTON_TYPE } from '../../../../../core/common/enum/operator';
   styleUrls: ['./dialog-company-info-update.component.scss'],
 })
 export class DialogCompanyInfoUpdateComponent implements OnInit {
+  disabledColumns: string[];
+  hiddenColumns: string[];
   customerInfo: CustomerInfo = {};
   bankOptions: Array<Bank>;
   companyOptions: Array<CompanyInfo>;
   customerId: string;
+
+  workingTimeOptions: any[] = [
+    'Dưới 6 tháng',
+    '6 tháng đến dưới 1 năm',
+    '1 năm đến dưới 2 năm',
+    '2 năm đến 3 năm',
+    'Trên 3 năm',
+  ];
 
   companyInfoForm: FormGroup;
 
@@ -35,21 +44,25 @@ export class DialogCompanyInfoUpdateComponent implements OnInit {
     }
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.formatAnnualIncomeInputWithSeparator();
+  }
 
   buildCompanyInfoForm() {
     this.companyInfoForm = this.formBuilder.group({
       companyId: [''],
-      employeeCode: [''],
-      tngFirstName: [''],
-      firstName: [''],
-      officeCode: [''],
-      officeName: [''],
-      annualIncome: [''],
-      workingDay: [''],
+      employeeCode: ['', [Validators.maxLength(50)]],
+      borrowerEmploymentHistoryTextVariable1: ['', [Validators.required]],
+      firstName: ['', [Validators.required, Validators.maxLength(256)]],
+      tngFirstName: ['', [Validators.maxLength(256)]],
+      tngLastName: ['', [Validators.maxLength(256)]],
+      officeCode: ['', [Validators.maxLength(50)]],
+      officeName: ['', [Validators.maxLength(50)]],
+      annualIncome: ['', [Validators.max(1000000000)]],
+      workingDay: ['', [Validators.maxLength(30)]],
       accountNumber: [''],
-      bankCode: [''],
-      bankName: [''],
+      bankCode: ['', [Validators.maxLength(50)]],
+      bankName: ['', [Validators.maxLength(256)]],
     });
   }
 
@@ -58,12 +71,17 @@ export class DialogCompanyInfoUpdateComponent implements OnInit {
     this.customerId = data?.customerId;
     this.bankOptions = data?.bankOptions ? data?.bankOptions : [];
     this.companyOptions = data?.companyOptions ? data?.companyOptions : [];
+    this.disabledColumns = data?.disabledColumns ? data?.disabledColumns : [];
+    this.hiddenColumns = data?.hiddenColumns ? data?.hiddenColumns : [];
 
     this.companyInfoForm.patchValue({
       companyId: this.customerInfo.companyId,
       employeeCode: this.customerInfo.organizationName,
-      tngFirstName: this.customerInfo.tngData.ten,
+      borrowerEmploymentHistoryTextVariable1:
+        this.customerInfo.borrowerEmploymentHistoryTextVariable1,
       firstName: this.customerInfo.firstName,
+      tngFirstName: this.customerInfo.tngData?.ten,
+      tngLastName: this.customerInfo.tngData?.hoDem,
       officeCode: this.customerInfo.officeCode,
       officeName: this.customerInfo.officeName,
       annualIncome: this.customerInfo.annualIncome,
@@ -79,16 +97,45 @@ export class DialogCompanyInfoUpdateComponent implements OnInit {
       return;
     }
     let seletedBank = this.bankOptions.filter(
-      (bank) => bank.bankName === event.value
+      (bank) => bank.bankCode === event.value
     );
     if (!seletedBank) return;
-    this.companyInfoForm.controls.bankCode.setValue(seletedBank[0].bankCode);
+    this.companyInfoForm.controls.bankName.setValue(seletedBank[0].bankName);
   }
 
   submitForm() {
+    if (this.companyInfoForm.invalid) {
+      return;
+    }
+    if (this.companyInfoForm.controls.annualIncome.value) {
+      this.convertAnnualIncomeInputWithoutSeparator();
+    }
     this.dialogRef.close({
       type: BUTTON_TYPE.PRIMARY,
       data: this.companyInfoForm.getRawValue(),
     });
+  }
+
+  formatAnnualIncomeInputWithSeparator() {
+    if (!this.companyInfoForm.controls.annualIncome.value) {
+      return null;
+    }
+
+    let numberValWithSeparator = parseInt(
+      this.companyInfoForm.controls.annualIncome.value
+    ).toLocaleString('de-de');
+    this.companyInfoForm.controls.annualIncome.setValue(numberValWithSeparator);
+  }
+
+  convertAnnualIncomeInputWithoutSeparator() {
+    if (!this.companyInfoForm.controls.annualIncome.value) {
+      return null;
+    }
+
+    let numberVal = this.companyInfoForm.controls.annualIncome.value.replace(
+      /\D/g,
+      ''
+    );
+    this.companyInfoForm.controls.annualIncome.setValue(numberVal);
   }
 }
