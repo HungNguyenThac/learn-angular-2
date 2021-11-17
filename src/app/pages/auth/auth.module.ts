@@ -11,6 +11,7 @@ import { ForgotPasswordComponent } from './forgot-password/forgot-password.compo
 import { SharedModule } from 'src/app/share/shared.module';
 import { ResetPasswordSuccessComponent } from './reset-password-success/reset-password-success.component';
 import { PlAuthSuccessComponent } from './components/pl-auth-success/pl-auth-success.component';
+import { PaydayLoanModule } from '../products/payday-loan/payday-loan.module';
 
 @NgModule({
   declarations: [
@@ -27,6 +28,7 @@ import { PlAuthSuccessComponent } from './components/pl-auth-success/pl-auth-suc
     RouterModule.forChild(AuthRoutes),
     ReactiveFormsModule,
     FormsModule,
+    PaydayLoanModule,
   ],
 })
 export class AuthModule {}

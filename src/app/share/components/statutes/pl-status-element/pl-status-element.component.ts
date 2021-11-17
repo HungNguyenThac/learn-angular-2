@@ -1,4 +1,7 @@
-import { PAYDAY_LOAN_OTHER_STATUS } from './../../../../core/common/enum/payday-loan';
+import {
+  PAYDAY_LOAN_OTHER_STATUS,
+  PAYDAY_LOAN_RATING_STATUS,
+} from '../../../../core/common/enum/payday-loan';
 import { Component, Input, OnInit } from '@angular/core';
 import { DATA_STATUS_TYPE } from '../../../../core/common/enum/operator';
 import {
@@ -18,7 +21,10 @@ export class PlStatusElementComponent implements OnInit {
   @Input() statusType: DATA_STATUS_TYPE;
   // @Input() statusValue: string;
 
+  constructor(private multiLanguageService: MultiLanguageService) {}
+
   _statusValue: string;
+
   @Input()
   get statusValue(): string {
     return this._statusValue;
@@ -48,8 +54,6 @@ export class PlStatusElementComponent implements OnInit {
         };
     }
   }
-
-  constructor(private multiLanguageService: MultiLanguageService) {}
 
   ngOnInit(): void {}
 

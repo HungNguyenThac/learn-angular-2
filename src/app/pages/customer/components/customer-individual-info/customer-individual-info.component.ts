@@ -105,6 +105,9 @@ export class CustomerIndividualInfoComponent implements OnInit, OnDestroy {
       ],
     },
   ];
+  @Output() triggerUpdateInfo = new EventEmitter<any>();
+  leftIndividualInfos: any[] = [];
+  rightIndividualInfos: any[] = [];
 
   constructor(
     private multiLanguageService: MultiLanguageService,
@@ -120,6 +123,7 @@ export class CustomerIndividualInfoComponent implements OnInit, OnDestroy {
   }
 
   _virtualAccount: VirtualAccount;
+
   @Input()
   get virtualAccount(): VirtualAccount {
     return this._virtualAccount;
@@ -130,6 +134,7 @@ export class CustomerIndividualInfoComponent implements OnInit, OnDestroy {
   }
 
   _customerInfo: CustomerInfo;
+
   @Input()
   get customerInfo(): CustomerInfo {
     return this._customerInfo;
@@ -144,6 +149,7 @@ export class CustomerIndividualInfoComponent implements OnInit, OnDestroy {
   }
 
   _customerId: string;
+
   @Input()
   get customerId(): string {
     return this._customerId;
@@ -154,6 +160,7 @@ export class CustomerIndividualInfoComponent implements OnInit, OnDestroy {
   }
 
   _bankOptions: Array<Bank>;
+
   @Input()
   get bankOptions(): Array<Bank> {
     return this._bankOptions;
@@ -163,15 +170,113 @@ export class CustomerIndividualInfoComponent implements OnInit, OnDestroy {
     this._bankOptions = value;
   }
 
-  @Output() triggerUpdateInfo = new EventEmitter<any>();
-
-  leftIndividualInfos: any[] = [];
-
-  rightIndividualInfos: any[] = [];
-
-  customerIndividualForm: FormGroup;
-
   ngOnInit(): void {}
+
+  openUpdateDialog() {
+    const updateDialogRef = this.dialog.open(
+      CustomerDetailUpdateDialogComponent,
+      {
+        panelClass: 'custom-info-dialog-container',
+        maxWidth: '1200px',
+        width: '90%',
+        data: {
+          customerInfo: this.customerInfo,
+          customerId: this.customerId,
+          virtualAccount: this.virtualAccount,
+          bankOptions: this.bankOptions,
+          selfieSrc: this.selfieSrc,
+        },
+      }
+    );
+    this.subManager.add(
+      updateDialogRef.afterClosed().subscribe((result: any) => {
+        if (result && result.type === BUTTON_TYPE.PRIMARY) {
+          let updateInfoRequest = this._bindingDialogIndividualData(
+            result.data
+          );
+          this.triggerUpdateInfo.emit(updateInfoRequest);
+        }
+      })
+    );
+  }
+
+  public displayDisableOption() {
+    const disableForm = document.getElementById('disableMethod');
+    if (window.getComputedStyle(disableForm, null).display === 'none') {
+      disableForm.setAttribute('style', 'display:block');
+    } else {
+      disableForm.setAttribute('style', 'display:none');
+    }
+  }
+
+  public chooseDisableTime(title, value, element) {
+    element.style.display = 'none';
+    const confirmDisableRef = this.notificationService.openPrompt({
+      imgUrl: '../../../../../assets/img/icon/group-5/Alert.svg',
+      title:
+        value === LOCK_TIME_OPTIONS.PERMANENT
+          ? this.multiLanguageService.instant(
+              'customer.individual_info.disable_customer.dialog_title_permanent'
+            )
+          : this.multiLanguageService.instant(
+              'customer.individual_info.disable_customer.dialog_title',
+              {
+                time: title,
+              }
+            ),
+      content: this.multiLanguageService.instant(
+        'customer.individual_info.disable_customer.dialog_content'
+      ),
+      primaryBtnText: this.multiLanguageService.instant('common.lock'),
+      primaryBtnClass: 'btn-error',
+      secondaryBtnText: this.multiLanguageService.instant('common.skip'),
+    });
+    confirmDisableRef.afterClosed().subscribe((result) => {
+      if (result === 'PRIMARY') {
+        this.showDisableOption = false;
+      }
+    });
+  }
+
+  public displayEnableOption() {
+    const confirmEnableRef = this.notificationService.openPrompt({
+      imgUrl: '../../../../../assets/img/icon/group-5/unlock-dialog.svg',
+      title: this.multiLanguageService.instant(
+        'customer.individual_info.enable_customer.dialog_title'
+      ),
+      content: '',
+      primaryBtnText: this.multiLanguageService.instant('common.allow'),
+      primaryBtnClass: 'btn-primary',
+      secondaryBtnText: this.multiLanguageService.instant('common.skip'),
+    });
+    confirmEnableRef.afterClosed().subscribe((result) => {
+      if (result === 'PRIMARY') {
+        this.showDisableOption = true;
+      }
+    });
+  }
+
+  submitForm() {
+    const data = this.customerIndividualForm.getRawValue();
+    this.triggerUpdateInfo.emit({
+      'personalData.note': data.note,
+    });
+  }
+
+  formatTime(timeInput) {
+    if (!timeInput) return;
+    return moment(new Date(timeInput), 'YYYY-MM-DD HH:mm:ss').format(
+      'DD/MM/YYYY'
+    );
+  }
+
+  ngOnDestroy(): void {
+    this.subManager.unsubscribe();
+  }
+
+  openFullSizeImg(imageSrc) {
+    this.notificationService.openImgFullsizeDiaglog({ imageSrc: imageSrc });
+  }
 
   private _initLeftIndividualInfos() {
     return [
@@ -320,108 +425,6 @@ export class CustomerIndividualInfoComponent implements OnInit, OnDestroy {
     ];
   }
 
-  openUpdateDialog() {
-    const updateDialogRef = this.dialog.open(
-      CustomerDetailUpdateDialogComponent,
-      {
-        panelClass: 'custom-info-dialog-container',
-        maxWidth: '1200px',
-        width: '90%',
-        data: {
-          customerInfo: this.customerInfo,
-          customerId: this.customerId,
-          virtualAccount: this.virtualAccount,
-          bankOptions: this.bankOptions,
-          selfieSrc: this.selfieSrc,
-        },
-      }
-    );
-    this.subManager.add(
-      updateDialogRef.afterClosed().subscribe((result: any) => {
-        if (result && result.type === BUTTON_TYPE.PRIMARY) {
-          let updateInfoRequest = this._bindingDialogIndividualData(
-            result.data
-          );
-          this.triggerUpdateInfo.emit(updateInfoRequest);
-        }
-      })
-    );
-  }
-
-  public displayDisableOption() {
-    const disableForm = document.getElementById('disableMethod');
-    if (window.getComputedStyle(disableForm, null).display === 'none') {
-      disableForm.setAttribute('style', 'display:block');
-    } else {
-      disableForm.setAttribute('style', 'display:none');
-    }
-  }
-
-  public chooseDisableTime(title, value, element) {
-    element.style.display = 'none';
-    const confirmDisableRef = this.notificationService.openPrompt({
-      imgUrl: '../../../../../assets/img/icon/group-5/Alert.svg',
-      title:
-        value === LOCK_TIME_OPTIONS.PERMANENT
-          ? this.multiLanguageService.instant(
-              'customer.individual_info.disable_customer.dialog_title_permanent'
-            )
-          : this.multiLanguageService.instant(
-              'customer.individual_info.disable_customer.dialog_title',
-              {
-                time: title,
-              }
-            ),
-      content: this.multiLanguageService.instant(
-        'customer.individual_info.disable_customer.dialog_content'
-      ),
-      primaryBtnText: this.multiLanguageService.instant('common.lock'),
-      primaryBtnClass: 'btn-error',
-      secondaryBtnText: this.multiLanguageService.instant('common.skip'),
-    });
-    confirmDisableRef.afterClosed().subscribe((result) => {
-      if (result === 'PRIMARY') {
-        this.showDisableOption = false;
-      }
-    });
-  }
-
-  public displayEnableOption() {
-    const confirmEnableRef = this.notificationService.openPrompt({
-      imgUrl: '../../../../../assets/img/icon/group-5/unlock-dialog.svg',
-      title: this.multiLanguageService.instant(
-        'customer.individual_info.enable_customer.dialog_title'
-      ),
-      content: '',
-      primaryBtnText: this.multiLanguageService.instant('common.allow'),
-      primaryBtnClass: 'btn-primary',
-      secondaryBtnText: this.multiLanguageService.instant('common.skip'),
-    });
-    confirmEnableRef.afterClosed().subscribe((result) => {
-      if (result === 'PRIMARY') {
-        this.showDisableOption = true;
-      }
-    });
-  }
-
-  submitForm() {
-    const data = this.customerIndividualForm.getRawValue();
-    this.triggerUpdateInfo.emit({
-      'personalData.note': data.note,
-    });
-  }
-
-  formatTime(timeInput) {
-    if (!timeInput) return;
-    return moment(new Date(timeInput), 'YYYY-MM-DD HH:mm:ss').format(
-      'DD/MM/YYYY'
-    );
-  }
-
-  ngOnDestroy(): void {
-    this.subManager.unsubscribe();
-  }
-
   private _initIndividualFormData(customerId, customerInfo) {
     this.customerIndividualForm.patchValue({
       note: customerInfo?.note,
@@ -462,23 +465,4 @@ export class CustomerIndividualInfoComponent implements OnInit, OnDestroy {
       'personalData.mobileNumber': data?.mobileNumber,
     };
   }
-
-  submitForm() {
-    const data = this.customerIndividualForm.getRawValue();
-    this.triggerUpdateInfo.emit({
-      'personalData.note': data.note,
-    });
-  }
-
-  formatTime(timeInput) {
-    if (!timeInput) return;
-    return moment(new Date(timeInput), 'YYYY-MM-DD HH:mm:ss').format(
-      'DD/MM/YYYY'
-    );
-  }
-
-  openFullSizeImg(imageSrc) {
-    this.notificationService.openImgFullsizeDiaglog({ imageSrc: imageSrc });
-  }
-
 }
