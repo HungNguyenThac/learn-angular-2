@@ -6,13 +6,15 @@ import {
   Output,
   TemplateRef,
 } from '@angular/core';
-import { detailExpandAnimation } from '../../../../core/common/animations/detail-expand.animation';
-import { Sort } from '@angular/material/sort';
-import { LiveAnnouncer } from '@angular/cdk/a11y';
-import { DisplayedFieldsModel } from '../../../../public/models/filter/displayed-fields.model';
-import { MatTableDataSource } from '@angular/material/table';
-import { PageEvent } from '@angular/material/paginator/public-api';
-import { SortDirection } from '@angular/material/sort/sort-direction';
+import {detailExpandAnimation} from '../../../../core/common/animations/detail-expand.animation';
+import {Sort} from '@angular/material/sort';
+import {LiveAnnouncer} from '@angular/cdk/a11y';
+import {DisplayedFieldsModel} from '../../../../public/models/filter/displayed-fields.model';
+import {MatTableDataSource} from '@angular/material/table';
+import {PageEvent} from '@angular/material/paginator/public-api';
+import {SortDirection} from '@angular/material/sort/sort-direction';
+import {SelectionModel} from '@angular/cdk/collections';
+import {PeriodicElement} from '../../../../pages/dashboard/dashboard.component';
 
 @Component({
   selector: 'app-base-expanded-table',
@@ -33,6 +35,7 @@ export class BaseExpandedTableComponent implements OnInit {
   @Input() pageIndex: number;
   @Input() pageSize: number;
   @Input() orderBy: string;
+  @Input() hasSelect: boolean;
   @Input() sortDirection: SortDirection;
   @Input() allColumns: any[];
   @Output() triggerPageChange = new EventEmitter<any>();
@@ -42,23 +45,69 @@ export class BaseExpandedTableComponent implements OnInit {
   expandedElement: any;
   selectedFields: DisplayedFieldsModel[] = [];
   panelOpenState = false;
+  selection = new SelectionModel<PeriodicElement>(true, []);
+  displayColumn;
+  arrDisplayColumn;
 
-  constructor(private _liveAnnouncer: LiveAnnouncer) {}
-
-  get displayedColumns() {
-    return (
-      this.selectedFields.filter((element) => element.showed === true) || []
-    );
+  constructor(private _liveAnnouncer: LiveAnnouncer) {
   }
 
-  get displayedColumnKeys() {
-    return this.displayedColumns.map((item, index) => {
+  get numSelected() {
+    return this.selection.selected.length;
+  }
+
+  get showSelectedPanel() {
+    return this.selection.selected.length !== 0;
+  }
+
+  displayedColumns() {
+    this.displayColumn =
+      this.selectedFields.filter((element) => element.showed === true) || [];
+  }
+
+  displayedColumnKeys() {
+    this.arrDisplayColumn = this.displayColumn.map((item, index) => {
       return item.key;
     });
+    if (this.hasSelect) {
+      this.arrDisplayColumn.unshift('select');
+    }
+  }
+
+  changeFilter(ele) {
+    ele.showed = !ele.showed;
+    this.displayedColumns();
+    this.displayedColumnKeys();
+  }
+
+  isAllSelected() {
+    const numSelected = this.selection.selected.length;
+    const numRows = this.dataSource.data.length;
+    return numSelected === numRows;
+  }
+
+  /** Selects all rows if they are not all selected; otherwise clear selection. */
+  masterToggle() {
+    if (this.isAllSelected()) {
+      this.selection.clear();
+      return;
+    }
+    this.selection.select(...this.dataSource.data);
+  }
+
+  /** The label for the checkbox on the passed row */
+  checkboxLabel(row?: PeriodicElement): string {
+    if (!row) {
+      return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
+    }
+    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${
+      row.position + 1
+    }`;
   }
 
   ngOnInit(): void {
     this._initSelectedFields();
+    this.displayedColumnKeys();
   }
 
   /** Announce the change in sort state for assistive technology. */
@@ -104,5 +153,6 @@ export class BaseExpandedTableComponent implements OnInit {
         showed: item.showed,
       };
     });
+    this.displayedColumns();
   }
 }

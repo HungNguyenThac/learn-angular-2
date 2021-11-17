@@ -230,6 +230,7 @@ export class UserListComponent implements OnInit, OnDestroy {
   totalItems: number = 0;
   filterForm: FormGroup;
   expandedElementId: number;
+  hasSelect: boolean = true;
   userInfo;
   private readonly routeAllState$: Observable<Params>;
 
@@ -270,7 +271,6 @@ export class UserListComponent implements OnInit, OnDestroy {
   }
 
   public onExpandElementChange(element: any) {
-    console.log(element.id);
     this.expandedElementId = element.id;
     this.userInfo = this.userList.filter((user) => user.id === element.id)[0];
   }

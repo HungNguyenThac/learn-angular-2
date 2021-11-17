@@ -22,15 +22,6 @@ import { PageEvent } from '@angular/material/paginator/public-api';
 })
 export class BaseManagementLayoutComponent implements OnInit {
   @Input() detailElementTemplate: TemplateRef<any>;
-
-  // filterOptions: FilterOptionModel[] = [];
-  _filterOptions: FilterOptionModel;
-  @Input() get filterOptions(): FilterOptionModel {
-    return this._filterOptions;
-  }
-  set filterOptions(value) {
-    this._filterOptions = value;
-  }
   @Input() allColumns: any[] = [];
   @Input() tableTitle: string;
   @Input() dataSource: MatTableDataSource<any> = new MatTableDataSource([]);
@@ -40,16 +31,8 @@ export class BaseManagementLayoutComponent implements OnInit {
   @Input() totalItems: number = 0;
   @Input() pageLength: number = 0;
   @Input() orderBy: string;
+  @Input() hasSelect: boolean;
   @Input() sortDirection: SortDirection = 'desc';
-  _breadcrumbOptions: BreadcrumbOptionsModel;
-  @Input() get breadcrumbOptions(): BreadcrumbOptionsModel {
-    return this._breadcrumbOptions;
-  }
-
-  set breadcrumbOptions(value) {
-    this._breadcrumbOptions = value;
-  }
-
   @Output() onPageChange = new EventEmitter<PageEvent>();
   @Output() onSortChange = new EventEmitter<Sort>();
   @Output() onExpandElementChange = new EventEmitter<any>();
@@ -59,6 +42,27 @@ export class BaseManagementLayoutComponent implements OnInit {
   @Output() onFilterActionTrigger = new EventEmitter<FilterActionEventModel>();
 
   constructor() {}
+
+  // filterOptions: FilterOptionModel[] = [];
+  _filterOptions: FilterOptionModel;
+
+  @Input() get filterOptions(): FilterOptionModel {
+    return this._filterOptions;
+  }
+
+  set filterOptions(value) {
+    this._filterOptions = value;
+  }
+
+  _breadcrumbOptions: BreadcrumbOptionsModel;
+
+  @Input() get breadcrumbOptions(): BreadcrumbOptionsModel {
+    return this._breadcrumbOptions;
+  }
+
+  set breadcrumbOptions(value) {
+    this._breadcrumbOptions = value;
+  }
 
   ngOnInit(): void {}
 
