@@ -127,7 +127,7 @@ export class LoanContractComponent implements OnInit, OnDestroy {
         idRequest,
         idDocument
       ).subscribe((result) => {
-        if (result?.errorCode === null) {
+        if (result.responseCode === 200) {
           this.notifier.success(`Ký hợp đồng thành công`);
           setTimeout(() => {
             this.triggerUpdateLoanAfterSign.emit();

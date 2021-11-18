@@ -455,6 +455,7 @@
     "choose_company": "Chọn công ty",
     "pl_ui_status": "Trạng thái tài khoản",
     "account_status": "Trạng thái hoạt động",
+    "loan_status": "Trạng thái khoản vay",
     "options": {
       "by_day": "Theo ngày",
       "to_day": "Hôm nay",
