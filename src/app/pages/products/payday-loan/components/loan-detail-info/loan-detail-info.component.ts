@@ -381,12 +381,12 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
           this.rejectLoanStatus = PAYDAY_LOAN_STATUS.WITHDRAW;
           break;
         }
-        this.nextLoanStatus = PAYDAY_LOAN_STATUS.CONTRACT_AWAITING;
+        this.nextLoanStatus = PAYDAY_LOAN_STATUS.UNKNOWN_STATUS;
         this.rejectLoanStatus = PAYDAY_LOAN_STATUS.WITHDRAW;
         break;
 
       case PAYDAY_LOAN_STATUS.CONTRACT_AWAITING:
-        this.nextLoanStatus = PAYDAY_LOAN_STATUS.CONTRACT_ACCEPTED;
+        this.nextLoanStatus = PAYDAY_LOAN_STATUS.UNKNOWN_STATUS;
         this.rejectLoanStatus = PAYDAY_LOAN_STATUS.WITHDRAW;
         break;
 
