@@ -12,7 +12,6 @@ export class DialogUserInfoUpdateComponent implements OnInit {
   accountInfoForm: FormGroup;
   isAccountNameInputFocus: boolean = false;
   isPhoneInputFocus: boolean = false;
-  isEmailInputFocus: boolean = false;
   isNoteInputFocus: boolean = false;
 
   roleOptions = {

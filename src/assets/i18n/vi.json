@@ -45,6 +45,8 @@
     "home": "Trang chủ",
     "confirm": "Xác nhận",
     "skip": "Bỏ qua",
+    "lock": "Ngừng hoạt động",
+    "allow": "Cho phép",
     "change": "Thay đổi",
     "no_options": "Không có bản ghi nào",
     "no_search_result": "Không có kết quả phù hợp với ",
@@ -208,6 +210,8 @@
       "avatar": "Ảnh chân dung",
       "update": "Cập nhật",
       "lock": "Ngừng hoạt động",
+      "delete": "Xoá người dùng",
+      "unlock": "Cho phép hoạt động",
       "cancel_update": "Hủy cập nhật",
       "save_update": "Lưu cập nhật",
       "gender": "Giới tính",
@@ -217,7 +221,16 @@
       "company": "Công ty",
       "status": "Trạng thái tài khoản",
       "update_individual_info": "Cập nhật thông tin khách hàng",
-      "update_company_info": "Cập nhật thông tin công ty"
+      "update_company_info": "Cập nhật thông tin công ty",
+      "disable_customer": {
+        "title": "Ngừng hoạt động",
+        "dialog_title": "Bạn có chắc chắn muốn dừng hoạt động khách hàng này trong {{time}} không?",
+        "dialog_title_permanent": "Bạn có chắc chắn muốn dừng hoạt động khách hàng này vĩnh viễn không?",
+        "dialog_content": "Thông tin và giao dịch của khách hàng này vẫn sẽ được giữ."
+      },
+      "enable_customer": {
+        "dialog_title": "Bạn có chắc chắn cho phép người dùng này hoạt động trở lại?"
+      }
     },
     "identity": {
       "front_id": "CMND/CCCD mặt trước",
@@ -441,7 +454,6 @@
     "company": "Công ty",
     "choose_company": "Chọn công ty",
     "pl_ui_status": "Trạng thái tài khoản",
-    "loan_status": "Trạng thái khoản vay",
     "account_status": "Trạng thái hoạt động",
     "options": {
       "by_day": "Theo ngày",
@@ -509,11 +521,67 @@
     "not_found": "404",
     "customer_list": "Danh sách khách hàng",
     "loan_list": "Danh sách khoản vay",
-    "dashboard": "Trang chủ"
+    "dashboard": "Trang chủ",
+    "user_list": "Danh sách người dùng"
   },
   "breadcrumb": {
     "manage_customer": "Quản lý khách hàng",
     "manage_payday_loan": "Quản lý khoản vay",
-    "search_field_payday_loan": "Mã khoản vay, Tên, Số điện thoại..."
+    "search_field_payday_loan": "Mã khoản vay, Tên, Số điện thoại...",
+    "manage_user": "Quản lý người dùng"
+  },
+  "system": {
+    "add_user": "Thêm người dùng",
+    "system_management": {
+      "user_account": "Tên đăng nhập",
+      "username": "Tên người dùng",
+      "role": "Vai trò",
+      "status": "Trạng thái",
+      "active_user": "Đang hoạt động",
+      "inactive_user": "Ngừng hoạt động"
+    },
+    "user_detail": {
+      "title": "Thông tin",
+      "name": "Tên người dùng",
+      "login_name": "Tên đăng nhập",
+      "email": "Email",
+      "phone": "Số điện thoại",
+      "note": "Ghi chú",
+      "status": "Trạng thái",
+      "lock_user": {
+        "title": "Ngừng hoạt động",
+        "content": "Sau khi ngừng hoạt động, lịch sử giao dịch của nhân viên vẫn sẽ được giữ. Bạn có chắc chắn muốn ngừng hoạt động nhân viên này?"
+      },
+      "delete_user": {
+        "title": "Xóa người dùng",
+        "toast": "Xóa người dùng thành công",
+        "content": "Hệ thống sẽ xóa người dùng được chọn nhưng vẫn giữ thông tin người dùng trong các lịch sử giao dịch nếu có. Bạn có chắc chắn muốn xóa?"
+      }
+    },
+    "user_role": {
+      "title": "Phân quyền"
+    },
+    "user_time_log": {
+      "title": "Thời gian truy cập"
+    },
+    "role": {
+      "super_admin": "Super Admin",
+      "developer": "Developer"
+    }
+  },
+  "lock_title": {
+    "by_hour": "Theo giờ",
+    "by_day": "Theo ngày",
+    "permanent": "Vĩnh viễn"
+  },
+  "lock_time_options": {
+    "1_hour": "1 giờ",
+    "2_hour": "2 giờ",
+    "4_hour": "4 giờ",
+    "8_hour": "8 giờ",
+    "1_day": "1 ngày",
+    "7_day": "7 ngày",
+    "30_day": "30 ngày",
+    "permanent": "Vĩnh viễn"
   }
 }

@@ -1,10 +1,10 @@
-import {NgModule} from '@angular/core';
-import {RouterModule, Routes} from '@angular/router';
-import {NotFoundComponent} from "./pages/errors/not-found/not-found.component";
-import {MainLayoutComponent} from "./layout/main-layout/main-layout.component";
-import {DashboardComponent} from "./pages/dashboard/dashboard.component";
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+import { NotFoundComponent } from './pages/errors/not-found/not-found.component';
+import { MainLayoutComponent } from './layout/main-layout/main-layout.component';
+import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { AuthGuardService as AuthGuard } from './core/services/auth-guard.service';
-import {CustomerModule} from "./pages/customer/customer.module";
+import { CustomerModule } from './pages/customer/customer.module';
 
 const routes: Routes = [
   {
@@ -32,6 +32,11 @@ const routes: Routes = [
           ),
       },
       {
+        path: 'user',
+        loadChildren: () =>
+          import('./pages/system/user/user.module').then((m) => m.UserModule),
+      },
+      {
         path: 'auth',
         loadChildren: () =>
           import('./pages/auth/auth.module').then((m) => m.AuthModule),
@@ -46,8 +51,9 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes, {relativeLinkResolution: 'corrected'})],
-  exports: [RouterModule]
+  imports: [
+    RouterModule.forRoot(routes, { relativeLinkResolution: 'corrected' }),
+  ],
+  exports: [RouterModule],
 })
-export class AppRoutingModule {
-}
+export class AppRoutingModule {}
