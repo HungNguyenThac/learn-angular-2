@@ -76,6 +76,8 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
   set loanDetail(value: PaydayLoanHmg) {
     this._loanDetail = value;
     this.getChangeLoanStatus();
+    this.maxLoanAmount = this.getMaxLoanAmount()
+    this.totalSettlementAmount = this.getTotalSettlementAmount();
     this.leftColumn = this._initLeftColumn();
     this.middleColumn = this._initMiddleColumn();
     this.rightColumn = this._initRightColumn();
@@ -246,6 +248,8 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
   rejectLoanStatusDisplay: string;
   salaryStatus: string;
   loanInfoForm: FormGroup;
+  totalSettlementAmount:number;
+  maxLoanAmount: number;
 
   subManager = new Subscription();
   @Output() loanDetailDetectChangeStatus = new EventEmitter<any>();
@@ -339,12 +343,12 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
   }
 
   //Số tiền vay tối đa
-  get maxLoanAmount() {
+  getMaxLoanAmount() {
     return this.customerInfo?.annualIncome * 0.8;
   }
 
   //Tổng tiền tất toán
-  get totalSettlementAmount() {
+  getTotalSettlementAmount() {
     return (
       this.loanDetail?.latePenaltyPayment + this.loanDetail?.expectedAmount
     );
@@ -442,9 +446,10 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
   submitForm() {
     const updateLoanRequest: UpdateLoanRequest = {
       customerId: this.customerId,
-      updateInfo: {}
+      updateInfo: {},
     };
-    updateLoanRequest.updateInfo['note'] = this.loanInfoForm.controls.note.value;
+    updateLoanRequest.updateInfo['note'] =
+      this.loanInfoForm.controls.note.value;
     console.log('updateLoanRequest', updateLoanRequest);
 
     if (this.groupName === 'HMG') {
@@ -454,9 +459,9 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
           .subscribe((res: ApiResponseString) => {
             if (res.responseCode !== 200) {
               this.notifier.error(res.errorCode);
-              return
+              return;
             }
-             this.loanDetailDetectChangeStatus.emit();
+            this.loanDetailDetectChangeStatus.emit();
           })
       );
     }
@@ -470,7 +475,7 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
               this.notifier.error(res.errorCode);
               return;
             }
-             this.loanDetailDetectChangeStatus.emit();
+            this.loanDetailDetectChangeStatus.emit();
           })
       );
     }
