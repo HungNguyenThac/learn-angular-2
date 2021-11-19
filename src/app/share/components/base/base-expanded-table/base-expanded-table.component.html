@@ -10,18 +10,7 @@
       mat-flat-button
       type="button"
     >
-      <svg
-        fill="none"
-        height="24"
-        viewBox="0 0 24 24"
-        width="24"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <path
-          d="M10 16H14C14.5523 16 15 16.4477 15 17C15 17.5128 14.614 17.9355 14.1166 17.9933L14 18H10C9.44772 18 9 17.5523 9 17C9 16.4872 9.38604 16.0645 9.88338 16.0067L10 16H14H10ZM8 11H16C16.5523 11 17 11.4477 17 12C17 12.5128 16.614 12.9355 16.1166 12.9933L16 13H8C7.44772 13 7 12.5523 7 12C7 11.4872 7.38604 11.0645 7.88338 11.0067L8 11H16H8ZM5 6H19C19.5523 6 20 6.44772 20 7C20 7.51284 19.614 7.93551 19.1166 7.99327L19 8H5C4.44772 8 4 7.55228 4 7C4 6.48716 4.38604 6.06449 4.88338 6.00673L5 6H19H5Z"
-          fill="#8E8E93"
-        />
-      </svg>
+      <span class="sprite-group-7-filter"></span>
     </button>
     <mat-accordion (mouseleave)="panelOpenState = false" class="filter-panel">
       <mat-expansion-panel [expanded]="panelOpenState" hideToggle>
@@ -47,7 +36,7 @@
                 [checked]="ele.showed"
                 class="checkbox"
                 color="primary"
-                >{{ ele?.title }}</mat-checkbox
+              >{{ ele?.title }}</mat-checkbox
               >
             </div>
           </div>
@@ -67,18 +56,7 @@
     "
   >
     <div class="d-flex align-items-center gap-2">
-      <svg
-        fill="none"
-        height="24"
-        viewBox="0 0 24 24"
-        width="24"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <path
-          d="M8.5 16.5858L4.70711 12.7929C4.31658 12.4024 3.68342 12.4024 3.29289 12.7929C2.90237 13.1834 2.90237 13.8166 3.29289 14.2071L7.79289 18.7071C8.18342 19.0976 8.81658 19.0976 9.20711 18.7071L20.2071 7.70711C20.5976 7.31658 20.5976 6.68342 20.2071 6.29289C19.8166 5.90237 19.1834 5.90237 18.7929 6.29289L8.5 16.5858Z"
-          fill="white"
-        />
-      </svg>
+      <span class="sprite-group-7-tick"></span>
       <h2
         [innerHTML]="
           'system.system_management.selected_user'
@@ -95,28 +73,14 @@
         [style]="button?.style"
         mat-flat-button
       >
-        <img *ngIf="button?.imageSrc" [src]="button?.imageSrc" alt="" />
+        <img *ngIf="button?.imageSrc" [src]="button?.imageSrc" alt=""/>
         <span
           *ngIf="button?.classImgSrc"
           [ngClass]="button?.classImgSrc"
         ></span>
         {{ button?.content }}
       </button>
-
-      <svg
-        (click)="deselectAll()"
-        fill="none"
-        height="24"
-        style="cursor: pointer"
-        viewBox="0 0 24 24"
-        width="24"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <path
-          d="M4.2097 4.3871L4.29289 4.29289C4.65338 3.93241 5.22061 3.90468 5.6129 4.2097L5.70711 4.29289L12 10.585L18.2929 4.29289C18.6834 3.90237 19.3166 3.90237 19.7071 4.29289C20.0976 4.68342 20.0976 5.31658 19.7071 5.70711L13.415 12L19.7071 18.2929C20.0676 18.6534 20.0953 19.2206 19.7903 19.6129L19.7071 19.7071C19.3466 20.0676 18.7794 20.0953 18.3871 19.7903L18.2929 19.7071L12 13.415L5.70711 19.7071C5.31658 20.0976 4.68342 20.0976 4.29289 19.7071C3.90237 19.3166 3.90237 18.6834 4.29289 18.2929L10.585 12L4.29289 5.70711C3.93241 5.34662 3.90468 4.77939 4.2097 4.3871L4.29289 4.29289L4.2097 4.3871Z"
-          fill="white"
-        />
-      </svg>
+      <span (click)="deselectAll()" class="sprite-group-7-close-white"></span>
     </div>
   </div>
 
@@ -141,7 +105,7 @@
               (change)="$event ? masterToggle() : null"
               [checked]="selection.hasValue() && isAllSelected()"
               [indeterminate]="selection.hasValue() && !isAllSelected()"
-              >>
+            >>
             </mat-checkbox>
           </th>
           <td *matCellDef="let row" mat-cell>
@@ -149,7 +113,7 @@
               (change)="$event ? selection.toggle(row) : null"
               (click)="$event.stopPropagation()"
               [checked]="selection.isSelected(row)"
-              >>
+            >>
             </mat-checkbox>
           </td>
         </ng-container>
