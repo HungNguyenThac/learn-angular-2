@@ -1,7 +1,10 @@
 import { query } from '@angular/animations';
 import { ApplicationTngControllerService } from '../../../../../../open-api-modules/dashboard-api-docs';
 import { ApplicationHmgControllerService } from '../../../../../../open-api-modules/dashboard-api-docs';
-import { PaydayLoanControllerService } from '../../../../../../open-api-modules/loanapp-hmg-api-docs';
+import {
+  PaydayLoanControllerService,
+  ContractControllerService as ContractHmgControllerService,
+} from '../../../../../../open-api-modules/loanapp-hmg-api-docs';
 import { Injectable } from '@angular/core';
 import { catchError, map } from 'rxjs/operators';
 import { CustomerControllerService } from 'open-api-modules/dashboard-api-docs';
@@ -24,6 +27,7 @@ export class LoanListService {
     private applicationHmgControllerService: ApplicationHmgControllerService,
     private customerControllerService: CustomerControllerService,
     private contractControllerService: ContractControllerService,
+    private contractHmgControllerService:ContractHmgControllerService,
     private signContractAutomation: SignDocumentControllerService,
     private fileControllerService: FileControllerService
   ) {}
@@ -122,19 +126,36 @@ export class LoanListService {
     );
   }
 
-  public getContractData(loanId: string, customerId: string) {
-    return this.contractControllerService
-      .getActivePaydayLoan2(loanId, customerId)
-      .pipe(
-        map((results: ApiResponseContract) => {
-          console.log('display ok');
-          return results;
-        }),
+  public getContractData(loanId: string, customerId: string, groupName: string) {
+    if (groupName === 'TNG') {
+      return this.contractControllerService
+        .getActivePaydayLoan2(loanId, customerId)
+        .pipe(
+          map((results: ApiResponseContract) => {
+            console.log('display ok');
+            return results;
+          }),
 
-        catchError((err) => {
-          throw err;
-        })
-      );
+          catchError((err) => {
+            throw err;
+          })
+        );
+    }
+
+    if (groupName === 'HMG') {
+      return this.contractHmgControllerService
+        .getContract(loanId, customerId)
+        .pipe(
+          map((results: ApiResponseContract) => {
+            console.log('display ok');
+            return results;
+          }),
+
+          catchError((err) => {
+            throw err;
+          })
+        );
+    }
   }
 
   public signContract(

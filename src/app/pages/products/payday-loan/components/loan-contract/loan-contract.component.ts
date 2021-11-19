@@ -69,6 +69,7 @@ export class LoanContractComponent implements OnInit, OnDestroy {
   set loanDetail(value: PaydayLoanHmg) {
     this._loanDetail = value;
     this.getDisplayStatus();
+    this.checkSignable()
   }
 
   _customerInfo: CustomerInfo;
@@ -98,11 +99,6 @@ export class LoanContractComponent implements OnInit, OnDestroy {
   }
 
   checkSignable() {
-    console.log(
-      this.customerInfo.companyGroupName,
-      this.loanDetail.status,
-      this.loanContractData?.status
-    );
 
     if (
       this.customerInfo.companyGroupName === 'HMG' &&
@@ -131,7 +127,7 @@ export class LoanContractComponent implements OnInit, OnDestroy {
         idRequest,
         idDocument
       ).subscribe((result) => {
-        if (result?.result === 'Ký thành công') {
+        if (result?.errorCode === null) {
           this.notifier.success(`Ký hợp đồng thành công`);
           setTimeout(() => {
             this.triggerUpdateLoanAfterSign.emit();
@@ -185,7 +181,8 @@ export class LoanContractComponent implements OnInit, OnDestroy {
     this.subManager.add(
       this.LoanListService.getContractData(
         this.loanDetail.id,
-        this.loanDetail.customerId
+        this.loanDetail.customerId,
+        this.loanDetail.companyGroupName,
       ).subscribe((response: ApiResponseContract) => {
         if (response.result === null) {
           return (this.loanContractData = null);
