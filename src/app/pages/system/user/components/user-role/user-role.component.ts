@@ -1,5 +1,7 @@
 import { Component, OnInit, Injectable } from '@angular/core';
 import { MultiLanguageService } from '../../../../../share/translate/multiLanguageService';
+import { MatDialog } from '@angular/material/dialog';
+import { EditRoleDialogComponent } from '../../../../../share/components/operators/user-account/edit-role-dialog/edit-role-dialog.component';
 
 @Component({
   selector: 'app-user-role',
@@ -7,6 +9,10 @@ import { MultiLanguageService } from '../../../../../share/translate/multiLangua
   styleUrls: ['./user-role.component.scss'],
 })
 export class UserRoleComponent implements OnInit {
+  roles = [
+    { title: 'Kiểm duyệt viên', id: '1' },
+    { title: 'Quản trị viên', id: '2' },
+  ];
   SYSTEM_DATA = {
     'Thiết lập': ['Xem danh sách', 'Thêm mới', 'Cập nhật', 'Xóa'],
     'Người dùng': ['Xem danh sách', 'Thêm mới', 'Cập nhật', 'Xóa'],
@@ -25,7 +31,25 @@ export class UserRoleComponent implements OnInit {
     'Tài liệu': ['Xem danh sách', 'Thêm mới', 'Cập nhật', 'Xóa'],
   };
 
-  constructor(private multiLanguageService: MultiLanguageService) {}
+  constructor(
+    private multiLanguageService: MultiLanguageService,
+    private dialog: MatDialog
+  ) {}
 
   ngOnInit(): void {}
+
+  openUpdateDialog(id) {
+    console.log(id);
+    const updateDialogRef = this.dialog.open(EditRoleDialogComponent, {
+      panelClass: 'custom-info-dialog-container',
+      maxWidth: '800px',
+      width: '90%',
+      data: {
+        title: this.multiLanguageService.instant('system.user_role.edit_role'),
+        SYSTEM_DATA: this.SYSTEM_DATA,
+        TRANSACTION_DATA: this.TRANSACTION_DATA,
+        CUSTOMER_DATA: this.CUSTOMER_DATA,
+      },
+    });
+  }
 }

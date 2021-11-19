@@ -102,6 +102,7 @@
         <ng-container matColumnDef="select" style="display: none">
           <th *matHeaderCellDef mat-header-cell>
             <mat-checkbox
+              color="primary"
               (change)="$event ? masterToggle() : null"
               [checked]="selection.hasValue() && isAllSelected()"
               [indeterminate]="selection.hasValue() && !isAllSelected()"
@@ -110,7 +111,8 @@
           </th>
           <td *matCellDef="let row" mat-cell>
             <mat-checkbox
-              (change)="$event ? selection.toggle(row) : null"
+              color="primary"
+              (change)="$event ? this.selection.toggle(row) : null"
               (click)="$event.stopPropagation()"
               [checked]="selection.isSelected(row)"
             >>
@@ -173,6 +175,7 @@
           (click)="expandElement(element)"
           *matRowDef="let element; columns: arrDisplayColumn"
           [class.op-expanded-row]="expandedElement === element"
+          [class.selected-user]="selection.isSelected(element)"
           class="op-element-row gap-2"
           mat-row
         ></tr>

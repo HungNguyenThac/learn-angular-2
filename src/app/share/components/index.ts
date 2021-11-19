@@ -27,6 +27,10 @@ import { CustomerCompanyInfoComponent } from './operators/customer/customer-comp
 import { DialogCompanyInfoUpdateComponent } from './operators/customer/dialog-company-info-update/dialog-company-info-update.component';
 import { TableCellFormatDataComponent } from './statutes/table-cell-format-data/table-cell-format-data.component';
 import { FullsizeImageDialogComponent } from './dialogs/fullsize-image-dialog/fullsize-image-dialog.component';
+import { PermissionTreeComponent } from './operators/user-account/permission-tree/permission-tree.component';
+import { EditRoleDialogComponent } from './operators/user-account/edit-role-dialog/edit-role-dialog.component';
+import { AddNewUserDialogComponent } from './operators/user-account/add-new-user-dialog/add-new-user-dialog.component';
+import { DialogUserInfoUpdateComponent } from './operators/user-account/dialog-user-info-update/dialog-user-info-update.component';
 
 export const components: any[] = [
   ConfirmationDialog,
@@ -58,6 +62,10 @@ export const components: any[] = [
   DialogCompanyInfoUpdateComponent,
   TableCellFormatDataComponent,
   FullsizeImageDialogComponent,
+  PermissionTreeComponent,
+  EditRoleDialogComponent,
+  AddNewUserDialogComponent,
+  DialogUserInfoUpdateComponent,
 ];
 
 export * from './dialogs/confirmation-dialog/confirmation-dialog.component';
@@ -89,4 +97,7 @@ export * from './operators/customer/customer-company-info/customer-company-info.
 export * from './operators/customer/dialog-company-info-update/dialog-company-info-update.component';
 export * from './statutes/table-cell-format-data/table-cell-format-data.component';
 export * from './dialogs/fullsize-image-dialog/fullsize-image-dialog.component';
-
+export * from './operators/user-account/permission-tree/permission-tree.component';
+export * from './operators/user-account/edit-role-dialog/edit-role-dialog.component';
+export * from './operators/user-account/add-new-user-dialog/add-new-user-dialog.component';
+export * from './operators/user-account/dialog-user-info-update/dialog-user-info-update.component';
