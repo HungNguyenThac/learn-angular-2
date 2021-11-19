@@ -39,6 +39,7 @@ export class LoanContractComponent implements OnInit, OnDestroy {
 
   subManager = new Subscription();
   @Output() triggerUpdateLoanAfterSign = new EventEmitter();
+  setTimeOut;
 
   constructor(
     private notifier: ToastrService,
@@ -69,7 +70,7 @@ export class LoanContractComponent implements OnInit, OnDestroy {
   set loanDetail(value: PaydayLoanHmg) {
     this._loanDetail = value;
     this.getDisplayStatus();
-    this.checkSignable()
+     this._getLoanContractData();
   }
 
   _customerInfo: CustomerInfo;
@@ -99,21 +100,21 @@ export class LoanContractComponent implements OnInit, OnDestroy {
   }
 
   checkSignable() {
-
     if (
-      this.customerInfo.companyGroupName === 'HMG' &&
-      this.loanDetail.status === 'CONTRACT_AWAITING'
+      this.loanDetail?.companyGroupName === 'HMG' &&
+      this.loanDetail?.status === 'CONTRACT_AWAITING'
     ) {
-      this.enableSign = true;
+      return (this.enableSign = true);
     }
 
     if (
-      this.customerInfo.companyGroupName === 'TNG' &&
-      this.loanDetail.status === 'FUNDED' &&
-      this.loanContractData.status === 'AWAITING_EPAY_SIGNATURE'
+      this.loanDetail?.companyGroupName === 'TNG' &&
+      this.loanDetail?.status === 'FUNDED' &&
+      this.loanContractData?.status === 'AWAITING_EPAY_SIGNATURE'
     ) {
-      this.enableSign = true;
+      return (this.enableSign = true);
     }
+    return (this.enableSign = false);
   }
 
   onClickSign() {
@@ -128,10 +129,10 @@ export class LoanContractComponent implements OnInit, OnDestroy {
         idDocument
       ).subscribe((result) => {
         if (result.responseCode === 200) {
-          this.notifier.success(`Ký hợp đồng thành công`);
-          setTimeout(() => {
-            this.triggerUpdateLoanAfterSign.emit();
-          }, 2000);
+          this.triggerUpdateLoanAfterSign.emit();
+          this.setTimeOut = setTimeout(() => {
+            this.notifier.success(`Ký hợp đồng thành công`);
+          }, 3000);
         } else {
           this.notifier.error(
             this.multiLanguageService.instant('loan_app.loan_contract.sign_fail')
@@ -174,6 +175,7 @@ export class LoanContractComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    clearTimeout(this.setTimeOut);
     this.subManager.unsubscribe();
   }
 
