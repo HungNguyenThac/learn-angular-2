@@ -5,11 +5,13 @@
   (onPageChange)="onPageChange($event)"
   (onSortChange)="onSortChange($event)"
   (onSubmitSearchForm)="onSubmitSearchForm($event)"
+  (onOutputAction)="onOutputAction($event)"
   [allColumns]="allColumns"
   [breadcrumbOptions]="breadcrumbOptions"
   [dataSource]="dataSource"
   [detailElementTemplate]="detailElementTemplate"
   [filterOptions]="filterOptions"
+  [hasSelect]="hasSelect"
   [orderBy]="filterForm.controls.orderBy?.value"
   [pageIndex]="pageIndex"
   [pageLength]="pageLength"
@@ -18,6 +20,7 @@
   [sortDirection]="filterForm.controls.sortDirection?.value"
   [tableTitle]="tableTitle"
   [totalItems]="totalItems"
+  [selectButtons]="selectButtons"
 >
 </app-base-management-layout>
 

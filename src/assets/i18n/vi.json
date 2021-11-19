@@ -539,7 +539,8 @@
       "role": "Vai trò",
       "status": "Trạng thái",
       "active_user": "Đang hoạt động",
-      "inactive_user": "Ngừng hoạt động"
+      "inactive_user": "Ngừng hoạt động",
+      "selected_user": "Đã chọn {{numSelected}} mục"
     },
     "user_detail": {
       "title": "Thông tin",

@@ -35,9 +35,11 @@
             (triggerExpandedElementChange)="triggerExpandElementChange($event)"
             (triggerPageChange)="triggerPageChange($event)"
             (triggerSortChange)="triggerSortChange($event)"
+            (outputAction)="outputAction($event)"
             [allColumns]="allColumns"
             [dataSource]="dataSource"
             [detailElementTemplate]="detailElementTemplate"
+            [hasSelect]="hasSelect"
             [orderBy]="orderBy"
             [pageIndex]="pageIndex"
             [pageLength]="pageLength"
@@ -46,6 +48,7 @@
             [sortDirection]="sortDirection"
             [tableTitle]="tableTitle"
             [totalItems]="totalItems"
+            [selectButtons]="selectButtons"
           >
           </app-base-expanded-table>
         </div>
