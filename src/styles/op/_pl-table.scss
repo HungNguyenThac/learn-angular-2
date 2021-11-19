@@ -126,6 +126,12 @@ table.expanded-table {
     border-radius: 0 0 4px 4px;
   }
 
+  tr.selected-user {
+    background-color: #F7FBFF !important;
+    border: 1px solid #007AFF;
+    border-radius: 4px;
+  }
+
   tr.op-element-row {
     min-height: 48px;
     display: flex;

@@ -1,7 +1,7 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Title } from '@angular/platform-browser';
-import { GlobalConstants } from 'src/app/core/common/global-constants';
-import { Store } from '@ngrx/store';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Title} from '@angular/platform-browser';
+import {GlobalConstants} from 'src/app/core/common/global-constants';
+import {Store} from '@ngrx/store';
 import * as fromActions from '../../../../core/store';
 import * as fromStore from '../../../../core/store';
 import {
@@ -11,31 +11,31 @@ import {
   NAV_ITEM,
   QUERY_CONDITION_TYPE,
 } from '../../../../core/common/enum/operator';
-import { MultiLanguageService } from '../../../../share/translate/multiLanguageService';
-import { Observable, Subscription } from 'rxjs';
+import {MultiLanguageService} from '../../../../share/translate/multiLanguageService';
+import {Observable, Subscription} from 'rxjs';
 import {
   ApiResponseSearchAndPaginationResponseCompanyInfo,
   ApiResponseSearchAndPaginationResponseCustomerInfo,
   CompanyControllerService,
   CompanyInfo,
 } from '../../../../../../open-api-modules/dashboard-api-docs';
-import { MatTableDataSource } from '@angular/material/table';
-import { FormBuilder, FormGroup } from '@angular/forms';
-import { ActivatedRoute, Params, Router } from '@angular/router';
+import {MatTableDataSource} from '@angular/material/table';
+import {FormBuilder, FormGroup} from '@angular/forms';
+import {ActivatedRoute, Params, Router} from '@angular/router';
 import * as fromSelectors from '../../../../core/store/selectors';
-import { BreadcrumbOptionsModel } from '../../../../public/models/external/breadcrumb-options.model';
-import { PageEvent } from '@angular/material/paginator/public-api';
-import { Sort } from '@angular/material/sort';
-import { FilterOptionModel } from 'src/app/public/models/filter/filter-option.model';
-import { FilterEventModel } from '../../../../public/models/filter/filter-event.model';
-import { FilterActionEventModel } from '../../../../public/models/filter/filter-action-event.model';
+import {BreadcrumbOptionsModel} from '../../../../public/models/external/breadcrumb-options.model';
+import {PageEvent} from '@angular/material/paginator/public-api';
+import {Sort} from '@angular/material/sort';
+import {FilterOptionModel} from 'src/app/public/models/filter/filter-option.model';
+import {FilterEventModel} from '../../../../public/models/filter/filter-event.model';
+import {FilterActionEventModel} from '../../../../public/models/filter/filter-action-event.model';
 import {
   PAYDAY_LOAN_UI_STATUS,
   PAYDAY_LOAN_UI_STATUS_TEXT,
 } from '../../../../core/common/enum/payday-loan';
-import { NotificationService } from '../../../../core/services/notification.service';
-import { ToastrService } from 'ngx-toastr';
-import { TableSelectActionModel } from '../../../../public/models/external/table-select-action.model';
+import {NotificationService} from '../../../../core/services/notification.service';
+import {ToastrService} from 'ngx-toastr';
+import {TableSelectActionModel} from '../../../../public/models/external/table-select-action.model';
 
 export interface UserListResult {
   id: number;
@@ -276,8 +276,8 @@ export class UserListComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.titleService.setTitle(
       this.multiLanguageService.instant('page_title.user_list') +
-        ' - ' +
-        GlobalConstants.PL_VALUE_DEFAULT.PROJECT_NAME
+      ' - ' +
+      GlobalConstants.PL_VALUE_DEFAULT.PROJECT_NAME
     );
     this.store.dispatch(new fromActions.SetOperatorInfo(NAV_ITEM.CUSTOMER));
     this._initSubscription();
@@ -341,7 +341,7 @@ export class UserListComponent implements OnInit, OnDestroy {
     const list = event.selectedList;
     switch (action) {
       case 'lock':
-        this.lockPrompt();
+        this.lockPrompt()
         break;
       case 'delete':
         this.deletePrompt();
@@ -351,7 +351,9 @@ export class UserListComponent implements OnInit, OnDestroy {
     }
   }
 
-  public lockPrompt() {
+  // @ts-ignore
+  public lockPrompt(): boolean {
+
     const confirmLockRef = this.notificationService.openPrompt({
       imgUrl: '../../../../../assets/img/icon/group-5/Alert.svg',
       title: this.multiLanguageService.instant(
@@ -364,7 +366,9 @@ export class UserListComponent implements OnInit, OnDestroy {
       primaryBtnClass: 'btn-error',
       secondaryBtnText: this.multiLanguageService.instant('common.skip'),
     });
-    confirmLockRef.afterClosed().subscribe((result) => {});
+    confirmLockRef.afterClosed().subscribe((result) => {
+
+    });
   }
 
   public deletePrompt() {
@@ -516,7 +520,7 @@ export class UserListComponent implements OnInit, OnDestroy {
     )) {
       queryParams[formControlName + queryCondition || ''] = data[
         formControlName
-      ]
+        ]
         ? data[formControlName].trim()
         : '';
     }
@@ -534,6 +538,7 @@ export class UserListComponent implements OnInit, OnDestroy {
         relativeTo: this.activatedRoute,
         queryParams,
       })
-      .then((r) => {});
+      .then((r) => {
+      });
   }
 }
