@@ -14,6 +14,7 @@ import { FilterEventModel } from '../../../../public/models/filter/filter-event.
 import { FilterActionEventModel } from '../../../../public/models/filter/filter-action-event.model';
 import { Sort } from '@angular/material/sort';
 import { PageEvent } from '@angular/material/paginator/public-api';
+import { TableSelectActionModel } from '../../../../public/models/external/table-select-action.model';
 
 @Component({
   selector: 'app-base-management-layout',
@@ -32,6 +33,7 @@ export class BaseManagementLayoutComponent implements OnInit {
   @Input() pageLength: number = 0;
   @Input() orderBy: string;
   @Input() hasSelect: boolean;
+  @Input() selectButtons: TableSelectActionModel[] = [];
   @Input() sortDirection: SortDirection = 'desc';
   @Output() onPageChange = new EventEmitter<PageEvent>();
   @Output() onSortChange = new EventEmitter<Sort>();
@@ -40,6 +42,7 @@ export class BaseManagementLayoutComponent implements OnInit {
   @Output() onSubmitSearchForm = new EventEmitter<any>();
   @Output() onFilterChange = new EventEmitter<FilterEventModel>();
   @Output() onFilterActionTrigger = new EventEmitter<FilterActionEventModel>();
+  @Output() onOutputAction = new EventEmitter<any>();
 
   constructor() {}
 
@@ -92,5 +95,9 @@ export class BaseManagementLayoutComponent implements OnInit {
 
   triggerFilterAction(event: FilterActionEventModel) {
     this.onFilterActionTrigger.emit(event);
+  }
+
+  outputAction(event: Sort) {
+    this.onOutputAction.emit(event);
   }
 }

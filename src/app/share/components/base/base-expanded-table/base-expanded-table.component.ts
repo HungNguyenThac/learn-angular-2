@@ -6,15 +6,19 @@ import {
   Output,
   TemplateRef,
 } from '@angular/core';
-import {detailExpandAnimation} from '../../../../core/common/animations/detail-expand.animation';
-import {Sort} from '@angular/material/sort';
-import {LiveAnnouncer} from '@angular/cdk/a11y';
-import {DisplayedFieldsModel} from '../../../../public/models/filter/displayed-fields.model';
-import {MatTableDataSource} from '@angular/material/table';
-import {PageEvent} from '@angular/material/paginator/public-api';
-import {SortDirection} from '@angular/material/sort/sort-direction';
-import {SelectionModel} from '@angular/cdk/collections';
-import {PeriodicElement} from '../../../../pages/dashboard/dashboard.component';
+import { detailExpandAnimation } from '../../../../core/common/animations/detail-expand.animation';
+import { Sort } from '@angular/material/sort';
+import { LiveAnnouncer } from '@angular/cdk/a11y';
+import { DisplayedFieldsModel } from '../../../../public/models/filter/displayed-fields.model';
+import { MatTableDataSource } from '@angular/material/table';
+import { PageEvent } from '@angular/material/paginator/public-api';
+import { SortDirection } from '@angular/material/sort/sort-direction';
+import { SelectionModel } from '@angular/cdk/collections';
+import { PeriodicElement } from '../../../../pages/dashboard/dashboard.component';
+import { MultiLanguageService } from '../../../translate/multiLanguageService';
+import { NotificationService } from '../../../../core/services/notification.service';
+import { ToastrService } from 'ngx-toastr';
+import { TableSelectActionModel } from '../../../../public/models/external/table-select-action.model';
 
 @Component({
   selector: 'app-base-expanded-table',
@@ -38,9 +42,11 @@ export class BaseExpandedTableComponent implements OnInit {
   @Input() hasSelect: boolean;
   @Input() sortDirection: SortDirection;
   @Input() allColumns: any[];
+  @Input() selectButtons: TableSelectActionModel[];
   @Output() triggerPageChange = new EventEmitter<any>();
   @Output() triggerSortChange = new EventEmitter<any>();
   @Output() triggerExpandedElementChange = new EventEmitter<any>();
+  @Output() outputAction = new EventEmitter<any>();
 
   expandedElement: any;
   selectedFields: DisplayedFieldsModel[] = [];
@@ -48,9 +54,14 @@ export class BaseExpandedTableComponent implements OnInit {
   selection = new SelectionModel<PeriodicElement>(true, []);
   displayColumn;
   arrDisplayColumn;
+  showEnableBtn: boolean = false;
 
-  constructor(private _liveAnnouncer: LiveAnnouncer) {
-  }
+  constructor(
+    private multiLanguageService: MultiLanguageService,
+    private notificationService: NotificationService,
+    private notifier: ToastrService,
+    private _liveAnnouncer: LiveAnnouncer
+  ) {}
 
   get numSelected() {
     return this.selection.selected.length;
@@ -58,6 +69,49 @@ export class BaseExpandedTableComponent implements OnInit {
 
   get showSelectedPanel() {
     return this.selection.selected.length !== 0;
+  }
+
+  public lockPrompt() {
+    const confirmLockRef = this.notificationService.openPrompt({
+      imgUrl: '../../../../../assets/img/icon/group-5/Alert.svg',
+      title: this.multiLanguageService.instant(
+        'system.user_detail.lock_user.title'
+      ),
+      content: this.multiLanguageService.instant(
+        'system.user_detail.lock_user.content'
+      ),
+      primaryBtnText: this.multiLanguageService.instant('common.lock'),
+      primaryBtnClass: 'btn-error',
+      secondaryBtnText: this.multiLanguageService.instant('common.skip'),
+    });
+    confirmLockRef.afterClosed().subscribe((result) => {
+      // if (result === 'PRIMARY') {
+      //   this.showEnableBtn = true;
+      // }
+    });
+  }
+
+  public deletePrompt() {
+    console.log(this.selection);
+    const confirmDeleteRef = this.notificationService.openPrompt({
+      imgUrl: '../../../../../assets/img/icon/group-5/Alert.svg',
+      title: this.multiLanguageService.instant(
+        'system.user_detail.delete_user.title'
+      ),
+      content: this.multiLanguageService.instant(
+        'system.user_detail.delete_user.content'
+      ),
+      primaryBtnText: this.multiLanguageService.instant('common.delete'),
+      primaryBtnClass: 'btn-error',
+      secondaryBtnText: this.multiLanguageService.instant('common.skip'),
+    });
+    confirmDeleteRef.afterClosed().subscribe((result) => {
+      if (result === 'PRIMARY') {
+        this.notifier.success(
+          this.multiLanguageService.instant('system.delete_user.toast')
+        );
+      }
+    });
   }
 
   displayedColumns() {
@@ -78,6 +132,11 @@ export class BaseExpandedTableComponent implements OnInit {
     ele.showed = !ele.showed;
     this.displayedColumns();
     this.displayedColumnKeys();
+  }
+
+  deselectAll() {
+    this.selection.clear();
+    return;
   }
 
   isAllSelected() {
@@ -154,5 +213,12 @@ export class BaseExpandedTableComponent implements OnInit {
       };
     });
     this.displayedColumns();
+  }
+
+  onClick(action) {
+    this.outputAction.emit({
+      action: action,
+      selectedList: this.selection.selected,
+    });
   }
 }

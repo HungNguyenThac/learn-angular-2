@@ -10,6 +10,7 @@ import { UserElementComponent } from './components/user-element/user-element.com
 import { UserDetailComponent } from './components/user-detail/user-detail.component';
 import { UserRoleComponent } from './components/user-role/user-role.component';
 import { UserTimeLogComponent } from './components/user-time-log/user-time-log.component';
+import { PermissionTreeComponent } from './components/permission-tree/permission-tree.component';
 
 export const UserRoutes: Routes = [
   {
@@ -25,7 +26,7 @@ export const UserRoutes: Routes = [
 ];
 
 @NgModule({
-  declarations: [UserListComponent, UserElementComponent, UserDetailComponent, UserRoleComponent, UserTimeLogComponent],
+  declarations: [UserListComponent, UserElementComponent, UserDetailComponent, UserRoleComponent, UserTimeLogComponent, PermissionTreeComponent],
   imports: [
     CommonModule,
     CommonModule,
