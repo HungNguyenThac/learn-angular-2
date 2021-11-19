@@ -39,7 +39,6 @@ export class LoanContractComponent implements OnInit, OnDestroy {
 
   subManager = new Subscription();
   @Output() triggerUpdateLoanAfterSign = new EventEmitter();
-  setTimeOut;
 
   constructor(
     private notifier: ToastrService,
@@ -70,7 +69,7 @@ export class LoanContractComponent implements OnInit, OnDestroy {
   set loanDetail(value: PaydayLoanHmg) {
     this._loanDetail = value;
     this.getDisplayStatus();
-     this._getLoanContractData();
+    this._getLoanContractData();
   }
 
   _customerInfo: CustomerInfo;
@@ -130,12 +129,18 @@ export class LoanContractComponent implements OnInit, OnDestroy {
       ).subscribe((result) => {
         if (result.responseCode === 200) {
           this.triggerUpdateLoanAfterSign.emit();
-          this.setTimeOut = setTimeout(() => {
-            this.notifier.success(`Ký hợp đồng thành công`);
+          setTimeout(() => {
+            this.notifier.success(
+              this.multiLanguageService.instant(
+                'loan_app.loan_info.sign_success'
+              )
+            );
           }, 3000);
         } else {
           this.notifier.error(
-            this.multiLanguageService.instant('loan_app.loan_contract.sign_fail')
+            this.multiLanguageService.instant(
+              'loan_app.loan_contract.sign_fail'
+            )
           );
         }
       })
@@ -175,7 +180,6 @@ export class LoanContractComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    clearTimeout(this.setTimeOut);
     this.subManager.unsubscribe();
   }
 
@@ -184,7 +188,7 @@ export class LoanContractComponent implements OnInit, OnDestroy {
       this.LoanListService.getContractData(
         this.loanDetail.id,
         this.loanDetail.customerId,
-        this.loanDetail.companyGroupName,
+        this.loanDetail.companyGroupName
       ).subscribe((response: ApiResponseContract) => {
         if (response.result === null) {
           return (this.loanContractData = null);
