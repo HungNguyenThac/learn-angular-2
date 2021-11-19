@@ -76,8 +76,6 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
   set loanDetail(value: PaydayLoanHmg) {
     this._loanDetail = value;
     this.getChangeLoanStatus();
-    this.maxLoanAmount = this.getMaxLoanAmount()
-    this.totalSettlementAmount = this.getTotalSettlementAmount();
     this.leftColumn = this._initLeftColumn();
     this.middleColumn = this._initMiddleColumn();
     this.rightColumn = this._initRightColumn();
@@ -138,6 +136,8 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
   }
 
   private _initMiddleColumn() {
+    this.maxLoanAmount = this.getMaxLoanAmount();
+    this.totalSettlementAmount = this.getTotalSettlementAmount();
     return [
       {
         title: this.multiLanguageService.instant(
