@@ -33,6 +33,9 @@ import {
   PAYDAY_LOAN_UI_STATUS,
   PAYDAY_LOAN_UI_STATUS_TEXT,
 } from '../../../../core/common/enum/payday-loan';
+import { NotificationService } from '../../../../core/services/notification.service';
+import { ToastrService } from 'ngx-toastr';
+import { TableSelectActionModel } from '../../../../public/models/external/table-select-action.model';
 
 export interface UserListResult {
   id: number;
@@ -84,6 +87,27 @@ export class UserListComponent implements OnInit, OnDestroy {
       status: this.multiLanguageService.instant('common.inactive'),
     },
   ];
+  selectButtons: TableSelectActionModel[] = [
+    {
+      action: 'delete',
+      color: 'accent',
+      content: this.multiLanguageService.instant(
+        'customer.individual_info.delete'
+      ),
+      imageSrc: 'assets/img/icon/group-5/trash.svg',
+      style: 'background-color: rgba(255, 255, 255, 0.1);',
+    },
+    {
+      action: 'lock',
+      color: 'accent',
+      content: this.multiLanguageService.instant(
+        'customer.individual_info.lock'
+      ),
+      imageSrc: 'assets/img/icon/group-5/lock-white.svg',
+      style: 'background-color: rgba(255, 255, 255, 0.1);',
+    },
+  ];
+
   companyList: Array<CompanyInfo>;
   subManager = new Subscription();
   tableTitle: string = this.multiLanguageService.instant(
@@ -230,6 +254,7 @@ export class UserListComponent implements OnInit, OnDestroy {
   totalItems: number = 0;
   filterForm: FormGroup;
   expandedElementId: number;
+  hasSelect: boolean = true;
   userInfo;
   private readonly routeAllState$: Observable<Params>;
 
@@ -237,6 +262,8 @@ export class UserListComponent implements OnInit, OnDestroy {
     private titleService: Title,
     private store: Store<fromStore.State>,
     private multiLanguageService: MultiLanguageService,
+    private notificationService: NotificationService,
+    private notifier: ToastrService,
     private companyControllerService: CompanyControllerService,
     private formBuilder: FormBuilder,
     private router: Router,
@@ -270,7 +297,6 @@ export class UserListComponent implements OnInit, OnDestroy {
   }
 
   public onExpandElementChange(element: any) {
-    console.log(element.id);
     this.expandedElementId = element.id;
     this.userInfo = this.userList.filter((user) => user.id === element.id)[0];
   }
@@ -308,6 +334,61 @@ export class UserListComponent implements OnInit, OnDestroy {
 
   public onFilterActionTrigger(event: FilterActionEventModel) {
     console.log('FilterActionEventModel', event);
+  }
+
+  public onOutputAction(event) {
+    const action = event.action;
+    const list = event.selectedList;
+    switch (action) {
+      case 'lock':
+        this.lockPrompt();
+        break;
+      case 'delete':
+        this.deletePrompt();
+        break;
+      default:
+        return;
+    }
+  }
+
+  public lockPrompt() {
+    const confirmLockRef = this.notificationService.openPrompt({
+      imgUrl: '../../../../../assets/img/icon/group-5/Alert.svg',
+      title: this.multiLanguageService.instant(
+        'system.user_detail.lock_user.title'
+      ),
+      content: this.multiLanguageService.instant(
+        'system.user_detail.lock_user.content'
+      ),
+      primaryBtnText: this.multiLanguageService.instant('common.lock'),
+      primaryBtnClass: 'btn-error',
+      secondaryBtnText: this.multiLanguageService.instant('common.skip'),
+    });
+    confirmLockRef.afterClosed().subscribe((result) => {});
+  }
+
+  public deletePrompt() {
+    const confirmDeleteRef = this.notificationService.openPrompt({
+      imgUrl: '../../../../../assets/img/icon/group-5/delete-dialog.svg',
+      title: this.multiLanguageService.instant(
+        'system.user_detail.delete_user.title'
+      ),
+      content: this.multiLanguageService.instant(
+        'system.user_detail.delete_user.content'
+      ),
+      primaryBtnText: this.multiLanguageService.instant('common.delete'),
+      primaryBtnClass: 'btn-error',
+      secondaryBtnText: this.multiLanguageService.instant('common.skip'),
+    });
+    confirmDeleteRef.afterClosed().subscribe((result) => {
+      if (result === 'PRIMARY') {
+        this.notifier.success(
+          this.multiLanguageService.instant(
+            'system.user_detail.delete_user.toast'
+          )
+        );
+      }
+    });
   }
 
   ngOnDestroy(): void {
