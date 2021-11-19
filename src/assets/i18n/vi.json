@@ -120,9 +120,9 @@
     "account": "Tài khoản",
     "navigation": {
       "dashboard": "Tổng quan",
-      "loanapp": "Khoản vay",
-      "loanapp_hmg": "Vay ứng lương HMG",
-      "loanapp_tng": "Vay ứng lương TNG",
+      "loanapp": "Khoản ứng",
+      "loanapp_hmg": "Ứng lương HMG",
+      "loanapp_tng": "Ứng lương TNG",
       "customer": "Khách hàng",
       "insurance": "Bảo hiểm",
       "saving": "Đầu tư"
@@ -286,33 +286,33 @@
   },
   "loan_app": {
     "tabs": {
-      "loan_info": "Thông tin khoản vay",
+      "loan_info": "Thông tin khoản ứng",
       "loan_contract": "Thông tin hợp đồng",
       "documents": "Tài liệu yêu cầu",
       "rating": "Đánh giá dịch vụ",
       "company_info": "Thông tin công ty"
     },
     "loan_info": {
-      "loan_code": "Mã khoản vay",
+      "loan_code": "Mã khoản ứng",
       "customer_name": "Tên khách hàng",
       "customer": "Khách hàng",
       "phone_number": "Số điện thoại",
       "salary_status": "Tình trạng trả lương",
-      "max_loan_amount": "Số tiền vay tối đa",
-      "loan_amount": "Số tiền vay",
+      "max_loan_amount": "Số tiền ứng tối đa",
+      "loan_amount": "Số tiền ứng",
       "service_charge": "Phí dịch vụ",
       "actual_received_amount": "Số tiền thực nhận",
-      "loan_term": "Thời hạn vay",
+      "loan_term": "Thời hạn ứng",
       "late_payment_fee": "Phí trả chậm",
       "total_settlement_amount": "Tổng tiền tất toán",
       "voucher_code": "Mã khuyến mại",
-      "loan_status": "Trạng thái khoản vay",
+      "loan_status": "Trạng thái khoản ứng",
       "status": "Trạng thái",
       "payment_status": "Trạng thái thanh toán",
-      "created_at": "Ngày tạo khoản vay",
+      "created_at": "Ngày tạo khoản ứng",
       "register_at": "Ngày đăng ký",
-      "updated_at": "Ngày cập nhật khoản vay",
-      "updated_by": "Người cập nhật khoản vay",
+      "updated_at": "Ngày cập nhật khoản ứng",
+      "updated_by": "Người cập nhật khoản ứng",
       "staff_in_charge": "Nhân viên phụ trách",
       "note": "Ghi chú",
       "type_note": "Viết ghi chú...",
@@ -341,10 +341,10 @@
       "lock": "Ngừng hoạt động",
       "cancel_update": "Hủy cập nhật",
       "save_update": "Lưu hoạt động",
-      "confirm_change_status_description": "Bạn có chắc chuyển trạng thái khoản vay {{loan_code}} từ {{current_loan_status}} → {{new_loan_status}}"
+      "confirm_change_status_description": "Bạn có chắc chuyển trạng thái khoản ứng {{loan_code}} từ {{current_loan_status}} → {{new_loan_status}}"
     },
     "loan_contract": {
-      "loan_status": "Trạng thái khoản vay",
+      "loan_status": "Trạng thái khoản ứng",
       "initialized": "Đã khởi tạo",
       "document_awaiting": "Chờ tài liệu",
       "document_completed": "Hoàn thành tài liệu",
@@ -431,8 +431,8 @@
       "awaiting_disbursement": "Chờ giải ngân",
       "disbursed": "Giải ngân",
       "completed": "Đã tất toán",
-      "unknown_status": "Khoản vay hiện tại",
-      "callback_payment_result": "Khoản vay hiện tại"
+      "unknown_status": "Khoản ứng hiện tại",
+      "callback_payment_result": "Khoản ứng hiện tại"
     },
     "repayment_status": {
       "overdue": "Quá hạn"
@@ -455,7 +455,7 @@
     "choose_company": "Chọn công ty",
     "pl_ui_status": "Trạng thái tài khoản",
     "account_status": "Trạng thái hoạt động",
-    "loan_status": "Trạng thái khoản vay",
+    "loan_status": "Trạng thái khoản ứng",
     "options": {
       "by_day": "Theo ngày",
       "to_day": "Hôm nay",
@@ -494,18 +494,18 @@
     "session_sign_already_exist": "Phiên ký đã tồn tại. Vui lòng thử lại sau",
     "lock_create_new_session": "Bạn tạm thời bị khóa chức năng do xác thực thất bại quá nhiều lần.",
     "do_not_exist_virtual_account": "Bạn chưa có tài khoản thanh toán. Vui lòng liên hệ tổng đài 1900 234 583 để được hỗ trợ",
-    "not_current_loan_repayment_error": "Bạn chưa có lịch sử thanh toán cho khoản vay hiện tại",
+    "not_current_loan_repayment_error": "Bạn chưa có lịch sử thanh toán cho khoản ứng hiện tại",
     "missing_anual_income": "Thiếu thông tin lương",
     "company_not_exist": "Công ty không tồn tại",
     "approval_letter_not_exist": "Thư chấp thuận không tồn tại",
-    "do_not_active_loan_error": "Không tồn tại khoản vay nào",
+    "do_not_active_loan_error": "Không tồn tại khoản ứng nào",
     "not_found_session": "Không tồn tại phiên ký",
     "internal_server_error": "Có lỗi xảy ra, vui lòng thử lại sau",
     "core_error": "Có lỗi xảy ra, vui lòng thử lại sau",
     "verification_failed": "Mã OTP không chính xác, vui lòng thử lại",
     "onsign_error": "Lỗi không xác định, vui lòng thử lại sau",
     "sent_otp_error": "Có lỗi xảy ra. Vui lòng chọn phương thức nhận OTP khác và thử lại.",
-    "invalid_loan_date_error": "Bạn không tạo khoản vay vào thời điểm này. Vui lòng tạo khoản vay sau ngày trả lương.",
+    "invalid_loan_date_error": "Bạn không tạo khoản ứng vào thời điểm này. Vui lòng tạo khoản ứng sau ngày trả lương.",
     "wrong_credential": "Tài khoản hoặc mật khẩu không chính xác. Vui lòng thử lại"
   },
   "not_found": {
@@ -517,18 +517,18 @@
     "sign_in": "Đăng nhập",
     "forgot_password": "Khôi phục mật khẩu",
     "forgot_pass_success": "Khôi phục mật khẩu thành công",
-    "loan_payment": "Chi tiết tất toán khoản vay",
+    "loan_payment": "Chi tiết tất toán khoản ứng",
     "choose_payment_method": "Chọn hình thức thanh toán",
     "not_found": "404",
     "customer_list": "Danh sách khách hàng",
-    "loan_list": "Danh sách khoản vay",
+    "loan_list": "Danh sách khoản ứng",
     "dashboard": "Trang chủ",
     "user_list": "Danh sách người dùng"
   },
   "breadcrumb": {
     "manage_customer": "Quản lý khách hàng",
-    "manage_payday_loan": "Quản lý khoản vay",
-    "search_field_payday_loan": "Mã khoản vay, Tên, Số điện thoại...",
+    "manage_payday_loan": "Quản lý khoản ứng",
+    "search_field_payday_loan": "Mã khoản ứng, Tên, Số điện thoại...",
     "manage_user": "Quản lý người dùng"
   },
   "system": {
