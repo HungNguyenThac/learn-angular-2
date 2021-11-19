@@ -24,6 +24,7 @@ router-outlet ~ * {
   width: 100%;
 }
 
+
 #main-layout-content {
   font-family: $sfPro;
   //height: 100%;
@@ -358,4 +359,10 @@ input.pl-text-otp {
     color: $grey-10;
     margin-top: 4px;
   }
+}
+
+.test {
+  background-color: #F7FBFF !important;
+  border: 1px solid #007AFF;
+  border-radius: 4px;
 }

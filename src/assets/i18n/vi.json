@@ -561,7 +561,10 @@
       }
     },
     "user_role": {
-      "title": "Phân quyền"
+      "title": "Phân quyền",
+      "add_role": "Thêm vai trò",
+      "edit_role": "Chỉnh sửa vai trò",
+      "add_role_placeholder": "Nhập tên vai trò"
     },
     "user_time_log": {
       "title": "Thời gian truy cập"
