@@ -14,7 +14,7 @@
 export interface PromotionEvent { 
     id?: string;
     purpose?: string;
-    createdBy?: string;
+    scope?: string;
     createdAt?: string;
     expiredAt?: string;
 }

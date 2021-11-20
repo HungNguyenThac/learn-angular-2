@@ -69,6 +69,7 @@ export class LoanContractComponent implements OnInit, OnDestroy {
   set loanDetail(value: PaydayLoanHmg) {
     this._loanDetail = value;
     this.getDisplayStatus();
+    this._getLoanContractData();
   }
 
   _customerInfo: CustomerInfo;
@@ -98,26 +99,21 @@ export class LoanContractComponent implements OnInit, OnDestroy {
   }
 
   checkSignable() {
-    console.log(
-      this.customerInfo.companyGroupName,
-      this.loanDetail.status,
-      this.loanContractData?.status
-    );
-
     if (
-      this.customerInfo.companyGroupName === 'HMG' &&
-      this.loanDetail.status === 'CONTRACT_AWAITING'
+      this.loanDetail?.companyGroupName === 'HMG' &&
+      this.loanDetail?.status === 'CONTRACT_AWAITING'
     ) {
-      this.enableSign = true;
+      return (this.enableSign = true);
     }
 
     if (
-      this.customerInfo.companyGroupName === 'TNG' &&
-      this.loanDetail.status === 'FUNDED' &&
-      this.loanContractData.status === 'AWAITING_EPAY_SIGNATURE'
+      this.loanDetail?.companyGroupName === 'TNG' &&
+      this.loanDetail?.status === 'FUNDED' &&
+      this.loanContractData?.status === 'AWAITING_EPAY_SIGNATURE'
     ) {
-      this.enableSign = true;
+      return (this.enableSign = true);
     }
+    return (this.enableSign = false);
   }
 
   onClickSign() {
@@ -131,13 +127,21 @@ export class LoanContractComponent implements OnInit, OnDestroy {
         idRequest,
         idDocument
       ).subscribe((result) => {
-        if (result?.result === 'Ký thành công') {
-          this.notifier.success(`Ký hợp đồng thành công`);
+        if (result.responseCode === 200) {
+          this.triggerUpdateLoanAfterSign.emit();
           setTimeout(() => {
-            this.triggerUpdateLoanAfterSign.emit();
-          }, 2000);
+            this.notifier.success(
+              this.multiLanguageService.instant(
+                'loan_app.loan_info.sign_success'
+              )
+            );
+          }, 3000);
         } else {
-          this.notifier.error(JSON.stringify(result?.message));
+          this.notifier.error(
+            this.multiLanguageService.instant(
+              'loan_app.loan_contract.sign_fail'
+            )
+          );
         }
       })
     );
@@ -157,6 +161,9 @@ export class LoanContractComponent implements OnInit, OnDestroy {
 
   onClickDownload() {
     this.LoanListService.downloadBlobFile(this.loanContractFile);
+    this.notifier.info(
+      this.multiLanguageService.instant('loan_app.loan_contract.downloading')
+    );
   }
 
   pdfView(pdfurl: string) {
@@ -180,7 +187,8 @@ export class LoanContractComponent implements OnInit, OnDestroy {
     this.subManager.add(
       this.LoanListService.getContractData(
         this.loanDetail.id,
-        this.loanDetail.customerId
+        this.loanDetail.customerId,
+        this.loanDetail.companyGroupName
       ).subscribe((response: ApiResponseContract) => {
         if (response.result === null) {
           return (this.loanContractData = null);

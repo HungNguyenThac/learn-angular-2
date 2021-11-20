@@ -67,7 +67,34 @@ export enum RESPONSE_CODE {
 }
 
 export enum BUTTON_TYPE {
-  PRIMARY = "PRIMARY",
-  SECONDARY = "SECONDARY"
+  PRIMARY = 'PRIMARY',
+  SECONDARY = 'SECONDARY',
 }
 
+export enum LOCK_TITLES {
+  BY_HOUR = 'lock_title.by_hour',
+  BY_DAY = 'lock_title.by_day',
+  PERMANENT = 'lock_title.permanent',
+}
+
+export enum LOCK_TIME_OPTIONS {
+  ONE_HOUR = 3600,
+  TWO_HOUR = 7200,
+  FOUR_HOUR = 14400,
+  EIGHT_HOUR = 28800,
+  ONE_DAY = 86400,
+  SEVEN_DAY = 604800,
+  THIRTY_DAY = 2592000,
+  PERMANENT = 'PERMANENT',
+}
+
+export enum LOCK_TIME_TEXT_OPTIONS {
+  ONE_HOUR = 'lock_time_options.1_hour',
+  TWO_HOUR = 'lock_time_options.2_hour',
+  FOUR_HOUR = 'lock_time_options.4_hour',
+  EIGHT_HOUR = 'lock_time_options.8_hour',
+  ONE_DAY = 'lock_time_options.1_day',
+  SEVEN_DAY = 'lock_time_options.7_day',
+  THIRTY_DAY = 'lock_time_options.30_day',
+  PERMANENT = 'lock_time_options.permanent',
+}

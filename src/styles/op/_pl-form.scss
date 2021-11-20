@@ -55,11 +55,11 @@
 }
 
 ::ng-deep.mat-form-field-appearance-outline.mat-form-field-can-float.mat-form-field-should-float
-  .mat-form-field-label,
+.mat-form-field-label,
 .mat-form-field-appearance-outline.mat-form-field-can-float
-  .mat-input-server:focus
-  + .mat-form-field-label-wrapper
-  .mat-form-field-label {
+.mat-input-server:focus
++ .mat-form-field-label-wrapper
+.mat-form-field-label {
   font-family: $sfPro;
   font-style: normal;
   font-weight: normal;
@@ -110,8 +110,10 @@
 
 ::ng-deep .mat-form-field-suffix {
   position: relative;
+
   button {
     margin-left: 16px;
+
     &:first-child {
       margin-left: 0;
     }
@@ -128,11 +130,11 @@
 }
 
 ::ng-deep.mat-form-field-appearance-outline.mat-form-field-can-float.mat-form-field-should-float
-  .mat-form-field-label,
+.mat-form-field-label,
 .mat-form-field-appearance-outline.mat-form-field-can-float
-  .mat-input-server:focus
-  + .mat-form-field-label-wrapper
-  .mat-form-field-label {
+.mat-input-server:focus
++ .mat-form-field-label-wrapper
+.mat-form-field-label {
   transform: translateY(-1.34375em) scale(0.75);
 }
 
@@ -172,7 +174,7 @@
   border: none !important;
   width: 20px !important;
   height: 20px !important;
-  background-image: url("/assets/img/icon/icon-down-grey-6.svg") !important;
+  background-image: url("../../assets/img/icon/icon-down-grey-6.svg") !important;
   background-repeat: no-repeat;
   background-size: 100% 100%;
 }
@@ -218,6 +220,7 @@ mat-radio-group {
 
 mat-radio-button {
   margin-right: 26px;
+
   &:first-child {
     margin-left: 2px;
   }
@@ -264,11 +267,13 @@ mat-radio-button {
   flex-direction: column;
   align-items: baseline;
   margin-bottom: 12px;
+
   .mat-form-field {
     .mat-form-field-wrapper {
       padding-bottom: 0;
       margin: 0;
     }
+
     .mat-form-field-infix {
       border-top: 0;
       padding: 0;
@@ -276,13 +281,16 @@ mat-radio-button {
       align-items: center;
       height: 36px;
     }
+
     .mat-form-field-label {
       top: 1.34375em;
     }
   }
+
   .mat-form-field-appearance-outline .mat-form-field-flex {
     margin: 0;
   }
+
   .mat-form-field-appearance-outline .mat-form-field-outline {
     position: absolute;
     top: 0;

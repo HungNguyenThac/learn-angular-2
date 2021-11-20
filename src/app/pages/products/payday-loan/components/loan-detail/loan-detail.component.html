@@ -4,7 +4,7 @@
     <ng-template matTabContent>
       <app-loan-detail-info
         (loanDetailDetectChangeStatus)="
-          loanDetailDetectChangeStatusTrigger($event)
+          loanDetailDetectChangeStatusTrigger()
         "
         [customerInfo]="userInfo"
         [groupName]="groupName"
@@ -41,7 +41,7 @@
     *ngIf="loanDetail?.ratingInfo?.isRated"
     [label]="'loan_app.tabs.rating' | translate"
   >
-    <ng-template>
+    <ng-template matTabContent>
       <app-loan-rating
         [loanDetail]="loanDetail"
         [loanId]="loanId"
@@ -58,6 +58,8 @@
         [companyOptions]="companyOptions"
         [customerId]="customerId"
         [customerInfo]="userInfo"
+        [disabledColumns]="disabledColumns"
+        [hiddenColumns]="hiddenColumns"
       ></app-customer-company-info>
     </ng-template>
     >

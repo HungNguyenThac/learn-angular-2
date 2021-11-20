@@ -1,6 +1,7 @@
 @import "../../../../../../styles/variables";
 @import "../../../../../../styles/op/common";
 @import "../../../../../../styles/op/pl-form";
+
 .text-area {
   width: 100%;
   border: none;
@@ -88,6 +89,7 @@
     color: $grey-10;
     word-break: break-word;
   }
+
   .op-customer-name-title {
     font-family: $sfPro;
     font-style: normal;
@@ -111,6 +113,12 @@
   position: absolute;
   right: 0;
   top: 0;
+}
+
+.company-avatar {
+  width: 36px;
+  height: 24px;
+  margin-right: 16px;
 }
 
 @media (max-width: 768px) {

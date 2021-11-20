@@ -8,7 +8,7 @@
       "card_payment_napas": "Thanh toán nhanh với NAPAS sẽ được thực hiện qua cổng thanh toán Gpay",
       "amount_to_be_paid": "Số tiền cần thanh toán",
       "amount_to_be_paid_desc": "Đã bao gồm phí trung gian thanh toán: 3.500 ₫ / mỗi lần giao dịch",
-      "hint_amount_to_be_paid": "Phí Thanh Toán = (giá trị khoản vay x 1.1%) + 1650 VNĐ",
+      "hint_amount_to_be_paid": "Phí Thanh Toán = (giá trị khoản ứng x 1.1%) + 1650 VNĐ",
       "payment": "Thanh toán",
       "bank_transfer": "Chuyển khoản ngân hàng",
       "guide_bank_transfer": "Thanh toán bằng cách chuyển khoản trực tiếp đến tài khoản của Monex với thông tin như sau:",

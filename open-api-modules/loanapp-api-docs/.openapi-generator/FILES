@@ -1,5 +1,4 @@
 .gitignore
-.openapi-generator-ignore
 README.md
 api.module.ts
 api/api.ts
@@ -15,11 +14,12 @@ model/apiResponseApplyResponse.ts
 model/apiResponseContract.ts
 model/apiResponseListPaydayLoan.ts
 model/apiResponseListPromotionEvent.ts
-model/apiResponseListVoucher.ts
+model/apiResponseListVoucherDTO.ts
 model/apiResponseObject.ts
 model/apiResponsePaydayLoan.ts
 model/apiResponseString.ts
 model/apiResponseVoucher.ts
+model/apiResponseVoucherDTO.ts
 model/apiResponseVoucherTransaction.ts
 model/applyResponse.ts
 model/checkValidVoucherRequest.ts
@@ -33,6 +33,8 @@ model/promotionEvent.ts
 model/updateLoanRequest.ts
 model/updateLoanStatusRequest.ts
 model/updatePromotionEventRequest.ts
+model/updateVoucherRequest.ts
 model/voucher.ts
+model/voucherDTO.ts
 model/voucherTransaction.ts
 variables.ts

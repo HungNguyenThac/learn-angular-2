@@ -9,7 +9,7 @@ paths:
   /v1/{loanId}/update-loan:
     post:
       tags:
-      - op-controller
+      - payday-loan-controller
       operationId: updateInfo
       parameters:
       - name: loanId
@@ -33,7 +33,7 @@ paths:
   /v1/{loanId}/change-status:
     post:
       tags:
-      - op-controller
+      - payday-loan-controller
       operationId: changeLoanStatus
       parameters:
       - name: loanId
@@ -129,63 +129,15 @@ paths:
   /v1/get-service-token:
     post:
       tags:
-      - op-controller
+      - payday-loan-controller
       operationId: getServiceToken
       responses:
         "200":
           description: OK
-  /v1/cronjob/withdraw-loan:
-    post:
-      tags:
-      - op-controller
-      operationId: withdraw
-      responses:
-        "200":
-          description: OK
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/ApiResponseString'
-  /v1/cronjob/overdue:
-    post:
-      tags:
-      - op-controller
-      operationId: setLoanOverdue
-      responses:
-        "200":
-          description: OK
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/ApiResponseString'
-  /v1/cronjob/notify-loan-inrepayment:
-    post:
-      tags:
-      - op-controller
-      operationId: notifyInRepaymentLoan
-      responses:
-        "200":
-          description: OK
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/ApiResponseString'
-  /v1/cronjob/notify-before-get-salary:
-    post:
-      tags:
-      - op-controller
-      operationId: notifyBeforeGetSalary
-      responses:
-        "200":
-          description: OK
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/ApiResponseString'
   /v1/create-application:
     post:
       tags:
-      - op-controller
+      - payday-loan-controller
       operationId: createLoan
       requestBody:
         content:
@@ -203,7 +155,7 @@ paths:
   /v1/{loanId}:
     get:
       tags:
-      - op-controller
+      - payday-loan-controller
       operationId: changeLoanStatus_1
       parameters:
       - name: loanId
@@ -221,7 +173,7 @@ paths:
   /v1/{customerId}/get-loan:
     get:
       tags:
-      - op-controller
+      - payday-loan-controller
       operationId: getLoan
       parameters:
       - name: customerId
@@ -244,7 +196,7 @@ paths:
   /v1/{customerId}/get-active-loan:
     get:
       tags:
-      - op-controller
+      - payday-loan-controller
       operationId: getActivePaydayLoan
       parameters:
       - name: customerId
@@ -303,7 +255,7 @@ paths:
   /v1/status:
     get:
       tags:
-      - op-controller
+      - payday-loan-controller
       operationId: getLoanByStatus
       parameters:
       - name: status
@@ -571,8 +523,8 @@ components:
           format: int32
         purpose:
           type: string
-        voucherTransaction:
-          $ref: '#/components/schemas/VoucherTransaction'
+        voucherTransactionId:
+          type: string
     ApiResponseApplyResponse:
       type: object
       properties:
@@ -659,6 +611,12 @@ components:
         getSalaryAt:
           type: string
         createdAt:
+          type: string
+        updatedAt:
+          type: string
+        note:
+          type: string
+        personInChargeId:
           type: string
     ApiResponseListPaydayLoan:
       type: object

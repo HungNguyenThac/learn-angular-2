@@ -21,6 +21,10 @@ export interface Voucher {
     remainAmount?: number;
     activedTime?: Array<string>;
     description?: string;
+    type?: string;
+    scope?: string;
+    expiredAt?: string;
+    limitPerDay?: number;
     createdAt?: string;
 }
 

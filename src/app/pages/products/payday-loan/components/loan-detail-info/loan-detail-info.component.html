@@ -59,7 +59,9 @@
               </p>
             </li>
             <li>
-              <form class="note-form">
+              <form [formGroup]="loanInfoForm"
+                    class="note-form"
+                    (submit)="submitForm()">
                 <mat-form-field appearance="standard" class="w-100">
                   <mat-label
                     class="
@@ -72,13 +74,16 @@
                     <span class="sprite-group-5-pen-grey"></span>
                     <span class="op-text-area-label">{{
                       "loan_app.loan_info.note" | translate
-                    }}</span>
+                      }}</span>
                   </mat-label>
                   <textarea
                     matInput
                     class="text-area"
                     id="review"
                     name="review"
+                    formControlName="note"
+                    (blur)="submitForm()"
+                    (keyup.enter)="submitForm()"
                     [placeholder]="'loan_app.loan_info.type_note' | translate"
                   ></textarea>
                 </mat-form-field>
@@ -94,24 +99,14 @@
 
   <div class="row mt-3 mb-3">
     <div class="col-12 d-flex gap-2 justify-content-end">
-      <button mat-flat-button color="accent" (click)="changeLoanStatus(nextLoanStatus, nextLoanStatusDisplay)" [hidden]="nextLoanStatus === 'UNKNOWN_STATUS'">
+      <button mat-flat-button color="accent" (click)="changeLoanStatus(nextLoanStatus, nextLoanStatusDisplay)"
+              [hidden]="nextLoanStatus === 'UNKNOWN_STATUS'">
         {{ nextLoanStatusDisplay }}
       </button>
-      <button mat-flat-button color="warn" (click)="changeLoanStatus(rejectLoanStatus, rejectLoanStatusDisplay)" [hidden]="rejectLoanStatus === 'UNKNOWN_STATUS'">
-        <span>
-          <svg
-            width="16"
-            height="16"
-            viewBox="0 0 16 16"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M8.00016 1.33325C11.682 1.33325 14.6668 4.31802 14.6668 7.99992C14.6668 11.6818 11.682 14.6666 8.00016 14.6666C4.31826 14.6666 1.3335 11.6818 1.3335 7.99992C1.3335 4.31802 4.31826 1.33325 8.00016 1.33325ZM10.3537 5.64637L10.2976 5.59795C10.1236 5.46885 9.88483 5.46726 9.70923 5.59317L9.64663 5.64637L8.00016 7.29259L6.35372 5.64637L6.29764 5.59795C6.12364 5.46885 5.88484 5.46726 5.70924 5.59317L5.64661 5.64637L5.5982 5.70245C5.4691 5.87644 5.4675 6.11525 5.59342 6.29084L5.64661 6.35347L7.29283 7.99992L5.64661 9.64639L5.5982 9.70245C5.4691 9.87645 5.4675 10.1153 5.59342 10.2909L5.64661 10.3535L5.70269 10.4019C5.87668 10.531 6.11549 10.5326 6.29108 10.4067L6.35372 10.3535L8.00016 8.70725L9.64663 10.3535L9.7027 10.4019C9.8767 10.531 10.1155 10.5326 10.2911 10.4067L10.3537 10.3535L10.4021 10.2974C10.5312 10.1234 10.5328 9.88459 10.4069 9.70899L10.3537 9.64639L8.7075 7.99992L10.3537 6.35347L10.4021 6.29739C10.5312 6.1234 10.5328 5.88459 10.4069 5.709L10.3537 5.64637L10.2976 5.59795L10.3537 5.64637Z"
-              fill="white"
-            />
-          </svg>
-        </span>
+      <button mat-flat-button color="warn"
+              (click)="changeLoanStatus(rejectLoanStatus, rejectLoanStatusDisplay)"
+              [hidden]="rejectLoanStatus === 'UNKNOWN_STATUS'">
+        <span class="sprite-group-7-dismiss"></span>
         {{ rejectLoanStatusDisplay }}
       </button>
     </div>

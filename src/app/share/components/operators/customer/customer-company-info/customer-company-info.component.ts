@@ -34,6 +34,8 @@ export class CustomerCompanyInfoComponent implements OnInit, OnDestroy {
   @Input() customerId: string = '';
   @Input() bankOptions: Array<Bank>;
   @Input() companyOptions: Array<CompanyInfo>;
+  @Input() disabledColumns: string[];
+  @Input() hiddenColumns: string[];
 
   _customerInfo: CustomerInfo;
   @Input()
@@ -48,6 +50,7 @@ export class CustomerCompanyInfoComponent implements OnInit, OnDestroy {
   }
 
   @Output() triggerUpdateInfo = new EventEmitter<any>();
+
 
   isCanCheckSalary: boolean = false;
 
@@ -203,6 +206,8 @@ export class CustomerCompanyInfoComponent implements OnInit, OnDestroy {
         customerId: this.customerId,
         bankOptions: this.bankOptions,
         companyOptions: this.companyOptions,
+        disabledColumns: this.disabledColumns,
+        hiddenColumns: this.hiddenColumns,
       },
     });
 
@@ -222,7 +227,8 @@ export class CustomerCompanyInfoComponent implements OnInit, OnDestroy {
     return {
       'personalData.companyId': data?.companyId,
       'personalData.organizationName': data?.employeeCode,
-      'personalData.borrowerEmploymentHistoryTextVariable1': data?.borrowerEmploymentHistoryTextVariable1,
+      'personalData.borrowerEmploymentHistoryTextVariable1':
+        data?.borrowerEmploymentHistoryTextVariable1,
       'personalData.firstName': data?.firstName,
       'tngData.ten': data?.tngFirstName || null,
       'tngData.ho': data?.tngLastName || null,

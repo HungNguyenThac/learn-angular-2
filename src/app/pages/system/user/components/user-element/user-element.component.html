@@ -1,0 +1,24 @@
+<mat-tab-group dynamicHeight>
+  <!--  Loan Info-->
+  <mat-tab [label]="'system.user_detail.title' | translate">
+    <ng-template matTabContent>
+      <app-user-detail [userInfo]="userInfo"
+      ></app-user-detail>
+    </ng-template>
+  </mat-tab>
+
+  <mat-tab [label]="'system.user_role.title' | translate">
+    <ng-template matTabContent>
+      <app-user-role></app-user-role>
+    </ng-template
+    >
+  </mat-tab>
+
+  <mat-tab [label]="'system.user_time_log.title' | translate">
+    <ng-template matTabContent>
+      <app-user-time-log></app-user-time-log>
+    </ng-template
+    >
+  </mat-tab>
+
+</mat-tab-group>

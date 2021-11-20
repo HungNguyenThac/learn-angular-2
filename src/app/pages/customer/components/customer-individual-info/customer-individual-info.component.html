@@ -85,7 +85,7 @@
                     <span class="sprite-group-5-pen-grey"></span>
                     <span class="op-text-area-label">{{
                       "customer.individual_info.note" | translate
-                    }}</span>
+                      }}</span>
                   </mat-label>
                   <textarea
                     matInput
@@ -112,14 +112,55 @@
 
   <div class="row mt-3 mb-3">
     <div class="col-12 d-flex gap-2 justify-content-end">
-      <button mat-flat-button color="accent" (click)="openUpdateDialog()">
+      <button (click)="openUpdateDialog()" color="accent" mat-flat-button>
         <span class="sprite-group-5-pen-white"></span>
         {{ "customer.individual_info.update" | translate }}
       </button>
-      <button mat-flat-button color="warn" disabled>
+      <button (click)="displayDisableOption()" *ngIf="showDisableOption else showEnableOption" color="warn"
+              mat-flat-button>
         <span class="sprite-group-5-lock-white"></span>
         {{ "customer.individual_info.lock" | translate }}
       </button>
+      <ng-template #showEnableOption>
+        <button (click)="displayEnableOption()" color="primary" mat-flat-button>
+          <span class="sprite-group-7-unlock"></span>
+          {{ "customer.individual_info.unlock" | translate }}
+        </button>
+      </ng-template>
+      <div
+        #staticMethodEle
+        (mouseleave)="staticMethodEle.style.display = 'none'"
+        class="customer-disable-form-container-expand"
+        id="disableMethod"
+      >
+        <div class="arrow">
+          <span class="sprite-group-7-popup-arrow-down"></span>
+
+        </div>
+        <div class="card op-card op-drop-shadow">
+          <div class="card-title d-flex align-items-center gap-1">
+            {{ "customer.individual_info.disable_customer.title" | translate }}
+          </div>
+          <div class="card-body">
+            <div class="all-time-filter-container d-flex flex-wrap gap-3">
+              <div
+                *ngFor="let timeOption of timeDisableOptions"
+                class="column-options"
+              >
+                <div class="thead">{{ timeOption.mainTitle }}</div>
+                <div
+                  (click)="chooseDisableTime(
+                  ele.title, ele.value,staticMethodEle)"
+                  *ngFor="let ele of timeOption.options"
+                  class="trow"
+                >
+                  {{ ele.title }}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>

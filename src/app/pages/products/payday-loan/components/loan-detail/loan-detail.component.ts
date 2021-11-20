@@ -34,8 +34,10 @@ export class LoanDetailComponent implements OnInit, OnDestroy {
   companyOptions: Array<CompanyInfo>;
   @Input() groupName: string;
   @Output() loanDetailTriggerUpdateStatus = new EventEmitter<any>();
-  @Output() detectUpdateLoanAfterSign = new EventEmitter();
+  @Output() detectUpdateLoanAfterSign = new EventEmitter<any>();
   subManager = new Subscription();
+  hiddenColumns: string[] = [];
+  disabledColumns: string[] = ['companyId'];
 
   constructor(
     private applicationHmgControllerService: ApplicationHmgControllerService,
@@ -80,16 +82,17 @@ export class LoanDetailComponent implements OnInit, OnDestroy {
   }
 
   loanDetailDetectChangeStatusTrigger() {
-    this.triggerUpdateLoanElement()
+    this.triggerUpdateLoanElement();
   }
 
   triggerUpdateLoanAfterSign() {
-    this.triggerUpdateLoanElement()
+    this.triggerUpdateLoanElement();
   }
 
   triggerUpdateLoanElement() {
     this.notificationService.showLoading({ showContent: true });
     this.timeOut = setTimeout(() => {
+      console.log("stop loading");
       this._getLoanById(this.loanId);
       this.notificationService.hideLoading();
     }, 3000);
@@ -162,8 +165,37 @@ export class LoanDetailComponent implements OnInit, OnDestroy {
     );
   }
 
+  public updateCustomerInfo(updateInfoRequest: Object) {
+    this.notificationService.showLoading({ showContent: true });
+    this.subManager.add(
+      this.customerDetailService
+        .updateCustomerInfo(this.customerId, updateInfoRequest, null, true)
+        .subscribe(
+          (result) => {
+            if (result?.responseCode !== RESPONSE_CODE.SUCCESS) {
+              this.notifier.error(
+                JSON.stringify(result?.message),
+                result?.errorCode
+              );
+              return;
+            }
+            setTimeout(() => {
+              this.notifier.success(
+                this.multiLanguageService.instant('common.update_success')
+              );
+              this._getCustomerInfoById(this.customerId);
+              this.notificationService.hideLoading();
+            }, 3000);
+          },
+          (error) => {
+            this.notifier.error(JSON.stringify(error));
+            this.notificationService.hideLoading();
+          }
+        )
+    );
+  }
+
   ngOnDestroy() {
     this.subManager.unsubscribe();
-    clearTimeout(this.timeOut);
   }
 }

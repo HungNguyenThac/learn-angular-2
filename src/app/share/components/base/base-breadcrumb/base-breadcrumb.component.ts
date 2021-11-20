@@ -15,6 +15,7 @@ export class BaseBreadcrumbComponent implements OnInit {
   @Input() extraActionLabel: string;
   @Input() btnAddText: string;
   @Input() showBtnAdd: boolean = false;
+  @Input() maxLengthSearchInput: number = 50
 
   _keyword: string;
   @Input()

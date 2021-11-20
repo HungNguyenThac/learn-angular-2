@@ -38,6 +38,8 @@ export class CustomerDetailElementComponent implements OnInit, OnDestroy {
   userInfo: CustomerInfo;
   bankOptions: Array<Bank>;
   companyOptions: Array<CompanyInfo>;
+  hiddenColumns: string[] = [];
+  disabledColumns: string[] = [];
 
   subManager = new Subscription();
 
