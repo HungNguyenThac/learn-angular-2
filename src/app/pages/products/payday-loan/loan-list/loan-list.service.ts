@@ -5,6 +5,7 @@ import {
   PaydayLoanControllerService,
   ContractControllerService as ContractHmgControllerService,
 } from '../../../../../../open-api-modules/loanapp-hmg-api-docs';
+import { ContractControllerService as ComSignContractAutomation } from 'open-api-modules/com-api-docs';
 import { Injectable } from '@angular/core';
 import { catchError, map } from 'rxjs/operators';
 import { CustomerControllerService } from 'open-api-modules/dashboard-api-docs';
@@ -27,7 +28,8 @@ export class LoanListService {
     private applicationHmgControllerService: ApplicationHmgControllerService,
     private customerControllerService: CustomerControllerService,
     private contractControllerService: ContractControllerService,
-    private contractHmgControllerService:ContractHmgControllerService,
+    private comSignContractAutomation: ComSignContractAutomation,
+    private contractHmgControllerService: ContractHmgControllerService,
     private signContractAutomation: SignDocumentControllerService,
     private fileControllerService: FileControllerService
   ) {}
@@ -126,7 +128,11 @@ export class LoanListService {
     );
   }
 
-  public getContractData(loanId: string, customerId: string, groupName: string) {
+  public getContractData(
+    loanId: string,
+    customerId: string,
+    groupName: string
+  ) {
     if (groupName === 'TNG') {
       return this.contractControllerService
         .getActivePaydayLoan2(loanId, customerId)
@@ -163,8 +169,22 @@ export class LoanListService {
     idRequest: number,
     idDocument: number
   ) {
-    return this.signContractAutomation
-      .v1SignAdminSignContractPost({ customerId, idRequest, idDocument })
+    //contract svc
+    // return this.signContractAutomation
+    //   .v1SignAdminSignContractPost({ customerId, idRequest, idDocument })
+    //   .pipe(
+    //     map((results) => {
+    //       return results;
+    //     }),
+
+    //     catchError((err) => {
+    //       throw err;
+    //     })
+    //   );
+
+    // com svc
+    return this.comSignContractAutomation
+      .signContractAutomation({ customerId, idRequest, idDocument })
       .pipe(
         map((results) => {
           return results;
