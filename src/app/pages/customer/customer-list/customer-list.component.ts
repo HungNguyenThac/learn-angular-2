@@ -402,28 +402,24 @@ export class CustomerListComponent implements OnInit, OnDestroy {
 
   private _getCustomerList() {
     const params = this._buildParams();
-    this.subManager.add(
-      this.customerListService
-        .getData(params)
-        .subscribe(
-          (data: ApiResponseSearchAndPaginationResponseCustomerInfo) => {
-            this._parseData(data?.result);
-          }
-        )
-    );
+    // this.subManager.add(
+    this.customerListService
+      .getData(params)
+      .subscribe((data: ApiResponseSearchAndPaginationResponseCustomerInfo) => {
+        this._parseData(data?.result);
+      });
+    // );
   }
 
   private _getCompanyList() {
-    this.subManager.add(
-      this.companyControllerService
-        .getCompanies(100, 0, {})
-        .subscribe(
-          (data: ApiResponseSearchAndPaginationResponseCompanyInfo) => {
-            this.companyList = data?.result?.data;
-            this._initCompanyOptions();
-          }
-        )
-    );
+    // this.subManager.add(
+    this.companyControllerService
+      .getCompanies(100, 0, {})
+      .subscribe((data: ApiResponseSearchAndPaginationResponseCompanyInfo) => {
+        this.companyList = data?.result?.data;
+        this._initCompanyOptions();
+      });
+    // );
   }
 
   private _initCompanyOptions() {
@@ -563,7 +559,7 @@ export class CustomerListComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     if (this.subManager !== null) {
-      // this.subManager.unsubscribe();
+      this.subManager.unsubscribe();
     }
   }
 }
