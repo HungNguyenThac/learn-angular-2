@@ -190,6 +190,27 @@
                 <div>
                   <mat-form-field appearance="outline" class="w-100">
                     <mat-label>{{
+                      "account.info.position" | translate
+                      }}</mat-label>
+                    <mat-icon [ngClass]="
+                        addAccountForm.controls.accountPosition.value != '' ||
+                        isPositionInputFocus
+                          ? 'is-focused-icon'
+                          : ''
+                      "
+                              class="role-icon" matPrefix></mat-icon>
+                    <mat-select formControlName="accountRole">
+                      <mat-option
+                        *ngFor="let positionOption of positionOptions.options"
+                        [value]="positionOption">{{positionOption}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+
+                <div>
+                  <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>{{
                       "account.add.note" | translate
                       }}</mat-label>
                     <mat-icon [ngClass]="

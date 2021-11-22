@@ -14,11 +14,11 @@
                 id="logo-monex-container"
                 class="d-flex align-items-center"
               >
-                <img [src]="logoSrc" alt="logo-monex" id="logo-monex" />
+                <img [src]="logoSrc" alt="logo-monex" id="logo-monex"/>
                 <span class="divider-monex-logo" *ngIf="!responsive">|</span>
                 <span id="title-monex-op" *ngIf="!responsive">{{
                   "header.op" | translate
-                }}</span>
+                  }}</span>
               </a>
 
               <div class="d-flex gap-3" *ngIf="showProfileBtn">
@@ -30,10 +30,32 @@
                 </section>
 
                 <section *ngIf="!responsive">
-                  <button class="header-nav-btn gap-1">
+                  <button
+                    #settingMenuTrigger="matMenuTrigger"
+                    (click)="settingMenuTrigger.openMenu()"
+                    [matMenuTriggerFor]="settingMenu"
+                    class="header-nav-btn gap-1"
+                  >
                     <span>{{ "header.setting" | translate }}</span>
                     <div class="sprite-group-5-setting-white"></div>
                   </button>
+
+                  <!--Setting pop-up menu-->
+                  <mat-menu #settingMenu="matMenu">
+                    <span (mouseleave)="settingMenuTrigger.closeMenu()">
+                      <button (click)="onClickManageUser()" class="gap-1" mat-menu-item>
+                        <div class="d-flex gap-1 align-items-center">
+                          <img src="assets/img/icon/group-7/svg/manage-user.svg" alt="">
+                          <span>{{ "header.mange_user" | translate }}</span>
+                        </div>
+                      </button>
+                      <button class="gap-1" mat-menu-item>
+                        <div class="d-flex gap-1 align-items-center">
+                          <span>Setting Option</span>
+                        </div>
+                      </button>
+                    </span>
+                  </mat-menu>
                 </section>
 
                 <section>
@@ -55,16 +77,17 @@
                       "
                     >
                       <div>
-                        <p id="manager-name">{{ fullName }}</p>
+                        <p id="manager-name">{{ accountInfo.fullName }}</p>
                         <p id="manager-role" class="d-flex gap-1">
                           <span class="sprite-group-5-personal-roll"></span>
-                          <span>{{ roleName }}</span>
+                          <span>{{ accountInfo.roleName }}</span>
                         </p>
                       </div>
                       <div class="avatar">{{ shortName }}</div>
                     </div>
                   </button>
 
+                  <!--Profile-popup-->
                   <mat-menu #profileMenu="matMenu">
                     <span (mouseleave)="profileMenuTrigger.closeMenu()">
                       <button mat-menu-item class="gap-1" *ngIf="responsive">
@@ -81,8 +104,21 @@
                         </div>
                       </button>
 
-                      <button mat-menu-item (click)="logout()">
-                        {{ "auth.logout" | translate }}
+                      <button
+                        (click)="openUpdateDialog()"
+                        class="gap-1"
+                        mat-menu-item
+                      >
+                        <div class="d-flex gap-1 align-items-center">
+                          <img src="assets/img/icon/group-7/svg/user-info.svg" alt="">
+                          <span>{{ "header.account" | translate }}</span>
+                        </div>
+                      </button>
+                      <button (click)="logout()" mat-menu-item>
+                        <div class="d-flex gap-1 align-items-center">
+                          <img src="assets/img/icon/group-7/svg/logout.svg" alt="">
+                          <span>{{ "auth.logout" | translate }}</span>
+                        </div>
                       </button>
                     </span>
                   </mat-menu>

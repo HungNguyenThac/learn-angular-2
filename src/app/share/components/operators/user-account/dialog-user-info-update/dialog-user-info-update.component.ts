@@ -19,6 +19,11 @@ export class DialogUserInfoUpdateComponent implements OnInit {
     options: ['Super Admin', '2', '3'],
   };
 
+  positionOptions = {
+    fieldName: 'Vị trí công việc',
+    options: ['Kiểm duyệt viên', 'DB Merchant', 'Operator Admin', 'Kế toán'],
+  };
+
   constructor(
     private dialogRef: MatDialogRef<DialogUserInfoUpdateComponent>,
     private formBuilder: FormBuilder,
@@ -39,6 +44,7 @@ export class DialogUserInfoUpdateComponent implements OnInit {
       accountRole: [''],
       accountPhone: [''],
       accountEmail: [''],
+      accountPosition: [''],
       accountNote: [''],
     });
   }
@@ -50,6 +56,7 @@ export class DialogUserInfoUpdateComponent implements OnInit {
       accountRole: data.accountRole,
       accountPhone: data.accountPhone,
       accountEmail: data.accountEmail,
+      accountPosition: data.accountPosition,
       accountNote: data.accountNote,
     });
   }
