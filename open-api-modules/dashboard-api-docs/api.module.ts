@@ -8,8 +8,11 @@ import { ApplicationHmgControllerService } from './api/applicationHmgController.
 import { ApplicationTngControllerService } from './api/applicationTngController.service';
 import { ApprovalLetterControllerService } from './api/approvalLetterController.service';
 import { BankControllerService } from './api/bankController.service';
+import { CityControllerService } from './api/cityController.service';
+import { CommuneControllerService } from './api/communeController.service';
 import { CompanyControllerService } from './api/companyController.service';
 import { CustomerControllerService } from './api/customerController.service';
+import { DistrictControllerService } from './api/districtController.service';
 import { EkycControllerService } from './api/ekycController.service';
 import { InsuranceControllerService } from './api/insuranceController.service';
 import { OpenApiControllerWebMvcService } from './api/openApiControllerWebMvc.service';

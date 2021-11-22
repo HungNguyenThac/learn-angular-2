@@ -89,15 +89,15 @@ export class TngDataTransactionControllerService {
      * @param pageNumber 
      * @param pageSize 
      * @param requestBody 
-     * @param sortField 
+     * @param orderBy 
      * @param descending 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public geTngDataTransaction(pageNumber: number, pageSize: number, requestBody: { [key: string]: object; }, sortField?: string, descending?: boolean, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseSearchAndPaginationResponseTNGInformationResponse>;
-    public geTngDataTransaction(pageNumber: number, pageSize: number, requestBody: { [key: string]: object; }, sortField?: string, descending?: boolean, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseSearchAndPaginationResponseTNGInformationResponse>>;
-    public geTngDataTransaction(pageNumber: number, pageSize: number, requestBody: { [key: string]: object; }, sortField?: string, descending?: boolean, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseSearchAndPaginationResponseTNGInformationResponse>>;
-    public geTngDataTransaction(pageNumber: number, pageSize: number, requestBody: { [key: string]: object; }, sortField?: string, descending?: boolean, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
+    public geTngDataTransaction(pageNumber: number, pageSize: number, requestBody: { [key: string]: object; }, orderBy?: string, descending?: boolean, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseSearchAndPaginationResponseTNGInformationResponse>;
+    public geTngDataTransaction(pageNumber: number, pageSize: number, requestBody: { [key: string]: object; }, orderBy?: string, descending?: boolean, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseSearchAndPaginationResponseTNGInformationResponse>>;
+    public geTngDataTransaction(pageNumber: number, pageSize: number, requestBody: { [key: string]: object; }, orderBy?: string, descending?: boolean, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseSearchAndPaginationResponseTNGInformationResponse>>;
+    public geTngDataTransaction(pageNumber: number, pageSize: number, requestBody: { [key: string]: object; }, orderBy?: string, descending?: boolean, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
         if (pageNumber === null || pageNumber === undefined) {
             throw new Error('Required parameter pageNumber was null or undefined when calling geTngDataTransaction.');
         }
@@ -113,9 +113,9 @@ export class TngDataTransactionControllerService {
           queryParameters = this.addToHttpParams(queryParameters,
             <any>pageNumber, 'pageNumber');
         }
-        if (sortField !== undefined && sortField !== null) {
+        if (orderBy !== undefined && orderBy !== null) {
           queryParameters = this.addToHttpParams(queryParameters,
-            <any>sortField, 'sortField');
+            <any>orderBy, 'orderBy');
         }
         if (pageSize !== undefined && pageSize !== null) {
           queryParameters = this.addToHttpParams(queryParameters,
