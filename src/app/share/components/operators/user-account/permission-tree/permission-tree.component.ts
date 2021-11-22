@@ -71,7 +71,6 @@ export class PermissionTreeComponent implements OnInit {
           node.item = value;
         }
       }
-
       return accumulator.concat(node);
     }, []);
   }

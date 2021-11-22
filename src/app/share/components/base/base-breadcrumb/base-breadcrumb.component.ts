@@ -1,5 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
+import { AddNewUserDialogComponent } from '../../operators/user-account/add-new-user-dialog/add-new-user-dialog.component';
 
 @Component({
   selector: 'app-base-breadcrumb',
@@ -15,7 +17,7 @@ export class BaseBreadcrumbComponent implements OnInit {
   @Input() extraActionLabel: string;
   @Input() btnAddText: string;
   @Input() showBtnAdd: boolean = false;
-  @Input() maxLengthSearchInput: number = 50
+  @Input() maxLengthSearchInput: number = 50;
 
   _keyword: string;
   @Input()
@@ -33,7 +35,7 @@ export class BaseBreadcrumbComponent implements OnInit {
 
   searchForm: FormGroup;
 
-  constructor(private formBuilder: FormBuilder) {
+  constructor(private formBuilder: FormBuilder, private dialog: MatDialog) {
     this.searchForm = this.formBuilder.group({
       keyword: [''],
     });
@@ -48,5 +50,13 @@ export class BaseBreadcrumbComponent implements OnInit {
   public submitSearch() {
     const searchData = this.searchForm.getRawValue();
     this.submitSearchForm.emit(searchData);
+  }
+
+  openAddUserDialog() {
+    const addUserDialogRef = this.dialog.open(AddNewUserDialogComponent, {
+      panelClass: 'custom-info-dialog-container',
+      maxWidth: '800px',
+      width: '90%',
+    });
   }
 }

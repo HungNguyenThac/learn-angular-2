@@ -12,7 +12,11 @@
         background-color: #F7FBFF;
         text-align: right;
         border-radius: 4px;
-        font-weight: 600 !important;
+
+        ::ng-deep .mat-select-min-line {
+          font-weight: 600 !important;
+          color: #1C1C1E !important;
+        }
       }
 
       .icon {

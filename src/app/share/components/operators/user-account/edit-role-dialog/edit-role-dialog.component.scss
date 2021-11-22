@@ -20,6 +20,14 @@
   background-color: #F7F7FC;
 }
 
+.role-form {
+  width: 328px;
+
+  ::ng-deep .mat-form-field-wrapper {
+    padding: 0 !important;
+  }
+}
+
 .permission-tree {
   margin-top: 16px;
 

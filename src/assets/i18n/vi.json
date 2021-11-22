@@ -146,6 +146,7 @@
       "role": "Vai trò",
       "phone": "Số điện thoại",
       "email": "Email",
+      "position": "Vị trí công việc",
       "note": "Ghi chú",
       "cancel_update": "Bỏ qua",
       "save_update": "Lưu cập nhật"
@@ -564,7 +565,10 @@
       "title": "Phân quyền",
       "add_role": "Thêm vai trò",
       "edit_role": "Chỉnh sửa vai trò",
-      "add_role_placeholder": "Nhập tên vai trò"
+      "add_role_placeholder": "Nhập tên vai trò",
+      "system": "Hệ thống",
+      "transaction": "Giao dịch",
+      "customer": "Khách hàng"
     },
     "user_time_log": {
       "title": "Thời gian truy cập"
