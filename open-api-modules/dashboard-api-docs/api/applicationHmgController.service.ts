@@ -19,7 +19,9 @@ import { Observable }                                        from 'rxjs';
 
 import { ApiResponsePaydayLoanHmg } from '../model/models';
 import { ApiResponseSearchAndPaginationResponsePaydayLoanHmg } from '../model/models';
+import { ApiResponseSearchPaydayLoanResponse } from '../model/models';
 import { ApiResponseSearchVoucherInfoResponse } from '../model/models';
+import { SearchPaydayLoanRequest } from '../model/models';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
 import { Configuration }                                     from '../configuration';
@@ -87,18 +89,98 @@ export class ApplicationHmgControllerService {
     }
 
     /**
+     * @param query 
+     * @param pageSize 
+     * @param pageNumber 
+     * @param orderBy 
+     * @param desc 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public findApplication1(query: SearchPaydayLoanRequest, pageSize: number, pageNumber: number, orderBy: string, desc?: boolean, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseSearchPaydayLoanResponse>;
+    public findApplication1(query: SearchPaydayLoanRequest, pageSize: number, pageNumber: number, orderBy: string, desc?: boolean, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseSearchPaydayLoanResponse>>;
+    public findApplication1(query: SearchPaydayLoanRequest, pageSize: number, pageNumber: number, orderBy: string, desc?: boolean, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseSearchPaydayLoanResponse>>;
+    public findApplication1(query: SearchPaydayLoanRequest, pageSize: number, pageNumber: number, orderBy: string, desc?: boolean, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
+        if (query === null || query === undefined) {
+            throw new Error('Required parameter query was null or undefined when calling findApplication1.');
+        }
+        if (pageSize === null || pageSize === undefined) {
+            throw new Error('Required parameter pageSize was null or undefined when calling findApplication1.');
+        }
+        if (pageNumber === null || pageNumber === undefined) {
+            throw new Error('Required parameter pageNumber was null or undefined when calling findApplication1.');
+        }
+        if (orderBy === null || orderBy === undefined) {
+            throw new Error('Required parameter orderBy was null or undefined when calling findApplication1.');
+        }
+
+        let queryParameters = new HttpParams({encoder: this.encoder});
+        if (query !== undefined && query !== null) {
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>query, 'query');
+        }
+        if (pageSize !== undefined && pageSize !== null) {
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>pageSize, 'pageSize');
+        }
+        if (pageNumber !== undefined && pageNumber !== null) {
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>pageNumber, 'pageNumber');
+        }
+        if (orderBy !== undefined && orderBy !== null) {
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>orderBy, 'orderBy');
+        }
+        if (desc !== undefined && desc !== null) {
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>desc, 'desc');
+        }
+
+        let headers = this.defaultHeaders;
+
+        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (httpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                '*/*'
+            ];
+            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
+        if (httpHeaderAcceptSelected !== undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+
+        let responseType_: 'text' | 'json' = 'json';
+        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+            responseType_ = 'text';
+        }
+
+        return this.httpClient.get<ApiResponseSearchPaydayLoanResponse>(`${this.configuration.basePath}/v1/application/hmg/loan-list`,
+            {
+                params: queryParameters,
+                responseType: <any>responseType_,
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
      * @param pageSize 
      * @param pageNumber 
      * @param requestBody 
-     * @param sortField 
+     * @param orderBy 
      * @param descending 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public findApplications1(pageSize: number, pageNumber: number, requestBody: { [key: string]: object; }, sortField?: string, descending?: boolean, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseSearchAndPaginationResponsePaydayLoanHmg>;
-    public findApplications1(pageSize: number, pageNumber: number, requestBody: { [key: string]: object; }, sortField?: string, descending?: boolean, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseSearchAndPaginationResponsePaydayLoanHmg>>;
-    public findApplications1(pageSize: number, pageNumber: number, requestBody: { [key: string]: object; }, sortField?: string, descending?: boolean, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseSearchAndPaginationResponsePaydayLoanHmg>>;
-    public findApplications1(pageSize: number, pageNumber: number, requestBody: { [key: string]: object; }, sortField?: string, descending?: boolean, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
+    public findApplications1(pageSize: number, pageNumber: number, requestBody: { [key: string]: object; }, orderBy?: string, descending?: boolean, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseSearchAndPaginationResponsePaydayLoanHmg>;
+    public findApplications1(pageSize: number, pageNumber: number, requestBody: { [key: string]: object; }, orderBy?: string, descending?: boolean, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseSearchAndPaginationResponsePaydayLoanHmg>>;
+    public findApplications1(pageSize: number, pageNumber: number, requestBody: { [key: string]: object; }, orderBy?: string, descending?: boolean, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseSearchAndPaginationResponsePaydayLoanHmg>>;
+    public findApplications1(pageSize: number, pageNumber: number, requestBody: { [key: string]: object; }, orderBy?: string, descending?: boolean, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
         if (pageSize === null || pageSize === undefined) {
             throw new Error('Required parameter pageSize was null or undefined when calling findApplications1.');
         }
@@ -118,9 +200,9 @@ export class ApplicationHmgControllerService {
           queryParameters = this.addToHttpParams(queryParameters,
             <any>pageNumber, 'pageNumber');
         }
-        if (sortField !== undefined && sortField !== null) {
+        if (orderBy !== undefined && orderBy !== null) {
           queryParameters = this.addToHttpParams(queryParameters,
-            <any>sortField, 'sortField');
+            <any>orderBy, 'orderBy');
         }
         if (descending !== undefined && descending !== null) {
           queryParameters = this.addToHttpParams(queryParameters,

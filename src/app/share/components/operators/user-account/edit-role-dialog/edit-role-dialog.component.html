@@ -10,7 +10,7 @@
       <div class="row">
         <!--  Info  -->
         <section class="col-12">
-          <form [formGroup]="updateRoleForm">
+          <form class="role-form" [formGroup]="updateRoleForm">
             <mat-form-field appearance="outline" class="w-100" floatLabel="never">
               <mat-label>{{ "system.user_role.add_role_placeholder" | translate}}</mat-label>
               <svg matPrefix width="20" height="20" viewBox="0 0 20 20" fill="none"
@@ -20,28 +20,17 @@
                   fill="#636366"/>
               </svg>
               <input formControlName="roleName"
+                     [value]="updateRoleForm.controls.roleName.value"
                      matInput
               >
             </mat-form-field>
           </form>
           <div class="row permission-tree">
             <div class="grid-table">
-              <div class="table">
-                <div class="table-title">Hệ thống</div>
+              <div *ngFor="let tableData of TREE_DATA" class="table">
+                <div class="table-title">{{tableData.title}}</div>
                 <div class="table-content">
-                  <app-permission-tree [TREE_DATA]="SYSTEM_DATA"></app-permission-tree>
-                </div>
-              </div>
-              <div class="table">
-                <div class="table-title">Giao dịch</div>
-                <div class="table-content">
-                  <app-permission-tree [TREE_DATA]="TRANSACTION_DATA"></app-permission-tree>
-                </div>
-              </div>
-              <div class="table">
-                <div class="table-title">Khách hàng</div>
-                <div class="table-content">
-                  <app-permission-tree [TREE_DATA]="CUSTOMER_DATA"></app-permission-tree>
+                  <app-permission-tree [TREE_DATA]=tableData.data></app-permission-tree>
                 </div>
               </div>
             </div>
@@ -55,6 +44,10 @@
                       mat-dialog-close
               >
                 {{ "account.info.cancel_update" | translate }}
+              </button>
+              <button color="warn" mat-flat-button>
+                <span class="sprite-group-7-trash"></span>
+                {{ "customer.individual_info.delete" | translate }}
               </button>
               <button color="accent" mat-flat-button type="submit">
                 <span class="sprite-group-5-save-white"></span>

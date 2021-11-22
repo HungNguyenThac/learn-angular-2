@@ -82,6 +82,21 @@
                     </mat-select>
                   </mat-form-field>
                 </div>
+
+                <div>
+                  <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>{{
+                      "account.info.position" | translate
+                      }}</mat-label>
+                    <mat-icon class="role-icon" matPrefix></mat-icon>
+                    <mat-select disabled formControlName="accountPosition">
+                      <mat-option
+                        *ngFor="let positionOption of positionOptions.options"
+                        [value]="positionOption">{{positionOption}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
               </div>
 
               <!-- Right Individual Info -->

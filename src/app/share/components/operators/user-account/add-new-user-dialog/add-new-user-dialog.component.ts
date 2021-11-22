@@ -17,11 +17,16 @@ export class AddNewUserDialogComponent implements OnInit {
   isRoleInputFocus: boolean = false;
   isPhoneInputFocus: boolean = false;
   isEmailInputFocus: boolean = false;
+  isPositionInputFocus: boolean = false;
   isNoteInputFocus: boolean = false;
 
   roleOptions = {
     fieldName: 'Vai trò',
     options: ['Super Admin', '2', '3'],
+  };
+  positionOptions = {
+    fieldName: 'Vị trí công việc',
+    options: ['Kiểm duyệt viên', 'DB Merchant', 'Operator Admin', 'Kế toán'],
   };
 
   constructor(
@@ -40,6 +45,7 @@ export class AddNewUserDialogComponent implements OnInit {
       accountRole: [''],
       accountPhone: [''],
       accountEmail: [''],
+      accountPosition: [''],
       accountNote: [''],
     });
   }

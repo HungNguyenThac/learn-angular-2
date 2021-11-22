@@ -10,6 +10,7 @@
  * Do not edit the class manually.
  */
 import { Rating } from './rating';
+import { CustomerInfo } from './customerInfo';
 import { Voucher } from './voucher';
 import { VoucherTransaction } from './voucherTransaction';
 
@@ -48,5 +49,6 @@ export interface PaydayLoanTng {
     ratingInfo?: Rating;
     voucherTransaction?: VoucherTransaction;
     voucher?: Voucher;
+    customerInfo?: CustomerInfo;
 }
 
