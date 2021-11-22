@@ -536,7 +536,9 @@ export class LoanListComponent implements OnInit, OnDestroy {
       ' - ' +
       this.groupName;
     if (params.groupName === 'HMG') {
-      this.filterOptions[2].options = this.statusFilterOptionsHmg;
+      this.filterOptions[2].options = this.statusFilterOptionsHmg.filter(
+        (ele) => ele?.value !== PAYDAY_LOAN_STATUS.DOCUMENT_AWAITING
+      );
       this.loanListService
         .getLoanDataHmg(params)
         .subscribe(
