@@ -312,6 +312,7 @@
       "payment_status": "Trạng thái thanh toán",
       "created_at": "Ngày tạo khoản ứng",
       "register_at": "Ngày đăng ký",
+      "updated_at_short": "Ngày cập nhật",
       "updated_at": "Ngày cập nhật khoản ứng",
       "updated_by": "Người cập nhật khoản ứng",
       "staff_in_charge": "Nhân viên phụ trách",

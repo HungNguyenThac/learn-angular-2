@@ -18,7 +18,7 @@ paths:
         schema:
           type: integer
           format: int32
-      - name: sortField
+      - name: orderBy
         in: query
         required: false
         schema:
@@ -69,7 +69,7 @@ paths:
         schema:
           type: integer
           format: int32
-      - name: sortField
+      - name: orderBy
         in: query
         required: false
         schema:
@@ -114,7 +114,7 @@ paths:
         schema:
           type: integer
           format: int32
-      - name: sortField
+      - name: orderBy
         in: query
         required: false
         schema:
@@ -159,7 +159,7 @@ paths:
         schema:
           type: integer
           format: int32
-      - name: sortField
+      - name: orderBy
         in: query
         required: false
         schema:
@@ -204,7 +204,7 @@ paths:
         schema:
           type: integer
           format: int32
-      - name: sortField
+      - name: orderBy
         in: query
         required: false
         schema:
@@ -249,7 +249,7 @@ paths:
         schema:
           type: integer
           format: int32
-      - name: sortField
+      - name: orderBy
         in: query
         required: false
         schema:
@@ -294,7 +294,7 @@ paths:
         schema:
           type: integer
           format: int32
-      - name: sortField
+      - name: orderBy
         in: query
         required: false
         schema:
@@ -339,7 +339,7 @@ paths:
         schema:
           type: integer
           format: int32
-      - name: sortField
+      - name: orderBy
         in: query
         required: false
         schema:
@@ -384,7 +384,7 @@ paths:
         schema:
           type: integer
           format: int32
-      - name: sortField
+      - name: orderBy
         in: query
         required: false
         schema:
@@ -411,6 +411,51 @@ paths:
                 $ref: '#/components/schemas/ApiResponseSearchAndPaginationResponseKalapaResponse'
       security:
       - bearerAuth: []
+  /v1/districts:
+    post:
+      tags:
+      - district-controller
+      operationId: getDistrict
+      parameters:
+      - name: pageSize
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: pageNumber
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: orderBy
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: descending
+        in: query
+        required: false
+        schema:
+          type: boolean
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties:
+                type: object
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseSearchAndPaginationResponseDistrict'
+      security:
+      - bearerAuth: []
   /v1/customers:
     post:
       tags:
@@ -429,7 +474,7 @@ paths:
         schema:
           type: integer
           format: int32
-      - name: sortField
+      - name: orderBy
         in: query
         required: false
         schema:
@@ -474,7 +519,7 @@ paths:
         schema:
           type: integer
           format: int32
-      - name: sortField
+      - name: orderBy
         in: query
         required: false
         schema:
@@ -501,6 +546,109 @@ paths:
                 $ref: '#/components/schemas/ApiResponseSearchAndPaginationResponseCompanyInfo'
       security:
       - bearerAuth: []
+  /v1/communes:
+    post:
+      tags:
+      - commune-controller
+      operationId: getCommune
+      parameters:
+      - name: pageSize
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: pageNumber
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: orderBy
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: descending
+        in: query
+        required: false
+        schema:
+          type: boolean
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties:
+                type: object
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseSearchAndPaginationResponseCommune'
+      security:
+      - bearerAuth: []
+  /v1/cities:
+    get:
+      tags:
+      - city-controller
+      operationId: getAllCities
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseListCity'
+      security:
+      - bearerAuth: []
+    post:
+      tags:
+      - city-controller
+      operationId: getCity
+      parameters:
+      - name: pageSize
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: pageNumber
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: orderBy
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: descending
+        in: query
+        required: false
+        schema:
+          type: boolean
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties:
+                type: object
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseSearchAndPaginationResponseCity'
+      security:
+      - bearerAuth: []
   /v1/bank:
     post:
       tags:
@@ -519,7 +667,7 @@ paths:
         schema:
           type: integer
           format: int32
-      - name: sortField
+      - name: orderBy
         in: query
         required: false
         schema:
@@ -564,7 +712,7 @@ paths:
         schema:
           type: integer
           format: int32
-      - name: sortField
+      - name: orderBy
         in: query
         required: false
         schema:
@@ -609,7 +757,7 @@ paths:
         schema:
           type: integer
           format: int32
-      - name: sortField
+      - name: orderBy
         in: query
         required: false
         schema:
@@ -652,7 +800,7 @@ paths:
         schema:
           type: integer
           format: int32
-      - name: sortField
+      - name: orderBy
         in: query
         required: false
         schema:
@@ -911,6 +1059,46 @@ paths:
                 $ref: '#/components/schemas/ApiResponseKalapaResponse'
       security:
       - bearerAuth: []
+  /v1/districts/{districtId}:
+    get:
+      tags:
+      - district-controller
+      operationId: getDistrict_1
+      parameters:
+      - name: districtId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseDistrict'
+      security:
+      - bearerAuth: []
+  /v1/districts/{districtId}/communes:
+    get:
+      tags:
+      - district-controller
+      operationId: getDCommunesByDistrictId
+      parameters:
+      - name: districtId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseListCommune'
+      security:
+      - bearerAuth: []
   /v1/customers/{customerId}:
     get:
       tags:
@@ -949,6 +1137,66 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ApiResponseCompanyInfo'
+      security:
+      - bearerAuth: []
+  /v1/communes/{communeId}:
+    get:
+      tags:
+      - commune-controller
+      operationId: getDistrict_2
+      parameters:
+      - name: communeId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseCommune'
+      security:
+      - bearerAuth: []
+  /v1/cities/{cityId}:
+    get:
+      tags:
+      - city-controller
+      operationId: getCity_1
+      parameters:
+      - name: cityId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseCity'
+      security:
+      - bearerAuth: []
+  /v1/cities/{cityId}/districts:
+    get:
+      tags:
+      - city-controller
+      operationId: getAllDistrictsByCityId
+      parameters:
+      - name: cityId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseListDistrict'
       security:
       - bearerAuth: []
   /v1/bank/{bankId}:
@@ -1032,6 +1280,46 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ApiResponseSearchVoucherInfoResponse'
+  /v1/application/loan-list:
+    get:
+      tags:
+      - application-tng-controller
+      operationId: findApplication
+      parameters:
+      - name: query
+        in: query
+        required: true
+        schema:
+          $ref: '#/components/schemas/SearchPaydayLoanRequest'
+      - name: pageSize
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: pageNumber
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: orderBy
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: desc
+        in: query
+        required: false
+        schema:
+          type: boolean
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseSearchPaydayLoanResponse'
   /v1/application/hmg/{loanId}:
     get:
       tags:
@@ -1073,6 +1361,46 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ApiResponseSearchVoucherInfoResponse'
+  /v1/application/hmg/loan-list:
+    get:
+      tags:
+      - application-hmg-controller
+      operationId: findApplication_1
+      parameters:
+      - name: query
+        in: query
+        required: true
+        schema:
+          $ref: '#/components/schemas/SearchPaydayLoanRequest'
+      - name: pageSize
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: pageNumber
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: orderBy
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: desc
+        in: query
+        required: false
+        schema:
+          type: boolean
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseSearchPaydayLoanResponse'
   /swagger-resources:
     get:
       tags:
@@ -1623,6 +1951,48 @@ components:
         matchingScore:
           type: integer
           format: int32
+    ApiResponseSearchAndPaginationResponseDistrict:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/SearchAndPaginationResponseDistrict'
+        errorCode:
+          type: string
+        message:
+          type: object
+        responseCode:
+          type: integer
+          format: int32
+    District:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        slug:
+          type: string
+        type:
+          type: string
+        nameWithType:
+          type: string
+        path:
+          type: string
+        pathWithType:
+          type: string
+        code:
+          type: string
+        cityId:
+          type: string
+    SearchAndPaginationResponseDistrict:
+      type: object
+      properties:
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/District'
     ApiResponseSearchAndPaginationResponseCustomerInfo:
       type: object
       properties:
@@ -1812,6 +2182,84 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/CompanyInfo'
+    ApiResponseSearchAndPaginationResponseCommune:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/SearchAndPaginationResponseCommune'
+        errorCode:
+          type: string
+        message:
+          type: object
+        responseCode:
+          type: integer
+          format: int32
+    Commune:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        slug:
+          type: string
+        type:
+          type: string
+        nameWithType:
+          type: string
+        path:
+          type: string
+        pathWithType:
+          type: string
+        code:
+          type: string
+        districtId:
+          type: string
+    SearchAndPaginationResponseCommune:
+      type: object
+      properties:
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Commune'
+    ApiResponseSearchAndPaginationResponseCity:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/SearchAndPaginationResponseCity'
+        errorCode:
+          type: string
+        message:
+          type: object
+        responseCode:
+          type: integer
+          format: int32
+    City:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        slug:
+          type: string
+        type:
+          type: string
+        nameWithType:
+          type: string
+        code:
+          type: string
+    SearchAndPaginationResponseCity:
+      type: object
+      properties:
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/City'
     ApiResponseSearchAndPaginationResponseBank:
       type: object
       properties:
@@ -1974,6 +2422,8 @@ components:
           $ref: '#/components/schemas/VoucherTransaction'
         voucher:
           $ref: '#/components/schemas/Voucher'
+        customerInfo:
+          $ref: '#/components/schemas/CustomerInfo'
     SearchAndPaginationResponsePaydayLoanTng:
       type: object
       properties:
@@ -2247,6 +2697,32 @@ components:
         responseCode:
           type: integer
           format: int32
+    ApiResponseDistrict:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/District'
+        errorCode:
+          type: string
+        message:
+          type: object
+        responseCode:
+          type: integer
+          format: int32
+    ApiResponseListCommune:
+      type: object
+      properties:
+        result:
+          type: array
+          items:
+            $ref: '#/components/schemas/Commune'
+        errorCode:
+          type: string
+        message:
+          type: object
+        responseCode:
+          type: integer
+          format: int32
     ApiResponseCustomerInfo:
       type: object
       properties:
@@ -2264,6 +2740,58 @@ components:
       properties:
         result:
           $ref: '#/components/schemas/CompanyInfo'
+        errorCode:
+          type: string
+        message:
+          type: object
+        responseCode:
+          type: integer
+          format: int32
+    ApiResponseCommune:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/Commune'
+        errorCode:
+          type: string
+        message:
+          type: object
+        responseCode:
+          type: integer
+          format: int32
+    ApiResponseListCity:
+      type: object
+      properties:
+        result:
+          type: array
+          items:
+            $ref: '#/components/schemas/City'
+        errorCode:
+          type: string
+        message:
+          type: object
+        responseCode:
+          type: integer
+          format: int32
+    ApiResponseCity:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/City'
+        errorCode:
+          type: string
+        message:
+          type: object
+        responseCode:
+          type: integer
+          format: int32
+    ApiResponseListDistrict:
+      type: object
+      properties:
+        result:
+          type: array
+          items:
+            $ref: '#/components/schemas/District'
         errorCode:
           type: string
         message:
@@ -2341,6 +2869,63 @@ components:
           $ref: '#/components/schemas/Voucher'
         voucherTransaction:
           $ref: '#/components/schemas/VoucherTransaction'
+    SearchPaydayLoanRequest:
+      type: object
+      properties:
+        loanCode:
+          type: string
+        mobileNumber:
+          type: string
+        status:
+          type: string
+    ApiResponseSearchPaydayLoanResponse:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/SearchPaydayLoanResponse'
+        errorCode:
+          type: string
+        message:
+          type: object
+        responseCode:
+          type: integer
+          format: int32
+    SearchPaydayLoanResponse:
+      type: object
+      properties:
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+        searchPaydayLoanResult:
+          type: array
+          items:
+            $ref: '#/components/schemas/SearchPaydayLoanResult'
+    SearchPaydayLoanResult:
+      type: object
+      properties:
+        customerId:
+          type: string
+        loanId:
+          type: string
+        loanCode:
+          type: string
+        tenure:
+          type: integer
+          format: int32
+        status:
+          type: string
+        repaymentStatus:
+          type: string
+        amount:
+          type: integer
+          format: int32
+        createdAt:
+          type: string
+        customerName:
+          type: string
+        mobileNumber:
+          type: string
+        emailAddress:
+          type: string
     ApiResponsePaydayLoanHmg:
       type: object
       properties:
