@@ -295,6 +295,15 @@ export class LoanListComponent implements OnInit, OnDestroy {
       showed: true,
     },
     {
+      key: 'updatedAt',
+      title: this.multiLanguageService.instant(
+        'loan_app.loan_info.updated_at_short'
+      ),
+      type: DATA_CELL_TYPE.DATETIME,
+      format: 'dd/MM/yyyy HH:mm',
+      showed: false,
+    },
+    {
       key: 'customerEmail',
       title: this.multiLanguageService.instant(
         'customer.individual_info.email'
@@ -431,6 +440,7 @@ export class LoanListComponent implements OnInit, OnDestroy {
       status: [''],
       customerOrganizationName: [''],
       customerIdentityNumberOne: [''],
+      updatedAt: [''],
       orderBy: ['createdAt'],
       sortDirection: ['desc'],
       startTime: [''],
@@ -527,25 +537,25 @@ export class LoanListComponent implements OnInit, OnDestroy {
       this.groupName;
     if (params.groupName === 'HMG') {
       this.filterOptions[2].options = this.statusFilterOptionsHmg;
-        this.loanListService
-          .getLoanDataHmg(params)
-          .subscribe(
-            (data: ApiResponseSearchAndPaginationResponsePaydayLoanHmg) => {
-              this._parseData(data?.result);
-            }
-          )
+      this.loanListService
+        .getLoanDataHmg(params)
+        .subscribe(
+          (data: ApiResponseSearchAndPaginationResponsePaydayLoanHmg) => {
+            this._parseData(data?.result);
+          }
+        );
     }
 
     if (params.groupName === 'TNG') {
       // Remove status CONTRACT_AWAITING from Filter sidebar
       this.filterOptions[2].options = this.statusFilterOptionsTng;
-        this.loanListService
-          .getLoanDataTng(params)
-          .subscribe(
-            (data: ApiResponseSearchAndPaginationResponsePaydayLoanTng) => {
-              this._parseData(data?.result);
-            }
-          )
+      this.loanListService
+        .getLoanDataTng(params)
+        .subscribe(
+          (data: ApiResponseSearchAndPaginationResponsePaydayLoanTng) => {
+            this._parseData(data?.result);
+          }
+        );
     }
   }
 
@@ -553,14 +563,12 @@ export class LoanListComponent implements OnInit, OnDestroy {
     const params = this._buildParams();
     const requestBody = {};
     requestBody['groupName'] = params.groupName;
-      this.companyControllerService
-        .getCompanies(10, 0, requestBody)
-        .subscribe(
-          (data: ApiResponseSearchAndPaginationResponseCompanyInfo) => {
-            this.companyList = data?.result?.data;
-            this._initCompanyOptions();
-          }
-        )
+    this.companyControllerService
+      .getCompanies(10, 0, requestBody)
+      .subscribe((data: ApiResponseSearchAndPaginationResponseCompanyInfo) => {
+        this.companyList = data?.result?.data;
+        this._initCompanyOptions();
+      });
   }
 
   private _initCompanyOptions() {
@@ -630,7 +638,7 @@ export class LoanListComponent implements OnInit, OnDestroy {
   }
   ngOnDestroy(): void {
     if (this.subManager !== null) {
-    this.subManager.unsubscribe();
+      this.subManager.unsubscribe();
     }
   }
 }
