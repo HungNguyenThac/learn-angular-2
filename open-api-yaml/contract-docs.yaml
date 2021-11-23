@@ -1,160 +1,39 @@
----
-openapi: 3.0.3
+openapi: 3.0.1
 info:
-  title: contract-service API
-  version: 1.0-SNAPSHOT
+  title: OpenAPI definition
+  version: v0
+servers:
+- url: http://localhost:8004
+  description: Generated server url
 paths:
-  /v1/contract/create/{companyName}:
-    post:
+  /v1/districts/{id}:
+    put:
       tags:
-      - Contract Controller
+      - district-controller
+      operationId: updateDistrict
       parameters:
-      - name: companyName
+      - name: id
         in: path
         required: true
         schema:
-          $ref: '#/components/schemas/CompanyName'
+          type: string
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CreateContractRequest'
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ApiResponseCreateDocumentResponse'
-  /v1/letter/create/{companyName}:
-    post:
-      tags:
-      - Letter Controller
-      parameters:
-      - name: companyName
-        in: path
+              $ref: '#/components/schemas/UpdateDistrictRequest'
         required: true
-        schema:
-          $ref: '#/components/schemas/CompanyName'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/CreateLetterRequest'
       responses:
         "200":
           description: OK
           content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ApiResponseCreateDocumentResponse'
-  /v1/sign/admin-sign-contract:
-    post:
-      tags:
-      - Sign Document Controller
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/AdminSignContractAutomationRequest'
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
+            '*/*':
               schema:
                 $ref: '#/components/schemas/ApiResponseString'
-  /v1/sign/confirm-otp:
-    post:
+    delete:
       tags:
-      - Sign Document Controller
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/ConfirmOTPSignRequest'
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ApiResponseConfirmOTPResponse'
-  /v1/sign/get-token-onsign:
-    get:
-      tags:
-      - Sign Document Controller
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ApiResponseCreateTokenResponse'
-  /v1/sign/send-contract/{companyName}:
-    post:
-      tags:
-      - Sign Document Controller
-      parameters:
-      - name: companyName
-        in: path
-        required: true
-        schema:
-          $ref: '#/components/schemas/CompanyName'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/SendContractOTPRequest'
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ApiResponseSignWithOTPResponse'
-  /v1/sign/send-letter/{companyName}:
-    post:
-      tags:
-      - Sign Document Controller
-      parameters:
-      - name: companyName
-        in: path
-        required: true
-        schema:
-          $ref: '#/components/schemas/CompanyName'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/SendLetterOTPRequest'
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ApiResponseSignWithOTPResponse'
-  /v1/signing-position/create:
-    post:
-      tags:
-      - Signing Position Controller
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/CreateSigningPositionRequest'
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ApiResponseString'
-  /v1/signing-position/delete/{id}:
-    post:
-      tags:
-      - Signing Position Controller
+      - district-controller
+      operationId: deleteDistrict
       parameters:
       - name: id
         in: path
@@ -165,103 +44,1109 @@ paths:
         "200":
           description: OK
           content:
-            application/json:
+            '*/*':
               schema:
                 $ref: '#/components/schemas/ApiResponseString'
-  /v1/signing-position/get-all:
+  /v1/communes/{id}:
+    put:
+      tags:
+      - commune-controller
+      operationId: updateCommune
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateCommuneRequest'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseString'
+    delete:
+      tags:
+      - commune-controller
+      operationId: deleteCommune
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseString'
+  /v1/cities/{id}:
+    put:
+      tags:
+      - city-controller
+      operationId: updateCity
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateCityRequest'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseString'
+    delete:
+      tags:
+      - city-controller
+      operationId: deleteCity
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseString'
+  /rating/v1/{id}:
+    put:
+      tags:
+      - rating-controller
+      operationId: updateRating
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateRatingRequest'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseString'
+  /company/v1/{id}:
     get:
       tags:
-      - Signing Position Controller
+      - company-controller
+      operationId: getCompanyById
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseCompanyInfo'
+      security:
+      - bearerAuth: []
+    put:
+      tags:
+      - company-controller
+      operationId: updateCompany
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/UpdateCompanyRequest'
       responses:
         "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ApiResponseListDocumentSigningLocationEntity'
+                $ref: '#/components/schemas/ApiResponseCompanyInfo'
+  /bank/v1/{id}:
+    put:
+      tags:
+      - bank-controller
+      operationId: updateBank
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateBankRequest'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseString'
+    delete:
+      tags:
+      - bank-controller
+      operationId: deleteBank
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseString'
+  /v1/districts:
+    post:
+      tags:
+      - district-controller
+      operationId: createDistrict
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateDistrictRequest'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseString'
+  /v1/communes:
+    post:
+      tags:
+      - commune-controller
+      operationId: createCommune
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateCommuneRequest'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseString'
+  /v1/cities:
+    get:
+      tags:
+      - city-controller
+      operationId: getAllCity
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseListCity'
+    post:
+      tags:
+      - city-controller
+      operationId: createCity
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateCityRequest'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseString'
+  /tng/v1/{customerId}/provides-information-salary-receipt-date:
+    post:
+      tags:
+      - tng-controller
+      operationId: checkCustomerInformationSalaryReceiptDate
+      parameters:
+      - name: customerId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseCheckIsPaydayByCustomerIdResponse'
+  /tng/v1/provides-information-salary-receipt-date:
+    post:
+      tags:
+      - tng-controller
+      operationId: providesInformationSalaryReceiptDate
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InformationSalaryReceiptDateRequest'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseObject'
+  /tng/v1/provides-information-salary-receipt-date-via-code-office:
+    post:
+      tags:
+      - tng-controller
+      operationId: providesInformationSalaryReceiptDateByOfficeCode
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InformationSalaryReceiptDateByOfficeCodeRequest'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseObject'
+  /tng/v1/provides-information-of-employees:
+    post:
+      tags:
+      - tng-controller
+      operationId: providesInformationOfEmployees
+      parameters:
+      - name: organizationName
+        in: query
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+  /tng/v1/check-is-employee-at-tng:
+    post:
+      tags:
+      - tng-controller
+      operationId: IsEmployeesWorkingAtTNG
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TNGRequest'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseTNGResponse'
+  /rating/v1/create-rating:
+    post:
+      tags:
+      - rating-controller
+      operationId: createRating
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateRatingRequest'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseString'
+  /notification/v1/{customerId}/notify-in-repayment-loan:
+    post:
+      tags:
+      - notification-controller
+      operationId: notifyCustomerHasInRepaymentLoan
+      parameters:
+      - name: customerId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: loanCode
+        in: query
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseBoolean'
+  /notification/v1/notify-in-repayment-loan-by-template:
+    post:
+      tags:
+      - notification-controller
+      operationId: notifyCustomerHasInRepaymentLoanByTemplate
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TemplateRequest'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseBoolean'
+  /newsletter/v1/info:
+    post:
+      tags:
+      - newsletter-controller
+      operationId: saveInfo
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewsLetterRequest'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseObject'
+  /kalapa/v2/{customerId}/id_card/plus:
+    post:
+      tags:
+      - kalapa-v-2-controller
+      operationId: extractInfo
+      parameters:
+      - name: verify
+        in: query
+        required: false
+        schema:
+          type: boolean
+          default: false
+      - name: skipValidate
+        in: query
+        required: false
+        schema:
+          type: boolean
+          default: false
+      - name: customerId
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/KalapaRequest'
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseKalapaResponse'
+  /kalapa/v1/id_card/plus:
+    post:
+      tags:
+      - kalapa-controller
+      operationId: extractInfo_1
+      parameters:
+      - name: verify
+        in: query
+        required: false
+        schema:
+          type: boolean
+          default: false
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/KalapaRequest'
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseKalapaResponse'
+  /info/v2/{customerId}/validate-confirm-information-request:
+    post:
+      tags:
+      - info-v-2-controller
+      operationId: validateConfirmInformationRequestV2
+      parameters:
+      - name: customerId
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ConfirmInformationV2Request'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseObject'
+  /info/v2/{customerId}/confirm-information:
+    post:
+      tags:
+      - info-v-2-controller
+      operationId: confirmInformationV2
+      parameters:
+      - name: customerId
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ConfirmInformationV2Request'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseObject'
+  /info/v2/{customerId}/additional-information:
+    post:
+      tags:
+      - info-v-2-controller
+      operationId: additionalInformationV2
+      parameters:
+      - name: customerId
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdditionalInformationV2Request'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseObject'
+  /info/v1/{customerId}/validate-confirm-information-request:
+    post:
+      tags:
+      - info-controller
+      operationId: validateConfirmInformationRequest
+      parameters:
+      - name: customerId
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ConfirmInformationRequest'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseObject'
+  /info/v1/{customerId}/update:
+    post:
+      tags:
+      - info-controller
+      operationId: putInfo
+      parameters:
+      - name: customerId
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateInfoRequest'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseObject'
+  /info/v1/{customerId}/update-finance:
+    post:
+      tags:
+      - info-controller
+      operationId: updateFinance
+      parameters:
+      - name: customerId
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FinancialData'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseObject'
+  /info/v1/{customerId}/return-confirm-information:
+    post:
+      tags:
+      - info-controller
+      operationId: returnConfirmInformation
+      parameters:
+      - name: customerId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseString'
+  /info/v1/{customerId}/request-get-tng-data:
+    post:
+      tags:
+      - info-controller
+      operationId: requestGetTngData
+      parameters:
+      - name: customerId
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetTngDataRequest'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseString'
+  /info/v1/{customerId}/customer-sign-done:
+    post:
+      tags:
+      - info-controller
+      operationId: customerSignDone
+      parameters:
+      - name: customerId
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomerSignDoneRequest'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseObject'
+  /info/v1/{customerId}/confirm-information:
+    post:
+      tags:
+      - info-controller
+      operationId: confirmInformation
+      parameters:
+      - name: customerId
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ConfirmInformationRequest'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseObject'
+  /info/v1/{customerId}/choose-company:
+    post:
+      tags:
+      - info-controller
+      operationId: chooseCompany
+      parameters:
+      - name: customerId
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChooseCompanyRequest'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseObject'
+  /info/v1/{customerId}/additional-information:
+    post:
+      tags:
+      - info-controller
+      operationId: additionalInformation
+      parameters:
+      - name: customerId
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdditionalInformationRequest'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseObject'
+  /company/v1/add:
+    post:
+      tags:
+      - company-controller
+      operationId: createCompany
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CompanyRequest'
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseCompanyInfo'
+      security:
+      - bearerAuth: []
+  /bank/v1/create-bank:
+    post:
+      tags:
+      - bank-controller
+      operationId: createBank
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateBankRequest'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseString'
+  /v1/districts/{districtId}/communes:
+    get:
+      tags:
+      - district-controller
+      operationId: getAllCommune
+      parameters:
+      - name: districtId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseListCommune'
+  /v1/districts/import:
+    get:
+      tags:
+      - district-controller
+      operationId: importDistrictInfo
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseString'
+  /v1/communes/merge:
+    get:
+      tags:
+      - commune-controller
+      operationId: mergeAllCommunes
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseString'
+  /v1/communes/import:
+    get:
+      tags:
+      - commune-controller
+      operationId: importCommuneInfo
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseString'
+  /v1/cities/{cityId}/districts:
+    get:
+      tags:
+      - city-controller
+      operationId: getAllDistrict
+      parameters:
+      - name: cityId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseListDistrict'
+  /v1/cities/import:
+    get:
+      tags:
+      - city-controller
+      operationId: importCity
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseString'
+  /rating/v1/get-lastest-rating:
+    get:
+      tags:
+      - rating-controller
+      operationId: getLastRating
+      parameters:
+      - name: customerId
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: applicationType
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: isRated
+        in: query
+        required: false
+        schema:
+          type: boolean
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseRating'
+  /rating/v1/get-all-ratings:
+    get:
+      tags:
+      - rating-controller
+      operationId: getAllRatings
+      parameters:
+      - name: customerId
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: applicationType
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: isRated
+        in: query
+        required: false
+        schema:
+          type: boolean
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseListRating'
+  /info/v1/{customerId}:
+    get:
+      tags:
+      - info-controller
+      operationId: getInfo
+      parameters:
+      - name: customerId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: category
+        in: query
+        required: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseCustomerInfoResponse'
+  /company/v1/get-list:
+    get:
+      tags:
+      - company-controller
+      operationId: getListCompany
+      parameters:
+      - name: groupName
+        in: query
+        required: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseListCompanyInfo'
+      security:
+      - bearerAuth: []
+  /bank/v1/get-bank:
+    get:
+      tags:
+      - bank-controller
+      operationId: getBankByCode
+      parameters:
+      - name: bankCode
+        in: query
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseBank'
+  /bank/v1/get-all-banks:
+    get:
+      tags:
+      - bank-controller
+      operationId: getAllBank
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseListBank'
+  /approval-letter/v1/{customerId}:
+    get:
+      tags:
+      - approval-letter-controller
+      operationId: getListApprovalLetterByCustomerId
+      parameters:
+      - name: customerId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseListApprovalLetter'
+      security:
+      - bearerAuth: []
+  /approval-letter/v1/{customerId}/latest:
+    get:
+      tags:
+      - approval-letter-controller
+      operationId: getApprovalLetterByCustomerId
+      parameters:
+      - name: customerId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseApprovalLetter'
+      security:
+      - bearerAuth: []
+  /company/v1/{companyId}:
+    delete:
+      tags:
+      - company-controller
+      operationId: deleteCompany
+      parameters:
+      - name: companyId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseString'
 components:
   schemas:
-    AdminSignContractAutomationRequest:
-      required:
-      - customerId
-      - idRequest
-      - idDocument
+    UpdateDistrictRequest:
       type: object
       properties:
-        customerId:
-          pattern: \S
+        name:
           type: string
-          nullable: false
-        idRequest:
-          format: int32
-          type: integer
-          nullable: false
-        idDocument:
-          format: int32
-          type: integer
-          nullable: false
-    ApiResponseConfirmOTPResponse:
-      type: object
-      properties:
-        result:
-          $ref: '#/components/schemas/ConfirmOTPResponse'
-        errorCode:
+        slug:
           type: string
-        message:
+        type:
           type: string
-        responseCode:
-          format: int32
-          type: integer
-    ApiResponseCreateDocumentResponse:
-      type: object
-      properties:
-        result:
-          $ref: '#/components/schemas/CreateDocumentResponse'
-        errorCode:
+        nameWithType:
           type: string
-        message:
+        code:
           type: string
-        responseCode:
-          format: int32
-          type: integer
-    ApiResponseCreateTokenResponse:
-      type: object
-      properties:
-        result:
-          $ref: '#/components/schemas/CreateTokenResponse'
-        errorCode:
+        path:
           type: string
-        message:
+        pathWithType:
           type: string
-        responseCode:
-          format: int32
-          type: integer
-    ApiResponseListDocumentSigningLocationEntity:
-      type: object
-      properties:
-        result:
-          type: array
-          items:
-            $ref: '#/components/schemas/DocumentSigningLocationEntity'
-        errorCode:
+        cityId:
           type: string
-        message:
-          type: string
-        responseCode:
-          format: int32
-          type: integer
-    ApiResponseSignWithOTPResponse:
-      type: object
-      properties:
-        result:
-          $ref: '#/components/schemas/SignWithOTPResponse'
-        errorCode:
-          type: string
-        message:
-          type: string
-        responseCode:
-          format: int32
-          type: integer
     ApiResponseString:
       type: object
       properties:
@@ -270,381 +1155,1033 @@ components:
         errorCode:
           type: string
         message:
-          type: string
+          type: object
         responseCode:
-          format: int32
           type: integer
-    CompanyName:
-      enum:
-      - HMG
-      - TNG
-      type: string
-    ConfirmOTPResponse:
+          format: int32
+    UpdateCommuneRequest:
       type: object
       properties:
-        customerId:
-          type: string
-        documentPath:
-          type: string
-        remainingRequests:
-          format: int32
-          type: integer
-    ConfirmOTPSignRequest:
-      required:
-      - customerId
-      - idRequest
-      - idDocument
-      - otp
-      type: object
-      properties:
-        customerId:
-          pattern: \S
-          type: string
-          nullable: false
-        idRequest:
-          format: int32
-          type: integer
-          nullable: false
-        idDocument:
-          format: int32
-          type: integer
-          nullable: false
-        otp:
-          maxLength: 6
-          minLength: 6
-          pattern: \S
-          type: string
-          nullable: false
-    CreateContractRequest:
-      required:
-      - customerId
-      - dateOfBirth
-      - name
-      - nationalId
-      - bankAccount
-      - bankName
-      - amount
-      - loanCode
-      type: object
-      properties:
-        customerId:
-          pattern: \S
-          type: string
-          nullable: false
-        dateOfBirth:
-          pattern: \S
-          type: string
-          nullable: false
         name:
-          pattern: \S
           type: string
-          nullable: false
-        nationalId:
-          pattern: \S
+        slug:
           type: string
-          nullable: false
-        bankAccount:
-          pattern: \S
+        type:
           type: string
-          nullable: false
-        bankName:
-          pattern: \S
+        nameWithType:
           type: string
-          nullable: false
-        amount:
-          pattern: \S
+        code:
           type: string
-          nullable: false
-        loanCode:
-          pattern: \S
+        path:
           type: string
-          nullable: false
-        company:
+        pathWithType:
           type: string
-        businessRegistrationNumber:
+        districtId:
           type: string
-        companyAddress:
-          type: string
-        companyPhoneNumber:
-          type: string
-        representative:
-          type: string
-    CreateDocumentResponse:
+    UpdateCityRequest:
       type: object
       properties:
-        customerId:
-          type: string
-        documentPath:
-          type: string
-    CreateLetterRequest:
-      required:
-      - customerId
-      - dateOfBirth
-      - name
-      - nationalId
-      - idIssuePlace
-      type: object
-      properties:
-        customerId:
-          pattern: \S
-          type: string
-          nullable: false
-        dateOfBirth:
-          pattern: \S
-          type: string
-          nullable: false
         name:
-          pattern: \S
           type: string
-          nullable: false
-        nationalId:
-          pattern: \S
+        slug:
           type: string
-          nullable: false
-        idIssuePlace:
-          pattern: \S
+        type:
           type: string
-          nullable: false
-        employeeCode:
+        nameWithType:
           type: string
-        company:
+        code:
           type: string
-    CreateSigningPositionRequest:
-      required:
-      - documentType
-      - companyName
-      - page
-      - positionBorrower
+    UpdateRatingRequest:
       type: object
       properties:
-        documentType:
-          allOf:
-          - $ref: '#/components/schemas/DocumentType'
-          - nullable: false
-        companyName:
-          allOf:
-          - $ref: '#/components/schemas/CompanyName'
-          - nullable: false
-        page:
-          format: int32
-          type: integer
-          nullable: false
-        positionBorrower:
-          allOf:
-          - $ref: '#/components/schemas/SigningPositionRequest'
-          - nullable: false
-        positionInvestor:
-          $ref: '#/components/schemas/SigningPositionRequest'
-        positionEpay:
-          $ref: '#/components/schemas/SigningPositionRequest'
-    CreateTokenResponse:
+        rate:
+          type: string
+          enum:
+          - NOT_SATISFIED
+          - SEMI_SATISFIED
+          - NORMAL
+          - SATISFIED
+          - VERY_SATISFIED
+        customerOpinion:
+          type: string
+    UpdateCompanyRequest:
       type: object
       properties:
-        error:
-          format: int32
+        name:
+          type: string
+        groupName:
+          type: string
+        code:
+          type: string
+        avatar:
+          type: string
+          format: binary
+        createdBy:
+          type: string
+        businessCode:
+          type: string
+        mobile:
+          type: string
+        owner:
+          type: string
+        address:
+          type: string
+        payday:
           type: integer
+          format: int32
+    ApiResponseCompanyInfo:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/CompanyInfo'
+        errorCode:
+          type: string
         message:
-          type: string
-        data:
-          $ref: '#/components/schemas/DataCreateToken'
-    DataCreateToken:
-      type: object
-      properties:
-        access:
           type: object
-          additionalProperties: {}
-        additional:
-          type: object
-          additionalProperties: {}
-    DocumentSigningLocationEntity:
+        responseCode:
+          type: integer
+          format: int32
+    CompanyInfo:
       type: object
       properties:
         id:
           type: string
-        companyName:
-          $ref: '#/components/schemas/CompanyName'
-        documentType:
-          $ref: '#/components/schemas/DocumentType'
-        page:
-          format: int32
+        name:
+          type: string
+        groupName:
+          type: string
+        code:
+          type: string
+        businessCode:
+          type: string
+        mobile:
+          type: string
+        owner:
+          type: string
+        address:
+          type: string
+        payday:
           type: integer
-        positionBorrower:
-          $ref: '#/components/schemas/SigningPosition'
-        positionInvestor:
-          $ref: '#/components/schemas/SigningPosition'
-        positionEpay:
-          $ref: '#/components/schemas/SigningPosition'
-    DocumentType:
-      enum:
-      - BACK_ID_CARD
-      - BACK_ID_CARD_TWO
-      - BANK_BOOK
-      - COMPANY_LOGO
-      - CONTRACT
-      - CONTRACT_CUSTOMER_SIGN_DONE
-      - CONTRACT_SIGN_DONE
-      - FRONT_ID_CARD
-      - FRONT_ID_CARD_TWO
-      - ID_CARD
-      - LETTER
-      - LETTER_SIGN_DONE
-      - PAY_SLIP
-      - SALARY_INFORMATION
-      - SALARY_INFORMATION_ONE
-      - SALARY_INFORMATION_THREE
-      - SALARY_INFORMATION_TWO
-      - SELFIE
-      - UN_KNOWN
-      - VEHICLE_REGISTRATION
-      type: string
-    OtpType:
-      enum:
-      - EMAIL
-      - SMS
-      - VOICE
-      type: string
-    SendContractOTPRequest:
+          format: int32
+        avatar:
+          type: string
+        createdBy:
+          type: string
+        updatedBy:
+          type: string
+        createdAt:
+          type: string
+        updatedAt:
+          type: string
+    UpdateBankRequest:
       required:
-      - email
-      - name
-      - address
-      - mobile
-      - nationalId
-      - customerId
-      - documentPath
-      - loanCode
-      - loanId
-      - otpType
+      - bankCode
+      - bankName
       type: object
       properties:
-        email:
-          pattern: \S
+        bankName:
           type: string
-          nullable: false
-        name:
-          pattern: \S
+        bankCode:
           type: string
-          nullable: false
-        address:
-          pattern: \S
-          type: string
-          nullable: false
-        mobile:
-          pattern: \S
-          type: string
-          nullable: false
-        nationalId:
-          pattern: \S
-          type: string
-          nullable: false
-        customerId:
-          pattern: \S
-          type: string
-          nullable: false
-        documentPath:
-          pattern: \S
-          type: string
-          nullable: false
-        loanCode:
-          pattern: \S
-          type: string
-          nullable: false
-        loanId:
-          pattern: \S
-          type: string
-          nullable: false
-        otpType:
-          allOf:
-          - $ref: '#/components/schemas/OtpType'
-          - nullable: false
-    SendLetterOTPRequest:
-      required:
-      - email
-      - dateOfBirth
-      - name
-      - address
-      - mobile
-      - nationalId
-      - customerId
-      - idIssuePlace
-      - documentPath
-      - otpType
-      - gender
+    CreateDistrictRequest:
       type: object
       properties:
-        email:
-          pattern: \S
-          type: string
-          nullable: false
-        dateOfBirth:
-          pattern: \S
-          type: string
-          nullable: false
         name:
-          pattern: \S
           type: string
-          nullable: false
-        address:
-          pattern: \S
+        slug:
           type: string
-          nullable: false
-        mobile:
-          pattern: \S
+        type:
           type: string
-          nullable: false
-        nationalId:
-          pattern: \S
+        nameWithType:
           type: string
-          nullable: false
-        customerId:
-          pattern: \S
+        code:
           type: string
-          nullable: false
-        employeeCode:
+        path:
           type: string
-        idIssuePlace:
-          pattern: \S
+        pathWithType:
           type: string
-          nullable: false
-        documentPath:
-          pattern: \S
+        cityId:
           type: string
-          nullable: false
-        otpType:
-          allOf:
-          - $ref: '#/components/schemas/OtpType'
-          - nullable: false
+    CreateCommuneRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        slug:
+          type: string
+        type:
+          type: string
+        nameWithType:
+          type: string
+        code:
+          type: string
+        path:
+          type: string
+        pathWithType:
+          type: string
+        districtId:
+          type: string
+    CreateCityRequest:
+      required:
+      - code
+      - name
+      - nameWithType
+      - slug
+      - type
+      type: object
+      properties:
+        name:
+          type: string
+        slug:
+          type: string
+        type:
+          type: string
+        nameWithType:
+          type: string
+        code:
+          type: string
+    ApiResponseCheckIsPaydayByCustomerIdResponse:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/CheckIsPaydayByCustomerIdResponse'
+        errorCode:
+          type: string
+        message:
+          type: object
+        responseCode:
+          type: integer
+          format: int32
+    CheckIsPaydayByCustomerIdResponse:
+      type: object
+      properties:
+        isPayday:
+          type: string
+        personalData:
+          $ref: '#/components/schemas/PersonalData'
+    PersonalData:
+      type: object
+      properties:
+        firstName:
+          type: string
         gender:
           type: string
-          nullable: false
-    SignWithOTPResponse:
+        dateOfBirth:
+          type: string
+        identityNumberSix:
+          type: string
+        emailAddress:
+          type: string
+        mobileNumber:
+          type: string
+        addressTwoLine1:
+          type: string
+        addressOneLine1:
+          type: string
+        apartmentNumber:
+          type: string
+        cityId:
+          type: string
+        districtId:
+          type: string
+        communeId:
+          type: string
+        borrowerDetailTextVariable1:
+          type: string
+        maritalStatus:
+          type: string
+        educationType:
+          type: string
+        coreUserId:
+          type: string
+        note:
+          type: string
+        idDocumentType:
+          type: string
+        identityNumberOne:
+          type: string
+        idIssuePlace:
+          type: string
+        idIssueDate:
+          type: string
+        idFeatures:
+          type: string
+        idExpiredDate:
+          type: string
+        idOrigin:
+          type: string
+        companyId:
+          type: string
+        officeCode:
+          type: string
+        organizationName:
+          type: string
+        officeName:
+          type: string
+        annualIncome:
+          type: number
+          format: float
+        workingDay:
+          type: number
+          format: float
+        borrowerEmploymentHistoryTextVariable1:
+          type: string
+        stepOne:
+          type: string
+        stepTwoIndividual:
+          type: string
+        stepThreeEmployment:
+          type: string
+        paydayLoanStatus:
+          type: string
+        errorGetTngInfo:
+          type: boolean
+        collateralDocument:
+          type: string
+        salaryDocument1:
+          type: string
+        salaryDocument2:
+          type: string
+        salaryDocument3:
+          type: string
+        approvalLetterId:
+          type: string
+        frontId:
+          type: string
+        backId:
+          type: string
+        selfie:
+          type: string
+        frontIdTwo:
+          type: string
+        backIdTwo:
+          type: string
+    InformationSalaryReceiptDateRequest:
+      required:
+      - employee_code
       type: object
       properties:
-        idRequest:
-          format: int32
+        employee_code:
+          type: string
+    ApiResponseObject:
+      type: object
+      properties:
+        result:
+          type: object
+        errorCode:
+          type: string
+        message:
+          type: object
+        responseCode:
           type: integer
-        idDocument:
           format: int32
+    InformationSalaryReceiptDateByOfficeCodeRequest:
+      required:
+      - officeCode
+      type: object
+      properties:
+        officeCode:
+          type: string
+    ApiResponse:
+      type: object
+      properties:
+        result:
+          type: object
+        errorCode:
+          type: string
+        message:
+          type: object
+        responseCode:
           type: integer
+          format: int32
+    TNGRequest:
+      required:
+      - employeeCode
+      type: object
+      properties:
+        employeeCode:
+          type: string
+    ApiResponseTNGResponse:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/TNGResponse'
+        errorCode:
+          type: string
+        message:
+          type: object
+        responseCode:
+          type: integer
+          format: int32
+    TNGResponse:
+      type: object
+      properties:
+        isEmployee:
+          type: string
+    CreateRatingRequest:
+      required:
+      - applicationId
+      - customerId
+      type: object
+      properties:
         customerId:
           type: string
-        unLockTime:
+        applicationId:
           type: string
-    SigningPosition:
+        applicationType:
+          type: string
+          enum:
+          - PDL_TNG
+          - PDL_HMG
+          - INSURANCE
+    ApiResponseBoolean:
       type: object
       properties:
-        xPosition:
-          format: int32
+        result:
+          type: boolean
+        errorCode:
+          type: string
+        message:
+          type: object
+        responseCode:
           type: integer
-        yPosition:
           format: int32
-          type: integer
-    SigningPositionRequest:
+    TemplateRequest:
+      required:
+      - customerId
+      - email
+      - fullName
+      - mobile
+      - templateName
       type: object
       properties:
-        xPosition:
-          format: int32
+        templateName:
+          type: string
+        customerId:
+          type: string
+        email:
+          type: string
+        mobile:
+          type: string
+        fullName:
+          type: string
+        amount:
+          type: string
+        loanCode:
+          type: string
+    NewsLetterRequest:
+      required:
+      - email
+      type: object
+      properties:
+        info:
+          type: object
+          additionalProperties:
+            type: string
+        email:
+          type: string
+    KalapaRequest:
+      required:
+      - image
+      - image_back
+      - image_selfie
+      type: object
+      properties:
+        image:
+          type: string
+          format: binary
+        image_selfie:
+          type: string
+          format: binary
+        image_back:
+          type: string
+          format: binary
+    ApiResponseKalapaResponse:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/KalapaResponse'
+        errorCode:
+          type: string
+        message:
+          type: object
+        responseCode:
           type: integer
-        yPosition:
           format: int32
+    FraudCheck:
+      type: object
+      properties:
+        facesMatched:
           type: integer
+          format: int32
+        floatingMark:
+          type: boolean
+        screenPhoto:
+          type: boolean
+        blacklist:
+          type: boolean
+        abnormalText:
+          type: boolean
+        abnormalFace:
+          type: boolean
+        cornerCut:
+          type: boolean
+    IdCardInfo:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        address:
+          type: string
+        dob:
+          type: string
+        home:
+          type: string
+        expiredDate:
+          type: string
+        documentType:
+          type: string
+        dateOfIssue:
+          type: string
+        features:
+          type: string
+        gender:
+          type: string
+        placeOfIssue:
+          type: string
+    KalapaResponse:
+      type: object
+      properties:
+        createdAt:
+          type: string
+        taxName:
+          type: string
+        verified:
+          type: boolean
+        idCardInfo:
+          $ref: '#/components/schemas/IdCardInfo'
+        selfieCheck:
+          $ref: '#/components/schemas/SelfieCheck'
+        fraudCheck:
+          $ref: '#/components/schemas/FraudCheck'
+    SelfieCheck:
+      type: object
+      properties:
+        matched:
+          type: boolean
+        matchingScore:
+          type: integer
+          format: int32
+    ConfirmInformationV2Request:
+      required:
+      - addressOneLine1
+      - addressTwoLine1
+      - dateOfBirth
+      - emailAddress
+      - firstName
+      - gender
+      - idIssuePlace
+      - identityNumberOne
+      - identityNumberSix
+      type: object
+      properties:
+        firstName:
+          type: string
+        dateOfBirth:
+          type: string
+        gender:
+          type: string
+        identityNumberSix:
+          type: string
+        identityNumberOne:
+          type: string
+        addressTwoLine1:
+          type: string
+        addressOneLine1:
+          type: string
+        emailAddress:
+          type: string
+        idIssuePlace:
+          type: string
+        coreUserId:
+          type: string
+        cityId:
+          type: string
+        districtId:
+          type: string
+        communeId:
+          type: string
+        apartmentNumber:
+          type: string
+    AdditionalInformationV2Request:
+      required:
+      - annualIncome
+      - borrowerDetailTextVariable1
+      - borrowerEmploymentHistoryTextVariable1
+      - educationType
+      - maritalStatus
+      type: object
+      properties:
+        maritalStatus:
+          type: string
+        educationType:
+          type: string
+        borrowerDetailTextVariable1:
+          type: string
+        borrowerEmploymentHistoryTextVariable1:
+          type: string
+        annualIncome:
+          maximum: 500000000
+          minimum: 1000000
+          type: number
+          format: float
+    ConfirmInformationRequest:
+      required:
+      - addressOneLine1
+      - addressTwoLine1
+      - dateOfBirth
+      - emailAddress
+      - firstName
+      - gender
+      - idIssuePlace
+      - identityNumberOne
+      - identityNumberSix
+      - organizationName
+      type: object
+      properties:
+        firstName:
+          type: string
+        dateOfBirth:
+          type: string
+        gender:
+          type: string
+        identityNumberSix:
+          type: string
+        identityNumberOne:
+          type: string
+        addressTwoLine1:
+          type: string
+        addressOneLine1:
+          type: string
+        emailAddress:
+          type: string
+        organizationName:
+          type: string
+        idIssuePlace:
+          type: string
+        coreUserId:
+          type: string
+        cityId:
+          type: string
+        districtId:
+          type: string
+        communeId:
+          type: string
+        apartmentNumber:
+          type: string
+    UpdateInfoRequest:
+      type: object
+      properties:
+        info:
+          type: object
+          additionalProperties:
+            type: object
+    FinancialData:
+      type: object
+      properties:
+        bankName:
+          type: string
+        bankCode:
+          type: string
+        accountNumber:
+          type: string
+    GetTngDataRequest:
+      required:
+      - documentPath
+      type: object
+      properties:
+        documentPath:
+          type: string
+    CustomerSignDoneRequest:
+      required:
+      - documentPath
+      - idDocument
+      - idRequest
+      type: object
+      properties:
+        documentPath:
+          type: string
+        idRequest:
+          type: integer
+          format: int32
+        idDocument:
+          type: integer
+          format: int32
+    ChooseCompanyRequest:
+      required:
+      - companyId
+      type: object
+      properties:
+        companyId:
+          type: string
+    AdditionalInformationRequest:
+      required:
+      - borrowerDetailTextVariable1
+      - borrowerEmploymentHistoryTextVariable1
+      - educationType
+      - maritalStatus
+      type: object
+      properties:
+        maritalStatus:
+          type: string
+        educationType:
+          type: string
+        borrowerDetailTextVariable1:
+          type: string
+        borrowerEmploymentHistoryTextVariable1:
+          type: string
+    CompanyRequest:
+      required:
+      - groupName
+      - name
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        groupName:
+          type: string
+        avatar:
+          type: string
+          format: binary
+        businessCode:
+          type: string
+        mobile:
+          type: string
+        owner:
+          type: string
+        address:
+          type: string
+        payday:
+          type: integer
+          format: int32
+        createdBy:
+          type: string
+        updatedBy:
+          type: string
+        createdAt:
+          type: string
+        updatedAt:
+          type: string
+        code:
+          type: string
+    CreateBankRequest:
+      required:
+      - bankCode
+      - bankName
+      type: object
+      properties:
+        bankName:
+          type: string
+        bankCode:
+          type: string
+    ApiResponseListCommune:
+      type: object
+      properties:
+        result:
+          type: array
+          items:
+            $ref: '#/components/schemas/Commune'
+        errorCode:
+          type: string
+        message:
+          type: object
+        responseCode:
+          type: integer
+          format: int32
+    Commune:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        slug:
+          type: string
+        type:
+          type: string
+        nameWithType:
+          type: string
+        path:
+          type: string
+        pathWithType:
+          type: string
+        code:
+          type: string
+        districtId:
+          type: string
+    ApiResponseListCity:
+      type: object
+      properties:
+        result:
+          type: array
+          items:
+            $ref: '#/components/schemas/City'
+        errorCode:
+          type: string
+        message:
+          type: object
+        responseCode:
+          type: integer
+          format: int32
+    City:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        slug:
+          type: string
+        type:
+          type: string
+        nameWithType:
+          type: string
+        code:
+          type: string
+    ApiResponseListDistrict:
+      type: object
+      properties:
+        result:
+          type: array
+          items:
+            $ref: '#/components/schemas/District'
+        errorCode:
+          type: string
+        message:
+          type: object
+        responseCode:
+          type: integer
+          format: int32
+    District:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        slug:
+          type: string
+        type:
+          type: string
+        nameWithType:
+          type: string
+        path:
+          type: string
+        pathWithType:
+          type: string
+        code:
+          type: string
+        cityId:
+          type: string
+    ApiResponseRating:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/Rating'
+        errorCode:
+          type: string
+        message:
+          type: object
+        responseCode:
+          type: integer
+          format: int32
+    Rating:
+      type: object
+      properties:
+        id:
+          type: string
+        applicationId:
+          type: string
+        applicationType:
+          type: string
+        rate:
+          type: string
+        customerOpinion:
+          type: string
+        isRated:
+          type: boolean
+        customerId:
+          type: string
+    ApiResponseListRating:
+      type: object
+      properties:
+        result:
+          type: array
+          items:
+            $ref: '#/components/schemas/Rating'
+        errorCode:
+          type: string
+        message:
+          type: object
+        responseCode:
+          type: integer
+          format: int32
+    ApiResponseCustomerInfoResponse:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/CustomerInfoResponse'
+        errorCode:
+          type: string
+        message:
+          type: object
+        responseCode:
+          type: integer
+          format: int32
+    CustomerInfoResponse:
+      type: object
+      properties:
+        personalData:
+          $ref: '#/components/schemas/PersonalData'
+        financialData:
+          $ref: '#/components/schemas/FinancialData'
+        kalapaData:
+          $ref: '#/components/schemas/KalapaResponse'
+        tngData:
+          $ref: '#/components/schemas/TNGInformationResponse'
+    TNGInformationResponse:
+      type: object
+      properties:
+        createdAt:
+          type: string
+        hoDem:
+          type: string
+        ten:
+          type: string
+        maDonVi:
+          type: string
+        tenDonVi:
+          type: string
+        theATM:
+          type: string
+        maNganHang:
+          type: string
+        tenNganHang:
+          type: string
+        thuNhap:
+          type: string
+        soCong:
+          type: string
+        maNS:
+          type: string
+    ApiResponseListCompanyInfo:
+      type: object
+      properties:
+        result:
+          type: array
+          items:
+            $ref: '#/components/schemas/CompanyInfo'
+        errorCode:
+          type: string
+        message:
+          type: object
+        responseCode:
+          type: integer
+          format: int32
+    ApiResponseBank:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/Bank'
+        errorCode:
+          type: string
+        message:
+          type: object
+        responseCode:
+          type: integer
+          format: int32
+    Bank:
+      type: object
+      properties:
+        id:
+          type: string
+        bankName:
+          type: string
+        bankCode:
+          type: string
+    ApiResponseListBank:
+      type: object
+      properties:
+        result:
+          type: array
+          items:
+            $ref: '#/components/schemas/Bank'
+        errorCode:
+          type: string
+        message:
+          type: object
+        responseCode:
+          type: integer
+          format: int32
+    ApiResponseListApprovalLetter:
+      type: object
+      properties:
+        result:
+          type: array
+          items:
+            $ref: '#/components/schemas/ApprovalLetter'
+        errorCode:
+          type: string
+        message:
+          type: object
+        responseCode:
+          type: integer
+          format: int32
+    ApprovalLetter:
+      type: object
+      properties:
+        id:
+          type: string
+        provider:
+          type: string
+        idRequest:
+          type: integer
+          format: int32
+        idDocument:
+          type: integer
+          format: int32
+        customerId:
+          type: string
+        path:
+          type: string
+        customerSignDone:
+          type: boolean
+        created_at:
+          type: string
+        updatedAt:
+          type: string
+        updatedBy:
+          type: string
+    ApiResponseApprovalLetter:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/ApprovalLetter'
+        errorCode:
+          type: string
+        message:
+          type: object
+        responseCode:
+          type: integer
+          format: int32
+  securitySchemes:
+    Bearer:
+      type: apiKey
+      name: Authorization
+      in: header
+      scheme: bearer
+      bearerFormat: JWT
