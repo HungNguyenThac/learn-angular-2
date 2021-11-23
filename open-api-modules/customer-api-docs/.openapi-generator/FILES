@@ -28,8 +28,11 @@ model/apiResponseApprovalLetter.ts
 model/apiResponseBank.ts
 model/apiResponseBoolean.ts
 model/apiResponseCheckIsPaydayByCustomerIdResponse.ts
+model/apiResponseCity.ts
+model/apiResponseCommune.ts
 model/apiResponseCompanyInfo.ts
 model/apiResponseCustomerInfoResponse.ts
+model/apiResponseDistrict.ts
 model/apiResponseKalapaResponse.ts
 model/apiResponseListApprovalLetter.ts
 model/apiResponseListBank.ts
@@ -38,6 +41,7 @@ model/apiResponseListCommune.ts
 model/apiResponseListCompanyInfo.ts
 model/apiResponseListDistrict.ts
 model/apiResponseListRating.ts
+model/apiResponseNewsletterInfo.ts
 model/apiResponseObject.ts
 model/apiResponseRating.ts
 model/apiResponseString.ts
@@ -69,6 +73,7 @@ model/inlineObject.ts
 model/kalapaResponse.ts
 model/models.ts
 model/newsLetterRequest.ts
+model/newsletterInfo.ts
 model/personalData.ts
 model/rating.ts
 model/selfieCheck.ts

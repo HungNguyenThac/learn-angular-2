@@ -19,7 +19,6 @@ import { Observable }                                        from 'rxjs';
 
 import { ApiResponseCompanyInfo } from '../model/models';
 import { ApiResponseListCompanyInfo } from '../model/models';
-import { ApiResponseString } from '../model/models';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
 import { Configuration }                                     from '../configuration';
@@ -226,9 +225,9 @@ export class CompanyControllerService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public deleteCompany(companyId: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseString>;
-    public deleteCompany(companyId: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseString>>;
-    public deleteCompany(companyId: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseString>>;
+    public deleteCompany(companyId: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseCompanyInfo>;
+    public deleteCompany(companyId: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseCompanyInfo>>;
+    public deleteCompany(companyId: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseCompanyInfo>>;
     public deleteCompany(companyId: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
         if (companyId === null || companyId === undefined) {
             throw new Error('Required parameter companyId was null or undefined when calling deleteCompany.');
@@ -254,7 +253,7 @@ export class CompanyControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.delete<ApiResponseString>(`${this.configuration.basePath}/company/v1/${encodeURIComponent(String(companyId))}`,
+        return this.httpClient.delete<ApiResponseCompanyInfo>(`${this.configuration.basePath}/company/v1/${encodeURIComponent(String(companyId))}`,
             {
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,

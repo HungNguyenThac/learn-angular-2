@@ -19,7 +19,6 @@ import { Observable }                                        from 'rxjs';
 
 import { ApiResponseBank } from '../model/models';
 import { ApiResponseListBank } from '../model/models';
-import { ApiResponseString } from '../model/models';
 import { CreateBankRequest } from '../model/models';
 import { UpdateBankRequest } from '../model/models';
 
@@ -93,9 +92,9 @@ export class BankControllerService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public createBank(createBankRequest: CreateBankRequest, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseString>;
-    public createBank(createBankRequest: CreateBankRequest, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseString>>;
-    public createBank(createBankRequest: CreateBankRequest, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseString>>;
+    public createBank(createBankRequest: CreateBankRequest, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseBank>;
+    public createBank(createBankRequest: CreateBankRequest, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseBank>>;
+    public createBank(createBankRequest: CreateBankRequest, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseBank>>;
     public createBank(createBankRequest: CreateBankRequest, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
         if (createBankRequest === null || createBankRequest === undefined) {
             throw new Error('Required parameter createBankRequest was null or undefined when calling createBank.');
@@ -130,7 +129,7 @@ export class BankControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.post<ApiResponseString>(`${this.configuration.basePath}/bank/v1/create-bank`,
+        return this.httpClient.post<ApiResponseBank>(`${this.configuration.basePath}/bank/v1/create-bank`,
             createBankRequest,
             {
                 responseType: <any>responseType_,
@@ -147,9 +146,9 @@ export class BankControllerService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public deleteBank(id: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseString>;
-    public deleteBank(id: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseString>>;
-    public deleteBank(id: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseString>>;
+    public deleteBank(id: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseBank>;
+    public deleteBank(id: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseBank>>;
+    public deleteBank(id: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseBank>>;
     public deleteBank(id: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
         if (id === null || id === undefined) {
             throw new Error('Required parameter id was null or undefined when calling deleteBank.');
@@ -175,7 +174,7 @@ export class BankControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.delete<ApiResponseString>(`${this.configuration.basePath}/bank/v1/${encodeURIComponent(String(id))}`,
+        return this.httpClient.delete<ApiResponseBank>(`${this.configuration.basePath}/bank/v1/${encodeURIComponent(String(id))}`,
             {
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
@@ -283,9 +282,9 @@ export class BankControllerService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public updateBank(id: string, updateBankRequest: UpdateBankRequest, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseString>;
-    public updateBank(id: string, updateBankRequest: UpdateBankRequest, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseString>>;
-    public updateBank(id: string, updateBankRequest: UpdateBankRequest, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseString>>;
+    public updateBank(id: string, updateBankRequest: UpdateBankRequest, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseBank>;
+    public updateBank(id: string, updateBankRequest: UpdateBankRequest, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseBank>>;
+    public updateBank(id: string, updateBankRequest: UpdateBankRequest, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseBank>>;
     public updateBank(id: string, updateBankRequest: UpdateBankRequest, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
         if (id === null || id === undefined) {
             throw new Error('Required parameter id was null or undefined when calling updateBank.');
@@ -323,7 +322,7 @@ export class BankControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.put<ApiResponseString>(`${this.configuration.basePath}/bank/v1/${encodeURIComponent(String(id))}`,
+        return this.httpClient.put<ApiResponseBank>(`${this.configuration.basePath}/bank/v1/${encodeURIComponent(String(id))}`,
             updateBankRequest,
             {
                 responseType: <any>responseType_,

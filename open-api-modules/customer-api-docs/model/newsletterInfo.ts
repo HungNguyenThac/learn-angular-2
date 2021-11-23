@@ -11,10 +11,10 @@
  */
 
 
-export interface ApiResponseObject { 
-    result?: object;
-    errorCode?: string;
-    message?: object;
-    responseCode?: number;
+export interface NewsletterInfo { 
+    id?: string;
+    email?: string;
+    info?: { [key: string]: string; };
+    created_at?: string;
 }
 

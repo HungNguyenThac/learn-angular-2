@@ -29,7 +29,7 @@ paths:
           content:
             '*/*':
               schema:
-                $ref: '#/components/schemas/ApiResponseString'
+                $ref: '#/components/schemas/ApiResponseDistrict'
     delete:
       tags:
       - district-controller
@@ -46,7 +46,7 @@ paths:
           content:
             '*/*':
               schema:
-                $ref: '#/components/schemas/ApiResponseString'
+                $ref: '#/components/schemas/ApiResponseDistrict'
   /v1/communes/{id}:
     put:
       tags:
@@ -70,7 +70,7 @@ paths:
           content:
             '*/*':
               schema:
-                $ref: '#/components/schemas/ApiResponseString'
+                $ref: '#/components/schemas/ApiResponseCommune'
     delete:
       tags:
       - commune-controller
@@ -87,7 +87,7 @@ paths:
           content:
             '*/*':
               schema:
-                $ref: '#/components/schemas/ApiResponseString'
+                $ref: '#/components/schemas/ApiResponseCommune'
   /v1/cities/{id}:
     put:
       tags:
@@ -111,7 +111,7 @@ paths:
           content:
             '*/*':
               schema:
-                $ref: '#/components/schemas/ApiResponseString'
+                $ref: '#/components/schemas/ApiResponseCity'
     delete:
       tags:
       - city-controller
@@ -128,7 +128,7 @@ paths:
           content:
             '*/*':
               schema:
-                $ref: '#/components/schemas/ApiResponseString'
+                $ref: '#/components/schemas/ApiResponseCity'
   /rating/v1/{id}:
     put:
       tags:
@@ -152,7 +152,7 @@ paths:
           content:
             '*/*':
               schema:
-                $ref: '#/components/schemas/ApiResponseString'
+                $ref: '#/components/schemas/ApiResponseRating'
   /company/v1/{id}:
     get:
       tags:
@@ -218,7 +218,7 @@ paths:
           content:
             '*/*':
               schema:
-                $ref: '#/components/schemas/ApiResponseString'
+                $ref: '#/components/schemas/ApiResponseBank'
     delete:
       tags:
       - bank-controller
@@ -235,7 +235,7 @@ paths:
           content:
             '*/*':
               schema:
-                $ref: '#/components/schemas/ApiResponseString'
+                $ref: '#/components/schemas/ApiResponseBank'
   /v1/districts:
     post:
       tags:
@@ -253,7 +253,7 @@ paths:
           content:
             '*/*':
               schema:
-                $ref: '#/components/schemas/ApiResponseString'
+                $ref: '#/components/schemas/ApiResponseDistrict'
   /v1/communes:
     post:
       tags:
@@ -271,7 +271,7 @@ paths:
           content:
             '*/*':
               schema:
-                $ref: '#/components/schemas/ApiResponseString'
+                $ref: '#/components/schemas/ApiResponseCommune'
   /v1/cities:
     get:
       tags:
@@ -300,7 +300,7 @@ paths:
           content:
             '*/*':
               schema:
-                $ref: '#/components/schemas/ApiResponseString'
+                $ref: '#/components/schemas/ApiResponseCity'
   /tng/v1/{customerId}/provides-information-salary-receipt-date:
     post:
       tags:
@@ -417,7 +417,7 @@ paths:
           content:
             '*/*':
               schema:
-                $ref: '#/components/schemas/ApiResponseString'
+                $ref: '#/components/schemas/ApiResponseRating'
   /notification/v1/{customerId}/notify-in-repayment-loan:
     post:
       tags:
@@ -476,7 +476,7 @@ paths:
           content:
             '*/*':
               schema:
-                $ref: '#/components/schemas/ApiResponseObject'
+                $ref: '#/components/schemas/ApiResponseNewsletterInfo'
   /kalapa/v2/{customerId}/id_card/plus:
     post:
       tags:
@@ -854,7 +854,7 @@ paths:
           content:
             '*/*':
               schema:
-                $ref: '#/components/schemas/ApiResponseString'
+                $ref: '#/components/schemas/ApiResponseBank'
   /v1/districts/{districtId}/communes:
     get:
       tags:
@@ -1125,7 +1125,7 @@ paths:
           content:
             '*/*':
               schema:
-                $ref: '#/components/schemas/ApiResponseString'
+                $ref: '#/components/schemas/ApiResponseCompanyInfo'
 components:
   schemas:
     UpdateDistrictRequest:
@@ -1147,11 +1147,11 @@ components:
           type: string
         cityId:
           type: string
-    ApiResponseString:
+    ApiResponseDistrict:
       type: object
       properties:
         result:
-          type: string
+          $ref: '#/components/schemas/District'
         errorCode:
           type: string
         message:
@@ -1159,6 +1159,27 @@ components:
         responseCode:
           type: integer
           format: int32
+    District:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        slug:
+          type: string
+        type:
+          type: string
+        nameWithType:
+          type: string
+        path:
+          type: string
+        pathWithType:
+          type: string
+        code:
+          type: string
+        cityId:
+          type: string
     UpdateCommuneRequest:
       type: object
       properties:
@@ -1178,9 +1199,69 @@ components:
           type: string
         districtId:
           type: string
+    ApiResponseCommune:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/Commune'
+        errorCode:
+          type: string
+        message:
+          type: object
+        responseCode:
+          type: integer
+          format: int32
+    Commune:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        slug:
+          type: string
+        type:
+          type: string
+        nameWithType:
+          type: string
+        path:
+          type: string
+        pathWithType:
+          type: string
+        code:
+          type: string
+        districtId:
+          type: string
     UpdateCityRequest:
       type: object
       properties:
+        name:
+          type: string
+        slug:
+          type: string
+        type:
+          type: string
+        nameWithType:
+          type: string
+        code:
+          type: string
+    ApiResponseCity:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/City'
+        errorCode:
+          type: string
+        message:
+          type: object
+        responseCode:
+          type: integer
+          format: int32
+    City:
+      type: object
+      properties:
+        id:
+          type: string
         name:
           type: string
         slug:
@@ -1203,6 +1284,35 @@ components:
           - SATISFIED
           - VERY_SATISFIED
         customerOpinion:
+          type: string
+    ApiResponseRating:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/Rating'
+        errorCode:
+          type: string
+        message:
+          type: object
+        responseCode:
+          type: integer
+          format: int32
+    Rating:
+      type: object
+      properties:
+        id:
+          type: string
+        applicationId:
+          type: string
+        applicationType:
+          type: string
+        rate:
+          type: string
+        customerOpinion:
+          type: string
+        isRated:
+          type: boolean
+        customerId:
           type: string
     UpdateCompanyRequest:
       type: object
@@ -1279,6 +1389,27 @@ components:
       - bankName
       type: object
       properties:
+        bankName:
+          type: string
+        bankCode:
+          type: string
+    ApiResponseBank:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/Bank'
+        errorCode:
+          type: string
+        message:
+          type: object
+        responseCode:
+          type: integer
+          format: int32
+    Bank:
+      type: object
+      properties:
+        id:
+          type: string
         bankName:
           type: string
         bankCode:
@@ -1580,6 +1711,31 @@ components:
             type: string
         email:
           type: string
+    ApiResponseNewsletterInfo:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/NewsletterInfo'
+        errorCode:
+          type: string
+        message:
+          type: object
+        responseCode:
+          type: integer
+          format: int32
+    NewsletterInfo:
+      type: object
+      properties:
+        id:
+          type: string
+        email:
+          type: string
+        info:
+          type: object
+          additionalProperties:
+            type: string
+        created_at:
+          type: string
     KalapaRequest:
       required:
       - image
@@ -1797,6 +1953,18 @@ components:
           type: string
         accountNumber:
           type: string
+    ApiResponseString:
+      type: object
+      properties:
+        result:
+          type: string
+        errorCode:
+          type: string
+        message:
+          type: object
+        responseCode:
+          type: integer
+          format: int32
     GetTngDataRequest:
       required:
       - documentPath
@@ -1902,27 +2070,6 @@ components:
         responseCode:
           type: integer
           format: int32
-    Commune:
-      type: object
-      properties:
-        id:
-          type: string
-        name:
-          type: string
-        slug:
-          type: string
-        type:
-          type: string
-        nameWithType:
-          type: string
-        path:
-          type: string
-        pathWithType:
-          type: string
-        code:
-          type: string
-        districtId:
-          type: string
     ApiResponseListCity:
       type: object
       properties:
@@ -1937,21 +2084,6 @@ components:
         responseCode:
           type: integer
           format: int32
-    City:
-      type: object
-      properties:
-        id:
-          type: string
-        name:
-          type: string
-        slug:
-          type: string
-        type:
-          type: string
-        nameWithType:
-          type: string
-        code:
-          type: string
     ApiResponseListDistrict:
       type: object
       properties:
@@ -1966,56 +2098,6 @@ components:
         responseCode:
           type: integer
           format: int32
-    District:
-      type: object
-      properties:
-        id:
-          type: string
-        name:
-          type: string
-        slug:
-          type: string
-        type:
-          type: string
-        nameWithType:
-          type: string
-        path:
-          type: string
-        pathWithType:
-          type: string
-        code:
-          type: string
-        cityId:
-          type: string
-    ApiResponseRating:
-      type: object
-      properties:
-        result:
-          $ref: '#/components/schemas/Rating'
-        errorCode:
-          type: string
-        message:
-          type: object
-        responseCode:
-          type: integer
-          format: int32
-    Rating:
-      type: object
-      properties:
-        id:
-          type: string
-        applicationId:
-          type: string
-        applicationType:
-          type: string
-        rate:
-          type: string
-        customerOpinion:
-          type: string
-        isRated:
-          type: boolean
-        customerId:
-          type: string
     ApiResponseListRating:
       type: object
       properties:
@@ -2092,27 +2174,6 @@ components:
         responseCode:
           type: integer
           format: int32
-    ApiResponseBank:
-      type: object
-      properties:
-        result:
-          $ref: '#/components/schemas/Bank'
-        errorCode:
-          type: string
-        message:
-          type: object
-        responseCode:
-          type: integer
-          format: int32
-    Bank:
-      type: object
-      properties:
-        id:
-          type: string
-        bankName:
-          type: string
-        bankCode:
-          type: string
     ApiResponseListBank:
       type: object
       properties:

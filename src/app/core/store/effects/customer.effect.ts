@@ -34,24 +34,24 @@ export class CustomerEffects {
     );
   }
 
-  getCustomerInfo$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(fromActions.GET_CUSTOMER_INFO),
-      map((action: fromActions.GetCustomerInfo) => action.payload),
-      switchMap((customerId: string) => {
-        return this.infoControllerService.getInfo(customerId).pipe(
-          map((response: ApiResponseCustomerInfoResponse) => {
-            console.log('Effect Response:', response);
-            if (!response || response.responseCode !== RESPONSE_CODE.SUCCESS) {
-              return new fromActions.GetCustomerInfoError(response.errorCode);
-            }
-            return new fromActions.GetCustomerInfoSuccess(response.result);
-          }),
-          catchError((error) => of(new fromActions.GetCustomerInfoError(error)))
-        );
-      })
-    )
-  );
+  // getCustomerInfo$ = createEffect(() =>
+  // this.actions$.pipe(
+  //   ofType(fromActions.GET_CUSTOMER_INFO),
+  //   map((action: fromActions.GetCustomerInfo) => action.payload),
+  //   switchMap((customerId: string) => {
+  //     return this.infoControllerService.getInfo(customerId).pipe(
+  //       map((response: ApiResponseCustomerInfoResponse) => {
+  //         console.log('Effect Response:', response);
+  //         if (!response || response.responseCode !== RESPONSE_CODE.SUCCESS) {
+  //           return new fromActions.GetCustomerInfoError(response.errorCode);
+  //         }
+  //         return new fromActions.GetCustomerInfoSuccess(response.result);
+  //       }),
+  //       catchError((error) => of(new fromActions.GetCustomerInfoError(error)))
+  //     );
+  //   })
+  // )
+  // );
 
   getCustomerInfoSuccess$ = createEffect(
     () =>

@@ -17,7 +17,7 @@ import { HttpClient, HttpHeaders, HttpParams,
 import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
-import { ApiResponseObject } from '../model/models';
+import { ApiResponseNewsletterInfo } from '../model/models';
 import { NewsLetterRequest } from '../model/models';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
@@ -90,9 +90,9 @@ export class NewsletterControllerService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public saveInfo(newsLetterRequest: NewsLetterRequest, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseObject>;
-    public saveInfo(newsLetterRequest: NewsLetterRequest, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseObject>>;
-    public saveInfo(newsLetterRequest: NewsLetterRequest, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseObject>>;
+    public saveInfo(newsLetterRequest: NewsLetterRequest, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseNewsletterInfo>;
+    public saveInfo(newsLetterRequest: NewsLetterRequest, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseNewsletterInfo>>;
+    public saveInfo(newsLetterRequest: NewsLetterRequest, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseNewsletterInfo>>;
     public saveInfo(newsLetterRequest: NewsLetterRequest, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
         if (newsLetterRequest === null || newsLetterRequest === undefined) {
             throw new Error('Required parameter newsLetterRequest was null or undefined when calling saveInfo.');
@@ -127,7 +127,7 @@ export class NewsletterControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.post<ApiResponseObject>(`${this.configuration.basePath}/newsletter/v1/info`,
+        return this.httpClient.post<ApiResponseNewsletterInfo>(`${this.configuration.basePath}/newsletter/v1/info`,
             newsLetterRequest,
             {
                 responseType: <any>responseType_,

@@ -18,7 +18,7 @@ paths:
         schema:
           type: integer
           format: int32
-      - name: orderBy
+      - name: sortField
         in: query
         required: false
         schema:
@@ -69,7 +69,7 @@ paths:
         schema:
           type: integer
           format: int32
-      - name: orderBy
+      - name: sortField
         in: query
         required: false
         schema:
@@ -114,7 +114,7 @@ paths:
         schema:
           type: integer
           format: int32
-      - name: orderBy
+      - name: sortField
         in: query
         required: false
         schema:
@@ -159,7 +159,7 @@ paths:
         schema:
           type: integer
           format: int32
-      - name: orderBy
+      - name: sortField
         in: query
         required: false
         schema:
@@ -204,7 +204,7 @@ paths:
         schema:
           type: integer
           format: int32
-      - name: orderBy
+      - name: sortField
         in: query
         required: false
         schema:
@@ -249,7 +249,7 @@ paths:
         schema:
           type: integer
           format: int32
-      - name: orderBy
+      - name: sortField
         in: query
         required: false
         schema:
@@ -294,7 +294,7 @@ paths:
         schema:
           type: integer
           format: int32
-      - name: orderBy
+      - name: sortField
         in: query
         required: false
         schema:
@@ -339,7 +339,7 @@ paths:
         schema:
           type: integer
           format: int32
-      - name: orderBy
+      - name: sortField
         in: query
         required: false
         schema:
@@ -384,7 +384,7 @@ paths:
         schema:
           type: integer
           format: int32
-      - name: orderBy
+      - name: sortField
         in: query
         required: false
         schema:
@@ -415,7 +415,7 @@ paths:
     post:
       tags:
       - district-controller
-      operationId: getDistrict
+      operationId: getDistricts
       parameters:
       - name: pageSize
         in: query
@@ -429,7 +429,7 @@ paths:
         schema:
           type: integer
           format: int32
-      - name: orderBy
+      - name: sortField
         in: query
         required: false
         schema:
@@ -474,7 +474,7 @@ paths:
         schema:
           type: integer
           format: int32
-      - name: orderBy
+      - name: sortField
         in: query
         required: false
         schema:
@@ -519,7 +519,7 @@ paths:
         schema:
           type: integer
           format: int32
-      - name: orderBy
+      - name: sortField
         in: query
         required: false
         schema:
@@ -550,7 +550,7 @@ paths:
     post:
       tags:
       - commune-controller
-      operationId: getCommune
+      operationId: getCommunes
       parameters:
       - name: pageSize
         in: query
@@ -564,7 +564,7 @@ paths:
         schema:
           type: integer
           format: int32
-      - name: orderBy
+      - name: sortField
         in: query
         required: false
         schema:
@@ -608,7 +608,7 @@ paths:
     post:
       tags:
       - city-controller
-      operationId: getCity
+      operationId: getCities
       parameters:
       - name: pageSize
         in: query
@@ -622,7 +622,7 @@ paths:
         schema:
           type: integer
           format: int32
-      - name: orderBy
+      - name: sortField
         in: query
         required: false
         schema:
@@ -667,7 +667,7 @@ paths:
         schema:
           type: integer
           format: int32
-      - name: orderBy
+      - name: sortField
         in: query
         required: false
         schema:
@@ -712,7 +712,7 @@ paths:
         schema:
           type: integer
           format: int32
-      - name: orderBy
+      - name: sortField
         in: query
         required: false
         schema:
@@ -757,7 +757,7 @@ paths:
         schema:
           type: integer
           format: int32
-      - name: orderBy
+      - name: sortField
         in: query
         required: false
         schema:
@@ -800,7 +800,7 @@ paths:
         schema:
           type: integer
           format: int32
-      - name: orderBy
+      - name: sortField
         in: query
         required: false
         schema:
@@ -1063,7 +1063,7 @@ paths:
     get:
       tags:
       - district-controller
-      operationId: getDistrict_1
+      operationId: getDistrictById
       parameters:
       - name: districtId
         in: path
@@ -1083,7 +1083,7 @@ paths:
     get:
       tags:
       - district-controller
-      operationId: getDCommunesByDistrictId
+      operationId: getAllCommunesByDistrictId
       parameters:
       - name: districtId
         in: path
@@ -1143,7 +1143,7 @@ paths:
     get:
       tags:
       - commune-controller
-      operationId: getDistrict_2
+      operationId: getCommuneById
       parameters:
       - name: communeId
         in: path
@@ -1163,7 +1163,7 @@ paths:
     get:
       tags:
       - city-controller
-      operationId: getCity_1
+      operationId: getCityById
       parameters:
       - name: cityId
         in: path
@@ -1280,46 +1280,6 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ApiResponseSearchVoucherInfoResponse'
-  /v1/application/loan-list:
-    get:
-      tags:
-      - application-tng-controller
-      operationId: findApplication
-      parameters:
-      - name: query
-        in: query
-        required: true
-        schema:
-          $ref: '#/components/schemas/SearchPaydayLoanRequest'
-      - name: pageSize
-        in: query
-        required: true
-        schema:
-          type: integer
-          format: int32
-      - name: pageNumber
-        in: query
-        required: true
-        schema:
-          type: integer
-          format: int32
-      - name: orderBy
-        in: query
-        required: true
-        schema:
-          type: string
-      - name: desc
-        in: query
-        required: false
-        schema:
-          type: boolean
-      responses:
-        "200":
-          description: OK
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/ApiResponseSearchPaydayLoanResponse'
   /v1/application/hmg/{loanId}:
     get:
       tags:
@@ -1361,46 +1321,6 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ApiResponseSearchVoucherInfoResponse'
-  /v1/application/hmg/loan-list:
-    get:
-      tags:
-      - application-hmg-controller
-      operationId: findApplication_1
-      parameters:
-      - name: query
-        in: query
-        required: true
-        schema:
-          $ref: '#/components/schemas/SearchPaydayLoanRequest'
-      - name: pageSize
-        in: query
-        required: true
-        schema:
-          type: integer
-          format: int32
-      - name: pageNumber
-        in: query
-        required: true
-        schema:
-          type: integer
-          format: int32
-      - name: orderBy
-        in: query
-        required: true
-        schema:
-          type: string
-      - name: desc
-        in: query
-        required: false
-        schema:
-          type: boolean
-      responses:
-        "200":
-          description: OK
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/ApiResponseSearchPaydayLoanResponse'
   /swagger-resources:
     get:
       tags:
@@ -2869,63 +2789,6 @@ components:
           $ref: '#/components/schemas/Voucher'
         voucherTransaction:
           $ref: '#/components/schemas/VoucherTransaction'
-    SearchPaydayLoanRequest:
-      type: object
-      properties:
-        loanCode:
-          type: string
-        mobileNumber:
-          type: string
-        status:
-          type: string
-    ApiResponseSearchPaydayLoanResponse:
-      type: object
-      properties:
-        result:
-          $ref: '#/components/schemas/SearchPaydayLoanResponse'
-        errorCode:
-          type: string
-        message:
-          type: object
-        responseCode:
-          type: integer
-          format: int32
-    SearchPaydayLoanResponse:
-      type: object
-      properties:
-        pagination:
-          $ref: '#/components/schemas/Pagination'
-        searchPaydayLoanResult:
-          type: array
-          items:
-            $ref: '#/components/schemas/SearchPaydayLoanResult'
-    SearchPaydayLoanResult:
-      type: object
-      properties:
-        customerId:
-          type: string
-        loanId:
-          type: string
-        loanCode:
-          type: string
-        tenure:
-          type: integer
-          format: int32
-        status:
-          type: string
-        repaymentStatus:
-          type: string
-        amount:
-          type: integer
-          format: int32
-        createdAt:
-          type: string
-        customerName:
-          type: string
-        mobileNumber:
-          type: string
-        emailAddress:
-          type: string
     ApiResponsePaydayLoanHmg:
       type: object
       properties:

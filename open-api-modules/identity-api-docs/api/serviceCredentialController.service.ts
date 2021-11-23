@@ -17,8 +17,8 @@ import { HttpClient, HttpHeaders, HttpParams,
 import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
+import { ApiResponseCredential } from '../model/models';
 import { ApiResponseGetTokenResponse } from '../model/models';
-import { ApiResponseObject } from '../model/models';
 import { ChangePassProviderRequest } from '../model/models';
 import { CreateProviderAccountRequest } from '../model/models';
 import { GetTokenRequest } from '../model/models';
@@ -93,9 +93,9 @@ export class ServiceCredentialControllerService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public changePass(changePassProviderRequest: ChangePassProviderRequest, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseObject>;
-    public changePass(changePassProviderRequest: ChangePassProviderRequest, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseObject>>;
-    public changePass(changePassProviderRequest: ChangePassProviderRequest, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseObject>>;
+    public changePass(changePassProviderRequest: ChangePassProviderRequest, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseCredential>;
+    public changePass(changePassProviderRequest: ChangePassProviderRequest, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseCredential>>;
+    public changePass(changePassProviderRequest: ChangePassProviderRequest, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseCredential>>;
     public changePass(changePassProviderRequest: ChangePassProviderRequest, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
         if (changePassProviderRequest === null || changePassProviderRequest === undefined) {
             throw new Error('Required parameter changePassProviderRequest was null or undefined when calling changePass.');
@@ -130,7 +130,7 @@ export class ServiceCredentialControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.post<ApiResponseObject>(`${this.configuration.basePath}/credential/v1/change-pass`,
+        return this.httpClient.post<ApiResponseCredential>(`${this.configuration.basePath}/credential/v1/change-pass`,
             changePassProviderRequest,
             {
                 responseType: <any>responseType_,
@@ -147,9 +147,9 @@ export class ServiceCredentialControllerService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public createToken(createProviderAccountRequest: CreateProviderAccountRequest, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseObject>;
-    public createToken(createProviderAccountRequest: CreateProviderAccountRequest, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseObject>>;
-    public createToken(createProviderAccountRequest: CreateProviderAccountRequest, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseObject>>;
+    public createToken(createProviderAccountRequest: CreateProviderAccountRequest, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseCredential>;
+    public createToken(createProviderAccountRequest: CreateProviderAccountRequest, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseCredential>>;
+    public createToken(createProviderAccountRequest: CreateProviderAccountRequest, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseCredential>>;
     public createToken(createProviderAccountRequest: CreateProviderAccountRequest, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
         if (createProviderAccountRequest === null || createProviderAccountRequest === undefined) {
             throw new Error('Required parameter createProviderAccountRequest was null or undefined when calling createToken.');
@@ -184,7 +184,7 @@ export class ServiceCredentialControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.post<ApiResponseObject>(`${this.configuration.basePath}/credential/v1/create`,
+        return this.httpClient.post<ApiResponseCredential>(`${this.configuration.basePath}/credential/v1/create`,
             createProviderAccountRequest,
             {
                 responseType: <any>responseType_,

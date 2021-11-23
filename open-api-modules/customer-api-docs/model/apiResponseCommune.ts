@@ -9,11 +9,11 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { Voucher } from './voucher';
+import { Commune } from './commune';
 
 
-export interface ApiResponseListVoucher { 
-    result?: Array<Voucher>;
+export interface ApiResponseCommune { 
+    result?: Commune;
     errorCode?: string;
     message?: object;
     responseCode?: number;

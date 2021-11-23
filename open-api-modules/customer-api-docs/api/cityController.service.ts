@@ -17,6 +17,7 @@ import { HttpClient, HttpHeaders, HttpParams,
 import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
+import { ApiResponseCity } from '../model/models';
 import { ApiResponseListCity } from '../model/models';
 import { ApiResponseListDistrict } from '../model/models';
 import { ApiResponseString } from '../model/models';
@@ -93,9 +94,9 @@ export class CityControllerService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public createCity(createCityRequest: CreateCityRequest, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseString>;
-    public createCity(createCityRequest: CreateCityRequest, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseString>>;
-    public createCity(createCityRequest: CreateCityRequest, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseString>>;
+    public createCity(createCityRequest: CreateCityRequest, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseCity>;
+    public createCity(createCityRequest: CreateCityRequest, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseCity>>;
+    public createCity(createCityRequest: CreateCityRequest, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseCity>>;
     public createCity(createCityRequest: CreateCityRequest, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
         if (createCityRequest === null || createCityRequest === undefined) {
             throw new Error('Required parameter createCityRequest was null or undefined when calling createCity.');
@@ -130,7 +131,7 @@ export class CityControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.post<ApiResponseString>(`${this.configuration.basePath}/v1/cities`,
+        return this.httpClient.post<ApiResponseCity>(`${this.configuration.basePath}/v1/cities`,
             createCityRequest,
             {
                 responseType: <any>responseType_,
@@ -147,9 +148,9 @@ export class CityControllerService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public deleteCity(id: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseString>;
-    public deleteCity(id: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseString>>;
-    public deleteCity(id: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseString>>;
+    public deleteCity(id: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseCity>;
+    public deleteCity(id: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseCity>>;
+    public deleteCity(id: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseCity>>;
     public deleteCity(id: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
         if (id === null || id === undefined) {
             throw new Error('Required parameter id was null or undefined when calling deleteCity.');
@@ -175,7 +176,7 @@ export class CityControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.delete<ApiResponseString>(`${this.configuration.basePath}/v1/cities/${encodeURIComponent(String(id))}`,
+        return this.httpClient.delete<ApiResponseCity>(`${this.configuration.basePath}/v1/cities/${encodeURIComponent(String(id))}`,
             {
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
@@ -316,9 +317,9 @@ export class CityControllerService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public updateCity(id: string, updateCityRequest: UpdateCityRequest, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseString>;
-    public updateCity(id: string, updateCityRequest: UpdateCityRequest, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseString>>;
-    public updateCity(id: string, updateCityRequest: UpdateCityRequest, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseString>>;
+    public updateCity(id: string, updateCityRequest: UpdateCityRequest, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseCity>;
+    public updateCity(id: string, updateCityRequest: UpdateCityRequest, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseCity>>;
+    public updateCity(id: string, updateCityRequest: UpdateCityRequest, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseCity>>;
     public updateCity(id: string, updateCityRequest: UpdateCityRequest, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
         if (id === null || id === undefined) {
             throw new Error('Required parameter id was null or undefined when calling updateCity.');
@@ -356,7 +357,7 @@ export class CityControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.put<ApiResponseString>(`${this.configuration.basePath}/v1/cities/${encodeURIComponent(String(id))}`,
+        return this.httpClient.put<ApiResponseCity>(`${this.configuration.basePath}/v1/cities/${encodeURIComponent(String(id))}`,
             updateCityRequest,
             {
                 responseType: <any>responseType_,

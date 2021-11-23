@@ -17,6 +17,7 @@ import { HttpClient, HttpHeaders, HttpParams,
 import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
+import { ApiResponseDistrict } from '../model/models';
 import { ApiResponseListCommune } from '../model/models';
 import { ApiResponseString } from '../model/models';
 import { CreateDistrictRequest } from '../model/models';
@@ -92,9 +93,9 @@ export class DistrictControllerService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public createDistrict(createDistrictRequest: CreateDistrictRequest, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseString>;
-    public createDistrict(createDistrictRequest: CreateDistrictRequest, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseString>>;
-    public createDistrict(createDistrictRequest: CreateDistrictRequest, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseString>>;
+    public createDistrict(createDistrictRequest: CreateDistrictRequest, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseDistrict>;
+    public createDistrict(createDistrictRequest: CreateDistrictRequest, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseDistrict>>;
+    public createDistrict(createDistrictRequest: CreateDistrictRequest, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseDistrict>>;
     public createDistrict(createDistrictRequest: CreateDistrictRequest, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
         if (createDistrictRequest === null || createDistrictRequest === undefined) {
             throw new Error('Required parameter createDistrictRequest was null or undefined when calling createDistrict.');
@@ -129,7 +130,7 @@ export class DistrictControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.post<ApiResponseString>(`${this.configuration.basePath}/v1/districts`,
+        return this.httpClient.post<ApiResponseDistrict>(`${this.configuration.basePath}/v1/districts`,
             createDistrictRequest,
             {
                 responseType: <any>responseType_,
@@ -146,9 +147,9 @@ export class DistrictControllerService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public deleteDistrict(id: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseString>;
-    public deleteDistrict(id: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseString>>;
-    public deleteDistrict(id: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseString>>;
+    public deleteDistrict(id: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseDistrict>;
+    public deleteDistrict(id: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseDistrict>>;
+    public deleteDistrict(id: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseDistrict>>;
     public deleteDistrict(id: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
         if (id === null || id === undefined) {
             throw new Error('Required parameter id was null or undefined when calling deleteDistrict.');
@@ -174,7 +175,7 @@ export class DistrictControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.delete<ApiResponseString>(`${this.configuration.basePath}/v1/districts/${encodeURIComponent(String(id))}`,
+        return this.httpClient.delete<ApiResponseDistrict>(`${this.configuration.basePath}/v1/districts/${encodeURIComponent(String(id))}`,
             {
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
@@ -275,9 +276,9 @@ export class DistrictControllerService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public updateDistrict(id: string, updateDistrictRequest: UpdateDistrictRequest, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseString>;
-    public updateDistrict(id: string, updateDistrictRequest: UpdateDistrictRequest, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseString>>;
-    public updateDistrict(id: string, updateDistrictRequest: UpdateDistrictRequest, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseString>>;
+    public updateDistrict(id: string, updateDistrictRequest: UpdateDistrictRequest, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseDistrict>;
+    public updateDistrict(id: string, updateDistrictRequest: UpdateDistrictRequest, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseDistrict>>;
+    public updateDistrict(id: string, updateDistrictRequest: UpdateDistrictRequest, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseDistrict>>;
     public updateDistrict(id: string, updateDistrictRequest: UpdateDistrictRequest, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
         if (id === null || id === undefined) {
             throw new Error('Required parameter id was null or undefined when calling updateDistrict.');
@@ -315,7 +316,7 @@ export class DistrictControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.put<ApiResponseString>(`${this.configuration.basePath}/v1/districts/${encodeURIComponent(String(id))}`,
+        return this.httpClient.put<ApiResponseDistrict>(`${this.configuration.basePath}/v1/districts/${encodeURIComponent(String(id))}`,
             updateDistrictRequest,
             {
                 responseType: <any>responseType_,

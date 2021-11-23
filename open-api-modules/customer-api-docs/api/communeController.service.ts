@@ -17,6 +17,7 @@ import { HttpClient, HttpHeaders, HttpParams,
 import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
+import { ApiResponseCommune } from '../model/models';
 import { ApiResponseString } from '../model/models';
 import { CreateCommuneRequest } from '../model/models';
 import { UpdateCommuneRequest } from '../model/models';
@@ -91,9 +92,9 @@ export class CommuneControllerService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public createCommune(createCommuneRequest: CreateCommuneRequest, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseString>;
-    public createCommune(createCommuneRequest: CreateCommuneRequest, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseString>>;
-    public createCommune(createCommuneRequest: CreateCommuneRequest, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseString>>;
+    public createCommune(createCommuneRequest: CreateCommuneRequest, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseCommune>;
+    public createCommune(createCommuneRequest: CreateCommuneRequest, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseCommune>>;
+    public createCommune(createCommuneRequest: CreateCommuneRequest, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseCommune>>;
     public createCommune(createCommuneRequest: CreateCommuneRequest, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
         if (createCommuneRequest === null || createCommuneRequest === undefined) {
             throw new Error('Required parameter createCommuneRequest was null or undefined when calling createCommune.');
@@ -128,7 +129,7 @@ export class CommuneControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.post<ApiResponseString>(`${this.configuration.basePath}/v1/communes`,
+        return this.httpClient.post<ApiResponseCommune>(`${this.configuration.basePath}/v1/communes`,
             createCommuneRequest,
             {
                 responseType: <any>responseType_,
@@ -145,9 +146,9 @@ export class CommuneControllerService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public deleteCommune(id: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseString>;
-    public deleteCommune(id: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseString>>;
-    public deleteCommune(id: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseString>>;
+    public deleteCommune(id: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseCommune>;
+    public deleteCommune(id: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseCommune>>;
+    public deleteCommune(id: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseCommune>>;
     public deleteCommune(id: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
         if (id === null || id === undefined) {
             throw new Error('Required parameter id was null or undefined when calling deleteCommune.');
@@ -173,7 +174,7 @@ export class CommuneControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.delete<ApiResponseString>(`${this.configuration.basePath}/v1/communes/${encodeURIComponent(String(id))}`,
+        return this.httpClient.delete<ApiResponseCommune>(`${this.configuration.basePath}/v1/communes/${encodeURIComponent(String(id))}`,
             {
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
@@ -270,9 +271,9 @@ export class CommuneControllerService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public updateCommune(id: string, updateCommuneRequest: UpdateCommuneRequest, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseString>;
-    public updateCommune(id: string, updateCommuneRequest: UpdateCommuneRequest, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseString>>;
-    public updateCommune(id: string, updateCommuneRequest: UpdateCommuneRequest, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseString>>;
+    public updateCommune(id: string, updateCommuneRequest: UpdateCommuneRequest, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseCommune>;
+    public updateCommune(id: string, updateCommuneRequest: UpdateCommuneRequest, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseCommune>>;
+    public updateCommune(id: string, updateCommuneRequest: UpdateCommuneRequest, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseCommune>>;
     public updateCommune(id: string, updateCommuneRequest: UpdateCommuneRequest, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
         if (id === null || id === undefined) {
             throw new Error('Required parameter id was null or undefined when calling updateCommune.');
@@ -310,7 +311,7 @@ export class CommuneControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.put<ApiResponseString>(`${this.configuration.basePath}/v1/communes/${encodeURIComponent(String(id))}`,
+        return this.httpClient.put<ApiResponseCommune>(`${this.configuration.basePath}/v1/communes/${encodeURIComponent(String(id))}`,
             updateCommuneRequest,
             {
                 responseType: <any>responseType_,
