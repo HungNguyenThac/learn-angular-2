@@ -360,6 +360,11 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
     const currentLoanStatus = this.loanDetail?.status;
     switch (currentLoanStatus) {
       case PAYDAY_LOAN_STATUS.INITIALIZED:
+        if (this.groupName === 'HMG') {
+          this.nextLoanStatus = PAYDAY_LOAN_STATUS.DOCUMENTATION_COMPLETE;
+          this.rejectLoanStatus = PAYDAY_LOAN_STATUS.WITHDRAW;
+          break;
+        }
         this.nextLoanStatus = PAYDAY_LOAN_STATUS.DOCUMENT_AWAITING;
         this.rejectLoanStatus = PAYDAY_LOAN_STATUS.WITHDRAW;
         break;
