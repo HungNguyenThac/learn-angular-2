@@ -19,7 +19,7 @@ import { Observable }                                        from 'rxjs';
 
 import { ApiResponseListPromotionEvent } from '../model/models';
 import { ApiResponseListVoucher } from '../model/models';
-import { ApiResponseString } from '../model/models';
+import { ApiResponsePromotionEvent } from '../model/models';
 import { ApiResponseVoucher } from '../model/models';
 import { ApiResponseVoucherTransaction } from '../model/models';
 import { CheckValidVoucherRequest } from '../model/models';
@@ -93,16 +93,16 @@ export class PromotionControllerService {
     }
 
     /**
-     * @param updatePromotionEventRequest 
+     * @param createPromotionEventRequest 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public createPromotionEvent(updatePromotionEventRequest: UpdatePromotionEventRequest, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseString>;
-    public createPromotionEvent(updatePromotionEventRequest: UpdatePromotionEventRequest, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseString>>;
-    public createPromotionEvent(updatePromotionEventRequest: UpdatePromotionEventRequest, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseString>>;
-    public createPromotionEvent(updatePromotionEventRequest: UpdatePromotionEventRequest, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
-        if (updatePromotionEventRequest === null || updatePromotionEventRequest === undefined) {
-            throw new Error('Required parameter updatePromotionEventRequest was null or undefined when calling createPromotionEvent.');
+    public createPromotionEvent(createPromotionEventRequest: CreatePromotionEventRequest, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponsePromotionEvent>;
+    public createPromotionEvent(createPromotionEventRequest: CreatePromotionEventRequest, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponsePromotionEvent>>;
+    public createPromotionEvent(createPromotionEventRequest: CreatePromotionEventRequest, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponsePromotionEvent>>;
+    public createPromotionEvent(createPromotionEventRequest: CreatePromotionEventRequest, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
+        if (createPromotionEventRequest === null || createPromotionEventRequest === undefined) {
+            throw new Error('Required parameter createPromotionEventRequest was null or undefined when calling createPromotionEvent.');
         }
 
         let headers = this.defaultHeaders;
@@ -134,8 +134,8 @@ export class PromotionControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.post<ApiResponseString>(`${this.configuration.basePath}/v1/promotion/update-promotion-event`,
-            updatePromotionEventRequest,
+        return this.httpClient.post<ApiResponsePromotionEvent>(`${this.configuration.basePath}/v1/promotion/create-promotion-event`,
+            createPromotionEventRequest,
             {
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
@@ -343,16 +343,16 @@ export class PromotionControllerService {
     }
 
     /**
-     * @param createPromotionEventRequest 
+     * @param updatePromotionEventRequest 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public updatePromotionEvent(createPromotionEventRequest: CreatePromotionEventRequest, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseString>;
-    public updatePromotionEvent(createPromotionEventRequest: CreatePromotionEventRequest, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseString>>;
-    public updatePromotionEvent(createPromotionEventRequest: CreatePromotionEventRequest, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseString>>;
-    public updatePromotionEvent(createPromotionEventRequest: CreatePromotionEventRequest, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
-        if (createPromotionEventRequest === null || createPromotionEventRequest === undefined) {
-            throw new Error('Required parameter createPromotionEventRequest was null or undefined when calling updatePromotionEvent.');
+    public updatePromotionEvent(updatePromotionEventRequest: UpdatePromotionEventRequest, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponsePromotionEvent>;
+    public updatePromotionEvent(updatePromotionEventRequest: UpdatePromotionEventRequest, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponsePromotionEvent>>;
+    public updatePromotionEvent(updatePromotionEventRequest: UpdatePromotionEventRequest, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponsePromotionEvent>>;
+    public updatePromotionEvent(updatePromotionEventRequest: UpdatePromotionEventRequest, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
+        if (updatePromotionEventRequest === null || updatePromotionEventRequest === undefined) {
+            throw new Error('Required parameter updatePromotionEventRequest was null or undefined when calling updatePromotionEvent.');
         }
 
         let headers = this.defaultHeaders;
@@ -384,8 +384,8 @@ export class PromotionControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.post<ApiResponseString>(`${this.configuration.basePath}/v1/promotion/create-promotion-event`,
-            createPromotionEventRequest,
+        return this.httpClient.post<ApiResponsePromotionEvent>(`${this.configuration.basePath}/v1/promotion/update-promotion-event`,
+            updatePromotionEventRequest,
             {
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,

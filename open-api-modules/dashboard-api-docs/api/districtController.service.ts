@@ -91,12 +91,12 @@ export class DistrictControllerService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getDCommunesByDistrictId(districtId: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseListCommune>;
-    public getDCommunesByDistrictId(districtId: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseListCommune>>;
-    public getDCommunesByDistrictId(districtId: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseListCommune>>;
-    public getDCommunesByDistrictId(districtId: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
+    public getAllCommunesByDistrictId(districtId: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseListCommune>;
+    public getAllCommunesByDistrictId(districtId: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseListCommune>>;
+    public getAllCommunesByDistrictId(districtId: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseListCommune>>;
+    public getAllCommunesByDistrictId(districtId: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
         if (districtId === null || districtId === undefined) {
-            throw new Error('Required parameter districtId was null or undefined when calling getDCommunesByDistrictId.');
+            throw new Error('Required parameter districtId was null or undefined when calling getAllCommunesByDistrictId.');
         }
 
         let headers = this.defaultHeaders;
@@ -131,6 +131,50 @@ export class DistrictControllerService {
     }
 
     /**
+     * @param districtId 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getDistrictById(districtId: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseDistrict>;
+    public getDistrictById(districtId: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseDistrict>>;
+    public getDistrictById(districtId: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseDistrict>>;
+    public getDistrictById(districtId: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
+        if (districtId === null || districtId === undefined) {
+            throw new Error('Required parameter districtId was null or undefined when calling getDistrictById.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (httpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                '*/*'
+            ];
+            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
+        if (httpHeaderAcceptSelected !== undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+
+        let responseType_: 'text' | 'json' = 'json';
+        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+            responseType_ = 'text';
+        }
+
+        return this.httpClient.get<ApiResponseDistrict>(`${this.configuration.basePath}/v1/districts/${encodeURIComponent(String(districtId))}`,
+            {
+                responseType: <any>responseType_,
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
      * @param pageSize 
      * @param pageNumber 
      * @param requestBody 
@@ -139,18 +183,18 @@ export class DistrictControllerService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getDistrict(pageSize: number, pageNumber: number, requestBody: { [key: string]: object; }, orderBy?: string, descending?: boolean, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseSearchAndPaginationResponseDistrict>;
-    public getDistrict(pageSize: number, pageNumber: number, requestBody: { [key: string]: object; }, orderBy?: string, descending?: boolean, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseSearchAndPaginationResponseDistrict>>;
-    public getDistrict(pageSize: number, pageNumber: number, requestBody: { [key: string]: object; }, orderBy?: string, descending?: boolean, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseSearchAndPaginationResponseDistrict>>;
-    public getDistrict(pageSize: number, pageNumber: number, requestBody: { [key: string]: object; }, orderBy?: string, descending?: boolean, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
+    public getDistricts(pageSize: number, pageNumber: number, requestBody: { [key: string]: object; }, orderBy?: string, descending?: boolean, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseSearchAndPaginationResponseDistrict>;
+    public getDistricts(pageSize: number, pageNumber: number, requestBody: { [key: string]: object; }, orderBy?: string, descending?: boolean, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseSearchAndPaginationResponseDistrict>>;
+    public getDistricts(pageSize: number, pageNumber: number, requestBody: { [key: string]: object; }, orderBy?: string, descending?: boolean, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseSearchAndPaginationResponseDistrict>>;
+    public getDistricts(pageSize: number, pageNumber: number, requestBody: { [key: string]: object; }, orderBy?: string, descending?: boolean, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
         if (pageSize === null || pageSize === undefined) {
-            throw new Error('Required parameter pageSize was null or undefined when calling getDistrict.');
+            throw new Error('Required parameter pageSize was null or undefined when calling getDistricts.');
         }
         if (pageNumber === null || pageNumber === undefined) {
-            throw new Error('Required parameter pageNumber was null or undefined when calling getDistrict.');
+            throw new Error('Required parameter pageNumber was null or undefined when calling getDistricts.');
         }
         if (requestBody === null || requestBody === undefined) {
-            throw new Error('Required parameter requestBody was null or undefined when calling getDistrict.');
+            throw new Error('Required parameter requestBody was null or undefined when calling getDistricts.');
         }
 
         let queryParameters = new HttpParams({encoder: this.encoder});
@@ -204,50 +248,6 @@ export class DistrictControllerService {
             requestBody,
             {
                 params: queryParameters,
-                responseType: <any>responseType_,
-                withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress
-            }
-        );
-    }
-
-    /**
-     * @param districtId 
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public getDistrict1(districtId: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseDistrict>;
-    public getDistrict1(districtId: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseDistrict>>;
-    public getDistrict1(districtId: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseDistrict>>;
-    public getDistrict1(districtId: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
-        if (districtId === null || districtId === undefined) {
-            throw new Error('Required parameter districtId was null or undefined when calling getDistrict1.');
-        }
-
-        let headers = this.defaultHeaders;
-
-        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-        if (httpHeaderAcceptSelected === undefined) {
-            // to determine the Accept header
-            const httpHeaderAccepts: string[] = [
-                '*/*'
-            ];
-            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        }
-        if (httpHeaderAcceptSelected !== undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
-        }
-
-
-        let responseType_: 'text' | 'json' = 'json';
-        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
-            responseType_ = 'text';
-        }
-
-        return this.httpClient.get<ApiResponseDistrict>(`${this.configuration.basePath}/v1/districts/${encodeURIComponent(String(districtId))}`,
-            {
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,

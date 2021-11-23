@@ -9,6 +9,7 @@ import {
   CompanyInfo,
   CustomerInfo,
 } from '../../../../../../open-api-modules/dashboard-api-docs';
+
 import { CustomerDetailService } from './customer-detail.service';
 import { Subscription } from 'rxjs';
 import { OnDestroy } from '@angular/core';
@@ -16,6 +17,12 @@ import { RESPONSE_CODE } from '../../../../core/common/enum/operator';
 import { ToastrService } from 'ngx-toastr';
 import { MultiLanguageService } from '../../../../share/translate/multiLanguageService';
 import { NotificationService } from '../../../../core/services/notification.service';
+import {
+  ApiResponseListCity,
+  ApiResponseListDistrict,
+  CityControllerService,
+  DistrictControllerService,
+} from '../../../../../../open-api-modules/customer-api-docs';
 
 @Component({
   selector: 'app-customer-detail-element',
@@ -40,11 +47,16 @@ export class CustomerDetailElementComponent implements OnInit, OnDestroy {
   companyOptions: Array<CompanyInfo>;
   hiddenColumns: string[] = [];
   disabledColumns: string[] = [];
+  cityData: any[];
+  districtData: any[];
+  communeData: any[];
 
   subManager = new Subscription();
 
   constructor(
     private customerDetailService: CustomerDetailService,
+    private cityControllerService: CityControllerService,
+    private districtControllerService: DistrictControllerService,
     private bankControllerService: BankControllerService,
     private notifier: ToastrService,
     private companyControllerService: CompanyControllerService,
@@ -133,6 +145,45 @@ export class CustomerDetailElementComponent implements OnInit, OnDestroy {
         )
     );
   }
+
+  // getAllCityList() {
+  //   this.subManager.add(
+  //     this.cityControllerService
+  //       .getAllCity()
+  //       .subscribe((result: ApiResponseListCity) => {
+  //         if (!result || result.responseCode !== 200) {
+  //           // return this.handleResponseError(result.errorCode);
+  //         }
+  //         this.cityData = result.result;
+  //       })
+  //   );
+  // }
+  //
+  // getDistrictList() {
+  //   this.subManager.add(
+  //     this.cityControllerService
+  //       .getAllDistrict(this.userInfo.cityId)
+  //       .subscribe((result: ApiResponseListDistrict) => {
+  //         if (!result || result.responseCode !== 200) {
+  //           // return this.handleResponseError(result.errorCode);
+  //         }
+  //         this.districtData = result.result;
+  //       })
+  //   );
+  // }
+  //
+  // getCommuneList() {
+  //   this.subManager.add(
+  //     this.districtControllerService
+  //       .getAllCommune(this.userInfo.districtId)
+  //       .subscribe((result: ApiResponseListDistrict) => {
+  //         if (!result || result.responseCode !== 200) {
+  //           // return this.handleResponseError(result.errorCode);
+  //         }
+  //         this.communeData = result.result;
+  //       })
+  //   );
+  // }
 
   ngOnDestroy(): void {
     this.subManager.unsubscribe();

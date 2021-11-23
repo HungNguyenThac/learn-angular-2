@@ -5,6 +5,7 @@ export * from './apiResponseListPromotionEvent';
 export * from './apiResponseListVoucherDTO';
 export * from './apiResponseObject';
 export * from './apiResponsePaydayLoan';
+export * from './apiResponsePromotionEvent';
 export * from './apiResponseString';
 export * from './apiResponseVoucher';
 export * from './apiResponseVoucherDTO';

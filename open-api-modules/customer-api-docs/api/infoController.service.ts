@@ -20,6 +20,7 @@ import { Observable }                                        from 'rxjs';
 import { AdditionalInformationRequest } from '../model/models';
 import { ApiResponseCustomerInfoResponse } from '../model/models';
 import { ApiResponseObject } from '../model/models';
+import { ApiResponseString } from '../model/models';
 import { ChooseCompanyRequest } from '../model/models';
 import { ConfirmInformationRequest } from '../model/models';
 import { CustomerSignDoneRequest } from '../model/models';
@@ -440,9 +441,9 @@ export class InfoControllerService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public requestGetTngData(customerId: string, getTngDataRequest: GetTngDataRequest, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseObject>;
-    public requestGetTngData(customerId: string, getTngDataRequest: GetTngDataRequest, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseObject>>;
-    public requestGetTngData(customerId: string, getTngDataRequest: GetTngDataRequest, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseObject>>;
+    public requestGetTngData(customerId: string, getTngDataRequest: GetTngDataRequest, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseString>;
+    public requestGetTngData(customerId: string, getTngDataRequest: GetTngDataRequest, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseString>>;
+    public requestGetTngData(customerId: string, getTngDataRequest: GetTngDataRequest, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseString>>;
     public requestGetTngData(customerId: string, getTngDataRequest: GetTngDataRequest, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
         if (customerId === null || customerId === undefined) {
             throw new Error('Required parameter customerId was null or undefined when calling requestGetTngData.');
@@ -480,7 +481,7 @@ export class InfoControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.post<ApiResponseObject>(`${this.configuration.basePath}/info/v1/${encodeURIComponent(String(customerId))}/request-get-tng-data`,
+        return this.httpClient.post<ApiResponseString>(`${this.configuration.basePath}/info/v1/${encodeURIComponent(String(customerId))}/request-get-tng-data`,
             getTngDataRequest,
             {
                 responseType: <any>responseType_,
@@ -497,9 +498,9 @@ export class InfoControllerService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public returnConfirmInformation(customerId: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseObject>;
-    public returnConfirmInformation(customerId: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseObject>>;
-    public returnConfirmInformation(customerId: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseObject>>;
+    public returnConfirmInformation(customerId: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseString>;
+    public returnConfirmInformation(customerId: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseString>>;
+    public returnConfirmInformation(customerId: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseString>>;
     public returnConfirmInformation(customerId: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
         if (customerId === null || customerId === undefined) {
             throw new Error('Required parameter customerId was null or undefined when calling returnConfirmInformation.');
@@ -525,7 +526,7 @@ export class InfoControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.post<ApiResponseObject>(`${this.configuration.basePath}/info/v1/${encodeURIComponent(String(customerId))}/return-confirm-information`,
+        return this.httpClient.post<ApiResponseString>(`${this.configuration.basePath}/info/v1/${encodeURIComponent(String(customerId))}/return-confirm-information`,
             null,
             {
                 responseType: <any>responseType_,

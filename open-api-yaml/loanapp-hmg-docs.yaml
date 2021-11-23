@@ -76,7 +76,7 @@ paths:
     post:
       tags:
       - promotion-controller
-      operationId: createPromotionEvent
+      operationId: updatePromotionEvent
       requestBody:
         content:
           application/json:
@@ -89,7 +89,7 @@ paths:
           content:
             '*/*':
               schema:
-                $ref: '#/components/schemas/ApiResponseString'
+                $ref: '#/components/schemas/ApiResponsePromotionEvent'
   /v1/promotion/create-voucher:
     post:
       tags:
@@ -112,7 +112,7 @@ paths:
     post:
       tags:
       - promotion-controller
-      operationId: updatePromotionEvent
+      operationId: createPromotionEvent
       requestBody:
         content:
           application/json:
@@ -125,7 +125,7 @@ paths:
           content:
             '*/*':
               schema:
-                $ref: '#/components/schemas/ApiResponseString'
+                $ref: '#/components/schemas/ApiResponsePromotionEvent'
   /v1/get-service-token:
     post:
       tags:
@@ -435,6 +435,31 @@ components:
           type: string
         expiredAt:
           type: string
+    ApiResponsePromotionEvent:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/PromotionEvent'
+        errorCode:
+          type: string
+        message:
+          type: object
+        responseCode:
+          type: integer
+          format: int32
+    PromotionEvent:
+      type: object
+      properties:
+        id:
+          type: string
+        purpose:
+          type: string
+        createdBy:
+          type: string
+        createdAt:
+          type: string
+        expiredAt:
+          type: string
     CreateVoucherRequest:
       type: object
       properties:
@@ -660,19 +685,6 @@ components:
         responseCode:
           type: integer
           format: int32
-    PromotionEvent:
-      type: object
-      properties:
-        id:
-          type: string
-        purpose:
-          type: string
-        createdBy:
-          type: string
-        createdAt:
-          type: string
-        expiredAt:
-          type: string
     ApiResponseContract:
       type: object
       properties:

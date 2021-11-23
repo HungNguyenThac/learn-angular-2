@@ -82,7 +82,7 @@ paths:
     post:
       tags:
       - promotion-controller
-      operationId: createPromotionEvent
+      operationId: updatePromotionEvent
       requestBody:
         content:
           application/json:
@@ -95,12 +95,12 @@ paths:
           content:
             '*/*':
               schema:
-                $ref: '#/components/schemas/ApiResponseString'
+                $ref: '#/components/schemas/ApiResponsePromotionEvent'
   /v1/promotion/create-promotion-event:
     post:
       tags:
       - promotion-controller
-      operationId: updatePromotionEvent
+      operationId: createPromotionEvent
       requestBody:
         content:
           application/json:
@@ -113,7 +113,7 @@ paths:
           content:
             '*/*':
               schema:
-                $ref: '#/components/schemas/ApiResponseString'
+                $ref: '#/components/schemas/ApiResponsePromotionEvent'
   /v1/payday/{loanId}/update-loan:
     post:
       tags:
@@ -269,7 +269,7 @@ paths:
     get:
       tags:
       - promotion-controller
-      operationId: createVoucher_1
+      operationId: getVoucherByScopeEvent
       parameters:
       - name: customerId
         in: query
@@ -415,7 +415,7 @@ paths:
     get:
       tags:
       - contract-controller
-      operationId: getActivePaydayLoan_2
+      operationId: getContractByLoanId
       parameters:
       - name: loanId
         in: query
@@ -610,11 +610,11 @@ components:
           type: string
         scope:
           type: string
-    ApiResponseString:
+    ApiResponsePromotionEvent:
       type: object
       properties:
         result:
-          type: string
+          $ref: '#/components/schemas/PromotionEvent'
         errorCode:
           type: string
         message:
@@ -622,6 +622,19 @@ components:
         responseCode:
           type: integer
           format: int32
+    PromotionEvent:
+      type: object
+      properties:
+        id:
+          type: string
+        purpose:
+          type: string
+        scope:
+          type: string
+        createdAt:
+          type: string
+        expiredAt:
+          type: string
     CreatePromotionEventRequest:
       type: object
       properties:
@@ -661,6 +674,18 @@ components:
           type: string
         status:
           type: string
+    ApiResponseString:
+      type: object
+      properties:
+        result:
+          type: string
+        errorCode:
+          type: string
+        message:
+          type: object
+        responseCode:
+          type: integer
+          format: int32
     CreateApplicationRequest:
       required:
       - coreToken
@@ -866,19 +891,6 @@ components:
         responseCode:
           type: integer
           format: int32
-    PromotionEvent:
-      type: object
-      properties:
-        id:
-          type: string
-        purpose:
-          type: string
-        scope:
-          type: string
-        createdAt:
-          type: string
-        expiredAt:
-          type: string
     ApiResponseContract:
       type: object
       properties:

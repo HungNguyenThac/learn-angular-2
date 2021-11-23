@@ -11,10 +11,14 @@
  */
 
 
-export interface ApiResponseObject { 
-    result?: object;
-    errorCode?: string;
-    message?: object;
-    responseCode?: number;
+export interface CreateCommuneRequest { 
+    name?: string;
+    slug?: string;
+    type?: string;
+    nameWithType?: string;
+    code?: string;
+    path?: string;
+    pathWithType?: string;
+    districtId?: string;
 }
 

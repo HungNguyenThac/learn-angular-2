@@ -14,6 +14,10 @@
 export interface TemplateRequest { 
     templateName: string;
     customerId: string;
+    email: string;
+    mobile: string;
+    fullName: string;
     amount?: string;
+    loanCode?: string;
 }
 

@@ -135,7 +135,7 @@ export class LoanListService {
   ) {
     if (groupName === 'TNG') {
       return this.contractControllerService
-        .getActivePaydayLoan2(loanId, customerId)
+        .getContractByLoanId(loanId, customerId)
         .pipe(
           map((results: ApiResponseContract) => {
             console.log('display ok');

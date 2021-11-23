@@ -20,6 +20,7 @@ import { Observable }                                        from 'rxjs';
 import { ApiResponse } from '../model/models';
 import { ApiResponseCheckIsPaydayByCustomerIdResponse } from '../model/models';
 import { ApiResponseObject } from '../model/models';
+import { ApiResponseTNGResponse } from '../model/models';
 import { InformationSalaryReceiptDateByOfficeCodeRequest } from '../model/models';
 import { InformationSalaryReceiptDateRequest } from '../model/models';
 import { InlineObject } from '../model/models';
@@ -140,9 +141,9 @@ export class TngControllerService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public isEmployeesWorkingAtTNG(tNGRequest: TNGRequest, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseObject>;
-    public isEmployeesWorkingAtTNG(tNGRequest: TNGRequest, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseObject>>;
-    public isEmployeesWorkingAtTNG(tNGRequest: TNGRequest, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseObject>>;
+    public isEmployeesWorkingAtTNG(tNGRequest: TNGRequest, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseTNGResponse>;
+    public isEmployeesWorkingAtTNG(tNGRequest: TNGRequest, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseTNGResponse>>;
+    public isEmployeesWorkingAtTNG(tNGRequest: TNGRequest, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseTNGResponse>>;
     public isEmployeesWorkingAtTNG(tNGRequest: TNGRequest, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
         if (tNGRequest === null || tNGRequest === undefined) {
             throw new Error('Required parameter tNGRequest was null or undefined when calling isEmployeesWorkingAtTNG.');
@@ -177,7 +178,7 @@ export class TngControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.post<ApiResponseObject>(`${this.configuration.basePath}/tng/v1/check-is-employee-at-tng`,
+        return this.httpClient.post<ApiResponseTNGResponse>(`${this.configuration.basePath}/tng/v1/check-is-employee-at-tng`,
             tNGRequest,
             {
                 responseType: <any>responseType_,
