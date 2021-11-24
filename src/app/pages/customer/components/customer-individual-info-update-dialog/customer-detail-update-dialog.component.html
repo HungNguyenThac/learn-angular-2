@@ -235,7 +235,7 @@
                       }}</mat-label>
 
                     <mat-select [disabled]="!customerIndividualForm.controls.cityId.value" required
-                                formControlName="districtId" (selectionChange)="getCommuneList()">
+                                formControlName="districtId" (selectionChange)="changeCommune()">
                       <mat-option *ngFor="let district of districtData" [value]="district.id">
                         {{district.name}}
                       </mat-option>

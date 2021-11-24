@@ -1,13 +1,13 @@
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { CustomerInfo } from '../../../../../../open-api-modules/dashboard-api-docs';
-import { MultiLanguageService } from '../../../../share/translate/multiLanguageService';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { Component, Inject, OnInit } from '@angular/core';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {CustomerInfo} from '../../../../../../open-api-modules/dashboard-api-docs';
+import {MultiLanguageService} from '../../../../share/translate/multiLanguageService';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import {Component, Inject, OnInit} from '@angular/core';
 import * as moment from 'moment';
-import { VirtualAccount } from '../../../../../../open-api-modules/payment-api-docs';
-import { Bank } from 'open-api-modules/dashboard-api-docs';
-import { BUTTON_TYPE } from '../../../../core/common/enum/operator';
-import { Subscription } from 'rxjs';
+import {VirtualAccount} from '../../../../../../open-api-modules/payment-api-docs';
+import {Bank} from 'open-api-modules/dashboard-api-docs';
+import {BUTTON_TYPE} from '../../../../core/common/enum/operator';
+import {Subscription} from 'rxjs';
 import {
   ApiResponseListCity,
   ApiResponseListDistrict,
@@ -224,7 +224,12 @@ export class CustomerDetailUpdateDialogComponent implements OnInit {
 
   changeCity() {
     this.getDistrictList();
-    this.customerIndividualForm.patchValue({ districtId: '' });
+    this.customerIndividualForm.patchValue({districtId: ''});
     this.communeData = [];
+  }
+
+  changeCommune() {
+    this.getCommuneList();
+    this.customerIndividualForm.patchValue({communeId: ''});
   }
 }
