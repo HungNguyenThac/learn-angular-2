@@ -5,6 +5,9 @@ import { CoreStoreModule } from './store';
 
 import { throwIfAlreadyLoaded } from './common/module-import-guard';
 
+// Import your library
+import { NgxPermissionsModule } from 'ngx-permissions';
+
 // interceptors
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 
@@ -42,6 +45,7 @@ export function tokenGetter() {
 @NgModule({
   imports: [
     CommonModule,
+    NgxPermissionsModule.forRoot(),
     CoreStoreModule,
     BrowserAnimationsModule,
     ToastrModule.forRoot(customNotifierOptions),
