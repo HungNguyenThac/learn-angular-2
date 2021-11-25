@@ -51,8 +51,7 @@ export class CustomerIndividualInfoComponent implements OnInit, OnDestroy {
   selfieSrc: string;
   diableTime: string;
   showDisableOption: boolean = true;
-  cityById: string;
-  districtById: string;
+
   communeById: string;
   timeDisableOptions: any = [
     {
