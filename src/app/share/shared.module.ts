@@ -10,8 +10,6 @@ import { FormsModule } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { NgxPermissionsModule } from 'ngx-permissions';
 
-// @ts-ignore
-// @ts-ignore
 @NgModule({
   declarations: [
     ...fromComponents.components,
@@ -19,7 +17,13 @@ import { NgxPermissionsModule } from 'ngx-permissions';
     ...fromDirectives.directives,
     ...fromPipes.pipes,
   ],
-  imports: [CommonModule, MaterialModule, TranslateModule, FormsModule, NgxPermissionsModule],
+  imports: [
+    CommonModule,
+    MaterialModule,
+    TranslateModule,
+    FormsModule,
+    NgxPermissionsModule,
+  ],
   exports: [
     MaterialModule,
     NgxPermissionsModule,

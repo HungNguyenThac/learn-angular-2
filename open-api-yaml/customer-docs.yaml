@@ -7,6 +7,23 @@ servers:
   description: Generated server url
 paths:
   /v1/districts/{id}:
+    get:
+      tags:
+      - district-controller
+      operationId: getDistrictById
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseDistrict'
     put:
       tags:
       - district-controller
@@ -48,6 +65,23 @@ paths:
               schema:
                 $ref: '#/components/schemas/ApiResponseDistrict'
   /v1/communes/{id}:
+    get:
+      tags:
+      - commune-controller
+      operationId: getCommuneById
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseCommune'
     put:
       tags:
       - commune-controller
@@ -89,6 +123,23 @@ paths:
               schema:
                 $ref: '#/components/schemas/ApiResponseCommune'
   /v1/cities/{id}:
+    get:
+      tags:
+      - city-controller
+      operationId: getCityById
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseCity'
     put:
       tags:
       - city-controller
@@ -859,7 +910,7 @@ paths:
     get:
       tags:
       - district-controller
-      operationId: getAllCommune
+      operationId: getCommunesByDistrictId
       parameters:
       - name: districtId
         in: path
@@ -913,7 +964,7 @@ paths:
     get:
       tags:
       - city-controller
-      operationId: getAllDistrict
+      operationId: getDistrictsByCityId
       parameters:
       - name: cityId
         in: path
