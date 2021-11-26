@@ -139,16 +139,7 @@ export class CustomerIndividualInfoComponent implements OnInit, OnDestroy {
     });
   }
 
-  _virtualAccount: VirtualAccount;
-
-  @Input()
-  get virtualAccount(): VirtualAccount {
-    return this._virtualAccount;
-  }
-
-  set virtualAccount(value: VirtualAccount) {
-    this._virtualAccount = value;
-  }
+  virtualAccount: VirtualAccount;
 
   _customerInfo: CustomerInfo;
 
@@ -159,6 +150,7 @@ export class CustomerIndividualInfoComponent implements OnInit, OnDestroy {
 
   set customerInfo(value: CustomerInfo) {
     this._customerInfo = value;
+    this.virtualAccount = this._customerInfo?.virtualAccount;
     this._getSelfieDocument(this.customerId, value);
     this._initIndividualFormData(this.customerId, value);
     this.getCustomerLocation(value);
@@ -510,7 +502,7 @@ export class CustomerIndividualInfoComponent implements OnInit, OnDestroy {
           }
           this.leftIndividualInfos.forEach((elementInfo) => {
             if (elementInfo.key && elementInfo.key === 'city') {
-              elementInfo.value = result.result.name;
+              elementInfo.value = result.result?.name;
             }
           });
         })
@@ -528,7 +520,7 @@ export class CustomerIndividualInfoComponent implements OnInit, OnDestroy {
           }
           this.leftIndividualInfos.forEach((elementInfo) => {
             if (elementInfo.key && elementInfo.key === 'district') {
-              elementInfo.value = result.result.name;
+              elementInfo.value = result.result?.name;
             }
           });
         })
@@ -546,7 +538,7 @@ export class CustomerIndividualInfoComponent implements OnInit, OnDestroy {
           }
           this.leftIndividualInfos.forEach((elementInfo) => {
             if (elementInfo.key && elementInfo.key === 'commune') {
-              elementInfo.value = result.result.name;
+              elementInfo.value = result.result?.name;
             }
           });
         })
