@@ -42,16 +42,15 @@ export class CustomerListService {
     }
     switch (params.accountClassification) {
       case ACCOUNT_CLASSIFICATION.ALL:
-        delete requestBody['identityNumberOne'];
+        delete requestBody['mobileNumber'];
         break;
 
       case ACCOUNT_CLASSIFICATION.TEST:
-        requestBody['identityNumberOne' + QUERY_CONDITION_TYPE.EQUAL] =
-          '001099028309';
+        requestBody['mobileNumber' + QUERY_CONDITION_TYPE.START_WITH] = '01';
         break;
       default:
-        requestBody['identityNumberOne' + QUERY_CONDITION_TYPE.NOT_EQUAL] =
-          '001099028309';
+        requestBody['mobileNumber' + QUERY_CONDITION_TYPE.NOT_START_WITH] =
+          '01';
         break;
     }
     console.log('requestBody----', requestBody);

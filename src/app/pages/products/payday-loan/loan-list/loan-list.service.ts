@@ -73,17 +73,16 @@ export class LoanListService {
 
     switch (params.accountClassification) {
       case ACCOUNT_CLASSIFICATION.ALL:
-        delete requestBody['customerIdentityNumberOne'];
+        delete requestBody['customerMobileNumber'];
         break;
 
       case ACCOUNT_CLASSIFICATION.TEST:
-        requestBody['customerIdentityNumberOne' + QUERY_CONDITION_TYPE.EQUAL] =
-          '001099028309';
+        requestBody['customerMobileNumber' + QUERY_CONDITION_TYPE.START_WITH] =
+          '01';
         break;
       default:
-        requestBody[
-          'customerIdentityNumberOne' + QUERY_CONDITION_TYPE.NOT_EQUAL
-        ] = '001099028309';
+        requestBody['customerMobileNumber' + QUERY_CONDITION_TYPE.NOT_START_WITH] =
+          '01';
         break;
     }
     console.log('requestBody--------------------------------', requestBody);
@@ -138,17 +137,17 @@ export class LoanListService {
 
     switch (params.accountClassification) {
       case ACCOUNT_CLASSIFICATION.ALL:
-        delete requestBody['customerIdentityNumberOne'];
+        delete requestBody['customerMobileNumber'];
         break;
 
       case ACCOUNT_CLASSIFICATION.TEST:
-        requestBody['customerIdentityNumberOne' + QUERY_CONDITION_TYPE.EQUAL] =
-          '001099028309';
+        requestBody['customerMobileNumber' + QUERY_CONDITION_TYPE.START_WITH] =
+          '01';
         break;
       default:
         requestBody[
-          'customerIdentityNumberOne' + QUERY_CONDITION_TYPE.NOT_EQUAL
-        ] = '001099028309';
+          'customerMobileNumber' + QUERY_CONDITION_TYPE.NOT_START_WITH
+        ] = '01';
         break;
     }
     console.log('requestBody--------------------------------', requestBody);

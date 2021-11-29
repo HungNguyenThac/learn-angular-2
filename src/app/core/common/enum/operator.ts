@@ -20,6 +20,7 @@ export enum QUERY_CONDITION_TYPE {
   LESS_THAN_OR_EQUAL = '__le',
   BETWEEN = '__bw',
   START_WITH = '__sw',
+  NOT_START_WITH = '__nsw',
   END_WITH = '__ew',
   NOT_EQUAL = '__ne',
   EQUAL = '__e',
