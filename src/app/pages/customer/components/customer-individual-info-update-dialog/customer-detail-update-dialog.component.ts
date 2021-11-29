@@ -1,13 +1,13 @@
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {CustomerInfo} from '../../../../../../open-api-modules/dashboard-api-docs';
-import {MultiLanguageService} from '../../../../share/translate/multiLanguageService';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
-import {Component, Inject, OnInit} from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { CustomerInfo } from '../../../../../../open-api-modules/dashboard-api-docs';
+import { MultiLanguageService } from '../../../../share/translate/multiLanguageService';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { Component, Inject, OnInit } from '@angular/core';
 import * as moment from 'moment';
-import {VirtualAccount} from '../../../../../../open-api-modules/payment-api-docs';
-import {Bank} from 'open-api-modules/dashboard-api-docs';
-import {BUTTON_TYPE} from '../../../../core/common/enum/operator';
-import {Subscription} from 'rxjs';
+import { VirtualAccount } from '../../../../../../open-api-modules/payment-api-docs';
+import { Bank } from 'open-api-modules/dashboard-api-docs';
+import { BUTTON_TYPE } from '../../../../core/common/enum/operator';
+import { Subscription } from 'rxjs';
 import {
   ApiResponseListCity,
   ApiResponseListDistrict,
@@ -197,9 +197,12 @@ export class CustomerDetailUpdateDialogComponent implements OnInit {
   }
 
   getDistrictList() {
+    if (this.customerIndividualForm.controls.cityId.value === null) {
+      return;
+    }
     this.subManager.add(
       this.cityControllerService
-        .getAllDistrict(this.customerIndividualForm.controls.cityId.value)
+        .getDistrictsByCityId(this.customerIndividualForm.controls.cityId.value)
         .subscribe((result: ApiResponseListDistrict) => {
           if (!result || result.responseCode !== 200) {
             // return this.handleResponseError(result.errorCode);
@@ -210,9 +213,14 @@ export class CustomerDetailUpdateDialogComponent implements OnInit {
   }
 
   getCommuneList() {
+    if (this.customerIndividualForm.controls.districtId.value === null) {
+      return;
+    }
     this.subManager.add(
       this.districtControllerService
-        .getAllCommune(this.customerIndividualForm.controls.districtId.value)
+        .getCommunesByDistrictId(
+          this.customerIndividualForm.controls.districtId.value
+        )
         .subscribe((result: ApiResponseListDistrict) => {
           if (!result || result.responseCode !== 200) {
             // return this.handleResponseError(result.errorCode);
@@ -224,12 +232,12 @@ export class CustomerDetailUpdateDialogComponent implements OnInit {
 
   changeCity() {
     this.getDistrictList();
-    this.customerIndividualForm.patchValue({districtId: ''});
+    this.customerIndividualForm.patchValue({ districtId: '' });
     this.communeData = [];
   }
 
   changeCommune() {
     this.getCommuneList();
-    this.customerIndividualForm.patchValue({communeId: ''});
+    this.customerIndividualForm.patchValue({ communeId: '' });
   }
 }
