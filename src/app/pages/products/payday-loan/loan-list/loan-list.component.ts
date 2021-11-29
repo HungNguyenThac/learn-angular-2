@@ -68,7 +68,7 @@ export class LoanListComponent implements OnInit, OnDestroy {
     keyword: '',
   };
 
-  filterOptions = [
+  filterOptions: FilterOptionModel[] = [
     {
       title: this.multiLanguageService.instant('filter.time'),
       type: FILTER_TYPE.DATETIME,
@@ -476,20 +476,15 @@ export class LoanListComponent implements OnInit, OnDestroy {
       endTime: [''],
       dateFilterType: [''],
       dateFilterTitle: [''],
-      accountClassification: [''],
+      accountClassification: [ACCOUNT_CLASSIFICATION.REAL],
       filterConditions: {
-        // keyword: QUERY_CONDITION_TYPE.LIKE,
         companyId: QUERY_CONDITION_TYPE.IN,
         status: QUERY_CONDITION_TYPE.IN,
-        // loanCode: QUERY_CONDITION_TYPE.LIKE,
-        // customerMobileNumber: QUERY_CONDITION_TYPE.LIKE,
       },
     });
   }
 
   private _parseQueryParams(params) {
-    console.log('day la param', params);
-
     let filterConditionsValue =
       this.filterForm.controls.filterConditions?.value;
 

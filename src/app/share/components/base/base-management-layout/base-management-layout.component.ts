@@ -47,10 +47,8 @@ export class BaseManagementLayoutComponent implements OnInit {
 
   constructor() {}
 
-  // filterOptions: FilterOptionModel[] = [];
-  _filterOptions: FilterOptionModel;
-
-  @Input() get filterOptions(): FilterOptionModel {
+  _filterOptions: FilterOptionModel[] = [];
+  @Input() get filterOptions(): FilterOptionModel[] {
     return this._filterOptions;
   }
 

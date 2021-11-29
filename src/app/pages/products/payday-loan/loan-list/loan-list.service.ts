@@ -18,6 +18,7 @@ import {
 import { FileControllerService } from '../../../../../../open-api-modules/com-api-docs';
 import { SignDocumentControllerService } from '../../../../../../open-api-modules/contract-api-docs';
 import { ACCOUNT_CLASSIFICATION } from 'src/app/core/common/enum/payday-loan';
+import { GlobalConstants } from '../../../../core/common/global-constants';
 
 @Injectable({
   providedIn: 'root',
@@ -35,7 +36,7 @@ export class LoanListService {
     private fileControllerService: FileControllerService
   ) {}
 
-  public getLoanDataHmg(params) {
+  private _buildRequestBodyGetList(params) {
     let requestBody = {};
 
     if (params.filterConditions) {
@@ -54,68 +55,6 @@ export class LoanListService {
         end: params.endTime,
       };
     }
-    // requestBody['status'] = params.status;
-
-    if (!params.status) delete requestBody['status'];
-    if (params.keyword) {
-      requestBody['loanCode' + QUERY_CONDITION_TYPE.LIKE_KEYWORD] =
-        params.keyword;
-      requestBody['customerMobileNumber' + QUERY_CONDITION_TYPE.LIKE_KEYWORD] =
-        params.keyword;
-      requestBody['customerEmail' + QUERY_CONDITION_TYPE.LIKE_KEYWORD] =
-        params.keyword;
-      requestBody['officeCode' + QUERY_CONDITION_TYPE.LIKE_KEYWORD] =
-        params.keyword;
-      requestBody[
-        'customerIdentityNumberOne' + QUERY_CONDITION_TYPE.LIKE_KEYWORD
-      ] = params.keyword;
-    }
-
-    switch (params.accountClassification) {
-      case ACCOUNT_CLASSIFICATION.ALL:
-        delete requestBody['customerIdentityNumberOne'];
-        break;
-
-      case ACCOUNT_CLASSIFICATION.TEST:
-        requestBody['customerIdentityNumberOne' + QUERY_CONDITION_TYPE.EQUAL] =
-          '001099028309';
-        break;
-      default:
-        requestBody[
-          'customerIdentityNumberOne' + QUERY_CONDITION_TYPE.NOT_EQUAL
-        ] = '001099028309';
-        break;
-    }
-    console.log('requestBody--------------------------------', requestBody);
-
-    return this.applicationHmgControllerService.findApplications1(
-      params.pageSize,
-      params.pageNumber,
-      requestBody,
-      params.orderBy,
-      params.sortDirection === 'desc'
-    );
-  }
-
-  public getLoanDataTng(params) {
-    let requestBody = {};
-    if (params.filterConditions) {
-      for (const [paramName, paramValue] of Object.entries(
-        params.filterConditions
-      )) {
-        if (!_.isEmpty(params[paramName])) {
-          requestBody[paramName + paramValue] = params[paramName] || '';
-        }
-      }
-    }
-
-    if (params.startTime || params.endTime) {
-      requestBody['createdAt' + QUERY_CONDITION_TYPE.BETWEEN] = {
-        start: params.startTime,
-        end: params.endTime,
-      };
-    }
-
     // requestBody['status'] = params.status;
 
     if (!params.status) delete requestBody['status'];
@@ -138,20 +77,39 @@ export class LoanListService {
 
     switch (params.accountClassification) {
       case ACCOUNT_CLASSIFICATION.ALL:
-        delete requestBody['customerIdentityNumberOne'];
+        delete requestBody['customerMobileNumber'];
         break;
 
       case ACCOUNT_CLASSIFICATION.TEST:
-        requestBody['customerIdentityNumberOne' + QUERY_CONDITION_TYPE.EQUAL] =
-          '001099028309';
+        requestBody['customerMobileNumber' + QUERY_CONDITION_TYPE.START_WITH] =
+          GlobalConstants.PL_VALUE_DEFAULT.PREFIX_MOBILE_NUMBER_TEST;
         break;
+      case ACCOUNT_CLASSIFICATION.REAL:
       default:
         requestBody[
-          'customerIdentityNumberOne' + QUERY_CONDITION_TYPE.NOT_EQUAL
-        ] = '001099028309';
+          'customerMobileNumber' + QUERY_CONDITION_TYPE.NOT_START_WITH
+        ] = GlobalConstants.PL_VALUE_DEFAULT.PREFIX_MOBILE_NUMBER_TEST;
         break;
     }
     console.log('requestBody--------------------------------', requestBody);
+    return requestBody;
+  }
+
+  public getLoanDataHmg(params) {
+    let requestBody = this._buildRequestBodyGetList(params);
+
+    return this.applicationHmgControllerService.findApplications1(
+      params.pageSize,
+      params.pageNumber,
+      requestBody,
+      params.orderBy,
+      params.sortDirection === 'desc'
+    );
+  }
+
+  public getLoanDataTng(params) {
+    let requestBody = this._buildRequestBodyGetList(params);
+
     return this.applicationTngControllerService.findApplications(
       params.pageSize,
       params.pageNumber,
