@@ -52,7 +52,7 @@ export class CustomerListComponent implements OnInit, OnDestroy {
   breadcrumbOptions: BreadcrumbOptionsModel = {
     title: this.multiLanguageService.instant('breadcrumb.manage_customer'),
     iconClass: 'sprite-group-5-customer-green-medium',
-    searchPlaceholder: 'Họ tên, Mã nhân viên, Số điện thoại, Email',
+    searchPlaceholder: this.multiLanguageService.instant('breadcrumb.search_field_customer_list'),
     searchable: true,
     showBtnAdd: false,
     keyword: '',
@@ -363,7 +363,7 @@ export class CustomerListComponent implements OnInit, OnDestroy {
       paydayLoanStatus: [''],
       orderBy: ['createdAt'],
       sortDirection: ['desc'],
-      accountClassification: [''],
+      accountClassification: [ACCOUNT_CLASSIFICATION.REAL],
       startTime: [null],
       endTime: [null],
       dateFilterType: [''],
@@ -415,7 +415,7 @@ export class CustomerListComponent implements OnInit, OnDestroy {
         filterOption.value = this.filterForm.controls.accountClassification
           .value
           ? this.filterForm.controls.accountClassification.value
-          : "";
+          : '';
       }
     });
 
