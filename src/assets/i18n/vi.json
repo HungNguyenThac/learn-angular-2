@@ -537,7 +537,8 @@
   "breadcrumb": {
     "manage_customer": "Quản lý khách hàng",
     "manage_payday_loan": "Quản lý khoản ứng",
-    "search_field_payday_loan": "Mã khoản ứng, Tên, Số điện thoại...",
+    "search_field_payday_loan": "Mã khoản ứng, Tên, Số điện thoại, Email, Mã nhân viên, Số CMND/CCCD",
+    "search_field_customer_list": "Họ tên, Mã nhân viên, Số điện thoại, Email",
     "manage_user": "Quản lý người dùng"
   },
   "system": {
