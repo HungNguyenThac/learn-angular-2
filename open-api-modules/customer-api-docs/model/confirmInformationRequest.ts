@@ -23,5 +23,9 @@ export interface ConfirmInformationRequest {
     organizationName: string;
     idIssuePlace: string;
     coreUserId?: string;
+    cityId?: string;
+    districtId?: string;
+    communeId?: string;
+    apartmentNumber?: string;
 }
 

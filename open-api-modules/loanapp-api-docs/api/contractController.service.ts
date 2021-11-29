@@ -90,15 +90,15 @@ export class ContractControllerService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getActivePaydayLoan2(loanId: string, customerId: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseContract>;
-    public getActivePaydayLoan2(loanId: string, customerId: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseContract>>;
-    public getActivePaydayLoan2(loanId: string, customerId: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseContract>>;
-    public getActivePaydayLoan2(loanId: string, customerId: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
+    public getContractByLoanId(loanId: string, customerId: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseContract>;
+    public getContractByLoanId(loanId: string, customerId: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseContract>>;
+    public getContractByLoanId(loanId: string, customerId: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseContract>>;
+    public getContractByLoanId(loanId: string, customerId: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
         if (loanId === null || loanId === undefined) {
-            throw new Error('Required parameter loanId was null or undefined when calling getActivePaydayLoan2.');
+            throw new Error('Required parameter loanId was null or undefined when calling getContractByLoanId.');
         }
         if (customerId === null || customerId === undefined) {
-            throw new Error('Required parameter customerId was null or undefined when calling getActivePaydayLoan2.');
+            throw new Error('Required parameter customerId was null or undefined when calling getContractByLoanId.');
         }
 
         let queryParameters = new HttpParams({encoder: this.encoder});

@@ -16,9 +16,9 @@ import { SelfieCheck } from './selfieCheck';
 
 export interface KalapaResponse { 
     createdAt?: string;
-    idCardInfo?: IdCardInfo;
     taxName?: string;
     verified?: boolean;
+    idCardInfo?: IdCardInfo;
     selfieCheck?: SelfieCheck;
     fraudCheck?: FraudCheck;
 }

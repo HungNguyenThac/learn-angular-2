@@ -17,7 +17,7 @@ export interface Rating {
     applicationType?: string;
     rate?: string;
     customerOpinion?: string;
+    isRated?: boolean;
     customerId?: string;
-    rated?: boolean;
 }
 

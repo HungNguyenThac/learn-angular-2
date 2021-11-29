@@ -8,7 +8,7 @@
         <span *ngIf="iconClass; else isIconImgSrc" [ngClass]="iconClass"></span>
         <ng-template #isIconImgSrc>
           <span>
-            <img [src]="iconImgSrc" class="op-breadcrumb-icon" alt="" />
+            <img [src]="iconImgSrc" class="op-breadcrumb-icon" alt=""/>
           </span>
         </ng-template>
         <h2 class="op-breadcrumb-title d-inline-flex align-items-center">
@@ -43,7 +43,7 @@
           </div>
         </form>
 
-        <button mat-button class="op-breadcrumb-add-btn" *ngIf="showBtnAdd">
+        <button (click)="openAddUserDialog()" mat-button class="op-breadcrumb-add-btn" *ngIf="showBtnAdd">
           <span class="sprite-group-5-add-white"></span>
           <span class="ps-1">{{ btnAddText }}</span>
         </button>

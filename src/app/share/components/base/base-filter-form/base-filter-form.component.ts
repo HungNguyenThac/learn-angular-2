@@ -36,8 +36,6 @@ export class BaseFilterFormComponent implements OnInit {
   }
 
   private _filterOptionsEle() {
-    console.log('set filter ne', this._filterOptions);
-
     return this._filterOptions;
   }
 }

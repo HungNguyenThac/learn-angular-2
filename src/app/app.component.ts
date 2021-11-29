@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { MultiLanguageService } from './share/translate/multiLanguageService';
 import { fadeAnimation } from './core/common/animations/router.animation';
+import { NgxPermissionsService } from 'ngx-permissions';
 
 @Component({
   selector: 'app-root',
@@ -14,9 +15,23 @@ import { fadeAnimation } from './core/common/animations/router.animation';
 export class AppComponent {
   title = 'monex-op';
 
-  constructor(private multiLanguageService: MultiLanguageService) {
+  constructor(
+    private multiLanguageService: MultiLanguageService,
+    private permissionsService: NgxPermissionsService
+  ) {
     sessionStorage.clear();
-    multiLanguageService.changeLanguage('vi');
-    this.multiLanguageService.onSetupMultiLanguage("payment")
+    this.multiLanguageService.changeLanguage('vi');
+    this.multiLanguageService.onSetupMultiLanguage('payment');
+    this.loadUserPermissions();
+  }
+
+  loadUserPermissions() {
+    const perm = ["ADMIN", "EDITOR"];
+    this.permissionsService.loadPermissions(perm);
+
+    // this.http.get('url').subscribe((permissions) => {
+    //   //const perm = ["ADMIN", "EDITOR"]; example of permissions
+    //   this.permissionsService.loadPermissions(permissions);
+    // })
   }
 }

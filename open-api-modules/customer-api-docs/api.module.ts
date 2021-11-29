@@ -3,7 +3,11 @@ import { Configuration } from './configuration';
 import { HttpClient } from '@angular/common/http';
 
 import { ApprovalLetterControllerService } from './api/approvalLetterController.service';
+import { BankControllerService } from './api/bankController.service';
+import { CityControllerService } from './api/cityController.service';
+import { CommuneControllerService } from './api/communeController.service';
 import { CompanyControllerService } from './api/companyController.service';
+import { DistrictControllerService } from './api/districtController.service';
 import { InfoControllerService } from './api/infoController.service';
 import { InfoV2ControllerService } from './api/infoV2Controller.service';
 import { KalapaControllerService } from './api/kalapaController.service';

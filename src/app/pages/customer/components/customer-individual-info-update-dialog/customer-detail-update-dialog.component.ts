@@ -7,6 +7,13 @@ import * as moment from 'moment';
 import { VirtualAccount } from '../../../../../../open-api-modules/payment-api-docs';
 import { Bank } from 'open-api-modules/dashboard-api-docs';
 import { BUTTON_TYPE } from '../../../../core/common/enum/operator';
+import { Subscription } from 'rxjs';
+import {
+  ApiResponseListCity,
+  ApiResponseListDistrict,
+  CityControllerService,
+  DistrictControllerService,
+} from '../../../../../../open-api-modules/customer-api-docs';
 
 @Component({
   selector: 'app-customer-detail-update-dialog',
@@ -19,6 +26,10 @@ export class CustomerDetailUpdateDialogComponent implements OnInit {
   bankOptions: Array<Bank>;
   customerId: string = '';
   selfieSrc: string;
+  cityData: any[];
+  districtData: any[];
+  communeData: any[];
+  subManager = new Subscription();
 
   customerIndividualForm: FormGroup;
 
@@ -50,7 +61,9 @@ export class CustomerDetailUpdateDialogComponent implements OnInit {
     private dialogRef: MatDialogRef<CustomerDetailUpdateDialogComponent>,
     @Inject(MAT_DIALOG_DATA) private data: any,
     private multiLanguageService: MultiLanguageService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private cityControllerService: CityControllerService,
+    private districtControllerService: DistrictControllerService
   ) {
     this.buildIndividualForm();
 
@@ -59,7 +72,11 @@ export class CustomerDetailUpdateDialogComponent implements OnInit {
     }
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.getAllCityList();
+    this.getCommuneList();
+    this.getDistrictList();
+  }
 
   buildIndividualForm() {
     this.customerIndividualForm = this.formBuilder.group({
@@ -74,6 +91,10 @@ export class CustomerDetailUpdateDialogComponent implements OnInit {
         [Validators.minLength(9), Validators.maxLength(12)],
       ],
       permanentAddress: ['', [Validators.maxLength(250)]],
+      cityId: [''],
+      districtId: [''],
+      communeId: [''],
+      apartmentNumber: ['', [Validators.maxLength(250)]],
       currentResidence: ['', [Validators.maxLength(250)]],
       idOrigin: ['', Validators.maxLength(250)],
       numberOfDependents: ['', [Validators.required]],
@@ -104,6 +125,10 @@ export class CustomerDetailUpdateDialogComponent implements OnInit {
       gender: this.customerInfo?.gender,
       identityNumberOne: this.customerInfo?.identityNumberOne,
       permanentAddress: this.customerInfo?.addressTwoLine1,
+      cityId: this.customerInfo?.cityId,
+      districtId: this.customerInfo?.districtId,
+      communeId: this.customerInfo?.communeId,
+      apartmentNumber: this.customerInfo?.apartmentNumber,
       currentResidence: this.customerInfo?.addressOneLine1,
       idOrigin: this.customerInfo?.idOrigin,
       numberOfDependents: this.customerInfo?.borrowerDetailTextVariable1,
@@ -156,5 +181,63 @@ export class CustomerDetailUpdateDialogComponent implements OnInit {
     this.customerIndividualForm.controls.bankName.setValue(
       seletedBank[0].bankName
     );
+  }
+
+  getAllCityList() {
+    this.subManager.add(
+      this.cityControllerService
+        .getAllCity()
+        .subscribe((result: ApiResponseListCity) => {
+          if (!result || result.responseCode !== 200) {
+            // return this.handleResponseError(result.errorCode);
+          }
+          this.cityData = result.result;
+        })
+    );
+  }
+
+  getDistrictList() {
+    if (this.customerIndividualForm.controls.cityId.value === null) {
+      return;
+    }
+    this.subManager.add(
+      this.cityControllerService
+        .getDistrictsByCityId(this.customerIndividualForm.controls.cityId.value)
+        .subscribe((result: ApiResponseListDistrict) => {
+          if (!result || result.responseCode !== 200) {
+            // return this.handleResponseError(result.errorCode);
+          }
+          this.districtData = result.result;
+        })
+    );
+  }
+
+  getCommuneList() {
+    if (this.customerIndividualForm.controls.districtId.value === null) {
+      return;
+    }
+    this.subManager.add(
+      this.districtControllerService
+        .getCommunesByDistrictId(
+          this.customerIndividualForm.controls.districtId.value
+        )
+        .subscribe((result: ApiResponseListDistrict) => {
+          if (!result || result.responseCode !== 200) {
+            // return this.handleResponseError(result.errorCode);
+          }
+          this.communeData = result.result;
+        })
+    );
+  }
+
+  changeCity() {
+    this.getDistrictList();
+    this.customerIndividualForm.patchValue({ districtId: '' });
+    this.communeData = [];
+  }
+
+  changeCommune() {
+    this.getCommuneList();
+    this.customerIndividualForm.patchValue({ communeId: '' });
   }
 }

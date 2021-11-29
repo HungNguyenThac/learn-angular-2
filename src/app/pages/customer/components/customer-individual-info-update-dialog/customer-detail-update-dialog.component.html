@@ -206,22 +206,21 @@
                 <div>
                   <mat-form-field appearance="outline" class="w-100">
                     <mat-label>{{
-                      "customer.individual_info.permanent_address" | translate
+                      "customer.individual_info.city" | translate
                       }}</mat-label>
-                    <input
-                      matInput
-                      required
-                      [placeholder]="
-                        'customer.individual_info.permanent_address' | translate
-                      "
-                      formControlName="permanentAddress"
-                    />
+
+                    <mat-select required formControlName="cityId" (selectionChange)="changeCity()">
+                      <mat-option *ngFor="let city of cityData" [value]="city.id">
+                        {{city.name}}
+                      </mat-option>
+                    </mat-select>
+
                     <show-errors
                       [control]="
-                        customerIndividualForm.controls['permanentAddress']
+                        customerIndividualForm.controls['cityId']
                       "
                       [controlLabel]="
-                        'customer.individual_info.permanent_address' | translate
+                        'customer.individual_info.city' | translate
                       "
                       [hasIconPrefix]="false"
                     >
@@ -232,22 +231,22 @@
                 <div>
                   <mat-form-field appearance="outline" class="w-100">
                     <mat-label>{{
-                      "customer.individual_info.current_residence" | translate
+                      "customer.individual_info.district" | translate
                       }}</mat-label>
-                    <input
-                      matInput
-                      required
-                      [placeholder]="
-                        'customer.individual_info.current_residence' | translate
-                      "
-                      formControlName="currentResidence"
-                    />
+
+                    <mat-select [disabled]="!customerIndividualForm.controls.cityId.value" required
+                                formControlName="districtId" (selectionChange)="changeCommune()">
+                      <mat-option *ngFor="let district of districtData" [value]="district.id">
+                        {{district.name}}
+                      </mat-option>
+                    </mat-select>
+
                     <show-errors
                       [control]="
-                        customerIndividualForm.controls['currentResidence']
+                        customerIndividualForm.controls['districtId']
                       "
                       [controlLabel]="
-                        'customer.individual_info.current_residence' | translate
+                        'customer.individual_info.district' | translate
                       "
                       [hasIconPrefix]="false"
                     >
@@ -258,25 +257,77 @@
                 <div>
                   <mat-form-field appearance="outline" class="w-100">
                     <mat-label>{{
-                      "customer.individual_info.id_origin" | translate
+                      "customer.individual_info.commune" | translate
                       }}</mat-label>
-                    <input
-                      matInput
-                      [placeholder]="
-                        'customer.individual_info.id_origin' | translate
-                      "
-                      formControlName="idOrigin"
-                    />
+
+                    <mat-select [disabled]="!customerIndividualForm.controls.districtId.value" required
+                                formControlName="communeId">
+                      <mat-option *ngFor="let commune of communeData" [value]="commune.id">
+                        {{commune.name}}
+                      </mat-option>
+                    </mat-select>
+
                     <show-errors
-                      [control]="customerIndividualForm.controls['idOrigin']"
+                      [control]="
+                        customerIndividualForm.controls['communeId']
+                      "
                       [controlLabel]="
-                        'customer.individual_info.id_origin' | translate
+                        'customer.individual_info.commune' | translate
                       "
                       [hasIconPrefix]="false"
                     >
                     </show-errors>
                   </mat-form-field>
                 </div>
+
+                <div>
+                  <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>{{
+                      "customer.individual_info.apartment_number" | translate
+                      }}</mat-label>
+                    <input
+                      matInput
+                      required
+                      [placeholder]="
+                        'customer.individual_info.apartment_number' | translate
+                      "
+                      formControlName="apartmentNumber"
+                    />
+                    <show-errors
+                      [control]="
+                        customerIndividualForm.controls['apartmentNumber']
+                      "
+                      [controlLabel]="
+                        'customer.individual_info.apartment_number' | translate
+                      "
+                      [hasIconPrefix]="false"
+                    >
+                    </show-errors>
+                  </mat-form-field>
+                </div>
+
+                <!--                <div>-->
+                <!--                  <mat-form-field appearance="outline" class="w-100">-->
+                <!--                    <mat-label>{{-->
+                <!--                      "customer.individual_info.id_origin" | translate-->
+                <!--                      }}</mat-label>-->
+                <!--                    <input-->
+                <!--                      matInput-->
+                <!--                      [placeholder]="-->
+                <!--                                        'customer.individual_info.id_origin' | translate-->
+                <!--                                      "-->
+                <!--                      formControlName="idOrigin"-->
+                <!--                    />-->
+                <!--                    <show-errors-->
+                <!--                      [control]="customerIndividualForm.controls['idOrigin']"-->
+                <!--                      [controlLabel]="-->
+                <!--                                        'customer.individual_info.id_origin' | translate-->
+                <!--                                      "-->
+                <!--                      [hasIconPrefix]="false"-->
+                <!--                    >-->
+                <!--                    </show-errors>-->
+                <!--                  </mat-form-field>-->
+                <!--                </div>-->
               </div>
 
               <!-- Right Individual Info -->

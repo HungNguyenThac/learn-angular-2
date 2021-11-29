@@ -9,13 +9,17 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { Voucher } from './voucher';
 
 
-export interface ApiResponseListVoucher { 
-    result?: Array<Voucher>;
-    errorCode?: string;
-    message?: object;
-    responseCode?: number;
+export interface Commune { 
+    id?: string;
+    name?: string;
+    slug?: string;
+    type?: string;
+    nameWithType?: string;
+    path?: string;
+    pathWithType?: string;
+    code?: string;
+    districtId?: string;
 }
 

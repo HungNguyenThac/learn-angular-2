@@ -12,7 +12,7 @@
 
 
 export interface CustomerSignDoneRequest { 
-    approvalLetterId?: string;
+    documentPath: string;
     idRequest: number;
     idDocument: number;
 }

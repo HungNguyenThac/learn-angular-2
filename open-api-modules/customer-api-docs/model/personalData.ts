@@ -20,6 +20,10 @@ export interface PersonalData {
     mobileNumber?: string;
     addressTwoLine1?: string;
     addressOneLine1?: string;
+    apartmentNumber?: string;
+    cityId?: string;
+    districtId?: string;
+    communeId?: string;
     borrowerDetailTextVariable1?: string;
     maritalStatus?: string;
     educationType?: string;

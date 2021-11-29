@@ -30,10 +30,39 @@
                 </section>
 
                 <section *ngIf="!responsive">
-                  <button class="header-nav-btn gap-1">
+                  <button
+                    #settingMenuTrigger="matMenuTrigger"
+                    (click)="settingMenuTrigger.openMenu()"
+                    [matMenuTriggerFor]="settingMenu"
+                    class="header-nav-btn gap-1"
+                  >
                     <span>{{ "header.setting" | translate }}</span>
                     <div class="sprite-group-5-setting-white"></div>
                   </button>
+
+                  <!--Setting pop-up menu-->
+                  <mat-menu #settingMenu="matMenu">
+                    <span (mouseleave)="settingMenuTrigger.closeMenu()">
+                      <button
+                        (click)="onClickManageUser()"
+                        class="gap-1"
+                        mat-menu-item
+                      >
+                        <div class="d-flex gap-1 align-items-center">
+                          <img
+                            src="assets/img/icon/group-7/svg/manage-user.svg"
+                            alt=""
+                          />
+                          <span>{{ "header.mange_user" | translate }}</span>
+                        </div>
+                      </button>
+                      <button class="gap-1" mat-menu-item>
+                        <div class="d-flex gap-1 align-items-center">
+                          <span>Setting Option</span>
+                        </div>
+                      </button>
+                    </span>
+                  </mat-menu>
                 </section>
 
                 <section>
@@ -55,16 +84,17 @@
                       "
                     >
                       <div>
-                        <p id="manager-name">{{ fullName }}</p>
+                        <p id="manager-name">{{ accountInfo.fullName }}</p>
                         <p id="manager-role" class="d-flex gap-1">
                           <span class="sprite-group-5-personal-roll"></span>
-                          <span>{{ roleName }}</span>
+                          <span>{{ accountInfo.roleName }}</span>
                         </p>
                       </div>
                       <div class="avatar">{{ shortName }}</div>
                     </div>
                   </button>
 
+                  <!--Profile-popup-->
                   <mat-menu #profileMenu="matMenu">
                     <span (mouseleave)="profileMenuTrigger.closeMenu()">
                       <button mat-menu-item class="gap-1" *ngIf="responsive">
@@ -81,8 +111,27 @@
                         </div>
                       </button>
 
-                      <button mat-menu-item (click)="logout()">
-                        {{ "auth.logout" | translate }}
+                      <button
+                        (click)="openUpdateDialog()"
+                        class="gap-1"
+                        mat-menu-item
+                      >
+                        <div class="d-flex gap-1 align-items-center">
+                          <img
+                            src="assets/img/icon/group-7/svg/user-info.svg"
+                            alt=""
+                          />
+                          <span>{{ "header.account" | translate }}</span>
+                        </div>
+                      </button>
+                      <button (click)="logout()" mat-menu-item>
+                        <div class="d-flex gap-1 align-items-center">
+                          <img
+                            src="assets/img/icon/group-7/svg/logout.svg"
+                            alt=""
+                          />
+                          <span>{{ "auth.logout" | translate }}</span>
+                        </div>
                       </button>
                     </span>
                   </mat-menu>
@@ -113,25 +162,27 @@
               </button>
               <mat-menu #menuMobile="matMenu" [overlapTrigger]="false">
                 <span (mouseleave)="menuTrigger.closeMenu()">
-                  <button
-                    mat-menu-item
-                    *ngFor="let menuItem of menuItems"
-                    class="mobile-menu-item gap-2 d-flex align-items-center"
-                    [ngClass]="{
-                      active: selectedNavItem === menuItem.navItem
-                    }"
-                    [routerLink]="menuItem.path"
-                    [queryParams]="menuItem.queryParams"
-                  >
-                    <span
-                      [ngClass]="[
-                        selectedNavItem === menuItem.navItem
-                          ? menuItem.activeIconClass
-                          : menuItem.defaultIconClass
-                      ]"
-                    ></span>
-                    <span>{{ menuItem.title }}</span>
-                  </button>
+                  <ng-container *ngFor="let menuItem of menuItems">
+                    <button
+                      mat-menu-item
+                      class="mobile-menu-item gap-2 d-flex align-items-center"
+                      [ngClass]="{
+                        active: selectedNavItem === menuItem.navItem
+                      }"
+                      [routerLink]="menuItem.path"
+                      [queryParams]="menuItem.queryParams"
+                      *ngxPermissionsOnly="menuItem.canActivate"
+                    >
+                      <span
+                        [ngClass]="[
+                          selectedNavItem === menuItem.navItem
+                            ? menuItem.activeIconClass
+                            : menuItem.defaultIconClass
+                        ]"
+                      ></span>
+                      <span>{{ menuItem.title }}</span>
+                    </button>
+                  </ng-container>
                 </span>
               </mat-menu>
             </span>
@@ -143,97 +194,104 @@
           <ng-template #desktopMenu>
             <div id="op-top-navigation" class="justify-content-between">
               <ul class="nav m-auto gap-3">
-                <li class="nav-item" *ngFor="let menuItem of menuItems">
-                  <!--  Has sub items  -->
-                  <div
-                    *ngIf="
-                      menuItem.subItems && menuItem.subItems.length > 0;
-                      else hasNotSubItems
-                    "
+                <ng-container *ngFor="let menuItem of menuItems">
+                  <li
+                    class="nav-item"
+                    *ngxPermissionsOnly="menuItem.canActivate"
                   >
-                    <a
-                      [routerLink]="menuItem.path"
-                      [queryParams]="menuItem.queryParams"
-                      class="
-                        nav-link
-                        d-inline-flex
-                        align-items-center
-                        gap-1
-                        op-nav-link
+                    <!--  Has sub items  -->
+                    <div
+                      *ngIf="
+                        menuItem.subItems && menuItem.subItems.length > 0;
+                        else hasNotSubItems
                       "
-                      [ngClass]="{
-                        active: selectedNavItem === menuItem.navItem
-                      }"
-                      [matMenuTriggerFor]="menuDesktop"
-                      #subMenuTrigger="matMenuTrigger"
-                      (mousemove)="subMenuTrigger.openMenu()"
                     >
-                      <span
-                        [ngClass]="[
-                          selectedNavItem === menuItem.navItem
-                            ? menuItem.activeIconClass
-                            : menuItem.defaultIconClass
-                        ]"
-                      ></span>
-                      <span>{{ menuItem.title }}</span>
-                    </a>
+                      <a
+                        class="
+                          nav-link
+                          d-inline-flex
+                          align-items-center
+                          gap-1
+                          op-nav-link
+                        "
+                        [ngClass]="{
+                          active: selectedNavItem === menuItem.navItem
+                        }"
+                        [matMenuTriggerFor]="menuDesktop"
+                        #subMenuTrigger="matMenuTrigger"
+                        (mousemove)="subMenuTrigger.openMenu()"
+                      >
+                        <span
+                          [ngClass]="[
+                            selectedNavItem === menuItem.navItem
+                              ? menuItem.activeIconClass
+                              : menuItem.defaultIconClass
+                          ]"
+                        ></span>
+                        <span>{{ menuItem.title }}</span>
+                      </a>
 
-                    <!-- Submenu-->
-                    <mat-menu
-                      #menuDesktop="matMenu"
-                      [overlapTrigger]="false"
-                      class="sub-menu-desktop"
-                    >
-                      <span (mouseleave)="subMenuTrigger.closeMenu()">
-                        <button
-                          mat-menu-item
-                          *ngFor="let subItem of menuItem.subItems"
-                          class="
-                            sub-menu-desktop-item
-                            gap-2
-                            d-flex
-                            align-items-center
-                          "
-                          [routerLink]="subItem.path"
-                          [queryParams]="subItem.queryParams"
-                        >
-                          <span [ngClass]="subItem.iconClass"></span>
-                          <span>{{ subItem.title }}</span>
-                        </button>
-                      </span>
-                    </mat-menu>
-                    <!--  End submenu -->
-                  </div>
-                  <!--  End: has sub items  -->
+                      <!-- Submenu-->
+                      <mat-menu
+                        #menuDesktop="matMenu"
+                        [overlapTrigger]="false"
+                        class="sub-menu-desktop"
+                      >
+                        <span (mouseleave)="subMenuTrigger.closeMenu()">
+                          <ng-container
+                            *ngFor="let subItem of menuItem.subItems"
+                          >
+                            <button
+                              mat-menu-item
+                              *ngxPermissionsOnly="subItem.canActivate"
+                              class="
+                                sub-menu-desktop-item
+                                gap-2
+                                d-flex
+                                align-items-center
+                              "
+                              [routerLink]="subItem.path"
+                              [queryParams]="subItem.queryParams"
+                            >
+                              <span [ngClass]="subItem.iconClass"></span>
+                              <span>{{ subItem.title }}</span>
+                            </button>
+                          </ng-container>
+                        </span>
+                      </mat-menu>
+                      <!--  End submenu -->
+                    </div>
+                    <!--  End: has sub items  -->
 
-                  <!--  Hasnot sub items  -->
-                  <ng-template #hasNotSubItems>
-                    <a
-                      [routerLink]="menuItem.path"
-                      [queryParams]="menuItem.queryParams"
-                      class="
-                        nav-link
-                        d-inline-flex
-                        align-items-center
-                        gap-1
-                        op-nav-link
-                      "
-                      [ngClass]="{
-                        active: selectedNavItem === menuItem.navItem
-                      }"
-                    >
-                      <span
-                        [ngClass]="[
-                          selectedNavItem === menuItem.navItem
-                            ? menuItem.activeIconClass
-                            : menuItem.defaultIconClass
-                        ]"
-                      ></span>
-                      <span>{{ menuItem.title }}</span>
-                    </a>
-                  </ng-template>
-                  <!--  End: Hasnot sub items  -->
-                </li>
+                    <!--  Hasnot sub items  -->
+                    <ng-template #hasNotSubItems>
+                      <a
+                        [routerLink]="menuItem.path"
+                        [queryParams]="menuItem.queryParams"
+                        class="
+                          nav-link
+                          d-inline-flex
+                          align-items-center
+                          gap-1
+                          op-nav-link
+                        "
+                        [ngClass]="{
+                          active: selectedNavItem === menuItem.navItem
+                        }"
+                      >
+                        <span
+                          [ngClass]="[
+                            selectedNavItem === menuItem.navItem
+                              ? menuItem.activeIconClass
+                              : menuItem.defaultIconClass
+                          ]"
+                        ></span>
+                        <span>{{ menuItem.title }}</span>
+                      </a>
+                    </ng-template>
+                    <!--  End: Hasnot sub items  -->
+                  </li>
+                </ng-container>
               </ul>
             </div>
           </ng-template>

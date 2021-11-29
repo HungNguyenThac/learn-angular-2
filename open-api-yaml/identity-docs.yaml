@@ -23,7 +23,7 @@ paths:
           content:
             '*/*':
               schema:
-                $ref: '#/components/schemas/ApiResponseObject'
+                $ref: '#/components/schemas/ApiResponseResetPasswordResponse'
   /sign-on/v1/reset-password-verified-otp:
     post:
       tags:
@@ -41,7 +41,7 @@ paths:
           content:
             '*/*':
               schema:
-                $ref: '#/components/schemas/ApiResponseObject'
+                $ref: '#/components/schemas/ApiResponseString'
   /sign-on/v1/reset-password-otp:
     post:
       tags:
@@ -59,7 +59,7 @@ paths:
           content:
             '*/*':
               schema:
-                $ref: '#/components/schemas/ApiResponseObject'
+                $ref: '#/components/schemas/ApiResponseAccount'
   /sign-on/v1/mobile-login:
     post:
       tags:
@@ -95,7 +95,7 @@ paths:
           content:
             '*/*':
               schema:
-                $ref: '#/components/schemas/ApiResponseObject'
+                $ref: '#/components/schemas/ApiResponseAccount'
   /sign-on/v1/create-customer-account:
     post:
       tags:
@@ -113,7 +113,7 @@ paths:
           content:
             '*/*':
               schema:
-                $ref: '#/components/schemas/ApiResponseObject'
+                $ref: '#/components/schemas/ApiResponseCreateCustomerAccountResponse'
   /credential/v1/get-token:
     post:
       tags:
@@ -149,7 +149,7 @@ paths:
           content:
             '*/*':
               schema:
-                $ref: '#/components/schemas/ApiResponseObject'
+                $ref: '#/components/schemas/ApiResponseCredential'
   /credential/v1/change-pass:
     post:
       tags:
@@ -167,7 +167,7 @@ paths:
           content:
             '*/*':
               schema:
-                $ref: '#/components/schemas/ApiResponseObject'
+                $ref: '#/components/schemas/ApiResponseCredential'
 components:
   schemas:
     CreateCustomerAccountRequest:
@@ -182,11 +182,11 @@ components:
           enum:
           - Zalo
           - CMC
-    ApiResponseObject:
+    ApiResponseResetPasswordResponse:
       type: object
       properties:
         result:
-          type: object
+          $ref: '#/components/schemas/ResetPasswordResponse'
         errorCode:
           type: string
         message:
@@ -194,6 +194,18 @@ components:
         responseCode:
           type: integer
           format: int32
+    ResetPasswordResponse:
+      type: object
+      properties:
+        requestId:
+          type: string
+        signature:
+          type: string
+        otpProvider:
+          type: string
+          enum:
+          - Zalo
+          - CMC
     ResetVerifiedPasswordOtpRequest:
       required:
       - mobile
@@ -210,6 +222,18 @@ components:
           type: string
         otp:
           type: string
+    ApiResponseString:
+      type: object
+      properties:
+        result:
+          type: string
+        errorCode:
+          type: string
+        message:
+          type: object
+        responseCode:
+          type: integer
+          format: int32
     ResetPasswordVerifiedAccountRequest:
       required:
       - mobile
@@ -232,6 +256,36 @@ components:
           type: string
         otp:
           type: string
+    Account:
+      type: object
+      properties:
+        id:
+          type: string
+        mobile:
+          type: string
+        passwordHash:
+          type: string
+        status:
+          type: string
+          enum:
+          - NOT_VERIFIED
+          - VERIFIED
+          - SUSPENDED
+        createdAt:
+          type: string
+          format: date-time
+    ApiResponseAccount:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/Account'
+        errorCode:
+          type: string
+        message:
+          type: object
+        responseCode:
+          type: integer
+          format: int32
     MobileLoginRequest:
       required:
       - mobile
@@ -284,6 +338,30 @@ components:
           type: string
         otp:
           type: string
+    ApiResponseCreateCustomerAccountResponse:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/CreateCustomerAccountResponse'
+        errorCode:
+          type: string
+        message:
+          type: object
+        responseCode:
+          type: integer
+          format: int32
+    CreateCustomerAccountResponse:
+      type: object
+      properties:
+        requestId:
+          type: string
+        signature:
+          type: string
+        otpProvider:
+          type: string
+          enum:
+          - Zalo
+          - CMC
     GetTokenRequest:
       type: object
       properties:
@@ -320,6 +398,31 @@ components:
         secret:
           type: string
         group:
+          type: string
+    ApiResponseCredential:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/Credential'
+        errorCode:
+          type: string
+        message:
+          type: object
+        responseCode:
+          type: integer
+          format: int32
+    Credential:
+      type: object
+      properties:
+        id:
+          type: string
+        username:
+          type: string
+        secretHash:
+          type: string
+        status:
+          type: string
+        createdAt:
           type: string
     ChangePassProviderRequest:
       required:

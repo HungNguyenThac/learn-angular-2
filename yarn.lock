@@ -5423,6 +5423,13 @@ ngx-moment@^5.0.0:
   dependencies:
     tslib "^2.0.0"
 
+ngx-permissions@^8.1.1:
+  version "8.1.1"
+  resolved "https://registry.yarnpkg.com/ngx-permissions/-/ngx-permissions-8.1.1.tgz#4c02cbb9b53101fc1c217d1e54c39aa6869ef85f"
+  integrity sha512-gxpZtyg9Hucx+sgoC+iJTYL02E6GOoDCfMKZ1rDnSzIFsyGWIsaNFbSi0FaoT4diWnQ+8B/kL4mEM7ldO/FTxA==
+  dependencies:
+    tslib "^1.10.0"
+
 ngx-toastr@^14.1.4:
   version "14.1.4"
   resolved "https://registry.yarnpkg.com/ngx-toastr/-/ngx-toastr-14.1.4.tgz#80b9d3d3663e35cd11e402ed2eced8a29310b050"

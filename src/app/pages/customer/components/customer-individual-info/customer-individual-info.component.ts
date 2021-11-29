@@ -1,5 +1,6 @@
 import { MatDialog } from '@angular/material/dialog';
 import {
+  AfterViewInit,
   Component,
   EventEmitter,
   Input,
@@ -9,6 +10,8 @@ import {
 } from '@angular/core';
 import { MultiLanguageService } from '../../../../share/translate/multiLanguageService';
 import {
+  ApiResponseCommune,
+  ApiResponseDistrict,
   Bank,
   CustomerInfo,
 } from '../../../../../../open-api-modules/dashboard-api-docs';
@@ -29,6 +32,13 @@ import * as moment from 'moment';
 import { AddNewUserDialogComponent } from '../../../../share/components/operators/user-account/add-new-user-dialog/add-new-user-dialog.component';
 import { PlPromptComponent } from '../../../../share/components';
 import { NotificationService } from '../../../../core/services/notification.service';
+import {
+  ApiResponseCity,
+  ApiResponseListDistrict,
+  CityControllerService,
+  CommuneControllerService,
+  DistrictControllerService,
+} from '../../../../../../open-api-modules/dashboard-api-docs';
 
 @Component({
   selector: 'app-customer-individual-info',
@@ -41,6 +51,8 @@ export class CustomerIndividualInfoComponent implements OnInit, OnDestroy {
   selfieSrc: string;
   diableTime: string;
   showDisableOption: boolean = true;
+
+  communeById: string;
   timeDisableOptions: any = [
     {
       mainTitle: this.multiLanguageService.instant(LOCK_TITLES.BY_HOUR),
@@ -116,23 +128,17 @@ export class CustomerIndividualInfoComponent implements OnInit, OnDestroy {
     private customerDetailService: CustomerDetailService,
     private notifier: ToastrService,
     private formBuilder: FormBuilder,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private cityControllerService: CityControllerService,
+    private districtControllerService: DistrictControllerService,
+    private communeControllerService: CommuneControllerService
   ) {
     this.customerIndividualForm = this.formBuilder.group({
       note: [''],
     });
   }
 
-  _virtualAccount: VirtualAccount;
-
-  @Input()
-  get virtualAccount(): VirtualAccount {
-    return this._virtualAccount;
-  }
-
-  set virtualAccount(value: VirtualAccount) {
-    this._virtualAccount = value;
-  }
+  virtualAccount: VirtualAccount;
 
   _customerInfo: CustomerInfo;
 
@@ -142,9 +148,11 @@ export class CustomerIndividualInfoComponent implements OnInit, OnDestroy {
   }
 
   set customerInfo(value: CustomerInfo) {
+    this._customerInfo = value;
+    this.virtualAccount = this._customerInfo?.virtualAccount;
     this._getSelfieDocument(this.customerId, value);
     this._initIndividualFormData(this.customerId, value);
-    this._customerInfo = value;
+    this.getCustomerLocation(value);
     this.leftIndividualInfos = this._initLeftIndividualInfos();
     this.rightIndividualInfos = this._initRightIndividualInfos();
   }
@@ -329,25 +337,36 @@ export class CustomerIndividualInfoComponent implements OnInit, OnDestroy {
       },
       {
         title: this.multiLanguageService.instant(
-          'customer.individual_info.permanent_address'
+          'customer.individual_info.city'
         ),
-        value: this.customerInfo?.addressTwoLine1,
+        value: '',
         type: DATA_CELL_TYPE.TEXT,
         format: null,
+        key: 'city',
       },
       {
         title: this.multiLanguageService.instant(
-          'customer.individual_info.current_residence'
+          'customer.individual_info.district'
         ),
-        value: this.customerInfo?.addressOneLine1,
+        value: '',
         type: DATA_CELL_TYPE.TEXT,
         format: null,
+        key: 'district',
       },
       {
         title: this.multiLanguageService.instant(
-          'customer.individual_info.id_origin'
+          'customer.individual_info.commune'
         ),
-        value: this.customerInfo?.idOrigin,
+        value: '',
+        type: DATA_CELL_TYPE.TEXT,
+        format: null,
+        key: 'commune',
+      },
+      {
+        title: this.multiLanguageService.instant(
+          'customer.individual_info.apartment_number'
+        ),
+        value: this.customerInfo?.apartmentNumber,
         type: DATA_CELL_TYPE.TEXT,
         format: null,
       },
@@ -463,7 +482,71 @@ export class CustomerIndividualInfoComponent implements OnInit, OnDestroy {
       'personalData.maritalStatus': data?.maritalStatus,
       'personalData.borrowerDetailTextVariable1': data?.numberOfDependents,
       'personalData.addressTwoLine1': data?.permanentAddress,
+      'personalData.cityId': data?.cityId,
+      'personalData.districtId': data?.districtId,
+      'personalData.communeId': data?.communeId,
+      'personalData.apartmentNumber': data?.apartmentNumber,
       'personalData.mobileNumber': data?.mobileNumber,
     };
+  }
+
+  getCityById(id) {
+    if (!id) return;
+    this.subManager.add(
+      this.cityControllerService
+        .getCityById(id)
+        .subscribe((result: ApiResponseCity) => {
+          if (!result || result.responseCode !== 200) {
+            // return this.handleResponseError(result.errorCode);
+          }
+          this.leftIndividualInfos.forEach((elementInfo) => {
+            if (elementInfo.key && elementInfo.key === 'city') {
+              elementInfo.value = result.result?.name;
+            }
+          });
+        })
+    );
+  }
+
+  getDistrictById(id) {
+    if (!id) return;
+    this.subManager.add(
+      this.districtControllerService
+        .getDistrictById(id)
+        .subscribe((result: ApiResponseDistrict) => {
+          if (!result || result.responseCode !== 200) {
+            // return this.handleResponseError(result.errorCode);
+          }
+          this.leftIndividualInfos.forEach((elementInfo) => {
+            if (elementInfo.key && elementInfo.key === 'district') {
+              elementInfo.value = result.result?.name;
+            }
+          });
+        })
+    );
+  }
+
+  getCommuneById(id) {
+    if (!id) return;
+    this.subManager.add(
+      this.communeControllerService
+        .getCommuneById(id)
+        .subscribe((result: ApiResponseCommune) => {
+          if (!result || result.responseCode !== 200) {
+            // return this.handleResponseError(result.errorCode);
+          }
+          this.leftIndividualInfos.forEach((elementInfo) => {
+            if (elementInfo.key && elementInfo.key === 'commune') {
+              elementInfo.value = result.result?.name;
+            }
+          });
+        })
+    );
+  }
+
+  getCustomerLocation(customerInfo: CustomerInfo) {
+    this.getCityById(customerInfo?.cityId);
+    this.getDistrictById(customerInfo?.districtId);
+    this.getCommuneById(customerInfo?.communeId);
   }
 }
