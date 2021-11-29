@@ -98,7 +98,7 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
         ),
         value: this.customerInfo?.firstName,
         type: DATA_CELL_TYPE.HYPERLINK,
-        format: { field: 'customerId' , value: this.loanDetail?.customerId},
+        format: `/customer/list?id__e=${this.loanDetail.customerId}`,
       },
       {
         title: this.multiLanguageService.instant(

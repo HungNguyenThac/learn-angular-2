@@ -19,7 +19,6 @@ export class FormatDataComponent implements OnInit {
 
   set format(value) {
     this._format = value;
-    this.getLink(this._format)
   }
 
   link: string;
@@ -27,15 +26,4 @@ export class FormatDataComponent implements OnInit {
   constructor() {}
 
   ngOnInit(): void {}
-
-  getLink(format) {
-    switch (format?.field) {
-      case "customerId":
-        this.link = `/customer/list?id__e=${this.format?.value}`;
-        break;
-
-      default:
-        break;
-    }
-  }
 }
