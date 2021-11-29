@@ -45,6 +45,16 @@ export class BaseExpandedTableComponent implements OnInit {
   @Input() allColumns: any[];
   @Input() hasSelect: boolean;
   @Input() selectButtons: TableSelectActionModel[];
+  _expandElementByDefault;
+  @Input() get expandElementByDefault() {
+    return this._expandElementByDefault
+  }
+  set expandElementByDefault(value) {
+    this._expandElementByDefault = value
+    if (this._expandElementByDefault) {
+      this.expandElement(this._expandElementByDefault);
+    }
+  }
   @Output() triggerPageChange = new EventEmitter<any>();
   @Output() triggerSortChange = new EventEmitter<any>();
   @Output() triggerExpandedElementChange = new EventEmitter<any>();
@@ -62,8 +72,7 @@ export class BaseExpandedTableComponent implements OnInit {
     private notificationService: NotificationService,
     private notifier: ToastrService,
     private _liveAnnouncer: LiveAnnouncer
-  ) {
-  }
+  ) {}
 
   get numSelected() {
     return this.selection.selected.length;

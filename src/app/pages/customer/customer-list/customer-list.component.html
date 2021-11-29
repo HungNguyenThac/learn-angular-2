@@ -12,6 +12,7 @@
   [orderBy]="filterForm.controls.orderBy?.value"
   [sortDirection]="filterForm.controls.sortDirection?.value"
   [breadcrumbOptions]="breadcrumbOptions"
+  [forceExpandElement]="expandElementFromLoan"
   (onPageChange)="onPageChange($event)"
   (onSortChange)="onSortChange($event)"
   (onExpandElementChange)="onExpandElementChange($event)"

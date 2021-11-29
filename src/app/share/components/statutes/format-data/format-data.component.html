@@ -14,3 +14,7 @@
 <span *ngIf="!type || type === 'TEXT'">
   {{ value || "N/A" }}
 </span>
+
+<span *ngIf="type === 'HYPERLINK'">
+  <a [href]="link" target="_blank" class="router">{{ value || "N/A" }}</a>
+</span>
