@@ -462,6 +462,9 @@
     "pl_ui_status": "Trạng thái tài khoản",
     "account_status": "Trạng thái hoạt động",
     "loan_status": "Trạng thái khoản ứng",
+    "account_classification": "Phân loại tài khoản",
+    "account_classification_test": "Tài khoản test",
+    "account_classification_real": "Tài khoản thực",
     "options": {
       "by_day": "Theo ngày",
       "to_day": "Hôm nay",

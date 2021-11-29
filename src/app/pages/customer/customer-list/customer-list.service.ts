@@ -1,3 +1,4 @@
+import { ACCOUNT_CLASSIFICATION } from './../../../core/common/enum/payday-loan';
 import { Injectable } from '@angular/core';
 import { CustomerControllerService } from 'open-api-modules/dashboard-api-docs';
 import * as _ from 'lodash';
@@ -38,6 +39,20 @@ export class CustomerListService {
         params.keyword;
       requestBody['organizationName' + QUERY_CONDITION_TYPE.LIKE_KEYWORD] =
         params.keyword;
+    }
+    switch (params.accountClassification) {
+      case ACCOUNT_CLASSIFICATION.ALL:
+        delete requestBody['identityNumberOne'];
+        break;
+
+      case ACCOUNT_CLASSIFICATION.TEST:
+        requestBody['identityNumberOne' + QUERY_CONDITION_TYPE.EQUAL] =
+          '001099028309';
+        break;
+      default:
+        requestBody['identityNumberOne' + QUERY_CONDITION_TYPE.NOT_EQUAL] =
+          '001099028309';
+        break;
     }
     console.log('requestBody----', requestBody);
     console.log('params----', params);
