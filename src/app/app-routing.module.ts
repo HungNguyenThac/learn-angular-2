@@ -37,6 +37,13 @@ const routes: Routes = [
           import('./pages/system/user/user.module').then((m) => m.UserModule),
       },
       {
+        path: 'merchant',
+        loadChildren: () =>
+          import('./pages/system/merchant/merchant.module').then(
+            (m) => m.MerchantModule
+          ),
+      },
+      {
         path: 'auth',
         loadChildren: () =>
           import('./pages/auth/auth.module').then((m) => m.AuthModule),
