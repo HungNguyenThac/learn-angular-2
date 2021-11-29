@@ -418,6 +418,7 @@ export class CustomerListComponent implements OnInit, OnDestroy {
           : '';
       }
     });
+    console.log('filter option', this.filterOptions);
 
     this.breadcrumbOptions.keyword = params.keyword;
     this.pageIndex = params.pageIndex || 0;

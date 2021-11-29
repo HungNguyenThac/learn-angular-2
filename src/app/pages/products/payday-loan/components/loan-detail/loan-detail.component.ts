@@ -95,6 +95,9 @@ export class LoanDetailComponent implements OnInit, OnDestroy {
       console.log("stop loading");
       this._getLoanById(this.loanId);
       this.notificationService.hideLoading();
+      this.notifier.success(
+        this.multiLanguageService.instant('common.update_success')
+      );
     }, 3000);
   }
 
