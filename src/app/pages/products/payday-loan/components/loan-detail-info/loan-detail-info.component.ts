@@ -97,16 +97,16 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
           'loan_app.loan_info.customer_name'
         ),
         value: this.customerInfo?.firstName,
-        type: DATA_CELL_TYPE.TEXT,
-        format: null,
+        type: DATA_CELL_TYPE.HYPERLINK,
+        format: `/customer/list?id__e=${this.loanDetail?.customerId}`,
       },
       {
         title: this.multiLanguageService.instant(
           'loan_app.loan_info.phone_number'
         ),
         value: this.customerInfo?.mobileNumber,
-        type: DATA_CELL_TYPE.TEXT,
-        format: null,
+        type: DATA_CELL_TYPE.HYPERLINK,
+        format: `/customer/list?id__e=${this.loanDetail?.customerId}`,
       },
       {
         title: this.multiLanguageService.instant(
@@ -248,7 +248,7 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
   rejectLoanStatusDisplay: string;
   salaryStatus: string;
   loanInfoForm: FormGroup;
-  totalSettlementAmount:number;
+  totalSettlementAmount: number;
   maxLoanAmount: number;
 
   subManager = new Subscription();

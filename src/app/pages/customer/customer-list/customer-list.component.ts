@@ -303,6 +303,7 @@ export class CustomerListComponent implements OnInit, OnDestroy {
   totalItems: number = 0;
   filterForm: FormGroup;
   expandedElementId: string;
+  expandElementFromLoan: any;
   private readonly routeAllState$: Observable<Params>;
 
   constructor(
@@ -333,6 +334,7 @@ export class CustomerListComponent implements OnInit, OnDestroy {
     this.filterForm = this.formBuilder.group({
       keyword: [''],
       companyId: [''],
+      id: [''],
       paydayLoanStatus: [''],
       orderBy: ['createdAt'],
       sortDirection: ['desc'],
@@ -343,6 +345,7 @@ export class CustomerListComponent implements OnInit, OnDestroy {
       filterConditions: {
         companyId: QUERY_CONDITION_TYPE.IN,
         paydayLoanStatus: QUERY_CONDITION_TYPE.IN,
+        id: QUERY_CONDITION_TYPE.EQUAL,
       },
     });
   }
@@ -354,14 +357,14 @@ export class CustomerListComponent implements OnInit, OnDestroy {
     for (const [param, paramValue] of Object.entries(params)) {
       let paramHasCondition = param.split('__');
       if (paramHasCondition.length > 1) {
-        this.filterForm.controls[paramHasCondition[0]].setValue(
+        this.filterForm.controls[paramHasCondition[0]]?.setValue(
           paramValue || ''
         );
         filterConditionsValue[paramHasCondition[0]] =
           '__' + paramHasCondition[1];
       } else {
         if (this.filterForm.controls[param]) {
-          this.filterForm.controls[param].setValue(paramValue || '');
+          this.filterForm.controls[param]?.setValue(paramValue || '');
         }
       }
     }
@@ -407,6 +410,9 @@ export class CustomerListComponent implements OnInit, OnDestroy {
       .getData(params)
       .subscribe((data: ApiResponseSearchAndPaginationResponseCustomerInfo) => {
         this._parseData(data?.result);
+        if (this.filterForm.controls.id.value) {
+          this.expandElementFromLoan = data?.result.data[0]
+        }
       });
     // );
   }

@@ -39,6 +39,8 @@ export class CustomerListService {
       requestBody['organizationName' + QUERY_CONDITION_TYPE.LIKE_KEYWORD] =
         params.keyword;
     }
+    console.log('requestBody----', requestBody);
+    console.log('params----', params);
 
     return this.customerControllerService.getCustomers(
       params.limit,
