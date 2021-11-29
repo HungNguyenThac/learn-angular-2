@@ -35,6 +35,7 @@ export class BaseManagementLayoutComponent implements OnInit {
   @Input() hasSelect: boolean;
   @Input() selectButtons: TableSelectActionModel[] = [];
   @Input() sortDirection: SortDirection = 'desc';
+  @Input() forceExpandElement: any;
   @Output() onPageChange = new EventEmitter<PageEvent>();
   @Output() onSortChange = new EventEmitter<Sort>();
   @Output() onExpandElementChange = new EventEmitter<any>();
