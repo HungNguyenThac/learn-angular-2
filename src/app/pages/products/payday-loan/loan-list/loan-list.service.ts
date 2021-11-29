@@ -17,6 +17,7 @@ import {
 } from '../../../../../../open-api-modules/loanapp-api-docs';
 import { FileControllerService } from '../../../../../../open-api-modules/com-api-docs';
 import { SignDocumentControllerService } from '../../../../../../open-api-modules/contract-api-docs';
+import { ACCOUNT_CLASSIFICATION } from 'src/app/core/common/enum/payday-loan';
 
 @Injectable({
   providedIn: 'root',
@@ -69,6 +70,22 @@ export class LoanListService {
         'customerIdentityNumberOne' + QUERY_CONDITION_TYPE.LIKE_KEYWORD
       ] = params.keyword;
     }
+
+    switch (params.accountClassification) {
+      case ACCOUNT_CLASSIFICATION.ALL:
+        delete requestBody['customerIdentityNumberOne'];
+        break;
+
+      case ACCOUNT_CLASSIFICATION.TEST:
+        requestBody['customerIdentityNumberOne' + QUERY_CONDITION_TYPE.EQUAL] =
+          '001099028309';
+        break;
+      default:
+        requestBody[
+          'customerIdentityNumberOne' + QUERY_CONDITION_TYPE.NOT_EQUAL
+        ] = '001099028309';
+        break;
+    }
     console.log('requestBody--------------------------------', requestBody);
 
     return this.applicationHmgControllerService.findApplications1(
@@ -117,6 +134,22 @@ export class LoanListService {
       requestBody[
         'customerIdentityNumberOne' + QUERY_CONDITION_TYPE.LIKE_KEYWORD
       ] = params.keyword;
+    }
+
+    switch (params.accountClassification) {
+      case ACCOUNT_CLASSIFICATION.ALL:
+        delete requestBody['customerIdentityNumberOne'];
+        break;
+
+      case ACCOUNT_CLASSIFICATION.TEST:
+        requestBody['customerIdentityNumberOne' + QUERY_CONDITION_TYPE.EQUAL] =
+          '001099028309';
+        break;
+      default:
+        requestBody[
+          'customerIdentityNumberOne' + QUERY_CONDITION_TYPE.NOT_EQUAL
+        ] = '001099028309';
+        break;
     }
     console.log('requestBody--------------------------------', requestBody);
     return this.applicationTngControllerService.findApplications(

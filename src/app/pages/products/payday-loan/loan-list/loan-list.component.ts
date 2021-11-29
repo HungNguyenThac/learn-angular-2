@@ -6,6 +6,7 @@ import { CompanyInfo } from './../../../../../../open-api-modules/customer-api-d
 import {
   PAYDAY_LOAN_UI_STATUS_TEXT,
   PAYDAY_LOAN_STATUS,
+  ACCOUNT_CLASSIFICATION,
 } from './../../../../core/common/enum/payday-loan';
 import { FILTER_TYPE } from 'src/app/core/common/enum/operator';
 import { LoanListService } from './loan-list.service';
@@ -171,6 +172,30 @@ export class LoanListComponent implements OnInit, OnDestroy {
             'loan_app.loan_info.withdrew'
           ),
           value: PAYDAY_LOAN_STATUS.WITHDRAW,
+        },
+      ],
+    },
+    {
+      title: this.multiLanguageService.instant('filter.account_classification'),
+      type: FILTER_TYPE.SELECT,
+      controlName: 'accountClassification',
+      value: null,
+      options: [
+        {
+          title: this.multiLanguageService.instant('common.all'),
+          value: ACCOUNT_CLASSIFICATION.ALL,
+        },
+        {
+          title: this.multiLanguageService.instant(
+            'filter.account_classification_real'
+          ),
+          value: ACCOUNT_CLASSIFICATION.REAL,
+        },
+        {
+          title: this.multiLanguageService.instant(
+            'filter.account_classification_test'
+          ),
+          value: ACCOUNT_CLASSIFICATION.TEST,
         },
       ],
     },
@@ -416,6 +441,10 @@ export class LoanListComponent implements OnInit, OnDestroy {
           this.filterForm.controls.status.setValue(
             event.value ? event.value.join(',') : ''
           );
+        } else if (event.controlName === 'accountClassification') {
+          this.filterForm.controls.accountClassification.setValue(
+            event.value ? event.value : ACCOUNT_CLASSIFICATION.REAL
+          );
         }
         break;
       default:
@@ -447,6 +476,7 @@ export class LoanListComponent implements OnInit, OnDestroy {
       endTime: [''],
       dateFilterType: [''],
       dateFilterTitle: [''],
+      accountClassification: [''],
       filterConditions: {
         // keyword: QUERY_CONDITION_TYPE.LIKE,
         companyId: QUERY_CONDITION_TYPE.IN,
@@ -494,6 +524,11 @@ export class LoanListComponent implements OnInit, OnDestroy {
         filterOption.value = this.filterForm.controls.status.value
           ? this.filterForm.controls.status.value.split(',')
           : [];
+      } else if (filterOption.controlName === 'accountClassification') {
+        filterOption.value = this.filterForm.controls.accountClassification
+          .value
+          ? this.filterForm.controls.accountClassification.value
+          : '';
       }
     });
 
@@ -630,6 +665,8 @@ export class LoanListComponent implements OnInit, OnDestroy {
     queryParams['pageIndex'] = this.pageIndex;
     queryParams['pageSize'] = this.pageSize;
     queryParams['keyword'] = data.keyword;
+
+    queryParams['accountClassification'] = data.accountClassification;
 
     this.router
       .navigate([], {
