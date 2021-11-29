@@ -300,9 +300,6 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
               .changeLoanStatus(this.loanDetail.id, updateLoanStatusRequest)
               .subscribe((result) => {
                 if (result?.responseCode === 200) {
-                  this.notifier.success(
-                    this.multiLanguageService.instant('common.update_success')
-                  );
                   this.loanDetailDetectChangeStatus.emit();
                 } else {
                   this.notifier.error(JSON.stringify(result?.message));
@@ -315,7 +312,6 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
               .changeLoanStatus(this.loanDetail.id, updateLoanStatusRequest)
               .subscribe((result) => {
                 if (result?.responseCode === 200) {
-                  this.multiLanguageService.instant('common.update_success');
                   this.loanDetailDetectChangeStatus.emit();
                 } else {
                   this.notifier.error(JSON.stringify(result?.message));

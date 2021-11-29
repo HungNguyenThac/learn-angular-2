@@ -462,6 +462,9 @@
     "pl_ui_status": "Trạng thái tài khoản",
     "account_status": "Trạng thái hoạt động",
     "loan_status": "Trạng thái khoản ứng",
+    "account_classification": "Phân loại tài khoản",
+    "account_classification_test": "Tài khoản test",
+    "account_classification_real": "Tài khoản thực",
     "options": {
       "by_day": "Theo ngày",
       "to_day": "Hôm nay",
@@ -534,7 +537,8 @@
   "breadcrumb": {
     "manage_customer": "Quản lý khách hàng",
     "manage_payday_loan": "Quản lý khoản ứng",
-    "search_field_payday_loan": "Mã khoản ứng, Tên, Số điện thoại...",
+    "search_field_payday_loan": "Mã khoản ứng, Tên, Số điện thoại, Email, Mã nhân viên, Số CMND/CCCD",
+    "search_field_customer_list": "Họ tên, Mã nhân viên, Số điện thoại, Email",
     "manage_user": "Quản lý người dùng"
   },
   "system": {
