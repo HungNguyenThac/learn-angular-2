@@ -24,8 +24,8 @@ export class CustomerEkycInfoComponent implements OnInit {
 
   set customerInfo(value: CustomerInfo) {
     this._getEKYCDocument(this.customerId, value);
-    this.rightEkycInfos = this._initRightEkycInfos();
     this._customerInfo = value;
+    this.rightEkycInfos = this._initRightEkycInfos();
   }
 
   _customerId: string;

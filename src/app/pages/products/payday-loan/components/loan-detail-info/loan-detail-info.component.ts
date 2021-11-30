@@ -97,16 +97,16 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
           'loan_app.loan_info.customer_name'
         ),
         value: this.customerInfo?.firstName,
-        type: DATA_CELL_TYPE.TEXT,
-        format: null,
+        type: DATA_CELL_TYPE.HYPERLINK,
+        format: `/customer/list?id__e=${this.loanDetail?.customerId}`,
       },
       {
         title: this.multiLanguageService.instant(
           'loan_app.loan_info.phone_number'
         ),
         value: this.customerInfo?.mobileNumber,
-        type: DATA_CELL_TYPE.TEXT,
-        format: null,
+        type: DATA_CELL_TYPE.HYPERLINK,
+        format: `/customer/list?id__e=${this.loanDetail?.customerId}`,
       },
       {
         title: this.multiLanguageService.instant(
@@ -248,7 +248,7 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
   rejectLoanStatusDisplay: string;
   salaryStatus: string;
   loanInfoForm: FormGroup;
-  totalSettlementAmount:number;
+  totalSettlementAmount: number;
   maxLoanAmount: number;
 
   subManager = new Subscription();
@@ -300,9 +300,6 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
               .changeLoanStatus(this.loanDetail.id, updateLoanStatusRequest)
               .subscribe((result) => {
                 if (result?.responseCode === 200) {
-                  this.notifier.success(
-                    this.multiLanguageService.instant('common.update_success')
-                  );
                   this.loanDetailDetectChangeStatus.emit();
                 } else {
                   this.notifier.error(JSON.stringify(result?.message));
@@ -315,7 +312,6 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
               .changeLoanStatus(this.loanDetail.id, updateLoanStatusRequest)
               .subscribe((result) => {
                 if (result?.responseCode === 200) {
-                  this.multiLanguageService.instant('common.update_success');
                   this.loanDetailDetectChangeStatus.emit();
                 } else {
                   this.notifier.error(JSON.stringify(result?.message));

@@ -26,10 +26,15 @@ export enum QUERY_CONDITION_TYPE {
   IN = '__in',
   LIKE = '__~',
   LIKE_KEYWORD = '__lk',
+  NOT_BETWEEN = "__nbw",
+  NOT_START_WITH = "__nsw",
+  NOT_END_WITH = "__new",
+  NOT_IN = "__nin"
 }
 
 export enum DATA_CELL_TYPE {
   TEXT = 'TEXT',
+  HYPERLINK = 'HYPERLINK',
   DATETIME = 'DATETIME',
   STATUS = 'STATUS',
   CURRENCY = 'CURRENCY',

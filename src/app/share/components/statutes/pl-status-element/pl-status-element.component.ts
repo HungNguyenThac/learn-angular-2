@@ -233,6 +233,12 @@ export class PlStatusElementComponent implements OnInit {
           labelStatus: PL_LABEL_STATUS.INFO,
         };
       case PAYDAY_LOAN_STATUS.REJECTED:
+         return {
+           label: this.multiLanguageService.instant(
+             `payday_loan.status.${status.toLowerCase()}`
+           ),
+           labelStatus: PL_LABEL_STATUS.CANCEL,
+         };
       case PAYDAY_LOAN_STATUS.WITHDRAW:
       case PAYDAY_LOAN_STATUS.CONTRACT_REJECTED:
         return {

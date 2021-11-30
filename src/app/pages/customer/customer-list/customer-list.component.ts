@@ -32,6 +32,7 @@ import { FilterOptionModel } from 'src/app/public/models/filter/filter-option.mo
 import { FilterEventModel } from '../../../public/models/filter/filter-event.model';
 import { FilterActionEventModel } from '../../../public/models/filter/filter-action-event.model';
 import {
+  ACCOUNT_CLASSIFICATION,
   PAYDAY_LOAN_UI_STATUS,
   PAYDAY_LOAN_UI_STATUS_TEXT,
 } from '../../../core/common/enum/payday-loan';
@@ -51,7 +52,7 @@ export class CustomerListComponent implements OnInit, OnDestroy {
   breadcrumbOptions: BreadcrumbOptionsModel = {
     title: this.multiLanguageService.instant('breadcrumb.manage_customer'),
     iconClass: 'sprite-group-5-customer-green-medium',
-    searchPlaceholder: 'Họ tên, Mã nhân viên, Số điện thoại, Email',
+    searchPlaceholder: this.multiLanguageService.instant('breadcrumb.search_field_customer_list'),
     searchable: true,
     showBtnAdd: false,
     keyword: '',
@@ -141,6 +142,30 @@ export class CustomerListComponent implements OnInit, OnDestroy {
         {
           title: this.multiLanguageService.instant('common.inactive'),
           value: PAYDAY_LOAN_UI_STATUS.NOT_COMPLETE_FILL_EKYC_YET,
+        },
+      ],
+    },
+    {
+      title: this.multiLanguageService.instant('filter.account_classification'),
+      type: FILTER_TYPE.SELECT,
+      controlName: 'accountClassification',
+      value: null,
+      options: [
+        {
+          title: this.multiLanguageService.instant('common.all'),
+          value: ACCOUNT_CLASSIFICATION.ALL,
+        },
+        {
+          title: this.multiLanguageService.instant(
+            'filter.account_classification_real'
+          ),
+          value: ACCOUNT_CLASSIFICATION.REAL,
+        },
+        {
+          title: this.multiLanguageService.instant(
+            'filter.account_classification_test'
+          ),
+          value: ACCOUNT_CLASSIFICATION.TEST,
         },
       ],
     },
@@ -303,6 +328,7 @@ export class CustomerListComponent implements OnInit, OnDestroy {
   totalItems: number = 0;
   filterForm: FormGroup;
   expandedElementId: string;
+  expandElementFromLoan: any;
   private readonly routeAllState$: Observable<Params>;
 
   constructor(
@@ -333,9 +359,11 @@ export class CustomerListComponent implements OnInit, OnDestroy {
     this.filterForm = this.formBuilder.group({
       keyword: [''],
       companyId: [''],
+      id: [''],
       paydayLoanStatus: [''],
       orderBy: ['createdAt'],
       sortDirection: ['desc'],
+      accountClassification: [ACCOUNT_CLASSIFICATION.REAL],
       startTime: [null],
       endTime: [null],
       dateFilterType: [''],
@@ -343,6 +371,7 @@ export class CustomerListComponent implements OnInit, OnDestroy {
       filterConditions: {
         companyId: QUERY_CONDITION_TYPE.IN,
         paydayLoanStatus: QUERY_CONDITION_TYPE.IN,
+        id: QUERY_CONDITION_TYPE.EQUAL,
       },
     });
   }
@@ -354,14 +383,14 @@ export class CustomerListComponent implements OnInit, OnDestroy {
     for (const [param, paramValue] of Object.entries(params)) {
       let paramHasCondition = param.split('__');
       if (paramHasCondition.length > 1) {
-        this.filterForm.controls[paramHasCondition[0]].setValue(
+        this.filterForm.controls[paramHasCondition[0]]?.setValue(
           paramValue || ''
         );
         filterConditionsValue[paramHasCondition[0]] =
           '__' + paramHasCondition[1];
       } else {
         if (this.filterForm.controls[param]) {
-          this.filterForm.controls[param].setValue(paramValue || '');
+          this.filterForm.controls[param]?.setValue(paramValue || '');
         }
       }
     }
@@ -382,8 +411,14 @@ export class CustomerListComponent implements OnInit, OnDestroy {
         filterOption.value = this.filterForm.controls.paydayLoanStatus.value
           ? this.filterForm.controls.paydayLoanStatus.value.split(',')
           : [];
+      } else if (filterOption.controlName === 'accountClassification') {
+        filterOption.value = this.filterForm.controls.accountClassification
+          .value
+          ? this.filterForm.controls.accountClassification.value
+          : '';
       }
     });
+    console.log('filter option', this.filterOptions);
 
     this.breadcrumbOptions.keyword = params.keyword;
     this.pageIndex = params.pageIndex || 0;
@@ -407,6 +442,9 @@ export class CustomerListComponent implements OnInit, OnDestroy {
       .getData(params)
       .subscribe((data: ApiResponseSearchAndPaginationResponseCustomerInfo) => {
         this._parseData(data?.result);
+        if (this.filterForm.controls.id.value) {
+          this.expandElementFromLoan = data?.result.data[0];
+        }
       });
     // );
   }
@@ -498,6 +536,10 @@ export class CustomerListComponent implements OnInit, OnDestroy {
           this.filterForm.controls.paydayLoanStatus.setValue(
             event.value ? event.value.join(',') : ''
           );
+        } else if (event.controlName === 'accountClassification') {
+          this.filterForm.controls.accountClassification.setValue(
+            event.value ? event.value : ACCOUNT_CLASSIFICATION.REAL
+          );
         }
         break;
       default:
@@ -537,6 +579,8 @@ export class CustomerListComponent implements OnInit, OnDestroy {
     queryParams['pageIndex'] = this.pageIndex;
     queryParams['pageSize'] = this.pageSize;
     queryParams['keyword'] = data.keyword;
+
+    queryParams['accountClassification'] = data.accountClassification;
 
     this.router
       .navigate([], {
