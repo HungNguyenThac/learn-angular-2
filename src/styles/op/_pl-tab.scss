@@ -33,3 +33,9 @@
     min-height: 500px;
   }
 }
+
+::ng-deep .op-tab-dialog {
+  .mat-tab-body {
+    min-height: 450px;
+  }
+}

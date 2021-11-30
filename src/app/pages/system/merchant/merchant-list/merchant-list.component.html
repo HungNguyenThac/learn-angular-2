@@ -8,8 +8,8 @@
   (onOutputAction)="onOutputAction($event)"
   (onClickBtnAdd)="onClickBtnAdd($event)"
   [allColumns]="allColumns"
-  [breadcrumbOptions]="breadcrumbOptions"
   [dataSource]="dataSource"
+  [breadcrumbOptions]="breadcrumbOptions"
   [detailElementTemplate]="detailElementTemplate"
   [filterOptions]="filterOptions"
   [orderBy]="filterForm.controls.orderBy?.value"
@@ -26,8 +26,8 @@
 </app-base-management-layout>
 
 <ng-template #detailElementTemplate>
-  <app-user-element
-    [userInfo]="userInfo"
+  <app-merchant-element
+    [merchantInfo]="merchantInfo"
     class="w-100"
-  ></app-user-element>
+  ></app-merchant-element>
 </ng-template>

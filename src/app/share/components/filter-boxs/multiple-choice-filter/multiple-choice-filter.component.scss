@@ -1,1 +1,9 @@
 @import "src/styles/op/pl-filter";
+
+.edit {
+  display: none !important;
+}
+
+li:hover .edit {
+  display: flex !important;
+}
