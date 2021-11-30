@@ -43,7 +43,7 @@
           </div>
         </form>
 
-        <button (click)="openAddUserDialog()" mat-button class="op-breadcrumb-add-btn" *ngIf="showBtnAdd">
+        <button (click)="onClickButton($event)" mat-button class="op-breadcrumb-add-btn" *ngIf="showBtnAdd">
           <span class="sprite-group-5-add-white"></span>
           <span class="ps-1">{{ btnAddText }}</span>
         </button>

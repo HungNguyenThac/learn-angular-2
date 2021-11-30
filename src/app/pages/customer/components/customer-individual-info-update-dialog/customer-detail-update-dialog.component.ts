@@ -1,4 +1,9 @@
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { CustomerInfo } from '../../../../../../open-api-modules/dashboard-api-docs';
 import { MultiLanguageService } from '../../../../share/translate/multiLanguageService';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
@@ -7,13 +12,14 @@ import * as moment from 'moment';
 import { VirtualAccount } from '../../../../../../open-api-modules/payment-api-docs';
 import { Bank } from 'open-api-modules/dashboard-api-docs';
 import { BUTTON_TYPE } from '../../../../core/common/enum/operator';
-import { Subscription } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
 import {
   ApiResponseListCity,
   ApiResponseListDistrict,
   CityControllerService,
   DistrictControllerService,
 } from '../../../../../../open-api-modules/customer-api-docs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-customer-detail-update-dialog',
@@ -29,7 +35,14 @@ export class CustomerDetailUpdateDialogComponent implements OnInit {
   cityData: any[];
   districtData: any[];
   communeData: any[];
+  filteredCities: any[];
+  filteredDistricts: any[];
+  filteredCommunes: any[];
+  citiesFilterCtrl: FormControl = new FormControl();
+  districtsFilterCtrl: FormControl = new FormControl();
+  communesFilterCtrl: FormControl = new FormControl();
   subManager = new Subscription();
+  _onDestroy = new Subject<void>();
 
   customerIndividualForm: FormGroup;
 
@@ -76,6 +89,21 @@ export class CustomerDetailUpdateDialogComponent implements OnInit {
     this.getAllCityList();
     this.getCommuneList();
     this.getDistrictList();
+    this.citiesFilterCtrl.valueChanges
+      .pipe(takeUntil(this._onDestroy))
+      .subscribe(() => {
+        this.filterCities();
+      });
+    this.districtsFilterCtrl.valueChanges
+      .pipe(takeUntil(this._onDestroy))
+      .subscribe(() => {
+        this.filterDistricts();
+      });
+    this.communesFilterCtrl.valueChanges
+      .pipe(takeUntil(this._onDestroy))
+      .subscribe(() => {
+        this.filterCommunes();
+      });
   }
 
   buildIndividualForm() {
@@ -192,6 +220,7 @@ export class CustomerDetailUpdateDialogComponent implements OnInit {
             // return this.handleResponseError(result.errorCode);
           }
           this.cityData = result.result;
+          this.filteredCities = result.result;
         })
     );
   }
@@ -208,6 +237,7 @@ export class CustomerDetailUpdateDialogComponent implements OnInit {
             // return this.handleResponseError(result.errorCode);
           }
           this.districtData = result.result;
+          this.filteredDistricts = result.result;
         })
     );
   }
@@ -226,6 +256,7 @@ export class CustomerDetailUpdateDialogComponent implements OnInit {
             // return this.handleResponseError(result.errorCode);
           }
           this.communeData = result.result;
+          this.filteredCommunes = result.result;
         })
     );
   }
@@ -236,8 +267,68 @@ export class CustomerDetailUpdateDialogComponent implements OnInit {
     this.communeData = [];
   }
 
-  changeCommune() {
+  toggleSelect() {
+    if (this.filteredCities.length === 0) {
+      this.customerIndividualForm.patchValue({
+        cityId: '',
+        districtId: '',
+        communeId: '',
+      });
+    }
+    if (this.filteredDistricts.length === 0) {
+      this.customerIndividualForm.patchValue({
+        districtId: '',
+        communeId: '',
+      });
+    }
+    if (this.filteredCommunes.length === 0) {
+      this.customerIndividualForm.patchValue({
+        communeId: '',
+      });
+    }
+  }
+
+  filterCities() {
+    let search = this.citiesFilterCtrl.value;
+    if (!search) {
+      this.filteredCities = this.cityData;
+      return;
+    } else {
+      search = search.toLowerCase();
+    }
+    this.filteredCities = this.cityData.filter(
+      (city) => city.name.toLowerCase().indexOf(search) > -1
+    );
+  }
+
+  changeDistrict() {
     this.getCommuneList();
     this.customerIndividualForm.patchValue({ communeId: '' });
+  }
+
+  filterDistricts() {
+    let search = this.districtsFilterCtrl.value;
+    if (!search) {
+      this.filteredDistricts = this.districtData;
+      return;
+    } else {
+      search = search.toLowerCase();
+    }
+    this.filteredDistricts = this.districtData.filter(
+      (district) => district.name.toLowerCase().indexOf(search) > -1
+    );
+  }
+
+  filterCommunes() {
+    let search = this.communesFilterCtrl.value;
+    if (!search) {
+      this.filteredCommunes = this.communeData;
+      return;
+    } else {
+      search = search.toLowerCase();
+    }
+    this.filteredCommunes = this.communeData.filter(
+      (commune) => commune.name.toLowerCase().indexOf(search) > -1
+    );
   }
 }

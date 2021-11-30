@@ -1,28 +1,32 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { MultiLanguageService } from '../../../../../share/translate/multiLanguageService';
+import { FormGroup } from '@angular/forms';
 import { Subscription } from 'rxjs';
-
-import { DATA_CELL_TYPE } from '../../../../../core/common/enum/operator';
+import { MultiLanguageService } from '../../../../../share/translate/multiLanguageService';
 import { NotificationService } from '../../../../../core/services/notification.service';
 import { ToastrService } from 'ngx-toastr';
+import { DATA_CELL_TYPE } from '../../../../../core/common/enum/operator';
+import { MerchantDetailDialogComponent } from '../../../../../share/components/operators/merchant/merchant-detail-dialog/merchant-detail-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
-  selector: 'app-user-detail',
-  templateUrl: './user-detail.component.html',
-  styleUrls: ['./user-detail.component.scss'],
+  selector: 'app-merchant-verify',
+  templateUrl: './merchant-verify.component.html',
+  styleUrls: ['./merchant-verify.component.scss'],
 })
-export class UserDetailComponent implements OnInit {
+export class MerchantVerifyComponent implements OnInit {
+  @Input() merchantInfo;
+  @Output() triggerUpdateInfo = new EventEmitter<any>();
+  merchantInfoForm: FormGroup;
   leftCompanyInfos: any[] = [];
   rightCompanyInfos: any[] = [];
   showEnableBtn: boolean = false;
   subManager = new Subscription();
 
-  @Input() userInfo;
-
   constructor(
     private multiLanguageService: MultiLanguageService,
     private notificationService: NotificationService,
-    private notifier: ToastrService
+    private notifier: ToastrService,
+    private dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
@@ -30,7 +34,24 @@ export class UserDetailComponent implements OnInit {
     this.rightCompanyInfos = this._initRightCompanyInfos();
   }
 
-  ngOnDestroy(): void {}
+  submitForm() {
+    const data = this.merchantInfoForm.getRawValue();
+    this.triggerUpdateInfo.emit({
+      'personalData.note': data.note,
+    });
+  }
+
+  openUpdateDialog() {
+    const updateDialogRef = this.dialog.open(MerchantDetailDialogComponent, {
+      panelClass: 'custom-info-dialog-container',
+      maxWidth: '800px',
+      width: '90%',
+      data: {
+        merchantInfo: this.merchantInfo,
+        tabIndex: 1,
+      },
+    });
+  }
 
   public lockPrompt() {
     const confirmLockRef = this.notificationService.openPrompt({
@@ -97,22 +118,42 @@ export class UserDetailComponent implements OnInit {
   private _initLeftCompanyInfos() {
     return [
       {
-        title: this.multiLanguageService.instant('system.user_detail.name'),
-        value: this.userInfo.username,
+        title: this.multiLanguageService.instant(
+          'merchant.merchant_detail.contactor'
+        ),
+        value: this.merchantInfo.contactor,
         type: DATA_CELL_TYPE.TEXT,
         format: null,
       },
       {
         title: this.multiLanguageService.instant(
-          'system.user_detail.login_name'
+          'merchant.merchant_detail.role'
         ),
-        value: this.userInfo.userAccount,
+        value: this.merchantInfo.role,
         type: DATA_CELL_TYPE.TEXT,
         format: null,
       },
       {
-        title: this.multiLanguageService.instant('system.user_detail.email'),
-        value: this.userInfo.email,
+        title: this.multiLanguageService.instant(
+          'merchant.merchant_detail.phone_number'
+        ),
+        value: this.merchantInfo.phone,
+        type: DATA_CELL_TYPE.STATUS,
+        format: null,
+      },
+      {
+        title: this.multiLanguageService.instant(
+          'merchant.merchant_detail.mail_to'
+        ),
+        value: this.merchantInfo.mailTo,
+        type: DATA_CELL_TYPE.TEXT,
+        format: null,
+      },
+      {
+        title: this.multiLanguageService.instant(
+          'merchant.merchant_detail.mail_cc'
+        ),
+        value: this.merchantInfo.mailCc,
         type: DATA_CELL_TYPE.TEXT,
         format: null,
       },
@@ -122,21 +163,35 @@ export class UserDetailComponent implements OnInit {
   private _initRightCompanyInfos() {
     return [
       {
-        title: this.multiLanguageService.instant('system.user_detail.phone'),
-        value: this.userInfo.phone,
+        title: this.multiLanguageService.instant(
+          'merchant.merchant_detail.bank'
+        ),
+        value: this.merchantInfo.bank,
         type: DATA_CELL_TYPE.TEXT,
         format: null,
       },
       {
-        title: this.multiLanguageService.instant('system.user_detail.note'),
-        value: this.userInfo.note,
+        title: this.multiLanguageService.instant(
+          'merchant.merchant_detail.branch'
+        ),
+        value: this.merchantInfo.branch,
         type: DATA_CELL_TYPE.TEXT,
         format: null,
       },
       {
-        title: this.multiLanguageService.instant('system.user_detail.status'),
-        value: this.userInfo.status,
-        type: DATA_CELL_TYPE.STATUS,
+        title: this.multiLanguageService.instant(
+          'merchant.merchant_detail.account_number'
+        ),
+        value: this.merchantInfo.accountNum,
+        type: DATA_CELL_TYPE.TEXT,
+        format: null,
+      },
+      {
+        title: this.multiLanguageService.instant(
+          'merchant.merchant_detail.account_name'
+        ),
+        value: this.merchantInfo.accountName,
+        type: DATA_CELL_TYPE.TEXT,
         format: null,
       },
     ];

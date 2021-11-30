@@ -30,11 +30,10 @@
           color="primary"
           (change)="filterChange($event, selectedItem)"
           [matTooltip]="selectedItem.filterItem?.title"
-          >{{ selectedItem.filterItem?.title }}</mat-checkbox
+        >{{ selectedItem.filterItem?.title }}</mat-checkbox
         >
         <div
-          class="d-inline-flex justify-content-between align-items-center gap-1"
-          *ngIf="selectedItem.filterItem?.showAction"
+          class="edit d-inline-flex justify-content-between align-items-center gap-1"
         >
           <button
             mat-icon-button

@@ -36,6 +36,8 @@ import {
 import { NotificationService } from '../../../../core/services/notification.service';
 import { ToastrService } from 'ngx-toastr';
 import { TableSelectActionModel } from '../../../../public/models/external/table-select-action.model';
+import { AddNewUserDialogComponent } from '../../../../share/components';
+import { MatDialog } from '@angular/material/dialog';
 
 export interface UserListResult {
   id: number;
@@ -255,7 +257,7 @@ export class UserListComponent implements OnInit, OnDestroy {
   filterForm: FormGroup;
   expandedElementId: number;
   hasSelect: boolean = true;
-  userInfo;
+  userInfo: any;
   private readonly routeAllState$: Observable<Params>;
 
   constructor(
@@ -267,6 +269,7 @@ export class UserListComponent implements OnInit, OnDestroy {
     private companyControllerService: CompanyControllerService,
     private formBuilder: FormBuilder,
     private router: Router,
+    private dialog: MatDialog,
     private activatedRoute: ActivatedRoute
   ) {
     this.routeAllState$ = store.select(fromSelectors.getRouterAllState);
@@ -536,5 +539,13 @@ export class UserListComponent implements OnInit, OnDestroy {
         queryParams,
       })
       .then((r) => {});
+  }
+
+  onClickBtnAdd(event) {
+    const addUserDialogRef = this.dialog.open(AddNewUserDialogComponent, {
+      panelClass: 'custom-info-dialog-container',
+      maxWidth: '800px',
+      width: '90%',
+    });
   }
 }

@@ -2,12 +2,13 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MerchantListComponent } from './merchant-list/merchant-list.component';
 import { RouterModule, Routes } from '@angular/router';
-import { UserListComponent } from '../user/user-list/user-list.component';
 import { SharedModule } from '../../../share/shared.module';
 import { TranslateModule } from '@ngx-translate/core';
 import { FormsModule } from '@angular/forms';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
-import { UserRoutes } from '../user/user.module';
+import { MerchantElementComponent } from './components/merchant-element/merchant-element.component';
+import { MerchantDetailComponent } from './components/merchant-detail/merchant-detail.component';
+import { MerchantVerifyComponent } from './components/merchant-verify/merchant-verify.component';
 
 export const MerchantRoutes: Routes = [
   {
@@ -23,7 +24,7 @@ export const MerchantRoutes: Routes = [
 ];
 
 @NgModule({
-  declarations: [MerchantListComponent],
+  declarations: [MerchantListComponent, MerchantElementComponent, MerchantDetailComponent, MerchantVerifyComponent],
   imports: [
     CommonModule,
     RouterModule.forChild(MerchantRoutes),
