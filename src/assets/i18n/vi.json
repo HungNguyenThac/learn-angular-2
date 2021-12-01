@@ -182,7 +182,8 @@
       "document_info": "Tài liệu",
       "check_info": "Kiểm tra thông tin",
       "transaction_history": "Lịch sử giao dịch",
-      "activity_history": "Lịch sử hoạt động"
+      "activity_history": "Lịch sử hoạt động",
+      "note": "Ghi chú"
     },
     "individual_info": {
       "id": "ID khách hàng",
