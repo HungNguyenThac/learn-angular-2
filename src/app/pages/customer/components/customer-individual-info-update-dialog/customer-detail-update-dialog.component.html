@@ -211,10 +211,12 @@
 
                     <mat-select required formControlName="cityId" (openedChange)="toggleSelect()"
                                 (selectionChange)="changeCity()">
-                      <ngx-mat-select-search [formControl]="citiesFilterCtrl"
-                                             placeholderLabel="Tìm Tỉnh/Thành Phố..."
-                                             noEntriesFoundLabel="Tỉnh/Thành Phố không tồn tại"
-                      ></ngx-mat-select-search>
+                      <mat-option>
+                        <ngx-mat-select-search [formControl]="citiesFilterCtrl"
+                                               placeholderLabel="Tìm Tỉnh/Thành Phố..."
+                                               noEntriesFoundLabel="Tỉnh/Thành Phố không tồn tại"
+                        ></ngx-mat-select-search>
+                      </mat-option>
                       <mat-option *ngFor="let city of filteredCities" [value]="city.id">
                         {{city.name}}
                       </mat-option>
@@ -242,10 +244,12 @@
                     <mat-select [disabled]="!customerIndividualForm.controls.cityId.value" required
                                 formControlName="districtId" (selectionChange)="changeDistrict()"
                                 (openedChange)="toggleSelect()">
-                      <ngx-mat-select-search [formControl]="districtsFilterCtrl"
-                                             placeholderLabel="Tìm Quận/Huyện..."
-                                             noEntriesFoundLabel="Quận/Huyện không tồn tại"
-                      ></ngx-mat-select-search>
+                      <mat-option>
+                        <ngx-mat-select-search [formControl]="districtsFilterCtrl"
+                                               placeholderLabel="Tìm Quận/Huyện..."
+                                               noEntriesFoundLabel="Quận/Huyện không tồn tại"
+                        ></ngx-mat-select-search>
+                      </mat-option>
                       <mat-option *ngFor="let district of filteredDistricts" [value]="district.id">
                         {{district.name}}
                       </mat-option>
@@ -272,10 +276,12 @@
 
                     <mat-select [disabled]="!customerIndividualForm.controls.districtId.value" required
                                 formControlName="communeId" (openedChange)="toggleSelect()">
-                      <ngx-mat-select-search [formControl]="communesFilterCtrl"
-                                             placeholderLabel="Tìm Quận/Huyện..."
-                                             noEntriesFoundLabel="Quận/Huyện không tồn tại"
-                      ></ngx-mat-select-search>
+                      <mat-option>
+                        <ngx-mat-select-search [formControl]="communesFilterCtrl"
+                                               placeholderLabel="Tìm Quận/Huyện..."
+                                               noEntriesFoundLabel="Quận/Huyện không tồn tại"
+                        ></ngx-mat-select-search>
+                      </mat-option>
                       <mat-option *ngFor="let commune of filteredCommunes" [value]="commune.id">
                         {{commune.name}}
                       </mat-option>

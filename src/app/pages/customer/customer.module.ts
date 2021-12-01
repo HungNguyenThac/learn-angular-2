@@ -12,7 +12,7 @@ import { CustomerCheckInfoComponent } from '../../share/components/operators/cus
 import { CustomerTransactionHistoryComponent } from './components/customer-transaction-history/customer-transaction-history.component';
 import { CustomerActivityHistoryComponent } from './components/customer-activity-history/customer-activity-history.component';
 import { CustomerDetailUpdateDialogComponent } from './components/customer-individual-info-update-dialog/customer-detail-update-dialog.component';
-import {NgxMatSelectSearchModule} from "ngx-mat-select-search";
+import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 
 @NgModule({
   declarations: [

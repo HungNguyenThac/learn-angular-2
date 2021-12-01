@@ -265,9 +265,13 @@ export class CustomerDetailUpdateDialogComponent implements OnInit {
     this.getDistrictList();
     this.customerIndividualForm.patchValue({ districtId: '' });
     this.communeData = [];
+    this.filteredCommunes = [];
   }
 
   toggleSelect() {
+    if (!this.customerIndividualForm.controls.cityId.value) {
+      return;
+    }
     if (this.filteredCities.length === 0) {
       this.customerIndividualForm.patchValue({
         cityId: '',
