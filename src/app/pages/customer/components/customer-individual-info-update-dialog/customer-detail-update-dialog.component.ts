@@ -272,20 +272,20 @@ export class CustomerDetailUpdateDialogComponent implements OnInit {
     if (!this.customerIndividualForm.controls.cityId.value) {
       return;
     }
-    if (this.filteredCities.length === 0) {
+    if (this.filteredCities && this.filteredCities.length === 0) {
       this.customerIndividualForm.patchValue({
         cityId: '',
         districtId: '',
         communeId: '',
       });
     }
-    if (this.filteredDistricts.length === 0) {
+    if (this.filteredDistricts && this.filteredDistricts.length === 0) {
       this.customerIndividualForm.patchValue({
         districtId: '',
         communeId: '',
       });
     }
-    if (this.filteredCommunes.length === 0) {
+    if (this.filteredCommunes && this.filteredCommunes.length === 0) {
       this.customerIndividualForm.patchValue({
         communeId: '',
       });
