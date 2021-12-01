@@ -34,6 +34,10 @@ import {
   ApiResponseString,
   UpdateLoanRequest,
 } from 'open-api-modules/loanapp-hmg-api-docs';
+import formatPunishStartTimeHmg from '../../../../../core/utils/format-punish-start-time-hmg';
+import formatPunishStartTimeTng from '../../../../../core/utils/format-punish-start-time-tng';
+import formatPunishCountHmg from '../../../../../core/utils/format-punish-count-hmg';
+import formatPunishCountTng from '../../../../../core/utils/format-punish-count-tng';
 
 @Component({
   selector: 'app-loan-detail-info',
@@ -98,7 +102,7 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
         ),
         value: this.customerInfo?.firstName,
         type: DATA_CELL_TYPE.HYPERLINK,
-        format: `/customer/list?id__e=${this.loanDetail?.customerId}`,
+        format: `/customer/list?id__e=${this.loanDetail?.customerId}&accountClassification=ALL`,
       },
       {
         title: this.multiLanguageService.instant(
@@ -106,7 +110,7 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
         ),
         value: this.customerInfo?.mobileNumber,
         type: DATA_CELL_TYPE.HYPERLINK,
-        format: `/customer/list?id__e=${this.loanDetail?.customerId}`,
+        format: `/customer/list?id__e=${this.loanDetail?.customerId}&accountClassification=ALL`,
       },
       {
         title: this.multiLanguageService.instant(
@@ -176,6 +180,22 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
           'loan_app.loan_info.loan_term'
         ),
         value: this.loanDetail?.expectedTenure,
+        type: DATA_CELL_TYPE.TEXT,
+        format: null,
+      },
+      {
+        title: this.multiLanguageService.instant(
+          'loan_app.loan_info.overdue_date'
+        ),
+        value: this.getOverdueDate(),
+        type: DATA_CELL_TYPE.TEXT,
+        format: null,
+      },
+      {
+        title: this.multiLanguageService.instant(
+          'loan_app.loan_info.overdue_date_count'
+        ),
+        value: this.getOverdueDateCount(),
         type: DATA_CELL_TYPE.TEXT,
         format: null,
       },
@@ -253,6 +273,7 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
 
   subManager = new Subscription();
   @Output() loanDetailDetectChangeStatus = new EventEmitter<any>();
+
   constructor(
     private multiLanguageService: MultiLanguageService,
     private dialog: MatDialog,
@@ -478,6 +499,34 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
             }
             this.loanDetailDetectChangeStatus.emit();
           })
+      );
+    }
+  }
+
+  getOverdueDate() {
+    if (this.loanDetail?.companyGroupName === 'HMG') {
+      return formatPunishStartTimeHmg(
+        this.loanDetail?.createdAt,
+        this.loanDetail?.expectedTenure
+      );
+    } else {
+      return formatPunishStartTimeTng(
+        this.loanDetail?.createdAt,
+        this.loanDetail?.expectedTenure
+      );
+    }
+  }
+
+  getOverdueDateCount() {
+    if (this.loanDetail?.companyGroupName === 'HMG') {
+      return formatPunishCountHmg(
+        this.loanDetail?.createdAt,
+        this.loanDetail?.expectedTenure
+      );
+    } else {
+      return formatPunishCountTng(
+        this.loanDetail?.createdAt,
+        this.loanDetail?.expectedTenure
       );
     }
   }

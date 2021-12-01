@@ -319,6 +319,8 @@
       "updated_at_short": "Ngày cập nhật",
       "updated_at": "Ngày cập nhật khoản ứng",
       "updated_by": "Người cập nhật khoản ứng",
+      "overdue_date": "Ngày bắt đầu quá hạn ",
+      "overdue_date_count": "Số ngày quá hạn ",
       "staff_in_charge": "Nhân viên phụ trách",
       "note": "Ghi chú",
       "type_note": "Viết ghi chú...",
@@ -462,6 +464,7 @@
     "pl_ui_status": "Trạng thái tài khoản",
     "account_status": "Trạng thái hoạt động",
     "loan_status": "Trạng thái khoản ứng",
+    "merchant_group": "Nhóm nhà cung cấp",
     "account_classification": "Phân loại tài khoản",
     "account_classification_test": "Tài khoản test",
     "account_classification_real": "Tài khoản thực",
@@ -531,15 +534,17 @@
     "not_found": "404",
     "customer_list": "Danh sách khách hàng",
     "loan_list": "Danh sách khoản ứng",
-    "dashboard": "Trang chủ",
-    "user_list": "Danh sách người dùng"
+    "dashboard": "Tổng quan",
+    "user_list": "Danh sách người dùng",
+    "merchant_list": "Danh sách nhà cung cấp"
   },
   "breadcrumb": {
     "manage_customer": "Quản lý khách hàng",
     "manage_payday_loan": "Quản lý khoản ứng",
-    "search_field_payday_loan": "Mã khoản ứng, Tên, Số điện thoại, Email, Mã nhân viên, Số CMND/CCCD",
+    "search_field_payday_loan": "Mã khoản ứng, Tên, Số điện thoại...",
     "search_field_customer_list": "Họ tên, Mã nhân viên, Số điện thoại, Email",
-    "manage_user": "Quản lý người dùng"
+    "manage_user": "Quản lý người dùng",
+    "merchant": "Quản lý nhà cung cấp"
   },
   "system": {
     "add_user": "Thêm người dùng",
@@ -601,5 +606,55 @@
     "7_day": "7 ngày",
     "30_day": "30 ngày",
     "permanent": "Vĩnh viễn"
+  },
+  "merchant": {
+    "merchant_list": {
+      "title": "Danh sách nhà cung cấp",
+      "id": "Mã nhà cung cấp",
+      "name": "Tên nhà cung cấp",
+      "phone": "Điện thoại",
+      "date": "Ngày tất toán",
+      "company": "Công ty",
+      "tax_no": "Mã số thuế",
+      "add_merchant": "Thêm Nhà cung cấp"
+    },
+    "merchant_detail": {
+      "info": "Thông tin",
+      "verify": "Đối soát",
+      "id": "Mã nhà cung cấp",
+      "name": "Tên nhà cung cấp",
+      "status": "Trạng thái",
+      "phone": "Điện thoại",
+      "phone_number": "Số điện thoại",
+      "email": "Email",
+      "date": "Ngày tất toán",
+      "group": "Nhóm nhà cung cấp",
+      "company": "Công ty",
+      "tax_no": "Mã số thuế",
+      "regis_no": "Mã số DKKD",
+      "website": "Website",
+      "address": "Địa chỉ",
+      "creator": "Người tạo",
+      "create_date": "Ngày tạo",
+      "note": "Ghi chú",
+      "contactor": "Người liên hệ",
+      "role": "Vai trò",
+      "mail_to": "Email đến",
+      "mail_cc": "Email CC",
+      "bank": "Ngân hàng",
+      "branch": "Chi nhánh",
+      "account_number": "Số tài khoản",
+      "account_name": "Chủ tài khoản"
+    },
+    "merchant_dialog": {
+      "add_group_title": "Thêm nhóm nhà cung cấp",
+      "edit_group_title": "Chỉnh sửa nhóm nhà cung cấp",
+      "group_name": "Tên nhóm nhà cung cấp",
+      "note": "Ghi chú",
+      "add_merchant_title": "Thêm nhà cung cấp",
+      "edit_merchant_title": "Chỉnh sửa nhà cung cấp",
+      "cancel": "Bỏ qua",
+      "save": "Lưu"
+    }
   }
 }

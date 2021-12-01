@@ -20,9 +20,10 @@ export class FormatPricePipe implements PipeTransform {
 
   transform(value: any, args: any[]): string {
     if (value === null) return 'N/A';
-    let val = (value / 1).toFixed(0).replace(".", ",");
+    // let val = (value / 1).toFixed(0).replace(".", ",");
+    let val = (value / 1).toFixed(0);
     return (
-      val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + " " + this.vndText
+      val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + " " + this.vndText
     );
   }
 }

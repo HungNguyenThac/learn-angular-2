@@ -1,6 +1,7 @@
 @import "src/styles/variables";
 @import "src/styles/op/common";
 @import "src/styles/op/pl-form";
+
 .text-area {
   width: 100%;
   border: none;
@@ -88,6 +89,7 @@
     color: $grey-10;
     word-break: break-word;
   }
+
   .op-customer-name-title {
     font-family: $sfPro;
     font-style: normal;

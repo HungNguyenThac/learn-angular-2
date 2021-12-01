@@ -52,11 +52,7 @@ export class BaseBreadcrumbComponent implements OnInit {
     this.submitSearchForm.emit(searchData);
   }
 
-  openAddUserDialog() {
-    const addUserDialogRef = this.dialog.open(AddNewUserDialogComponent, {
-      panelClass: 'custom-info-dialog-container',
-      maxWidth: '800px',
-      width: '90%',
-    });
+  onClickButton(event) {
+    this.clickBtnAdd.emit(event);
   }
 }
