@@ -10,15 +10,16 @@
               class="d-flex justify-content-between align-items-center"
             >
               <a
+                (click)="navigateToHomePage()"
                 href="javascript:void(0)"
                 id="logo-monex-container"
                 class="d-flex align-items-center"
               >
-                <img [src]="logoSrc" alt="logo-monex" id="logo-monex" />
+                <img [src]="logoSrc" alt="logo-monex" id="logo-monex"/>
                 <span class="divider-monex-logo" *ngIf="!responsive">|</span>
                 <span id="title-monex-op" *ngIf="!responsive">{{
                   "header.op" | translate
-                }}</span>
+                  }}</span>
               </a>
 
               <div class="d-flex gap-3" *ngIf="showProfileBtn">

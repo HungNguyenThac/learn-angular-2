@@ -14,8 +14,6 @@
         <h2 class="op-breadcrumb-title d-inline-flex align-items-center">
           {{ title }}
         </h2>
-      </div>
-      <div class="d-inline-flex gap-3">
         <form
           [formGroup]="searchForm"
           class="form-container"
@@ -42,7 +40,8 @@
             </div>
           </div>
         </form>
-
+      </div>
+      <div class="d-inline-flex gap-3">
         <button (click)="onClickButton($event)" mat-button class="op-breadcrumb-add-btn" *ngIf="showBtnAdd">
           <span class="sprite-group-5-add-white"></span>
           <span class="ps-1">{{ btnAddText }}</span>

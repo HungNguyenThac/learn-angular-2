@@ -319,6 +319,8 @@
       "updated_at_short": "Ngày cập nhật",
       "updated_at": "Ngày cập nhật khoản ứng",
       "updated_by": "Người cập nhật khoản ứng",
+      "overdue_date": "Ngày bắt đầu quá hạn ",
+      "overdue_date_count": "Số ngày quá hạn ",
       "staff_in_charge": "Nhân viên phụ trách",
       "note": "Ghi chú",
       "type_note": "Viết ghi chú...",
@@ -532,7 +534,7 @@
     "not_found": "404",
     "customer_list": "Danh sách khách hàng",
     "loan_list": "Danh sách khoản ứng",
-    "dashboard": "Trang chủ",
+    "dashboard": "Tổng quan",
     "user_list": "Danh sách người dùng",
     "merchant_list": "Danh sách nhà cung cấp"
   },
@@ -542,7 +544,7 @@
     "search_field_payday_loan": "Mã khoản ứng, Tên, Số điện thoại...",
     "search_field_customer_list": "Họ tên, Mã nhân viên, Số điện thoại, Email",
     "manage_user": "Quản lý người dùng",
-    "merchant": "Nhà cung cấp"
+    "merchant": "Quản lý nhà cung cấp"
   },
   "system": {
     "add_user": "Thêm người dùng",

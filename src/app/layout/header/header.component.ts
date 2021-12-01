@@ -1,17 +1,17 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {Store} from '@ngrx/store';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Store } from '@ngrx/store';
 import * as fromStore from '../../core/store';
 import * as fromActions from '../../core/store';
-import {Router} from '@angular/router';
+import { Router } from '@angular/router';
 import * as fromSelectors from '../../core/store/selectors';
-import {Observable} from 'rxjs/Observable';
-import {CustomerInfoResponse} from '../../../../open-api-modules/customer-api-docs';
-import {Subscription} from 'rxjs';
-import {NAV_ITEM} from '../../core/common/enum/operator';
-import {MultiLanguageService} from '../../share/translate/multiLanguageService';
-import {DialogCompanyInfoUpdateComponent} from '../../share/components';
-import {MatDialog} from '@angular/material/dialog';
-import {DialogUserInfoUpdateComponent} from '../../share/components/operators/user-account/dialog-user-info-update/dialog-user-info-update.component';
+import { Observable } from 'rxjs/Observable';
+import { CustomerInfoResponse } from '../../../../open-api-modules/customer-api-docs';
+import { Subscription } from 'rxjs';
+import { NAV_ITEM } from '../../core/common/enum/operator';
+import { MultiLanguageService } from '../../share/translate/multiLanguageService';
+import { DialogCompanyInfoUpdateComponent } from '../../share/components';
+import { MatDialog } from '@angular/material/dialog';
+import { DialogUserInfoUpdateComponent } from '../../share/components/operators/user-account/dialog-user-info-update/dialog-user-info-update.component';
 
 export interface AccountInfo {
   fullName?: string;
@@ -69,8 +69,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
           ),
           iconClass: 'sprite-group-5-pl-24',
           path: '/payday-loan/list',
-          queryParams: {groupName: 'HMG'},
-          canActivate: ['ADMIN', 'MODERATOR']
+          queryParams: { groupName: 'HMG' },
+          canActivate: ['ADMIN', 'MODERATOR'],
         },
         {
           title: this.multiLanguageService.instant(
@@ -78,8 +78,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
           ),
           iconClass: 'sprite-group-5-pl-24',
           path: '/payday-loan/list',
-          queryParams: {groupName: 'TNG'},
-          canActivate: ['ADMIN', 'MODERATOR']
+          queryParams: { groupName: 'TNG' },
+          canActivate: ['ADMIN', 'MODERATOR'],
         },
       ],
       path: '/payday-loan/list',
@@ -90,22 +90,22 @@ export class HeaderComponent implements OnInit, OnDestroy {
       defaultIconClass: 'sprite-group-5-customer',
       activeIconClass: 'sprite-group-5-customer-white',
       path: '/customer/list',
-      canActivate: ['ADMIN', 'MODERATOR']
+      canActivate: ['ADMIN', 'MODERATOR'],
     },
-    {
-      navItem: NAV_ITEM.INSURANCE,
-      title: this.multiLanguageService.instant('header.navigation.insurance'),
-      defaultIconClass: 'sprite-group-5-shield-check',
-      activeIconClass: 'sprite-group-5-shield-check-white',
-      path: '/',
-    },
-    {
-      navItem: NAV_ITEM.SAVING,
-      title: this.multiLanguageService.instant('header.navigation.saving'),
-      defaultIconClass: 'sprite-group-5-invest',
-      activeIconClass: 'sprite-group-5-invest-white',
-      path: '/',
-    },
+    // {
+    //   navItem: NAV_ITEM.INSURANCE,
+    //   title: this.multiLanguageService.instant('header.navigation.insurance'),
+    //   defaultIconClass: 'sprite-group-5-shield-check',
+    //   activeIconClass: 'sprite-group-5-shield-check-white',
+    //   path: '/',
+    // },
+    // {
+    //   navItem: NAV_ITEM.SAVING,
+    //   title: this.multiLanguageService.instant('header.navigation.saving'),
+    //   defaultIconClass: 'sprite-group-5-invest',
+    //   activeIconClass: 'sprite-group-5-invest-white',
+    //   path: '/',
+    // },
   ];
   subManager = new Subscription();
 
@@ -154,11 +154,15 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   onClickManageUser() {
-    this.router.navigateByUrl('user/list')
+    this.router.navigateByUrl('user/list');
   }
 
   logout() {
     this.store.dispatch(new fromActions.Logout(null));
+  }
+
+  navigateToHomePage() {
+    this.router.navigateByUrl('');
   }
 
   private _subscribeHeaderInfo() {

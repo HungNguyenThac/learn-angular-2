@@ -1,4 +1,5 @@
 @import "src/styles/variables";
+
 .op-breadcrumb-container {
   background: $grey-00;
   box-shadow: inset 0px -1px 0px $grey-02;
@@ -23,7 +24,7 @@ h2.op-breadcrumb-title {
 }
 
 .breadcrumb-search-input {
-  width: 100%;
+  width: 440px;
 
   .breadcrumb-input-icon {
     position: absolute;
@@ -36,7 +37,7 @@ h2.op-breadcrumb-title {
     padding: 10px 10px 10px 36px;
     background: $white;
     border-radius: 8px;
-    border: none;
+    border: 1px solid #D1D1D6;
     text-overflow: ellipsis;
 
     &::placeholder {
@@ -58,6 +59,7 @@ h2.op-breadcrumb-title {
   font-weight: normal;
   font-size: 16px;
   line-height: 22px;
+  padding: 9px 16px;
   color: $white;
   background: $system-color-blue;
   border-radius: 4px;
