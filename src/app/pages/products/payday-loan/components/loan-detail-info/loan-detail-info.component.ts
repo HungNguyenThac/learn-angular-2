@@ -102,7 +102,7 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
         ),
         value: this.customerInfo?.firstName,
         type: DATA_CELL_TYPE.HYPERLINK,
-        format: `/customer/list?id__e=${this.loanDetail?.customerId}`,
+        format: `/customer/list?id__e=${this.loanDetail?.customerId}&accountClassification=ALL`,
       },
       {
         title: this.multiLanguageService.instant(
@@ -110,7 +110,7 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
         ),
         value: this.customerInfo?.mobileNumber,
         type: DATA_CELL_TYPE.HYPERLINK,
-        format: `/customer/list?id__e=${this.loanDetail?.customerId}`,
+        format: `/customer/list?id__e=${this.loanDetail?.customerId}&accountClassification=ALL`,
       },
       {
         title: this.multiLanguageService.instant(
