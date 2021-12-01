@@ -26,6 +26,8 @@ import { AddNewUserDialogComponent } from '../../../../share/components';
 import { MatDialog } from '@angular/material/dialog';
 import { MerchantDetailDialogComponent } from '../../../../share/components/operators/merchant/merchant-detail-dialog/merchant-detail-dialog.component';
 import { MerchantGroupDialogComponent } from '../../../../share/components/operators/merchant/merchant-group-dialog/merchant-group-dialog.component';
+import { GlobalConstants } from '../../../../core/common/global-constants';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-merchant-list',
@@ -258,12 +260,18 @@ export class MerchantListComponent implements OnInit {
     private formBuilder: FormBuilder,
     private router: Router,
     private dialog: MatDialog,
+    private titleService: Title,
     private activatedRoute: ActivatedRoute
   ) {
     this._initFilterForm();
   }
 
   ngOnInit(): void {
+    this.titleService.setTitle(
+      this.multiLanguageService.instant('page_title.merchant_list') +
+        ' - ' +
+        GlobalConstants.PL_VALUE_DEFAULT.PROJECT_NAME
+    );
     this.dataSource.data = this.merchantList;
   }
 
