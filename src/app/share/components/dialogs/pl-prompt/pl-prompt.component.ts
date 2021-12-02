@@ -26,7 +26,7 @@ export class PlPromptComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) private data: Prompt,
     private dialogRef: MatDialogRef<PlPromptComponent>
   ) {
-    dialogRef.disableClose = true;
+    // dialogRef.disableClose = true;
     if (data) {
       this.promptContent = {
         title: data.title,
