@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {
   ApiResponseCustomerInfo,
   ApiResponseSearchAndPaginationResponseBank,
@@ -10,13 +10,13 @@ import {
   CustomerInfo,
 } from '../../../../../../open-api-modules/dashboard-api-docs';
 
-import { CustomerDetailService } from './customer-detail.service';
-import { Subscription } from 'rxjs';
-import { OnDestroy } from '@angular/core';
-import { RESPONSE_CODE } from '../../../../core/common/enum/operator';
-import { ToastrService } from 'ngx-toastr';
-import { MultiLanguageService } from '../../../../share/translate/multiLanguageService';
-import { NotificationService } from '../../../../core/services/notification.service';
+import {CustomerDetailService} from './customer-detail.service';
+import {Subscription} from 'rxjs';
+import {OnDestroy} from '@angular/core';
+import {RESPONSE_CODE} from '../../../../core/common/enum/operator';
+import {ToastrService} from 'ngx-toastr';
+import {MultiLanguageService} from '../../../../share/translate/multiLanguageService';
+import {NotificationService} from '../../../../core/services/notification.service';
 import {
   ApiResponseListCity,
   ApiResponseListDistrict,
@@ -62,7 +62,8 @@ export class CustomerDetailElementComponent implements OnInit, OnDestroy {
     private companyControllerService: CompanyControllerService,
     private multiLanguageService: MultiLanguageService,
     private notificationService: NotificationService
-  ) {}
+  ) {
+  }
 
   ngOnInit(): void {
     this._getCustomerInfoById(this.customerId);
@@ -116,7 +117,7 @@ export class CustomerDetailElementComponent implements OnInit, OnDestroy {
   }
 
   public updateCustomerInfo(updateInfoRequest: Object) {
-    this.notificationService.showLoading({ showContent: true });
+    this.notificationService.showLoading({showContent: true});
     this.subManager.add(
       this.customerDetailService
         .updateCustomerInfo(this.customerId, updateInfoRequest, null, true)
@@ -145,45 +146,6 @@ export class CustomerDetailElementComponent implements OnInit, OnDestroy {
         )
     );
   }
-
-  // getAllCityList() {
-  //   this.subManager.add(
-  //     this.cityControllerService
-  //       .getAllCity()
-  //       .subscribe((result: ApiResponseListCity) => {
-  //         if (!result || result.responseCode !== 200) {
-  //           // return this.handleResponseError(result.errorCode);
-  //         }
-  //         this.cityData = result.result;
-  //       })
-  //   );
-  // }
-  //
-  // getDistrictList() {
-  //   this.subManager.add(
-  //     this.cityControllerService
-  //       .getAllDistrict(this.userInfo.cityId)
-  //       .subscribe((result: ApiResponseListDistrict) => {
-  //         if (!result || result.responseCode !== 200) {
-  //           // return this.handleResponseError(result.errorCode);
-  //         }
-  //         this.districtData = result.result;
-  //       })
-  //   );
-  // }
-  //
-  // getCommuneList() {
-  //   this.subManager.add(
-  //     this.districtControllerService
-  //       .getAllCommune(this.userInfo.districtId)
-  //       .subscribe((result: ApiResponseListDistrict) => {
-  //         if (!result || result.responseCode !== 200) {
-  //           // return this.handleResponseError(result.errorCode);
-  //         }
-  //         this.communeData = result.result;
-  //       })
-  //   );
-  // }
 
   ngOnDestroy(): void {
     this.subManager.unsubscribe();

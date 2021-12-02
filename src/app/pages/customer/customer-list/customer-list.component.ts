@@ -52,7 +52,9 @@ export class CustomerListComponent implements OnInit, OnDestroy {
   breadcrumbOptions: BreadcrumbOptionsModel = {
     title: this.multiLanguageService.instant('breadcrumb.manage_customer'),
     iconClass: 'sprite-group-5-customer-green-medium',
-    searchPlaceholder: this.multiLanguageService.instant('breadcrumb.search_field_customer_list'),
+    searchPlaceholder: this.multiLanguageService.instant(
+      'breadcrumb.search_field_customer_list'
+    ),
     searchable: true,
     showBtnAdd: false,
     keyword: '',
@@ -86,7 +88,6 @@ export class CustomerListComponent implements OnInit, OnDestroy {
       title: this.multiLanguageService.instant('filter.pl_ui_status'),
       type: FILTER_TYPE.SELECT,
       controlName: 'paydayLoanStatus',
-      multiple: true,
       value: null,
       options: [
         {
@@ -534,7 +535,7 @@ export class CustomerListComponent implements OnInit, OnDestroy {
           );
         } else if (event.controlName === 'paydayLoanStatus') {
           this.filterForm.controls.paydayLoanStatus.setValue(
-            event.value ? event.value.join(',') : ''
+            event.value ? event.value : ''
           );
         } else if (event.controlName === 'accountClassification') {
           this.filterForm.controls.accountClassification.setValue(

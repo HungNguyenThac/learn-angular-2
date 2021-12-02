@@ -52,10 +52,12 @@
     "ngx-moment": "^5.0.0",
     "ngx-permissions": "^8.1.1",
     "ngx-toastr": "^14.1.4",
+    "ngx-viewer": "^1.0.8",
     "prettier": "^2.4.0",
     "rxjs": "6.6.7",
     "rxjs-compat": "6.6.7",
     "tslib": "^2.2.0",
+    "viewerjs": "^1.10.2",
     "zone.js": "~0.11.4"
   },
   "devDependencies": {

@@ -6,7 +6,8 @@
         [src]="imgSrc"
         alt="img"
         *ngIf="imgSrc; else isNotImg"
-        (click)="openFullSizeImg(imgSrc)"
+        ngxViewer
+        [viewerOptions]="viewerOptions"
       />
       <ng-template #isNotImg>
         <img
@@ -70,7 +71,7 @@
       ></app-document-button>
     </ng-template>
 
-    <input type="reset" [id]="'reset-manual-upload-input-' + id" hidden />
+    <input type="reset" [id]="'reset-manual-upload-input-' + id" hidden/>
     <input
       type="file"
       [(ngModel)]="file"

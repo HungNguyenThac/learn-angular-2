@@ -29,8 +29,21 @@ export class UploadDocumentAreaComponent implements OnInit, AfterViewInit {
   @Input() hiddenDownloadBtn: boolean = false;
   @Input() acceptFileType: string = 'image/*';
   @Input() hiddenDeleteBtn: boolean = false;
-
+  public viewerOptions: any = {
+    navbar: false,
+    toolbar: {
+      zoomIn: 4,
+      zoomOut: 4,
+      oneToOne: 4,
+      reset: 4,
+      rotateLeft: 4,
+      rotateRight: 4,
+      flipHorizontal: 4,
+      flipVertical: 4,
+    },
+  };
   _imageSrc: any;
+
   get imgSrc(): any {
     return this._imageSrc;
   }

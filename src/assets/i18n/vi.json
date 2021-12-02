@@ -296,7 +296,8 @@
       "loan_contract": "Thông tin hợp đồng",
       "documents": "Tài liệu yêu cầu",
       "rating": "Đánh giá dịch vụ",
-      "company_info": "Thông tin công ty"
+      "company_info": "Thông tin công ty",
+      "note": "Ghi chú"
     },
     "loan_info": {
       "loan_code": "Mã khoản ứng",
@@ -438,8 +439,8 @@
       "contract_accepted": "Ký hoàn thành",
       "contract_rejected": "Từ chối hợp đồng",
       "awaiting_disbursement": "Chờ giải ngân",
-      "disbursed": "Giải ngân",
-      "completed": "Đã tất toán",
+      "disbursed": "Đã giải ngân",
+      "completed": "Đã hoàn thành",
       "unknown_status": "Khoản ứng hiện tại",
       "callback_payment_result": "Khoản ứng hiện tại"
     },

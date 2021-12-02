@@ -28,6 +28,16 @@
   }
 }
 
+::ng-deep .customer-tab {
+  .mat-tab-labels {
+    justify-content: space-between;
+
+    .mat-tab-label {
+      min-width: 100px !important;
+    }
+  }
+}
+
 ::ng-deep .op-tab-group {
   .mat-tab-body {
     min-height: 500px;
