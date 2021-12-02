@@ -36,6 +36,7 @@ import {
   PAYDAY_LOAN_UI_STATUS,
   PAYDAY_LOAN_UI_STATUS_TEXT,
 } from '../../../core/common/enum/payday-loan';
+import _ from 'lodash';
 
 @Component({
   selector: 'app-customer-list',
@@ -377,9 +378,34 @@ export class CustomerListComponent implements OnInit, OnDestroy {
     });
   }
 
+  private _resetFilterForm() {
+    this.filterForm.patchValue({
+      keyword: '',
+      companyId: '',
+      id: '',
+      paydayLoanStatus: '',
+      orderBy: 'createdAt',
+      sortDirection: 'desc',
+      accountClassification: ACCOUNT_CLASSIFICATION.REAL,
+      startTime: null,
+      endTime: null,
+      dateFilterType: '',
+      dateFilterTitle: '',
+      filterConditions: {
+        companyId: QUERY_CONDITION_TYPE.IN,
+        paydayLoanStatus: QUERY_CONDITION_TYPE.IN,
+        id: QUERY_CONDITION_TYPE.EQUAL,
+      },
+    });
+  }
+
   private _parseQueryParams(params) {
     let filterConditionsValue =
       this.filterForm.controls.filterConditions?.value;
+    if (_.isEmpty(params)) {
+      this._resetFilterForm();
+      this._resetFilterOptions();
+    }
 
     for (const [param, paramValue] of Object.entries(params)) {
       let paramHasCondition = param.split('__');
@@ -424,6 +450,14 @@ export class CustomerListComponent implements OnInit, OnDestroy {
     this.breadcrumbOptions.keyword = params.keyword;
     this.pageIndex = params.pageIndex || 0;
     this.pageSize = params.pageSize || 20;
+  }
+
+  private _resetFilterOptions() {
+    let newFilterOptions = JSON.parse(JSON.stringify(this.filterOptions));
+    newFilterOptions.forEach((filterOption) => {
+      filterOption.value = null;
+    });
+    this.filterOptions = newFilterOptions;
   }
 
   private _initSubscription() {
@@ -481,6 +515,7 @@ export class CustomerListComponent implements OnInit, OnDestroy {
 
   private _buildParams() {
     const data = this.filterForm.getRawValue();
+    console.log('this.filterForm', data);
     data.offset = this.pageIndex * this.pageSize;
     data.limit = this.pageSize;
     data.pageIndex = this.pageIndex;
@@ -518,6 +553,7 @@ export class CustomerListComponent implements OnInit, OnDestroy {
   public onFilterFormChange(event: FilterEventModel) {
     console.log('FilterEventModel', event);
     this.pageIndex = 0;
+    this.filterForm.controls.id.setValue(null);
 
     switch (event.type) {
       case FILTER_TYPE.DATETIME:
