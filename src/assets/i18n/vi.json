@@ -296,7 +296,8 @@
       "loan_contract": "Thông tin hợp đồng",
       "documents": "Tài liệu yêu cầu",
       "rating": "Đánh giá dịch vụ",
-      "company_info": "Thông tin công ty"
+      "company_info": "Thông tin công ty",
+      "note": "Ghi chú"
     },
     "loan_info": {
       "loan_code": "Mã khoản ứng",

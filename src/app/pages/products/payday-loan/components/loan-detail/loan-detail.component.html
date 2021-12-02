@@ -64,4 +64,18 @@
     </ng-template>
     >
   </mat-tab>
+
+  <!--  Loan Note-->
+  <mat-tab [label]="'loan_app.tabs.note' | translate">
+    <ng-template matTabContent>
+      <app-loan-note
+        (loanDetailDetectChangeStatus)="
+          loanDetailDetectChangeStatusTrigger()
+        "
+        [groupName]="groupName"
+        [loanDetail]="loanDetail"
+        [loanId]="loanId"
+      ></app-loan-note>
+    </ng-template>
+  </mat-tab>
 </mat-tab-group>

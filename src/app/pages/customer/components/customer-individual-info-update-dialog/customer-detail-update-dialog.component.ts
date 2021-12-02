@@ -131,7 +131,6 @@ export class CustomerDetailUpdateDialogComponent implements OnInit {
       bankCode: [''],
       bankName: [''],
       vaAccountNumber: [''],
-      note: [''],
       createdAt: [''],
       updatedAt: [''],
     });
@@ -162,7 +161,6 @@ export class CustomerDetailUpdateDialogComponent implements OnInit {
       numberOfDependents: this.customerInfo?.borrowerDetailTextVariable1,
       maritalStatus: this.customerInfo?.maritalStatus,
       accountNumber: this.customerInfo?.accountNumber || null,
-      note: this.customerInfo?.note || null,
       bankCode: this.customerInfo?.bankCode || null,
       bankName: this.customerInfo?.bankName || null,
       vaAccountNumber: this.virtualAccount?.accountNumber || null,

@@ -465,44 +465,6 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
     });
   }
 
-  submitForm() {
-    const updateLoanRequest: UpdateLoanRequest = {
-      customerId: this.customerId,
-      updateInfo: {},
-    };
-    updateLoanRequest.updateInfo['note'] =
-      this.loanInfoForm.controls.note.value;
-    console.log('updateLoanRequest', updateLoanRequest);
-
-    if (this.groupName === 'HMG') {
-      this.subManager.add(
-        this.paydayLoanHmgControllerService
-          .updateInfo(this.loanId, updateLoanRequest)
-          .subscribe((res: ApiResponseString) => {
-            if (res.responseCode !== 200) {
-              this.notifier.error(res.errorCode);
-              return;
-            }
-            this.loanDetailDetectChangeStatus.emit();
-          })
-      );
-    }
-
-    if (this.groupName === 'TNG') {
-      this.subManager.add(
-        this.paydayLoanTngControllerService
-          .updateInfo(this.loanId, updateLoanRequest)
-          .subscribe((res: ApiResponseObject) => {
-            if (res.responseCode !== 200) {
-              this.notifier.error(res.errorCode);
-              return;
-            }
-            this.loanDetailDetectChangeStatus.emit();
-          })
-      );
-    }
-  }
-
   getOverdueDate() {
     if (this.loanDetail?.companyGroupName === 'HMG') {
       return formatPunishStartTimeHmg(
