@@ -439,8 +439,8 @@
       "contract_accepted": "Ký hoàn thành",
       "contract_rejected": "Từ chối hợp đồng",
       "awaiting_disbursement": "Chờ giải ngân",
-      "disbursed": "Giải ngân",
-      "completed": "Đã tất toán",
+      "disbursed": "Đã giải ngân",
+      "completed": "Đã hoàn thành",
       "unknown_status": "Khoản ứng hiện tại",
       "callback_payment_result": "Khoản ứng hiện tại"
     },
