@@ -206,12 +206,25 @@ input.pl-text-otp {
   margin: 0;
 
   .pl-list-item {
+    position: relative;
     display: flex;
     align-content: space-between;
     padding: 14px 16px 13px;
     margin: 0;
     border-bottom: 1px solid $grey-02;
     align-items: center;
+
+    .service-fee-container {
+      margin-left: 5px;
+
+      svg {
+        display: block;
+      }
+    }
+
+    .service-fee:hover .customer-disable-form-container-expand {
+      display: block;
+    }
 
     .pl-list-item-label {
       margin: 0;
