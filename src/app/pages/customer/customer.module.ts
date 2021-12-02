@@ -13,6 +13,7 @@ import { CustomerTransactionHistoryComponent } from './components/customer-trans
 import { CustomerActivityHistoryComponent } from './components/customer-activity-history/customer-activity-history.component';
 import { CustomerDetailUpdateDialogComponent } from './components/customer-individual-info-update-dialog/customer-detail-update-dialog.component';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
+import { CustomerNoteComponent } from './components/customer-note/customer-note.component';
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
     CustomerTransactionHistoryComponent,
     CustomerActivityHistoryComponent,
     CustomerDetailUpdateDialogComponent,
+    CustomerNoteComponent,
   ],
   imports: [
     CommonModule,

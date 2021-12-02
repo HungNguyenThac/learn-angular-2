@@ -14,6 +14,7 @@ import { LoanDetailComponent } from './components/loan-detail/loan-detail.compon
 import { LoanContractComponent } from './components/loan-contract/loan-contract.component';
 import { LoanRatingComponent } from './components/loan-rating/loan-rating.component';
 import { LoanDetailInfoComponent } from './components/loan-detail-info/loan-detail-info.component';
+import { LoanNoteComponent } from './components/loan-note/loan-note.component';
 
 @NgModule({
   declarations: [
@@ -25,6 +26,7 @@ import { LoanDetailInfoComponent } from './components/loan-detail-info/loan-deta
     LoanContractComponent,
     LoanRatingComponent,
     LoanDetailInfoComponent,
+    LoanNoteComponent,
   ],
   imports: [
     CommonModule,
