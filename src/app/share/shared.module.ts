@@ -9,6 +9,7 @@ import * as fromDirectives from './directives';
 import { FormsModule } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { NgxPermissionsModule } from 'ngx-permissions';
+import { NgxViewerModule } from 'ngx-viewer';
 
 @NgModule({
   declarations: [
@@ -23,10 +24,12 @@ import { NgxPermissionsModule } from 'ngx-permissions';
     TranslateModule,
     FormsModule,
     NgxPermissionsModule,
+    NgxViewerModule,
   ],
   exports: [
     MaterialModule,
     NgxPermissionsModule,
+    NgxViewerModule,
     ...fromComponents.components,
     ...fromValidators.validators,
     ...fromDirectives.directives,
