@@ -97,7 +97,6 @@ export class LoanListComponent implements OnInit, OnDestroy {
       type: FILTER_TYPE.SELECT,
       controlName: 'status',
       value: null,
-      multiple: true,
       options: [
         {
           title: this.multiLanguageService.instant('common.all'),
@@ -439,7 +438,7 @@ export class LoanListComponent implements OnInit, OnDestroy {
           );
         } else if (event.controlName === 'status') {
           this.filterForm.controls.status.setValue(
-            event.value ? event.value.join(',') : ''
+            event.value ? event.value : ''
           );
         } else if (event.controlName === 'accountClassification') {
           this.filterForm.controls.accountClassification.setValue(
@@ -670,6 +669,7 @@ export class LoanListComponent implements OnInit, OnDestroy {
       })
       .then((r) => {});
   }
+
   ngOnDestroy(): void {
     if (this.subManager !== null) {
       this.subManager.unsubscribe();
