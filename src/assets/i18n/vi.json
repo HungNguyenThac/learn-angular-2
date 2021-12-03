@@ -227,6 +227,7 @@
       "company": "Công ty",
       "status": "Trạng thái tài khoản",
       "update_individual_info": "Cập nhật thông tin khách hàng",
+      "verify": "Yêu cầu xác thực lại thông tin",
       "update_company_info": "Cập nhật thông tin công ty",
       "disable_customer": {
         "title": "Ngừng hoạt động",

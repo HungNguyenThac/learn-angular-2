@@ -181,6 +181,8 @@ export class CustomerIndividualInfoComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {}
 
+  verifyInfo() {}
+
   openUpdateDialog() {
     const updateDialogRef = this.dialog.open(
       CustomerDetailUpdateDialogComponent,
