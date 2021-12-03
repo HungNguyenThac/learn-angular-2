@@ -308,6 +308,7 @@
       "max_loan_amount": "Số tiền ứng tối đa",
       "loan_amount": "Số tiền ứng",
       "service_charge": "Phí dịch vụ",
+      "total_service_charge": "Tổng phí dịch vụ",
       "actual_received_amount": "Số tiền thực nhận",
       "loan_term": "Thời hạn ứng",
       "late_payment_fee": "Phí trả chậm",
@@ -446,6 +447,16 @@
     },
     "repayment_status": {
       "overdue": "Quá hạn"
+    },
+    "service_fee": {
+      "service_fee": "Phí dịch vụ",
+      "service_fee_hmg": "2 % giá trị khoản vay tối thiểu là 100,000 VND",
+      "service_fee_tng": "2.5 % giá trị khoản vay tối thiểu là 100,000 VND",
+      "transaction_fee": "Phí xử lý giao dịch",
+      "vat_fee": "Phí xử lý giao dịch",
+      "vat_fee_description": "Phí xử lý giao dịch",
+      "discount_fee": "Ưu đãi phí",
+      "total_fee": "Tổng phí phải trả"
     },
     "pl_ui_status": {
       "not_complete_ekyc_yet": "Chưa EKYC",
