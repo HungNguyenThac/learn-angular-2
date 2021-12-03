@@ -308,6 +308,7 @@
       "max_loan_amount": "Số tiền ứng tối đa",
       "loan_amount": "Số tiền ứng",
       "service_charge": "Phí dịch vụ",
+      "total_service_charge": "Tổng phí dịch vụ",
       "actual_received_amount": "Số tiền thực nhận",
       "loan_term": "Thời hạn ứng",
       "late_payment_fee": "Phí trả chậm",

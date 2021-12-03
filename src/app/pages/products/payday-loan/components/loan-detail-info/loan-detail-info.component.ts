@@ -24,6 +24,7 @@ import * as moment from 'moment';
 import {
   CustomerInfo,
   PaydayLoanHmg,
+  Voucher,
 } from 'open-api-modules/dashboard-api-docs';
 import {
   ApiResponseObject,
@@ -83,6 +84,8 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
     this.leftColumn = this._initLeftColumn();
     this.middleColumn = this._initMiddleColumn();
     this.rightColumn = this._initRightColumn();
+    this.serviceFeeHmg = this._serviceFeeHmg();
+    this.serviceFeeTng = this._serviceFeeTng();
     this._initLoanInfoData();
   }
 
@@ -161,7 +164,7 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
       },
       {
         title: this.multiLanguageService.instant(
-          'loan_app.loan_info.service_charge'
+          'loan_app.loan_info.total_service_charge'
         ),
         value: this.loanDetail?.totalServiceFees,
         type: DATA_CELL_TYPE.CURRENCY,
@@ -255,9 +258,98 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
     ];
   }
 
+  private _serviceFeeHmg() {
+    return [
+      {
+        title: 'Phí dịch vụ',
+        subTitle: '2 % giá trị khoản vay tối thiểu là 100,000 VND',
+        value: 0.02 * this.loanDetail?.expectedAmount,
+        type: DATA_CELL_TYPE.CURRENCY,
+        format: null,
+      },
+      {
+        title: 'Phí xử lý giao dịch',
+        subTitle: null,
+        value: '11200',
+        type: DATA_CELL_TYPE.CURRENCY,
+        format: null,
+      },
+      {
+        title: 'Ưu đãi phí',
+        subTitle: null,
+        value: this.getDiscountValue(this.loanDetail?.voucher),
+        type: DATA_CELL_TYPE.CURRENCY,
+        format: null,
+      },
+      {
+        title: 'Tổng phí phải trả',
+        subTitle: null,
+        value: this.loanDetail?.totalServiceFees,
+        type: DATA_CELL_TYPE.CURRENCY,
+        format: null,
+      },
+    ];
+  }
+
+  private _serviceFeeTng() {
+    return [
+      {
+        title: 'Phí dịch vụ',
+        subTitle: '2.5 % giá trị khoản vay tối thiểu là 100,000 VND',
+        value: 0.025 * this.loanDetail?.expectedAmount,
+        type: DATA_CELL_TYPE.CURRENCY,
+        format: null,
+      },
+      {
+        title: 'Phí xử lý giao dịch',
+        subTitle: null,
+        value: '11200',
+        type: DATA_CELL_TYPE.CURRENCY,
+        format: null,
+      },
+      {
+        title: 'Phí VAT',
+        subTitle: '10% của Phí dịch vụ',
+        value: 0.1 * 0.025 * this.loanDetail?.expectedAmount,
+        type: DATA_CELL_TYPE.CURRENCY,
+        format: null,
+      },
+      {
+        title: 'Ưu đãi phí',
+        subTitle: null,
+        value: this.getDiscountValue(this.loanDetail?.voucher),
+        type: DATA_CELL_TYPE.CURRENCY,
+        format: null,
+      },
+      {
+        title: 'Tổng phí phải trả',
+        subTitle: null,
+        value: this.loanDetail?.totalServiceFees,
+        type: DATA_CELL_TYPE.CURRENCY,
+        format: null,
+      },
+    ];
+  }
+
+  getDiscountValue(voucher: Voucher) {
+    console.log(voucher);
+    if (!voucher) {
+      return 0;
+    }
+    let discountAmount =
+      voucher.percentage * 0.025 * this.loanDetail?.expectedAmount;
+    // check max discount accepted
+    if (discountAmount > voucher.maxValue) {
+      return (discountAmount = voucher.maxValue);
+    }
+    return discountAmount;
+  }
+
   leftColumn: any[] = [];
   middleColumn: any[] = [];
   rightColumn: any[] = [];
+  serviceFeeHmg: any[] = [];
+  serviceFeeTng: any[] = [];
 
   currentTime = new Date();
 
