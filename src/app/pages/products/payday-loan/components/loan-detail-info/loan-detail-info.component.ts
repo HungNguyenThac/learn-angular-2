@@ -261,28 +261,38 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
   private _serviceFeeHmg() {
     return [
       {
-        title: 'Phí dịch vụ',
-        subTitle: '2 % giá trị khoản vay tối thiểu là 100,000 VND',
+        title: this.multiLanguageService.instant(
+          'payday_loan.service_fee.service_fee'
+        ),
+        subTitle: this.multiLanguageService.instant(
+          'payday_loan.service_fee.service_fee_hmg'
+        ),
         value: 0.02 * this.loanDetail?.expectedAmount,
         type: DATA_CELL_TYPE.CURRENCY,
         format: null,
       },
       {
-        title: 'Phí xử lý giao dịch',
+        title: this.multiLanguageService.instant(
+          'payday_loan.service_fee.transaction_fee'
+        ),
         subTitle: null,
         value: '11200',
         type: DATA_CELL_TYPE.CURRENCY,
         format: null,
       },
       {
-        title: 'Ưu đãi phí',
+        title: this.multiLanguageService.instant(
+          'payday_loan.service_fee.discount_fee'
+        ),
         subTitle: null,
         value: this.getDiscountValue(this.loanDetail?.voucher),
         type: DATA_CELL_TYPE.CURRENCY,
         format: null,
       },
       {
-        title: 'Tổng phí phải trả',
+        title: this.multiLanguageService.instant(
+          'payday_loan.service_fee.total_fee'
+        ),
         subTitle: null,
         value: this.loanDetail?.totalServiceFees,
         type: DATA_CELL_TYPE.CURRENCY,
@@ -294,35 +304,49 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
   private _serviceFeeTng() {
     return [
       {
-        title: 'Phí dịch vụ',
-        subTitle: '2.5 % giá trị khoản vay tối thiểu là 100,000 VND',
+        title: this.multiLanguageService.instant(
+          'payday_loan.service_fee.service_fee'
+        ),
+        subTitle: this.multiLanguageService.instant(
+          'payday_loan.service_fee.service_fee_tng'
+        ),
         value: 0.025 * this.loanDetail?.expectedAmount,
         type: DATA_CELL_TYPE.CURRENCY,
         format: null,
       },
       {
-        title: 'Phí xử lý giao dịch',
+        title: this.multiLanguageService.instant(
+          'payday_loan.service_fee.transaction_fee'
+        ),
         subTitle: null,
         value: '11200',
         type: DATA_CELL_TYPE.CURRENCY,
         format: null,
       },
       {
-        title: 'Phí VAT',
-        subTitle: '10% của Phí dịch vụ',
+        title: this.multiLanguageService.instant(
+          'payday_loan.service_fee.vat_fee'
+        ),
+        subTitle: this.multiLanguageService.instant(
+          'payday_loan.service_fee.vat_fee_description'
+        ),
         value: 0.1 * 0.025 * this.loanDetail?.expectedAmount,
         type: DATA_CELL_TYPE.CURRENCY,
         format: null,
       },
       {
-        title: 'Ưu đãi phí',
+        title: this.multiLanguageService.instant(
+          'payday_loan.service_fee.discount_fee'
+        ),
         subTitle: null,
         value: this.getDiscountValue(this.loanDetail?.voucher),
         type: DATA_CELL_TYPE.CURRENCY,
         format: null,
       },
       {
-        title: 'Tổng phí phải trả',
+        title: this.multiLanguageService.instant(
+          'payday_loan.service_fee.total_fee'
+        ),
         subTitle: null,
         value: this.loanDetail?.totalServiceFees,
         type: DATA_CELL_TYPE.CURRENCY,

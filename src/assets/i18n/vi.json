@@ -448,6 +448,16 @@
     "repayment_status": {
       "overdue": "Quá hạn"
     },
+    "service_fee": {
+      "service_fee": "Phí dịch vụ",
+      "service_fee_hmg": "2 % giá trị khoản vay tối thiểu là 100,000 VND",
+      "service_fee_tng": "2.5 % giá trị khoản vay tối thiểu là 100,000 VND",
+      "transaction_fee": "Phí xử lý giao dịch",
+      "vat_fee": "Phí xử lý giao dịch",
+      "vat_fee_description": "Phí xử lý giao dịch",
+      "discount_fee": "Ưu đãi phí",
+      "total_fee": "Tổng phí phải trả"
+    },
     "pl_ui_status": {
       "not_complete_ekyc_yet": "Chưa EKYC",
       "not_complete_fill_ekyc_yet": "Chưa xác thực thông tin",
