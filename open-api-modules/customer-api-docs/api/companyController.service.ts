@@ -208,7 +208,7 @@ export class CompanyControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.post<ApiResponseCompanyInfo>(`${this.configuration.basePath}/company/v1/add`,
+        return this.httpClient.post<ApiResponseCompanyInfo>(`${this.configuration.basePath}/v1/companies`,
             convertFormParamsToString ? formParams.toString() : formParams,
             {
                 responseType: <any>responseType_,
@@ -253,7 +253,7 @@ export class CompanyControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.delete<ApiResponseCompanyInfo>(`${this.configuration.basePath}/company/v1/${encodeURIComponent(String(companyId))}`,
+        return this.httpClient.delete<ApiResponseCompanyInfo>(`${this.configuration.basePath}/v1/companies/${encodeURIComponent(String(companyId))}`,
             {
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
@@ -297,7 +297,7 @@ export class CompanyControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.get<ApiResponseCompanyInfo>(`${this.configuration.basePath}/company/v1/${encodeURIComponent(String(id))}`,
+        return this.httpClient.get<ApiResponseCompanyInfo>(`${this.configuration.basePath}/v1/companies/${encodeURIComponent(String(id))}`,
             {
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
@@ -313,10 +313,10 @@ export class CompanyControllerService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getListCompany(groupName?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseListCompanyInfo>;
-    public getListCompany(groupName?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseListCompanyInfo>>;
-    public getListCompany(groupName?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseListCompanyInfo>>;
-    public getListCompany(groupName?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
+    public getListCompanies(groupName?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseListCompanyInfo>;
+    public getListCompanies(groupName?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseListCompanyInfo>>;
+    public getListCompanies(groupName?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseListCompanyInfo>>;
+    public getListCompanies(groupName?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
 
         let queryParameters = new HttpParams({encoder: this.encoder});
         if (groupName !== undefined && groupName !== null) {
@@ -344,7 +344,7 @@ export class CompanyControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.get<ApiResponseListCompanyInfo>(`${this.configuration.basePath}/company/v1/get-list`,
+        return this.httpClient.get<ApiResponseListCompanyInfo>(`${this.configuration.basePath}/v1/companies`,
             {
                 params: queryParameters,
                 responseType: <any>responseType_,
@@ -448,7 +448,7 @@ export class CompanyControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.put<ApiResponseCompanyInfo>(`${this.configuration.basePath}/company/v1/${encodeURIComponent(String(id))}`,
+        return this.httpClient.put<ApiResponseCompanyInfo>(`${this.configuration.basePath}/v1/companies/${encodeURIComponent(String(id))}`,
             convertFormParamsToString ? formParams.toString() : formParams,
             {
                 responseType: <any>responseType_,

@@ -21,7 +21,7 @@ import { NotificationService } from '../../../../../core/services/notification.s
 import { Prompt } from '../../../../../public/models/external/prompt.model';
 import { PlPromptComponent } from '../../../../../share/components';
 import { MatDialog } from '@angular/material/dialog';
-import {RESPONSE_CODE} from "../../../../../core/common/enum/operator";
+import { RESPONSE_CODE } from '../../../../../core/common/enum/operator';
 
 @Component({
   selector: 'ekyc-upload',
@@ -149,7 +149,7 @@ export class EkycUploadComponent implements OnInit, AfterViewInit {
     this.notificationService.showLoading({ showContent: true });
     this.subManager.add(
       this.kalapaV2Service
-        .extractInfo(
+        .extractInfo1(
           this.customerId,
           this.params.frontIdentityCardImg,
           this.params.selfieImg,
@@ -161,7 +161,10 @@ export class EkycUploadComponent implements OnInit, AfterViewInit {
         )
         .subscribe(
           (ekycResponse: ApiResponseKalapaResponse) => {
-            if (!ekycResponse.result || ekycResponse.responseCode !== RESPONSE_CODE.SUCCESS) {
+            if (
+              !ekycResponse.result ||
+              ekycResponse.responseCode !== RESPONSE_CODE.SUCCESS
+            ) {
               this.handleEkycError(ekycResponse);
             }
 

@@ -14,6 +14,8 @@ import {
 import { MultiLanguageService } from '../../../../share/translate/multiLanguageService';
 import { Observable, Subscription } from 'rxjs';
 import {
+  AdminAccountControllerService,
+  ApiResponseSearchAndPaginationResponseAdminAccountEntity,
   ApiResponseSearchAndPaginationResponseCompanyInfo,
   ApiResponseSearchAndPaginationResponseCustomerInfo,
   CompanyControllerService,
@@ -38,17 +40,8 @@ import { ToastrService } from 'ngx-toastr';
 import { TableSelectActionModel } from '../../../../public/models/external/table-select-action.model';
 import { AddNewUserDialogComponent } from '../../../../share/components';
 import { MatDialog } from '@angular/material/dialog';
-
-export interface UserListResult {
-  id: number;
-  username: string;
-  userAccount: string;
-  email: string;
-  phone: string;
-  note: string;
-  role: string;
-  status: string;
-}
+import { CustomerListService } from '../../../customer/customer-list/customer-list.service';
+import { UserListService } from './user-list.service';
 
 @Component({
   selector: 'app-user-list',
@@ -57,38 +50,6 @@ export interface UserListResult {
 })
 export class UserListComponent implements OnInit, OnDestroy {
   //Mock data
-  userList: UserListResult[] = [
-    {
-      id: 1,
-      username: 'Bùi Minh',
-      userAccount: 'minhdungdau',
-      email: 'minh.bui@epay.vn',
-      phone: '0982737261',
-      note: '',
-      role: 'Dev',
-      status: this.multiLanguageService.instant('common.active'),
-    },
-    {
-      id: 2,
-      username: 'Nguyễn Tiến Đạt',
-      userAccount: 'datnguyen',
-      email: 'dat.nguyen@epay.vn',
-      phone: '09828371629',
-      note: '',
-      role: 'Dev',
-      status: this.multiLanguageService.instant('common.active'),
-    },
-    {
-      id: 3,
-      username: 'Tạ Minh Quân',
-      userAccount: 'quanta',
-      email: 'quan.ta@epay.vn',
-      phone: '0934475006',
-      note: '',
-      role: 'Dev',
-      status: this.multiLanguageService.instant('common.inactive'),
-    },
-  ];
   selectButtons: TableSelectActionModel[] = [
     {
       action: 'delete',
@@ -213,7 +174,7 @@ export class UserListComponent implements OnInit, OnDestroy {
   ];
   allColumns: any[] = [
     {
-      key: 'userAccount',
+      key: 'username',
       title: this.multiLanguageService.instant(
         'system.system_management.user_account'
       ),
@@ -222,7 +183,7 @@ export class UserListComponent implements OnInit, OnDestroy {
       showed: true,
     },
     {
-      key: 'username',
+      key: 'fullName',
       title: this.multiLanguageService.instant(
         'system.system_management.username'
       ),
@@ -231,7 +192,7 @@ export class UserListComponent implements OnInit, OnDestroy {
       showed: true,
     },
     {
-      key: 'role',
+      key: 'userRole',
       title: this.multiLanguageService.instant('system.system_management.role'),
       type: DATA_CELL_TYPE.STATUS,
       format: null,
@@ -256,6 +217,7 @@ export class UserListComponent implements OnInit, OnDestroy {
   totalItems: number = 0;
   filterForm: FormGroup;
   expandedElementId: number;
+  expandElementFromLoan: any;
   hasSelect: boolean = true;
   userInfo: any;
   private readonly routeAllState$: Observable<Params>;
@@ -270,7 +232,8 @@ export class UserListComponent implements OnInit, OnDestroy {
     private formBuilder: FormBuilder,
     private router: Router,
     private dialog: MatDialog,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private userListService: UserListService
   ) {
     this.routeAllState$ = store.select(fromSelectors.getRouterAllState);
     this._initFilterForm();
@@ -284,7 +247,22 @@ export class UserListComponent implements OnInit, OnDestroy {
     );
     this.store.dispatch(new fromActions.SetOperatorInfo(NAV_ITEM.CUSTOMER));
     this._initSubscription();
-    this.dataSource.data = this.userList;
+  }
+
+  private _getUserList() {
+    const params = this._buildParams();
+    this.subManager.add(
+      this.userListService
+        .getData(params)
+        .subscribe(
+          (data: ApiResponseSearchAndPaginationResponseAdminAccountEntity) => {
+            this._parseData(data?.result);
+            if (this.filterForm.controls.id.value) {
+              this.expandElementFromLoan = data?.result.data[0];
+            }
+          }
+        )
+    );
   }
 
   public onPageChange(event: PageEvent) {
@@ -301,7 +279,7 @@ export class UserListComponent implements OnInit, OnDestroy {
 
   public onExpandElementChange(element: any) {
     this.expandedElementId = element.id;
-    this.userInfo = this.userList.filter((user) => user.id === element.id)[0];
+    this.userInfo = element;
   }
 
   public onSubmitSearchForm(event) {
@@ -403,6 +381,7 @@ export class UserListComponent implements OnInit, OnDestroy {
 
   private _initFilterForm() {
     this.filterForm = this.formBuilder.group({
+      id: [''],
       keyword: [''],
       companyId: [''],
       paydayLoanStatus: [''],
@@ -460,6 +439,7 @@ export class UserListComponent implements OnInit, OnDestroy {
     this.subManager.add(
       this.routeAllState$.subscribe((params) => {
         this._parseQueryParams(params?.queryParams);
+        this._getUserList();
         this._getCompanyList();
       })
     );

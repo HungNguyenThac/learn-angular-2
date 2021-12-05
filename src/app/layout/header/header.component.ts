@@ -176,6 +176,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.subManager.add(
       this.customerInfo$.subscribe((customerInfo: CustomerInfoResponse) => {
         this.customerInfo = customerInfo;
+        console.log(this.customerInfo);
         if (customerInfo?.personalData?.firstName) {
           const names = customerInfo.personalData.firstName.split(' ');
           this.shortName = names[names.length - 1].charAt(0);

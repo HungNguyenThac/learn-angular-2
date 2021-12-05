@@ -86,17 +86,13 @@ export class ApprovalLetterControllerService {
     }
 
     /**
-     * @param customerId 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getApprovalLetterByCustomerId(customerId: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseApprovalLetter>;
-    public getApprovalLetterByCustomerId(customerId: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseApprovalLetter>>;
-    public getApprovalLetterByCustomerId(customerId: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseApprovalLetter>>;
-    public getApprovalLetterByCustomerId(customerId: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
-        if (customerId === null || customerId === undefined) {
-            throw new Error('Required parameter customerId was null or undefined when calling getApprovalLetterByCustomerId.');
-        }
+    public getApprovalLetterByCustomerId(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseApprovalLetter>;
+    public getApprovalLetterByCustomerId(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseApprovalLetter>>;
+    public getApprovalLetterByCustomerId(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseApprovalLetter>>;
+    public getApprovalLetterByCustomerId(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
 
         let headers = this.defaultHeaders;
 
@@ -118,7 +114,7 @@ export class ApprovalLetterControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.get<ApiResponseApprovalLetter>(`${this.configuration.basePath}/approval-letter/v1/${encodeURIComponent(String(customerId))}/latest`,
+        return this.httpClient.get<ApiResponseApprovalLetter>(`${this.configuration.basePath}/v1/approvalLetters/latest`,
             {
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
@@ -162,7 +158,7 @@ export class ApprovalLetterControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.get<ApiResponseListApprovalLetter>(`${this.configuration.basePath}/approval-letter/v1/${encodeURIComponent(String(customerId))}`,
+        return this.httpClient.get<ApiResponseListApprovalLetter>(`${this.configuration.basePath}/v1/approvalLetters/${encodeURIComponent(String(customerId))}`,
             {
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,

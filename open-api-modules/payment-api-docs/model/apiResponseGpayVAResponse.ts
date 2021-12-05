@@ -15,7 +15,7 @@ import { GpayVAResponse } from './gpayVAResponse';
 export interface ApiResponseGpayVAResponse { 
     result?: GpayVAResponse;
     errorCode?: string;
-    message?: string;
+    message?: object;
     responseCode?: number;
 }
 

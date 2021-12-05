@@ -135,7 +135,7 @@ export class CustomerDetailService {
     }
 
     return this.customerService
-      .putInfo(customerId, infoData, observe, reportProgress)
+      .updateInfo(customerId, infoData, observe, reportProgress)
       .pipe(
         map((results) => {
           return results;

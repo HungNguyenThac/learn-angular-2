@@ -8,7 +8,7 @@ import * as fromActions from '../actions';
 import { LoginForm } from '../../../public/models';
 import {
   ApiResponseGetTokenResponse,
-  ServiceCredentialControllerService,
+  AdminAccountControllerService,
 } from '../../../../../open-api-modules/identity-api-docs';
 import {
   CustomerInfoResponse,
@@ -18,7 +18,7 @@ import {
   LoginControllerService,
   LoginInput,
 } from 'open-api-modules/core-api-docs';
-import { ApplicationControllerService } from '../../../../../open-api-modules/loanapp-api-docs';
+import { ApplicationControllerService } from '../../../../../open-api-modules/loanapp-tng-api-docs';
 import { Store } from '@ngrx/store';
 import * as fromStore from '../index';
 import { Observable, Subscription } from 'rxjs';
@@ -26,7 +26,7 @@ import { ERROR_CODE_KEY } from '../../common/enum/payday-loan';
 import { NotificationService } from '../../services/notification.service';
 import { MultiLanguageService } from '../../../share/translate/multiLanguageService';
 import { ToastrService } from 'ngx-toastr';
-import {RESPONSE_CODE} from "../../common/enum/operator";
+import { RESPONSE_CODE } from '../../common/enum/operator';
 
 @Injectable()
 export class LoginEffects {
@@ -45,7 +45,7 @@ export class LoginEffects {
     private store$: Store<fromStore.State>,
     private router: Router,
     private location: Location,
-    private serviceCredentialControllerService: ServiceCredentialControllerService,
+    private AdminAccountControllerService: AdminAccountControllerService,
     private infoService: InfoControllerService,
     private loginService: LoginControllerService,
     private applicationControllerService: ApplicationControllerService,
@@ -89,21 +89,19 @@ export class LoginEffects {
       switchMap((login: LoginForm) => {
         const { username, password } = login;
 
-        return this.serviceCredentialControllerService
-          .getToken({
-            username: username,
-            secret: password,
+        return this.AdminAccountControllerService.getToken({
+          username: username,
+          secret: password,
+        }).pipe(
+          map((result: ApiResponseGetTokenResponse) => {
+            //
+            this.loginInput = login;
+            if (!result || result.responseCode !== RESPONSE_CODE.SUCCESS) {
+              return new fromActions.SigninError(result.errorCode);
+            }
+            return new fromActions.SigninSuccess(result);
           })
-          .pipe(
-            map((result: ApiResponseGetTokenResponse) => {
-              //
-              this.loginInput = login;
-              if (!result || result.responseCode !== RESPONSE_CODE.SUCCESS) {
-                return new fromActions.SigninError(result.errorCode);
-              }
-              return new fromActions.SigninSuccess(result);
-            })
-          );
+        );
       })
     )
   );
@@ -114,6 +112,7 @@ export class LoginEffects {
         ofType(fromActions.LOGIN_SIGNIN_SUCCESS),
         map((action: fromActions.SigninSuccess) => action.payload),
         tap(() => {
+
           this.router.navigateByUrl('/');
         })
       ),

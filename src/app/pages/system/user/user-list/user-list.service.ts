@@ -1,20 +1,20 @@
-import { ACCOUNT_CLASSIFICATION } from '../../../core/common/enum/payday-loan';
 import { Injectable } from '@angular/core';
-import { CustomerControllerService } from 'open-api-modules/dashboard-api-docs';
+import { AdminAccountControllerService } from 'open-api-modules/dashboard-api-docs';
 import * as _ from 'lodash';
-import { QUERY_CONDITION_TYPE } from '../../../core/common/enum/operator';
-import { GlobalConstants } from '../../../core/common/global-constants';
+import { QUERY_CONDITION_TYPE } from '../../../../core/common/enum/operator';
+import { ACCOUNT_CLASSIFICATION } from '../../../../core/common/enum/payday-loan';
+import { GlobalConstants } from '../../../../core/common/global-constants';
 
 @Injectable({
   providedIn: 'root',
 })
-export class CustomerListService {
-  constructor(private customerControllerService: CustomerControllerService) {}
+export class UserListService {
+  constructor(private adminAccountController: AdminAccountControllerService) {}
 
   public getData(params) {
     let requestBody = this._buildRequestBodyGetList(params);
 
-    return this.customerControllerService.getCustomers(
+    return this.adminAccountController.getAdminAccounts(
       params.limit,
       params.pageIndex,
       requestBody,
@@ -44,30 +44,14 @@ export class CustomerListService {
     }
 
     if (params.keyword) {
-      requestBody['firstName' + QUERY_CONDITION_TYPE.LIKE_KEYWORD] =
-        params.keyword;
-      requestBody['mobileNumber' + QUERY_CONDITION_TYPE.LIKE_KEYWORD] =
-        params.keyword;
-      requestBody['emailAddress' + QUERY_CONDITION_TYPE.LIKE_KEYWORD] =
-        params.keyword;
-      requestBody['organizationName' + QUERY_CONDITION_TYPE.LIKE_KEYWORD] =
-        params.keyword;
-    }
-
-    switch (params.accountClassification) {
-      case ACCOUNT_CLASSIFICATION.ALL:
-        delete requestBody['mobileNumber'];
-        break;
-
-      case ACCOUNT_CLASSIFICATION.TEST:
-        requestBody['mobileNumber' + QUERY_CONDITION_TYPE.START_WITH] =
-          GlobalConstants.PL_VALUE_DEFAULT.PREFIX_MOBILE_NUMBER_TEST;
-        break;
-      case ACCOUNT_CLASSIFICATION.REAL:
-      default:
-        requestBody['mobileNumber' + QUERY_CONDITION_TYPE.NOT_START_WITH] =
-          GlobalConstants.PL_VALUE_DEFAULT.PREFIX_MOBILE_NUMBER_TEST;
-        break;
+      // requestBody['firstName' + QUERY_CONDITION_TYPE.LIKE_KEYWORD] =
+      //   params.keyword;
+      // requestBody['mobileNumber' + QUERY_CONDITION_TYPE.LIKE_KEYWORD] =
+      //   params.keyword;
+      // requestBody['emailAddress' + QUERY_CONDITION_TYPE.LIKE_KEYWORD] =
+      //   params.keyword;
+      // requestBody['organizationName' + QUERY_CONDITION_TYPE.LIKE_KEYWORD] =
+      //   params.keyword;
     }
 
     console.log('requestBody----', requestBody);

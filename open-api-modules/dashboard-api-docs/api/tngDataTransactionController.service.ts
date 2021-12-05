@@ -94,18 +94,18 @@ export class TngDataTransactionControllerService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public geTngDataTransaction(pageNumber: number, pageSize: number, requestBody: { [key: string]: object; }, orderBy?: string, descending?: boolean, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseSearchAndPaginationResponseTNGInformationResponse>;
-    public geTngDataTransaction(pageNumber: number, pageSize: number, requestBody: { [key: string]: object; }, orderBy?: string, descending?: boolean, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseSearchAndPaginationResponseTNGInformationResponse>>;
-    public geTngDataTransaction(pageNumber: number, pageSize: number, requestBody: { [key: string]: object; }, orderBy?: string, descending?: boolean, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseSearchAndPaginationResponseTNGInformationResponse>>;
-    public geTngDataTransaction(pageNumber: number, pageSize: number, requestBody: { [key: string]: object; }, orderBy?: string, descending?: boolean, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
+    public getTngDataTransaction(pageNumber: number, pageSize: number, requestBody: { [key: string]: object; }, orderBy?: string, descending?: boolean, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseSearchAndPaginationResponseTNGInformationResponse>;
+    public getTngDataTransaction(pageNumber: number, pageSize: number, requestBody: { [key: string]: object; }, orderBy?: string, descending?: boolean, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseSearchAndPaginationResponseTNGInformationResponse>>;
+    public getTngDataTransaction(pageNumber: number, pageSize: number, requestBody: { [key: string]: object; }, orderBy?: string, descending?: boolean, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseSearchAndPaginationResponseTNGInformationResponse>>;
+    public getTngDataTransaction(pageNumber: number, pageSize: number, requestBody: { [key: string]: object; }, orderBy?: string, descending?: boolean, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
         if (pageNumber === null || pageNumber === undefined) {
-            throw new Error('Required parameter pageNumber was null or undefined when calling geTngDataTransaction.');
+            throw new Error('Required parameter pageNumber was null or undefined when calling getTngDataTransaction.');
         }
         if (pageSize === null || pageSize === undefined) {
-            throw new Error('Required parameter pageSize was null or undefined when calling geTngDataTransaction.');
+            throw new Error('Required parameter pageSize was null or undefined when calling getTngDataTransaction.');
         }
         if (requestBody === null || requestBody === undefined) {
-            throw new Error('Required parameter requestBody was null or undefined when calling geTngDataTransaction.');
+            throw new Error('Required parameter requestBody was null or undefined when calling getTngDataTransaction.');
         }
 
         let queryParameters = new HttpParams({encoder: this.encoder});
@@ -155,7 +155,7 @@ export class TngDataTransactionControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.post<ApiResponseSearchAndPaginationResponseTNGInformationResponse>(`${this.configuration.basePath}/v1/tng-data-transaction`,
+        return this.httpClient.post<ApiResponseSearchAndPaginationResponseTNGInformationResponse>(`${this.configuration.basePath}/v1/tngDataTransactions`,
             requestBody,
             {
                 params: queryParameters,
@@ -201,7 +201,7 @@ export class TngDataTransactionControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.get<ApiResponseTNGInformationResponse>(`${this.configuration.basePath}/v1/tng-data-transaction/${encodeURIComponent(String(tngId))}`,
+        return this.httpClient.get<ApiResponseTNGInformationResponse>(`${this.configuration.basePath}/v1/tngDataTransactions/${encodeURIComponent(String(tngId))}`,
             {
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,

@@ -102,10 +102,6 @@ export class ContractControllerService {
         }
 
         let queryParameters = new HttpParams({encoder: this.encoder});
-        if (loanId !== undefined && loanId !== null) {
-          queryParameters = this.addToHttpParams(queryParameters,
-            <any>loanId, 'loanId');
-        }
         if (customerId !== undefined && customerId !== null) {
           queryParameters = this.addToHttpParams(queryParameters,
             <any>customerId, 'customerId');
@@ -131,7 +127,7 @@ export class ContractControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.get<ApiResponseContract>(`${this.configuration.basePath}/v1/contract/Contract`,
+        return this.httpClient.get<ApiResponseContract>(`${this.configuration.basePath}/v1/contracts/${encodeURIComponent(String(loanId))}`,
             {
                 params: queryParameters,
                 responseType: <any>responseType_,

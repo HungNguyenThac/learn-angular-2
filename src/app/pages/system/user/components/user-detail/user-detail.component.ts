@@ -2,7 +2,10 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { MultiLanguageService } from '../../../../../share/translate/multiLanguageService';
 import { Subscription } from 'rxjs';
 
-import { DATA_CELL_TYPE } from '../../../../../core/common/enum/operator';
+import {
+  DATA_CELL_TYPE,
+  DATA_STATUS_TYPE,
+} from '../../../../../core/common/enum/operator';
 import { NotificationService } from '../../../../../core/services/notification.service';
 import { ToastrService } from 'ngx-toastr';
 
@@ -98,7 +101,7 @@ export class UserDetailComponent implements OnInit {
     return [
       {
         title: this.multiLanguageService.instant('system.user_detail.name'),
-        value: this.userInfo.username,
+        value: this.userInfo.fullName,
         type: DATA_CELL_TYPE.TEXT,
         format: null,
       },
@@ -106,7 +109,7 @@ export class UserDetailComponent implements OnInit {
         title: this.multiLanguageService.instant(
           'system.user_detail.login_name'
         ),
-        value: this.userInfo.userAccount,
+        value: this.userInfo.username,
         type: DATA_CELL_TYPE.TEXT,
         format: null,
       },
@@ -123,7 +126,7 @@ export class UserDetailComponent implements OnInit {
     return [
       {
         title: this.multiLanguageService.instant('system.user_detail.phone'),
-        value: this.userInfo.phone,
+        value: this.userInfo.mobile,
         type: DATA_CELL_TYPE.TEXT,
         format: null,
       },
@@ -135,9 +138,9 @@ export class UserDetailComponent implements OnInit {
       },
       {
         title: this.multiLanguageService.instant('system.user_detail.status'),
-        value: this.userInfo.status,
+        value: this.userInfo.userStatus,
         type: DATA_CELL_TYPE.STATUS,
-        format: null,
+        format: DATA_STATUS_TYPE.USER_STATUS,
       },
     ];
   }

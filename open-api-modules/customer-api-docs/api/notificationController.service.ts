@@ -128,7 +128,7 @@ export class NotificationControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.post<ApiResponseBoolean>(`${this.configuration.basePath}/notification/v1/${encodeURIComponent(String(customerId))}/notify-in-repayment-loan`,
+        return this.httpClient.post<ApiResponseBoolean>(`${this.configuration.basePath}/v1/notifications/${encodeURIComponent(String(customerId))}/notifyInRepaymentLoan`,
             null,
             {
                 params: queryParameters,
@@ -183,7 +183,7 @@ export class NotificationControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.post<ApiResponseBoolean>(`${this.configuration.basePath}/notification/v1/notify-in-repayment-loan-by-template`,
+        return this.httpClient.post<ApiResponseBoolean>(`${this.configuration.basePath}/v1/notifications/notifyInRepaymentLoanByTemplate`,
             templateRequest,
             {
                 responseType: <any>responseType_,

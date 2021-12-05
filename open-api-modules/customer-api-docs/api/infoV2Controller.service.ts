@@ -87,18 +87,14 @@ export class InfoV2ControllerService {
     }
 
     /**
-     * @param customerId 
      * @param additionalInformationV2Request 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public additionalInformationV2(customerId: string, additionalInformationV2Request: AdditionalInformationV2Request, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseObject>;
-    public additionalInformationV2(customerId: string, additionalInformationV2Request: AdditionalInformationV2Request, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseObject>>;
-    public additionalInformationV2(customerId: string, additionalInformationV2Request: AdditionalInformationV2Request, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseObject>>;
-    public additionalInformationV2(customerId: string, additionalInformationV2Request: AdditionalInformationV2Request, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
-        if (customerId === null || customerId === undefined) {
-            throw new Error('Required parameter customerId was null or undefined when calling additionalInformationV2.');
-        }
+    public additionalInformationV2(additionalInformationV2Request: AdditionalInformationV2Request, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseObject>;
+    public additionalInformationV2(additionalInformationV2Request: AdditionalInformationV2Request, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseObject>>;
+    public additionalInformationV2(additionalInformationV2Request: AdditionalInformationV2Request, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseObject>>;
+    public additionalInformationV2(additionalInformationV2Request: AdditionalInformationV2Request, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
         if (additionalInformationV2Request === null || additionalInformationV2Request === undefined) {
             throw new Error('Required parameter additionalInformationV2Request was null or undefined when calling additionalInformationV2.');
         }
@@ -132,7 +128,7 @@ export class InfoV2ControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.post<ApiResponseObject>(`${this.configuration.basePath}/info/v2/${encodeURIComponent(String(customerId))}/additional-information`,
+        return this.httpClient.post<ApiResponseObject>(`${this.configuration.basePath}/v2/infos/additionalInformation`,
             additionalInformationV2Request,
             {
                 responseType: <any>responseType_,
@@ -145,18 +141,14 @@ export class InfoV2ControllerService {
     }
 
     /**
-     * @param customerId 
      * @param confirmInformationV2Request 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public confirmInformationV2(customerId: string, confirmInformationV2Request: ConfirmInformationV2Request, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseObject>;
-    public confirmInformationV2(customerId: string, confirmInformationV2Request: ConfirmInformationV2Request, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseObject>>;
-    public confirmInformationV2(customerId: string, confirmInformationV2Request: ConfirmInformationV2Request, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseObject>>;
-    public confirmInformationV2(customerId: string, confirmInformationV2Request: ConfirmInformationV2Request, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
-        if (customerId === null || customerId === undefined) {
-            throw new Error('Required parameter customerId was null or undefined when calling confirmInformationV2.');
-        }
+    public confirmInformationV2(confirmInformationV2Request: ConfirmInformationV2Request, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseObject>;
+    public confirmInformationV2(confirmInformationV2Request: ConfirmInformationV2Request, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseObject>>;
+    public confirmInformationV2(confirmInformationV2Request: ConfirmInformationV2Request, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseObject>>;
+    public confirmInformationV2(confirmInformationV2Request: ConfirmInformationV2Request, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
         if (confirmInformationV2Request === null || confirmInformationV2Request === undefined) {
             throw new Error('Required parameter confirmInformationV2Request was null or undefined when calling confirmInformationV2.');
         }
@@ -190,7 +182,7 @@ export class InfoV2ControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.post<ApiResponseObject>(`${this.configuration.basePath}/info/v2/${encodeURIComponent(String(customerId))}/confirm-information`,
+        return this.httpClient.post<ApiResponseObject>(`${this.configuration.basePath}/v2/infos/confirmInformation`,
             confirmInformationV2Request,
             {
                 responseType: <any>responseType_,
@@ -203,18 +195,14 @@ export class InfoV2ControllerService {
     }
 
     /**
-     * @param customerId 
      * @param confirmInformationV2Request 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public validateConfirmInformationRequestV2(customerId: string, confirmInformationV2Request: ConfirmInformationV2Request, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseObject>;
-    public validateConfirmInformationRequestV2(customerId: string, confirmInformationV2Request: ConfirmInformationV2Request, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseObject>>;
-    public validateConfirmInformationRequestV2(customerId: string, confirmInformationV2Request: ConfirmInformationV2Request, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseObject>>;
-    public validateConfirmInformationRequestV2(customerId: string, confirmInformationV2Request: ConfirmInformationV2Request, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
-        if (customerId === null || customerId === undefined) {
-            throw new Error('Required parameter customerId was null or undefined when calling validateConfirmInformationRequestV2.');
-        }
+    public validateConfirmInformationRequestV2(confirmInformationV2Request: ConfirmInformationV2Request, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseObject>;
+    public validateConfirmInformationRequestV2(confirmInformationV2Request: ConfirmInformationV2Request, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseObject>>;
+    public validateConfirmInformationRequestV2(confirmInformationV2Request: ConfirmInformationV2Request, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseObject>>;
+    public validateConfirmInformationRequestV2(confirmInformationV2Request: ConfirmInformationV2Request, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
         if (confirmInformationV2Request === null || confirmInformationV2Request === undefined) {
             throw new Error('Required parameter confirmInformationV2Request was null or undefined when calling validateConfirmInformationRequestV2.');
         }
@@ -248,7 +236,7 @@ export class InfoV2ControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.post<ApiResponseObject>(`${this.configuration.basePath}/info/v2/${encodeURIComponent(String(customerId))}/validate-confirm-information-request`,
+        return this.httpClient.post<ApiResponseObject>(`${this.configuration.basePath}/v2/infos/validateConfirmInformationRequest`,
             confirmInformationV2Request,
             {
                 responseType: <any>responseType_,

@@ -48,6 +48,8 @@ export interface PersonalData {
     stepThreeEmployment?: string;
     paydayLoanStatus?: string;
     errorGetTngInfo?: boolean;
+    isSignedApprovalLetter?: boolean;
+    isVerified?: boolean;
     collateralDocument?: string;
     salaryDocument1?: string;
     salaryDocument2?: string;
@@ -58,5 +60,16 @@ export interface PersonalData {
     selfie?: string;
     frontIdTwo?: string;
     backIdTwo?: string;
+    userStatus?: PersonalData.UserStatusEnum;
+    unLockTime?: string;
+    isDelete?: boolean;
 }
+export namespace PersonalData {
+    export type UserStatusEnum = 'ACTIVE' | 'LOCKED';
+    export const UserStatusEnum = {
+        Active: 'ACTIVE' as UserStatusEnum,
+        Locked: 'LOCKED' as UserStatusEnum
+    };
+}
+
 

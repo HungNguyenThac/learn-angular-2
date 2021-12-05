@@ -131,7 +131,7 @@ export class TemplateNotificationControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.post<ApiResponseString>(`${this.configuration.basePath}/v1/template-notification/add-content`,
+        return this.httpClient.post<ApiResponseString>(`${this.configuration.basePath}/v1/templateNotifications/addContent`,
             addContentRequest,
             {
                 responseType: <any>responseType_,
@@ -185,7 +185,7 @@ export class TemplateNotificationControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.post<ApiResponseString>(`${this.configuration.basePath}/v1/template-notification/create`,
+        return this.httpClient.post<ApiResponseString>(`${this.configuration.basePath}/v1/templateNotifications`,
             createTemplateNotificationRequest,
             {
                 responseType: <any>responseType_,
@@ -230,8 +230,7 @@ export class TemplateNotificationControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.post<ApiResponseString>(`${this.configuration.basePath}/v1/template-notification/delete-template/${encodeURIComponent(String(idTemplate))}`,
-            null,
+        return this.httpClient.delete<ApiResponseString>(`${this.configuration.basePath}/v1/templateNotifications/${encodeURIComponent(String(idTemplate))}`,
             {
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
@@ -271,7 +270,7 @@ export class TemplateNotificationControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.get<ApiResponseListTemplateNotificationEntity>(`${this.configuration.basePath}/v1/template-notification/get-templates`,
+        return this.httpClient.get<ApiResponseListTemplateNotificationEntity>(`${this.configuration.basePath}/v1/templateNotifications`,
             {
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
@@ -324,7 +323,7 @@ export class TemplateNotificationControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.post<ApiResponseString>(`${this.configuration.basePath}/v1/template-notification/send-template`,
+        return this.httpClient.post<ApiResponseString>(`${this.configuration.basePath}/v1/templateNotifications/sendTemplate`,
             sendTemplateRequest,
             {
                 responseType: <any>responseType_,
@@ -378,7 +377,7 @@ export class TemplateNotificationControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.post<ApiResponseString>(`${this.configuration.basePath}/v1/template-notification/update-active`,
+        return this.httpClient.post<ApiResponseString>(`${this.configuration.basePath}/v1/templateNotifications/updateStatus`,
             updateTemplateStatusRequest,
             {
                 responseType: <any>responseType_,

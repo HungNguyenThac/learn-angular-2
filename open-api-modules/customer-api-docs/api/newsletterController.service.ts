@@ -127,7 +127,7 @@ export class NewsletterControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.post<ApiResponseNewsletterInfo>(`${this.configuration.basePath}/newsletter/v1/info`,
+        return this.httpClient.post<ApiResponseNewsletterInfo>(`${this.configuration.basePath}/v1/newsletters`,
             newsLetterRequest,
             {
                 responseType: <any>responseType_,

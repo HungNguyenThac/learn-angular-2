@@ -14,7 +14,7 @@ import { QUERY_CONDITION_TYPE } from '../../../../core/common/enum/operator';
 import {
   ApiResponseContract,
   ContractControllerService,
-} from '../../../../../../open-api-modules/loanapp-api-docs';
+} from '../../../../../../open-api-modules/loanapp-tng-api-docs';
 import { FileControllerService } from '../../../../../../open-api-modules/com-api-docs';
 import { SignDocumentControllerService } from '../../../../../../open-api-modules/contract-api-docs';
 import { ACCOUNT_CLASSIFICATION } from 'src/app/core/common/enum/payday-loan';
@@ -175,7 +175,7 @@ export class LoanListService {
 
     // com svc
     return this.comSignContractAutomation
-      .signContractAutomation({ customerId, idRequest, idDocument })
+      .adminSignContract({ customerId, idRequest, idDocument })
       .pipe(
         map((results) => {
           return results;

@@ -129,7 +129,7 @@ export class BankControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.post<ApiResponseBank>(`${this.configuration.basePath}/bank/v1/create-bank`,
+        return this.httpClient.post<ApiResponseBank>(`${this.configuration.basePath}/v1/banks`,
             createBankRequest,
             {
                 responseType: <any>responseType_,
@@ -174,7 +174,7 @@ export class BankControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.delete<ApiResponseBank>(`${this.configuration.basePath}/bank/v1/${encodeURIComponent(String(id))}`,
+        return this.httpClient.delete<ApiResponseBank>(`${this.configuration.basePath}/v1/banks/${encodeURIComponent(String(id))}`,
             {
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
@@ -214,7 +214,7 @@ export class BankControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.get<ApiResponseListBank>(`${this.configuration.basePath}/bank/v1/get-all-banks`,
+        return this.httpClient.get<ApiResponseListBank>(`${this.configuration.basePath}/v1/banks`,
             {
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
@@ -238,12 +238,6 @@ export class BankControllerService {
             throw new Error('Required parameter bankCode was null or undefined when calling getBankByCode.');
         }
 
-        let queryParameters = new HttpParams({encoder: this.encoder});
-        if (bankCode !== undefined && bankCode !== null) {
-          queryParameters = this.addToHttpParams(queryParameters,
-            <any>bankCode, 'bankCode');
-        }
-
         let headers = this.defaultHeaders;
 
         let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
@@ -264,9 +258,8 @@ export class BankControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.get<ApiResponseBank>(`${this.configuration.basePath}/bank/v1/get-bank`,
+        return this.httpClient.get<ApiResponseBank>(`${this.configuration.basePath}/v1/banks/${encodeURIComponent(String(bankCode))}`,
             {
-                params: queryParameters,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -322,7 +315,7 @@ export class BankControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.put<ApiResponseBank>(`${this.configuration.basePath}/bank/v1/${encodeURIComponent(String(id))}`,
+        return this.httpClient.put<ApiResponseBank>(`${this.configuration.basePath}/v1/banks/${encodeURIComponent(String(id))}`,
             updateBankRequest,
             {
                 responseType: <any>responseType_,

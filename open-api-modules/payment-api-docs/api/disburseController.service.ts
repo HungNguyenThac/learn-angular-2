@@ -127,7 +127,7 @@ export class DisburseControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.post<ApiResponseString>(`${this.configuration.basePath}/v1/disburse/gpay`,
+        return this.httpClient.post<ApiResponseString>(`${this.configuration.basePath}/v1/disburses/gpay`,
             coreDisburseRequest,
             {
                 responseType: <any>responseType_,

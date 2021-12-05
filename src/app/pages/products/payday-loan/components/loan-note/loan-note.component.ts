@@ -1,19 +1,20 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import {
-  ApiResponseString, PaydayLoanControllerService as PaydayLoanHmgControllerService,
+  ApiResponseString,
+  PaydayLoanControllerService as PaydayLoanHmgControllerService,
   UpdateLoanRequest,
 } from '../../../../../../../open-api-modules/loanapp-hmg-api-docs';
 import {
   ApiResponseObject,
-  PaydayLoanControllerService as PaydayLoanTngControllerService
-} from '../../../../../../../open-api-modules/loanapp-api-docs';
-import {FormBuilder, FormGroup} from "@angular/forms";
-import {MultiLanguageService} from "../../../../../share/translate/multiLanguageService";
-import {MatDialog} from "@angular/material/dialog";
-import {NotificationService} from "../../../../../core/services/notification.service";
-import {ToastrService} from "ngx-toastr";
-import {Subscription} from "rxjs";
-import {PaydayLoanHmg} from "../../../../../../../open-api-modules/dashboard-api-docs";
+  PaydayLoanControllerService as PaydayLoanTngControllerService,
+} from '../../../../../../../open-api-modules/loanapp-tng-api-docs';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { MultiLanguageService } from '../../../../../share/translate/multiLanguageService';
+import { MatDialog } from '@angular/material/dialog';
+import { NotificationService } from '../../../../../core/services/notification.service';
+import { ToastrService } from 'ngx-toastr';
+import { Subscription } from 'rxjs';
+import { PaydayLoanHmg } from '../../../../../../../open-api-modules/dashboard-api-docs';
 
 @Component({
   selector: 'app-loan-note',
@@ -61,8 +62,7 @@ export class LoanNoteComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   private _initLoanInfoData() {
     this.loanInfoForm.patchValue({

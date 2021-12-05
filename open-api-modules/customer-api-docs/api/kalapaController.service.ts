@@ -105,18 +105,18 @@ export class KalapaControllerService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public extractInfo1(image: Blob, imageSelfie: Blob, imageBack: Blob, verify?: boolean, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<ApiResponseKalapaResponse>;
-    public extractInfo1(image: Blob, imageSelfie: Blob, imageBack: Blob, verify?: boolean, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<ApiResponseKalapaResponse>>;
-    public extractInfo1(image: Blob, imageSelfie: Blob, imageBack: Blob, verify?: boolean, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<ApiResponseKalapaResponse>>;
-    public extractInfo1(image: Blob, imageSelfie: Blob, imageBack: Blob, verify?: boolean, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
+    public extractInfo(image: Blob, imageSelfie: Blob, imageBack: Blob, verify?: boolean, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<ApiResponseKalapaResponse>;
+    public extractInfo(image: Blob, imageSelfie: Blob, imageBack: Blob, verify?: boolean, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<ApiResponseKalapaResponse>>;
+    public extractInfo(image: Blob, imageSelfie: Blob, imageBack: Blob, verify?: boolean, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<ApiResponseKalapaResponse>>;
+    public extractInfo(image: Blob, imageSelfie: Blob, imageBack: Blob, verify?: boolean, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
         if (image === null || image === undefined) {
-            throw new Error('Required parameter image was null or undefined when calling extractInfo1.');
+            throw new Error('Required parameter image was null or undefined when calling extractInfo.');
         }
         if (imageSelfie === null || imageSelfie === undefined) {
-            throw new Error('Required parameter imageSelfie was null or undefined when calling extractInfo1.');
+            throw new Error('Required parameter imageSelfie was null or undefined when calling extractInfo.');
         }
         if (imageBack === null || imageBack === undefined) {
-            throw new Error('Required parameter imageBack was null or undefined when calling extractInfo1.');
+            throw new Error('Required parameter imageBack was null or undefined when calling extractInfo.');
         }
 
         let queryParameters = new HttpParams({encoder: this.encoder});
@@ -179,7 +179,7 @@ export class KalapaControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.post<ApiResponseKalapaResponse>(`${this.configuration.basePath}/kalapa/v1/id_card/plus`,
+        return this.httpClient.post<ApiResponseKalapaResponse>(`${this.configuration.basePath}/v1/kalapas/idCard/plus`,
             convertFormParamsToString ? formParams.toString() : formParams,
             {
                 params: queryParameters,
