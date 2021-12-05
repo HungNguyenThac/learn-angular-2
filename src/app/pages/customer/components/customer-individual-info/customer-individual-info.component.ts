@@ -39,6 +39,10 @@ import {
   CommuneControllerService,
   DistrictControllerService,
 } from '../../../../../../open-api-modules/dashboard-api-docs';
+import {
+  ApiResponseString,
+  InfoControllerService,
+} from '../../../../../../open-api-modules/customer-api-docs';
 
 @Component({
   selector: 'app-customer-individual-info',
@@ -129,6 +133,7 @@ export class CustomerIndividualInfoComponent implements OnInit, OnDestroy {
     private notifier: ToastrService,
     private formBuilder: FormBuilder,
     private notificationService: NotificationService,
+    private infoControllerService: InfoControllerService,
     private cityControllerService: CityControllerService,
     private districtControllerService: DistrictControllerService,
     private communeControllerService: CommuneControllerService
@@ -181,7 +186,18 @@ export class CustomerIndividualInfoComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {}
 
-  verifyInfo() {}
+  verifyInfo() {
+    this.subManager.add(
+      this.infoControllerService
+        .returnConfirmInformation(this.customerId)
+        .subscribe((result: ApiResponseString) => {
+          if (!result || result.responseCode !== 200) {
+            // return this.handleResponseError(result.errorCode);
+          }
+          console.log(this.customerId);
+        })
+    );
+  }
 
   openUpdateDialog() {
     const updateDialogRef = this.dialog.open(
