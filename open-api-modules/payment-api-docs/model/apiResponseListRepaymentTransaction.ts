@@ -15,7 +15,7 @@ import { RepaymentTransaction } from './repaymentTransaction';
 export interface ApiResponseListRepaymentTransaction { 
     result?: Array<RepaymentTransaction>;
     errorCode?: string;
-    message?: string;
+    message?: object;
     responseCode?: number;
 }
 

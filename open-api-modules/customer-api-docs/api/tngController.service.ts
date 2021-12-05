@@ -124,7 +124,7 @@ export class TngControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.post<ApiResponseCheckIsPaydayByCustomerIdResponse>(`${this.configuration.basePath}/tng/v1/${encodeURIComponent(String(customerId))}/provides-information-salary-receipt-date`,
+        return this.httpClient.post<ApiResponseCheckIsPaydayByCustomerIdResponse>(`${this.configuration.basePath}/v1/tngs/${encodeURIComponent(String(customerId))}/checkCustomerInformationSalaryReceiptDate`,
             null,
             {
                 responseType: <any>responseType_,
@@ -178,7 +178,7 @@ export class TngControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.post<ApiResponseTNGResponse>(`${this.configuration.basePath}/tng/v1/check-is-employee-at-tng`,
+        return this.httpClient.post<ApiResponseTNGResponse>(`${this.configuration.basePath}/v1/tngs/checkIsEmployeeAtTng`,
             tNGRequest,
             {
                 responseType: <any>responseType_,
@@ -239,7 +239,7 @@ export class TngControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.post<ApiResponse>(`${this.configuration.basePath}/tng/v1/provides-information-of-employees`,
+        return this.httpClient.post<ApiResponse>(`${this.configuration.basePath}/v1/tngs/providesInformationOfEmployees`,
             inlineObject,
             {
                 params: queryParameters,
@@ -294,7 +294,7 @@ export class TngControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.post<ApiResponseObject>(`${this.configuration.basePath}/tng/v1/provides-information-salary-receipt-date`,
+        return this.httpClient.post<ApiResponseObject>(`${this.configuration.basePath}/v1/tngs/providesInformationSalaryReceiptDate`,
             informationSalaryReceiptDateRequest,
             {
                 responseType: <any>responseType_,
@@ -348,7 +348,7 @@ export class TngControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.post<ApiResponseObject>(`${this.configuration.basePath}/tng/v1/provides-information-salary-receipt-date-via-code-office`,
+        return this.httpClient.post<ApiResponseObject>(`${this.configuration.basePath}/v1/tngs/providesInformationSalaryReceiptDateByOfficeCode`,
             informationSalaryReceiptDateByOfficeCodeRequest,
             {
                 responseType: <any>responseType_,

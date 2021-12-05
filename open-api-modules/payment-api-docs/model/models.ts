@@ -1,5 +1,5 @@
 export * from './apiResponseGpayDeleteTokenResponse';
-export * from './apiResponseGpayRepaymentResponse';
+export * from './apiResponseGpayNapasOrderRepaymentResponse';
 export * from './apiResponseGpayVAResponse';
 export * from './apiResponseListRepaymentTransaction';
 export * from './apiResponseString';
@@ -11,7 +11,7 @@ export * from './deleteTokenRequest';
 export * from './gpayChangeBalanceEvent';
 export * from './gpayChangeBalanceWebhook';
 export * from './gpayDeleteTokenResponse';
-export * from './gpayRepaymentResponse';
+export * from './gpayNapasOrderRepaymentResponse';
 export * from './gpayRepaymentWebhook';
 export * from './gpayVAResponse';
 export * from './meta';

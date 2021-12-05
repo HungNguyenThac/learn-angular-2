@@ -12,7 +12,7 @@ encoder.ts
 git_push.sh
 index.ts
 model/apiResponseGpayDeleteTokenResponse.ts
-model/apiResponseGpayRepaymentResponse.ts
+model/apiResponseGpayNapasOrderRepaymentResponse.ts
 model/apiResponseGpayVAResponse.ts
 model/apiResponseListRepaymentTransaction.ts
 model/apiResponseString.ts
@@ -24,7 +24,7 @@ model/deleteTokenRequest.ts
 model/gpayChangeBalanceEvent.ts
 model/gpayChangeBalanceWebhook.ts
 model/gpayDeleteTokenResponse.ts
-model/gpayRepaymentResponse.ts
+model/gpayNapasOrderRepaymentResponse.ts
 model/gpayRepaymentWebhook.ts
 model/gpayVAResponse.ts
 model/meta.ts

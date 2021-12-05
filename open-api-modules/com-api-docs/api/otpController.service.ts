@@ -17,7 +17,7 @@ import { HttpClient, HttpHeaders, HttpParams,
 import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
-import { ApiResponseOtpResponse } from '../model/models';
+import { ApiResponseString } from '../model/models';
 import { SendOtpRequest } from '../model/models';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
@@ -90,9 +90,9 @@ export class OtpControllerService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public sendOtp(sendOtpRequest: SendOtpRequest, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseOtpResponse>;
-    public sendOtp(sendOtpRequest: SendOtpRequest, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseOtpResponse>>;
-    public sendOtp(sendOtpRequest: SendOtpRequest, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseOtpResponse>>;
+    public sendOtp(sendOtpRequest: SendOtpRequest, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseString>;
+    public sendOtp(sendOtpRequest: SendOtpRequest, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseString>>;
+    public sendOtp(sendOtpRequest: SendOtpRequest, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseString>>;
     public sendOtp(sendOtpRequest: SendOtpRequest, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
         if (sendOtpRequest === null || sendOtpRequest === undefined) {
             throw new Error('Required parameter sendOtpRequest was null or undefined when calling sendOtp.');
@@ -127,7 +127,7 @@ export class OtpControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.post<ApiResponseOtpResponse>(`${this.configuration.basePath}/v1/otp/send-otp`,
+        return this.httpClient.post<ApiResponseString>(`${this.configuration.basePath}/v1/otps/sendOtp`,
             sendOtpRequest,
             {
                 responseType: <any>responseType_,

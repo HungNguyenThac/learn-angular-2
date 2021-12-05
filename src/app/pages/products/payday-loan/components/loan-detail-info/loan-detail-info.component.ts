@@ -3,7 +3,7 @@ import { ToastrService } from 'ngx-toastr';
 import { UpdateLoanStatusRequest } from './../../../../../../../open-api-modules/loanapp-hmg-api-docs/model/updateLoanStatusRequest';
 import { Subscription } from 'rxjs';
 import { PaydayLoanControllerService as PaydayLoanHmgControllerService } from './../../../../../../../open-api-modules/loanapp-hmg-api-docs/api/paydayLoanController.service';
-import { PaydayLoanControllerService as PaydayLoanTngControllerService } from './../../../../../../../open-api-modules/loanapp-api-docs/api/paydayLoanController.service';
+import { PaydayLoanControllerService as PaydayLoanTngControllerService } from './../../../../../../../open-api-modules/loanapp-tng-api-docs/api/paydayLoanController.service';
 import { PAYDAY_LOAN_STATUS } from './../../../../../core/common/enum/payday-loan';
 import {
   BUTTON_TYPE,
@@ -29,7 +29,7 @@ import {
 import {
   ApiResponseObject,
   PaydayLoan,
-} from 'open-api-modules/loanapp-api-docs';
+} from 'open-api-modules/loanapp-tng-api-docs';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import {
   ApiResponseString,

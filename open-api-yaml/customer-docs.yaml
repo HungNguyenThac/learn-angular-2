@@ -6,6 +6,76 @@ servers:
 - url: http://localhost:8004
   description: Generated server url
 paths:
+  /v1/ratings/{id}:
+    put:
+      tags:
+      - rating-controller
+      operationId: updateRating
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateRatingRequest'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseRating'
+  /v1/infos/{customerId}:
+    get:
+      tags:
+      - info-controller
+      operationId: getInfoByCustomerId
+      parameters:
+      - name: customerId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: category
+        in: query
+        required: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseCustomerInfoResponse'
+    put:
+      tags:
+      - info-controller
+      operationId: updateInfo
+      parameters:
+      - name: customerId
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateInfoRequest'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseObject'
   /v1/districts/{id}:
     get:
       tags:
@@ -64,6 +134,48 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ApiResponseDistrict'
+  /v1/companies/{id}:
+    get:
+      tags:
+      - company-controller
+      operationId: getCompanyById
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseCompanyInfo'
+      security:
+      - bearerAuth: []
+    put:
+      tags:
+      - company-controller
+      operationId: updateCompany
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/UpdateCompanyRequest'
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseCompanyInfo'
   /v1/communes/{id}:
     get:
       tags:
@@ -180,73 +292,7 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ApiResponseCity'
-  /rating/v1/{id}:
-    put:
-      tags:
-      - rating-controller
-      operationId: updateRating
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/UpdateRatingRequest'
-        required: true
-      responses:
-        "200":
-          description: OK
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/ApiResponseRating'
-  /company/v1/{id}:
-    get:
-      tags:
-      - company-controller
-      operationId: getCompanyById
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          description: OK
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/ApiResponseCompanyInfo'
-      security:
-      - bearerAuth: []
-    put:
-      tags:
-      - company-controller
-      operationId: updateCompany
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-      requestBody:
-        content:
-          multipart/form-data:
-            schema:
-              $ref: '#/components/schemas/UpdateCompanyRequest'
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ApiResponseCompanyInfo'
-  /bank/v1/{id}:
+  /v1/banks/{id}:
     put:
       tags:
       - bank-controller
@@ -287,6 +333,444 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ApiResponseBank'
+  /v2/infos/validateConfirmInformationRequest:
+    post:
+      tags:
+      - info-v-2-controller
+      operationId: validateConfirmInformationRequestV2
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ConfirmInformationV2Request'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseObject'
+  /v2/infos/confirmInformation:
+    post:
+      tags:
+      - info-v-2-controller
+      operationId: confirmInformationV2
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ConfirmInformationV2Request'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseObject'
+  /v2/infos/additionalInformation:
+    post:
+      tags:
+      - info-v-2-controller
+      operationId: additionalInformationV2
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdditionalInformationV2Request'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseObject'
+  /v1/tngs/{customerId}/checkCustomerInformationSalaryReceiptDate:
+    post:
+      tags:
+      - tng-controller
+      operationId: checkCustomerInformationSalaryReceiptDate
+      parameters:
+      - name: customerId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseCheckIsPaydayByCustomerIdResponse'
+  /v1/tngs/providesInformationSalaryReceiptDate:
+    post:
+      tags:
+      - tng-controller
+      operationId: providesInformationSalaryReceiptDate
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InformationSalaryReceiptDateRequest'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseObject'
+  /v1/tngs/providesInformationSalaryReceiptDateByOfficeCode:
+    post:
+      tags:
+      - tng-controller
+      operationId: providesInformationSalaryReceiptDateByOfficeCode
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InformationSalaryReceiptDateByOfficeCodeRequest'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseObject'
+  /v1/tngs/providesInformationOfEmployees:
+    post:
+      tags:
+      - tng-controller
+      operationId: providesInformationOfEmployees
+      parameters:
+      - name: organizationName
+        in: query
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+  /v1/tngs/checkIsEmployeeAtTng:
+    post:
+      tags:
+      - tng-controller
+      operationId: IsEmployeesWorkingAtTNG
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TNGRequest'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseTNGResponse'
+  /v1/ratings:
+    get:
+      tags:
+      - rating-controller
+      operationId: getAllRatings
+      parameters:
+      - name: applicationType
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: isRated
+        in: query
+        required: false
+        schema:
+          type: boolean
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseListRating'
+    post:
+      tags:
+      - rating-controller
+      operationId: createRating
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateRatingRequest'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseRating'
+  /v1/notifications/{customerId}/notifyInRepaymentLoan:
+    post:
+      tags:
+      - notification-controller
+      operationId: notifyCustomerHasInRepaymentLoan
+      parameters:
+      - name: customerId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: loanCode
+        in: query
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseBoolean'
+  /v1/notifications/notifyInRepaymentLoanByTemplate:
+    post:
+      tags:
+      - notification-controller
+      operationId: notifyCustomerHasInRepaymentLoanByTemplate
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TemplateRequest'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseBoolean'
+  /v1/newsletters:
+    post:
+      tags:
+      - newsletter-controller
+      operationId: saveInfo
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewsLetterRequest'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseNewsletterInfo'
+  /v1/kalapas/idCard/plus:
+    post:
+      tags:
+      - kalapa-controller
+      operationId: extractInfo
+      parameters:
+      - name: verify
+        in: query
+        required: false
+        schema:
+          type: boolean
+          default: false
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/KalapaRequest'
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseKalapaResponse'
+  /v1/infos/{customerId}/returnConfirmInformation:
+    post:
+      tags:
+      - info-controller
+      operationId: returnConfirmInformation
+      parameters:
+      - name: customerId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseString'
+  /v1/infos/validateConfirmInformationRequest:
+    post:
+      tags:
+      - info-controller
+      operationId: validateConfirmInformationRequest
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ConfirmInformationRequest'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseObject'
+  /v1/infos/updateFinance:
+    post:
+      tags:
+      - info-controller
+      operationId: updateFinance
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FinancialData'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseObject'
+  /v1/infos/requestGetTngData:
+    post:
+      tags:
+      - info-controller
+      operationId: requestGetTngData
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetTngDataRequest'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseString'
+  /v1/infos/customerSignDone:
+    post:
+      tags:
+      - info-controller
+      operationId: customerSignDone
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomerSignDoneRequest'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseObject'
+  /v1/infos/confirmInformation:
+    post:
+      tags:
+      - info-controller
+      operationId: confirmInformation
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ConfirmInformationRequest'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseObject'
+  /v1/infos/chooseCompany:
+    post:
+      tags:
+      - info-controller
+      operationId: chooseCompany
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChooseCompanyRequest'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseObject'
+  /v1/infos/additionalInformation:
+    post:
+      tags:
+      - info-controller
+      operationId: additionalInformation
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdditionalInformationRequest'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseObject'
+  /v1/infos/addEmployeeData:
+    post:
+      tags:
+      - info-controller
+      operationId: addEmployeeData
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdditionalEmployeeDataRequest'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseString'
   /v1/districts:
     post:
       tags:
@@ -305,6 +789,44 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ApiResponseDistrict'
+  /v1/companies:
+    get:
+      tags:
+      - company-controller
+      operationId: getListCompanies
+      parameters:
+      - name: groupName
+        in: query
+        required: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseListCompanyInfo'
+      security:
+      - bearerAuth: []
+    post:
+      tags:
+      - company-controller
+      operationId: createCompany
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CompanyRequest'
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseCompanyInfo'
+      security:
+      - bearerAuth: []
   /v1/communes:
     post:
       tags:
@@ -352,543 +874,18 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ApiResponseCity'
-  /tng/v1/{customerId}/provides-information-salary-receipt-date:
-    post:
+  /v1/banks:
+    get:
       tags:
-      - tng-controller
-      operationId: checkCustomerInformationSalaryReceiptDate
-      parameters:
-      - name: customerId
-        in: path
-        required: true
-        schema:
-          type: string
+      - bank-controller
+      operationId: getAllBank
       responses:
         "200":
           description: OK
           content:
             '*/*':
               schema:
-                $ref: '#/components/schemas/ApiResponseCheckIsPaydayByCustomerIdResponse'
-  /tng/v1/provides-information-salary-receipt-date:
-    post:
-      tags:
-      - tng-controller
-      operationId: providesInformationSalaryReceiptDate
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/InformationSalaryReceiptDateRequest'
-        required: true
-      responses:
-        "200":
-          description: OK
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/ApiResponseObject'
-  /tng/v1/provides-information-salary-receipt-date-via-code-office:
-    post:
-      tags:
-      - tng-controller
-      operationId: providesInformationSalaryReceiptDateByOfficeCode
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/InformationSalaryReceiptDateByOfficeCodeRequest'
-        required: true
-      responses:
-        "200":
-          description: OK
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/ApiResponseObject'
-  /tng/v1/provides-information-of-employees:
-    post:
-      tags:
-      - tng-controller
-      operationId: providesInformationOfEmployees
-      parameters:
-      - name: organizationName
-        in: query
-        required: true
-        schema:
-          type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                file:
-                  type: string
-                  format: binary
-      responses:
-        "200":
-          description: OK
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/ApiResponse'
-  /tng/v1/check-is-employee-at-tng:
-    post:
-      tags:
-      - tng-controller
-      operationId: IsEmployeesWorkingAtTNG
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/TNGRequest'
-        required: true
-      responses:
-        "200":
-          description: OK
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/ApiResponseTNGResponse'
-  /rating/v1/create-rating:
-    post:
-      tags:
-      - rating-controller
-      operationId: createRating
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/CreateRatingRequest'
-        required: true
-      responses:
-        "200":
-          description: OK
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/ApiResponseRating'
-  /notification/v1/{customerId}/notify-in-repayment-loan:
-    post:
-      tags:
-      - notification-controller
-      operationId: notifyCustomerHasInRepaymentLoan
-      parameters:
-      - name: customerId
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: loanCode
-        in: query
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          description: OK
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/ApiResponseBoolean'
-  /notification/v1/notify-in-repayment-loan-by-template:
-    post:
-      tags:
-      - notification-controller
-      operationId: notifyCustomerHasInRepaymentLoanByTemplate
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/TemplateRequest'
-        required: true
-      responses:
-        "200":
-          description: OK
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/ApiResponseBoolean'
-  /newsletter/v1/info:
-    post:
-      tags:
-      - newsletter-controller
-      operationId: saveInfo
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/NewsLetterRequest'
-        required: true
-      responses:
-        "200":
-          description: OK
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/ApiResponseNewsletterInfo'
-  /kalapa/v2/{customerId}/id_card/plus:
-    post:
-      tags:
-      - kalapa-v-2-controller
-      operationId: extractInfo
-      parameters:
-      - name: verify
-        in: query
-        required: false
-        schema:
-          type: boolean
-          default: false
-      - name: skipValidate
-        in: query
-        required: false
-        schema:
-          type: boolean
-          default: false
-      - name: customerId
-        in: path
-        required: true
-        schema:
-          type: string
-      requestBody:
-        content:
-          multipart/form-data:
-            schema:
-              $ref: '#/components/schemas/KalapaRequest'
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ApiResponseKalapaResponse'
-  /kalapa/v1/id_card/plus:
-    post:
-      tags:
-      - kalapa-controller
-      operationId: extractInfo_1
-      parameters:
-      - name: verify
-        in: query
-        required: false
-        schema:
-          type: boolean
-          default: false
-      requestBody:
-        content:
-          multipart/form-data:
-            schema:
-              $ref: '#/components/schemas/KalapaRequest'
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ApiResponseKalapaResponse'
-  /info/v2/{customerId}/validate-confirm-information-request:
-    post:
-      tags:
-      - info-v-2-controller
-      operationId: validateConfirmInformationRequestV2
-      parameters:
-      - name: customerId
-        in: path
-        required: true
-        schema:
-          type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/ConfirmInformationV2Request'
-        required: true
-      responses:
-        "200":
-          description: OK
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/ApiResponseObject'
-  /info/v2/{customerId}/confirm-information:
-    post:
-      tags:
-      - info-v-2-controller
-      operationId: confirmInformationV2
-      parameters:
-      - name: customerId
-        in: path
-        required: true
-        schema:
-          type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/ConfirmInformationV2Request'
-        required: true
-      responses:
-        "200":
-          description: OK
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/ApiResponseObject'
-  /info/v2/{customerId}/additional-information:
-    post:
-      tags:
-      - info-v-2-controller
-      operationId: additionalInformationV2
-      parameters:
-      - name: customerId
-        in: path
-        required: true
-        schema:
-          type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/AdditionalInformationV2Request'
-        required: true
-      responses:
-        "200":
-          description: OK
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/ApiResponseObject'
-  /info/v1/{customerId}/validate-confirm-information-request:
-    post:
-      tags:
-      - info-controller
-      operationId: validateConfirmInformationRequest
-      parameters:
-      - name: customerId
-        in: path
-        required: true
-        schema:
-          type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/ConfirmInformationRequest'
-        required: true
-      responses:
-        "200":
-          description: OK
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/ApiResponseObject'
-  /info/v1/{customerId}/update:
-    post:
-      tags:
-      - info-controller
-      operationId: putInfo
-      parameters:
-      - name: customerId
-        in: path
-        required: true
-        schema:
-          type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/UpdateInfoRequest'
-        required: true
-      responses:
-        "200":
-          description: OK
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/ApiResponseObject'
-  /info/v1/{customerId}/update-finance:
-    post:
-      tags:
-      - info-controller
-      operationId: updateFinance
-      parameters:
-      - name: customerId
-        in: path
-        required: true
-        schema:
-          type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/FinancialData'
-        required: true
-      responses:
-        "200":
-          description: OK
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/ApiResponseObject'
-  /info/v1/{customerId}/return-confirm-information:
-    post:
-      tags:
-      - info-controller
-      operationId: returnConfirmInformation
-      parameters:
-      - name: customerId
-        in: path
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          description: OK
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/ApiResponseString'
-  /info/v1/{customerId}/request-get-tng-data:
-    post:
-      tags:
-      - info-controller
-      operationId: requestGetTngData
-      parameters:
-      - name: customerId
-        in: path
-        required: true
-        schema:
-          type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/GetTngDataRequest'
-        required: true
-      responses:
-        "200":
-          description: OK
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/ApiResponseString'
-  /info/v1/{customerId}/customer-sign-done:
-    post:
-      tags:
-      - info-controller
-      operationId: customerSignDone
-      parameters:
-      - name: customerId
-        in: path
-        required: true
-        schema:
-          type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/CustomerSignDoneRequest'
-        required: true
-      responses:
-        "200":
-          description: OK
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/ApiResponseObject'
-  /info/v1/{customerId}/confirm-information:
-    post:
-      tags:
-      - info-controller
-      operationId: confirmInformation
-      parameters:
-      - name: customerId
-        in: path
-        required: true
-        schema:
-          type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/ConfirmInformationRequest'
-        required: true
-      responses:
-        "200":
-          description: OK
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/ApiResponseObject'
-  /info/v1/{customerId}/choose-company:
-    post:
-      tags:
-      - info-controller
-      operationId: chooseCompany
-      parameters:
-      - name: customerId
-        in: path
-        required: true
-        schema:
-          type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/ChooseCompanyRequest'
-        required: true
-      responses:
-        "200":
-          description: OK
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/ApiResponseObject'
-  /info/v1/{customerId}/additional-information:
-    post:
-      tags:
-      - info-controller
-      operationId: additionalInformation
-      parameters:
-      - name: customerId
-        in: path
-        required: true
-        schema:
-          type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/AdditionalInformationRequest'
-        required: true
-      responses:
-        "200":
-          description: OK
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/ApiResponseObject'
-  /company/v1/add:
-    post:
-      tags:
-      - company-controller
-      operationId: createCompany
-      requestBody:
-        content:
-          multipart/form-data:
-            schema:
-              $ref: '#/components/schemas/CompanyRequest'
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ApiResponseCompanyInfo'
-      security:
-      - bearerAuth: []
-  /bank/v1/create-bank:
+                $ref: '#/components/schemas/ApiResponseListBank'
     post:
       tags:
       - bank-controller
@@ -906,6 +903,82 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ApiResponseBank'
+  /v1/admin/kalapas/{customerId}/idCard/plus:
+    post:
+      tags:
+      - kalapa-v-2-controller
+      operationId: extractInfo_1
+      parameters:
+      - name: verify
+        in: query
+        required: false
+        schema:
+          type: boolean
+          default: false
+      - name: customerId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: skipValidate
+        in: query
+        required: false
+        schema:
+          type: boolean
+          default: false
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/KalapaRequest'
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseKalapaResponse'
+  /v1/ratings/latest:
+    get:
+      tags:
+      - rating-controller
+      operationId: getLastRating
+      parameters:
+      - name: applicationType
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: isRated
+        in: query
+        required: false
+        schema:
+          type: boolean
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseRating'
+  /v1/infos/me:
+    get:
+      tags:
+      - info-controller
+      operationId: getInfo
+      parameters:
+      - name: category
+        in: query
+        required: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseCustomerInfoResponse'
   /v1/districts/{districtId}/communes:
     get:
       tags:
@@ -990,113 +1063,14 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ApiResponseString'
-  /rating/v1/get-lastest-rating:
-    get:
-      tags:
-      - rating-controller
-      operationId: getLastRating
-      parameters:
-      - name: customerId
-        in: query
-        required: true
-        schema:
-          type: string
-      - name: applicationType
-        in: query
-        required: true
-        schema:
-          type: string
-      - name: isRated
-        in: query
-        required: false
-        schema:
-          type: boolean
-      responses:
-        "200":
-          description: OK
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/ApiResponseRating'
-  /rating/v1/get-all-ratings:
-    get:
-      tags:
-      - rating-controller
-      operationId: getAllRatings
-      parameters:
-      - name: customerId
-        in: query
-        required: true
-        schema:
-          type: string
-      - name: applicationType
-        in: query
-        required: true
-        schema:
-          type: string
-      - name: isRated
-        in: query
-        required: false
-        schema:
-          type: boolean
-      responses:
-        "200":
-          description: OK
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/ApiResponseListRating'
-  /info/v1/{customerId}:
-    get:
-      tags:
-      - info-controller
-      operationId: getInfo
-      parameters:
-      - name: customerId
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: category
-        in: query
-        required: false
-        schema:
-          type: string
-      responses:
-        "200":
-          description: OK
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/ApiResponseCustomerInfoResponse'
-  /company/v1/get-list:
-    get:
-      tags:
-      - company-controller
-      operationId: getListCompany
-      parameters:
-      - name: groupName
-        in: query
-        required: false
-        schema:
-          type: string
-      responses:
-        "200":
-          description: OK
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/ApiResponseListCompanyInfo'
-      security:
-      - bearerAuth: []
-  /bank/v1/get-bank:
+  /v1/banks/{bankCode}:
     get:
       tags:
       - bank-controller
       operationId: getBankByCode
       parameters:
       - name: bankCode
-        in: query
+        in: path
         required: true
         schema:
           type: string
@@ -1107,19 +1081,7 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ApiResponseBank'
-  /bank/v1/get-all-banks:
-    get:
-      tags:
-      - bank-controller
-      operationId: getAllBank
-      responses:
-        "200":
-          description: OK
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/ApiResponseListBank'
-  /approval-letter/v1/{customerId}:
+  /v1/approvalLetters/{customerId}:
     get:
       tags:
       - approval-letter-controller
@@ -1139,17 +1101,11 @@ paths:
                 $ref: '#/components/schemas/ApiResponseListApprovalLetter'
       security:
       - bearerAuth: []
-  /approval-letter/v1/{customerId}/latest:
+  /v1/approvalLetters/latest:
     get:
       tags:
       - approval-letter-controller
       operationId: getApprovalLetterByCustomerId
-      parameters:
-      - name: customerId
-        in: path
-        required: true
-        schema:
-          type: string
       responses:
         "200":
           description: OK
@@ -1159,7 +1115,7 @@ paths:
                 $ref: '#/components/schemas/ApiResponseApprovalLetter'
       security:
       - bearerAuth: []
-  /company/v1/{companyId}:
+  /v1/companies/{companyId}:
     delete:
       tags:
       - company-controller
@@ -1179,6 +1135,67 @@ paths:
                 $ref: '#/components/schemas/ApiResponseCompanyInfo'
 components:
   schemas:
+    UpdateRatingRequest:
+      type: object
+      properties:
+        rate:
+          type: string
+          enum:
+          - NOT_SATISFIED
+          - SEMI_SATISFIED
+          - NORMAL
+          - SATISFIED
+          - VERY_SATISFIED
+        customerOpinion:
+          type: string
+    ApiResponseRating:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/Rating'
+        errorCode:
+          type: string
+        message:
+          type: object
+        responseCode:
+          type: integer
+          format: int32
+    Rating:
+      type: object
+      properties:
+        id:
+          type: string
+        applicationId:
+          type: string
+        applicationType:
+          type: string
+        rate:
+          type: string
+        customerOpinion:
+          type: string
+        isRated:
+          type: boolean
+        customerId:
+          type: string
+    UpdateInfoRequest:
+      type: object
+      properties:
+        info:
+          type: object
+          additionalProperties:
+            type: object
+    ApiResponseObject:
+      type: object
+      properties:
+        result:
+          type: object
+        errorCode:
+          type: string
+        message:
+          type: object
+        responseCode:
+          type: integer
+          format: int32
     UpdateDistrictRequest:
       type: object
       properties:
@@ -1230,6 +1247,75 @@ components:
         code:
           type: string
         cityId:
+          type: string
+    UpdateCompanyRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        groupName:
+          type: string
+        code:
+          type: string
+        avatar:
+          type: string
+          format: binary
+        createdBy:
+          type: string
+        businessCode:
+          type: string
+        mobile:
+          type: string
+        owner:
+          type: string
+        address:
+          type: string
+        payday:
+          type: integer
+          format: int32
+    ApiResponseCompanyInfo:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/CompanyInfo'
+        errorCode:
+          type: string
+        message:
+          type: object
+        responseCode:
+          type: integer
+          format: int32
+    CompanyInfo:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        groupName:
+          type: string
+        code:
+          type: string
+        businessCode:
+          type: string
+        mobile:
+          type: string
+        owner:
+          type: string
+        address:
+          type: string
+        payday:
+          type: integer
+          format: int32
+        avatar:
+          type: string
+        createdBy:
+          type: string
+        updatedBy:
+          type: string
+        createdAt:
+          type: string
+        updatedAt:
           type: string
     UpdateCommuneRequest:
       type: object
@@ -1323,117 +1409,6 @@ components:
           type: string
         code:
           type: string
-    UpdateRatingRequest:
-      type: object
-      properties:
-        rate:
-          type: string
-          enum:
-          - NOT_SATISFIED
-          - SEMI_SATISFIED
-          - NORMAL
-          - SATISFIED
-          - VERY_SATISFIED
-        customerOpinion:
-          type: string
-    ApiResponseRating:
-      type: object
-      properties:
-        result:
-          $ref: '#/components/schemas/Rating'
-        errorCode:
-          type: string
-        message:
-          type: object
-        responseCode:
-          type: integer
-          format: int32
-    Rating:
-      type: object
-      properties:
-        id:
-          type: string
-        applicationId:
-          type: string
-        applicationType:
-          type: string
-        rate:
-          type: string
-        customerOpinion:
-          type: string
-        isRated:
-          type: boolean
-        customerId:
-          type: string
-    UpdateCompanyRequest:
-      type: object
-      properties:
-        name:
-          type: string
-        groupName:
-          type: string
-        code:
-          type: string
-        avatar:
-          type: string
-          format: binary
-        createdBy:
-          type: string
-        businessCode:
-          type: string
-        mobile:
-          type: string
-        owner:
-          type: string
-        address:
-          type: string
-        payday:
-          type: integer
-          format: int32
-    ApiResponseCompanyInfo:
-      type: object
-      properties:
-        result:
-          $ref: '#/components/schemas/CompanyInfo'
-        errorCode:
-          type: string
-        message:
-          type: object
-        responseCode:
-          type: integer
-          format: int32
-    CompanyInfo:
-      type: object
-      properties:
-        id:
-          type: string
-        name:
-          type: string
-        groupName:
-          type: string
-        code:
-          type: string
-        businessCode:
-          type: string
-        mobile:
-          type: string
-        owner:
-          type: string
-        address:
-          type: string
-        payday:
-          type: integer
-          format: int32
-        avatar:
-          type: string
-        createdBy:
-          type: string
-        updatedBy:
-          type: string
-        createdAt:
-          type: string
-        updatedAt:
-          type: string
     UpdateBankRequest:
       required:
       - bankCode
@@ -1465,63 +1440,70 @@ components:
           type: string
         bankCode:
           type: string
-    CreateDistrictRequest:
+    ConfirmInformationV2Request:
+      required:
+      - addressTwoLine1
+      - apartmentNumber
+      - cityId
+      - communeId
+      - dateOfBirth
+      - districtId
+      - emailAddress
+      - firstName
+      - gender
+      - idIssuePlace
+      - identityNumberOne
+      - identityNumberSix
       type: object
       properties:
-        name:
+        firstName:
           type: string
-        slug:
+        dateOfBirth:
           type: string
-        type:
+        gender:
           type: string
-        nameWithType:
+        identityNumberSix:
           type: string
-        code:
+        identityNumberOne:
           type: string
-        path:
+        addressTwoLine1:
           type: string
-        pathWithType:
+        emailAddress:
+          type: string
+        idIssuePlace:
+          type: string
+        coreUserId:
           type: string
         cityId:
           type: string
-    CreateCommuneRequest:
-      type: object
-      properties:
-        name:
-          type: string
-        slug:
-          type: string
-        type:
-          type: string
-        nameWithType:
-          type: string
-        code:
-          type: string
-        path:
-          type: string
-        pathWithType:
-          type: string
         districtId:
           type: string
-    CreateCityRequest:
+        communeId:
+          type: string
+        apartmentNumber:
+          type: string
+    AdditionalInformationV2Request:
       required:
-      - code
-      - name
-      - nameWithType
-      - slug
-      - type
+      - annualIncome
+      - borrowerDetailTextVariable1
+      - borrowerEmploymentHistoryTextVariable1
+      - educationType
+      - maritalStatus
       type: object
       properties:
-        name:
+        maritalStatus:
           type: string
-        slug:
+        educationType:
           type: string
-        type:
+        borrowerDetailTextVariable1:
           type: string
-        nameWithType:
+        borrowerEmploymentHistoryTextVariable1:
           type: string
-        code:
-          type: string
+        annualIncome:
+          maximum: 500000000
+          minimum: 1000000
+          type: number
+          format: float
     ApiResponseCheckIsPaydayByCustomerIdResponse:
       type: object
       properties:
@@ -1618,6 +1600,10 @@ components:
           type: string
         errorGetTngInfo:
           type: boolean
+        isSignedApprovalLetter:
+          type: boolean
+        isVerified:
+          type: boolean
         collateralDocument:
           type: string
         salaryDocument1:
@@ -1638,6 +1624,16 @@ components:
           type: string
         backIdTwo:
           type: string
+        userStatus:
+          type: string
+          enum:
+          - ACTIVE
+          - LOCKED
+        unLockTime:
+          type: string
+          format: date-time
+        isDelete:
+          type: boolean
     InformationSalaryReceiptDateRequest:
       required:
       - employee_code
@@ -1645,18 +1641,6 @@ components:
       properties:
         employee_code:
           type: string
-    ApiResponseObject:
-      type: object
-      properties:
-        result:
-          type: object
-        errorCode:
-          type: string
-        message:
-          type: object
-        responseCode:
-          type: integer
-          format: int32
     InformationSalaryReceiptDateByOfficeCodeRequest:
       required:
       - officeCode
@@ -1881,74 +1865,26 @@ components:
         matchingScore:
           type: integer
           format: int32
-    ConfirmInformationV2Request:
-      required:
-      - addressOneLine1
-      - addressTwoLine1
-      - dateOfBirth
-      - emailAddress
-      - firstName
-      - gender
-      - idIssuePlace
-      - identityNumberOne
-      - identityNumberSix
+    ApiResponseString:
       type: object
       properties:
-        firstName:
+        result:
           type: string
-        dateOfBirth:
+        errorCode:
           type: string
-        gender:
-          type: string
-        identityNumberSix:
-          type: string
-        identityNumberOne:
-          type: string
-        addressTwoLine1:
-          type: string
-        addressOneLine1:
-          type: string
-        emailAddress:
-          type: string
-        idIssuePlace:
-          type: string
-        coreUserId:
-          type: string
-        cityId:
-          type: string
-        districtId:
-          type: string
-        communeId:
-          type: string
-        apartmentNumber:
-          type: string
-    AdditionalInformationV2Request:
-      required:
-      - annualIncome
-      - borrowerDetailTextVariable1
-      - borrowerEmploymentHistoryTextVariable1
-      - educationType
-      - maritalStatus
-      type: object
-      properties:
-        maritalStatus:
-          type: string
-        educationType:
-          type: string
-        borrowerDetailTextVariable1:
-          type: string
-        borrowerEmploymentHistoryTextVariable1:
-          type: string
-        annualIncome:
-          maximum: 500000000
-          minimum: 1000000
-          type: number
-          format: float
+        message:
+          type: object
+        responseCode:
+          type: integer
+          format: int32
     ConfirmInformationRequest:
       required:
-      - addressOneLine1
       - addressTwoLine1
+      - apartmentNumber
+      - cityId
+      - communeId
       - dateOfBirth
+      - districtId
       - emailAddress
       - firstName
       - gender
@@ -1970,8 +1906,6 @@ components:
           type: string
         addressTwoLine1:
           type: string
-        addressOneLine1:
-          type: string
         emailAddress:
           type: string
         organizationName:
@@ -1988,13 +1922,6 @@ components:
           type: string
         apartmentNumber:
           type: string
-    UpdateInfoRequest:
-      type: object
-      properties:
-        info:
-          type: object
-          additionalProperties:
-            type: object
     FinancialData:
       type: object
       properties:
@@ -2004,18 +1931,6 @@ components:
           type: string
         accountNumber:
           type: string
-    ApiResponseString:
-      type: object
-      properties:
-        result:
-          type: string
-        errorCode:
-          type: string
-        message:
-          type: object
-        responseCode:
-          type: integer
-          format: int32
     GetTngDataRequest:
       required:
       - documentPath
@@ -2061,6 +1976,32 @@ components:
           type: string
         borrowerEmploymentHistoryTextVariable1:
           type: string
+    AdditionalEmployeeDataRequest:
+      required:
+      - organizationName
+      type: object
+      properties:
+        organizationName:
+          type: string
+    CreateDistrictRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        slug:
+          type: string
+        type:
+          type: string
+        nameWithType:
+          type: string
+        code:
+          type: string
+        path:
+          type: string
+        pathWithType:
+          type: string
+        cityId:
+          type: string
     CompanyRequest:
       required:
       - groupName
@@ -2097,6 +2038,44 @@ components:
           type: string
         code:
           type: string
+    CreateCommuneRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        slug:
+          type: string
+        type:
+          type: string
+        nameWithType:
+          type: string
+        code:
+          type: string
+        path:
+          type: string
+        pathWithType:
+          type: string
+        districtId:
+          type: string
+    CreateCityRequest:
+      required:
+      - code
+      - name
+      - nameWithType
+      - slug
+      - type
+      type: object
+      properties:
+        name:
+          type: string
+        slug:
+          type: string
+        type:
+          type: string
+        nameWithType:
+          type: string
+        code:
+          type: string
     CreateBankRequest:
       required:
       - bankCode
@@ -2107,48 +2086,6 @@ components:
           type: string
         bankCode:
           type: string
-    ApiResponseListCommune:
-      type: object
-      properties:
-        result:
-          type: array
-          items:
-            $ref: '#/components/schemas/Commune'
-        errorCode:
-          type: string
-        message:
-          type: object
-        responseCode:
-          type: integer
-          format: int32
-    ApiResponseListCity:
-      type: object
-      properties:
-        result:
-          type: array
-          items:
-            $ref: '#/components/schemas/City'
-        errorCode:
-          type: string
-        message:
-          type: object
-        responseCode:
-          type: integer
-          format: int32
-    ApiResponseListDistrict:
-      type: object
-      properties:
-        result:
-          type: array
-          items:
-            $ref: '#/components/schemas/District'
-        errorCode:
-          type: string
-        message:
-          type: object
-        responseCode:
-          type: integer
-          format: int32
     ApiResponseListRating:
       type: object
       properties:
@@ -2211,6 +2148,20 @@ components:
           type: string
         maNS:
           type: string
+    ApiResponseListCommune:
+      type: object
+      properties:
+        result:
+          type: array
+          items:
+            $ref: '#/components/schemas/Commune'
+        errorCode:
+          type: string
+        message:
+          type: object
+        responseCode:
+          type: integer
+          format: int32
     ApiResponseListCompanyInfo:
       type: object
       properties:
@@ -2218,6 +2169,34 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/CompanyInfo'
+        errorCode:
+          type: string
+        message:
+          type: object
+        responseCode:
+          type: integer
+          format: int32
+    ApiResponseListCity:
+      type: object
+      properties:
+        result:
+          type: array
+          items:
+            $ref: '#/components/schemas/City'
+        errorCode:
+          type: string
+        message:
+          type: object
+        responseCode:
+          type: integer
+          format: int32
+    ApiResponseListDistrict:
+      type: object
+      properties:
+        result:
+          type: array
+          items:
+            $ref: '#/components/schemas/District'
         errorCode:
           type: string
         message:

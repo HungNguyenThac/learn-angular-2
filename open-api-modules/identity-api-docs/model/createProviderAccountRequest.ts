@@ -12,8 +12,13 @@
 
 
 export interface CreateProviderAccountRequest { 
+    groupId: string;
     username: string;
     secret: string;
-    group: string;
+    fullName: string;
+    email: string;
+    mobile: string;
+    note?: string;
+    position?: string;
 }
 

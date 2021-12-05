@@ -29,7 +29,11 @@
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
-            "assets": ["src/favicon.ico", "src/assets", "src/environments"],
+            "assets": [
+              "src/favicon.ico",
+              "src/assets",
+              "src/environments"
+            ],
             "styles": [
               "src/styles/theme.scss",
               "./node_modules/bootstrap/dist/css/bootstrap.min.css",
@@ -78,7 +82,7 @@
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.staging.ts"
+                  "with": "src/environments/environment.dev.ts"
                 }
               ],
               "buildOptimizer": false,
@@ -117,7 +121,11 @@
             "tsConfig": "tsconfig.spec.json",
             "karmaConfig": "karma.conf.js",
             "inlineStyleLanguage": "scss",
-            "assets": ["src/favicon.ico", "src/assets", "src/environments"],
+            "assets": [
+              "src/favicon.ico",
+              "src/assets",
+              "src/environments"
+            ],
             "styles": [
               "src/styles/theme.scss",
               "./node_modules/bootstrap/dist/css/bootstrap.min.css",

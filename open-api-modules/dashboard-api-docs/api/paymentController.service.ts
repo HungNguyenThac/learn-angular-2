@@ -120,7 +120,7 @@ export class PaymentControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.get<ApiResponseRepaymentTransaction>(`${this.configuration.basePath}/v1/payment/${encodeURIComponent(String(paymentId))}`,
+        return this.httpClient.get<ApiResponseRepaymentTransaction>(`${this.configuration.basePath}/v1/payments/${encodeURIComponent(String(paymentId))}`,
             {
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
@@ -140,18 +140,18 @@ export class PaymentControllerService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getTransaction(pageSize: number, pageNumber: number, requestBody: { [key: string]: object; }, orderBy?: string, descending?: boolean, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseSearchAndPaginationResponseRepaymentTransaction>;
-    public getTransaction(pageSize: number, pageNumber: number, requestBody: { [key: string]: object; }, orderBy?: string, descending?: boolean, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseSearchAndPaginationResponseRepaymentTransaction>>;
-    public getTransaction(pageSize: number, pageNumber: number, requestBody: { [key: string]: object; }, orderBy?: string, descending?: boolean, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseSearchAndPaginationResponseRepaymentTransaction>>;
-    public getTransaction(pageSize: number, pageNumber: number, requestBody: { [key: string]: object; }, orderBy?: string, descending?: boolean, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
+    public getTransactions(pageSize: number, pageNumber: number, requestBody: { [key: string]: object; }, orderBy?: string, descending?: boolean, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseSearchAndPaginationResponseRepaymentTransaction>;
+    public getTransactions(pageSize: number, pageNumber: number, requestBody: { [key: string]: object; }, orderBy?: string, descending?: boolean, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseSearchAndPaginationResponseRepaymentTransaction>>;
+    public getTransactions(pageSize: number, pageNumber: number, requestBody: { [key: string]: object; }, orderBy?: string, descending?: boolean, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseSearchAndPaginationResponseRepaymentTransaction>>;
+    public getTransactions(pageSize: number, pageNumber: number, requestBody: { [key: string]: object; }, orderBy?: string, descending?: boolean, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
         if (pageSize === null || pageSize === undefined) {
-            throw new Error('Required parameter pageSize was null or undefined when calling getTransaction.');
+            throw new Error('Required parameter pageSize was null or undefined when calling getTransactions.');
         }
         if (pageNumber === null || pageNumber === undefined) {
-            throw new Error('Required parameter pageNumber was null or undefined when calling getTransaction.');
+            throw new Error('Required parameter pageNumber was null or undefined when calling getTransactions.');
         }
         if (requestBody === null || requestBody === undefined) {
-            throw new Error('Required parameter requestBody was null or undefined when calling getTransaction.');
+            throw new Error('Required parameter requestBody was null or undefined when calling getTransactions.');
         }
 
         let queryParameters = new HttpParams({encoder: this.encoder});
@@ -201,7 +201,7 @@ export class PaymentControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.post<ApiResponseSearchAndPaginationResponseRepaymentTransaction>(`${this.configuration.basePath}/v1/payment/repayment`,
+        return this.httpClient.post<ApiResponseSearchAndPaginationResponseRepaymentTransaction>(`${this.configuration.basePath}/v1/payments/repayment`,
             requestBody,
             {
                 params: queryParameters,
@@ -247,7 +247,7 @@ export class PaymentControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.get<ApiResponseVirtualAccount>(`${this.configuration.basePath}/v1/payment/virtual-account/${encodeURIComponent(String(customerId))}`,
+        return this.httpClient.get<ApiResponseVirtualAccount>(`${this.configuration.basePath}/v1/payments/virtualAccount/${encodeURIComponent(String(customerId))}`,
             {
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
@@ -328,7 +328,7 @@ export class PaymentControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.post<ApiResponseSearchAndPaginationResponseVirtualAccount>(`${this.configuration.basePath}/v1/payment/virtual-account`,
+        return this.httpClient.post<ApiResponseSearchAndPaginationResponseVirtualAccount>(`${this.configuration.basePath}/v1/payments/virtualAccount`,
             requestBody,
             {
                 params: queryParameters,

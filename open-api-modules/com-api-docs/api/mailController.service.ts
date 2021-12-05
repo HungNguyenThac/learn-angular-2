@@ -127,7 +127,7 @@ export class MailControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.post<ApiResponseObject>(`${this.configuration.basePath}/v1/email/send-mail`,
+        return this.httpClient.post<ApiResponseObject>(`${this.configuration.basePath}/v1/emails/sendEmail`,
             sendMailRequest,
             {
                 responseType: <any>responseType_,

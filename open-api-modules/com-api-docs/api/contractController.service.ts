@@ -94,16 +94,16 @@ export class ContractControllerService {
     }
 
     /**
-     * @param confirmOTPSignRequest 
+     * @param adminSignContractAutomationRequest 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public confirmOPTSign(confirmOTPSignRequest: ConfirmOTPSignRequest, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<ApiResponseConfirmOTPResponse>;
-    public confirmOPTSign(confirmOTPSignRequest: ConfirmOTPSignRequest, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<ApiResponseConfirmOTPResponse>>;
-    public confirmOPTSign(confirmOTPSignRequest: ConfirmOTPSignRequest, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<ApiResponseConfirmOTPResponse>>;
-    public confirmOPTSign(confirmOTPSignRequest: ConfirmOTPSignRequest, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
-        if (confirmOTPSignRequest === null || confirmOTPSignRequest === undefined) {
-            throw new Error('Required parameter confirmOTPSignRequest was null or undefined when calling confirmOPTSign.');
+    public adminSignContract(adminSignContractAutomationRequest: AdminSignContractAutomationRequest, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<ApiResponseString>;
+    public adminSignContract(adminSignContractAutomationRequest: AdminSignContractAutomationRequest, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<ApiResponseString>>;
+    public adminSignContract(adminSignContractAutomationRequest: AdminSignContractAutomationRequest, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<ApiResponseString>>;
+    public adminSignContract(adminSignContractAutomationRequest: AdminSignContractAutomationRequest, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
+        if (adminSignContractAutomationRequest === null || adminSignContractAutomationRequest === undefined) {
+            throw new Error('Required parameter adminSignContractAutomationRequest was null or undefined when calling adminSignContract.');
         }
 
         let headers = this.defaultHeaders;
@@ -135,7 +135,61 @@ export class ContractControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.post<ApiResponseConfirmOTPResponse>(`${this.configuration.basePath}/v1/contract/confirm-otp-sign`,
+        return this.httpClient.post<ApiResponseString>(`${this.configuration.basePath}/v1/contracts/adminSignContract`,
+            adminSignContractAutomationRequest,
+            {
+                responseType: <any>responseType_,
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * @param confirmOTPSignRequest 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public confirmOtp(confirmOTPSignRequest: ConfirmOTPSignRequest, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<ApiResponseConfirmOTPResponse>;
+    public confirmOtp(confirmOTPSignRequest: ConfirmOTPSignRequest, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<ApiResponseConfirmOTPResponse>>;
+    public confirmOtp(confirmOTPSignRequest: ConfirmOTPSignRequest, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<ApiResponseConfirmOTPResponse>>;
+    public confirmOtp(confirmOTPSignRequest: ConfirmOTPSignRequest, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
+        if (confirmOTPSignRequest === null || confirmOTPSignRequest === undefined) {
+            throw new Error('Required parameter confirmOTPSignRequest was null or undefined when calling confirmOtp.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (httpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'application/json'
+            ];
+            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
+        if (httpHeaderAcceptSelected !== undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'application/json'
+        ];
+        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
+        if (httpContentTypeSelected !== undefined) {
+            headers = headers.set('Content-Type', httpContentTypeSelected);
+        }
+
+        let responseType_: 'text' | 'json' = 'json';
+        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+            responseType_ = 'text';
+        }
+
+        return this.httpClient.post<ApiResponseConfirmOTPResponse>(`${this.configuration.basePath}/v1/contracts/confirmOtp`,
             confirmOTPSignRequest,
             {
                 responseType: <any>responseType_,
@@ -193,7 +247,7 @@ export class ContractControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.post<ApiResponseCreateLetterResponse>(`${this.configuration.basePath}/v1/contract/create-letter/${encodeURIComponent(String(companyName))}`,
+        return this.httpClient.post<ApiResponseCreateLetterResponse>(`${this.configuration.basePath}/v1/contracts/${encodeURIComponent(String(companyName))}/createLetter`,
             createLetterRequest,
             {
                 responseType: <any>responseType_,
@@ -209,10 +263,10 @@ export class ContractControllerService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public createToken(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseCreateTokenResponse>;
-    public createToken(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseCreateTokenResponse>>;
-    public createToken(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseCreateTokenResponse>>;
-    public createToken(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
+    public getTokenOnSign(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseCreateTokenResponse>;
+    public getTokenOnSign(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseCreateTokenResponse>>;
+    public getTokenOnSign(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseCreateTokenResponse>>;
+    public getTokenOnSign(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
 
         let headers = this.defaultHeaders;
 
@@ -234,7 +288,7 @@ export class ContractControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.post<ApiResponseCreateTokenResponse>(`${this.configuration.basePath}/v1/contract/create-token`,
+        return this.httpClient.post<ApiResponseCreateTokenResponse>(`${this.configuration.basePath}/v1/contracts/getTokenOnSign`,
             null,
             {
                 responseType: <any>responseType_,
@@ -252,15 +306,15 @@ export class ContractControllerService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public sendContractOTP(companyName: 'HMG' | 'TNG', sendContractOTPRequest: SendContractOTPRequest, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<ApiResponseSignWithOTPResponse>;
-    public sendContractOTP(companyName: 'HMG' | 'TNG', sendContractOTPRequest: SendContractOTPRequest, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<ApiResponseSignWithOTPResponse>>;
-    public sendContractOTP(companyName: 'HMG' | 'TNG', sendContractOTPRequest: SendContractOTPRequest, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<ApiResponseSignWithOTPResponse>>;
-    public sendContractOTP(companyName: 'HMG' | 'TNG', sendContractOTPRequest: SendContractOTPRequest, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
+    public sendContract(companyName: 'HMG' | 'TNG', sendContractOTPRequest: SendContractOTPRequest, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<ApiResponseSignWithOTPResponse>;
+    public sendContract(companyName: 'HMG' | 'TNG', sendContractOTPRequest: SendContractOTPRequest, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<ApiResponseSignWithOTPResponse>>;
+    public sendContract(companyName: 'HMG' | 'TNG', sendContractOTPRequest: SendContractOTPRequest, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<ApiResponseSignWithOTPResponse>>;
+    public sendContract(companyName: 'HMG' | 'TNG', sendContractOTPRequest: SendContractOTPRequest, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
         if (companyName === null || companyName === undefined) {
-            throw new Error('Required parameter companyName was null or undefined when calling sendContractOTP.');
+            throw new Error('Required parameter companyName was null or undefined when calling sendContract.');
         }
         if (sendContractOTPRequest === null || sendContractOTPRequest === undefined) {
-            throw new Error('Required parameter sendContractOTPRequest was null or undefined when calling sendContractOTP.');
+            throw new Error('Required parameter sendContractOTPRequest was null or undefined when calling sendContract.');
         }
 
         let headers = this.defaultHeaders;
@@ -292,7 +346,7 @@ export class ContractControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.post<ApiResponseSignWithOTPResponse>(`${this.configuration.basePath}/v1/contract/send-contract-otp/${encodeURIComponent(String(companyName))}`,
+        return this.httpClient.post<ApiResponseSignWithOTPResponse>(`${this.configuration.basePath}/v1/contracts/${encodeURIComponent(String(companyName))}/sendContract`,
             sendContractOTPRequest,
             {
                 responseType: <any>responseType_,
@@ -310,15 +364,15 @@ export class ContractControllerService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public sendLetterOTP(companyName: 'HMG' | 'TNG', sendLetterOTPRequest: SendLetterOTPRequest, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<ApiResponseSignWithOTPResponse>;
-    public sendLetterOTP(companyName: 'HMG' | 'TNG', sendLetterOTPRequest: SendLetterOTPRequest, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<ApiResponseSignWithOTPResponse>>;
-    public sendLetterOTP(companyName: 'HMG' | 'TNG', sendLetterOTPRequest: SendLetterOTPRequest, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<ApiResponseSignWithOTPResponse>>;
-    public sendLetterOTP(companyName: 'HMG' | 'TNG', sendLetterOTPRequest: SendLetterOTPRequest, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
+    public sendLetter(companyName: 'HMG' | 'TNG', sendLetterOTPRequest: SendLetterOTPRequest, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<ApiResponseSignWithOTPResponse>;
+    public sendLetter(companyName: 'HMG' | 'TNG', sendLetterOTPRequest: SendLetterOTPRequest, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<ApiResponseSignWithOTPResponse>>;
+    public sendLetter(companyName: 'HMG' | 'TNG', sendLetterOTPRequest: SendLetterOTPRequest, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<ApiResponseSignWithOTPResponse>>;
+    public sendLetter(companyName: 'HMG' | 'TNG', sendLetterOTPRequest: SendLetterOTPRequest, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
         if (companyName === null || companyName === undefined) {
-            throw new Error('Required parameter companyName was null or undefined when calling sendLetterOTP.');
+            throw new Error('Required parameter companyName was null or undefined when calling sendLetter.');
         }
         if (sendLetterOTPRequest === null || sendLetterOTPRequest === undefined) {
-            throw new Error('Required parameter sendLetterOTPRequest was null or undefined when calling sendLetterOTP.');
+            throw new Error('Required parameter sendLetterOTPRequest was null or undefined when calling sendLetter.');
         }
 
         let headers = this.defaultHeaders;
@@ -350,62 +404,8 @@ export class ContractControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.post<ApiResponseSignWithOTPResponse>(`${this.configuration.basePath}/v1/contract/send-letter-otp/${encodeURIComponent(String(companyName))}`,
+        return this.httpClient.post<ApiResponseSignWithOTPResponse>(`${this.configuration.basePath}/v1/contracts/${encodeURIComponent(String(companyName))}/sendLetter`,
             sendLetterOTPRequest,
-            {
-                responseType: <any>responseType_,
-                withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress
-            }
-        );
-    }
-
-    /**
-     * @param adminSignContractAutomationRequest 
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public signContractAutomation(adminSignContractAutomationRequest: AdminSignContractAutomationRequest, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<ApiResponseString>;
-    public signContractAutomation(adminSignContractAutomationRequest: AdminSignContractAutomationRequest, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<ApiResponseString>>;
-    public signContractAutomation(adminSignContractAutomationRequest: AdminSignContractAutomationRequest, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<ApiResponseString>>;
-    public signContractAutomation(adminSignContractAutomationRequest: AdminSignContractAutomationRequest, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
-        if (adminSignContractAutomationRequest === null || adminSignContractAutomationRequest === undefined) {
-            throw new Error('Required parameter adminSignContractAutomationRequest was null or undefined when calling signContractAutomation.');
-        }
-
-        let headers = this.defaultHeaders;
-
-        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-        if (httpHeaderAcceptSelected === undefined) {
-            // to determine the Accept header
-            const httpHeaderAccepts: string[] = [
-                'application/json'
-            ];
-            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        }
-        if (httpHeaderAcceptSelected !== undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
-        }
-
-
-        // to determine the Content-Type header
-        const consumes: string[] = [
-            'application/json'
-        ];
-        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
-        if (httpContentTypeSelected !== undefined) {
-            headers = headers.set('Content-Type', httpContentTypeSelected);
-        }
-
-        let responseType_: 'text' | 'json' = 'json';
-        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
-            responseType_ = 'text';
-        }
-
-        return this.httpClient.post<ApiResponseString>(`${this.configuration.basePath}/v1/contract/admin-sign-contract-automation`,
-            adminSignContractAutomationRequest,
             {
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,

@@ -124,7 +124,7 @@ export class InsuranceControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.get<ApiResponseInsuranceOrder>(`${this.configuration.basePath}/v1/insurance/${encodeURIComponent(String(insuranceOrderId))}`,
+        return this.httpClient.get<ApiResponseInsuranceOrder>(`${this.configuration.basePath}/v1/insurances/orders/${encodeURIComponent(String(insuranceOrderId))}`,
             {
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
@@ -205,7 +205,7 @@ export class InsuranceControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.post<ApiResponseSearchAndPaginationResponseInsuranceOrder>(`${this.configuration.basePath}/v1/insurance/insuranceOrder`,
+        return this.httpClient.post<ApiResponseSearchAndPaginationResponseInsuranceOrder>(`${this.configuration.basePath}/v1/insurances/orders`,
             requestBody,
             {
                 params: queryParameters,
@@ -251,7 +251,7 @@ export class InsuranceControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.get<ApiResponseInsurancePackage>(`${this.configuration.basePath}/v1/insurance/${encodeURIComponent(String(insurancePackageId))}`,
+        return this.httpClient.get<ApiResponseInsurancePackage>(`${this.configuration.basePath}/v1/insurances/packages/${encodeURIComponent(String(insurancePackageId))}`,
             {
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
@@ -332,7 +332,7 @@ export class InsuranceControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.post<ApiResponseSearchAndPaginationResponseInsurancePackage>(`${this.configuration.basePath}/v1/insurance/insurancePackage`,
+        return this.httpClient.post<ApiResponseSearchAndPaginationResponseInsurancePackage>(`${this.configuration.basePath}/v1/insurances/packages`,
             requestBody,
             {
                 params: queryParameters,
@@ -378,7 +378,7 @@ export class InsuranceControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.get<ApiResponseProvider>(`${this.configuration.basePath}/v1/insurance/${encodeURIComponent(String(insuranceProviderId))}`,
+        return this.httpClient.get<ApiResponseProvider>(`${this.configuration.basePath}/v1/insurances/providers/${encodeURIComponent(String(insuranceProviderId))}`,
             {
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
@@ -459,7 +459,7 @@ export class InsuranceControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.post<ApiResponseSearchAndPaginationResponseProvider>(`${this.configuration.basePath}/v1/insurance/insuranceProvider`,
+        return this.httpClient.post<ApiResponseSearchAndPaginationResponseProvider>(`${this.configuration.basePath}/v1/insurances/providers`,
             requestBody,
             {
                 params: queryParameters,
@@ -505,7 +505,7 @@ export class InsuranceControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.get<ApiResponseInsuranceType>(`${this.configuration.basePath}/v1/insurance/${encodeURIComponent(String(insuranceTypeId))}`,
+        return this.httpClient.get<ApiResponseInsuranceType>(`${this.configuration.basePath}/v1/insurances/types/${encodeURIComponent(String(insuranceTypeId))}`,
             {
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
@@ -586,7 +586,7 @@ export class InsuranceControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.post<ApiResponseSearchAndPaginationResponseInsuranceType>(`${this.configuration.basePath}/v1/insurance/insuranceType`,
+        return this.httpClient.post<ApiResponseSearchAndPaginationResponseInsuranceType>(`${this.configuration.basePath}/v1/insurances/types`,
             requestBody,
             {
                 params: queryParameters,

@@ -1,3 +1,4 @@
+export * from './additionalEmployeeDataRequest';
 export * from './additionalInformationRequest';
 export * from './additionalInformationV2Request';
 export * from './apiResponse';

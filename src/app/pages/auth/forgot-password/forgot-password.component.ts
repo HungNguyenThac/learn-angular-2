@@ -89,7 +89,7 @@ export class ForgotPasswordComponent implements OnInit {
 
     this.subManager.add(
       this.signOnControllerService
-        .resetPasswordbyMobileOtp(createCustomerAccountRequest)
+        .resetPasswordByMobileOtp(createCustomerAccountRequest)
         .subscribe((result) => {
           if (
             !result ||
@@ -145,7 +145,7 @@ export class ForgotPasswordComponent implements OnInit {
       };
     this.subManager.add(
       this.signOnControllerService
-        .resetPasswordbyOtp(resetPasswordVerifiedAccountRequest)
+        .resetPasswordByOtp(resetPasswordVerifiedAccountRequest)
         .subscribe((result) => {
           if (
             result.errorCode != null ||

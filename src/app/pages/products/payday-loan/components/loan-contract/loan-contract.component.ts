@@ -1,5 +1,5 @@
-import { Contract } from './../../../../../../../open-api-modules/loanapp-api-docs/model/contract';
-import { ApiResponseContract } from './../../../../../../../open-api-modules/loanapp-api-docs/model/apiResponseContract';
+import { Contract } from './../../../../../../../open-api-modules/loanapp-tng-api-docs/model/contract';
+import { ApiResponseContract } from './../../../../../../../open-api-modules/loanapp-tng-api-docs/model/apiResponseContract';
 import {
   CustomerInfo,
   PaydayLoanHmg,
@@ -16,7 +16,7 @@ import {
 } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
-import { PaydayLoan } from 'open-api-modules/loanapp-api-docs';
+import { PaydayLoan } from 'open-api-modules/loanapp-tng-api-docs';
 import {
   DATA_CELL_TYPE,
   DATA_STATUS_TYPE,

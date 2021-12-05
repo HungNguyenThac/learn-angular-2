@@ -2,6 +2,7 @@ import { NgModule, ModuleWithProviders, SkipSelf, Optional } from '@angular/core
 import { Configuration } from './configuration';
 import { HttpClient } from '@angular/common/http';
 
+import { AdminAccountControllerService } from './api/adminAccountController.service';
 import { ApiControllerService } from './api/apiController.service';
 import { ApiResourceControllerService } from './api/apiResourceController.service';
 import { ApplicationHmgControllerService } from './api/applicationHmgController.service';
@@ -14,9 +15,12 @@ import { CompanyControllerService } from './api/companyController.service';
 import { CustomerControllerService } from './api/customerController.service';
 import { DistrictControllerService } from './api/districtController.service';
 import { EkycControllerService } from './api/ekycController.service';
+import { GroupControllerService } from './api/groupController.service';
 import { InsuranceControllerService } from './api/insuranceController.service';
 import { OpenApiControllerWebMvcService } from './api/openApiControllerWebMvc.service';
 import { PaymentControllerService } from './api/paymentController.service';
+import { PermissionControllerService } from './api/permissionController.service';
+import { PermissionTypeControllerService } from './api/permissionTypeController.service';
 import { RatingControllerService } from './api/ratingController.service';
 import { Swagger2ControllerWebMvcService } from './api/swagger2ControllerWebMvc.service';
 import { TngDataTransactionControllerService } from './api/tngDataTransactionController.service';
