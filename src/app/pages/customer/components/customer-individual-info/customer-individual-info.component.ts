@@ -187,16 +187,29 @@ export class CustomerIndividualInfoComponent implements OnInit, OnDestroy {
   ngOnInit(): void {}
 
   verifyInfo() {
-    this.subManager.add(
-      this.infoControllerService
-        .returnConfirmInformation(this.customerId)
-        .subscribe((result: ApiResponseString) => {
-          if (!result || result.responseCode !== 200) {
-            // return this.handleResponseError(result.errorCode);
-          }
-          console.log(this.customerId);
-        })
-    );
+    const confirmVerifyRef = this.notificationService.openPrompt({
+      imgUrl: '../../../../../assets/img/icon/group-5/unlock-dialog.svg',
+      title: this.multiLanguageService.instant(
+        'customer.individual_info.verify_customer.dialog_title'
+      ),
+      content: '',
+      primaryBtnText: this.multiLanguageService.instant('common.allow'),
+      primaryBtnClass: 'btn-primary',
+      secondaryBtnText: this.multiLanguageService.instant('common.skip'),
+    });
+    confirmVerifyRef.afterClosed().subscribe((result) => {
+      if (result === 'PRIMARY') {
+        this.subManager.add(
+          this.infoControllerService
+            .returnConfirmInformation(this.customerId)
+            .subscribe((result: ApiResponseString) => {
+              if (!result || result.responseCode !== 200) {
+                // return this.handleResponseError(result.errorCode);
+              }
+            })
+        );
+      }
+    });
   }
 
   openUpdateDialog() {

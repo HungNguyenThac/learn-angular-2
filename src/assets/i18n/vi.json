@@ -237,6 +237,9 @@
       },
       "enable_customer": {
         "dialog_title": "Bạn có chắc chắn cho phép người dùng này hoạt động trở lại?"
+      },
+      "verify_customer": {
+        "dialog_title": "Bạn có chắc chắn muốn yêu cầu xác thực lại thông tin?"
       }
     },
     "identity": {
