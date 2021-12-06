@@ -13,7 +13,7 @@ jobs:
     env:
       SVC_NAME: operator-svc
       ACR_NAME: epayprodregistry.azurecr.io
-      ENV_TYPE: development
+      ENV_TYPE: staging
     steps:
       - uses: actions/checkout@v2
 
