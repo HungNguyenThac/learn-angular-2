@@ -318,7 +318,9 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
         title: this.multiLanguageService.instant(
           'payday_loan.service_fee.transaction_fee'
         ),
-        subTitle: null,
+        subTitle: this.multiLanguageService.instant(
+          'payday_loan.service_fee.transaction_fee_description'
+        ),
         value: '11200',
         type: DATA_CELL_TYPE.CURRENCY,
         format: null,
