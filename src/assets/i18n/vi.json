@@ -454,7 +454,7 @@
     },
     "service_fee": {
       "service_fee": "Phí dịch vụ",
-      "service_fee_hmg": "2 % giá trị khoản vay tối thiểu là 100,000 VND",
+      "service_fee_hmg": "2 % giá trị khoản vay",
       "service_fee_tng": "2.5 % giá trị khoản vay tối thiểu là 100,000 VND",
       "transaction_fee": "Phí xử lý giao dịch",
       "transaction_fee_description": "Phí chuyển khoản 7k7 + phí cổng thanh toán 3.5k",
