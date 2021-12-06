@@ -13,7 +13,14 @@ import { RESPONSE_CODE } from './../../../../../core/common/enum/operator';
 import { ApiResponseCustomerInfo } from './../../../../../../../open-api-modules/dashboard-api-docs/model/apiResponseCustomerInfo';
 import { ApiResponsePaydayLoanHmg } from './../../../../../../../open-api-modules/dashboard-api-docs/model/apiResponsePaydayLoanHmg';
 import { Subscription } from 'rxjs';
-import { Component, EventEmitter, Input, OnInit, Output, OnDestroy } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  OnDestroy,
+} from '@angular/core';
 import { PaydayLoan } from 'open-api-modules/loanapp-api-docs';
 import {
   ApplicationHmgControllerService,
@@ -92,7 +99,7 @@ export class LoanDetailComponent implements OnInit, OnDestroy {
   triggerUpdateLoanElement() {
     this.notificationService.showLoading({ showContent: true });
     this.timeOut = setTimeout(() => {
-      console.log("stop loading");
+      console.log('stop loading');
       this._getLoanById(this.loanId);
       this.notificationService.hideLoading();
       this.notifier.success(
@@ -126,6 +133,10 @@ export class LoanDetailComponent implements OnInit, OnDestroy {
           })
       );
     }
+  }
+
+  public refreshContent() {
+    this._getCustomerInfoById(this.customerId);
   }
 
   private _getCustomerInfoById(customerId) {

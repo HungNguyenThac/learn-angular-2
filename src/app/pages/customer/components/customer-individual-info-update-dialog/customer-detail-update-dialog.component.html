@@ -449,8 +449,14 @@
                       formControlName="bankCode"
                       (selectionChange)="changeBank($event)"
                     >
+                      <mat-option>
+                        <ngx-mat-select-search [formControl]="banksFilterCtrl"
+                                               placeholderLabel="Tìm Ngân Hàng"
+                                               noEntriesFoundLabel="Ngân Hàng không tồn tại"
+                        ></ngx-mat-select-search>
+                      </mat-option>
                       <mat-option
-                        *ngFor="let bankNameOption of bankOptions"
+                        *ngFor="let bankNameOption of filteredBanks"
                         [value]="bankNameOption.bankCode"
                         [matTooltip]="
                           bankNameOption.bankName +

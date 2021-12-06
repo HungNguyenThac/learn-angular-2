@@ -1,13 +1,15 @@
-import { MultiLanguageService } from '../../../../translate/multiLanguageService';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { Component, Inject, Input, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {MultiLanguageService} from '../../../../translate/multiLanguageService';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import {Component, Inject, Input, OnInit} from '@angular/core';
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {
   Bank,
   CompanyInfo,
   CustomerInfo,
 } from '../../../../../../../open-api-modules/dashboard-api-docs';
-import { BUTTON_TYPE } from '../../../../../core/common/enum/operator';
+import {BUTTON_TYPE} from '../../../../../core/common/enum/operator';
+import {takeUntil} from "rxjs/operators";
+import {Subject} from "rxjs";
 
 @Component({
   selector: 'app-dialog-company-info-update',
@@ -18,9 +20,13 @@ export class DialogCompanyInfoUpdateComponent implements OnInit {
   disabledColumns: string[];
   hiddenColumns: string[];
   customerInfo: CustomerInfo = {};
+  banksFilterCtrl: FormControl = new FormControl();
+  filteredBanks: any[];
   bankOptions: Array<Bank>;
   companyOptions: Array<CompanyInfo>;
   customerId: string;
+  _onDestroy = new Subject<void>();
+
 
   workingTimeOptions: any[] = [
     'Dưới 6 tháng',
@@ -46,6 +52,11 @@ export class DialogCompanyInfoUpdateComponent implements OnInit {
 
   ngOnInit(): void {
     this.formatAnnualIncomeInputWithSeparator();
+    this.banksFilterCtrl.valueChanges
+      .pipe(takeUntil(this._onDestroy))
+      .subscribe(() => {
+        this.filterBanks();
+      });
   }
 
   buildCompanyInfoForm() {
@@ -70,6 +81,7 @@ export class DialogCompanyInfoUpdateComponent implements OnInit {
     this.customerInfo = data?.customerInfo;
     this.customerId = data?.customerId;
     this.bankOptions = data?.bankOptions ? data?.bankOptions : [];
+    this.filteredBanks = data?.bankOptions ? data?.bankOptions : [];
     this.companyOptions = data?.companyOptions ? data?.companyOptions : [];
     this.disabledColumns = data?.disabledColumns ? data?.disabledColumns : [];
     this.hiddenColumns = data?.hiddenColumns ? data?.hiddenColumns : [];
@@ -78,7 +90,7 @@ export class DialogCompanyInfoUpdateComponent implements OnInit {
       companyId: this.customerInfo.companyId,
       employeeCode: this.customerInfo.organizationName,
       borrowerEmploymentHistoryTextVariable1:
-        this.customerInfo.borrowerEmploymentHistoryTextVariable1,
+      this.customerInfo.borrowerEmploymentHistoryTextVariable1,
       firstName: this.customerInfo.firstName,
       tngFirstName: this.customerInfo.tngData?.ten,
       tngLastName: this.customerInfo.tngData?.hoDem,
@@ -101,6 +113,23 @@ export class DialogCompanyInfoUpdateComponent implements OnInit {
     );
     if (!seletedBank) return;
     this.companyInfoForm.controls.bankName.setValue(seletedBank[0].bankName);
+  }
+
+  filterBanks() {
+    let search = this.banksFilterCtrl.value;
+    if (!search) {
+      this.filteredBanks = this.bankOptions;
+      return;
+    } else {
+      search = search.toLowerCase();
+    }
+    let filteredBanksByCode = this.bankOptions.filter(
+      (bank) => bank.bankCode.toLowerCase().indexOf(search) > -1
+    );
+    let filteredBanksByName = this.bankOptions.filter(
+      (bank) => bank.bankName.toLowerCase().indexOf(search) > -1
+    );
+    this.filteredBanks = filteredBanksByName.concat(filteredBanksByCode);
   }
 
   submitForm() {
