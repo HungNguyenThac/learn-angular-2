@@ -24,10 +24,10 @@
 
   <div class="row permission-tree">
     <div class="grid-table">
-      <div *ngFor="let tableData of TREE_DATA" class="table">
-        <div class="table-title">{{tableData.title}}</div>
+      <div *ngFor="let tableData of treeData" class="table">
+        <div class="table-title">{{tableData.name}}</div>
         <div class="table-content">
-          <app-permission-tree [TREE_DATA]=tableData.data></app-permission-tree>
+          <app-permission-tree [TREE_DATA]=tableData.childPermissionTypeResponses></app-permission-tree>
         </div>
       </div>
     </div>

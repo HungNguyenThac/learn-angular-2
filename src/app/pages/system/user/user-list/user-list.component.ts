@@ -5,6 +5,7 @@ import { Store } from '@ngrx/store';
 import * as fromActions from '../../../../core/store';
 import * as fromStore from '../../../../core/store';
 import {
+  BUTTON_TYPE,
   DATA_CELL_TYPE,
   DATA_STATUS_TYPE,
   FILTER_TYPE,
@@ -14,7 +15,6 @@ import {
 import { MultiLanguageService } from '../../../../share/translate/multiLanguageService';
 import { Observable, Subscription } from 'rxjs';
 import {
-  AdminAccountControllerService,
   ApiResponseSearchAndPaginationResponseAdminAccountEntity,
   ApiResponseSearchAndPaginationResponseCompanyInfo,
   ApiResponseSearchAndPaginationResponseCustomerInfo,
@@ -42,6 +42,11 @@ import { AddNewUserDialogComponent } from '../../../../share/components';
 import { MatDialog } from '@angular/material/dialog';
 import { CustomerListService } from '../../../customer/customer-list/customer-list.service';
 import { UserListService } from './user-list.service';
+import {
+  AdminAccountControllerService,
+  ApiResponseAdminAccountEntity,
+  CreateProviderAccountRequest,
+} from '../../../../../../open-api-modules/identity-api-docs';
 
 @Component({
   selector: 'app-user-list',
@@ -229,6 +234,7 @@ export class UserListComponent implements OnInit, OnDestroy {
     private notificationService: NotificationService,
     private notifier: ToastrService,
     private companyControllerService: CompanyControllerService,
+    private adminAccountControllerService: AdminAccountControllerService,
     private formBuilder: FormBuilder,
     private router: Router,
     private dialog: MatDialog,
@@ -527,5 +533,47 @@ export class UserListComponent implements OnInit, OnDestroy {
       maxWidth: '800px',
       width: '90%',
     });
+    this.subManager.add(
+      addUserDialogRef.afterClosed().subscribe((result: any) => {
+        if (result && result.type === BUTTON_TYPE.PRIMARY) {
+          let updateInfoRequest = this._bindingDialogUserData(result.data);
+          console.log('updateInfoRequest', updateInfoRequest);
+          // this.notificationService.showLoading({ showContent: true });
+          this.subManager.add(
+            this.adminAccountControllerService
+              .create3(updateInfoRequest)
+              .subscribe((result: ApiResponseAdminAccountEntity) => {
+                if (!result || result.responseCode !== 200) {
+                  // return this.handleResponseError(result.errorCode);
+                }
+                setTimeout(() => {
+                  this.notifier.success(
+                    this.multiLanguageService.instant('common.update_success')
+                  );
+                  this.refreshContent();
+                  this.notificationService.hideLoading();
+                }, 3000);
+              })
+          );
+        }
+      })
+    );
+  }
+
+  public refreshContent() {
+    this._getUserList();
+  }
+
+  private _bindingDialogUserData(data) {
+    return {
+      groupId: data?.accountRole,
+      username: data?.accountLogin,
+      secret: data?.accountPassword,
+      fullName: data?.accountName,
+      email: data?.accountEmail,
+      mobile: data?.accountPhone,
+      note: data?.accountNote,
+      position: data?.accountPosition,
+    };
   }
 }

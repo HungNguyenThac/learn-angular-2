@@ -1,7 +1,14 @@
-import {Component, OnInit, Injectable} from '@angular/core';
-import {MultiLanguageService} from '../../../../../share/translate/multiLanguageService';
-import {MatDialog} from '@angular/material/dialog';
-import {EditRoleDialogComponent} from '../../../../../share/components/operators/user-account/edit-role-dialog/edit-role-dialog.component';
+import { Component, OnInit, Injectable } from '@angular/core';
+import { MultiLanguageService } from '../../../../../share/translate/multiLanguageService';
+import { MatDialog } from '@angular/material/dialog';
+import { EditRoleDialogComponent } from '../../../../../share/components/operators/user-account/edit-role-dialog/edit-role-dialog.component';
+import { ApiResponseListCity } from '../../../../../../../open-api-modules/customer-api-docs';
+import { Subscription } from 'rxjs';
+import {
+  ApiResponseCollectionParentPermissionTypeResponse,
+  ParentPermissionTypeResponse,
+  PermissionTypeControllerService,
+} from '../../../../../../../open-api-modules/dashboard-api-docs';
 
 @Component({
   selector: 'app-user-role',
@@ -9,9 +16,11 @@ import {EditRoleDialogComponent} from '../../../../../share/components/operators
   styleUrls: ['./user-role.component.scss'],
 })
 export class UserRoleComponent implements OnInit {
+  treeData: Array<ParentPermissionTypeResponse>;
+  subManager = new Subscription();
   roles = [
-    {title: 'Kiểm duyệt viên', id: '1'},
-    {title: 'Quản trị viên', id: '2'},
+    { title: 'Kiểm duyệt viên', id: '1' },
+    { title: 'Quản trị viên', id: '2' },
   ];
   TREE_DATA = [
     {
@@ -22,33 +31,34 @@ export class UserRoleComponent implements OnInit {
         'Cấu hình khoản vay': ['Xem danh sách', 'Thêm mới', 'Cập nhật', 'Xóa'],
         'Zalo/SMS/Email': ['Xem danh sách', 'Thêm mới', 'Cập nhật', 'Xóa'],
         'Tổng quan': ['Xem danh sách', 'Thêm mới', 'Cập nhật', 'Xóa'],
-      }
-    }, {
+      },
+    },
+    {
       title: this.multiLanguageService.instant('system.user_role.transaction'),
       data: {
         'Danh sách khoản vay': ['Xem danh sách', 'Thêm mới', 'Cập nhật', 'Xóa'],
         'Ký hợp đồng vay': ['Xem danh sách', 'Thêm mới', 'Cập nhật', 'Xóa'],
         'Cấu hình khoản vay': ['Xem danh sách', 'Thêm mới', 'Cập nhật', 'Xóa'],
         'Đầu tư khoản vay': ['Xem danh sách', 'Thêm mới', 'Cập nhật', 'Xóa'],
-      }
+      },
     },
     {
       title: this.multiLanguageService.instant('system.user_role.customer'),
       data: {
         'Người vay': ['Xem danh sách', 'Thêm mới', 'Cập nhật', 'Xóa'],
         'Tài liệu': ['Xem danh sách', 'Thêm mới', 'Cập nhật', 'Xóa'],
-      }
-    }
-  ]
-
+      },
+    },
+  ];
 
   constructor(
     private multiLanguageService: MultiLanguageService,
-    private dialog: MatDialog
-  ) {
-  }
+    private dialog: MatDialog,
+    private permissionTypeControllerService: PermissionTypeControllerService
+  ) {}
 
   ngOnInit(): void {
+    this.getPermissionList();
   }
 
   openUpdateDialog(roleTitle) {
@@ -59,7 +69,7 @@ export class UserRoleComponent implements OnInit {
       data: {
         title: this.multiLanguageService.instant('system.user_role.edit_role'),
         roleName: roleTitle,
-        TREE_DATA: this.TREE_DATA
+        TREE_DATA: this.TREE_DATA,
       },
     });
   }
@@ -72,8 +82,24 @@ export class UserRoleComponent implements OnInit {
       data: {
         title: this.multiLanguageService.instant('system.user_role.add_role'),
         hasDelete: true,
-        TREE_DATA: this.TREE_DATA
+        TREE_DATA: this.TREE_DATA,
       },
     });
+  }
+
+  getPermissionList() {
+    this.subManager.add(
+      this.permissionTypeControllerService
+        .getPermissionTypeByTreeFormat()
+        .subscribe(
+          (result: ApiResponseCollectionParentPermissionTypeResponse) => {
+            if (!result || result.responseCode !== 200) {
+              // return this.handleResponseError(result.errorCode);
+            }
+            this.treeData = result.result;
+            console.log(this.treeData);
+          }
+        )
+    );
   }
 }

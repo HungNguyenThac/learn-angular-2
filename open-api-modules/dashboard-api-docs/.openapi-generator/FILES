@@ -34,6 +34,7 @@ model/apiResponseAdminAccountEntity.ts
 model/apiResponseApprovalLetter.ts
 model/apiResponseBank.ts
 model/apiResponseCity.ts
+model/apiResponseCollectionParentPermissionTypeResponse.ts
 model/apiResponseCommune.ts
 model/apiResponseCompanyInfo.ts
 model/apiResponseCustomerInfo.ts
@@ -83,6 +84,7 @@ model/apiResponseVirtualAccount.ts
 model/approvalLetter.ts
 model/assetInfoDTO.ts
 model/bank.ts
+model/childPermissionTypeResponse.ts
 model/city.ts
 model/commune.ts
 model/companyInfo.ts
@@ -97,6 +99,7 @@ model/insuranceType.ts
 model/kalapaResponse.ts
 model/models.ts
 model/pagination.ts
+model/parentPermissionTypeResponse.ts
 model/paydayLoanHmg.ts
 model/paydayLoanTng.ts
 model/permissionEntity.ts
