@@ -54,6 +54,7 @@ import {
   AdminAccountControllerService,
   ApiResponseAdminAccountEntity,
   ApiResponseCustomerAccountEntity,
+  ApiResponseString,
   CreateProviderAccountRequest,
 } from '../../../../../../open-api-modules/identity-api-docs';
 import * as moment from 'moment';
@@ -225,6 +226,7 @@ export class UserListComponent implements OnInit, OnDestroy {
         .subscribe(
           (data: ApiResponseSearchAndPaginationResponseAdminAccountEntity) => {
             this._parseData(data?.result);
+            this.dataSource.data = data?.result.data;
             if (this.filterForm.controls.id.value) {
               this.expandElementFromLoan = data?.result.data[0];
             }
@@ -247,7 +249,6 @@ export class UserListComponent implements OnInit, OnDestroy {
 
   public onExpandElementChange(element: any) {
     this.expandedElementId = element.id;
-    this.userInfo = element;
   }
 
   public onSubmitSearchForm(event) {
@@ -293,19 +294,20 @@ export class UserListComponent implements OnInit, OnDestroy {
   public onOutputAction(event) {
     const action = event.action;
     const list = event.selectedList;
+    const idArr = list.map((user) => user.id);
     switch (action) {
       case 'lock':
-        this.lockPrompt();
+        this.lockMultiplePrompt(idArr);
         break;
       case 'delete':
-        this.deletePrompt();
+        this.deleteMultiplePrompt(idArr);
         break;
       default:
         return;
     }
   }
 
-  public lockPrompt() {
+  public lockMultiplePrompt(userIds) {
     const confirmLockRef = this.notificationService.openPrompt({
       imgUrl: '../../../../../assets/img/icon/group-5/Alert.svg',
       title: this.multiLanguageService.instant(
@@ -318,10 +320,33 @@ export class UserListComponent implements OnInit, OnDestroy {
       primaryBtnClass: 'btn-error',
       secondaryBtnText: this.multiLanguageService.instant('common.skip'),
     });
-    confirmLockRef.afterClosed().subscribe((result) => {});
+    confirmLockRef.afterClosed().subscribe((result) => {
+      if (result === 'PRIMARY') {
+        let now = new Date();
+        const unlockTime = new Date(now.getTime() + 999999999 * 1000);
+        this.subManager.add(
+          this.adminAccountControllerService
+            .lockMultiAccount({
+              accountIds: userIds,
+            })
+            .subscribe((result: ApiResponseString) => {
+              if (!result || result.responseCode !== 200) {
+                // return this.handleResponseError(result.errorCode);
+              }
+              if (result.responseCode === 200) {
+                setTimeout(() => {
+                  this.notifier.success(
+                    this.multiLanguageService.instant('common.lock_success')
+                  );
+                }, 500);
+              }
+            })
+        );
+      }
+    });
   }
 
-  public deletePrompt() {
+  public deleteMultiplePrompt(userIds) {
     const confirmDeleteRef = this.notificationService.openPrompt({
       imgUrl: '../../../../../assets/img/icon/group-5/delete-dialog.svg',
       title: this.multiLanguageService.instant(
@@ -588,15 +613,7 @@ export class UserListComponent implements OnInit, OnDestroy {
     });
   }
 
-  public updateElementInfo(updatedUserInfo) {
-    this.dataSource.data.map((item) => {
-      if (item.id === updatedUserInfo.id) {
-        this.allColumns.forEach((column) => {
-          item[column.key] = updatedUserInfo[column.key];
-        });
-      }
-      return item;
-    });
+  public updateElementInfo() {
     this.refreshContent();
   }
 }

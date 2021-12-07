@@ -28,7 +28,7 @@
 <ng-template #detailElementTemplate>
   <app-user-element
     [treeData]="treeData"
-    [userInfo]="userInfo"
+    [userId]="expandedElementId"
     (triggerUpdateElementInfo)="updateElementInfo($event)"
     class="w-100"
   ></app-user-element>
