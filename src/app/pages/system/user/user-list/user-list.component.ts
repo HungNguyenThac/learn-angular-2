@@ -8,6 +8,7 @@ import {
   BUTTON_TYPE,
   DATA_CELL_TYPE,
   DATA_STATUS_TYPE,
+  FILTER_ACTION_TYPE,
   FILTER_TYPE,
   NAV_ITEM,
   QUERY_CONDITION_TYPE,
@@ -15,19 +16,16 @@ import {
 import { MultiLanguageService } from '../../../../share/translate/multiLanguageService';
 import { Observable, Subscription } from 'rxjs';
 import {
-  ApiResponseListParentPermissionTypeResponse,
+  AdminAccountEntity,
   ApiResponseSearchAndPaginationResponseAdminAccountEntity,
   ApiResponseSearchAndPaginationResponseCompanyInfo,
-  ApiResponseSearchAndPaginationResponseCustomerInfo,
   ApiResponseSearchAndPaginationResponseGroupEntity,
   CompanyControllerService,
   CompanyInfo,
-  CustomerInfo,
   GroupControllerService,
   GroupEntity,
   ParentPermissionTypeResponse,
   PermissionTypeControllerService,
-  SearchAndPaginationResponseGroupEntity,
 } from '../../../../../../open-api-modules/dashboard-api-docs';
 import { MatTableDataSource } from '@angular/material/table';
 import { FormBuilder, FormGroup } from '@angular/forms';
@@ -39,24 +37,21 @@ import { Sort } from '@angular/material/sort';
 import { FilterOptionModel } from 'src/app/public/models/filter/filter-option.model';
 import { FilterEventModel } from '../../../../public/models/filter/filter-event.model';
 import { FilterActionEventModel } from '../../../../public/models/filter/filter-action-event.model';
-import {
-  PAYDAY_LOAN_UI_STATUS,
-  PAYDAY_LOAN_UI_STATUS_TEXT,
-} from '../../../../core/common/enum/payday-loan';
 import { NotificationService } from '../../../../core/services/notification.service';
 import { ToastrService } from 'ngx-toastr';
 import { TableSelectActionModel } from '../../../../public/models/external/table-select-action.model';
-import { AddNewUserDialogComponent } from '../../../../share/components';
+import {
+  AddNewUserDialogComponent,
+  MerchantGroupDialogComponent,
+} from '../../../../share/components';
 import { MatDialog } from '@angular/material/dialog';
-import { CustomerListService } from '../../../customer/customer-list/customer-list.service';
 import { UserListService } from './user-list.service';
 import {
   AdminAccountControllerService,
   ApiResponseAdminAccountEntity,
-  ApiResponseCustomerAccountEntity,
-  CreateProviderAccountRequest,
 } from '../../../../../../open-api-modules/identity-api-docs';
 import * as moment from 'moment';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-user-list',
@@ -96,7 +91,9 @@ export class UserListComponent implements OnInit, OnDestroy {
   breadcrumbOptions: BreadcrumbOptionsModel = {
     title: this.multiLanguageService.instant('breadcrumb.manage_user'),
     iconImgSrc: 'assets/img/icon/group-5/person-roll.svg',
-    searchPlaceholder: 'Tên đăng nhập, tên người dùng',
+    searchPlaceholder: this.multiLanguageService.instant(
+      'breadcrumb.search_field_user_list'
+    ),
     searchable: true,
     showBtnAdd: true,
     btnAddText: this.multiLanguageService.instant('system.add_user'),
@@ -105,19 +102,18 @@ export class UserListComponent implements OnInit, OnDestroy {
 
   filterOptions: FilterOptionModel[] = [
     {
-      title: this.multiLanguageService.instant('filter.merchant_group'),
+      title: this.multiLanguageService.instant('system.system_management.role'),
       type: FILTER_TYPE.MULTIPLE_CHOICE,
       controlName: 'groupId',
       value: null,
       showAction: true,
-      titleAction: 'Thêm nhóm nhà cung cấp',
-      actionIconClass: 'sprite-group-7-add-blue',
+      titleAction: this.multiLanguageService.instant('filter.select_all'),
       options: [],
     },
     {
       title: this.multiLanguageService.instant('filter.account_status'),
       type: FILTER_TYPE.SELECT,
-      controlName: 'unknow',
+      controlName: 'userStatus',
       value: null,
       options: [
         {
@@ -126,11 +122,11 @@ export class UserListComponent implements OnInit, OnDestroy {
         },
         {
           title: this.multiLanguageService.instant('common.active'),
-          value: PAYDAY_LOAN_UI_STATUS.NOT_COMPLETE_EKYC_YET,
+          value: AdminAccountEntity.UserStatusEnum.Active,
         },
         {
           title: this.multiLanguageService.instant('common.inactive'),
-          value: PAYDAY_LOAN_UI_STATUS.NOT_COMPLETE_FILL_EKYC_YET,
+          value: AdminAccountEntity.UserStatusEnum.Locked,
         },
       ],
     },
@@ -155,9 +151,11 @@ export class UserListComponent implements OnInit, OnDestroy {
       showed: true,
     },
     {
-      key: 'userRole',
-      title: this.multiLanguageService.instant('system.system_management.role'),
-      type: DATA_CELL_TYPE.STATUS,
+      key: 'position',
+      title: this.multiLanguageService.instant(
+        'system.system_management.position'
+      ),
+      type: DATA_CELL_TYPE.TEXT,
       format: null,
       showed: true,
     },
@@ -180,7 +178,6 @@ export class UserListComponent implements OnInit, OnDestroy {
   totalItems: number = 0;
   filterForm: FormGroup;
   expandedElementId: number;
-  expandElementFromLoan: any;
   hasSelect: boolean = true;
   userInfo: any;
   private readonly routeAllState$: Observable<Params>;
@@ -225,9 +222,6 @@ export class UserListComponent implements OnInit, OnDestroy {
         .subscribe(
           (data: ApiResponseSearchAndPaginationResponseAdminAccountEntity) => {
             this._parseData(data?.result);
-            if (this.filterForm.controls.id.value) {
-              this.expandElementFromLoan = data?.result.data[0];
-            }
           }
         )
     );
@@ -257,6 +251,8 @@ export class UserListComponent implements OnInit, OnDestroy {
 
   public onFilterFormChange(event: FilterEventModel) {
     console.log('FilterEventModel', event);
+    this.pageIndex = 0;
+
     switch (event.type) {
       case FILTER_TYPE.DATETIME:
         this.filterForm.controls.startTime.setValue(event.value.startDate);
@@ -272,12 +268,10 @@ export class UserListComponent implements OnInit, OnDestroy {
         }
         break;
       case FILTER_TYPE.SELECT:
-        if (event.controlName === 'companyId') {
-          this.filterForm.controls.companyId.setValue(
-            event.value ? event.value.join(',') : ''
+        if (event.controlName === 'userStatus') {
+          this.filterForm.controls.userStatus.setValue(
+            event.value ? event.value : ''
           );
-        } else if (event.controlName === 'paydayLoanStatus') {
-          this.filterForm.controls.paydayLoanStatus.setValue(event.value);
         }
         break;
       default:
@@ -288,6 +282,15 @@ export class UserListComponent implements OnInit, OnDestroy {
 
   public onFilterActionTrigger(event: FilterActionEventModel) {
     console.log('FilterActionEventModel', event);
+    if (event.type === FILTER_ACTION_TYPE.FILTER_EXTRA_ACTION) {
+      if (event.controlName === 'groupId') {
+        this.onFilterFormChange({
+          type: FILTER_TYPE.MULTIPLE_CHOICE,
+          controlName: 'groupId',
+          value: null,
+        });
+      }
+    }
   }
 
   public onOutputAction(event) {
@@ -362,9 +365,8 @@ export class UserListComponent implements OnInit, OnDestroy {
     this.filterForm = this.formBuilder.group({
       id: [''],
       keyword: [''],
-      companyId: [''],
       groupId: [''],
-      paydayLoanStatus: [''],
+      userStatus: [''],
       orderBy: ['createdAt'],
       sortDirection: ['desc'],
       startTime: [null],
@@ -372,39 +374,10 @@ export class UserListComponent implements OnInit, OnDestroy {
       dateFilterType: [''],
       dateFilterTitle: [''],
       filterConditions: {
-        companyId: QUERY_CONDITION_TYPE.IN,
         groupId: QUERY_CONDITION_TYPE.IN,
-        paydayLoanStatus: QUERY_CONDITION_TYPE.EQUAL,
+        userStatus: QUERY_CONDITION_TYPE.EQUAL,
       },
     });
-  }
-
-  private _parseQueryParams(params) {
-    let filterConditionsValue =
-      this.filterForm.controls.filterConditions?.value;
-    for (const [param, paramValue] of Object.entries(params)) {
-      let paramHasCondition = param.split('__');
-      if (paramHasCondition.length > 1) {
-        this.filterForm.controls[paramHasCondition[0]].setValue(
-          paramValue || ''
-        );
-        filterConditionsValue[paramHasCondition[0]] =
-          '__' + paramHasCondition[1];
-      } else {
-        if (this.filterForm.controls[param]) {
-          this.filterForm.controls[param].setValue(paramValue || '');
-        }
-      }
-    }
-
-    this.filterForm.controls.filterConditions.setValue(filterConditionsValue);
-    this.filterOptions.forEach((filterOption) => {
-      if (filterOption.controlName === 'groupId') {
-      }
-    });
-    this.breadcrumbOptions.keyword = params.keyword;
-    this.pageIndex = params.pageIndex || 0;
-    this.pageSize = params.pageSize || 20;
   }
 
   private _initSubscription() {
@@ -416,6 +389,60 @@ export class UserListComponent implements OnInit, OnDestroy {
         this.getRoleList();
       })
     );
+  }
+
+  private _parseQueryParams(params) {
+    this._initFilterFormFromQueryParams(params);
+    this._initFilterOptionsFromQueryParams(params);
+
+    this.breadcrumbOptions.keyword = params.keyword;
+    this.pageIndex = params.pageIndex || 0;
+    this.pageSize = params.pageSize || 20;
+  }
+
+  private _initFilterFormFromQueryParams(params) {
+    let filterConditionsValue =
+      this.filterForm.controls.filterConditions?.value;
+    if (_.isEmpty(params)) {
+      this._resetFilterForm();
+      this._resetFilterOptions();
+    }
+
+    for (const [param, paramValue] of Object.entries(params)) {
+      let paramHasCondition = param.split('__');
+      if (paramHasCondition.length > 1) {
+        this.filterForm.controls[paramHasCondition[0]]?.setValue(
+          paramValue || ''
+        );
+        filterConditionsValue[paramHasCondition[0]] =
+          '__' + paramHasCondition[1];
+      } else {
+        if (this.filterForm.controls[param]) {
+          this.filterForm.controls[param]?.setValue(paramValue || '');
+        }
+      }
+    }
+
+    this.filterForm.controls.filterConditions.setValue(filterConditionsValue);
+  }
+
+  private _initFilterOptionsFromQueryParams(params) {
+    this.filterOptions.forEach((filterOption) => {
+      if (filterOption.type === FILTER_TYPE.DATETIME) {
+        filterOption.value = {
+          type: params.dateFilterType,
+          title: params.dateFilterTitle,
+        };
+      } else if (filterOption.controlName === 'groupId') {
+        filterOption.value = this.filterForm.controls.groupId.value
+          ? this.filterForm.controls.groupId.value.split(',')
+          : [];
+      } else if (filterOption.controlName === 'userStatus') {
+        filterOption.value = this.filterForm.controls.userStatus.value
+          ? this.filterForm.controls.userStatus.value
+          : null;
+      }
+    });
   }
 
   private _getCompanyList() {
@@ -557,13 +584,31 @@ export class UserListComponent implements OnInit, OnDestroy {
             if (!result || result.responseCode !== 200) {
               // return this.handleResponseError(result.errorCode);
             }
-            this.roleList = result.result.data;
+            this.roleList = result?.result?.data;
             this._initRoleOptions();
             this.filterOptions = JSON.parse(JSON.stringify(this.filterOptions));
-            console.log(this.roleList);
           }
         )
     );
+  }
+
+  private _resetFilterForm() {
+    this.filterForm.patchValue({
+      id: '',
+      keyword: '',
+      groupId: '',
+      userStatus: '',
+      orderBy: 'createdAt',
+      sortDirection: 'desc',
+      startTime: null,
+      endTime: null,
+      dateFilterType: '',
+      dateFilterTitle: '',
+      filterConditions: {
+        groupId: QUERY_CONDITION_TYPE.IN,
+        userStatus: QUERY_CONDITION_TYPE.EQUAL,
+      },
+    });
   }
 
   private _resetFilterOptions() {

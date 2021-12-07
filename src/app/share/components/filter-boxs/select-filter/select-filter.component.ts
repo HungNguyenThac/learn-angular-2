@@ -20,8 +20,6 @@ export class SelectFilterComponent implements OnInit {
   set filterOption(filterOptionModel: FilterOptionModel) {
     this.selectedItems = filterOptionModel.value || [];
     this._filterOption = filterOptionModel;
-    console.log("nhay vao filter option");
-
   }
 
   @Output() completeFilter = new EventEmitter<FilterEventModel>();
