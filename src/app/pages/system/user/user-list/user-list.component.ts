@@ -40,10 +40,7 @@ import { FilterActionEventModel } from '../../../../public/models/filter/filter-
 import { NotificationService } from '../../../../core/services/notification.service';
 import { ToastrService } from 'ngx-toastr';
 import { TableSelectActionModel } from '../../../../public/models/external/table-select-action.model';
-import {
-  AddNewUserDialogComponent,
-  MerchantGroupDialogComponent,
-} from '../../../../share/components';
+import { AddNewUserDialogComponent } from '../../../../share/components';
 import { MatDialog } from '@angular/material/dialog';
 import { UserListService } from './user-list.service';
 import {
