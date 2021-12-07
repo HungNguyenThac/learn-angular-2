@@ -12,6 +12,11 @@ import { MultiLanguageService } from '../../share/translate/multiLanguageService
 import { DialogCompanyInfoUpdateComponent } from '../../share/components';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogUserInfoUpdateComponent } from '../../share/components/operators/user-account/dialog-user-info-update/dialog-user-info-update.component';
+import {
+  AdminAccountControllerService,
+  ApiResponseAdminAccountEntity,
+} from '../../../../open-api-modules/identity-api-docs';
+import { AdminAccountEntity } from '../../../../open-api-modules/dashboard-api-docs';
 
 export interface AccountInfo {
   fullName?: string;
@@ -29,7 +34,7 @@ export interface AccountInfo {
   styleUrls: ['./header.component.scss'],
 })
 export class HeaderComponent implements OnInit, OnDestroy {
-  customerInfo$: Observable<CustomerInfoResponse>;
+  customerInfo$: Observable<AdminAccountEntity>;
   authorization$: Observable<any>;
   activeNavItem$: Observable<any>;
   responsive: boolean = false;
@@ -37,6 +42,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   logoSrc: string = 'assets/img/monex-logo.svg';
   showProfileBtn: boolean = false;
   shortName: string = '0';
+  userInfo;
 
   accountInfo: AccountInfo = {
     fullName: 'Nguyễn Văn A',
@@ -110,6 +116,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   subManager = new Subscription();
 
   constructor(
+    private adminAccountControllerService: AdminAccountControllerService,
     private router: Router,
     private store: Store<fromStore.State>,
     private dialog: MatDialog,
@@ -174,15 +181,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
       fromSelectors.getAuthorizationState
     );
     this.subManager.add(
-      this.customerInfo$.subscribe((customerInfo: CustomerInfoResponse) => {
-        this.customerInfo = customerInfo;
-        console.log(this.customerInfo);
-        if (customerInfo?.personalData?.firstName) {
-          const names = customerInfo.personalData.firstName.split(' ');
-          this.shortName = names[names.length - 1].charAt(0);
-          return;
-        }
-        this.shortName = '0';
+      this.customerInfo$.subscribe((customerInfo: AdminAccountEntity) => {
+        console.log('customerInfo', customerInfo);
       })
     );
     this.subManager.add(

@@ -1,6 +1,6 @@
-import { Component, OnInit, ViewChildren } from '@angular/core';
+import { Component, Inject, OnInit, ViewChildren } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BUTTON_TYPE } from '../../../../../core/common/enum/operator';
 
 @Component({
@@ -20,37 +20,48 @@ export class AddNewUserDialogComponent implements OnInit {
   isPositionInputFocus: boolean = false;
   isNoteInputFocus: boolean = false;
 
-  roleOptions = {
-    fieldName: 'Vai trò',
-    options: ['Super Admin', '2', '3'],
-  };
+  roleList;
   positionOptions = {
     fieldName: 'Vị trí công việc',
     options: ['Kiểm duyệt viên', 'DB Merchant', 'Operator Admin', 'Kế toán'],
   };
 
   constructor(
+    @Inject(MAT_DIALOG_DATA) private data: any,
     private dialogRef: MatDialogRef<AddNewUserDialogComponent>,
     private formBuilder: FormBuilder
   ) {
     this.buildAccountInfoForm();
+    if (data) {
+      this.initDialogData(data);
+    }
   }
 
   buildAccountInfoForm() {
     this.addAccountForm = this.formBuilder.group({
       accountName: [''],
       accountLogin: [''],
-      accountPassword: [''],
+      accountPassword: [
+        '',
+        [Validators.minLength(8), Validators.maxLength(50)],
+      ],
       accountRePassword: [''],
       accountRole: [''],
       accountPhone: [''],
-      accountEmail: [''],
+      accountEmail: ['', [Validators.email]],
       accountPosition: [''],
       accountNote: [''],
     });
   }
 
+  initDialogData(data) {
+    this.roleList = data?.roleList;
+  }
+
   submitForm() {
+    if (this.addAccountForm.invalid) {
+      return;
+    }
     this.dialogRef.close({
       type: BUTTON_TYPE.PRIMARY,
       data: this.addAccountForm.getRawValue(),

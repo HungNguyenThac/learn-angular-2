@@ -5,6 +5,7 @@ import { Store } from '@ngrx/store';
 import * as fromActions from '../../../../core/store';
 import * as fromStore from '../../../../core/store';
 import {
+  BUTTON_TYPE,
   DATA_CELL_TYPE,
   DATA_STATUS_TYPE,
   FILTER_TYPE,
@@ -14,12 +15,19 @@ import {
 import { MultiLanguageService } from '../../../../share/translate/multiLanguageService';
 import { Observable, Subscription } from 'rxjs';
 import {
-  AdminAccountControllerService,
+  ApiResponseListParentPermissionTypeResponse,
   ApiResponseSearchAndPaginationResponseAdminAccountEntity,
   ApiResponseSearchAndPaginationResponseCompanyInfo,
   ApiResponseSearchAndPaginationResponseCustomerInfo,
+  ApiResponseSearchAndPaginationResponseGroupEntity,
   CompanyControllerService,
   CompanyInfo,
+  CustomerInfo,
+  GroupControllerService,
+  GroupEntity,
+  ParentPermissionTypeResponse,
+  PermissionTypeControllerService,
+  SearchAndPaginationResponseGroupEntity,
 } from '../../../../../../open-api-modules/dashboard-api-docs';
 import { MatTableDataSource } from '@angular/material/table';
 import { FormBuilder, FormGroup } from '@angular/forms';
@@ -42,6 +50,13 @@ import { AddNewUserDialogComponent } from '../../../../share/components';
 import { MatDialog } from '@angular/material/dialog';
 import { CustomerListService } from '../../../customer/customer-list/customer-list.service';
 import { UserListService } from './user-list.service';
+import {
+  AdminAccountControllerService,
+  ApiResponseAdminAccountEntity,
+  ApiResponseCustomerAccountEntity,
+  CreateProviderAccountRequest,
+} from '../../../../../../open-api-modules/identity-api-docs';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-user-list',
@@ -49,6 +64,8 @@ import { UserListService } from './user-list.service';
   styleUrls: ['./user-list.component.scss'],
 })
 export class UserListComponent implements OnInit, OnDestroy {
+  treeData: Array<ParentPermissionTypeResponse>;
+  roleList: Array<GroupEntity>;
   //Mock data
   selectButtons: TableSelectActionModel[] = [
     {
@@ -85,71 +102,17 @@ export class UserListComponent implements OnInit, OnDestroy {
     btnAddText: this.multiLanguageService.instant('system.add_user'),
     keyword: '',
   };
+
   filterOptions: FilterOptionModel[] = [
     {
-      title: this.multiLanguageService.instant('filter.time'),
-      type: FILTER_TYPE.DATETIME,
-      controlName: 'createdAt',
+      title: this.multiLanguageService.instant('filter.merchant_group'),
+      type: FILTER_TYPE.MULTIPLE_CHOICE,
+      controlName: 'groupId',
       value: null,
-    },
-    {
-      title: this.multiLanguageService.instant('filter.company'),
-      type: FILTER_TYPE.SELECT,
-      controlName: 'companyId',
-      value: null,
-      options: [
-        {
-          title: this.multiLanguageService.instant('filter.choose_company'),
-          value: null,
-          showAction: false,
-          subTitle: this.multiLanguageService.instant('filter.choose_company'),
-          subOptions: [],
-          disabled: false,
-          count: 0,
-        },
-      ],
-    },
-    {
-      title: this.multiLanguageService.instant('filter.pl_ui_status'),
-      type: FILTER_TYPE.SELECT,
-      controlName: 'paydayLoanStatus',
-      value: null,
-      options: [
-        {
-          title: this.multiLanguageService.instant('common.all'),
-          value: null,
-        },
-        {
-          title: this.multiLanguageService.instant(
-            PAYDAY_LOAN_UI_STATUS_TEXT.NOT_COMPLETE_EKYC_YET
-          ),
-          value: PAYDAY_LOAN_UI_STATUS.NOT_COMPLETE_EKYC_YET,
-        },
-        {
-          title: this.multiLanguageService.instant(
-            PAYDAY_LOAN_UI_STATUS_TEXT.NOT_COMPLETE_FILL_EKYC_YET
-          ),
-          value: PAYDAY_LOAN_UI_STATUS.NOT_COMPLETE_FILL_EKYC_YET,
-        },
-        {
-          title: this.multiLanguageService.instant(
-            PAYDAY_LOAN_UI_STATUS_TEXT.NOT_ACCEPTING_TERM_YET
-          ),
-          value: PAYDAY_LOAN_UI_STATUS.NOT_ACCEPTING_TERM_YET,
-        },
-        {
-          title: this.multiLanguageService.instant(
-            PAYDAY_LOAN_UI_STATUS_TEXT.NOT_COMPLETE_CDE_YET
-          ),
-          value: PAYDAY_LOAN_UI_STATUS.NOT_COMPLETE_CDE_YET,
-        },
-        {
-          title: this.multiLanguageService.instant(
-            PAYDAY_LOAN_UI_STATUS_TEXT.COMPLETED_CDE
-          ),
-          value: PAYDAY_LOAN_UI_STATUS.COMPLETED_CDE,
-        },
-      ],
+      showAction: true,
+      titleAction: 'Thêm nhóm nhà cung cấp',
+      actionIconClass: 'sprite-group-7-add-blue',
+      options: [],
     },
     {
       title: this.multiLanguageService.instant('filter.account_status'),
@@ -199,12 +162,12 @@ export class UserListComponent implements OnInit, OnDestroy {
       showed: true,
     },
     {
-      key: 'status',
+      key: 'userStatus',
       title: this.multiLanguageService.instant(
         'system.system_management.status'
       ),
       type: DATA_CELL_TYPE.STATUS,
-      format: DATA_STATUS_TYPE.PL_OTHER_STATUS,
+      format: DATA_STATUS_TYPE.USER_STATUS,
       showed: true,
     },
   ];
@@ -227,8 +190,11 @@ export class UserListComponent implements OnInit, OnDestroy {
     private store: Store<fromStore.State>,
     private multiLanguageService: MultiLanguageService,
     private notificationService: NotificationService,
+    private permissionTypeControllerService: PermissionTypeControllerService,
     private notifier: ToastrService,
     private companyControllerService: CompanyControllerService,
+    private adminAccountControllerService: AdminAccountControllerService,
+    private groupControllerService: GroupControllerService,
     private formBuilder: FormBuilder,
     private router: Router,
     private dialog: MatDialog,
@@ -236,6 +202,7 @@ export class UserListComponent implements OnInit, OnDestroy {
     private userListService: UserListService
   ) {
     this.routeAllState$ = store.select(fromSelectors.getRouterAllState);
+
     this._initFilterForm();
   }
 
@@ -247,6 +214,7 @@ export class UserListComponent implements OnInit, OnDestroy {
     );
     this.store.dispatch(new fromActions.SetOperatorInfo(NAV_ITEM.CUSTOMER));
     this._initSubscription();
+    this.getPermissionList();
   }
 
   private _getUserList() {
@@ -297,6 +265,11 @@ export class UserListComponent implements OnInit, OnDestroy {
         this.filterForm.controls.dateFilterTitle.setValue(event.value.title);
         break;
       case FILTER_TYPE.MULTIPLE_CHOICE:
+        if (event.controlName === 'groupId') {
+          this.filterForm.controls.groupId.setValue(
+            event.value ? event.value.join(',') : ''
+          );
+        }
         break;
       case FILTER_TYPE.SELECT:
         if (event.controlName === 'companyId') {
@@ -332,8 +305,7 @@ export class UserListComponent implements OnInit, OnDestroy {
     }
   }
 
-  // @ts-ignore
-  public lockPrompt(): boolean {
+  public lockPrompt() {
     const confirmLockRef = this.notificationService.openPrompt({
       imgUrl: '../../../../../assets/img/icon/group-5/Alert.svg',
       title: this.multiLanguageService.instant(
@@ -373,6 +345,13 @@ export class UserListComponent implements OnInit, OnDestroy {
     });
   }
 
+  formatTimeSecond(timeInput) {
+    if (!timeInput) return;
+    return moment(new Date(timeInput), 'YYYY-MM-DD HH:mm:ss').format(
+      'DD/MM/YYYY HH:mm:ss'
+    );
+  }
+
   ngOnDestroy(): void {
     if (this.subManager !== null) {
       // this.subManager.unsubscribe();
@@ -384,6 +363,7 @@ export class UserListComponent implements OnInit, OnDestroy {
       id: [''],
       keyword: [''],
       companyId: [''],
+      groupId: [''],
       paydayLoanStatus: [''],
       orderBy: ['createdAt'],
       sortDirection: ['desc'],
@@ -393,6 +373,7 @@ export class UserListComponent implements OnInit, OnDestroy {
       dateFilterTitle: [''],
       filterConditions: {
         companyId: QUERY_CONDITION_TYPE.IN,
+        groupId: QUERY_CONDITION_TYPE.IN,
         paydayLoanStatus: QUERY_CONDITION_TYPE.EQUAL,
       },
     });
@@ -415,19 +396,10 @@ export class UserListComponent implements OnInit, OnDestroy {
         }
       }
     }
+
     this.filterForm.controls.filterConditions.setValue(filterConditionsValue);
     this.filterOptions.forEach((filterOption) => {
-      if (filterOption.type === FILTER_TYPE.DATETIME) {
-        filterOption.value = {
-          type: params.dateFilterType,
-          title: params.dateFilterTitle,
-        };
-      } else if (filterOption.controlName === 'companyId') {
-        filterOption.value = this.filterForm.controls.companyId.value
-          ? this.filterForm.controls.companyId.value.split(',')
-          : [];
-      } else if (filterOption.controlName === 'paydayLoanStatus') {
-        filterOption.value = this.filterForm.controls.paydayLoanStatus.value;
+      if (filterOption.controlName === 'groupId') {
       }
     });
     this.breadcrumbOptions.keyword = params.keyword;
@@ -441,6 +413,7 @@ export class UserListComponent implements OnInit, OnDestroy {
         this._parseQueryParams(params?.queryParams);
         this._getUserList();
         this._getCompanyList();
+        this.getRoleList();
       })
     );
   }
@@ -452,28 +425,9 @@ export class UserListComponent implements OnInit, OnDestroy {
         .subscribe(
           (data: ApiResponseSearchAndPaginationResponseCompanyInfo) => {
             this.companyList = data?.result?.data;
-            this._initCompanyOptions();
           }
         )
     );
-  }
-
-  private _initCompanyOptions() {
-    this.filterOptions.forEach((filterOption: FilterOptionModel) => {
-      if (filterOption.controlName !== 'companyId') {
-        return;
-      }
-      filterOption.options[0].subOptions = this.companyList.map(
-        (company: CompanyInfo) => {
-          return {
-            title: company.name + ' (' + company.code + ')',
-            value: company.id,
-            imgSrc: company.avatar,
-            code: company.code,
-          };
-        }
-      );
-    });
   }
 
   private _buildParams() {
@@ -526,6 +480,123 @@ export class UserListComponent implements OnInit, OnDestroy {
       panelClass: 'custom-info-dialog-container',
       maxWidth: '800px',
       width: '90%',
+      data: {
+        roleList: this.roleList,
+      },
     });
+    this.subManager.add(
+      addUserDialogRef.afterClosed().subscribe((result: any) => {
+        if (result && result.type === BUTTON_TYPE.PRIMARY) {
+          let updateInfoRequest = this._bindingDialogUserData(result.data);
+          console.log('updateInfoRequest', updateInfoRequest);
+          // this.notificationService.showLoading({ showContent: true });
+          this.sendAddUserRequest(updateInfoRequest);
+        }
+      })
+    );
+  }
+
+  sendAddUserRequest(updateInfoRequest) {
+    this.subManager.add(
+      this.adminAccountControllerService
+        .create3(updateInfoRequest)
+        .subscribe((result: ApiResponseAdminAccountEntity) => {
+          if (!result || result.responseCode !== 200) {
+            // return this.handleResponseError(result.errorCode);
+          }
+          setTimeout(() => {
+            this.notifier.success(
+              this.multiLanguageService.instant('common.create_success')
+            );
+            this.refreshContent();
+            this.notificationService.hideLoading();
+          }, 3000);
+        })
+    );
+  }
+
+  public refreshContent() {
+    this._getUserList();
+  }
+
+  private _bindingDialogUserData(data) {
+    return {
+      groupId: data?.accountRole,
+      username: data?.accountLogin,
+      secret: data?.accountPassword,
+      fullName: data?.accountName,
+      email: data?.accountEmail,
+      mobile: data?.accountPhone,
+      note: data?.accountNote,
+      position: data?.accountPosition,
+    };
+  }
+
+  getPermissionList() {
+    // this.subManager.add(
+    //   this.permissionTypeControllerService
+    //     .getPermissionTypeByTreeFormat()
+    //     .subscribe(
+    //       (result: ApiResponseListParentPermissionTypeResponse) => {
+    //         if (!result || result.responseCode !== 200) {
+    //           // return this.handleResponseError(result.errorCode);
+    //         }
+    //         this.treeData = result.result;
+    //         console.log(this.treeData);
+    //       }
+    //     )
+    // );
+  }
+
+  getRoleList() {
+    this.subManager.add(
+      this.groupControllerService
+        .getGroups(100, 0, {})
+        .subscribe(
+          (result: ApiResponseSearchAndPaginationResponseGroupEntity) => {
+            if (!result || result.responseCode !== 200) {
+              // return this.handleResponseError(result.errorCode);
+            }
+            this.roleList = result.result.data;
+            this._initRoleOptions();
+            this.filterOptions = JSON.parse(JSON.stringify(this.filterOptions));
+            console.log(this.roleList);
+          }
+        )
+    );
+  }
+
+  private _resetFilterOptions() {
+    let newFilterOptions = JSON.parse(JSON.stringify(this.filterOptions));
+    newFilterOptions.forEach((filterOption) => {
+      filterOption.value = null;
+    });
+    this.filterOptions = newFilterOptions;
+  }
+
+  private _initRoleOptions() {
+    this.filterOptions.forEach((filterOption: FilterOptionModel) => {
+      if (filterOption.controlName !== 'groupId' || !this.roleList) {
+        return;
+      }
+      filterOption.options = this.roleList.map((role) => {
+        return {
+          title: role.name,
+          value: role.id,
+        };
+      });
+    });
+  }
+
+  public updateElementInfo(updatedUserInfo) {
+    this.dataSource.data.map((item) => {
+      if (item.id === updatedUserInfo.id) {
+        this.allColumns.forEach((column) => {
+          item[column.key] = updatedUserInfo[column.key];
+        });
+      }
+      return item;
+    });
+    this.refreshContent();
   }
 }

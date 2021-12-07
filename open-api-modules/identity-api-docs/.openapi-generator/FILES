@@ -4,8 +4,8 @@ README.md
 api.module.ts
 api/adminAccountController.service.ts
 api/api.ts
+api/customerController.service.ts
 api/groupController.service.ts
-api/lockCustomerController.service.ts
 api/permissionController.service.ts
 api/permissionTypeController.service.ts
 api/signOnController.service.ts
@@ -23,6 +23,7 @@ model/apiResponseGroupEntity.ts
 model/apiResponseListGroupEntity.ts
 model/apiResponseListPermissionEntity.ts
 model/apiResponseListPermissionTypeEntity.ts
+model/apiResponseListString.ts
 model/apiResponseLoginResponse.ts
 model/apiResponseObject.ts
 model/apiResponsePermissionEntity.ts
@@ -43,6 +44,7 @@ model/getTokenRequest.ts
 model/getTokenResponse.ts
 model/groupEntity.ts
 model/lockAccountRequest.ts
+model/lockMultiAccountRequest.ts
 model/loginResponse.ts
 model/mobileLoginRequest.ts
 model/models.ts
@@ -53,9 +55,10 @@ model/removePermissionsRequest.ts
 model/resetPasswordResponse.ts
 model/resetPasswordVerifiedAccountRequest.ts
 model/resetVerifiedPasswordOtpRequest.ts
-model/updateFullInfoProviderAccountRequest.ts
+model/updateFullInfoAdminAccountRequest.ts
 model/updateGroupRequest.ts
-model/updateInfoProviderAccountRequest.ts
+model/updateInfoAdminAccountRequest.ts
 model/updatePermissionRequest.ts
 model/updatePermissionTypeRequest.ts
+model/updatePermissionsRequest.ts
 variables.ts

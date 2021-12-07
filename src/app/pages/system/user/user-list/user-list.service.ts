@@ -44,10 +44,10 @@ export class UserListService {
     }
 
     if (params.keyword) {
-      // requestBody['firstName' + QUERY_CONDITION_TYPE.LIKE_KEYWORD] =
-      //   params.keyword;
-      // requestBody['mobileNumber' + QUERY_CONDITION_TYPE.LIKE_KEYWORD] =
-      //   params.keyword;
+      requestBody['fullName' + QUERY_CONDITION_TYPE.LIKE_KEYWORD] =
+        params.keyword;
+      requestBody['username' + QUERY_CONDITION_TYPE.LIKE_KEYWORD] =
+        params.keyword;
       // requestBody['emailAddress' + QUERY_CONDITION_TYPE.LIKE_KEYWORD] =
       //   params.keyword;
       // requestBody['organizationName' + QUERY_CONDITION_TYPE.LIKE_KEYWORD] =

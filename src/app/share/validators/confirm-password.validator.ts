@@ -1,4 +1,4 @@
-import { Directive } from "@angular/core";
+import {Directive} from "@angular/core";
 import {
   NG_VALIDATORS,
   FormControl,
@@ -10,7 +10,7 @@ import {
   selector: "[confirm-password-validate]",
 
   providers: [
-    { provide: NG_VALIDATORS, useExisting: ConfirmPasswordValidatorDirective, multi: true }
+    {provide: NG_VALIDATORS, useExisting: ConfirmPasswordValidatorDirective, multi: true}
   ]
 })
 export class ConfirmPasswordValidatorDirective implements Validator {
@@ -18,14 +18,14 @@ export class ConfirmPasswordValidatorDirective implements Validator {
 
   validate(c: FormControl): ValidationErrors {
 
-    const isValid = c.value === c.parent.controls["password"].value
+    const isValid = c.value === c.parent.controls["accountPassword"].value
 
     const message = {
       confirmPassword: {
         message: "Xác nhận mật khẩu không trùng khớp." // Will changes the error defined in errors helper.
       }
     };
-    
+
     return isValid ? null : message;
   }
 }
