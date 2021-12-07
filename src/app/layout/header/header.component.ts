@@ -16,6 +16,7 @@ import {
   AdminAccountControllerService,
   ApiResponseAdminAccountEntity,
 } from '../../../../open-api-modules/identity-api-docs';
+import { AdminAccountEntity } from '../../../../open-api-modules/dashboard-api-docs';
 
 export interface AccountInfo {
   fullName?: string;
@@ -33,7 +34,7 @@ export interface AccountInfo {
   styleUrls: ['./header.component.scss'],
 })
 export class HeaderComponent implements OnInit, OnDestroy {
-  customerInfo$: Observable<CustomerInfoResponse>;
+  customerInfo$: Observable<AdminAccountEntity>;
   authorization$: Observable<any>;
   activeNavItem$: Observable<any>;
   responsive: boolean = false;
@@ -41,6 +42,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   logoSrc: string = 'assets/img/monex-logo.svg';
   showProfileBtn: boolean = false;
   shortName: string = '0';
+  userInfo;
 
   accountInfo: AccountInfo = {
     fullName: 'Nguyễn Văn A',
@@ -111,7 +113,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
     //   path: '/',
     // },
   ];
-  userInfo;
   subManager = new Subscription();
 
   constructor(
@@ -180,14 +181,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
       fromSelectors.getAuthorizationState
     );
     this.subManager.add(
-      this.customerInfo$.subscribe((customerInfo: CustomerInfoResponse) => {
-        this.customerInfo = customerInfo;
-        if (customerInfo?.personalData?.firstName) {
-          const names = customerInfo.personalData.firstName.split(' ');
-          this.shortName = names[names.length - 1].charAt(0);
-          return;
-        }
-        this.shortName = '0';
+      this.customerInfo$.subscribe((customerInfo: AdminAccountEntity) => {
+        console.log('customerInfo', customerInfo);
       })
     );
     this.subManager.add(
@@ -200,17 +195,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
         console.log('selectedNavItem', selectedNavItem);
         this.selectedNavItem = selectedNavItem;
       })
-    );
-    this.subManager.add(
-      this.adminAccountControllerService
-        .getInFo()
-        .subscribe((result: ApiResponseAdminAccountEntity) => {
-          if (!result || result.responseCode !== 200) {
-            // return this.handleResponseError(result.errorCode);
-          }
-          this.userInfo = result.result;
-          console.log(this.userInfo);
-        })
     );
   }
 }

@@ -3,6 +3,7 @@ import { FilterSubItemsModel } from './filter-sub-items.model';
 export interface FilterItemModel {
   title: string;
   note?: string;
+  id?: string;
   value: any;
   showAction?: boolean;
   actionTitle?: string;

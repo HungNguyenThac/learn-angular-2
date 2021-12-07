@@ -92,13 +92,11 @@
         <span class="sprite-group-5-lock-white"></span>
         {{ "customer.individual_info.lock" | translate }}
       </button>
-      <ng-template>
-        <button (click)="displayEnableOption()" *ngIf="customerStatus === 'LOCKED'" color="primary"
-                mat-flat-button>
-          <span class="sprite-group-7-unlock"></span>
-          {{ "customer.individual_info.unlock" | translate }}
-        </button>
-      </ng-template>
+      <button (click)="displayEnableOption()" *ngIf="customerStatus === 'LOCKED'" color="primary"
+              mat-flat-button>
+        <span class="sprite-group-7-unlock"></span>
+        {{ "customer.individual_info.unlock" | translate }}
+      </button>
       <div
         #staticMethodEle
         (mouseleave)="staticMethodEle.style.display = 'none'"

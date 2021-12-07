@@ -5,9 +5,10 @@ import {
 import * as fromActions from '../actions';
 import { HttpErrorResponse } from '@angular/common/http';
 import { RESPONSE_CODE } from '../../common/enum/operator';
+import { AdminAccountEntity } from '../../../../../open-api-modules/dashboard-api-docs';
 
 export interface CustomerState {
-  customerInfo: CustomerInfoResponse;
+  customerInfo: AdminAccountEntity;
   getCustomerError: HttpErrorResponse;
 }
 

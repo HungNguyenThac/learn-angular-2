@@ -1442,6 +1442,26 @@ paths:
                 $ref: '#/components/schemas/ApiResponseGroupEntity'
       security:
       - bearerAuth: []
+  /v1/groups/{groupId}/permissions:
+    get:
+      tags:
+      - group-controller
+      operationId: getListPermissionsGroupById
+      parameters:
+      - name: groupId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseListString'
+      security:
+      - bearerAuth: []
   /v1/examples:
     get:
       tags:
@@ -3034,8 +3054,8 @@ components:
         unLockTime:
           type: string
           format: date-time
-        groupId:
-          type: string
+        groupEntity:
+          $ref: '#/components/schemas/GroupEntity'
     ApiResponseSearchAndPaginationResponseAdminAccountEntity:
       type: object
       properties:

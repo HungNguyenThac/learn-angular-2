@@ -11,6 +11,10 @@ import {
   AdminAccountControllerService,
 } from '../../../../../open-api-modules/identity-api-docs';
 import {
+  AdminAccountControllerService as dashboardAdminAccountControllerService,
+  ApiResponseAdminAccountEntity,
+} from '../../../../../open-api-modules/dashboard-api-docs';
+import {
   CustomerInfoResponse,
   InfoControllerService,
 } from 'open-api-modules/customer-api-docs';
@@ -46,6 +50,7 @@ export class LoginEffects {
     private router: Router,
     private location: Location,
     private AdminAccountControllerService: AdminAccountControllerService,
+    private dashboardAdminAccountControllerService: dashboardAdminAccountControllerService,
     private infoService: InfoControllerService,
     private loginService: LoginControllerService,
     private applicationControllerService: ApplicationControllerService,
@@ -112,6 +117,17 @@ export class LoginEffects {
         ofType(fromActions.LOGIN_SIGNIN_SUCCESS),
         map((action: fromActions.SigninSuccess) => action.payload),
         tap(() => {
+          this.subManager.add(
+            this.dashboardAdminAccountControllerService
+              .getAdminAccountById('23112')
+              .subscribe((result: ApiResponseAdminAccountEntity) => {
+                if (!result || result.responseCode !== 200) return;
+
+                this.store$.dispatch(
+                  new fromActions.SetCustomerInfo(result.result)
+                );
+              })
+          );
 
           this.router.navigateByUrl('/');
         })
@@ -126,9 +142,7 @@ export class LoginEffects {
         map((action: fromActions.SigninError) => action.payload),
         tap((errorCode: any) => {
           this.notifier.error(
-            errorCode
-              ? this.multiLanguageService.instant(ERROR_CODE_KEY[errorCode])
-              : this.multiLanguageService.instant('common.something_went_wrong')
+            this.multiLanguageService.instant('common.something_went_wrong')
           );
         })
       ),
