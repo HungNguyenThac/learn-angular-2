@@ -135,6 +135,10 @@ export class LoanDetailComponent implements OnInit, OnDestroy {
     }
   }
 
+  public refreshContent() {
+    this._getCustomerInfoById(this.customerId);
+  }
+
   private _getCustomerInfoById(customerId) {
     if (!customerId) return;
     this.subManager.add(

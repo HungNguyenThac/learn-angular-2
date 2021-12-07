@@ -39,6 +39,12 @@ import {
   CommuneControllerService,
   DistrictControllerService,
 } from '../../../../../../open-api-modules/dashboard-api-docs';
+import { ApiResponseListCity, ApiResponseString,
+  InfoControllerService, } from '../../../../../../open-api-modules/customer-api-docs';
+import {
+  ApiResponseCustomerAccountEntity,
+  CustomerControllerService,
+} from '../../../../../../open-api-modules/identity-api-docs';
 
 @Component({
   selector: 'app-customer-individual-info',
@@ -50,7 +56,6 @@ export class CustomerIndividualInfoComponent implements OnInit, OnDestroy {
   subManager = new Subscription();
   selfieSrc: string;
   diableTime: string;
-  showDisableOption: boolean = true;
 
   communeById: string;
   timeDisableOptions: any = [
@@ -129,9 +134,11 @@ export class CustomerIndividualInfoComponent implements OnInit, OnDestroy {
     private notifier: ToastrService,
     private formBuilder: FormBuilder,
     private notificationService: NotificationService,
+    private infoControllerService: InfoControllerService,
     private cityControllerService: CityControllerService,
     private districtControllerService: DistrictControllerService,
-    private communeControllerService: CommuneControllerService
+    private communeControllerService: CommuneControllerService,
+    private customerControllerService: CustomerControllerService
   ) {
     this.customerIndividualForm = this.formBuilder.group({
       note: [''],
@@ -180,6 +187,32 @@ export class CustomerIndividualInfoComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {}
+
+  verifyInfo() {
+    const confirmVerifyRef = this.notificationService.openPrompt({
+      imgUrl: '../../../../../assets/img/icon/group-5/unlock-dialog.svg',
+      title: this.multiLanguageService.instant(
+        'customer.individual_info.verify_customer.dialog_title'
+      ),
+      content: '',
+      primaryBtnText: this.multiLanguageService.instant('common.allow'),
+      primaryBtnClass: 'btn-primary',
+      secondaryBtnText: this.multiLanguageService.instant('common.skip'),
+    });
+    confirmVerifyRef.afterClosed().subscribe((result) => {
+      if (result === 'PRIMARY') {
+        this.subManager.add(
+          this.infoControllerService
+            .returnConfirmInformation(this.customerId)
+            .subscribe((result: ApiResponseString) => {
+              if (!result || result.responseCode !== 200) {
+                // return this.handleResponseError(result.errorCode);
+              }
+            })
+        );
+      }
+    });
+  }
 
   openUpdateDialog() {
     const updateDialogRef = this.dialog.open(
@@ -242,7 +275,27 @@ export class CustomerIndividualInfoComponent implements OnInit, OnDestroy {
     });
     confirmDisableRef.afterClosed().subscribe((result) => {
       if (result === 'PRIMARY') {
-        this.showDisableOption = false;
+        let now = new Date();
+        const unlockTime = new Date(now.getTime() + value * 1000);
+        this.subManager.add(
+          this.customerControllerService
+            .lockAccount({
+              accountId: this.customerId,
+              unLockTime: this.formatTimeSecond(unlockTime),
+            })
+            .subscribe((result: ApiResponseCustomerAccountEntity) => {
+              if (!result || result.responseCode !== 200) {
+                // return this.handleResponseError(result.errorCode);
+              }
+              if (result.responseCode === 200) {
+                setTimeout(() => {
+                  this.notifier.success(
+                    this.multiLanguageService.instant('common.lock_success')
+                  );
+                }, 500);
+              }
+            })
+        );
       }
     });
   }
@@ -260,7 +313,22 @@ export class CustomerIndividualInfoComponent implements OnInit, OnDestroy {
     });
     confirmEnableRef.afterClosed().subscribe((result) => {
       if (result === 'PRIMARY') {
-        this.showDisableOption = true;
+        this.subManager.add(
+          this.customerControllerService
+            .unLockAccount(this.customerId)
+            .subscribe((result: ApiResponseCustomerAccountEntity) => {
+              if (!result || result.responseCode !== 200) {
+                // return this.handleResponseError(result.errorCode);
+              }
+              if (result.responseCode === 200) {
+                setTimeout(() => {
+                  this.notifier.success(
+                    this.multiLanguageService.instant('common.unlock_success')
+                  );
+                }, 500);
+              }
+            })
+        );
       }
     });
   }
@@ -276,6 +344,13 @@ export class CustomerIndividualInfoComponent implements OnInit, OnDestroy {
     if (!timeInput) return;
     return moment(new Date(timeInput), 'YYYY-MM-DD HH:mm:ss').format(
       'DD/MM/YYYY'
+    );
+  }
+
+  formatTimeSecond(timeInput) {
+    if (!timeInput) return;
+    return moment(new Date(timeInput), 'YYYY-MM-DD HH:mm:ss').format(
+      'DD/MM/YYYY HH:mm:ss'
     );
   }
 
@@ -548,5 +623,9 @@ export class CustomerIndividualInfoComponent implements OnInit, OnDestroy {
     this.getCityById(customerInfo?.cityId);
     this.getDistrictById(customerInfo?.districtId);
     this.getCommuneById(customerInfo?.communeId);
+  }
+
+  get customerStatus() {
+    return this.customerInfo?.userStatus;
   }
 }

@@ -48,7 +48,11 @@ export class ApiHttpInterceptor implements HttpInterceptor {
     const headers = {
       Authorization: '',
     };
-    if (!request.url.includes('/identity')) {
+
+    if (
+      !request.url.includes('/v1/signOn') &&
+      !request.url.includes('/v1/credentials/getToken')
+    ) {
       headers['Authorization'] = `Bearer ${this.authorization}`;
     }
     // clone the request

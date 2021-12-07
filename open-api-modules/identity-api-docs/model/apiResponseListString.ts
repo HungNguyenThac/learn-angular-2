@@ -11,16 +11,10 @@
  */
 
 
-export interface PermissionTypeEntity { 
-    createdAt?: string;
-    updatedAt?: string;
-    createdBy?: string;
-    updateBy?: string;
-    id?: string;
-    name?: string;
-    level?: number;
-    parentId?: string;
-    childPermissionTypeIds?: Array<string>;
-    permissionIds?: Array<string>;
+export interface ApiResponseListString { 
+    result?: Array<string>;
+    errorCode?: string;
+    message?: object;
+    responseCode?: number;
 }
 

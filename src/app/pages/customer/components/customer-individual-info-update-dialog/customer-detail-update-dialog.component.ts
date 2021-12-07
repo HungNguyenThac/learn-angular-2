@@ -35,9 +35,11 @@ export class CustomerDetailUpdateDialogComponent implements OnInit {
   cityData: any[];
   districtData: any[];
   communeData: any[];
+  filteredBanks: any[];
   filteredCities: any[];
   filteredDistricts: any[];
   filteredCommunes: any[];
+  banksFilterCtrl: FormControl = new FormControl();
   citiesFilterCtrl: FormControl = new FormControl();
   districtsFilterCtrl: FormControl = new FormControl();
   communesFilterCtrl: FormControl = new FormControl();
@@ -89,6 +91,11 @@ export class CustomerDetailUpdateDialogComponent implements OnInit {
     this.getAllCityList();
     this.getCommuneList();
     this.getDistrictList();
+    this.banksFilterCtrl.valueChanges
+      .pipe(takeUntil(this._onDestroy))
+      .subscribe(() => {
+        this.filterBanks();
+      });
     this.citiesFilterCtrl.valueChanges
       .pipe(takeUntil(this._onDestroy))
       .subscribe(() => {
@@ -142,6 +149,7 @@ export class CustomerDetailUpdateDialogComponent implements OnInit {
     this.virtualAccount = data?.virtualAccount;
     this.selfieSrc = data?.selfieSrc;
     this.bankOptions = data?.bankOptions ? data?.bankOptions : [];
+    this.filteredBanks = data?.bankOptions ? data?.bankOptions : [];
 
     this.customerIndividualForm.patchValue({
       id: this.customerId,
@@ -288,6 +296,23 @@ export class CustomerDetailUpdateDialogComponent implements OnInit {
         communeId: '',
       });
     }
+  }
+
+  filterBanks() {
+    let search = this.banksFilterCtrl.value;
+    if (!search) {
+      this.filteredBanks = this.bankOptions;
+      return;
+    } else {
+      search = search.toLowerCase();
+    }
+    let filteredBanksByCode = this.bankOptions.filter(
+      (bank) => bank.bankCode.toLowerCase().indexOf(search) > -1
+    );
+    let filteredBanksByName = this.bankOptions.filter(
+      (bank) => bank.bankName.toLowerCase().indexOf(search) > -1
+    );
+    this.filteredBanks = filteredBanksByName.concat(filteredBanksByCode);
   }
 
   filterCities() {

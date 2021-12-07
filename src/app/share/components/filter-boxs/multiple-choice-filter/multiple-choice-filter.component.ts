@@ -38,12 +38,12 @@ export class MultipleChoiceFilterComponent implements OnInit {
 
   private _initSelectedItems() {
     this.selectedItems = this.filterOption.options.map(
-      (item: FilterItemModel, index) => {
+      (item: FilterItemModel) => {
         return {
           filterItem: item,
           selected:
             this.filterOption.value &&
-            this.filterOption.value.include(item.value),
+            this.filterOption.value.includes(item.value),
         };
       }
     );

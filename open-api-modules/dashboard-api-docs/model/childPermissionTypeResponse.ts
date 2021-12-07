@@ -9,18 +9,14 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { PermissionEntity } from './permissionEntity';
 
 
-export interface PermissionTypeEntity { 
-    createdAt?: string;
-    updatedAt?: string;
-    createdBy?: string;
-    updateBy?: string;
+export interface ChildPermissionTypeResponse { 
     id?: string;
     name?: string;
     level?: number;
     parentId?: string;
-    childPermissionTypeIds?: Array<string>;
-    permissionIds?: Array<string>;
+    permissionEntities?: Array<PermissionEntity>;
 }
 
