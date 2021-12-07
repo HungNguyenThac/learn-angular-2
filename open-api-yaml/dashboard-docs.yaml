@@ -185,6 +185,19 @@ paths:
       security:
       - bearerAuth: []
   /v1/permissionTypes:
+    get:
+      tags:
+      - permission-type-controller
+      operationId: getPermissionTypeByTreeFormat
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseListParentPermissionTypeResponse'
+      security:
+      - bearerAuth: []
     post:
       tags:
       - permission-type-controller
@@ -961,6 +974,17 @@ paths:
       security:
       - bearerAuth: []
   /v1/adminAccounts:
+    get:
+      tags:
+      - admin-account-controller
+      operationId: getInFo
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseAdminAccountEntity'
     post:
       tags:
       - admin-account-controller
@@ -1429,6 +1453,26 @@ paths:
                 $ref: '#/components/schemas/ApiResponseGroupEntity'
       security:
       - bearerAuth: []
+  /v1/groups/{groupId}/permissions:
+    get:
+      tags:
+      - group-controller
+      operationId: getListPermissionsGroupById
+      parameters:
+      - name: groupId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseListString'
+      security:
+      - bearerAuth: []
   /v1/examples:
     get:
       tags:
@@ -1871,6 +1915,16 @@ components:
           type: boolean
         isVerified:
           type: boolean
+        userStatus:
+          type: string
+          enum:
+          - ACTIVE
+          - LOCKED
+        unLockTime:
+          type: string
+          format: date-time
+        isDelete:
+          type: boolean
         collateralDocument:
           type: string
         salaryDocument1:
@@ -2265,6 +2319,14 @@ components:
           format: int32
         parentId:
           type: string
+        childPermissionTypeIds:
+          type: array
+          items:
+            type: string
+        permissionIds:
+          type: array
+          items:
+            type: string
     SearchAndPaginationResponsePermissionTypeEntity:
       type: object
       properties:
@@ -3003,6 +3065,10 @@ components:
         unLockTime:
           type: string
           format: date-time
+        groupEntity:
+          $ref: '#/components/schemas/GroupEntity'
+        groupId:
+          type: string
     ApiResponseSearchAndPaginationResponseAdminAccountEntity:
       type: object
       properties:
@@ -3165,6 +3231,50 @@ components:
         responseCode:
           type: integer
           format: int32
+    ApiResponseListParentPermissionTypeResponse:
+      type: object
+      properties:
+        result:
+          type: array
+          items:
+            $ref: '#/components/schemas/ParentPermissionTypeResponse'
+        errorCode:
+          type: string
+        message:
+          type: object
+        responseCode:
+          type: integer
+          format: int32
+    ChildPermissionTypeResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        level:
+          type: integer
+          format: int32
+        parentId:
+          type: string
+        permissionEntities:
+          type: array
+          items:
+            $ref: '#/components/schemas/PermissionEntity'
+    ParentPermissionTypeResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        level:
+          type: integer
+          format: int32
+        childPermissionTypeResponses:
+          type: array
+          items:
+            $ref: '#/components/schemas/ChildPermissionTypeResponse'
     ApiResponsePermissionTypeEntity:
       type: object
       properties:

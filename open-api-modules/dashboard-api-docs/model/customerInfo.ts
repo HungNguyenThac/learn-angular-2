@@ -57,6 +57,9 @@ export interface CustomerInfo {
     errorGetTngInfo?: boolean;
     isSignedApprovalLetter?: boolean;
     isVerified?: boolean;
+    userStatus?: CustomerInfo.UserStatusEnum;
+    unLockTime?: string;
+    isDelete?: boolean;
     collateralDocument?: string;
     salaryDocument1?: string;
     salaryDocument2?: string;
@@ -77,4 +80,12 @@ export interface CustomerInfo {
     updatedBy?: string;
     updatedAt?: string;
 }
+export namespace CustomerInfo {
+    export type UserStatusEnum = 'ACTIVE' | 'LOCKED';
+    export const UserStatusEnum = {
+        Active: 'ACTIVE' as UserStatusEnum,
+        Locked: 'LOCKED' as UserStatusEnum
+    };
+}
+
 

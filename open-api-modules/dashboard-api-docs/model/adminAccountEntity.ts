@@ -9,6 +9,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { GroupEntity } from './groupEntity';
 
 
 export interface AdminAccountEntity { 
@@ -26,6 +27,8 @@ export interface AdminAccountEntity {
     position?: string;
     userStatus?: AdminAccountEntity.UserStatusEnum;
     unLockTime?: string;
+    groupEntity?: GroupEntity;
+    groupId?: string;
 }
 export namespace AdminAccountEntity {
     export type UserStatusEnum = 'ACTIVE' | 'LOCKED';
