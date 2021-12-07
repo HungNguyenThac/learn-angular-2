@@ -12,7 +12,17 @@ import { FilterDisplayedOptionModel } from '../../../../public/models/filter/fil
   styleUrls: ['./multiple-choice-filter.component.scss'],
 })
 export class MultipleChoiceFilterComponent implements OnInit {
-  @Input() filterOption: FilterOptionModel;
+  _filterOption: FilterOptionModel;
+  @Input()
+  get filterOption(): FilterOptionModel {
+    return this._filterOption;
+  }
+
+  set filterOption(filterOptionModel: FilterOptionModel) {
+    console.log("dsada", filterOptionModel)
+    this.selectedItems = filterOptionModel.value || [];
+    this._filterOption = filterOptionModel;
+  }
 
   @Output() completeFilter = new EventEmitter<FilterEventModel>();
   @Output() clickActionBtn = new EventEmitter<FilterActionEventModel>();
@@ -49,7 +59,7 @@ export class MultipleChoiceFilterComponent implements OnInit {
     );
   }
 
-  filterChange(event, selectedItem: FilterDisplayedOptionModel) {
+  public filterChange(event, selectedItem: FilterDisplayedOptionModel) {
     selectedItem.selected = !selectedItem.selected;
     this.completeFilter.emit({
       type: this.filterOption.type,
@@ -58,7 +68,7 @@ export class MultipleChoiceFilterComponent implements OnInit {
     });
   }
 
-  triggerExtraAction(filterItem: FilterOptionModel) {
+  public triggerExtraAction(filterItem: FilterOptionModel) {
     this.clickActionBtn.emit({
       type: FILTER_ACTION_TYPE.FILTER_EXTRA_ACTION,
       controlName: this.filterOption.controlName,
@@ -66,7 +76,7 @@ export class MultipleChoiceFilterComponent implements OnInit {
     });
   }
 
-  triggerItemAction(filterItem: FilterItemModel) {
+  public triggerItemAction(filterItem: FilterItemModel) {
     this.clickActionBtn.emit({
       type: FILTER_ACTION_TYPE.ITEM_ACTION,
       controlName: this.filterOption.controlName,
