@@ -9,10 +9,13 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { ParentPermissionTypeResponse } from './parentPermissionTypeResponse';
 
 
-export interface UpdateInfoProviderAccountRequest { 
-    fullName: string;
-    mobile: string;
+export interface ApiResponseListParentPermissionTypeResponse { 
+    result?: Array<ParentPermissionTypeResponse>;
+    errorCode?: string;
+    message?: object;
+    responseCode?: number;
 }
 

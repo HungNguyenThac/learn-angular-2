@@ -167,8 +167,8 @@
                               class="role-icon" matPrefix></mat-icon>
                     <mat-select required formControlName="accountRole">
                       <mat-option
-                        *ngFor="let roleOption of roleOptions.options"
-                        [value]="roleOption">{{roleOption}}
+                        *ngFor="let role of roleList"
+                        [value]="role.id">{{role.name}}
                       </mat-option>
                     </mat-select>
                     <show-errors

@@ -70,6 +70,9 @@
     "active": "Đang hoạt động",
     "inactive": "Ngừng hoạt động",
     "update_success": "Cập nhật dữ liệu thành công",
+    "create_success": "Tạo người dùng thành công",
+    "lock_success": "Khóa tài khoản thành công",
+    "unlock_success": "Mở khóa tài khoản thành công",
     "process_downloading": "Đang tải xuống tài liệu"
   },
   "auth": {
@@ -478,6 +481,7 @@
     "account_status": "Trạng thái hoạt động",
     "loan_status": "Trạng thái khoản ứng",
     "merchant_group": "Nhóm nhà cung cấp",
+    "role_group": "Vai trò",
     "account_classification": "Phân loại tài khoản",
     "account_classification_test": "Tài khoản test",
     "account_classification_real": "Tài khoản thực",

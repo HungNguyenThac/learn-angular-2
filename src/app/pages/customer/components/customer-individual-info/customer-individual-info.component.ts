@@ -39,6 +39,11 @@ import {
   CommuneControllerService,
   DistrictControllerService,
 } from '../../../../../../open-api-modules/dashboard-api-docs';
+import { ApiResponseListCity } from '../../../../../../open-api-modules/customer-api-docs';
+import {
+  ApiResponseCustomerAccountEntity,
+  CustomerControllerService,
+} from '../../../../../../open-api-modules/identity-api-docs';
 
 @Component({
   selector: 'app-customer-individual-info',
@@ -50,7 +55,6 @@ export class CustomerIndividualInfoComponent implements OnInit, OnDestroy {
   subManager = new Subscription();
   selfieSrc: string;
   diableTime: string;
-  showDisableOption: boolean = true;
 
   communeById: string;
   timeDisableOptions: any = [
@@ -131,7 +135,8 @@ export class CustomerIndividualInfoComponent implements OnInit, OnDestroy {
     private notificationService: NotificationService,
     private cityControllerService: CityControllerService,
     private districtControllerService: DistrictControllerService,
-    private communeControllerService: CommuneControllerService
+    private communeControllerService: CommuneControllerService,
+    private customerControllerService: CustomerControllerService
   ) {
     this.customerIndividualForm = this.formBuilder.group({
       note: [''],
@@ -242,7 +247,27 @@ export class CustomerIndividualInfoComponent implements OnInit, OnDestroy {
     });
     confirmDisableRef.afterClosed().subscribe((result) => {
       if (result === 'PRIMARY') {
-        this.showDisableOption = false;
+        let now = new Date();
+        const unlockTime = new Date(now.getTime() + value * 1000);
+        this.subManager.add(
+          this.customerControllerService
+            .lockAccount({
+              accountId: this.customerId,
+              unLockTime: this.formatTimeSecond(unlockTime),
+            })
+            .subscribe((result: ApiResponseCustomerAccountEntity) => {
+              if (!result || result.responseCode !== 200) {
+                // return this.handleResponseError(result.errorCode);
+              }
+              if (result.responseCode === 200) {
+                setTimeout(() => {
+                  this.notifier.success(
+                    this.multiLanguageService.instant('common.lock_success')
+                  );
+                }, 500);
+              }
+            })
+        );
       }
     });
   }
@@ -260,7 +285,22 @@ export class CustomerIndividualInfoComponent implements OnInit, OnDestroy {
     });
     confirmEnableRef.afterClosed().subscribe((result) => {
       if (result === 'PRIMARY') {
-        this.showDisableOption = true;
+        this.subManager.add(
+          this.customerControllerService
+            .unLockAccount(this.customerId)
+            .subscribe((result: ApiResponseCustomerAccountEntity) => {
+              if (!result || result.responseCode !== 200) {
+                // return this.handleResponseError(result.errorCode);
+              }
+              if (result.responseCode === 200) {
+                setTimeout(() => {
+                  this.notifier.success(
+                    this.multiLanguageService.instant('common.unlock_success')
+                  );
+                }, 500);
+              }
+            })
+        );
       }
     });
   }
@@ -276,6 +316,13 @@ export class CustomerIndividualInfoComponent implements OnInit, OnDestroy {
     if (!timeInput) return;
     return moment(new Date(timeInput), 'YYYY-MM-DD HH:mm:ss').format(
       'DD/MM/YYYY'
+    );
+  }
+
+  formatTimeSecond(timeInput) {
+    if (!timeInput) return;
+    return moment(new Date(timeInput), 'YYYY-MM-DD HH:mm:ss').format(
+      'DD/MM/YYYY HH:mm:ss'
     );
   }
 
@@ -548,5 +595,9 @@ export class CustomerIndividualInfoComponent implements OnInit, OnDestroy {
     this.getCityById(customerInfo?.cityId);
     this.getDistrictById(customerInfo?.districtId);
     this.getCommuneById(customerInfo?.communeId);
+  }
+
+  get customerStatus() {
+    return this.customerInfo?.userStatus;
   }
 }

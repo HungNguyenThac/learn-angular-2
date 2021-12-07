@@ -8,6 +8,16 @@ import {
 } from '../../../../../core/common/enum/operator';
 import { NotificationService } from '../../../../../core/services/notification.service';
 import { ToastrService } from 'ngx-toastr';
+import {
+  AdminAccountControllerService as AdminAccountControllerService1,
+  ApiResponseAdminAccountEntity,
+} from '../../../../../../../open-api-modules/identity-api-docs';
+import * as moment from 'moment';
+import {
+  AdminAccountControllerService,
+  ApiResponseCustomerInfo,
+  CompanyInfo,
+} from '../../../../../../../open-api-modules/dashboard-api-docs';
 
 @Component({
   selector: 'app-user-detail',
@@ -21,11 +31,14 @@ export class UserDetailComponent implements OnInit {
   subManager = new Subscription();
 
   @Input() userInfo;
+  @Output() updateElementInfo = new EventEmitter<CompanyInfo>();
 
   constructor(
     private multiLanguageService: MultiLanguageService,
     private notificationService: NotificationService,
-    private notifier: ToastrService
+    private notifier: ToastrService,
+    private adminAccountControllerService: AdminAccountControllerService1,
+    private adminAccountControllerDashboardService: AdminAccountControllerService
   ) {}
 
   ngOnInit(): void {
@@ -50,7 +63,27 @@ export class UserDetailComponent implements OnInit {
     });
     confirmLockRef.afterClosed().subscribe((result) => {
       if (result === 'PRIMARY') {
-        this.showEnableBtn = true;
+        let now = new Date();
+        const unlockTime = new Date(now.getTime() + 999999999 * 1000);
+        this.subManager.add(
+          this.adminAccountControllerService
+            .lockAccount1({
+              accountId: this.userInfo.id,
+              unLockTime: this.formatTimeSecond(unlockTime),
+            })
+            .subscribe((result: ApiResponseAdminAccountEntity) => {
+              if (!result || result.responseCode !== 200) {
+                // return this.handleResponseError(result.errorCode);
+              }
+              if (result.responseCode === 200) {
+                setTimeout(() => {
+                  this.notifier.success(
+                    this.multiLanguageService.instant('common.lock_success')
+                  );
+                }, 500);
+              }
+            })
+        );
       }
     });
   }
@@ -68,7 +101,22 @@ export class UserDetailComponent implements OnInit {
     });
     confirmUnlockRef.afterClosed().subscribe((result) => {
       if (result === 'PRIMARY') {
-        this.showEnableBtn = false;
+        this.subManager.add(
+          this.adminAccountControllerService
+            .unLockAccount1(this.userInfo.id)
+            .subscribe((result: ApiResponseAdminAccountEntity) => {
+              if (!result || result.responseCode !== 200) {
+                // return this.handleResponseError(result.errorCode);
+              }
+              if (result.responseCode === 200) {
+                setTimeout(() => {
+                  this.notifier.success(
+                    this.multiLanguageService.instant('common.unlock_success')
+                  );
+                }, 500);
+              }
+            })
+        );
       }
     });
   }
@@ -95,6 +143,29 @@ export class UserDetailComponent implements OnInit {
         );
       }
     });
+  }
+
+  formatTimeSecond(timeInput) {
+    if (!timeInput) return;
+    return moment(new Date(timeInput), 'YYYY-MM-DD HH:mm:ss').format(
+      'DD/MM/YYYY HH:mm:ss'
+    );
+  }
+
+  public refreshContent() {
+    this._getUserInfoById(this.userInfo.id);
+  }
+
+  private _getUserInfoById(userId) {
+    if (!userId) return;
+    this.subManager.add(
+      this.adminAccountControllerDashboardService
+        .getAdminAccountById(this.userInfo.id)
+        .subscribe((data: ApiResponseCustomerInfo) => {
+          this.userInfo = data?.result;
+          this.updateElementInfo.emit(this.userInfo);
+        })
+    );
   }
 
   private _initLeftCompanyInfos() {
@@ -143,5 +214,9 @@ export class UserDetailComponent implements OnInit {
         format: DATA_STATUS_TYPE.USER_STATUS,
       },
     ];
+  }
+
+  get userStatus() {
+    return this.userInfo?.userStatus;
   }
 }

@@ -81,13 +81,14 @@
         <span class="sprite-group-5-pen-white"></span>
         {{ "customer.individual_info.update" | translate }}
       </button>
-      <button (click)="displayDisableOption()" *ngIf="showDisableOption else showEnableOption" color="warn"
+      <button (click)="displayDisableOption()" *ngIf="customerStatus === 'ACTIVE'" color="warn"
               mat-flat-button>
         <span class="sprite-group-5-lock-white"></span>
         {{ "customer.individual_info.lock" | translate }}
       </button>
-      <ng-template #showEnableOption>
-        <button (click)="displayEnableOption()" color="primary" mat-flat-button>
+      <ng-template>
+        <button (click)="displayEnableOption()" *ngIf="customerStatus === 'LOCKED'" color="primary"
+                mat-flat-button>
           <span class="sprite-group-7-unlock"></span>
           {{ "customer.individual_info.unlock" | translate }}
         </button>
@@ -114,9 +115,9 @@
               >
                 <div class="thead">{{ timeOption.mainTitle }}</div>
                 <div
+                  *ngFor="let ele of timeOption.options"
                   (click)="chooseDisableTime(
                   ele.title, ele.value,staticMethodEle)"
-                  *ngFor="let ele of timeOption.options"
                   class="trow"
                 >
                   {{ ele.title }}

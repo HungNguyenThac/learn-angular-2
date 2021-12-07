@@ -34,7 +34,6 @@ model/apiResponseAdminAccountEntity.ts
 model/apiResponseApprovalLetter.ts
 model/apiResponseBank.ts
 model/apiResponseCity.ts
-model/apiResponseCollectionParentPermissionTypeResponse.ts
 model/apiResponseCommune.ts
 model/apiResponseCompanyInfo.ts
 model/apiResponseCustomerInfo.ts
@@ -47,6 +46,7 @@ model/apiResponseKalapaResponse.ts
 model/apiResponseListCity.ts
 model/apiResponseListCommune.ts
 model/apiResponseListDistrict.ts
+model/apiResponseListParentPermissionTypeResponse.ts
 model/apiResponseListRating.ts
 model/apiResponseListString.ts
 model/apiResponsePaydayLoanHmg.ts

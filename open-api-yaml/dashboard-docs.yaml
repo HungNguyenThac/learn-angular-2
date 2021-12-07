@@ -195,7 +195,7 @@ paths:
           content:
             '*/*':
               schema:
-                $ref: '#/components/schemas/ApiResponseCollectionParentPermissionTypeResponse'
+                $ref: '#/components/schemas/ApiResponseListParentPermissionTypeResponse'
       security:
       - bearerAuth: []
     post:
@@ -1884,6 +1884,16 @@ components:
           type: boolean
         isVerified:
           type: boolean
+        userStatus:
+          type: string
+          enum:
+          - ACTIVE
+          - LOCKED
+        unLockTime:
+          type: string
+          format: date-time
+        isDelete:
+          type: boolean
         collateralDocument:
           type: string
         salaryDocument1:
@@ -3188,7 +3198,7 @@ components:
         responseCode:
           type: integer
           format: int32
-    ApiResponseCollectionParentPermissionTypeResponse:
+    ApiResponseListParentPermissionTypeResponse:
       type: object
       properties:
         result:

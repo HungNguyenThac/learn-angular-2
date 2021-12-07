@@ -1,11 +1,11 @@
-import { Component, OnInit, Injectable } from '@angular/core';
+import { Component, OnInit, Injectable, Input } from '@angular/core';
 import { MultiLanguageService } from '../../../../../share/translate/multiLanguageService';
 import { MatDialog } from '@angular/material/dialog';
 import { EditRoleDialogComponent } from '../../../../../share/components/operators/user-account/edit-role-dialog/edit-role-dialog.component';
 import { ApiResponseListCity } from '../../../../../../../open-api-modules/customer-api-docs';
 import { Subscription } from 'rxjs';
 import {
-  ApiResponseCollectionParentPermissionTypeResponse,
+  ApiResponseListParentPermissionTypeResponse,
   ParentPermissionTypeResponse,
   PermissionTypeControllerService,
 } from '../../../../../../../open-api-modules/dashboard-api-docs';
@@ -16,7 +16,7 @@ import {
   styleUrls: ['./user-role.component.scss'],
 })
 export class UserRoleComponent implements OnInit {
-  treeData: Array<ParentPermissionTypeResponse>;
+  @Input() treeData;
   subManager = new Subscription();
   roles = [
     { title: 'Kiểm duyệt viên', id: '1' },
@@ -53,13 +53,10 @@ export class UserRoleComponent implements OnInit {
 
   constructor(
     private multiLanguageService: MultiLanguageService,
-    private dialog: MatDialog,
-    private permissionTypeControllerService: PermissionTypeControllerService
+    private dialog: MatDialog
   ) {}
 
-  ngOnInit(): void {
-    this.getPermissionList();
-  }
+  ngOnInit(): void {}
 
   openUpdateDialog(roleTitle) {
     const updateDialogRef = this.dialog.open(EditRoleDialogComponent, {
@@ -85,21 +82,5 @@ export class UserRoleComponent implements OnInit {
         TREE_DATA: this.TREE_DATA,
       },
     });
-  }
-
-  getPermissionList() {
-    this.subManager.add(
-      this.permissionTypeControllerService
-        .getPermissionTypeByTreeFormat()
-        .subscribe(
-          (result: ApiResponseCollectionParentPermissionTypeResponse) => {
-            if (!result || result.responseCode !== 200) {
-              // return this.handleResponseError(result.errorCode);
-            }
-            this.treeData = result.result;
-            console.log(this.treeData);
-          }
-        )
-    );
   }
 }

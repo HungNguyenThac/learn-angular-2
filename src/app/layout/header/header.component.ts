@@ -12,6 +12,10 @@ import { MultiLanguageService } from '../../share/translate/multiLanguageService
 import { DialogCompanyInfoUpdateComponent } from '../../share/components';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogUserInfoUpdateComponent } from '../../share/components/operators/user-account/dialog-user-info-update/dialog-user-info-update.component';
+import {
+  AdminAccountControllerService,
+  ApiResponseAdminAccountEntity,
+} from '../../../../open-api-modules/identity-api-docs';
 
 export interface AccountInfo {
   fullName?: string;
@@ -107,9 +111,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
     //   path: '/',
     // },
   ];
+  userInfo;
   subManager = new Subscription();
 
   constructor(
+    private adminAccountControllerService: AdminAccountControllerService,
     private router: Router,
     private store: Store<fromStore.State>,
     private dialog: MatDialog,
@@ -176,7 +182,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.subManager.add(
       this.customerInfo$.subscribe((customerInfo: CustomerInfoResponse) => {
         this.customerInfo = customerInfo;
-        console.log(this.customerInfo);
         if (customerInfo?.personalData?.firstName) {
           const names = customerInfo.personalData.firstName.split(' ');
           this.shortName = names[names.length - 1].charAt(0);
@@ -195,6 +200,17 @@ export class HeaderComponent implements OnInit, OnDestroy {
         console.log('selectedNavItem', selectedNavItem);
         this.selectedNavItem = selectedNavItem;
       })
+    );
+    this.subManager.add(
+      this.adminAccountControllerService
+        .getInFo()
+        .subscribe((result: ApiResponseAdminAccountEntity) => {
+          if (!result || result.responseCode !== 200) {
+            // return this.handleResponseError(result.errorCode);
+          }
+          this.userInfo = result.result;
+          console.log(this.userInfo);
+        })
     );
   }
 }

@@ -1,4 +1,5 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { CompanyInfo } from '../../../../../../../open-api-modules/dashboard-api-docs';
 
 @Component({
   selector: 'app-user-element',
@@ -7,11 +8,16 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 })
 export class UserElementComponent implements OnInit {
   @Input() userInfo;
+  @Input() treeData;
+  @Output() triggerUpdateElementInfo = new EventEmitter();
 
-  constructor() {
-  }
+  constructor() {}
 
   ngOnInit(): void {
     console.log(this.userInfo);
+  }
+
+  updateElementInfo(event) {
+    this.triggerUpdateElementInfo.emit(event);
   }
 }
