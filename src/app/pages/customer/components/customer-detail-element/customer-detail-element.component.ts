@@ -42,6 +42,7 @@ export class CustomerDetailElementComponent implements OnInit, OnDestroy {
 
   @Output() updateElementInfo = new EventEmitter<CompanyInfo>();
 
+  customerStatus;
   userInfo: CustomerInfo;
   bankOptions: Array<Bank>;
   companyOptions: Array<CompanyInfo>;
@@ -81,6 +82,7 @@ export class CustomerDetailElementComponent implements OnInit, OnDestroy {
         .getById(customerId)
         .subscribe((data: ApiResponseCustomerInfo) => {
           this.userInfo = data?.result;
+          this.customerStatus = data?.result.userStatus;
           this.updateElementInfo.emit(this.userInfo);
         })
     );
@@ -116,6 +118,9 @@ export class CustomerDetailElementComponent implements OnInit, OnDestroy {
   }
 
   public updateCustomerInfo(updateInfoRequest: Object) {
+    if (!updateInfoRequest) {
+      this.refreshContent();
+    }
     this.notificationService.showLoading({ showContent: true });
     this.subManager.add(
       this.customerDetailService

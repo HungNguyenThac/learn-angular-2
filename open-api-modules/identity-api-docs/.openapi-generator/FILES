@@ -44,6 +44,7 @@ model/getTokenRequest.ts
 model/getTokenResponse.ts
 model/groupEntity.ts
 model/lockAccountRequest.ts
+model/lockMultiAccountRequest.ts
 model/loginResponse.ts
 model/mobileLoginRequest.ts
 model/models.ts
@@ -59,4 +60,5 @@ model/updateGroupRequest.ts
 model/updateInfoAdminAccountRequest.ts
 model/updatePermissionRequest.ts
 model/updatePermissionTypeRequest.ts
+model/updatePermissionsRequest.ts
 variables.ts

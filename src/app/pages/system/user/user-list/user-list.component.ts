@@ -102,39 +102,17 @@ export class UserListComponent implements OnInit, OnDestroy {
     btnAddText: this.multiLanguageService.instant('system.add_user'),
     keyword: '',
   };
+
   filterOptions: FilterOptionModel[] = [
     {
       title: this.multiLanguageService.instant('filter.merchant_group'),
       type: FILTER_TYPE.MULTIPLE_CHOICE,
-      controlName: 'companyId',
+      controlName: 'groupId',
       value: null,
       showAction: true,
       titleAction: 'Thêm nhóm nhà cung cấp',
       actionIconClass: 'sprite-group-7-add-blue',
-      options: [
-        {
-          title: 'Nhóm nhà cung cấp 1',
-          note: '',
-          value: '1',
-          showAction: true,
-          actionTitle: 'Sửa nhóm nhà cung cấp',
-          actionIconClass: 'sprite-group-5-edit-blue',
-          subTitle: 'casca',
-          disabled: false,
-          count: 0,
-        },
-        {
-          title: 'Nhóm nhà cung cấp 2',
-          note: 'zz',
-          value: '2',
-          showAction: true,
-          actionTitle: 'Sửa nhóm nhà cung cấp',
-          actionIconClass: 'sprite-group-5-edit-blue',
-          subTitle: 'váv',
-          disabled: false,
-          count: 0,
-        },
-      ],
+      options: [],
     },
     {
       title: this.multiLanguageService.instant('filter.account_status'),
@@ -224,6 +202,7 @@ export class UserListComponent implements OnInit, OnDestroy {
     private userListService: UserListService
   ) {
     this.routeAllState$ = store.select(fromSelectors.getRouterAllState);
+
     this._initFilterForm();
   }
 
@@ -236,7 +215,6 @@ export class UserListComponent implements OnInit, OnDestroy {
     this.store.dispatch(new fromActions.SetOperatorInfo(NAV_ITEM.CUSTOMER));
     this._initSubscription();
     this.getPermissionList();
-    this.getRoleList();
   }
 
   private _getUserList() {
@@ -287,6 +265,11 @@ export class UserListComponent implements OnInit, OnDestroy {
         this.filterForm.controls.dateFilterTitle.setValue(event.value.title);
         break;
       case FILTER_TYPE.MULTIPLE_CHOICE:
+        if (event.controlName === 'groupId') {
+          this.filterForm.controls.groupId.setValue(
+            event.value ? event.value.join(',') : ''
+          );
+        }
         break;
       case FILTER_TYPE.SELECT:
         if (event.controlName === 'companyId') {
@@ -380,6 +363,7 @@ export class UserListComponent implements OnInit, OnDestroy {
       id: [''],
       keyword: [''],
       companyId: [''],
+      groupId: [''],
       paydayLoanStatus: [''],
       orderBy: ['createdAt'],
       sortDirection: ['desc'],
@@ -389,6 +373,7 @@ export class UserListComponent implements OnInit, OnDestroy {
       dateFilterTitle: [''],
       filterConditions: {
         companyId: QUERY_CONDITION_TYPE.IN,
+        groupId: QUERY_CONDITION_TYPE.IN,
         paydayLoanStatus: QUERY_CONDITION_TYPE.EQUAL,
       },
     });
@@ -411,19 +396,10 @@ export class UserListComponent implements OnInit, OnDestroy {
         }
       }
     }
+
     this.filterForm.controls.filterConditions.setValue(filterConditionsValue);
     this.filterOptions.forEach((filterOption) => {
-      if (filterOption.type === FILTER_TYPE.DATETIME) {
-        filterOption.value = {
-          type: params.dateFilterType,
-          title: params.dateFilterTitle,
-        };
-      } else if (filterOption.controlName === 'companyId') {
-        filterOption.value = this.filterForm.controls.companyId.value
-          ? this.filterForm.controls.companyId.value.split(',')
-          : [];
-      } else if (filterOption.controlName === 'paydayLoanStatus') {
-        filterOption.value = this.filterForm.controls.paydayLoanStatus.value;
+      if (filterOption.controlName === 'groupId') {
       }
     });
     this.breadcrumbOptions.keyword = params.keyword;
@@ -437,6 +413,7 @@ export class UserListComponent implements OnInit, OnDestroy {
         this._parseQueryParams(params?.queryParams);
         this._getUserList();
         this._getCompanyList();
+        this.getRoleList();
       })
     );
   }
@@ -581,10 +558,34 @@ export class UserListComponent implements OnInit, OnDestroy {
               // return this.handleResponseError(result.errorCode);
             }
             this.roleList = result.result.data;
+            this._initRoleOptions();
+            this.filterOptions = JSON.parse(JSON.stringify(this.filterOptions));
             console.log(this.roleList);
           }
         )
     );
+  }
+
+  private _resetFilterOptions() {
+    let newFilterOptions = JSON.parse(JSON.stringify(this.filterOptions));
+    newFilterOptions.forEach((filterOption) => {
+      filterOption.value = null;
+    });
+    this.filterOptions = newFilterOptions;
+  }
+
+  private _initRoleOptions() {
+    this.filterOptions.forEach((filterOption: FilterOptionModel) => {
+      if (filterOption.controlName !== 'groupId' || !this.roleList) {
+        return;
+      }
+      filterOption.options = this.roleList.map((role) => {
+        return {
+          title: role.name,
+          value: role.id,
+        };
+      });
+    });
   }
 
   public updateElementInfo(updatedUserInfo) {
@@ -596,7 +597,6 @@ export class UserListComponent implements OnInit, OnDestroy {
       }
       return item;
     });
-    console.log('hiabsfihbasjfbaeniabdgoagbagbghb');
     this.refreshContent();
   }
 }

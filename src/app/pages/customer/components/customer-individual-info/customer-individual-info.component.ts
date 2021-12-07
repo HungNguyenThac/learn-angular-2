@@ -39,8 +39,11 @@ import {
   CommuneControllerService,
   DistrictControllerService,
 } from '../../../../../../open-api-modules/dashboard-api-docs';
-import { ApiResponseListCity, ApiResponseString,
-  InfoControllerService, } from '../../../../../../open-api-modules/customer-api-docs';
+import {
+  ApiResponseListCity,
+  ApiResponseString,
+  InfoControllerService,
+} from '../../../../../../open-api-modules/customer-api-docs';
 import {
   ApiResponseCustomerAccountEntity,
   CustomerControllerService,
@@ -56,6 +59,7 @@ export class CustomerIndividualInfoComponent implements OnInit, OnDestroy {
   subManager = new Subscription();
   selfieSrc: string;
   diableTime: string;
+  customerStatus: string;
 
   communeById: string;
   timeDisableOptions: any = [
@@ -157,6 +161,7 @@ export class CustomerIndividualInfoComponent implements OnInit, OnDestroy {
   set customerInfo(value: CustomerInfo) {
     this._customerInfo = value;
     this.virtualAccount = this._customerInfo?.virtualAccount;
+    this.customerStatus = value?.userStatus;
     this._getSelfieDocument(this.customerId, value);
     this._initIndividualFormData(this.customerId, value);
     this.getCustomerLocation(value);
@@ -288,6 +293,7 @@ export class CustomerIndividualInfoComponent implements OnInit, OnDestroy {
                 // return this.handleResponseError(result.errorCode);
               }
               if (result.responseCode === 200) {
+                this.triggerUpdateInfo.emit();
                 setTimeout(() => {
                   this.notifier.success(
                     this.multiLanguageService.instant('common.lock_success')
@@ -321,6 +327,7 @@ export class CustomerIndividualInfoComponent implements OnInit, OnDestroy {
                 // return this.handleResponseError(result.errorCode);
               }
               if (result.responseCode === 200) {
+                this.triggerUpdateInfo.emit();
                 setTimeout(() => {
                   this.notifier.success(
                     this.multiLanguageService.instant('common.unlock_success')
@@ -623,9 +630,5 @@ export class CustomerIndividualInfoComponent implements OnInit, OnDestroy {
     this.getCityById(customerInfo?.cityId);
     this.getDistrictById(customerInfo?.districtId);
     this.getCommuneById(customerInfo?.communeId);
-  }
-
-  get customerStatus() {
-    return this.customerInfo?.userStatus;
   }
 }

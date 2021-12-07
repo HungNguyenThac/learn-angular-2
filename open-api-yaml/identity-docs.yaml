@@ -377,6 +377,24 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ApiResponseGroupEntity'
+  /v1/groups/updatePermissions:
+    post:
+      tags:
+      - group-controller
+      operationId: updatePermissions
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdatePermissionsRequest'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseString'
   /v1/groups/removePermissions:
     post:
       tags:
@@ -515,6 +533,24 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ApiResponseAdminAccountEntity'
+  /v1/credentials/lockMultiAccount:
+    post:
+      tags:
+      - admin-account-controller
+      operationId: lockMultiAccount
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LockMultiAccountRequest'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseString'
   /v1/credentials/lockAccount:
     post:
       tags:
@@ -1035,6 +1071,18 @@ components:
           type: string
         description:
           type: string
+    UpdatePermissionsRequest:
+      required:
+      - groupId
+      - permissionIds
+      type: object
+      properties:
+        permissionIds:
+          type: array
+          items:
+            type: string
+        groupId:
+          type: string
     RemovePermissionsRequest:
       required:
       - groupId
@@ -1150,6 +1198,15 @@ components:
           type: string
         position:
           type: string
+    LockMultiAccountRequest:
+      required:
+      - accountIds
+      type: object
+      properties:
+        accountIds:
+          type: array
+          items:
+            type: string
     GetTokenRequest:
       type: object
       properties:
