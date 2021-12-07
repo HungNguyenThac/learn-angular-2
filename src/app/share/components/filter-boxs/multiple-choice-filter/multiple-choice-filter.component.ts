@@ -19,7 +19,6 @@ export class MultipleChoiceFilterComponent implements OnInit {
   }
 
   set filterOption(filterOptionModel: FilterOptionModel) {
-    console.log("dsada", filterOptionModel)
     this.selectedItems = filterOptionModel.value || [];
     this._filterOption = filterOptionModel;
   }
