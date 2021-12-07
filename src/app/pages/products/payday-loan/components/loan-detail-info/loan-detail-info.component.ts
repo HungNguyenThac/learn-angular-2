@@ -275,7 +275,9 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
         title: this.multiLanguageService.instant(
           'payday_loan.service_fee.transaction_fee'
         ),
-        subTitle: null,
+        subTitle: this.multiLanguageService.instant(
+          'payday_loan.service_fee.transaction_fee_description'
+        ),
         value: '11200',
         type: DATA_CELL_TYPE.CURRENCY,
         format: null,
@@ -318,8 +320,19 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
         title: this.multiLanguageService.instant(
           'payday_loan.service_fee.transaction_fee'
         ),
-        subTitle: null,
+        subTitle: this.multiLanguageService.instant(
+          'payday_loan.service_fee.transaction_fee_description'
+        ),
         value: '11200',
+        type: DATA_CELL_TYPE.CURRENCY,
+        format: null,
+      },
+      {
+        title: this.multiLanguageService.instant(
+          'payday_loan.service_fee.discount_fee'
+        ),
+        subTitle: null,
+        value: this.getDiscountValue(this.loanDetail?.voucher),
         type: DATA_CELL_TYPE.CURRENCY,
         format: null,
       },
@@ -331,15 +344,6 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
           'payday_loan.service_fee.vat_fee_description'
         ),
         value: 0.1 * 0.025 * this.loanDetail?.expectedAmount,
-        type: DATA_CELL_TYPE.CURRENCY,
-        format: null,
-      },
-      {
-        title: this.multiLanguageService.instant(
-          'payday_loan.service_fee.discount_fee'
-        ),
-        subTitle: null,
-        value: this.getDiscountValue(this.loanDetail?.voucher),
         type: DATA_CELL_TYPE.CURRENCY,
         format: null,
       },

@@ -230,6 +230,7 @@
       "company": "Công ty",
       "status": "Trạng thái tài khoản",
       "update_individual_info": "Cập nhật thông tin khách hàng",
+      "verify": "Yêu cầu xác thực lại thông tin",
       "update_company_info": "Cập nhật thông tin công ty",
       "disable_customer": {
         "title": "Ngừng hoạt động",
@@ -239,6 +240,9 @@
       },
       "enable_customer": {
         "dialog_title": "Bạn có chắc chắn cho phép người dùng này hoạt động trở lại?"
+      },
+      "verify_customer": {
+        "dialog_title": "Bạn có chắc chắn muốn yêu cầu xác thực lại thông tin?"
       }
     },
     "identity": {
@@ -453,11 +457,12 @@
     },
     "service_fee": {
       "service_fee": "Phí dịch vụ",
-      "service_fee_hmg": "2 % giá trị khoản vay tối thiểu là 100,000 VND",
+      "service_fee_hmg": "2 % giá trị khoản vay",
       "service_fee_tng": "2.5 % giá trị khoản vay tối thiểu là 100,000 VND",
       "transaction_fee": "Phí xử lý giao dịch",
-      "vat_fee": "Phí xử lý giao dịch",
-      "vat_fee_description": "Phí xử lý giao dịch",
+      "transaction_fee_description": "Phí chuyển khoản 7k7 + phí cổng thanh toán 3.5k",
+      "vat_fee": "Phí VAT",
+      "vat_fee_description": "10% của Phí dịch vụ",
       "discount_fee": "Ưu đãi phí",
       "total_fee": "Tổng phí phải trả"
     },

@@ -39,7 +39,8 @@ import {
   CommuneControllerService,
   DistrictControllerService,
 } from '../../../../../../open-api-modules/dashboard-api-docs';
-import { ApiResponseListCity } from '../../../../../../open-api-modules/customer-api-docs';
+import { ApiResponseListCity, ApiResponseString,
+  InfoControllerService, } from '../../../../../../open-api-modules/customer-api-docs';
 import {
   ApiResponseCustomerAccountEntity,
   CustomerControllerService,
@@ -133,6 +134,7 @@ export class CustomerIndividualInfoComponent implements OnInit, OnDestroy {
     private notifier: ToastrService,
     private formBuilder: FormBuilder,
     private notificationService: NotificationService,
+    private infoControllerService: InfoControllerService,
     private cityControllerService: CityControllerService,
     private districtControllerService: DistrictControllerService,
     private communeControllerService: CommuneControllerService,
@@ -185,6 +187,32 @@ export class CustomerIndividualInfoComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {}
+
+  verifyInfo() {
+    const confirmVerifyRef = this.notificationService.openPrompt({
+      imgUrl: '../../../../../assets/img/icon/group-5/unlock-dialog.svg',
+      title: this.multiLanguageService.instant(
+        'customer.individual_info.verify_customer.dialog_title'
+      ),
+      content: '',
+      primaryBtnText: this.multiLanguageService.instant('common.allow'),
+      primaryBtnClass: 'btn-primary',
+      secondaryBtnText: this.multiLanguageService.instant('common.skip'),
+    });
+    confirmVerifyRef.afterClosed().subscribe((result) => {
+      if (result === 'PRIMARY') {
+        this.subManager.add(
+          this.infoControllerService
+            .returnConfirmInformation(this.customerId)
+            .subscribe((result: ApiResponseString) => {
+              if (!result || result.responseCode !== 200) {
+                // return this.handleResponseError(result.errorCode);
+              }
+            })
+        );
+      }
+    });
+  }
 
   openUpdateDialog() {
     const updateDialogRef = this.dialog.open(
