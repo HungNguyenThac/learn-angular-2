@@ -974,6 +974,17 @@ paths:
       security:
       - bearerAuth: []
   /v1/adminAccounts:
+    get:
+      tags:
+      - admin-account-controller
+      operationId: getInFo
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseAdminAccountEntity'
     post:
       tags:
       - admin-account-controller
@@ -3056,6 +3067,8 @@ components:
           format: date-time
         groupEntity:
           $ref: '#/components/schemas/GroupEntity'
+        groupId:
+          type: string
     ApiResponseSearchAndPaginationResponseAdminAccountEntity:
       type: object
       properties:
