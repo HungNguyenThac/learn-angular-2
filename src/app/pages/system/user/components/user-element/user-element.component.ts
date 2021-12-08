@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import {
   AdminAccountControllerService,
+  AdminAccountEntity,
   ApiResponseAdminAccountEntity,
   ApiResponseCustomerInfo,
   CompanyInfo,
@@ -11,6 +12,7 @@ import { MultiLanguageService } from '../../../../../share/translate/multiLangua
 import { NotificationService } from '../../../../../core/services/notification.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
+import { RESPONSE_CODE } from '../../../../../core/common/enum/operator';
 
 @Component({
   selector: 'app-user-element',
@@ -18,13 +20,11 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./user-element.component.scss'],
 })
 export class UserElementComponent implements OnInit {
-  _userId;
-  userInfo;
-  subManager = new Subscription();
   @Input() roleList;
   @Input() treeData;
   @Output() triggerUpdateElementInfo = new EventEmitter();
 
+  private _userId;
   @Input()
   get userId(): string {
     return this._userId;
@@ -33,6 +33,9 @@ export class UserElementComponent implements OnInit {
   set userId(value: string) {
     this._userId = value;
   }
+
+  userInfo: AdminAccountEntity;
+  subManager = new Subscription();
 
   constructor(
     private multiLanguageService: MultiLanguageService,
@@ -59,7 +62,7 @@ export class UserElementComponent implements OnInit {
       this.adminAccountControllerService
         .getAdminAccountById(this.userId)
         .subscribe((data: ApiResponseAdminAccountEntity) => {
-          if (!data || data.responseCode !== 200) {
+          if (!data || data.responseCode !== RESPONSE_CODE.SUCCESS) {
             // return this.handleResponseError(result.errorCode);
           }
           if (data.responseCode === 200) {
@@ -75,7 +78,7 @@ export class UserElementComponent implements OnInit {
       this.identityAdminAccountControllerService
         .updateFullInfo(this.userId, updateInfoRequest)
         .subscribe((data: ApiResponseAdminAccountEntity) => {
-          if (!data || data.responseCode !== 200) {
+          if (!data || data.responseCode !== RESPONSE_CODE.SUCCESS) {
             // return this.handleResponseError(result.errorCode);
           }
           if (data.responseCode === 200) {

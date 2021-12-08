@@ -79,40 +79,55 @@
 
   <div class="row mt-3 mb-3">
     <div class="col-12 d-flex gap-2 justify-content-end">
+      <ng-container *ngxPermissionsOnly="['infos:returnConfirmInformation']">
+        <button
+          *ngIf="
+            customerInfo?.companyGroupName === 'TNG' &&
+            customerInfo?.paydayLoanStatus === 'NOT_ACCEPTING_TERM_YET'
+          "
+          (click)="verifyInfo()"
+          color="primary"
+          mat-flat-button
+        >
+          <span class="sprite-group-7-search-white"></span>
+          {{ "customer.individual_info.verify" | translate }}
+        </button>
+      </ng-container>
+
       <button
-        *ngIf="
-          customerInfo?.companyGroupName === 'TNG' &&
-          customerInfo?.paydayLoanStatus === 'NOT_ACCEPTING_TERM_YET'
-        "
-        (click)="verifyInfo()"
-        color="primary"
+        *ngxPermissionsOnly="['infos:updateInfo']"
+        (click)="openUpdateDialog()"
+        color="accent"
         mat-flat-button
       >
-        <span class="sprite-group-7-search-white"></span>
-        {{ "customer.individual_info.verify" | translate }}
-      </button>
-      <button (click)="openUpdateDialog()" color="accent" mat-flat-button>
         <span class="sprite-group-5-pen-white"></span>
         {{ "customer.individual_info.update" | translate }}
       </button>
-      <button
-        (click)="displayDisableOption()"
-        *ngIf="customerStatus === 'ACTIVE'"
-        color="warn"
-        mat-flat-button
-      >
-        <span class="sprite-group-5-lock-white"></span>
-        {{ "customer.individual_info.lock" | translate }}
-      </button>
-      <button
-        (click)="displayEnableOption()"
-        *ngIf="customerStatus === 'LOCKED'"
-        color="primary"
-        mat-flat-button
-      >
-        <span class="sprite-group-7-unlock"></span>
-        {{ "customer.individual_info.unlock" | translate }}
-      </button>
+
+      <ng-container *ngxPermissionsOnly="['customers:lockCustomer']">
+        <button
+          (click)="displayDisableOption()"
+          *ngIf="customerStatus === 'ACTIVE'"
+          color="warn"
+          mat-flat-button
+        >
+          <span class="sprite-group-5-lock-white"></span>
+          {{ "customer.individual_info.lock" | translate }}
+        </button>
+      </ng-container>
+
+      <ng-container *ngxPermissionsOnly="['customers:unLockCustomer']">
+        <button
+          (click)="displayEnableOption()"
+          *ngIf="customerStatus === 'LOCKED'"
+          color="primary"
+          mat-flat-button
+        >
+          <span class="sprite-group-7-unlock"></span>
+          {{ "customer.individual_info.unlock" | translate }}
+        </button>
+      </ng-container>
+
       <div
         #staticMethodEle
         (mouseleave)="staticMethodEle.style.display = 'none'"

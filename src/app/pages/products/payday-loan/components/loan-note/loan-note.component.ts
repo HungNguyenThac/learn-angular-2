@@ -15,6 +15,7 @@ import { NotificationService } from '../../../../../core/services/notification.s
 import { ToastrService } from 'ngx-toastr';
 import { Subscription } from 'rxjs';
 import { PaydayLoanHmg } from '../../../../../../../open-api-modules/dashboard-api-docs';
+import { RESPONSE_CODE } from '../../../../../core/common/enum/operator';
 
 @Component({
   selector: 'app-loan-note',
@@ -22,7 +23,6 @@ import { PaydayLoanHmg } from '../../../../../../../open-api-modules/dashboard-a
   styleUrls: ['./loan-note.component.scss'],
 })
 export class LoanNoteComponent implements OnInit {
-  customerId: string = '';
   loanInfoForm: FormGroup;
   subManager = new Subscription();
   @Output() loanDetailDetectChangeStatus = new EventEmitter<any>();
@@ -72,19 +72,18 @@ export class LoanNoteComponent implements OnInit {
 
   submitForm() {
     const updateLoanRequest: UpdateLoanRequest = {
-      customerId: this.customerId,
+      customerId: this.loanDetail?.customerId,
       updateInfo: {},
     };
     updateLoanRequest.updateInfo['note'] =
       this.loanInfoForm.controls.note.value;
-    console.log('updateLoanRequest', updateLoanRequest);
 
     if (this.groupName === 'HMG') {
       this.subManager.add(
         this.paydayLoanHmgControllerService
           .updateInfo(this.loanId, updateLoanRequest)
           .subscribe((res: ApiResponseString) => {
-            if (res.responseCode !== 200) {
+            if (res.responseCode !== RESPONSE_CODE.SUCCESS) {
               this.notifier.error(res.errorCode);
               return;
             }
@@ -98,7 +97,7 @@ export class LoanNoteComponent implements OnInit {
         this.paydayLoanTngControllerService
           .updateInfo(this.loanId, updateLoanRequest)
           .subscribe((res: ApiResponseObject) => {
-            if (res.responseCode !== 200) {
+            if (res.responseCode !== RESPONSE_CODE.SUCCESS) {
               this.notifier.error(res.errorCode);
               return;
             }

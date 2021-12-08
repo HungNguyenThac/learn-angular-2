@@ -5,7 +5,7 @@ import { Subscription } from 'rxjs';
 import {
   BUTTON_TYPE,
   DATA_CELL_TYPE,
-  DATA_STATUS_TYPE,
+  DATA_STATUS_TYPE, RESPONSE_CODE,
 } from '../../../../../core/common/enum/operator';
 import { NotificationService } from '../../../../../core/services/notification.service';
 import { ToastrService } from 'ngx-toastr';
@@ -105,7 +105,7 @@ export class UserDetailComponent implements OnInit {
       secondaryBtnText: this.multiLanguageService.instant('common.skip'),
     });
     confirmLockRef.afterClosed().subscribe((result) => {
-      if (result === 'PRIMARY') {
+      if (result === BUTTON_TYPE.PRIMARY) {
         let now = new Date();
         const unlockTime = new Date(now.getTime() + 999999999 * 1000);
         this.subManager.add(
@@ -115,7 +115,7 @@ export class UserDetailComponent implements OnInit {
               unLockTime: this.formatTimeSecond(unlockTime),
             })
             .subscribe((result: ApiResponseAdminAccountEntity) => {
-              if (!result || result.responseCode !== 200) {
+              if (!result || result.responseCode !== RESPONSE_CODE.SUCCESS) {
                 // return this.handleResponseError(result.errorCode);
               }
               if (result.responseCode === 200) {
@@ -144,12 +144,12 @@ export class UserDetailComponent implements OnInit {
       secondaryBtnText: this.multiLanguageService.instant('common.skip'),
     });
     confirmUnlockRef.afterClosed().subscribe((result) => {
-      if (result === 'PRIMARY') {
+      if (result === BUTTON_TYPE.PRIMARY) {
         this.subManager.add(
           this.adminAccountControllerService
             .unLockAccount1(this.userInfo.id)
             .subscribe((result: ApiResponseAdminAccountEntity) => {
-              if (!result || result.responseCode !== 200) {
+              if (!result || result.responseCode !== RESPONSE_CODE.SUCCESS) {
                 // return this.handleResponseError(result.errorCode);
               }
               if (result.responseCode === 200) {
@@ -180,12 +180,12 @@ export class UserDetailComponent implements OnInit {
       secondaryBtnText: this.multiLanguageService.instant('common.skip'),
     });
     confirmDeleteRef.afterClosed().subscribe((result) => {
-      if (result === 'PRIMARY') {
+      if (result === BUTTON_TYPE.PRIMARY) {
         this.subManager.add(
           this.adminAccountControllerService
             .deleteAdminAccount(this.userInfo.id)
             .subscribe((result: ApiResponseAdminAccountEntity) => {
-              if (!result || result.responseCode !== 200) {
+              if (!result || result.responseCode !== RESPONSE_CODE.SUCCESS) {
                 // return this.handleResponseError(result.errorCode);
               }
               if (result.responseCode === 200) {

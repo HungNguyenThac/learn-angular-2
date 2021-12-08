@@ -1,13 +1,15 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { BUTTON_TYPE } from '../../../../../core/common/enum/operator';
+import {
+  BUTTON_TYPE,
+  RESPONSE_CODE,
+} from '../../../../../core/common/enum/operator';
 import {
   AdminAccountEntity,
   ApiResponseSearchAndPaginationResponseGroupEntity,
   GroupControllerService,
 } from '../../../../../../../open-api-modules/dashboard-api-docs';
-import { FilterOptionModel } from '../../../../../public/models/filter/filter-option.model';
 import { Subscription } from 'rxjs';
 import { NgxPermissionsService } from 'ngx-permissions';
 
@@ -76,12 +78,13 @@ export class DialogUserInfoUpdateComponent implements OnInit {
     if (!this.permissionsService.hasPermission('dashboardGroups:getGroups')) {
       return;
     }
+
     this.subManager.add(
       this.groupControllerService
         .getGroups(100, 0, {})
         .subscribe(
           (result: ApiResponseSearchAndPaginationResponseGroupEntity) => {
-            if (!result || result.responseCode !== 200) {
+            if (!result || result.responseCode !== RESPONSE_CODE.SUCCESS) {
               return;
             }
             this.roleOptions = result?.result?.data;
