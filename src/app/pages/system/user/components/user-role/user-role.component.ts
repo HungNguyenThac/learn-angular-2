@@ -1,12 +1,12 @@
-import { Component, OnInit, Injectable, Input } from '@angular/core';
+
+import { PermissionTreeComponent } from './../../../../../share/components/operators/user-account/permission-tree/permission-tree.component';
+import { Component, OnInit, Injectable, ViewChild, ViewChildren, QueryList, Input } from '@angular/core';
 import { MultiLanguageService } from '../../../../../share/translate/multiLanguageService';
 import { MatDialog } from '@angular/material/dialog';
 import { EditRoleDialogComponent } from '../../../../../share/components/operators/user-account/edit-role-dialog/edit-role-dialog.component';
-import { ApiResponseListCity } from '../../../../../../../open-api-modules/customer-api-docs';
 import { Subscription } from 'rxjs';
 import {
   ApiResponseListParentPermissionTypeResponse,
-  ParentPermissionTypeResponse,
   PermissionTypeControllerService,
 } from '../../../../../../../open-api-modules/dashboard-api-docs';
 
@@ -53,10 +53,15 @@ export class UserRoleComponent implements OnInit {
 
   constructor(
     private multiLanguageService: MultiLanguageService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private permissionTypeControllerService: PermissionTypeControllerService
   ) {}
 
-  ngOnInit(): void {}
+  @ViewChildren('tree') permissionTree: QueryList<PermissionTreeComponent>;
+
+  ngOnInit(): void {
+    this.getPermissionList();
+  }
 
   openUpdateDialog(roleTitle) {
     const updateDialogRef = this.dialog.open(EditRoleDialogComponent, {
@@ -82,5 +87,31 @@ export class UserRoleComponent implements OnInit {
         TREE_DATA: this.TREE_DATA,
       },
     });
+  }
+
+  getPermissionList() {
+    this.subManager.add(
+      this.permissionTypeControllerService
+        .getPermissionTypeByTreeFormat()
+        .subscribe((result: ApiResponseListParentPermissionTypeResponse) => {
+          if (!result || result.responseCode !== 200) {
+            // return this.handleResponseError(result.errorCode);
+          }
+          this.treeData = result.result;
+          console.log(this.treeData);
+        })
+    );
+  }
+
+  addRoleToUser() {
+    const arrayPermissionTreeComponent = this.permissionTree.toArray();
+    let arrayPermission = [];
+    for (let i = 0; i < arrayPermissionTreeComponent.length; i++) {
+      if (arrayPermissionTreeComponent[i].totalPermissionSelected().length > 0)
+        arrayPermission.push(
+          ...arrayPermissionTreeComponent[i].totalPermissionSelected()
+        );
+    }
+    console.log(arrayPermission);
   }
 }
