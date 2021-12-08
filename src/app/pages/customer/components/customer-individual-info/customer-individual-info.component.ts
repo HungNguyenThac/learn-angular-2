@@ -27,6 +27,7 @@ import {
   LOCK_TIME_OPTIONS,
   LOCK_TIME_TEXT_OPTIONS,
   LOCK_TITLES,
+  RESPONSE_CODE,
 } from '../../../../core/common/enum/operator';
 import { ToastrService } from 'ngx-toastr';
 import { FormBuilder, FormGroup } from '@angular/forms';
@@ -198,12 +199,12 @@ export class CustomerIndividualInfoComponent implements OnInit, OnDestroy {
       secondaryBtnText: this.multiLanguageService.instant('common.skip'),
     });
     confirmVerifyRef.afterClosed().subscribe((result) => {
-      if (result === 'PRIMARY') {
+      if (result === BUTTON_TYPE.PRIMARY) {
         this.subManager.add(
           this.infoControllerService
             .returnConfirmInformation(this.customerId)
             .subscribe((result: ApiResponseString) => {
-              if (!result || result.responseCode !== 200) {
+              if (!result || result.responseCode !== RESPONSE_CODE.SUCCESS) {
                 // return this.handleResponseError(result.errorCode);
               }
             })
@@ -272,7 +273,7 @@ export class CustomerIndividualInfoComponent implements OnInit, OnDestroy {
       secondaryBtnText: this.multiLanguageService.instant('common.skip'),
     });
     confirmDisableRef.afterClosed().subscribe((result) => {
-      if (result === 'PRIMARY') {
+      if (result === BUTTON_TYPE.PRIMARY) {
         let now = new Date();
         const unlockTime = new Date(now.getTime() + value * 1000);
         this.subManager.add(
@@ -282,7 +283,7 @@ export class CustomerIndividualInfoComponent implements OnInit, OnDestroy {
               unLockTime: this.formatTimeSecond(unlockTime),
             })
             .subscribe((result: ApiResponseCustomerAccountEntity) => {
-              if (!result || result.responseCode !== 200) {
+              if (!result || result.responseCode !== RESPONSE_CODE.SUCCESS) {
                 // return this.handleResponseError(result.errorCode);
               }
               if (result.responseCode === 200) {
@@ -311,12 +312,12 @@ export class CustomerIndividualInfoComponent implements OnInit, OnDestroy {
       secondaryBtnText: this.multiLanguageService.instant('common.skip'),
     });
     confirmEnableRef.afterClosed().subscribe((result) => {
-      if (result === 'PRIMARY') {
+      if (result === BUTTON_TYPE.PRIMARY) {
         this.subManager.add(
           this.customerControllerService
             .unLockAccount(this.customerId)
             .subscribe((result: ApiResponseCustomerAccountEntity) => {
-              if (!result || result.responseCode !== 200) {
+              if (!result || result.responseCode !== RESPONSE_CODE.SUCCESS) {
                 // return this.handleResponseError(result.errorCode);
               }
               if (result.responseCode === 200) {
@@ -571,7 +572,7 @@ export class CustomerIndividualInfoComponent implements OnInit, OnDestroy {
       this.cityControllerService
         .getCityById(id)
         .subscribe((result: ApiResponseCity) => {
-          if (!result || result.responseCode !== 200) {
+          if (!result || result.responseCode !== RESPONSE_CODE.SUCCESS) {
             // return this.handleResponseError(result.errorCode);
           }
           this.leftIndividualInfos.forEach((elementInfo) => {
@@ -589,7 +590,7 @@ export class CustomerIndividualInfoComponent implements OnInit, OnDestroy {
       this.districtControllerService
         .getDistrictById(id)
         .subscribe((result: ApiResponseDistrict) => {
-          if (!result || result.responseCode !== 200) {
+          if (!result || result.responseCode !== RESPONSE_CODE.SUCCESS) {
             // return this.handleResponseError(result.errorCode);
           }
           this.leftIndividualInfos.forEach((elementInfo) => {
@@ -607,7 +608,7 @@ export class CustomerIndividualInfoComponent implements OnInit, OnDestroy {
       this.communeControllerService
         .getCommuneById(id)
         .subscribe((result: ApiResponseCommune) => {
-          if (!result || result.responseCode !== 200) {
+          if (!result || result.responseCode !== RESPONSE_CODE.SUCCESS) {
             // return this.handleResponseError(result.errorCode);
           }
           this.leftIndividualInfos.forEach((elementInfo) => {

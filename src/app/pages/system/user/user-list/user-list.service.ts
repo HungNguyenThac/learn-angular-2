@@ -2,8 +2,6 @@ import { Injectable } from '@angular/core';
 import { AdminAccountControllerService } from 'open-api-modules/dashboard-api-docs';
 import * as _ from 'lodash';
 import { QUERY_CONDITION_TYPE } from '../../../../core/common/enum/operator';
-import { ACCOUNT_CLASSIFICATION } from '../../../../core/common/enum/payday-loan';
-import { GlobalConstants } from '../../../../core/common/global-constants';
 
 @Injectable({
   providedIn: 'root',

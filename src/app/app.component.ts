@@ -10,6 +10,7 @@ import * as fromStore from './core/store';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs';
+import {RESPONSE_CODE} from "./core/common/enum/operator";
 
 @Component({
   selector: 'app-root',
@@ -52,7 +53,7 @@ export class AppComponent {
     this.permissionControllerService
       .getPermissionsByAccount()
       .subscribe((response: ApiResponseListString) => {
-        if (!response || !response.result || response.responseCode !== 200) {
+        if (!response || !response.result || response.responseCode !== RESPONSE_CODE.SUCCESS) {
           return;
         }
         this.permissionsService.loadPermissions(response.result);

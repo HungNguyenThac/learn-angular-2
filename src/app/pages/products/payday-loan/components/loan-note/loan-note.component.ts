@@ -15,6 +15,7 @@ import { NotificationService } from '../../../../../core/services/notification.s
 import { ToastrService } from 'ngx-toastr';
 import { Subscription } from 'rxjs';
 import { PaydayLoanHmg } from '../../../../../../../open-api-modules/dashboard-api-docs';
+import { RESPONSE_CODE } from '../../../../../core/common/enum/operator';
 
 @Component({
   selector: 'app-loan-note',
@@ -84,7 +85,7 @@ export class LoanNoteComponent implements OnInit {
         this.paydayLoanHmgControllerService
           .updateInfo(this.loanId, updateLoanRequest)
           .subscribe((res: ApiResponseString) => {
-            if (res.responseCode !== 200) {
+            if (res.responseCode !== RESPONSE_CODE.SUCCESS) {
               this.notifier.error(res.errorCode);
               return;
             }
@@ -98,7 +99,7 @@ export class LoanNoteComponent implements OnInit {
         this.paydayLoanTngControllerService
           .updateInfo(this.loanId, updateLoanRequest)
           .subscribe((res: ApiResponseObject) => {
-            if (res.responseCode !== 200) {
+            if (res.responseCode !== RESPONSE_CODE.SUCCESS) {
               this.notifier.error(res.errorCode);
               return;
             }
