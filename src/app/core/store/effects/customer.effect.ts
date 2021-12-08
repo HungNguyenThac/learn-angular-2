@@ -13,6 +13,10 @@ import { Store } from '@ngrx/store';
 import * as fromStore from '../index';
 import { Observable, Subscription } from 'rxjs';
 import { RESPONSE_CODE } from '../../common/enum/operator';
+import {
+  AdminAccountControllerService as DashboardAdminAccountControllerService,
+  ApiResponseAdminAccountEntity,
+} from '../../../../../open-api-modules/dashboard-api-docs';
 
 @Injectable()
 export class CustomerEffects {
@@ -24,7 +28,8 @@ export class CustomerEffects {
     private actions$: Actions,
     private store$: Store<fromStore.State>,
     private infoControllerService: InfoControllerService,
-    private ratingControllerService: RatingControllerService
+    private ratingControllerService: RatingControllerService,
+    private dashboardAdminAccountControllerService: DashboardAdminAccountControllerService
   ) {
     this.customerId$ = store$.select(fromStore.getCustomerIdState);
     this.subManager.add(
@@ -34,24 +39,26 @@ export class CustomerEffects {
     );
   }
 
-  // getCustomerInfo$ = createEffect(() =>
-  // this.actions$.pipe(
-  //   ofType(fromActions.GET_CUSTOMER_INFO),
-  //   map((action: fromActions.GetCustomerInfo) => action.payload),
-  //   switchMap((customerId: string) => {
-  //     return this.infoControllerService.getInfo(customerId).pipe(
-  //       map((response: ApiResponseCustomerInfoResponse) => {
-  //         console.log('Effect Response:', response);
-  //         if (!response || response.responseCode !== RESPONSE_CODE.SUCCESS) {
-  //           return new fromActions.GetCustomerInfoError(response.errorCode);
-  //         }
-  //         return new fromActions.GetCustomerInfoSuccess(response.result);
-  //       }),
-  //       catchError((error) => of(new fromActions.GetCustomerInfoError(error)))
-  //     );
-  //   })
-  // )
-  // );
+  getCustomerInfo$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(fromActions.GET_CUSTOMER_INFO),
+      map((action: fromActions.GetCustomerInfo) => action.payload),
+      switchMap(() => {
+        return this.dashboardAdminAccountControllerService.getInFo().pipe(
+          map((response: ApiResponseAdminAccountEntity) => {
+            if (!response || response.responseCode !== RESPONSE_CODE.SUCCESS) {
+              return new fromActions.GetCustomerInfoError(response.errorCode);
+            }
+
+            this.store$.dispatch(
+              new fromActions.SetCustomerInfo(response.result)
+            );
+            return new fromActions.GetCustomerInfoSuccess(response.result);
+          })
+        );
+      })
+    )
+  );
 
   getCustomerInfoSuccess$ = createEffect(
     () =>
