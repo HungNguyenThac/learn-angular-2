@@ -29,7 +29,9 @@
                         isAccountNameInputFocus ? 'is-focused-input' : ''
                       " [placeholder]="'account.add.name' | translate"
                            formControlName="accountName"
-                           autocomplete="off"
+                           name="new_password"
+                           autocomplete='new-password'
+                           aria-autocomplete="none"
                            required
                            matInput
                     >
@@ -50,7 +52,7 @@
                       "account.add.log_in" | translate
                       }}</mat-label>
                     <mat-icon [ngClass]="
-                        addAccountForm.controls.accountLogin.value != '' ||
+                        addAccountForm.controls.username.value != '' ||
                         isLoginInputFocus
                           ? 'is-focused-icon'
                           : ''
@@ -64,12 +66,15 @@
                         isLoginInputFocus ? 'is-focused-input' : ''
                       "
                       [placeholder]="'account.add.log_in' | translate"
-                      formControlName="accountLogin"
+                      formControlName="username"
+                      name="new_password"
+                      autocomplete='new-password'
+                      aria-autocomplete="none"
                       required
                       matInput
                     />
                     <show-errors
-                      [control]="addAccountForm.controls['accountLogin']"
+                      [control]="addAccountForm.controls['username']"
                       [controlLabel]="
                         'account.add.log_in' | translate
                       "
@@ -100,7 +105,9 @@
                       "
                       [placeholder]="'account.add.password' | translate"
                       formControlName="accountPassword"
-                      autocomplete="off"
+                      name="new_password"
+                      autocomplete='new-password'
+                      aria-autocomplete="none"
                       matInput
                       required
                       type="password"

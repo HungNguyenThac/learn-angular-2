@@ -46,12 +46,11 @@ import { UserListService } from './user-list.service';
 import {
   AdminAccountControllerService,
   ApiResponseAdminAccountEntity,
-  ApiResponseCustomerAccountEntity,
   ApiResponseString,
-  CreateProviderAccountRequest,
 } from '../../../../../../open-api-modules/identity-api-docs';
 import * as moment from 'moment';
 import * as _ from 'lodash';
+import { NgxPermissionsService } from 'ngx-permissions';
 
 @Component({
   selector: 'app-user-list',
@@ -177,7 +176,7 @@ export class UserListComponent implements OnInit, OnDestroy {
   pageSizeOptions: number[] = [10, 20, 50];
   totalItems: number = 0;
   filterForm: FormGroup;
-  expandedElementId: number;
+  expandedElementId: string;
   expandElementFromLoan;
   hasSelect: boolean = true;
   userInfo: any;
@@ -197,7 +196,8 @@ export class UserListComponent implements OnInit, OnDestroy {
     private router: Router,
     private dialog: MatDialog,
     private activatedRoute: ActivatedRoute,
-    private userListService: UserListService
+    private userListService: UserListService,
+    private permissionsService: NgxPermissionsService,
   ) {
     this.routeAllState$ = store.select(fromSelectors.getRouterAllState);
 
@@ -582,7 +582,7 @@ export class UserListComponent implements OnInit, OnDestroy {
   private _bindingDialogUserData(data) {
     return {
       groupId: data?.accountRole,
-      username: data?.accountLogin,
+      username: data?.username,
       secret: data?.accountPassword,
       fullName: data?.accountName,
       email: data?.accountEmail,

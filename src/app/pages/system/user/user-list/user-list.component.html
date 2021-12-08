@@ -27,6 +27,7 @@
 
 <ng-template #detailElementTemplate>
   <app-user-element
+    *ngxPermissionsOnly="['dashboardAdminAccounts:getAdminAccountById']"
     [roleList]="roleList"
     [treeData]="treeData"
     [userId]="expandedElementId"
