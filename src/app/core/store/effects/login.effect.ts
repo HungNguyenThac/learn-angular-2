@@ -7,13 +7,10 @@ import { map, switchMap, tap } from 'rxjs/operators';
 import * as fromActions from '../actions';
 import { LoginForm } from '../../../public/models';
 import {
-  ApiResponseGetTokenResponse,
   AdminAccountControllerService,
+  ApiResponseGetTokenResponse,
 } from '../../../../../open-api-modules/identity-api-docs';
-import {
-  AdminAccountControllerService as dashboardAdminAccountControllerService,
-  ApiResponseAdminAccountEntity,
-} from '../../../../../open-api-modules/dashboard-api-docs';
+import { AdminAccountControllerService as dashboardAdminAccountControllerService } from '../../../../../open-api-modules/dashboard-api-docs';
 import {
   CustomerInfoResponse,
   InfoControllerService,
@@ -26,7 +23,6 @@ import { ApplicationControllerService } from '../../../../../open-api-modules/lo
 import { Store } from '@ngrx/store';
 import * as fromStore from '../index';
 import { Observable, Subscription } from 'rxjs';
-import { ERROR_CODE_KEY } from '../../common/enum/payday-loan';
 import { NotificationService } from '../../services/notification.service';
 import { MultiLanguageService } from '../../../share/translate/multiLanguageService';
 import { ToastrService } from 'ngx-toastr';
@@ -117,18 +113,7 @@ export class LoginEffects {
         ofType(fromActions.LOGIN_SIGNIN_SUCCESS),
         map((action: fromActions.SigninSuccess) => action.payload),
         tap(() => {
-          this.subManager.add(
-            this.dashboardAdminAccountControllerService
-              .getInFo()
-              .subscribe((result: ApiResponseAdminAccountEntity) => {
-                if (!result || result.responseCode !== 200) return;
-
-                this.store$.dispatch(
-                  new fromActions.SetCustomerInfo(result.result)
-                );
-              })
-          );
-
+          this.store$.dispatch(new fromActions.GetCustomerInfo(null));
           this.router.navigateByUrl('/');
         })
       ),

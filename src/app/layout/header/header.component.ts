@@ -7,26 +7,20 @@ import * as fromSelectors from '../../core/store/selectors';
 import { Observable } from 'rxjs/Observable';
 import { CustomerInfoResponse } from '../../../../open-api-modules/customer-api-docs';
 import { Subscription } from 'rxjs';
-import { NAV_ITEM } from '../../core/common/enum/operator';
+import {
+  BUTTON_TYPE,
+  NAV_ITEM,
+  RESPONSE_CODE,
+} from '../../core/common/enum/operator';
 import { MultiLanguageService } from '../../share/translate/multiLanguageService';
-import { DialogCompanyInfoUpdateComponent } from '../../share/components';
 import { MatDialog } from '@angular/material/dialog';
-import { DialogUserInfoUpdateComponent } from '../../share/components/operators/user-account/dialog-user-info-update/dialog-user-info-update.component';
+import { DialogUserInfoUpdateComponent } from '../../share/components';
 import {
   AdminAccountControllerService,
-  ApiResponseAdminAccountEntity,
+  UpdateInfoAdminAccountRequest,
 } from '../../../../open-api-modules/identity-api-docs';
 import { AdminAccountEntity } from '../../../../open-api-modules/dashboard-api-docs';
-
-export interface AccountInfo {
-  fullName?: string;
-  loginName?: string;
-  roleName?: string;
-  phoneNum?: string;
-  email?: string;
-  position?: string;
-  note?: string;
-}
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-header',
@@ -44,15 +38,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
   shortName: string = '0';
   userInfo: AdminAccountEntity;
 
-  accountInfo: AccountInfo = {
-    fullName: 'Nguyễn Văn A',
-    loginName: 'ngvana',
-    roleName: 'Super Admin',
-    phoneNum: '0943777294',
-    email: 'a.nguyen@epay.vn',
-    position: 'Kế toán',
-    note: '',
-  };
   selectedNavItem: NAV_ITEM = NAV_ITEM.DASHBOARD;
   menuItems = [
     {
@@ -123,7 +108,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
     private router: Router,
     private store: Store<fromStore.State>,
     private dialog: MatDialog,
-    private multiLanguageService: MultiLanguageService
+    private multiLanguageService: MultiLanguageService,
+    private notifier: ToastrService
   ) {
     this._subscribeHeaderInfo();
   }
@@ -151,16 +137,40 @@ export class HeaderComponent implements OnInit, OnDestroy {
       panelClass: 'custom-info-dialog-container',
       maxWidth: '800px',
       width: '90%',
-      data: {
-        accountName: this.accountInfo.fullName,
-        accountLogin: this.accountInfo.loginName,
-        accountRole: this.accountInfo.roleName,
-        accountPhone: this.accountInfo.phoneNum,
-        accountEmail: this.accountInfo.email,
-        accountPosition: this.accountInfo.position,
-        accountNote: this.accountInfo.note,
-      },
+      data: this.userInfo,
     });
+    this.subManager.add(
+      updateDialogRef.afterClosed().subscribe((result: any) => {
+        if (result && result.type === BUTTON_TYPE.PRIMARY) {
+          this.updateUserInfo({
+            fullName: result?.data.fullName,
+            mobile: result?.data.mobile,
+          });
+        }
+      })
+    );
+  }
+
+  updateUserInfo(updateUserInfoRequest: UpdateInfoAdminAccountRequest) {
+    this.subManager.add(
+      this.adminAccountControllerService
+        .updateInfo(updateUserInfoRequest)
+        .subscribe((response) => {
+          if (response.responseCode !== RESPONSE_CODE.SUCCESS) {
+            this.notifier.error(
+              JSON.stringify(response?.message),
+              response?.errorCode
+            );
+            return;
+          }
+          setTimeout(() => {
+            this.store.dispatch(new fromActions.GetCustomerInfo());
+            this.notifier.success(
+              this.multiLanguageService.instant('common.update_success')
+            );
+          }, 1000);
+        })
+    );
   }
 
   onClickManageUser() {
@@ -184,8 +194,14 @@ export class HeaderComponent implements OnInit, OnDestroy {
       fromSelectors.getAuthorizationState
     );
     this.subManager.add(
-      this.customerInfo$.subscribe((customerInfo: AdminAccountEntity) => {
-        this.userInfo = customerInfo;
+      this.customerInfo$.subscribe((userInfo: AdminAccountEntity) => {
+        this.userInfo = userInfo;
+        if (userInfo?.fullName) {
+          const names = userInfo?.fullName.split(' ');
+          this.shortName = names[names.length - 1].charAt(0);
+        } else {
+          this.shortName = '0';
+        }
       })
     );
     this.subManager.add(

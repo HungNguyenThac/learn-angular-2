@@ -223,9 +223,9 @@ export class UserListComponent implements OnInit, OnDestroy {
         .subscribe(
           (data: ApiResponseSearchAndPaginationResponseAdminAccountEntity) => {
             this._parseData(data?.result);
-            this.dataSource.data = data?.result.data;
+            this.dataSource.data = data?.result?.data;
             if (this.filterForm.controls.id.value) {
-              this.expandElementFromLoan = data?.result.data[0];
+              this.expandElementFromLoan = data?.result?.data[0];
             }
           }
         )
