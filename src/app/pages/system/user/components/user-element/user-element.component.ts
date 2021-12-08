@@ -7,6 +7,10 @@ import {
 } from '../../../../../../../open-api-modules/dashboard-api-docs';
 import { Subscription } from 'rxjs';
 import { AdminAccountControllerService as AdminAccountControllerService1 } from '../../../../../../../open-api-modules/identity-api-docs';
+import { MultiLanguageService } from '../../../../../share/translate/multiLanguageService';
+import { NotificationService } from '../../../../../core/services/notification.service';
+import { MatDialog } from '@angular/material/dialog';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-user-element',
@@ -31,6 +35,10 @@ export class UserElementComponent implements OnInit {
   }
 
   constructor(
+    private multiLanguageService: MultiLanguageService,
+    private notificationService: NotificationService,
+    private dialog: MatDialog,
+    private notifier: ToastrService,
     private adminAccountControllerService: AdminAccountControllerService,
     private identityAdminAccountControllerService: AdminAccountControllerService1
   ) {}
@@ -42,7 +50,7 @@ export class UserElementComponent implements OnInit {
   public refreshContent() {
     setTimeout(() => {
       this._getUserInfoById(this.userId);
-    }, 1000);
+    }, 2000);
   }
 
   private _getUserInfoById(userId) {
@@ -51,8 +59,13 @@ export class UserElementComponent implements OnInit {
       this.adminAccountControllerService
         .getAdminAccountById(this.userId)
         .subscribe((data: ApiResponseAdminAccountEntity) => {
-          this.userInfo = data?.result;
-          this.triggerUpdateElementInfo.emit(this.userInfo);
+          if (!data || data.responseCode !== 200) {
+            // return this.handleResponseError(result.errorCode);
+          }
+          if (data.responseCode === 200) {
+            this.userInfo = data?.result;
+            this.triggerUpdateElementInfo.emit(this.userInfo);
+          }
         })
     );
   }
@@ -62,8 +75,18 @@ export class UserElementComponent implements OnInit {
       this.identityAdminAccountControllerService
         .updateFullInfo(this.userId, updateInfoRequest)
         .subscribe((data: ApiResponseAdminAccountEntity) => {
-          this.userInfo = data?.result;
-          this.triggerUpdateElementInfo.emit(this.userInfo);
+          if (!data || data.responseCode !== 200) {
+            // return this.handleResponseError(result.errorCode);
+          }
+          if (data.responseCode === 200) {
+            this.userInfo = data?.result;
+            this.triggerUpdateElementInfo.emit(this.userInfo);
+            setTimeout(() => {
+              this.notifier.success(
+                this.multiLanguageService.instant('common.update_success')
+              );
+            }, 500);
+          }
         })
     );
   }
@@ -71,6 +94,8 @@ export class UserElementComponent implements OnInit {
   updateElementInfo(updateInfoRequest) {
     if (!updateInfoRequest) {
       this.refreshContent();
+    } else if (updateInfoRequest === 'delete') {
+      this.triggerUpdateElementInfo.emit();
     } else {
       this.updateUserInfo(updateInfoRequest);
     }

@@ -124,7 +124,7 @@ export class UserDetailComponent implements OnInit {
                   this.notifier.success(
                     this.multiLanguageService.instant('common.lock_success')
                   );
-                }, 1000);
+                }, 3000);
               }
             })
         );
@@ -158,7 +158,7 @@ export class UserDetailComponent implements OnInit {
                   this.notifier.success(
                     this.multiLanguageService.instant('common.unlock_success')
                   );
-                }, 1000);
+                }, 3000);
               }
             })
         );
@@ -181,10 +181,24 @@ export class UserDetailComponent implements OnInit {
     });
     confirmDeleteRef.afterClosed().subscribe((result) => {
       if (result === 'PRIMARY') {
-        this.notifier.success(
-          this.multiLanguageService.instant(
-            'system.user_detail.delete_user.toast'
-          )
+        this.subManager.add(
+          this.adminAccountControllerService
+            .deleteAdminAccount(this.userInfo.id)
+            .subscribe((result: ApiResponseAdminAccountEntity) => {
+              if (!result || result.responseCode !== 200) {
+                // return this.handleResponseError(result.errorCode);
+              }
+              if (result.responseCode === 200) {
+                this.updateElementInfo.emit('delete');
+                setTimeout(() => {
+                  this.notifier.success(
+                    this.multiLanguageService.instant(
+                      'system.user_detail.delete_user.toast'
+                    )
+                  );
+                }, 3000);
+              }
+            })
         );
       }
     });

@@ -32,13 +32,22 @@
 
   .permission-tree {
     margin-top: 16px;
+    overflow-x: scroll;
+
 
     .grid-table {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      column-gap: 16px;
+      max-width: none !important;
+      width: auto !important;
+
+
+      //display: grid;
+      //grid-template-columns: repeat(3, 1fr);
+      //column-gap: 16px;
 
       .table {
+        margin-right: 16px;
+        width: 360px;
+        display: inline-block;
         border: 1px solid #E5E5EA;
         border-radius: 4px;
 
@@ -56,6 +65,10 @@
           overflow: auto;
           height: 360px;
         }
+      }
+
+      .table:last-child {
+        margin-right: 0;
       }
     }
   }

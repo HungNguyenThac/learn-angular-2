@@ -291,7 +291,7 @@ export class CustomerIndividualInfoComponent implements OnInit, OnDestroy {
                   this.notifier.success(
                     this.multiLanguageService.instant('common.lock_success')
                   );
-                }, 500);
+                }, 2000);
               }
             })
         );
@@ -325,7 +325,7 @@ export class CustomerIndividualInfoComponent implements OnInit, OnDestroy {
                   this.notifier.success(
                     this.multiLanguageService.instant('common.unlock_success')
                   );
-                }, 500);
+                }, 2000);
               }
             })
         );

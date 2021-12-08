@@ -21,7 +21,7 @@ export class EditRoleDialogComponent implements OnInit {
     'system.user_role.add_role'
   );
   hasDelete: boolean = false;
-  TREE_DATA;
+  treeData;
   updateRoleForm: FormGroup;
 
   constructor(
@@ -35,7 +35,7 @@ export class EditRoleDialogComponent implements OnInit {
       this.initDialogData(data);
       this.dialogTitle = data?.title;
       this.hasDelete = data?.hasDelete;
-      this.TREE_DATA = data?.TREE_DATA;
+      this.treeData = data?.TREE_DATA;
     }
   }
 
