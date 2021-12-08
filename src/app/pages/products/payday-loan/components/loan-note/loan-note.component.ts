@@ -23,7 +23,6 @@ import { RESPONSE_CODE } from '../../../../../core/common/enum/operator';
   styleUrls: ['./loan-note.component.scss'],
 })
 export class LoanNoteComponent implements OnInit {
-  customerId: string = '';
   loanInfoForm: FormGroup;
   subManager = new Subscription();
   @Output() loanDetailDetectChangeStatus = new EventEmitter<any>();
@@ -73,12 +72,11 @@ export class LoanNoteComponent implements OnInit {
 
   submitForm() {
     const updateLoanRequest: UpdateLoanRequest = {
-      customerId: this.customerId,
+      customerId: this.loanDetail?.customerId,
       updateInfo: {},
     };
     updateLoanRequest.updateInfo['note'] =
       this.loanInfoForm.controls.note.value;
-    console.log('updateLoanRequest', updateLoanRequest);
 
     if (this.groupName === 'HMG') {
       this.subManager.add(
