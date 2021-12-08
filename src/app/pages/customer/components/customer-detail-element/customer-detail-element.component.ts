@@ -72,7 +72,9 @@ export class CustomerDetailElementComponent implements OnInit, OnDestroy {
   }
 
   public refreshContent() {
-    this._getCustomerInfoById(this.customerId);
+    setTimeout(() => {
+      this._getCustomerInfoById(this.customerId);
+    }, 1000);
   }
 
   private _getCustomerInfoById(customerId) {
@@ -120,6 +122,7 @@ export class CustomerDetailElementComponent implements OnInit, OnDestroy {
   public updateCustomerInfo(updateInfoRequest: Object) {
     if (!updateInfoRequest) {
       this.refreshContent();
+      return;
     }
     this.notificationService.showLoading({ showContent: true });
     this.subManager.add(

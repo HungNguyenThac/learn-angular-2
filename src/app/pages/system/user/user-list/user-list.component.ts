@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { GlobalConstants } from 'src/app/core/common/global-constants';
 import { Store } from '@ngrx/store';
@@ -17,6 +17,7 @@ import { MultiLanguageService } from '../../../../share/translate/multiLanguageS
 import { Observable, Subscription } from 'rxjs';
 import {
   AdminAccountEntity,
+  ApiResponseListParentPermissionTypeResponse,
   ApiResponseSearchAndPaginationResponseAdminAccountEntity,
   ApiResponseSearchAndPaginationResponseCompanyInfo,
   ApiResponseSearchAndPaginationResponseGroupEntity,
@@ -40,12 +41,16 @@ import { FilterActionEventModel } from '../../../../public/models/filter/filter-
 import { NotificationService } from '../../../../core/services/notification.service';
 import { ToastrService } from 'ngx-toastr';
 import { TableSelectActionModel } from '../../../../public/models/external/table-select-action.model';
-import { AddNewUserDialogComponent } from '../../../../share/components';
+import {
+  AddNewUserDialogComponent,
+  BaseManagementLayoutComponent,
+} from '../../../../share/components';
 import { MatDialog } from '@angular/material/dialog';
 import { UserListService } from './user-list.service';
 import {
   AdminAccountControllerService,
   ApiResponseAdminAccountEntity,
+  ApiResponseListString,
   ApiResponseString,
 } from '../../../../../../open-api-modules/identity-api-docs';
 import * as moment from 'moment';
@@ -296,6 +301,13 @@ export class UserListComponent implements OnInit, OnDestroy {
     }
   }
 
+  @ViewChild(BaseManagementLayoutComponent)
+  child: BaseManagementLayoutComponent;
+
+  triggerDeselectUsers() {
+    this.child.triggerDeselectUsers();
+  }
+
   public onOutputAction(event) {
     const action = event.action;
     const list = event.selectedList;
@@ -339,11 +351,13 @@ export class UserListComponent implements OnInit, OnDestroy {
                 // return this.handleResponseError(result.errorCode);
               }
               if (result.responseCode === 200) {
+                this.refreshContent();
+                this.triggerDeselectUsers();
                 setTimeout(() => {
                   this.notifier.success(
                     this.multiLanguageService.instant('common.lock_success')
                   );
-                }, 500);
+                }, 3000);
               }
             })
         );
@@ -364,13 +378,30 @@ export class UserListComponent implements OnInit, OnDestroy {
       primaryBtnClass: 'btn-error',
       secondaryBtnText: this.multiLanguageService.instant('common.skip'),
     });
-    confirmDeleteRef.afterClosed().subscribe((result) => {
-      if (result === 'PRIMARY') {
-        this.notifier.success(
-          this.multiLanguageService.instant(
-            'system.user_detail.delete_user.toast'
-          )
-        );
+    confirmDeleteRef.afterClosed().subscribe((event) => {
+      if (event === BUTTON_TYPE.PRIMARY) {
+        userIds.forEach((userId) => {
+          this.subManager.add(
+            this.adminAccountControllerService
+              .deleteAdminAccount(userId)
+              .subscribe((result: ApiResponseAdminAccountEntity) => {
+                if (!result || result.responseCode !== 200) {
+                  // return this.handleResponseError(result.errorCode);
+                }
+                if (result.responseCode === 200) {
+                }
+              })
+          );
+        });
+        this.refreshContent();
+        this.triggerDeselectUsers();
+        setTimeout(() => {
+          this.notifier.success(
+            this.multiLanguageService.instant(
+              'system.user_detail.delete_user.toast'
+            )
+          );
+        }, 3000);
       }
     });
   }
@@ -538,6 +569,7 @@ export class UserListComponent implements OnInit, OnDestroy {
           console.log('updateInfoRequest', updateInfoRequest);
           // this.notificationService.showLoading({ showContent: true });
           this.sendAddUserRequest(updateInfoRequest);
+          this.triggerDeselectUsers();
         }
       })
     );
@@ -565,7 +597,7 @@ export class UserListComponent implements OnInit, OnDestroy {
   public refreshContent() {
     setTimeout(() => {
       this._getUserList();
-    }, 1000);
+    }, 2000);
   }
 
   private _bindingDialogUserData(data) {
@@ -582,19 +614,17 @@ export class UserListComponent implements OnInit, OnDestroy {
   }
 
   getPermissionList() {
-    // this.subManager.add(
-    //   this.permissionTypeControllerService
-    //     .getPermissionTypeByTreeFormat()
-    //     .subscribe(
-    //       (result: ApiResponseListParentPermissionTypeResponse) => {
-    //         if (!result || result.responseCode !== 200) {
-    //           // return this.handleResponseError(result.errorCode);
-    //         }
-    //         this.treeData = result.result;
-    //         console.log(this.treeData);
-    //       }
-    //     )
-    // );
+    this.subManager.add(
+      this.permissionTypeControllerService
+        .getPermissionTypeByTreeFormat()
+        .subscribe((result: ApiResponseListParentPermissionTypeResponse) => {
+          if (!result || result.responseCode !== 200) {
+            // return this.handleResponseError(result.errorCode);
+          }
+          this.treeData = result.result;
+          console.log(this.treeData);
+        })
+    );
   }
 
   getRoleList() {
@@ -655,6 +685,12 @@ export class UserListComponent implements OnInit, OnDestroy {
 
   public updateElementInfo(updatedUserInfo) {
     console.log('asbdihasdgastdftqwd', updatedUserInfo);
+    if (!updatedUserInfo) {
+      setTimeout(() => {
+        this.triggerDeselectUsers();
+        this._getUserList();
+      }, 2000);
+    }
     this.dataSource.data.map((item) => {
       if (item.id === updatedUserInfo.id) {
         this.allColumns.forEach((column) => {

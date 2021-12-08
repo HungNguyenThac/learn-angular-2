@@ -3069,6 +3069,8 @@ components:
           $ref: '#/components/schemas/GroupEntity'
         groupId:
           type: string
+        isDeleted:
+          type: boolean
     ApiResponseSearchAndPaginationResponseAdminAccountEntity:
       type: object
       properties:
