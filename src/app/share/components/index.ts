@@ -33,6 +33,7 @@ import { AddNewUserDialogComponent } from './operators/user-account/add-new-user
 import { DialogUserInfoUpdateComponent } from './operators/user-account/dialog-user-info-update/dialog-user-info-update.component';
 import { MerchantDetailDialogComponent } from './operators/merchant/merchant-detail-dialog/merchant-detail-dialog.component';
 import { MerchantGroupDialogComponent } from './operators/merchant/merchant-group-dialog/merchant-group-dialog.component';
+import { ChangeUserPasswordDialogComponent } from './operators/user-account/change-user-password-dialog/change-user-password-dialog.component';
 
 export const components: any[] = [
   ConfirmationDialog,
@@ -70,6 +71,7 @@ export const components: any[] = [
   DialogUserInfoUpdateComponent,
   MerchantDetailDialogComponent,
   MerchantGroupDialogComponent,
+  ChangeUserPasswordDialogComponent,
 ];
 
 export * from './dialogs/confirmation-dialog/confirmation-dialog.component';
@@ -107,3 +109,4 @@ export * from './operators/user-account/add-new-user-dialog/add-new-user-dialog.
 export * from './operators/user-account/dialog-user-info-update/dialog-user-info-update.component';
 export * from './operators/merchant/merchant-detail-dialog/merchant-detail-dialog.component';
 export * from './operators/merchant/merchant-group-dialog/merchant-group-dialog.component';
+export * from './operators/user-account/change-user-password-dialog/change-user-password-dialog.component';

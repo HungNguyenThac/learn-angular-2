@@ -25,6 +25,7 @@ export * from './createPermissionTypeRequest';
 export * from './createProviderAccountRequest';
 export * from './createVerifiedAccountRequest';
 export * from './customerAccountEntity';
+export * from './deleteMultiAdminAccountsRequest';
 export * from './getTokenRequest';
 export * from './getTokenResponse';
 export * from './groupEntity';
