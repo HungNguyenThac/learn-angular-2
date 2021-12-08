@@ -17,6 +17,7 @@ import { MultiLanguageService } from '../../../../share/translate/multiLanguageS
 import { Observable, Subscription } from 'rxjs';
 import {
   AdminAccountEntity,
+  ApiResponseListParentPermissionTypeResponse,
   ApiResponseSearchAndPaginationResponseAdminAccountEntity,
   ApiResponseSearchAndPaginationResponseCompanyInfo,
   ApiResponseSearchAndPaginationResponseGroupEntity,
@@ -593,19 +594,17 @@ export class UserListComponent implements OnInit, OnDestroy {
   }
 
   getPermissionList() {
-    // this.subManager.add(
-    //   this.permissionTypeControllerService
-    //     .getPermissionTypeByTreeFormat()
-    //     .subscribe(
-    //       (result: ApiResponseListParentPermissionTypeResponse) => {
-    //         if (!result || result.responseCode !== 200) {
-    //           // return this.handleResponseError(result.errorCode);
-    //         }
-    //         this.treeData = result.result;
-    //         console.log(this.treeData);
-    //       }
-    //     )
-    // );
+    this.subManager.add(
+      this.permissionTypeControllerService
+        .getPermissionTypeByTreeFormat()
+        .subscribe((result: ApiResponseListParentPermissionTypeResponse) => {
+          if (!result || result.responseCode !== 200) {
+            // return this.handleResponseError(result.errorCode);
+          }
+          this.treeData = result.result;
+          console.log(this.treeData);
+        })
+    );
   }
 
   getRoleList() {
