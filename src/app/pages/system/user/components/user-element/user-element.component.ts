@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import {
   AdminAccountControllerService,
+  ApiResponseAdminAccountEntity,
   ApiResponseCustomerInfo,
   CompanyInfo,
 } from '../../../../../../../open-api-modules/dashboard-api-docs';
@@ -36,7 +37,9 @@ export class UserElementComponent implements OnInit {
   }
 
   public refreshContent() {
-    this._getUserInfoById(this.userId);
+    setTimeout(() => {
+      this._getUserInfoById(this.userId);
+    }, 2000);
   }
 
   private _getUserInfoById(userId) {
@@ -44,14 +47,14 @@ export class UserElementComponent implements OnInit {
     this.subManager.add(
       this.adminAccountControllerService
         .getAdminAccountById(this.userId)
-        .subscribe((data: ApiResponseCustomerInfo) => {
+        .subscribe((data: ApiResponseAdminAccountEntity) => {
           this.userInfo = data?.result;
         })
     );
   }
 
   updateElementInfo(event) {
-    // this.refreshContent();
+    this.refreshContent();
     this.triggerUpdateElementInfo.emit(event);
   }
 }

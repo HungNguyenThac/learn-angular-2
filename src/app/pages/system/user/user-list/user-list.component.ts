@@ -178,7 +178,7 @@ export class UserListComponent implements OnInit, OnDestroy {
   totalItems: number = 0;
   filterForm: FormGroup;
   expandedElementId: number;
-  expandElementFromLoan
+  expandElementFromLoan;
   hasSelect: boolean = true;
   userInfo: any;
   private readonly routeAllState$: Observable<Params>;
@@ -571,7 +571,9 @@ export class UserListComponent implements OnInit, OnDestroy {
   }
 
   public refreshContent() {
-    this._getUserList();
+    setTimeout(() => {
+      this._getUserList();
+    }, 2000);
   }
 
   private _bindingDialogUserData(data) {
@@ -662,14 +664,14 @@ export class UserListComponent implements OnInit, OnDestroy {
   }
 
   public updateElementInfo(updatedUserInfo) {
-    this.dataSource.data.map((item) => {
-      if (item.id === updatedUserInfo.id) {
-        this.allColumns.forEach((column) => {
-          item[column.key] = updatedUserInfo[column.key];
-        });
-      }
-      return item;
-    });
+    // this.dataSource.data.map((item) => {
+    //   if (item.id === updatedUserInfo.id) {
+    //     this.allColumns.forEach((column) => {
+    //       item[column.key] = updatedUserInfo[column.key];
+    //     });
+    //   }
+    //   return item;
+    // });
     this.refreshContent();
   }
 }

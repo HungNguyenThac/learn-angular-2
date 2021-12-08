@@ -27,7 +27,6 @@ import {
 export class UserDetailComponent implements OnInit {
   leftCompanyInfos: any[] = [];
   rightCompanyInfos: any[] = [];
-  showEnableBtn: boolean = false;
   subManager = new Subscription();
   _userInfo;
 
@@ -42,7 +41,7 @@ export class UserDetailComponent implements OnInit {
     this.rightCompanyInfos = this._initRightCompanyInfos();
   }
 
-  @Output() updateElementInfo = new EventEmitter<CompanyInfo>();
+  @Output() updateElementInfo = new EventEmitter();
 
   constructor(
     private multiLanguageService: MultiLanguageService,
@@ -88,7 +87,7 @@ export class UserDetailComponent implements OnInit {
                   this.notifier.success(
                     this.multiLanguageService.instant('common.lock_success')
                   );
-                }, 1000);
+                }, 2000);
               }
             })
         );
@@ -122,7 +121,7 @@ export class UserDetailComponent implements OnInit {
                   this.notifier.success(
                     this.multiLanguageService.instant('common.unlock_success')
                   );
-                }, 1000);
+                }, 2000);
               }
             })
         );
