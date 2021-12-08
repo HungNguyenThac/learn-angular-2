@@ -156,9 +156,9 @@ export class UserListComponent implements OnInit, OnDestroy {
       showed: true,
     },
     {
-      key: 'userRole',
+      key: 'groupEntity',
       title: this.multiLanguageService.instant('system.system_management.role'),
-      type: DATA_CELL_TYPE.STATUS,
+      type: DATA_CELL_TYPE.TEXT,
       format: null,
       showed: true,
     },
@@ -515,7 +515,7 @@ export class UserListComponent implements OnInit, OnDestroy {
           let updateInfoRequest = this._bindingDialogUserData(result.data);
           console.log('updateInfoRequest', updateInfoRequest);
           // this.notificationService.showLoading({ showContent: true });
-          this.sendAddUserRequest(updateInfoRequest);
+          // this.sendAddUserRequest(updateInfoRequest);
         }
       })
     );

@@ -119,7 +119,7 @@ export class LoginEffects {
         tap(() => {
           this.subManager.add(
             this.dashboardAdminAccountControllerService
-              .getAdminAccountById('23112')
+              .getInFo()
               .subscribe((result: ApiResponseAdminAccountEntity) => {
                 if (!result || result.responseCode !== 200) return;
 

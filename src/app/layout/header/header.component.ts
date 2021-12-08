@@ -1,22 +1,22 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Store } from '@ngrx/store';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Store} from '@ngrx/store';
 import * as fromStore from '../../core/store';
 import * as fromActions from '../../core/store';
-import { Router } from '@angular/router';
+import {Router} from '@angular/router';
 import * as fromSelectors from '../../core/store/selectors';
-import { Observable } from 'rxjs/Observable';
-import { CustomerInfoResponse } from '../../../../open-api-modules/customer-api-docs';
-import { Subscription } from 'rxjs';
-import { NAV_ITEM } from '../../core/common/enum/operator';
-import { MultiLanguageService } from '../../share/translate/multiLanguageService';
-import { DialogCompanyInfoUpdateComponent } from '../../share/components';
-import { MatDialog } from '@angular/material/dialog';
-import { DialogUserInfoUpdateComponent } from '../../share/components/operators/user-account/dialog-user-info-update/dialog-user-info-update.component';
+import {Observable} from 'rxjs/Observable';
+import {CustomerInfoResponse} from '../../../../open-api-modules/customer-api-docs';
+import {Subscription} from 'rxjs';
+import {NAV_ITEM} from '../../core/common/enum/operator';
+import {MultiLanguageService} from '../../share/translate/multiLanguageService';
+import {DialogCompanyInfoUpdateComponent} from '../../share/components';
+import {MatDialog} from '@angular/material/dialog';
+import {DialogUserInfoUpdateComponent} from '../../share/components/operators/user-account/dialog-user-info-update/dialog-user-info-update.component';
 import {
   AdminAccountControllerService,
   ApiResponseAdminAccountEntity,
 } from '../../../../open-api-modules/identity-api-docs';
-import { AdminAccountEntity } from '../../../../open-api-modules/dashboard-api-docs';
+import {AdminAccountEntity} from '../../../../open-api-modules/dashboard-api-docs';
 
 export interface AccountInfo {
   fullName?: string;
@@ -42,7 +42,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   logoSrc: string = 'assets/img/monex-logo.svg';
   showProfileBtn: boolean = false;
   shortName: string = '0';
-  userInfo;
+  userInfo: AdminAccountEntity;
 
   accountInfo: AccountInfo = {
     fullName: 'Nguyễn Văn A',
@@ -75,7 +75,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
           ),
           iconClass: 'sprite-group-5-pl-24',
           path: '/payday-loan/list',
-          queryParams: { groupName: 'HMG' },
+          queryParams: {groupName: 'HMG'},
           canActivate: ['ADMIN', 'MODERATOR'],
         },
         {
@@ -84,7 +84,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
           ),
           iconClass: 'sprite-group-5-pl-24',
           path: '/payday-loan/list',
-          queryParams: { groupName: 'TNG' },
+          queryParams: {groupName: 'TNG'},
           canActivate: ['ADMIN', 'MODERATOR'],
         },
       ],
@@ -182,7 +182,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
     );
     this.subManager.add(
       this.customerInfo$.subscribe((customerInfo: AdminAccountEntity) => {
-        console.log('customerInfo', customerInfo);
+        console.log('customerInfozxczxcszs', customerInfo);
+        this.userInfo = customerInfo;
       })
     );
     this.subManager.add(
@@ -197,4 +198,5 @@ export class HeaderComponent implements OnInit, OnDestroy {
       })
     );
   }
+
 }
