@@ -1,6 +1,5 @@
 import { LoanListComponent } from './loan-list/loan-list.component';
 import { Routes } from '@angular/router';
-import { AuthGuardService as AuthGuard } from '../../../core/services/auth-guard.service';
 
 export const PaydayLoanRoutes: Routes = [
   {
@@ -9,7 +8,16 @@ export const PaydayLoanRoutes: Routes = [
       {
         path: 'list',
         component: LoanListComponent,
-        data: { animation: true },
+        data: {
+          animation: true,
+          permissions: {
+            only: [
+              'dashboardHmgApplications:findApplications',
+              'dashboardTngApplications:findApplications',
+            ],
+            redirectTo: '/',
+          },
+        },
       },
     ],
   },

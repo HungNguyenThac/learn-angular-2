@@ -67,7 +67,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
       title: this.multiLanguageService.instant('header.navigation.loanapp'),
       defaultIconClass: 'sprite-group-5-coin',
       activeIconClass: 'sprite-group-5-coin-white',
-      canActivate: ['ADMIN', 'MODERATOR'],
+      canActivate: [
+        'dashboardHmgApplications:findApplications',
+        'dashboardTngApplications:findApplications',
+      ],
       subItems: [
         {
           title: this.multiLanguageService.instant(
@@ -76,7 +79,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
           iconClass: 'sprite-group-5-pl-24',
           path: '/payday-loan/list',
           queryParams: { groupName: 'HMG' },
-          canActivate: ['ADMIN', 'MODERATOR'],
+          canActivate: ['dashboardHmgApplications:findApplications'],
         },
         {
           title: this.multiLanguageService.instant(
@@ -85,7 +88,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
           iconClass: 'sprite-group-5-pl-24',
           path: '/payday-loan/list',
           queryParams: { groupName: 'TNG' },
-          canActivate: ['ADMIN', 'MODERATOR'],
+          canActivate: ['dashboardTngApplications:findApplications'],
         },
       ],
       path: '/payday-loan/list',
@@ -96,7 +99,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
       defaultIconClass: 'sprite-group-5-customer',
       activeIconClass: 'sprite-group-5-customer-white',
       path: '/customer/list',
-      canActivate: ['ADMIN', 'MODERATOR'],
+      canActivate: ['dashboardCustomers:getCustomers'],
     },
     // {
     //   navItem: NAV_ITEM.INSURANCE,
@@ -161,7 +164,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   onClickManageUser() {
-    this.router.navigateByUrl('user/list');
+    this.router.navigateByUrl('/system/user/list');
   }
 
   logout() {
