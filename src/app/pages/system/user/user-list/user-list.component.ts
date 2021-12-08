@@ -67,6 +67,7 @@ export class UserListComponent implements OnInit, OnDestroy {
   //Mock data
   selectButtons: TableSelectActionModel[] = [
     {
+      hidden: false,
       action: 'delete',
       color: 'accent',
       content: this.multiLanguageService.instant(
@@ -76,6 +77,7 @@ export class UserListComponent implements OnInit, OnDestroy {
       style: 'background-color: rgba(255, 255, 255, 0.1);',
     },
     {
+      hidden: false,
       action: 'lock',
       color: 'accent',
       content: this.multiLanguageService.instant(
@@ -98,7 +100,7 @@ export class UserListComponent implements OnInit, OnDestroy {
       'breadcrumb.search_field_user_list'
     ),
     searchable: true,
-    showBtnAdd: true,
+    showBtnAdd: false,
     btnAddText: this.multiLanguageService.instant('system.add_user'),
     keyword: '',
   };
@@ -217,7 +219,38 @@ export class UserListComponent implements OnInit, OnDestroy {
     );
     this.store.dispatch(new fromActions.SetOperatorInfo(null));
     this._initSubscription();
-    this.getPermissionList();
+    this._getPermissionList();
+  }
+
+  private async _checkActionPermissions() {
+    const hasCredentialsCreatePermission =
+      await this.permissionsService.hasPermission('credentials:create');
+    const hasDeleteAccountPermission =
+      await this.permissionsService.hasPermission(
+        'credentials:deleteAdminAccount'
+      );
+    const hasLockMultipleAccountPermission =
+      await this.permissionsService.hasPermission(
+        'credentials:lockMultiAccount'
+      );
+
+    //TODO
+    // if (hasCredentialsCreatePermission) {
+      this.breadcrumbOptions.showBtnAdd = true;
+    // }
+
+    let selectedButtons = JSON.parse(JSON.stringify(this.selectButtons));
+    selectedButtons.forEach((button) => {
+      if (button.action === 'delete') {
+        button.hidden = !hasDeleteAccountPermission;
+        return;
+      }
+      if (button.action === 'lock') {
+        button.hidden = !hasLockMultipleAccountPermission;
+      }
+    });
+
+    this.selectButtons = selectedButtons;
   }
 
   private _getUserList() {
@@ -356,9 +389,10 @@ export class UserListComponent implements OnInit, OnDestroy {
           if (!result || result.responseCode !== RESPONSE_CODE.SUCCESS) {
             return;
           }
-          this.refreshContent();
           this.triggerDeselectUsers();
+
           setTimeout(() => {
+            this.refreshContent();
             this.notifier.success(
               this.multiLanguageService.instant('common.lock_success')
             );
@@ -457,6 +491,14 @@ export class UserListComponent implements OnInit, OnDestroy {
         this._getUserList();
         this._getCompanyList();
         this.getRoleList();
+      })
+    );
+
+    this.subManager.add(
+      this.permissionsService.permissions$.subscribe((permissions) => {
+        if (permissions) {
+          this._checkActionPermissions();
+        }
       })
     );
   }
@@ -631,7 +673,7 @@ export class UserListComponent implements OnInit, OnDestroy {
     };
   }
 
-  getPermissionList() {
+  _getPermissionList() {
     this.subManager.add(
       this.permissionTypeControllerService
         .getPermissionTypeByTreeFormat()
@@ -702,7 +744,6 @@ export class UserListComponent implements OnInit, OnDestroy {
   }
 
   public updateElementInfo(updatedUserInfo) {
-    console.log('asbdihasdgastdftqwd', updatedUserInfo);
     if (!updatedUserInfo) {
       setTimeout(() => {
         this.triggerDeselectUsers();

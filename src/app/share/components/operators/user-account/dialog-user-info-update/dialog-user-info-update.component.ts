@@ -78,6 +78,7 @@ export class DialogUserInfoUpdateComponent implements OnInit {
     if (!this.permissionsService.hasPermission('dashboardGroups:getGroups')) {
       return;
     }
+
     this.subManager.add(
       this.groupControllerService
         .getGroups(100, 0, {})

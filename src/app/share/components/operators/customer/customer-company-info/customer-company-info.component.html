@@ -56,7 +56,7 @@
         <span class="sprite-group-7-search-white"></span>
         {{ "loan_app.company_info.salary_info_confirmation" | translate }}
       </button>
-      <button mat-flat-button color="accent" (click)="openUpdateDialog()">
+      <button *ngxPermissionsOnly="['infos:updateInfo']" mat-flat-button color="accent" (click)="openUpdateDialog()">
         <span class="sprite-group-5-pen-white"></span>
         {{ "customer.individual_info.update" | translate }}
       </button>

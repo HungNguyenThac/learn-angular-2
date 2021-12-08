@@ -1,27 +1,26 @@
 import { NotificationService } from 'src/app/core/services/notification.service';
-import { PaydayLoanHmg } from './../../../../../../../open-api-modules/dashboard-api-docs/model/paydayLoanHmg';
-import { ApiResponsePaydayLoanTng } from './../../../../../../../open-api-modules/dashboard-api-docs/model/apiResponsePaydayLoanTng';
-import { ApplicationTngControllerService } from './../../../../../../../open-api-modules/dashboard-api-docs/api/applicationTngController.service';
-import { ApiResponseSearchAndPaginationResponseCompanyInfo } from './../../../../../../../open-api-modules/dashboard-api-docs/model/apiResponseSearchAndPaginationResponseCompanyInfo';
-import { ApiResponseSearchAndPaginationResponseBank } from './../../../../../../../open-api-modules/dashboard-api-docs/model/apiResponseSearchAndPaginationResponseBank';
-import { BankControllerService } from './../../../../../../../open-api-modules/dashboard-api-docs/api/bankController.service';
-import { CompanyInfo } from './../../../../../../../open-api-modules/customer-api-docs/model/companyInfo';
-import { Bank } from './../../../../../../../open-api-modules/dashboard-api-docs/model/bank';
-import { MultiLanguageService } from './../../../../../share/translate/multiLanguageService';
+import { PaydayLoanHmg } from '../../../../../../../open-api-modules/dashboard-api-docs';
+import { ApiResponsePaydayLoanTng } from '../../../../../../../open-api-modules/dashboard-api-docs';
+import { ApplicationTngControllerService } from '../../../../../../../open-api-modules/dashboard-api-docs';
+import { ApiResponseSearchAndPaginationResponseCompanyInfo } from '../../../../../../../open-api-modules/dashboard-api-docs';
+import { ApiResponseSearchAndPaginationResponseBank } from '../../../../../../../open-api-modules/dashboard-api-docs';
+import { BankControllerService } from '../../../../../../../open-api-modules/dashboard-api-docs';
+import { CompanyInfo } from '../../../../../../../open-api-modules/customer-api-docs';
+import { Bank } from '../../../../../../../open-api-modules/dashboard-api-docs';
+import { MultiLanguageService } from '../../../../../share/translate/multiLanguageService';
 import { ToastrService } from 'ngx-toastr';
-import { RESPONSE_CODE } from './../../../../../core/common/enum/operator';
-import { ApiResponseCustomerInfo } from './../../../../../../../open-api-modules/dashboard-api-docs/model/apiResponseCustomerInfo';
-import { ApiResponsePaydayLoanHmg } from './../../../../../../../open-api-modules/dashboard-api-docs/model/apiResponsePaydayLoanHmg';
+import { RESPONSE_CODE } from '../../../../../core/common/enum/operator';
+import { ApiResponseCustomerInfo } from '../../../../../../../open-api-modules/dashboard-api-docs';
+import { ApiResponsePaydayLoanHmg } from '../../../../../../../open-api-modules/dashboard-api-docs';
 import { Subscription } from 'rxjs';
 import {
   Component,
   EventEmitter,
   Input,
+  OnDestroy,
   OnInit,
   Output,
-  OnDestroy,
 } from '@angular/core';
-import { PaydayLoan } from 'open-api-modules/loanapp-tng-api-docs';
 import {
   ApplicationHmgControllerService,
   CompanyControllerService,
