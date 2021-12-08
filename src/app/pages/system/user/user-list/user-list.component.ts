@@ -228,10 +228,7 @@ export class UserListComponent implements OnInit, OnDestroy {
         .subscribe(
           (data: ApiResponseSearchAndPaginationResponseAdminAccountEntity) => {
             this._parseData(data?.result);
-            const filterDeletedUser = data?.result?.data.filter(
-              (user) => user.isDeleted === false
-            );
-            this.dataSource.data = filterDeletedUser;
+            this.dataSource.data = data?.result?.data;
             if (this.filterForm.controls.id.value) {
               this.expandElementFromLoan = data?.result?.data[0];
             }
@@ -382,31 +379,30 @@ export class UserListComponent implements OnInit, OnDestroy {
       primaryBtnClass: 'btn-error',
       secondaryBtnText: this.multiLanguageService.instant('common.skip'),
     });
-    confirmDeleteRef.afterClosed().subscribe((result) => {
-      if (result === 'PRIMARY') {
-        console.log('áudhaoiusdhuaishdiuahsduiahsuidhasid', userIds);
-        this.subManager.add(
-          this.adminAccountControllerService
-            .deleteMultiAdminAccount({
-              accountIds: userIds,
-            })
-            .subscribe((result: ApiResponseListString) => {
-              if (!result || result.responseCode !== 200) {
-                // return this.handleResponseError(result.errorCode);
-              }
-              if (result.responseCode === 200) {
-                this.refreshContent();
-                this.triggerDeselectUsers();
-                setTimeout(() => {
-                  this.notifier.success(
-                    this.multiLanguageService.instant(
-                      'system.user_detail.delete_user.toast'
-                    )
-                  );
-                }, 3000);
-              }
-            })
-        );
+    confirmDeleteRef.afterClosed().subscribe((event) => {
+      if (event === BUTTON_TYPE.PRIMARY) {
+        userIds.forEach((userId) => {
+          this.subManager.add(
+            this.adminAccountControllerService
+              .deleteAdminAccount(userId)
+              .subscribe((result: ApiResponseAdminAccountEntity) => {
+                if (!result || result.responseCode !== 200) {
+                  // return this.handleResponseError(result.errorCode);
+                }
+                if (result.responseCode === 200) {
+                }
+              })
+          );
+        });
+        this.refreshContent();
+        this.triggerDeselectUsers();
+        setTimeout(() => {
+          this.notifier.success(
+            this.multiLanguageService.instant(
+              'system.user_detail.delete_user.toast'
+            )
+          );
+        }, 3000);
       }
     });
   }
@@ -584,6 +580,7 @@ export class UserListComponent implements OnInit, OnDestroy {
           console.log('updateInfoRequest', updateInfoRequest);
           // this.notificationService.showLoading({ showContent: true });
           this.sendAddUserRequest(updateInfoRequest);
+          this.triggerDeselectUsers();
         }
       })
     );
