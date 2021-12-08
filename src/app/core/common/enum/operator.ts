@@ -26,10 +26,10 @@ export enum QUERY_CONDITION_TYPE {
   IN = '__in',
   LIKE = '__~',
   LIKE_KEYWORD = '__lk',
-  NOT_BETWEEN = "__nbw",
-  NOT_START_WITH = "__nsw",
-  NOT_END_WITH = "__new",
-  NOT_IN = "__nin"
+  NOT_BETWEEN = '__nbw',
+  NOT_START_WITH = '__nsw',
+  NOT_END_WITH = '__new',
+  NOT_IN = '__nin',
 }
 
 export enum DATA_CELL_TYPE {
@@ -47,6 +47,7 @@ export enum DATA_STATUS_TYPE {
   PL_OTHER_STATUS = 'PL_OTHER_STATUS',
   PL_REPAYMENT_STATUS = 'PL_REPAYMENT_STATUS',
   PL_RATING_STATUS = 'PL_RATING_STATUS',
+  USER_STATUS = 'USER_STATUS',
 }
 
 export enum FILTER_TYPE {
@@ -90,7 +91,7 @@ export enum LOCK_TIME_OPTIONS {
   ONE_DAY = 86400,
   SEVEN_DAY = 604800,
   THIRTY_DAY = 2592000,
-  PERMANENT = 'PERMANENT',
+  PERMANENT = 9999999999,
 }
 
 export enum LOCK_TIME_TEXT_OPTIONS {

@@ -70,6 +70,9 @@
     "active": "Đang hoạt động",
     "inactive": "Ngừng hoạt động",
     "update_success": "Cập nhật dữ liệu thành công",
+    "create_success": "Tạo người dùng thành công",
+    "lock_success": "Khóa tài khoản thành công",
+    "unlock_success": "Mở khóa tài khoản thành công",
     "process_downloading": "Đang tải xuống tài liệu"
   },
   "auth": {
@@ -140,6 +143,7 @@
   },
   "account": {
     "info": {
+      "update_dialog_title": "Cập nhật thông tin người dùng",
       "_info": "Thông tin tài khoản",
       "name": "Tên người dùng",
       "log_in": "Tên đăng nhập",
@@ -220,6 +224,7 @@
       "unlock": "Cho phép hoạt động",
       "cancel_update": "Hủy cập nhật",
       "save_update": "Lưu cập nhật",
+      "active_status": "Trạng thái hoạt động",
       "gender": "Giới tính",
       "gender_male": "Nam",
       "gender_female": "Nữ",
@@ -483,6 +488,8 @@
     "account_status": "Trạng thái hoạt động",
     "loan_status": "Trạng thái khoản ứng",
     "merchant_group": "Nhóm nhà cung cấp",
+    "role_group": "Vai trò",
+    "select_all": "Chọn tất cả",
     "account_classification": "Phân loại tài khoản",
     "account_classification_test": "Tài khoản test",
     "account_classification_real": "Tài khoản thực",
@@ -561,6 +568,7 @@
     "manage_payday_loan": "Quản lý khoản ứng",
     "search_field_payday_loan": "Mã khoản ứng, Tên, Số điện thoại...",
     "search_field_customer_list": "Họ tên, Mã nhân viên, Số điện thoại, Email",
+    "search_field_user_list": "Tên đăng nhập, tên người dùng",
     "manage_user": "Quản lý người dùng",
     "merchant": "Quản lý nhà cung cấp"
   },
@@ -570,6 +578,7 @@
       "user_account": "Tên đăng nhập",
       "username": "Tên người dùng",
       "role": "Vai trò",
+      "position": "Vị trí công việc",
       "status": "Trạng thái",
       "active_user": "Đang hoạt động",
       "inactive_user": "Ngừng hoạt động",

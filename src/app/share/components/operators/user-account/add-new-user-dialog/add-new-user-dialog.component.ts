@@ -1,6 +1,6 @@
-import { Component, OnInit, ViewChildren } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BUTTON_TYPE } from '../../../../../core/common/enum/operator';
 
 @Component({
@@ -19,38 +19,72 @@ export class AddNewUserDialogComponent implements OnInit {
   isEmailInputFocus: boolean = false;
   isPositionInputFocus: boolean = false;
   isNoteInputFocus: boolean = false;
+  dialogTitle: string;
+  userInfo;
+  passwordInput: boolean;
+  disableUsername: boolean = true;
 
-  roleOptions = {
-    fieldName: 'Vai trò',
-    options: ['Super Admin', '2', '3'],
-  };
+  roleList;
   positionOptions = {
     fieldName: 'Vị trí công việc',
     options: ['Kiểm duyệt viên', 'DB Merchant', 'Operator Admin', 'Kế toán'],
   };
 
   constructor(
+    @Inject(MAT_DIALOG_DATA) private data: any,
     private dialogRef: MatDialogRef<AddNewUserDialogComponent>,
     private formBuilder: FormBuilder
   ) {
     this.buildAccountInfoForm();
+    if (data) {
+      this.initDialogData(data);
+    }
   }
 
   buildAccountInfoForm() {
     this.addAccountForm = this.formBuilder.group({
       accountName: [''],
-      accountLogin: [''],
-      accountPassword: [''],
+      username: [''],
+      accountPassword: [
+        '',
+        [Validators.minLength(8), Validators.maxLength(50)],
+      ],
       accountRePassword: [''],
       accountRole: [''],
       accountPhone: [''],
-      accountEmail: [''],
+      accountEmail: ['', [Validators.email]],
       accountPosition: [''],
       accountNote: [''],
     });
   }
 
+  initDialogData(data) {
+    ``;
+    this.roleList = data?.roleList;
+    this.dialogTitle = data?.dialogTitle;
+    this.userInfo = data?.userInfo;
+    this.passwordInput = data?.hasPasswordField;
+    if (!data?.hasUsernameField) {
+      this.addAccountForm.controls.username.disable();
+    }
+
+    this.addAccountForm.patchValue({
+      accountName: this.userInfo?.fullName,
+      username: this.userInfo?.username,
+      accountPassword: '',
+      accountRePassword: '',
+      accountRole: this.userInfo?.groupId,
+      accountPhone: this.userInfo?.mobile,
+      accountEmail: this.userInfo?.email,
+      accountPosition: this.userInfo?.position,
+      accountNote: this.userInfo?.note,
+    });
+  }
+
   submitForm() {
+    if (this.addAccountForm.invalid) {
+      return;
+    }
     this.dialogRef.close({
       type: BUTTON_TYPE.PRIMARY,
       data: this.addAccountForm.getRawValue(),

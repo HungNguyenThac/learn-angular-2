@@ -136,52 +136,8 @@ export class PaydayLoanControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.post<ApiResponseString>(`${this.configuration.basePath}/v1/${encodeURIComponent(String(loanId))}/change-status`,
+        return this.httpClient.post<ApiResponseString>(`${this.configuration.basePath}/v1/hmgPaydayLoans/${encodeURIComponent(String(loanId))}/changeStatus`,
             updateLoanStatusRequest,
-            {
-                responseType: <any>responseType_,
-                withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress
-            }
-        );
-    }
-
-    /**
-     * @param loanId 
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public changeLoanStatus1(loanId: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponsePaydayLoan>;
-    public changeLoanStatus1(loanId: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponsePaydayLoan>>;
-    public changeLoanStatus1(loanId: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponsePaydayLoan>>;
-    public changeLoanStatus1(loanId: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
-        if (loanId === null || loanId === undefined) {
-            throw new Error('Required parameter loanId was null or undefined when calling changeLoanStatus1.');
-        }
-
-        let headers = this.defaultHeaders;
-
-        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-        if (httpHeaderAcceptSelected === undefined) {
-            // to determine the Accept header
-            const httpHeaderAccepts: string[] = [
-                '*/*'
-            ];
-            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        }
-        if (httpHeaderAcceptSelected !== undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
-        }
-
-
-        let responseType_: 'text' | 'json' = 'json';
-        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
-            responseType_ = 'text';
-        }
-
-        return this.httpClient.get<ApiResponsePaydayLoan>(`${this.configuration.basePath}/v1/${encodeURIComponent(String(loanId))}`,
             {
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
@@ -234,8 +190,52 @@ export class PaydayLoanControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.post<ApiResponseApplyResponse>(`${this.configuration.basePath}/v1/create-application`,
+        return this.httpClient.post<ApiResponseApplyResponse>(`${this.configuration.basePath}/v1/hmgPaydayLoans`,
             createApplicationRequest,
+            {
+                responseType: <any>responseType_,
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * @param loanId 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public findLoanById(loanId: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponsePaydayLoan>;
+    public findLoanById(loanId: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponsePaydayLoan>>;
+    public findLoanById(loanId: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponsePaydayLoan>>;
+    public findLoanById(loanId: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
+        if (loanId === null || loanId === undefined) {
+            throw new Error('Required parameter loanId was null or undefined when calling findLoanById.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (httpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                '*/*'
+            ];
+            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
+        if (httpHeaderAcceptSelected !== undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+
+        let responseType_: 'text' | 'json' = 'json';
+        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+            responseType_ = 'text';
+        }
+
+        return this.httpClient.get<ApiResponsePaydayLoan>(`${this.configuration.basePath}/v1/hmgPaydayLoans/${encodeURIComponent(String(loanId))}`,
             {
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
@@ -279,63 +279,8 @@ export class PaydayLoanControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.get<ApiResponsePaydayLoan>(`${this.configuration.basePath}/v1/${encodeURIComponent(String(customerId))}/get-active-loan`,
+        return this.httpClient.get<ApiResponsePaydayLoan>(`${this.configuration.basePath}/v1/hmgPaydayLoans/${encodeURIComponent(String(customerId))}/activeLoan`,
             {
-                responseType: <any>responseType_,
-                withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress
-            }
-        );
-    }
-
-    /**
-     * @param customerId 
-     * @param loanId 
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public getLoan(customerId: string, loanId: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponsePaydayLoan>;
-    public getLoan(customerId: string, loanId: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponsePaydayLoan>>;
-    public getLoan(customerId: string, loanId: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponsePaydayLoan>>;
-    public getLoan(customerId: string, loanId: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
-        if (customerId === null || customerId === undefined) {
-            throw new Error('Required parameter customerId was null or undefined when calling getLoan.');
-        }
-        if (loanId === null || loanId === undefined) {
-            throw new Error('Required parameter loanId was null or undefined when calling getLoan.');
-        }
-
-        let queryParameters = new HttpParams({encoder: this.encoder});
-        if (loanId !== undefined && loanId !== null) {
-          queryParameters = this.addToHttpParams(queryParameters,
-            <any>loanId, 'loanId');
-        }
-
-        let headers = this.defaultHeaders;
-
-        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-        if (httpHeaderAcceptSelected === undefined) {
-            // to determine the Accept header
-            const httpHeaderAccepts: string[] = [
-                '*/*'
-            ];
-            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        }
-        if (httpHeaderAcceptSelected !== undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
-        }
-
-
-        let responseType_: 'text' | 'json' = 'json';
-        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
-            responseType_ = 'text';
-        }
-
-        return this.httpClient.get<ApiResponsePaydayLoan>(`${this.configuration.basePath}/v1/${encodeURIComponent(String(customerId))}/get-loan`,
-            {
-                params: queryParameters,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -384,7 +329,7 @@ export class PaydayLoanControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.get<ApiResponseListPaydayLoan>(`${this.configuration.basePath}/v1/status`,
+        return this.httpClient.get<ApiResponseListPaydayLoan>(`${this.configuration.basePath}/v1/hmgPaydayLoans/getByStatus`,
             {
                 params: queryParameters,
                 responseType: <any>responseType_,
@@ -424,7 +369,7 @@ export class PaydayLoanControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.post<any>(`${this.configuration.basePath}/v1/get-service-token`,
+        return this.httpClient.post<any>(`${this.configuration.basePath}/v1/hmgPaydayLoans/getServiceToken`,
             null,
             {
                 responseType: <any>responseType_,
@@ -482,7 +427,7 @@ export class PaydayLoanControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.post<ApiResponseString>(`${this.configuration.basePath}/v1/${encodeURIComponent(String(loanId))}/update-loan`,
+        return this.httpClient.put<ApiResponseString>(`${this.configuration.basePath}/v1/hmgPaydayLoans/${encodeURIComponent(String(loanId))}`,
             updateLoanRequest,
             {
                 responseType: <any>responseType_,

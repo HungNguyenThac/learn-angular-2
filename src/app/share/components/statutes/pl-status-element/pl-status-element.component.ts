@@ -11,6 +11,8 @@ import {
 } from '../../../../core/common/enum/payday-loan';
 import { PL_LABEL_STATUS } from '../../../../core/common/enum/label-status';
 import { MultiLanguageService } from '../../../translate/multiLanguageService';
+import { AdminAccountEntity } from '../../../../../../open-api-modules/dashboard-api-docs';
+import UserStatusEnum = AdminAccountEntity.UserStatusEnum;
 
 @Component({
   selector: 'app-pl-status-element',
@@ -48,6 +50,8 @@ export class PlStatusElementComponent implements OnInit {
         return this.loanRepaymentStatusContent(this.statusValue);
       case DATA_STATUS_TYPE.PL_RATING_STATUS:
         return this.loanRatingStatusContent(this.statusValue);
+      case DATA_STATUS_TYPE.USER_STATUS:
+        return this.userStatus(this.statusValue);
       default:
         return {
           label: this.statusValue,
@@ -295,6 +299,22 @@ export class PlStatusElementComponent implements OnInit {
         return {
           label: status,
           labelStatus: PL_LABEL_STATUS.REJECT,
+        };
+    }
+  }
+
+  userStatus(status) {
+    switch (status) {
+      case UserStatusEnum.Locked:
+        return {
+          label: this.multiLanguageService.instant('common.inactive'),
+          labelStatus: PL_LABEL_STATUS.WITHDRAW,
+        };
+      case UserStatusEnum.Active:
+      default:
+        return {
+          label: this.multiLanguageService.instant('common.active'),
+          labelStatus: PL_LABEL_STATUS.SUCCESS,
         };
     }
   }

@@ -3,13 +3,15 @@
   <mat-tab [label]="'system.user_detail.title' | translate">
     <ng-template matTabContent>
       <app-user-detail [userInfo]="userInfo"
+                       [roleList]="roleList"
+                       (updateElementInfo)="updateElementInfo($event)"
       ></app-user-detail>
     </ng-template>
   </mat-tab>
 
   <mat-tab [label]="'system.user_role.title' | translate">
     <ng-template matTabContent>
-      <app-user-role></app-user-role>
+      <app-user-role [treeData]="treeData"></app-user-role>
     </ng-template
     >
   </mat-tab>

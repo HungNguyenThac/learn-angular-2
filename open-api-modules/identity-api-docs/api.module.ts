@@ -2,7 +2,11 @@ import { NgModule, ModuleWithProviders, SkipSelf, Optional } from '@angular/core
 import { Configuration } from './configuration';
 import { HttpClient } from '@angular/common/http';
 
-import { ServiceCredentialControllerService } from './api/serviceCredentialController.service';
+import { AdminAccountControllerService } from './api/adminAccountController.service';
+import { CustomerControllerService } from './api/customerController.service';
+import { GroupControllerService } from './api/groupController.service';
+import { PermissionControllerService } from './api/permissionController.service';
+import { PermissionTypeControllerService } from './api/permissionTypeController.service';
 import { SignOnControllerService } from './api/signOnController.service';
 
 @NgModule({

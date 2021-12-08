@@ -119,8 +119,7 @@ export class SigningPositionControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.post<ApiResponseString>(`${this.configuration.basePath}/v1/signing-position/delete/${encodeURIComponent(String(id))}`,
-            null,
+        return this.httpClient.delete<ApiResponseString>(`${this.configuration.basePath}/v1/signingPositions/${encodeURIComponent(String(id))}`,
             {
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
@@ -173,7 +172,7 @@ export class SigningPositionControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.post<ApiResponseString>(`${this.configuration.basePath}/v1/signing-position/create`,
+        return this.httpClient.post<ApiResponseString>(`${this.configuration.basePath}/v1/signingPositions`,
             createSigningPositionRequest,
             {
                 responseType: <any>responseType_,
@@ -189,10 +188,10 @@ export class SigningPositionControllerService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getAllSigningPositions(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseListDocumentSigningLocationEntity>;
-    public getAllSigningPositions(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseListDocumentSigningLocationEntity>>;
-    public getAllSigningPositions(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseListDocumentSigningLocationEntity>>;
-    public getAllSigningPositions(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
+    public getAll(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseListDocumentSigningLocationEntity>;
+    public getAll(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseListDocumentSigningLocationEntity>>;
+    public getAll(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseListDocumentSigningLocationEntity>>;
+    public getAll(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
 
         let headers = this.defaultHeaders;
 
@@ -214,7 +213,7 @@ export class SigningPositionControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.get<ApiResponseListDocumentSigningLocationEntity>(`${this.configuration.basePath}/v1/signing-position/get-all`,
+        return this.httpClient.get<ApiResponseListDocumentSigningLocationEntity>(`${this.configuration.basePath}/v1/signingPositions`,
             {
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,

@@ -136,7 +136,7 @@ export class FileControllerService {
             headers = headers.set('Content-Type', httpContentTypeSelected);
         }
 
-        return this.httpClient.post(`${this.configuration.basePath}/v1/file/download-file`,
+        return this.httpClient.post(`${this.configuration.basePath}/v1/files/downloadFile`,
             downloadFileRequest,
             {
                 responseType: "blob",
@@ -190,7 +190,7 @@ export class FileControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.post<ApiResponseObject>(`${this.configuration.basePath}/v1/file/upload-document-core`,
+        return this.httpClient.post<ApiResponseObject>(`${this.configuration.basePath}/v1/files/uploadCoreDocument`,
             requestBody,
             {
                 responseType: <any>responseType_,
@@ -271,7 +271,7 @@ export class FileControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.post<ApiResponseObject>(`${this.configuration.basePath}/v1/file/single-file`,
+        return this.httpClient.post<ApiResponseObject>(`${this.configuration.basePath}/v1/files/uploadSingleFile`,
             convertFormParamsToString ? formParams.toString() : formParams,
             {
                 responseType: <any>responseType_,
@@ -322,7 +322,7 @@ export class FileControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.post<ApiResponseObject>(`${this.configuration.basePath}/v1/file/single-public-file`,
+        return this.httpClient.post<ApiResponseObject>(`${this.configuration.basePath}/v1/files/uploadPublicFile`,
             uploadFileRequest,
             {
                 responseType: <any>responseType_,

@@ -107,21 +107,21 @@ export class KalapaV2ControllerService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public extractInfo(customerId: string, image: Blob, imageSelfie: Blob, imageBack: Blob, verify?: boolean, skipValidate?: boolean, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<ApiResponseKalapaResponse>;
-    public extractInfo(customerId: string, image: Blob, imageSelfie: Blob, imageBack: Blob, verify?: boolean, skipValidate?: boolean, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<ApiResponseKalapaResponse>>;
-    public extractInfo(customerId: string, image: Blob, imageSelfie: Blob, imageBack: Blob, verify?: boolean, skipValidate?: boolean, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<ApiResponseKalapaResponse>>;
-    public extractInfo(customerId: string, image: Blob, imageSelfie: Blob, imageBack: Blob, verify?: boolean, skipValidate?: boolean, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
+    public extractInfo1(customerId: string, image: Blob, imageSelfie: Blob, imageBack: Blob, verify?: boolean, skipValidate?: boolean, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<ApiResponseKalapaResponse>;
+    public extractInfo1(customerId: string, image: Blob, imageSelfie: Blob, imageBack: Blob, verify?: boolean, skipValidate?: boolean, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<ApiResponseKalapaResponse>>;
+    public extractInfo1(customerId: string, image: Blob, imageSelfie: Blob, imageBack: Blob, verify?: boolean, skipValidate?: boolean, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<ApiResponseKalapaResponse>>;
+    public extractInfo1(customerId: string, image: Blob, imageSelfie: Blob, imageBack: Blob, verify?: boolean, skipValidate?: boolean, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
         if (customerId === null || customerId === undefined) {
-            throw new Error('Required parameter customerId was null or undefined when calling extractInfo.');
+            throw new Error('Required parameter customerId was null or undefined when calling extractInfo1.');
         }
         if (image === null || image === undefined) {
-            throw new Error('Required parameter image was null or undefined when calling extractInfo.');
+            throw new Error('Required parameter image was null or undefined when calling extractInfo1.');
         }
         if (imageSelfie === null || imageSelfie === undefined) {
-            throw new Error('Required parameter imageSelfie was null or undefined when calling extractInfo.');
+            throw new Error('Required parameter imageSelfie was null or undefined when calling extractInfo1.');
         }
         if (imageBack === null || imageBack === undefined) {
-            throw new Error('Required parameter imageBack was null or undefined when calling extractInfo.');
+            throw new Error('Required parameter imageBack was null or undefined when calling extractInfo1.');
         }
 
         let queryParameters = new HttpParams({encoder: this.encoder});
@@ -188,7 +188,7 @@ export class KalapaV2ControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.post<ApiResponseKalapaResponse>(`${this.configuration.basePath}/kalapa/v2/${encodeURIComponent(String(customerId))}/id_card/plus`,
+        return this.httpClient.post<ApiResponseKalapaResponse>(`${this.configuration.basePath}/v1/admin/kalapas/${encodeURIComponent(String(customerId))}/idCard/plus`,
             convertFormParamsToString ? formParams.toString() : formParams,
             {
                 params: queryParameters,

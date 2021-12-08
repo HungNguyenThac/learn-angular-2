@@ -10,5 +10,6 @@ export interface FilterOptionModel {
   titleAction?: string;
   actionIconClass?: string;
   showAction?: boolean;
+  showIconAction?: boolean;
   options?: FilterItemModel[];
 }

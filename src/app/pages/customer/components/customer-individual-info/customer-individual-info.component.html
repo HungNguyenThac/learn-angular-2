@@ -19,9 +19,11 @@
         <pl-status-label [statusType]="'INFO'">
           {{ "customer.individual_info.enough_info" | translate }}
         </pl-status-label>
-        <pl-status-label [statusType]="'INFO'">
-          {{ "customer.individual_info.active" | translate }}
-        </pl-status-label>
+        <app-format-data
+          [type]="'STATUS'"
+          [format]="'USER_STATUS'"
+          [value]="customerInfo?.userStatus"
+        ></app-format-data>
       </div>
     </section>
 
@@ -78,8 +80,14 @@
   <div class="row mt-3 mb-3">
     <div class="col-12 d-flex gap-2 justify-content-end">
       <button
-        *ngIf="customerInfo?.companyGroupName === 'TNG' && customerInfo?.paydayLoanStatus === 'NOT_ACCEPTING_TERM_YET'"
-        (click)="verifyInfo()" color="primary" mat-flat-button>
+        *ngIf="
+          customerInfo?.companyGroupName === 'TNG' &&
+          customerInfo?.paydayLoanStatus === 'NOT_ACCEPTING_TERM_YET'
+        "
+        (click)="verifyInfo()"
+        color="primary"
+        mat-flat-button
+      >
         <span class="sprite-group-7-search-white"></span>
         {{ "customer.individual_info.verify" | translate }}
       </button>
@@ -87,17 +95,24 @@
         <span class="sprite-group-5-pen-white"></span>
         {{ "customer.individual_info.update" | translate }}
       </button>
-      <button (click)="displayDisableOption()" *ngIf="showDisableOption else showEnableOption" color="warn"
-              mat-flat-button>
+      <button
+        (click)="displayDisableOption()"
+        *ngIf="customerStatus === 'ACTIVE'"
+        color="warn"
+        mat-flat-button
+      >
         <span class="sprite-group-5-lock-white"></span>
         {{ "customer.individual_info.lock" | translate }}
       </button>
-      <ng-template #showEnableOption>
-        <button (click)="displayEnableOption()" color="primary" mat-flat-button>
-          <span class="sprite-group-7-unlock"></span>
-          {{ "customer.individual_info.unlock" | translate }}
-        </button>
-      </ng-template>
+      <button
+        (click)="displayEnableOption()"
+        *ngIf="customerStatus === 'LOCKED'"
+        color="primary"
+        mat-flat-button
+      >
+        <span class="sprite-group-7-unlock"></span>
+        {{ "customer.individual_info.unlock" | translate }}
+      </button>
       <div
         #staticMethodEle
         (mouseleave)="staticMethodEle.style.display = 'none'"
@@ -106,7 +121,6 @@
       >
         <div class="arrow">
           <span class="sprite-group-7-popup-arrow-down"></span>
-
         </div>
         <div class="card op-card op-drop-shadow">
           <div class="card-title d-flex align-items-center gap-1">
@@ -120,9 +134,10 @@
               >
                 <div class="thead">{{ timeOption.mainTitle }}</div>
                 <div
-                  (click)="chooseDisableTime(
-                  ele.title, ele.value,staticMethodEle)"
                   *ngFor="let ele of timeOption.options"
+                  (click)="
+                    chooseDisableTime(ele.title, ele.value, staticMethodEle)
+                  "
                   class="trow"
                 >
                   {{ ele.title }}

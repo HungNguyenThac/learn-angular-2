@@ -1,25 +1,33 @@
+import { PermissionEntity } from './../../../../../../../open-api-modules/identity-api-docs/model/permissionEntity';
+import { ChildPermissionTypeResponse } from './../../../../../../../open-api-modules/dashboard-api-docs/model/childPermissionTypeResponse';
 import { SelectionModel } from '@angular/cdk/collections';
 import { FlatTreeControl } from '@angular/cdk/tree';
-import { Component, OnInit, Injectable, Input } from '@angular/core';
+import { Component, OnInit, Injectable, Input, AfterViewInit } from '@angular/core';
 import {
   MatTreeFlatDataSource,
   MatTreeFlattener,
 } from '@angular/material/tree';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, combineLatest } from 'rxjs';
+import { ChangeDetectorRef } from '@angular/core';
 
 /**
  * Node for to-do item
  */
 export class TodoItemNode {
   children: TodoItemNode[];
-  item: string;
+  item: any;
 }
 
 /** Flat to-do item node with expandable and level information */
 export class TodoItemFlatNode {
-  item: string;
+  item: any;
   level: number;
   expandable: boolean;
+  id?: string;
+  name?: string;
+  childPermissionTypeResponses?: Array<ChildPermissionTypeResponse>;
+  parentId?: string;
+  permissionEntities?: Array<PermissionEntity>;
 }
 
 /**
@@ -37,7 +45,11 @@ export class TodoItemFlatNode {
   templateUrl: './permission-tree.component.html',
   styleUrls: ['./permission-tree.component.scss'],
 })
-export class PermissionTreeComponent implements OnInit {
+export class PermissionTreeComponent implements OnInit, AfterViewInit {
+  activePermissions = [
+    '9aa75fcc-3739-40e7-9363-69e369d24641',
+    'f9969a3d-9d1e-47ff-9f74-215cec6506e5',
+  ];
   @Input() TREE_DATA;
 
   dataChange = new BehaviorSubject<TodoItemNode[]>([]);
@@ -58,17 +70,15 @@ export class PermissionTreeComponent implements OnInit {
    * Build the file structure tree. The `value` is the Json object, or a sub-tree of a Json object.
    * The return value is the list of `TodoItemNode`.
    */
-  buildFileTree(obj: { [key: string]: any }, level: number): TodoItemNode[] {
-    return Object.keys(obj).reduce<TodoItemNode[]>((accumulator, key) => {
-      const value = obj[key];
+  buildFileTree(dataArray: Array<any>, level: number): TodoItemNode[] {
+    return dataArray.reduce<TodoItemNode[]>((accumulator, data) => {
+      const value = data;
       const node = new TodoItemNode();
-      node.item = key;
+      node.item = data;
 
-      if (value != null) {
-        if (typeof value === 'object') {
-          node.children = this.buildFileTree(value, level + 1);
-        } else {
-          node.item = value;
+      for (const key in value) {
+        if (Array.isArray(value[key])) {
+          node.children = this.buildFileTree(value[key], level + 1);
         }
       }
       return accumulator.concat(node);
@@ -76,17 +86,17 @@ export class PermissionTreeComponent implements OnInit {
   }
 
   /** Add an item to to-do list */
-  insertItem(parent: TodoItemNode, name: string) {
-    if (parent.children) {
-      parent.children.push({ item: name } as TodoItemNode);
-      this.dataChange.next(this.data);
-    }
-  }
+  // insertItem(parent: TodoItemNode, name: string) {
+  //   if (parent.children) {
+  //     parent.children.push({ item: name } as TodoItemNode);
+  //     this.dataChange.next(this.data);
+  //   }
+  // }
 
-  updateItem(node: TodoItemNode, name: string) {
-    node.item = name;
-    this.dataChange.next(this.data);
-  }
+  // updateItem(node: TodoItemNode, name: string) {
+  //   node.item = name;
+  //   this.dataChange.next(this.data);
+  // }
 
   /** Map from flat node to nested node. This helps us finding the nested node to be modified */
   flatNodeMap = new Map<TodoItemFlatNode, TodoItemNode>();
@@ -110,8 +120,6 @@ export class PermissionTreeComponent implements OnInit {
   checklistSelection = new SelectionModel<TodoItemFlatNode>(
     true /* multiple */
   );
-
-  constructor() {}
 
   getLevel = (node: TodoItemFlatNode) => node.level;
 
@@ -226,17 +234,19 @@ export class PermissionTreeComponent implements OnInit {
   }
 
   /** Select the category so we can insert the new item. */
-  addNewItem(node: TodoItemFlatNode) {
-    const parentNode = this.flatNodeMap.get(node);
-    this.insertItem(parentNode!, '');
-    this.treeControl.expand(node);
-  }
+  // addNewItem(node: TodoItemFlatNode) {
+  //   const parentNode = this.flatNodeMap.get(node);
+  //   this.insertItem(parentNode!, '');
+  //   this.treeControl.expand(node);
+  // }
 
   /** Save the node to database */
-  saveNode(node: TodoItemFlatNode, itemValue: string) {
-    const nestedNode = this.flatNodeMap.get(node);
-    this.updateItem(nestedNode!, itemValue);
-  }
+  // saveNode(node: TodoItemFlatNode, itemValue: string) {
+  //   const nestedNode = this.flatNodeMap.get(node);
+  //   this.updateItem(nestedNode!, itemValue);
+  // }
+
+  constructor(private changeDetectorRef: ChangeDetectorRef) {}
 
   ngOnInit(): void {
     this.initialize();
@@ -257,5 +267,26 @@ export class PermissionTreeComponent implements OnInit {
     this.dataChange.subscribe((data) => {
       this.dataSource.data = data;
     });
+  }
+
+  ngAfterViewInit() {
+    this.treeControl.dataNodes.map((ele) => {
+      const descendants = this.treeControl.getDescendants(ele);
+      descendants.map((ele) => {
+        if (this.activePermissions.includes(ele?.item?.id)) {
+          this.checklistSelection.select(ele);
+        }
+        return ele;
+      });
+    });
+    this.changeDetectorRef.detectChanges();
+  }
+
+  totalPermissionSelected() {
+    return this.checklistSelection.selected
+      .filter((ele) => ele.level > 0)
+      .map((ele) => {
+        return ele.item?.id;
+      });
   }
 }

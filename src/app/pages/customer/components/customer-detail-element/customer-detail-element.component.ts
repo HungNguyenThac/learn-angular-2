@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import {
   ApiResponseCustomerInfo,
   ApiResponseSearchAndPaginationResponseBank,
@@ -10,13 +10,13 @@ import {
   CustomerInfo,
 } from '../../../../../../open-api-modules/dashboard-api-docs';
 
-import {CustomerDetailService} from './customer-detail.service';
-import {Subscription} from 'rxjs';
-import {OnDestroy} from '@angular/core';
-import {RESPONSE_CODE} from '../../../../core/common/enum/operator';
-import {ToastrService} from 'ngx-toastr';
-import {MultiLanguageService} from '../../../../share/translate/multiLanguageService';
-import {NotificationService} from '../../../../core/services/notification.service';
+import { CustomerDetailService } from './customer-detail.service';
+import { Subscription } from 'rxjs';
+import { OnDestroy } from '@angular/core';
+import { RESPONSE_CODE } from '../../../../core/common/enum/operator';
+import { ToastrService } from 'ngx-toastr';
+import { MultiLanguageService } from '../../../../share/translate/multiLanguageService';
+import { NotificationService } from '../../../../core/services/notification.service';
 import {
   ApiResponseListCity,
   ApiResponseListDistrict,
@@ -42,6 +42,7 @@ export class CustomerDetailElementComponent implements OnInit, OnDestroy {
 
   @Output() updateElementInfo = new EventEmitter<CompanyInfo>();
 
+  customerStatus;
   userInfo: CustomerInfo;
   bankOptions: Array<Bank>;
   companyOptions: Array<CompanyInfo>;
@@ -62,8 +63,7 @@ export class CustomerDetailElementComponent implements OnInit, OnDestroy {
     private companyControllerService: CompanyControllerService,
     private multiLanguageService: MultiLanguageService,
     private notificationService: NotificationService
-  ) {
-  }
+  ) {}
 
   ngOnInit(): void {
     this._getCustomerInfoById(this.customerId);
@@ -82,6 +82,7 @@ export class CustomerDetailElementComponent implements OnInit, OnDestroy {
         .getById(customerId)
         .subscribe((data: ApiResponseCustomerInfo) => {
           this.userInfo = data?.result;
+          this.customerStatus = data?.result.userStatus;
           this.updateElementInfo.emit(this.userInfo);
         })
     );
@@ -90,7 +91,7 @@ export class CustomerDetailElementComponent implements OnInit, OnDestroy {
   private _getBankOptions() {
     this.subManager.add(
       this.bankControllerService
-        .getBank(200, 0, {})
+        .getBanks(200, 0, {})
         .subscribe((response: ApiResponseSearchAndPaginationResponseBank) => {
           if (response.responseCode !== RESPONSE_CODE.SUCCESS) {
             this.notifier.error(
@@ -117,7 +118,10 @@ export class CustomerDetailElementComponent implements OnInit, OnDestroy {
   }
 
   public updateCustomerInfo(updateInfoRequest: Object) {
-    this.notificationService.showLoading({showContent: true});
+    if (!updateInfoRequest) {
+      this.refreshContent();
+    }
+    this.notificationService.showLoading({ showContent: true });
     this.subManager.add(
       this.customerDetailService
         .updateCustomerInfo(this.customerId, updateInfoRequest, null, true)

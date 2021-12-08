@@ -7,20 +7,20 @@ import {
   TemplateRef,
   ViewChild,
 } from '@angular/core';
-import {detailExpandAnimation} from '../../../../core/common/animations/detail-expand.animation';
-import {Sort} from '@angular/material/sort';
-import {LiveAnnouncer} from '@angular/cdk/a11y';
-import {DisplayedFieldsModel} from '../../../../public/models/filter/displayed-fields.model';
-import {MatTableDataSource} from '@angular/material/table';
-import {PageEvent} from '@angular/material/paginator/public-api';
-import {SortDirection} from '@angular/material/sort/sort-direction';
-import {SelectionModel} from '@angular/cdk/collections';
-import {PeriodicElement} from '../../../../pages/dashboard/dashboard.component';
-import {MultiLanguageService} from '../../../translate/multiLanguageService';
-import {NotificationService} from '../../../../core/services/notification.service';
-import {ToastrService} from 'ngx-toastr';
-import {TableSelectActionModel} from '../../../../public/models/external/table-select-action.model';
-import {MatCheckbox} from '@angular/material/checkbox';
+import { detailExpandAnimation } from '../../../../core/common/animations/detail-expand.animation';
+import { Sort } from '@angular/material/sort';
+import { LiveAnnouncer } from '@angular/cdk/a11y';
+import { DisplayedFieldsModel } from '../../../../public/models/filter/displayed-fields.model';
+import { MatTableDataSource } from '@angular/material/table';
+import { PageEvent } from '@angular/material/paginator/public-api';
+import { SortDirection } from '@angular/material/sort/sort-direction';
+import { SelectionModel } from '@angular/cdk/collections';
+import { PeriodicElement } from '../../../../pages/dashboard/dashboard.component';
+import { MultiLanguageService } from '../../../translate/multiLanguageService';
+import { NotificationService } from '../../../../core/services/notification.service';
+import { ToastrService } from 'ngx-toastr';
+import { TableSelectActionModel } from '../../../../public/models/external/table-select-action.model';
+import { MatCheckbox } from '@angular/material/checkbox';
 
 @Component({
   selector: 'app-base-expanded-table',
@@ -47,14 +47,16 @@ export class BaseExpandedTableComponent implements OnInit {
   @Input() selectButtons: TableSelectActionModel[];
   _expandElementByDefault;
   @Input() get expandElementByDefault() {
-    return this._expandElementByDefault
+    return this._expandElementByDefault;
   }
+
   set expandElementByDefault(value) {
-    this._expandElementByDefault = value
+    this._expandElementByDefault = value;
     if (this._expandElementByDefault) {
       this.expandElement(this._expandElementByDefault);
     }
   }
+
   @Output() triggerPageChange = new EventEmitter<any>();
   @Output() triggerSortChange = new EventEmitter<any>();
   @Output() triggerExpandedElementChange = new EventEmitter<any>();
@@ -159,10 +161,13 @@ export class BaseExpandedTableComponent implements OnInit {
 
   public resetDisplayFields() {
     this._initSelectedFields();
+    this.displayedColumns();
+    this.displayedColumnKeys();
   }
 
   private _initSelectedFields() {
     this.selectedFields = this.allColumns.map((item, index) => {
+
       return {
         key: item.key,
         title: item.title,

@@ -6,61 +6,18 @@ servers:
 - url: http://localhost:8004
   description: Generated server url
 paths:
-  /v1/template-notification/update-active:
-    post:
+  /v1/templateNotifications:
+    get:
       tags:
       - template-notification-controller
-      operationId: updateStatus
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/UpdateTemplateStatusRequest'
-        required: true
+      operationId: getTemplate
       responses:
         "200":
           description: OK
           content:
             '*/*':
               schema:
-                $ref: '#/components/schemas/ApiResponseString'
-  /v1/template-notification/send-template:
-    post:
-      tags:
-      - template-notification-controller
-      operationId: sendTemplate
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/SendTemplateRequest'
-        required: true
-      responses:
-        "200":
-          description: OK
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/ApiResponseString'
-  /v1/template-notification/delete-template/{idTemplate}:
-    post:
-      tags:
-      - template-notification-controller
-      operationId: deleteTemplate
-      parameters:
-      - name: idTemplate
-        in: path
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          description: OK
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/ApiResponseString'
-  /v1/template-notification/create:
+                $ref: '#/components/schemas/ApiResponseListTemplateNotificationEntity'
     post:
       tags:
       - template-notification-controller
@@ -78,7 +35,43 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ApiResponseString'
-  /v1/template-notification/add-content:
+  /v1/templateNotifications/updateStatus:
+    post:
+      tags:
+      - template-notification-controller
+      operationId: updateStatus
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateTemplateStatusRequest'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseString'
+  /v1/templateNotifications/sendTemplate:
+    post:
+      tags:
+      - template-notification-controller
+      operationId: sendTemplate
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SendTemplateRequest'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseString'
+  /v1/templateNotifications/addContent:
     post:
       tags:
       - template-notification-controller
@@ -96,7 +89,7 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ApiResponseString'
-  /v1/sms/send-sms:
+  /v1/sms/sendSms:
     post:
       tags:
       - sms-controller
@@ -114,25 +107,18 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ApiResponseObject'
-  /v1/signing-position/delete/{id}:
-    post:
+  /v1/signingPositions:
+    get:
       tags:
       - signing-position-controller
-      operationId: delete
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
+      operationId: getAll
       responses:
         "200":
           description: OK
           content:
             '*/*':
               schema:
-                $ref: '#/components/schemas/ApiResponseString'
-  /v1/signing-position/create:
+                $ref: '#/components/schemas/ApiResponseListDocumentSigningLocationEntity'
     post:
       tags:
       - signing-position-controller
@@ -150,7 +136,7 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ApiResponseString'
-  /v1/otp/send-otp:
+  /v1/otps/sendOtp:
     post:
       tags:
       - otp-controller
@@ -167,8 +153,8 @@ paths:
           content:
             '*/*':
               schema:
-                $ref: '#/components/schemas/ApiResponseOtpResponse'
-  /v1/notification/update-fcm-token:
+                $ref: '#/components/schemas/ApiResponseString'
+  /v1/notifications/updateFcmToken:
     post:
       tags:
       - push-notification-controller
@@ -186,7 +172,7 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ApiResponseString'
-  /v1/notification/seen-notification:
+  /v1/notifications/seenNotification:
     post:
       tags:
       - push-notification-controller
@@ -204,11 +190,11 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ApiResponseString'
-  /v1/notification/push:
+  /v1/notifications/pushNotification:
     post:
       tags:
       - push-notification-controller
-      operationId: sendSampleNotification
+      operationId: pushNotification
       requestBody:
         content:
           application/json:
@@ -222,7 +208,41 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ApiResponseString'
-  /v1/file/upload-document-core:
+  /v1/files/uploadSingleFile:
+    post:
+      tags:
+      - file-controller
+      operationId: uploadSingleFile
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/UploadFileRequest'
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseObject'
+  /v1/files/uploadPublicFile:
+    post:
+      tags:
+      - file-controller
+      operationId: uploadSinglePublicFile
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UploadFileRequest'
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseObject'
+  /v1/files/uploadCoreDocument:
     post:
       tags:
       - file-controller
@@ -242,41 +262,7 @@ paths:
             application/json;charset=UTF-8:
               schema:
                 $ref: '#/components/schemas/ApiResponseObject'
-  /v1/file/single-public-file:
-    post:
-      tags:
-      - file-controller
-      operationId: uploadSinglePublicFile
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/UploadFileRequest'
-      responses:
-        "200":
-          description: OK
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/ApiResponseObject'
-  /v1/file/single-file:
-    post:
-      tags:
-      - file-controller
-      operationId: uploadSingleFile
-      requestBody:
-        content:
-          multipart/form-data:
-            schema:
-              $ref: '#/components/schemas/UploadFileRequest'
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ApiResponseObject'
-  /v1/file/download-file:
+  /v1/files/downloadFile:
     post:
       tags:
       - file-controller
@@ -295,7 +281,7 @@ paths:
               schema:
                 type: string
                 format: binary
-  /v1/email/send-mail:
+  /v1/emails/sendEmail:
     post:
       tags:
       - mail-controller
@@ -313,11 +299,11 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ApiResponseObject'
-  /v1/contract/send-letter-otp/{companyName}:
+  /v1/contracts/{companyName}/sendLetter:
     post:
       tags:
       - contract-controller
-      operationId: sendLetterOTP
+      operationId: sendLetter
       parameters:
       - name: companyName
         in: path
@@ -340,11 +326,11 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiResponseSignWithOTPResponse'
-  /v1/contract/send-contract-otp/{companyName}:
+  /v1/contracts/{companyName}/sendContract:
     post:
       tags:
       - contract-controller
-      operationId: sendContractOTP
+      operationId: sendContract
       parameters:
       - name: companyName
         in: path
@@ -367,19 +353,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiResponseSignWithOTPResponse'
-  /v1/contract/create-token:
-    post:
-      tags:
-      - contract-controller
-      operationId: createToken
-      responses:
-        "200":
-          description: OK
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/ApiResponseCreateTokenResponse'
-  /v1/contract/create-letter/{companyName}:
+  /v1/contracts/{companyName}/createLetter:
     post:
       tags:
       - contract-controller
@@ -406,11 +380,23 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiResponseCreateLetterResponse'
-  /v1/contract/confirm-otp-sign:
+  /v1/contracts/getTokenOnSign:
     post:
       tags:
       - contract-controller
-      operationId: confirmOPTSign
+      operationId: getTokenOnSign
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseCreateTokenResponse'
+  /v1/contracts/confirmOtp:
+    post:
+      tags:
+      - contract-controller
+      operationId: confirmOtp
       requestBody:
         content:
           application/json:
@@ -424,11 +410,11 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiResponseConfirmOTPResponse'
-  /v1/contract/admin-sign-contract-automation:
+  /v1/contracts/adminSignContract:
     post:
       tags:
       - contract-controller
-      operationId: signContractAutomation
+      operationId: adminSignContract
       requestBody:
         content:
           application/json:
@@ -442,31 +428,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiResponseString'
-  /v1/template-notification/get-templates:
-    get:
-      tags:
-      - template-notification-controller
-      operationId: getTemplate
-      responses:
-        "200":
-          description: OK
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/ApiResponseListTemplateNotificationEntity'
-  /v1/signing-position/get-all:
-    get:
-      tags:
-      - signing-position-controller
-      operationId: getAllSigningPositions
-      responses:
-        "200":
-          description: OK
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/ApiResponseListDocumentSigningLocationEntity'
-  /v1/notification/get-notification-customer/{customerId}:
+  /v1/notifications/{customerId}:
     get:
       tags:
       - push-notification-controller
@@ -484,8 +446,89 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ApiResponseListTransactionNotificationEntity'
+  /v1/templateNotifications/{idTemplate}:
+    delete:
+      tags:
+      - template-notification-controller
+      operationId: deleteTemplate
+      parameters:
+      - name: idTemplate
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseString'
+  /v1/signingPositions/{id}:
+    delete:
+      tags:
+      - signing-position-controller
+      operationId: delete
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseString'
 components:
   schemas:
+    ContentNotificationRequest:
+      required:
+      - content
+      - type
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - EMAIL
+          - SMS
+          - NOTIFICATION
+        content:
+          type: string
+        title:
+          type: string
+        isActive:
+          type: boolean
+    CreateTemplateNotificationRequest:
+      required:
+      - description
+      - listContent
+      - nameTemplate
+      type: object
+      properties:
+        nameTemplate:
+          type: string
+        listContent:
+          type: array
+          items:
+            $ref: '#/components/schemas/ContentNotificationRequest'
+        description:
+          type: string
+    ApiResponseString:
+      type: object
+      properties:
+        result:
+          type: string
+        errorCode:
+          type: string
+        message:
+          type: object
+        responseCode:
+          type: integer
+          format: int32
     UpdateTemplateStatusRequest:
       required:
       - nameTemplate
@@ -500,18 +543,6 @@ components:
           - EMAIL
           - SMS
           - NOTIFICATION
-    ApiResponseString:
-      type: object
-      properties:
-        result:
-          type: string
-        errorCode:
-          type: string
-        message:
-          type: object
-        responseCode:
-          type: integer
-          format: int32
     SendTemplateRequest:
       required:
       - customerId
@@ -550,39 +581,6 @@ components:
         giftGivingTime:
           type: string
         giftGivingDay:
-          type: string
-    ContentNotificationRequest:
-      required:
-      - content
-      - type
-      type: object
-      properties:
-        type:
-          type: string
-          enum:
-          - EMAIL
-          - SMS
-          - NOTIFICATION
-        content:
-          type: string
-        title:
-          type: string
-        isActive:
-          type: boolean
-    CreateTemplateNotificationRequest:
-      required:
-      - description
-      - listContent
-      - nameTemplate
-      type: object
-      properties:
-        nameTemplate:
-          type: string
-        listContent:
-          type: array
-          items:
-            $ref: '#/components/schemas/ContentNotificationRequest'
-        description:
           type: string
     AddContentRequest:
       required:
@@ -676,29 +674,6 @@ components:
         provider:
           type: string
         otp:
-          type: string
-    ApiResponseOtpResponse:
-      type: object
-      properties:
-        result:
-          $ref: '#/components/schemas/OtpResponse'
-        errorCode:
-          type: string
-        message:
-          type: object
-        responseCode:
-          type: integer
-          format: int32
-    OtpResponse:
-      type: object
-      properties:
-        provider:
-          type: string
-        method:
-          type: string
-        errorCode:
-          type: string
-        message:
           type: string
     UpdateFcmTokenRequest:
       required:
@@ -849,12 +824,6 @@ components:
           type: string
         unLockTime:
           type: string
-        otpType:
-          type: string
-          enum:
-          - EMAIL
-          - SMS
-          - VOICE
     SendContractOTPRequest:
       required:
       - address
@@ -893,39 +862,6 @@ components:
           - EMAIL
           - SMS
           - VOICE
-    ApiResponseCreateTokenResponse:
-      type: object
-      properties:
-        result:
-          $ref: '#/components/schemas/CreateTokenResponse'
-        errorCode:
-          type: string
-        message:
-          type: object
-        responseCode:
-          type: integer
-          format: int32
-    CreateTokenResponse:
-      type: object
-      properties:
-        error:
-          type: integer
-          format: int32
-        message:
-          type: string
-        data:
-          $ref: '#/components/schemas/DataCreateToken'
-    DataCreateToken:
-      type: object
-      properties:
-        access:
-          type: object
-          additionalProperties:
-            type: object
-        additional:
-          type: object
-          additionalProperties:
-            type: object
     CreateLetterRequest:
       required:
       - customerId
@@ -968,6 +904,39 @@ components:
           type: string
         documentPath:
           type: string
+    ApiResponseCreateTokenResponse:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/CreateTokenResponse'
+        errorCode:
+          type: string
+        message:
+          type: object
+        responseCode:
+          type: integer
+          format: int32
+    CreateTokenResponse:
+      type: object
+      properties:
+        error:
+          type: integer
+          format: int32
+        message:
+          type: string
+        data:
+          $ref: '#/components/schemas/DataCreateToken'
+    DataCreateToken:
+      type: object
+      properties:
+        access:
+          type: object
+          additionalProperties:
+            type: object
+        additional:
+          type: object
+          additionalProperties:
+            type: object
     ConfirmOTPSignRequest:
       required:
       - customerId

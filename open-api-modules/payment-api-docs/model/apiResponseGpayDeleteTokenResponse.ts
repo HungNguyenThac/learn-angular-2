@@ -15,7 +15,7 @@ import { GpayDeleteTokenResponse } from './gpayDeleteTokenResponse';
 export interface ApiResponseGpayDeleteTokenResponse { 
     result?: GpayDeleteTokenResponse;
     errorCode?: string;
-    message?: string;
+    message?: object;
     responseCode?: number;
 }
 

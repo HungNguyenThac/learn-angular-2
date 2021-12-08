@@ -134,7 +134,7 @@ export class PromotionControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.post<ApiResponsePromotionEvent>(`${this.configuration.basePath}/v1/promotion/create-promotion-event`,
+        return this.httpClient.post<ApiResponsePromotionEvent>(`${this.configuration.basePath}/v1/hmgPromotions/events`,
             createPromotionEventRequest,
             {
                 responseType: <any>responseType_,
@@ -188,7 +188,7 @@ export class PromotionControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.post<ApiResponseVoucher>(`${this.configuration.basePath}/v1/promotion/create-voucher`,
+        return this.httpClient.post<ApiResponseVoucher>(`${this.configuration.basePath}/v1/hmgPromotions/vouchers`,
             createVoucherRequest,
             {
                 responseType: <any>responseType_,
@@ -204,10 +204,10 @@ export class PromotionControllerService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public createVoucher1(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseListVoucher>;
-    public createVoucher1(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseListVoucher>>;
-    public createVoucher1(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseListVoucher>>;
-    public createVoucher1(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
+    public getAllPromotionEvent(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseListPromotionEvent>;
+    public getAllPromotionEvent(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseListPromotionEvent>>;
+    public getAllPromotionEvent(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseListPromotionEvent>>;
+    public getAllPromotionEvent(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
 
         let headers = this.defaultHeaders;
 
@@ -229,7 +229,7 @@ export class PromotionControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.get<ApiResponseListVoucher>(`${this.configuration.basePath}/v1/promotion/voucher`,
+        return this.httpClient.get<ApiResponseListPromotionEvent>(`${this.configuration.basePath}/v1/hmgPromotions/events`,
             {
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
@@ -241,22 +241,56 @@ export class PromotionControllerService {
     }
 
     /**
-     * @param request 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getAllPromotionEvent(request: CreatePromotionEventRequest, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseListPromotionEvent>;
-    public getAllPromotionEvent(request: CreatePromotionEventRequest, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseListPromotionEvent>>;
-    public getAllPromotionEvent(request: CreatePromotionEventRequest, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseListPromotionEvent>>;
-    public getAllPromotionEvent(request: CreatePromotionEventRequest, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
-        if (request === null || request === undefined) {
-            throw new Error('Required parameter request was null or undefined when calling getAllPromotionEvent.');
+    public getAllVoucher(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseListVoucher>;
+    public getAllVoucher(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseListVoucher>>;
+    public getAllVoucher(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseListVoucher>>;
+    public getAllVoucher(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
+
+        let headers = this.defaultHeaders;
+
+        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (httpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                '*/*'
+            ];
+            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
+        if (httpHeaderAcceptSelected !== undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
         }
 
-        let queryParameters = new HttpParams({encoder: this.encoder});
-        if (request !== undefined && request !== null) {
-          queryParameters = this.addToHttpParams(queryParameters,
-            <any>request, 'request');
+
+        let responseType_: 'text' | 'json' = 'json';
+        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+            responseType_ = 'text';
+        }
+
+        return this.httpClient.get<ApiResponseListVoucher>(`${this.configuration.basePath}/v1/hmgPromotions/vouchers`,
+            {
+                responseType: <any>responseType_,
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * @param voucherCode 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getVoucherByCode(voucherCode: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseVoucher>;
+    public getVoucherByCode(voucherCode: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseVoucher>>;
+    public getVoucherByCode(voucherCode: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseVoucher>>;
+    public getVoucherByCode(voucherCode: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
+        if (voucherCode === null || voucherCode === undefined) {
+            throw new Error('Required parameter voucherCode was null or undefined when calling getVoucherByCode.');
         }
 
         let headers = this.defaultHeaders;
@@ -279,9 +313,8 @@ export class PromotionControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.get<ApiResponseListPromotionEvent>(`${this.configuration.basePath}/v1/promotion/all-event`,
+        return this.httpClient.get<ApiResponseVoucher>(`${this.configuration.basePath}/v1/hmgPromotions/vouchers/${encodeURIComponent(String(voucherCode))}`,
             {
-                params: queryParameters,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -304,12 +337,6 @@ export class PromotionControllerService {
             throw new Error('Required parameter voucherTransactionId was null or undefined when calling getVoucherTransaction.');
         }
 
-        let queryParameters = new HttpParams({encoder: this.encoder});
-        if (voucherTransactionId !== undefined && voucherTransactionId !== null) {
-          queryParameters = this.addToHttpParams(queryParameters,
-            <any>voucherTransactionId, 'voucherTransactionId');
-        }
-
         let headers = this.defaultHeaders;
 
         let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
@@ -330,9 +357,8 @@ export class PromotionControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.get<ApiResponseVoucherTransaction>(`${this.configuration.basePath}/v1/promotion/voucher-transaction`,
+        return this.httpClient.get<ApiResponseVoucherTransaction>(`${this.configuration.basePath}/v1/hmgPromotions/vouchers/${encodeURIComponent(String(voucherTransactionId))}`,
             {
-                params: queryParameters,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -343,14 +369,18 @@ export class PromotionControllerService {
     }
 
     /**
+     * @param promotionEventId 
      * @param updatePromotionEventRequest 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public updatePromotionEvent(updatePromotionEventRequest: UpdatePromotionEventRequest, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponsePromotionEvent>;
-    public updatePromotionEvent(updatePromotionEventRequest: UpdatePromotionEventRequest, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponsePromotionEvent>>;
-    public updatePromotionEvent(updatePromotionEventRequest: UpdatePromotionEventRequest, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponsePromotionEvent>>;
-    public updatePromotionEvent(updatePromotionEventRequest: UpdatePromotionEventRequest, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
+    public updatePromotionEvent(promotionEventId: string, updatePromotionEventRequest: UpdatePromotionEventRequest, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponsePromotionEvent>;
+    public updatePromotionEvent(promotionEventId: string, updatePromotionEventRequest: UpdatePromotionEventRequest, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponsePromotionEvent>>;
+    public updatePromotionEvent(promotionEventId: string, updatePromotionEventRequest: UpdatePromotionEventRequest, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponsePromotionEvent>>;
+    public updatePromotionEvent(promotionEventId: string, updatePromotionEventRequest: UpdatePromotionEventRequest, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
+        if (promotionEventId === null || promotionEventId === undefined) {
+            throw new Error('Required parameter promotionEventId was null or undefined when calling updatePromotionEvent.');
+        }
         if (updatePromotionEventRequest === null || updatePromotionEventRequest === undefined) {
             throw new Error('Required parameter updatePromotionEventRequest was null or undefined when calling updatePromotionEvent.');
         }
@@ -384,7 +414,7 @@ export class PromotionControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.post<ApiResponsePromotionEvent>(`${this.configuration.basePath}/v1/promotion/update-promotion-event`,
+        return this.httpClient.put<ApiResponsePromotionEvent>(`${this.configuration.basePath}/v1/hmgPromotions/events/${encodeURIComponent(String(promotionEventId))}`,
             updatePromotionEventRequest,
             {
                 responseType: <any>responseType_,
@@ -438,60 +468,9 @@ export class PromotionControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.post<ApiResponseVoucherTransaction>(`${this.configuration.basePath}/v1/promotion/voucher/validate`,
+        return this.httpClient.post<ApiResponseVoucherTransaction>(`${this.configuration.basePath}/v1/hmgPromotions/vouchers/validate`,
             checkValidVoucherRequest,
             {
-                responseType: <any>responseType_,
-                withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress
-            }
-        );
-    }
-
-    /**
-     * @param voucherCode 
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public voucherDetail(voucherCode: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseVoucher>;
-    public voucherDetail(voucherCode: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseVoucher>>;
-    public voucherDetail(voucherCode: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseVoucher>>;
-    public voucherDetail(voucherCode: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
-        if (voucherCode === null || voucherCode === undefined) {
-            throw new Error('Required parameter voucherCode was null or undefined when calling voucherDetail.');
-        }
-
-        let queryParameters = new HttpParams({encoder: this.encoder});
-        if (voucherCode !== undefined && voucherCode !== null) {
-          queryParameters = this.addToHttpParams(queryParameters,
-            <any>voucherCode, 'voucherCode');
-        }
-
-        let headers = this.defaultHeaders;
-
-        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-        if (httpHeaderAcceptSelected === undefined) {
-            // to determine the Accept header
-            const httpHeaderAccepts: string[] = [
-                '*/*'
-            ];
-            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        }
-        if (httpHeaderAcceptSelected !== undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
-        }
-
-
-        let responseType_: 'text' | 'json' = 'json';
-        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
-            responseType_ = 'text';
-        }
-
-        return this.httpClient.get<ApiResponseVoucher>(`${this.configuration.basePath}/v1/promotion/voucher/detail`,
-            {
-                params: queryParameters,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,

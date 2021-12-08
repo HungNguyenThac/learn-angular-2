@@ -21,7 +21,7 @@ import {
   Output,
   OnDestroy,
 } from '@angular/core';
-import { PaydayLoan } from 'open-api-modules/loanapp-api-docs';
+import { PaydayLoan } from 'open-api-modules/loanapp-tng-api-docs';
 import {
   ApplicationHmgControllerService,
   CompanyControllerService,
@@ -153,7 +153,7 @@ export class LoanDetailComponent implements OnInit, OnDestroy {
   private _getBankOptions() {
     this.subManager.add(
       this.bankControllerService
-        .getBank(200, 0, {})
+        .getBanks(200, 0, {})
         .subscribe((response: ApiResponseSearchAndPaginationResponseBank) => {
           if (response.responseCode !== RESPONSE_CODE.SUCCESS) {
             this.notifier.error(

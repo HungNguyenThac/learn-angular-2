@@ -156,7 +156,7 @@ export class ApplicationHmgControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.get<ApiResponseSearchPaydayLoanResponse>(`${this.configuration.basePath}/v1/application/hmg/loan-list`,
+        return this.httpClient.get<ApiResponseSearchPaydayLoanResponse>(`${this.configuration.basePath}/v1/hmgApplications`,
             {
                 params: queryParameters,
                 responseType: <any>responseType_,
@@ -238,7 +238,7 @@ export class ApplicationHmgControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.post<ApiResponseSearchAndPaginationResponsePaydayLoanHmg>(`${this.configuration.basePath}/v1/application/hmg/list`,
+        return this.httpClient.post<ApiResponseSearchAndPaginationResponsePaydayLoanHmg>(`${this.configuration.basePath}/v1/hmgApplications/list`,
             requestBody,
             {
                 params: queryParameters,
@@ -284,7 +284,7 @@ export class ApplicationHmgControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.get<ApiResponsePaydayLoanHmg>(`${this.configuration.basePath}/v1/application/hmg/${encodeURIComponent(String(loanId))}`,
+        return this.httpClient.get<ApiResponsePaydayLoanHmg>(`${this.configuration.basePath}/v1/hmgApplications/${encodeURIComponent(String(loanId))}`,
             {
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
@@ -338,7 +338,7 @@ export class ApplicationHmgControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.get<ApiResponseSearchVoucherInfoResponse>(`${this.configuration.basePath}/v1/application/hmg/${encodeURIComponent(String(loanId))}/voucher`,
+        return this.httpClient.get<ApiResponseSearchVoucherInfoResponse>(`${this.configuration.basePath}/v1/hmgApplications/${encodeURIComponent(String(loanId))}/voucher`,
             {
                 params: queryParameters,
                 responseType: <any>responseType_,

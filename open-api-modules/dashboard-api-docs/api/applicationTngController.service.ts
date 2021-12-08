@@ -156,7 +156,7 @@ export class ApplicationTngControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.get<ApiResponseSearchPaydayLoanResponse>(`${this.configuration.basePath}/v1/application/loan-list`,
+        return this.httpClient.get<ApiResponseSearchPaydayLoanResponse>(`${this.configuration.basePath}/v1/tngApplications`,
             {
                 params: queryParameters,
                 responseType: <any>responseType_,
@@ -238,7 +238,7 @@ export class ApplicationTngControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.post<ApiResponseSearchAndPaginationResponsePaydayLoanTng>(`${this.configuration.basePath}/v1/application/list`,
+        return this.httpClient.post<ApiResponseSearchAndPaginationResponsePaydayLoanTng>(`${this.configuration.basePath}/v1/tngApplications/list`,
             requestBody,
             {
                 params: queryParameters,
@@ -284,7 +284,7 @@ export class ApplicationTngControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.get<ApiResponsePaydayLoanTng>(`${this.configuration.basePath}/v1/application/${encodeURIComponent(String(loanId))}`,
+        return this.httpClient.get<ApiResponsePaydayLoanTng>(`${this.configuration.basePath}/v1/tngApplications/${encodeURIComponent(String(loanId))}`,
             {
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
@@ -338,7 +338,7 @@ export class ApplicationTngControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.get<ApiResponseSearchVoucherInfoResponse>(`${this.configuration.basePath}/v1/application/${encodeURIComponent(String(loanId))}/voucher`,
+        return this.httpClient.get<ApiResponseSearchVoucherInfoResponse>(`${this.configuration.basePath}/v1/tngApplications/${encodeURIComponent(String(loanId))}/voucher`,
             {
                 params: queryParameters,
                 responseType: <any>responseType_,

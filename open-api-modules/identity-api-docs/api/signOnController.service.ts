@@ -17,7 +17,6 @@ import { HttpClient, HttpHeaders, HttpParams,
 import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
-import { ApiResponseAccount } from '../model/models';
 import { ApiResponseCreateCustomerAccountResponse } from '../model/models';
 import { ApiResponseLoginResponse } from '../model/models';
 import { ApiResponseResetPasswordResponse } from '../model/models';
@@ -135,7 +134,7 @@ export class SignOnControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.post<ApiResponseCreateCustomerAccountResponse>(`${this.configuration.basePath}/sign-on/v1/create-customer-account`,
+        return this.httpClient.post<ApiResponseCreateCustomerAccountResponse>(`${this.configuration.basePath}/v1/signOn/createCustomerAccount`,
             createCustomerAccountRequest,
             {
                 responseType: <any>responseType_,
@@ -152,9 +151,9 @@ export class SignOnControllerService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public createVerifiedCustomerAccount(createVerifiedAccountRequest: CreateVerifiedAccountRequest, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseAccount>;
-    public createVerifiedCustomerAccount(createVerifiedAccountRequest: CreateVerifiedAccountRequest, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseAccount>>;
-    public createVerifiedCustomerAccount(createVerifiedAccountRequest: CreateVerifiedAccountRequest, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseAccount>>;
+    public createVerifiedCustomerAccount(createVerifiedAccountRequest: CreateVerifiedAccountRequest, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseString>;
+    public createVerifiedCustomerAccount(createVerifiedAccountRequest: CreateVerifiedAccountRequest, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseString>>;
+    public createVerifiedCustomerAccount(createVerifiedAccountRequest: CreateVerifiedAccountRequest, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseString>>;
     public createVerifiedCustomerAccount(createVerifiedAccountRequest: CreateVerifiedAccountRequest, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
         if (createVerifiedAccountRequest === null || createVerifiedAccountRequest === undefined) {
             throw new Error('Required parameter createVerifiedAccountRequest was null or undefined when calling createVerifiedCustomerAccount.');
@@ -189,7 +188,7 @@ export class SignOnControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.post<ApiResponseAccount>(`${this.configuration.basePath}/sign-on/v1/create-verified-customer-account`,
+        return this.httpClient.post<ApiResponseString>(`${this.configuration.basePath}/v1/signOn/createVerifiedCustomerAccount`,
             createVerifiedAccountRequest,
             {
                 responseType: <any>responseType_,
@@ -243,8 +242,116 @@ export class SignOnControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.post<ApiResponseLoginResponse>(`${this.configuration.basePath}/sign-on/v1/mobile-login`,
+        return this.httpClient.post<ApiResponseLoginResponse>(`${this.configuration.basePath}/v1/signOn/mobileLogin`,
             mobileLoginRequest,
+            {
+                responseType: <any>responseType_,
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * @param createCustomerAccountRequest 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public resetPasswordByMobileOtp(createCustomerAccountRequest: CreateCustomerAccountRequest, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseResetPasswordResponse>;
+    public resetPasswordByMobileOtp(createCustomerAccountRequest: CreateCustomerAccountRequest, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseResetPasswordResponse>>;
+    public resetPasswordByMobileOtp(createCustomerAccountRequest: CreateCustomerAccountRequest, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseResetPasswordResponse>>;
+    public resetPasswordByMobileOtp(createCustomerAccountRequest: CreateCustomerAccountRequest, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
+        if (createCustomerAccountRequest === null || createCustomerAccountRequest === undefined) {
+            throw new Error('Required parameter createCustomerAccountRequest was null or undefined when calling resetPasswordByMobileOtp.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (httpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                '*/*'
+            ];
+            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
+        if (httpHeaderAcceptSelected !== undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'application/json'
+        ];
+        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
+        if (httpContentTypeSelected !== undefined) {
+            headers = headers.set('Content-Type', httpContentTypeSelected);
+        }
+
+        let responseType_: 'text' | 'json' = 'json';
+        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+            responseType_ = 'text';
+        }
+
+        return this.httpClient.post<ApiResponseResetPasswordResponse>(`${this.configuration.basePath}/v1/signOn/resetPassword`,
+            createCustomerAccountRequest,
+            {
+                responseType: <any>responseType_,
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * @param resetPasswordVerifiedAccountRequest 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public resetPasswordByOtp(resetPasswordVerifiedAccountRequest: ResetPasswordVerifiedAccountRequest, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseString>;
+    public resetPasswordByOtp(resetPasswordVerifiedAccountRequest: ResetPasswordVerifiedAccountRequest, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseString>>;
+    public resetPasswordByOtp(resetPasswordVerifiedAccountRequest: ResetPasswordVerifiedAccountRequest, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseString>>;
+    public resetPasswordByOtp(resetPasswordVerifiedAccountRequest: ResetPasswordVerifiedAccountRequest, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
+        if (resetPasswordVerifiedAccountRequest === null || resetPasswordVerifiedAccountRequest === undefined) {
+            throw new Error('Required parameter resetPasswordVerifiedAccountRequest was null or undefined when calling resetPasswordByOtp.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (httpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                '*/*'
+            ];
+            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
+        if (httpHeaderAcceptSelected !== undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'application/json'
+        ];
+        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
+        if (httpContentTypeSelected !== undefined) {
+            headers = headers.set('Content-Type', httpContentTypeSelected);
+        }
+
+        let responseType_: 'text' | 'json' = 'json';
+        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+            responseType_ = 'text';
+        }
+
+        return this.httpClient.post<ApiResponseString>(`${this.configuration.basePath}/v1/signOn/resetPasswordOtp`,
+            resetPasswordVerifiedAccountRequest,
             {
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
@@ -297,7 +404,7 @@ export class SignOnControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.post<ApiResponseString>(`${this.configuration.basePath}/sign-on/v1/reset-password-verified-otp`,
+        return this.httpClient.post<ApiResponseString>(`${this.configuration.basePath}/v1/signOn/resetPasswordVerifiedOtp`,
             resetVerifiedPasswordOtpRequest,
             {
                 responseType: <any>responseType_,
@@ -310,17 +417,13 @@ export class SignOnControllerService {
     }
 
     /**
-     * @param createCustomerAccountRequest 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public resetPasswordbyMobileOtp(createCustomerAccountRequest: CreateCustomerAccountRequest, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseResetPasswordResponse>;
-    public resetPasswordbyMobileOtp(createCustomerAccountRequest: CreateCustomerAccountRequest, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseResetPasswordResponse>>;
-    public resetPasswordbyMobileOtp(createCustomerAccountRequest: CreateCustomerAccountRequest, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseResetPasswordResponse>>;
-    public resetPasswordbyMobileOtp(createCustomerAccountRequest: CreateCustomerAccountRequest, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
-        if (createCustomerAccountRequest === null || createCustomerAccountRequest === undefined) {
-            throw new Error('Required parameter createCustomerAccountRequest was null or undefined when calling resetPasswordbyMobileOtp.');
-        }
+    public signOut(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseString>;
+    public signOut(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseString>>;
+    public signOut(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseString>>;
+    public signOut(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
 
         let headers = this.defaultHeaders;
 
@@ -337,76 +440,13 @@ export class SignOnControllerService {
         }
 
 
-        // to determine the Content-Type header
-        const consumes: string[] = [
-            'application/json'
-        ];
-        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
-        if (httpContentTypeSelected !== undefined) {
-            headers = headers.set('Content-Type', httpContentTypeSelected);
-        }
-
         let responseType_: 'text' | 'json' = 'json';
         if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
             responseType_ = 'text';
         }
 
-        return this.httpClient.post<ApiResponseResetPasswordResponse>(`${this.configuration.basePath}/sign-on/v1/reset-password`,
-            createCustomerAccountRequest,
-            {
-                responseType: <any>responseType_,
-                withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress
-            }
-        );
-    }
-
-    /**
-     * @param resetPasswordVerifiedAccountRequest 
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public resetPasswordbyOtp(resetPasswordVerifiedAccountRequest: ResetPasswordVerifiedAccountRequest, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseAccount>;
-    public resetPasswordbyOtp(resetPasswordVerifiedAccountRequest: ResetPasswordVerifiedAccountRequest, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseAccount>>;
-    public resetPasswordbyOtp(resetPasswordVerifiedAccountRequest: ResetPasswordVerifiedAccountRequest, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseAccount>>;
-    public resetPasswordbyOtp(resetPasswordVerifiedAccountRequest: ResetPasswordVerifiedAccountRequest, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
-        if (resetPasswordVerifiedAccountRequest === null || resetPasswordVerifiedAccountRequest === undefined) {
-            throw new Error('Required parameter resetPasswordVerifiedAccountRequest was null or undefined when calling resetPasswordbyOtp.');
-        }
-
-        let headers = this.defaultHeaders;
-
-        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-        if (httpHeaderAcceptSelected === undefined) {
-            // to determine the Accept header
-            const httpHeaderAccepts: string[] = [
-                '*/*'
-            ];
-            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        }
-        if (httpHeaderAcceptSelected !== undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
-        }
-
-
-        // to determine the Content-Type header
-        const consumes: string[] = [
-            'application/json'
-        ];
-        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
-        if (httpContentTypeSelected !== undefined) {
-            headers = headers.set('Content-Type', httpContentTypeSelected);
-        }
-
-        let responseType_: 'text' | 'json' = 'json';
-        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
-            responseType_ = 'text';
-        }
-
-        return this.httpClient.post<ApiResponseAccount>(`${this.configuration.basePath}/sign-on/v1/reset-password-otp`,
-            resetPasswordVerifiedAccountRequest,
+        return this.httpClient.post<ApiResponseString>(`${this.configuration.basePath}/v1/signOn/signOut`,
+            null,
             {
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,

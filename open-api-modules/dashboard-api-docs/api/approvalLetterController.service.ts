@@ -155,7 +155,7 @@ export class ApprovalLetterControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.post<ApiResponseSearchAndPaginationResponseApprovalLetter>(`${this.configuration.basePath}/v1/approval-letter`,
+        return this.httpClient.post<ApiResponseSearchAndPaginationResponseApprovalLetter>(`${this.configuration.basePath}/v1/approvalLetters`,
             requestBody,
             {
                 params: queryParameters,
@@ -201,7 +201,7 @@ export class ApprovalLetterControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.get<ApiResponseApprovalLetter>(`${this.configuration.basePath}/v1/approval-letter/${encodeURIComponent(String(approvalLetterId))}`,
+        return this.httpClient.get<ApiResponseApprovalLetter>(`${this.configuration.basePath}/v1/approvalLetters/${encodeURIComponent(String(approvalLetterId))}`,
             {
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,

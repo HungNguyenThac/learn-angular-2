@@ -127,7 +127,7 @@ export class SmsControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.post<ApiResponseObject>(`${this.configuration.basePath}/v1/sms/send-sms`,
+        return this.httpClient.post<ApiResponseObject>(`${this.configuration.basePath}/v1/sms/sendSms`,
             sendSMSRequest,
             {
                 responseType: <any>responseType_,

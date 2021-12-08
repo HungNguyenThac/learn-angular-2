@@ -15,7 +15,7 @@ import { VirtualAccount } from './virtualAccount';
 export interface ApiResponseVirtualAccount { 
     result?: VirtualAccount;
     errorCode?: string;
-    message?: string;
+    message?: object;
     responseCode?: number;
 }
 

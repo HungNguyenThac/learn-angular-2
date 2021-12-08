@@ -21,6 +21,7 @@ configuration.ts
 encoder.ts
 git_push.sh
 index.ts
+model/additionalEmployeeDataRequest.ts
 model/additionalInformationRequest.ts
 model/additionalInformationV2Request.ts
 model/apiResponse.ts
