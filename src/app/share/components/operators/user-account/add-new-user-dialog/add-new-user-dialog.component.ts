@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit, ViewChildren } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BUTTON_TYPE } from '../../../../../core/common/enum/operator';
@@ -44,7 +44,7 @@ export class AddNewUserDialogComponent implements OnInit {
   buildAccountInfoForm() {
     this.addAccountForm = this.formBuilder.group({
       accountName: [''],
-      accountLogin: [''],
+      username: [''],
       accountPassword: [
         '',
         [Validators.minLength(8), Validators.maxLength(50)],
@@ -65,12 +65,12 @@ export class AddNewUserDialogComponent implements OnInit {
     this.userInfo = data?.userInfo;
     this.passwordInput = data?.hasPasswordField;
     if (!data?.hasUsernameField) {
-      this.addAccountForm.controls.accountLogin.disable();
+      this.addAccountForm.controls.username.disable();
     }
 
     this.addAccountForm.patchValue({
       accountName: this.userInfo?.fullName,
-      accountLogin: this.userInfo?.username,
+      username: this.userInfo?.username,
       accountPassword: '',
       accountRePassword: '',
       accountRole: this.userInfo?.groupId,

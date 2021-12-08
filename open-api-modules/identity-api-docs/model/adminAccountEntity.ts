@@ -26,6 +26,7 @@ export interface AdminAccountEntity {
     position?: string;
     userStatus?: AdminAccountEntity.UserStatusEnum;
     unLockTime?: string;
+    isDeleted?: boolean;
 }
 export namespace AdminAccountEntity {
     export type UserStatusEnum = 'ACTIVE' | 'LOCKED';

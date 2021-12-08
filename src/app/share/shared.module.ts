@@ -6,7 +6,7 @@ import * as fromComponents from './components';
 import * as fromValidators from './validators';
 import * as fromPipes from './pipes';
 import * as fromDirectives from './directives';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { NgxPermissionsModule } from 'ngx-permissions';
 import { NgxViewerModule } from 'ngx-viewer';
