@@ -1,4 +1,5 @@
-import { Component, OnInit, Injectable } from '@angular/core';
+import { PermissionTreeComponent } from './../../../../../share/components/operators/user-account/permission-tree/permission-tree.component';
+import { Component, OnInit, Injectable, ViewChild, ViewChildren, QueryList } from '@angular/core';
 import { MultiLanguageService } from '../../../../../share/translate/multiLanguageService';
 import { MatDialog } from '@angular/material/dialog';
 import { EditRoleDialogComponent } from '../../../../../share/components/operators/user-account/edit-role-dialog/edit-role-dialog.component';
@@ -57,6 +58,8 @@ export class UserRoleComponent implements OnInit {
     private permissionTypeControllerService: PermissionTypeControllerService
   ) {}
 
+  @ViewChildren('tree') permissionTree: QueryList<PermissionTreeComponent>;
+
   ngOnInit(): void {
     this.getPermissionList();
   }
@@ -101,5 +104,20 @@ export class UserRoleComponent implements OnInit {
           }
         )
     );
+  }
+
+  addRoleToUser() {
+    const arrayPermissionTreeComponent = this.permissionTree.toArray();
+    let arrayPermission = []
+    for (let i = 0; i < arrayPermissionTreeComponent.length; i++) {
+      if (
+        arrayPermissionTreeComponent[i].totalPermissionSelected().length > 0
+      )
+        arrayPermission.push(
+          ...arrayPermissionTreeComponent[i].totalPermissionSelected()
+        );
+    }
+    console.log(arrayPermission);
+
   }
 }

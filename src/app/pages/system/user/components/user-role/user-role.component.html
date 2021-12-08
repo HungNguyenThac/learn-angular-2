@@ -27,14 +27,14 @@
       <div *ngFor="let tableData of treeData" class="table">
         <div class="table-title">{{tableData.name}}</div>
         <div class="table-content">
-          <app-permission-tree [TREE_DATA]=tableData.childPermissionTypeResponses></app-permission-tree>
+          <app-permission-tree #tree [TREE_DATA]="tableData.childPermissionTypeResponses"></app-permission-tree>
         </div>
       </div>
     </div>
   </div>
 
   <div class="action text-end">
-    <button color="accent" mat-flat-button>
+    <button color="accent" mat-flat-button (click)="addRoleToUser()">
       <span class="sprite-group-5-pen-white"></span>
       {{ "customer.individual_info.update" | translate }}
     </button>
