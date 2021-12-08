@@ -536,7 +536,10 @@ export class UserListComponent implements OnInit, OnDestroy {
       maxWidth: '800px',
       width: '90%',
       data: {
+        hasUsernameField: true,
+        hasPasswordField: true,
         roleList: this.roleList,
+        dialogTitle: this.multiLanguageService.instant('account.add.title'),
       },
     });
     this.subManager.add(
@@ -573,7 +576,7 @@ export class UserListComponent implements OnInit, OnDestroy {
   public refreshContent() {
     setTimeout(() => {
       this._getUserList();
-    }, 2000);
+    }, 1000);
   }
 
   private _bindingDialogUserData(data) {
@@ -664,14 +667,15 @@ export class UserListComponent implements OnInit, OnDestroy {
   }
 
   public updateElementInfo(updatedUserInfo) {
-    // this.dataSource.data.map((item) => {
-    //   if (item.id === updatedUserInfo.id) {
-    //     this.allColumns.forEach((column) => {
-    //       item[column.key] = updatedUserInfo[column.key];
-    //     });
-    //   }
-    //   return item;
-    // });
-    this.refreshContent();
+    console.log('asbdihasdgastdftqwd', updatedUserInfo);
+    this.dataSource.data.map((item) => {
+      if (item.id === updatedUserInfo.id) {
+        this.allColumns.forEach((column) => {
+          item[column.key] = updatedUserInfo[column.key];
+        });
+      }
+      return item;
+    });
+    // this.refreshContent();
   }
 }

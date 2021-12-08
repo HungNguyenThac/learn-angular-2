@@ -3,6 +3,7 @@ import { MultiLanguageService } from '../../../../../share/translate/multiLangua
 import { Subscription } from 'rxjs';
 
 import {
+  BUTTON_TYPE,
   DATA_CELL_TYPE,
   DATA_STATUS_TYPE,
 } from '../../../../../core/common/enum/operator';
@@ -18,6 +19,12 @@ import {
   CompanyInfo,
   CustomerInfo,
 } from '../../../../../../../open-api-modules/dashboard-api-docs';
+import {
+  AddNewUserDialogComponent,
+  DialogUserInfoUpdateComponent,
+  MerchantDetailDialogComponent,
+} from '../../../../../share/components';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-user-detail',
@@ -29,6 +36,8 @@ export class UserDetailComponent implements OnInit {
   rightCompanyInfos: any[] = [];
   subManager = new Subscription();
   _userInfo;
+
+  @Input() roleList;
 
   @Input()
   get userInfo() {
@@ -46,6 +55,7 @@ export class UserDetailComponent implements OnInit {
   constructor(
     private multiLanguageService: MultiLanguageService,
     private notificationService: NotificationService,
+    private dialog: MatDialog,
     private notifier: ToastrService,
     private adminAccountControllerService: AdminAccountControllerService
   ) {}
@@ -53,6 +63,33 @@ export class UserDetailComponent implements OnInit {
   ngOnInit(): void {}
 
   ngOnDestroy(): void {}
+
+  public openUpdateDialog() {
+    const updateDialogRef = this.dialog.open(AddNewUserDialogComponent, {
+      panelClass: 'custom-info-dialog-container',
+      maxWidth: '800px',
+      width: '90%',
+      data: {
+        hasUsernameField: false,
+        hasPasswordField: false,
+        roleList: this.roleList,
+        userInfo: this.userInfo,
+        dialogTitle: this.multiLanguageService.instant(
+          'account.info.update_dialog_title'
+        ),
+      },
+    });
+    this.subManager.add(
+      updateDialogRef.afterClosed().subscribe((result: any) => {
+        if (result && result.type === BUTTON_TYPE.PRIMARY) {
+          let updateInfoRequest = this._bindingDialogIndividualData(
+            result.data
+          );
+          this.updateElementInfo.emit(updateInfoRequest);
+        }
+      })
+    );
+  }
 
   public lockPrompt() {
     const confirmLockRef = this.notificationService.openPrompt({
@@ -87,7 +124,7 @@ export class UserDetailComponent implements OnInit {
                   this.notifier.success(
                     this.multiLanguageService.instant('common.lock_success')
                   );
-                }, 2000);
+                }, 1000);
               }
             })
         );
@@ -121,7 +158,7 @@ export class UserDetailComponent implements OnInit {
                   this.notifier.success(
                     this.multiLanguageService.instant('common.unlock_success')
                   );
-                }, 2000);
+                }, 1000);
               }
             })
         );
@@ -160,6 +197,16 @@ export class UserDetailComponent implements OnInit {
     );
   }
 
+  _bindingDialogIndividualData(data) {
+    return {
+      fullName: data?.accountName,
+      email: data?.accountEmail,
+      mobile: data?.accountPhone,
+      note: data?.accountNote,
+      position: data?.accountPosition,
+    };
+  }
+
   private _initLeftCompanyInfos() {
     return [
       {
@@ -193,12 +240,12 @@ export class UserDetailComponent implements OnInit {
         type: DATA_CELL_TYPE.TEXT,
         format: null,
       },
-      {
-        title: this.multiLanguageService.instant('system.user_detail.note'),
-        value: this.userInfo?.note,
-        type: DATA_CELL_TYPE.TEXT,
-        format: null,
-      },
+      // {
+      //   title: this.multiLanguageService.instant('system.user_detail.note'),
+      //   value: this.userInfo?.note,
+      //   type: DATA_CELL_TYPE.TEXT,
+      //   format: null,
+      // },
       {
         title: this.multiLanguageService.instant('system.user_detail.status'),
         value: this.userInfo?.userStatus,

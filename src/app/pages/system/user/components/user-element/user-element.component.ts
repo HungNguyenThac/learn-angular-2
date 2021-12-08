@@ -6,6 +6,7 @@ import {
   CompanyInfo,
 } from '../../../../../../../open-api-modules/dashboard-api-docs';
 import { Subscription } from 'rxjs';
+import { AdminAccountControllerService as AdminAccountControllerService1 } from '../../../../../../../open-api-modules/identity-api-docs';
 
 @Component({
   selector: 'app-user-element',
@@ -16,6 +17,7 @@ export class UserElementComponent implements OnInit {
   _userId;
   userInfo;
   subManager = new Subscription();
+  @Input() roleList;
   @Input() treeData;
   @Output() triggerUpdateElementInfo = new EventEmitter();
 
@@ -29,7 +31,8 @@ export class UserElementComponent implements OnInit {
   }
 
   constructor(
-    private adminAccountControllerService: AdminAccountControllerService
+    private adminAccountControllerService: AdminAccountControllerService,
+    private identityAdminAccountControllerService: AdminAccountControllerService1
   ) {}
 
   ngOnInit(): void {
@@ -39,7 +42,7 @@ export class UserElementComponent implements OnInit {
   public refreshContent() {
     setTimeout(() => {
       this._getUserInfoById(this.userId);
-    }, 2000);
+    }, 1000);
   }
 
   private _getUserInfoById(userId) {
@@ -49,12 +52,27 @@ export class UserElementComponent implements OnInit {
         .getAdminAccountById(this.userId)
         .subscribe((data: ApiResponseAdminAccountEntity) => {
           this.userInfo = data?.result;
+          this.triggerUpdateElementInfo.emit(this.userInfo);
         })
     );
   }
 
-  updateElementInfo(event) {
-    this.refreshContent();
-    this.triggerUpdateElementInfo.emit(event);
+  private updateUserInfo(updateInfoRequest) {
+    this.subManager.add(
+      this.identityAdminAccountControllerService
+        .updateFullInfo(this.userId, updateInfoRequest)
+        .subscribe((data: ApiResponseAdminAccountEntity) => {
+          this.userInfo = data?.result;
+          this.triggerUpdateElementInfo.emit(this.userInfo);
+        })
+    );
+  }
+
+  updateElementInfo(updateInfoRequest) {
+    if (!updateInfoRequest) {
+      this.refreshContent();
+    } else {
+      this.updateUserInfo(updateInfoRequest);
+    }
   }
 }

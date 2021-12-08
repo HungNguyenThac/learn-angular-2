@@ -19,6 +19,10 @@ export class AddNewUserDialogComponent implements OnInit {
   isEmailInputFocus: boolean = false;
   isPositionInputFocus: boolean = false;
   isNoteInputFocus: boolean = false;
+  dialogTitle: string;
+  userInfo;
+  passwordInput: boolean;
+  disableUsername: boolean = true;
 
   roleList;
   positionOptions = {
@@ -55,7 +59,26 @@ export class AddNewUserDialogComponent implements OnInit {
   }
 
   initDialogData(data) {
+    ``;
     this.roleList = data?.roleList;
+    this.dialogTitle = data?.dialogTitle;
+    this.userInfo = data?.userInfo;
+    this.passwordInput = data?.hasPasswordField;
+    if (!data?.hasUsernameField) {
+      this.addAccountForm.controls.accountLogin.disable();
+    }
+
+    this.addAccountForm.patchValue({
+      accountName: this.userInfo?.fullName,
+      accountLogin: this.userInfo?.username,
+      accountPassword: '',
+      accountRePassword: '',
+      accountRole: this.userInfo?.groupId,
+      accountPhone: this.userInfo?.mobile,
+      accountEmail: this.userInfo?.email,
+      accountPosition: this.userInfo?.position,
+      accountNote: this.userInfo?.note,
+    });
   }
 
   submitForm() {

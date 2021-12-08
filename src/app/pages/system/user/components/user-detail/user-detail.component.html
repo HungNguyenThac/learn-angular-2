@@ -52,7 +52,7 @@
 
   <div class="row mt-3 mb-3">
     <div class="col-12 d-flex gap-2 justify-content-end">
-      <button color="accent" mat-flat-button>
+      <button (click)="openUpdateDialog()" color="accent" mat-flat-button>
         <span class="sprite-group-5-pen-white"></span>
         {{ "customer.individual_info.update" | translate }}
       </button>

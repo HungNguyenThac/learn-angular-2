@@ -143,6 +143,7 @@
   },
   "account": {
     "info": {
+      "update_dialog_title": "Cập nhật thông tin người dùng",
       "_info": "Thông tin tài khoản",
       "name": "Tên người dùng",
       "log_in": "Tên đăng nhập",

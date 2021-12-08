@@ -5,7 +5,7 @@
     </button>
 
     <div class="card-title title">
-      {{ "account.add.title" | translate }}
+      {{dialogTitle}}
     </div>
     <div class="card-body">
       <form [formGroup]="addAccountForm" (ngSubmit)="submitForm()" autocomplete="off">
@@ -79,7 +79,7 @@
                   </mat-form-field>
                 </div>
 
-                <div>
+                <div *ngIf="passwordInput">
                   <mat-form-field appearance="outline" class="w-100" floatLabel="never">
                     <mat-label>{{
                       "account.add.password" | translate
@@ -116,7 +116,7 @@
                   </mat-form-field>
                 </div>
 
-                <div>
+                <div *ngIf="passwordInput">
                   <mat-form-field appearance="outline" class="w-100" floatLabel="never">
                     <mat-label>{{
                       "account.add.re_password" | translate
@@ -281,36 +281,36 @@
                   </mat-form-field>
                 </div>
 
-                <div>
-                  <mat-form-field appearance="outline" class="w-100">
-                    <mat-label>{{
-                      "account.add.note" | translate
-                      }}</mat-label>
-                    <mat-icon [ngClass]="
-                        addAccountForm.controls.accountNote.value != '' ||
-                        isNoteInputFocus
-                          ? 'is-focused-icon'
-                          : ''
-                      "
-                              class="note-icon" matPrefix></mat-icon>
-                    <input
-                      (blur)="isNoteInputFocus = false"
-                      (focus)="isNoteInputFocus = true"
-                      [ngClass]="isNoteInputFocus ? 'is-focused-input' : ''"
-                      [placeholder]="'account.add.note' | translate"
-                      formControlName="accountNote"
-                      matInput
-                    />
-                    <show-errors
-                      [control]="addAccountForm.controls['accountNote']"
-                      [controlLabel]="
-                        'account.add.note' | translate
-                      "
-                      [hasIconPrefix]="false"
-                    >
-                    </show-errors>
-                  </mat-form-field>
-                </div>
+                <!--                <div>-->
+                <!--                  <mat-form-field appearance="outline" class="w-100">-->
+                <!--                    <mat-label>{{-->
+                <!--                      "account.add.note" | translate-->
+                <!--                      }}</mat-label>-->
+                <!--                    <mat-icon [ngClass]="-->
+                <!--                        addAccountForm.controls.accountNote.value != '' ||-->
+                <!--                        isNoteInputFocus-->
+                <!--                          ? 'is-focused-icon'-->
+                <!--                          : ''-->
+                <!--                      "-->
+                <!--                              class="note-icon" matPrefix></mat-icon>-->
+                <!--                    <input-->
+                <!--                      (blur)="isNoteInputFocus = false"-->
+                <!--                      (focus)="isNoteInputFocus = true"-->
+                <!--                      [ngClass]="isNoteInputFocus ? 'is-focused-input' : ''"-->
+                <!--                      [placeholder]="'account.add.note' | translate"-->
+                <!--                      formControlName="accountNote"-->
+                <!--                      matInput-->
+                <!--                    />-->
+                <!--                    <show-errors-->
+                <!--                      [control]="addAccountForm.controls['accountNote']"-->
+                <!--                      [controlLabel]="-->
+                <!--                        'account.add.note' | translate-->
+                <!--                      "-->
+                <!--                      [hasIconPrefix]="false"-->
+                <!--                    >-->
+                <!--                    </show-errors>-->
+                <!--                  </mat-form-field>-->
+                <!--                </div>-->
               </div>
             </div>
           </section>
