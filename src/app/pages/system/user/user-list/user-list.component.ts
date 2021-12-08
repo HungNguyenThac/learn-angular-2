@@ -130,6 +130,7 @@ export class UserListComponent implements OnInit, OnDestroy {
       ],
     },
   ];
+
   allColumns: any[] = [
     {
       key: 'username',
@@ -197,7 +198,7 @@ export class UserListComponent implements OnInit, OnDestroy {
     private dialog: MatDialog,
     private activatedRoute: ActivatedRoute,
     private userListService: UserListService,
-    private permissionsService: NgxPermissionsService,
+    private permissionsService: NgxPermissionsService
   ) {
     this.routeAllState$ = store.select(fromSelectors.getRouterAllState);
 
@@ -210,26 +211,24 @@ export class UserListComponent implements OnInit, OnDestroy {
         ' - ' +
         GlobalConstants.PL_VALUE_DEFAULT.PROJECT_NAME
     );
-    this.store.dispatch(new fromActions.SetOperatorInfo(NAV_ITEM.CUSTOMER));
+    this.store.dispatch(new fromActions.SetOperatorInfo(null));
     this._initSubscription();
     this.getPermissionList();
   }
 
   private _getUserList() {
     const params = this._buildParams();
-    this.subManager.add(
-      this.userListService
-        .getData(params)
-        .subscribe(
-          (data: ApiResponseSearchAndPaginationResponseAdminAccountEntity) => {
-            this._parseData(data?.result);
-            this.dataSource.data = data?.result?.data;
-            if (this.filterForm.controls.id.value) {
-              this.expandElementFromLoan = data?.result?.data[0];
-            }
+    this.userListService
+      .getData(params)
+      .subscribe(
+        (data: ApiResponseSearchAndPaginationResponseAdminAccountEntity) => {
+          this._parseData(data?.result);
+          this.dataSource.data = data?.result?.data;
+          if (this.filterForm.controls.id.value) {
+            this.expandElementFromLoan = data?.result?.data[0];
           }
-        )
-    );
+        }
+      );
   }
 
   public onPageChange(event: PageEvent) {
@@ -383,12 +382,6 @@ export class UserListComponent implements OnInit, OnDestroy {
     );
   }
 
-  ngOnDestroy(): void {
-    if (this.subManager !== null) {
-      // this.subManager.unsubscribe();
-    }
-  }
-
   private _initFilterForm() {
     this.filterForm = this.formBuilder.group({
       id: [''],
@@ -474,15 +467,11 @@ export class UserListComponent implements OnInit, OnDestroy {
   }
 
   private _getCompanyList() {
-    this.subManager.add(
-      this.companyControllerService
-        .getCompanies(100, 0, {})
-        .subscribe(
-          (data: ApiResponseSearchAndPaginationResponseCompanyInfo) => {
-            this.companyList = data?.result?.data;
-          }
-        )
-    );
+    this.companyControllerService
+      .getCompanies(100, 0, {})
+      .subscribe((data: ApiResponseSearchAndPaginationResponseCompanyInfo) => {
+        this.companyList = data?.result?.data;
+      });
   }
 
   private _buildParams() {
@@ -609,20 +598,18 @@ export class UserListComponent implements OnInit, OnDestroy {
   }
 
   getRoleList() {
-    this.subManager.add(
-      this.groupControllerService
-        .getGroups(100, 0, {})
-        .subscribe(
-          (result: ApiResponseSearchAndPaginationResponseGroupEntity) => {
-            if (!result || result.responseCode !== 200) {
-              // return this.handleResponseError(result.errorCode);
-            }
-            this.roleList = result?.result?.data;
-            this._initRoleOptions();
-            this.filterOptions = JSON.parse(JSON.stringify(this.filterOptions));
+    this.groupControllerService
+      .getGroups(100, 0, {})
+      .subscribe(
+        (result: ApiResponseSearchAndPaginationResponseGroupEntity) => {
+          if (!result || result.responseCode !== 200) {
+            // return this.handleResponseError(result.errorCode);
           }
-        )
-    );
+          this.roleList = result?.result?.data;
+          this._initRoleOptions();
+          this.filterOptions = JSON.parse(JSON.stringify(this.filterOptions));
+        }
+      );
   }
 
   private _resetFilterForm() {
@@ -677,5 +664,11 @@ export class UserListComponent implements OnInit, OnDestroy {
       return item;
     });
     // this.refreshContent();
+  }
+
+  ngOnDestroy(): void {
+    if (this.subManager !== null) {
+      this.subManager.unsubscribe();
+    }
   }
 }
