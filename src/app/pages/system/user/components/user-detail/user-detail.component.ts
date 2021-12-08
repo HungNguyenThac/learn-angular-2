@@ -9,14 +9,14 @@ import {
 import { NotificationService } from '../../../../../core/services/notification.service';
 import { ToastrService } from 'ngx-toastr';
 import {
-  AdminAccountControllerService as AdminAccountControllerService1,
+  AdminAccountControllerService,
   ApiResponseAdminAccountEntity,
 } from '../../../../../../../open-api-modules/identity-api-docs';
 import * as moment from 'moment';
 import {
-  AdminAccountControllerService,
   ApiResponseCustomerInfo,
   CompanyInfo,
+  CustomerInfo,
 } from '../../../../../../../open-api-modules/dashboard-api-docs';
 
 @Component({
@@ -27,24 +27,30 @@ import {
 export class UserDetailComponent implements OnInit {
   leftCompanyInfos: any[] = [];
   rightCompanyInfos: any[] = [];
-  showEnableBtn: boolean = false;
   subManager = new Subscription();
+  _userInfo;
 
-  @Input() userInfo;
-  @Output() updateElementInfo = new EventEmitter<CompanyInfo>();
+  @Input()
+  get userInfo() {
+    return this._userInfo;
+  }
+
+  set userInfo(value) {
+    this._userInfo = value;
+    this.leftCompanyInfos = this._initLeftCompanyInfos();
+    this.rightCompanyInfos = this._initRightCompanyInfos();
+  }
+
+  @Output() updateElementInfo = new EventEmitter();
 
   constructor(
     private multiLanguageService: MultiLanguageService,
     private notificationService: NotificationService,
     private notifier: ToastrService,
-    private adminAccountControllerService: AdminAccountControllerService1,
-    private adminAccountControllerDashboardService: AdminAccountControllerService
+    private adminAccountControllerService: AdminAccountControllerService
   ) {}
 
-  ngOnInit(): void {
-    this.leftCompanyInfos = this._initLeftCompanyInfos();
-    this.rightCompanyInfos = this._initRightCompanyInfos();
-  }
+  ngOnInit(): void {}
 
   ngOnDestroy(): void {}
 
@@ -76,11 +82,12 @@ export class UserDetailComponent implements OnInit {
                 // return this.handleResponseError(result.errorCode);
               }
               if (result.responseCode === 200) {
+                this.updateElementInfo.emit();
                 setTimeout(() => {
                   this.notifier.success(
                     this.multiLanguageService.instant('common.lock_success')
                   );
-                }, 500);
+                }, 2000);
               }
             })
         );
@@ -109,11 +116,12 @@ export class UserDetailComponent implements OnInit {
                 // return this.handleResponseError(result.errorCode);
               }
               if (result.responseCode === 200) {
+                this.updateElementInfo.emit();
                 setTimeout(() => {
                   this.notifier.success(
                     this.multiLanguageService.instant('common.unlock_success')
                   );
-                }, 500);
+                }, 2000);
               }
             })
         );
@@ -152,27 +160,11 @@ export class UserDetailComponent implements OnInit {
     );
   }
 
-  public refreshContent() {
-    this._getUserInfoById(this.userInfo.id);
-  }
-
-  private _getUserInfoById(userId) {
-    if (!userId) return;
-    this.subManager.add(
-      this.adminAccountControllerDashboardService
-        .getAdminAccountById(this.userInfo.id)
-        .subscribe((data: ApiResponseCustomerInfo) => {
-          this.userInfo = data?.result;
-          this.updateElementInfo.emit(this.userInfo);
-        })
-    );
-  }
-
   private _initLeftCompanyInfos() {
     return [
       {
         title: this.multiLanguageService.instant('system.user_detail.name'),
-        value: this.userInfo.fullName,
+        value: this.userInfo?.fullName,
         type: DATA_CELL_TYPE.TEXT,
         format: null,
       },
@@ -180,13 +172,13 @@ export class UserDetailComponent implements OnInit {
         title: this.multiLanguageService.instant(
           'system.user_detail.login_name'
         ),
-        value: this.userInfo.username,
+        value: this.userInfo?.username,
         type: DATA_CELL_TYPE.TEXT,
         format: null,
       },
       {
         title: this.multiLanguageService.instant('system.user_detail.email'),
-        value: this.userInfo.email,
+        value: this.userInfo?.email,
         type: DATA_CELL_TYPE.TEXT,
         format: null,
       },
@@ -197,19 +189,19 @@ export class UserDetailComponent implements OnInit {
     return [
       {
         title: this.multiLanguageService.instant('system.user_detail.phone'),
-        value: this.userInfo.mobile,
+        value: this.userInfo?.mobile,
         type: DATA_CELL_TYPE.TEXT,
         format: null,
       },
       {
         title: this.multiLanguageService.instant('system.user_detail.note'),
-        value: this.userInfo.note,
+        value: this.userInfo?.note,
         type: DATA_CELL_TYPE.TEXT,
         format: null,
       },
       {
         title: this.multiLanguageService.instant('system.user_detail.status'),
-        value: this.userInfo.userStatus,
+        value: this.userInfo?.userStatus,
         type: DATA_CELL_TYPE.STATUS,
         format: DATA_STATUS_TYPE.USER_STATUS,
       },
