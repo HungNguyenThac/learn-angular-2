@@ -1,6 +1,5 @@
 import { MatDialog } from '@angular/material/dialog';
 import {
-  AfterViewInit,
   Component,
   EventEmitter,
   Input,
@@ -10,10 +9,14 @@ import {
 } from '@angular/core';
 import { MultiLanguageService } from '../../../../share/translate/multiLanguageService';
 import {
+  ApiResponseCity,
   ApiResponseCommune,
   ApiResponseDistrict,
   Bank,
+  CityControllerService,
+  CommuneControllerService,
   CustomerInfo,
+  DistrictControllerService,
 } from '../../../../../../open-api-modules/dashboard-api-docs';
 import { CustomerDetailUpdateDialogComponent } from '../customer-individual-info-update-dialog/customer-detail-update-dialog.component';
 import { Subscription } from 'rxjs';
@@ -29,18 +32,8 @@ import { ToastrService } from 'ngx-toastr';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { VirtualAccount } from '../../../../../../open-api-modules/payment-api-docs';
 import * as moment from 'moment';
-import { AddNewUserDialogComponent } from '../../../../share/components/operators/user-account/add-new-user-dialog/add-new-user-dialog.component';
-import { PlPromptComponent } from '../../../../share/components';
 import { NotificationService } from '../../../../core/services/notification.service';
 import {
-  ApiResponseCity,
-  ApiResponseListDistrict,
-  CityControllerService,
-  CommuneControllerService,
-  DistrictControllerService,
-} from '../../../../../../open-api-modules/dashboard-api-docs';
-import {
-  ApiResponseListCity,
   ApiResponseString,
   InfoControllerService,
 } from '../../../../../../open-api-modules/customer-api-docs';

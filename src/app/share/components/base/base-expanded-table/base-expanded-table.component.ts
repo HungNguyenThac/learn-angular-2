@@ -161,6 +161,8 @@ export class BaseExpandedTableComponent implements OnInit {
 
   public resetDisplayFields() {
     this._initSelectedFields();
+    this.displayedColumns();
+    this.displayedColumnKeys();
   }
 
   private _initSelectedFields() {
