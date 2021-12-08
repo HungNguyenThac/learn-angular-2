@@ -27,6 +27,7 @@
 
 <ng-template #detailElementTemplate>
   <app-user-element
+    *ngxPermissionsOnly="['dashboardAdminAccounts:getAdminAccountById']"
     [treeData]="treeData"
     [userInfo]="userInfo"
     (triggerUpdateElementInfo)="updateElementInfo($event)"

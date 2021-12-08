@@ -18,7 +18,13 @@ export const UserRoutes: Routes = [
       {
         path: 'list',
         component: UserListComponent,
-        data: { animation: true },
+        data: {
+          animation: true,
+          permissions: {
+            only: ['dashboardAdminAccounts:getAdminAccounts'],
+            redirectTo: '/',
+          },
+        },
       },
     ],
   },
@@ -33,7 +39,6 @@ export const UserRoutes: Routes = [
     UserTimeLogComponent,
   ],
   imports: [
-    CommonModule,
     CommonModule,
     RouterModule.forChild(UserRoutes),
     SharedModule,
