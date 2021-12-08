@@ -4,7 +4,7 @@ import { Subscription } from 'rxjs';
 import { MultiLanguageService } from '../../../../../share/translate/multiLanguageService';
 import { NotificationService } from '../../../../../core/services/notification.service';
 import { ToastrService } from 'ngx-toastr';
-import { DATA_CELL_TYPE } from '../../../../../core/common/enum/operator';
+import {BUTTON_TYPE, DATA_CELL_TYPE} from '../../../../../core/common/enum/operator';
 import { MerchantDetailDialogComponent } from '../../../../../share/components/operators/merchant/merchant-detail-dialog/merchant-detail-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 
@@ -67,7 +67,7 @@ export class MerchantVerifyComponent implements OnInit {
       secondaryBtnText: this.multiLanguageService.instant('common.skip'),
     });
     confirmLockRef.afterClosed().subscribe((result) => {
-      if (result === 'PRIMARY') {
+      if (result === BUTTON_TYPE.PRIMARY) {
         this.showEnableBtn = true;
       }
     });
@@ -85,7 +85,7 @@ export class MerchantVerifyComponent implements OnInit {
       secondaryBtnText: this.multiLanguageService.instant('common.skip'),
     });
     confirmUnlockRef.afterClosed().subscribe((result) => {
-      if (result === 'PRIMARY') {
+      if (result === BUTTON_TYPE.PRIMARY) {
         this.showEnableBtn = false;
       }
     });
@@ -105,7 +105,7 @@ export class MerchantVerifyComponent implements OnInit {
       secondaryBtnText: this.multiLanguageService.instant('common.skip'),
     });
     confirmDeleteRef.afterClosed().subscribe((result) => {
-      if (result === 'PRIMARY') {
+      if (result === BUTTON_TYPE.PRIMARY) {
         this.notifier.success(
           this.multiLanguageService.instant(
             'system.user_detail.delete_user.toast'
