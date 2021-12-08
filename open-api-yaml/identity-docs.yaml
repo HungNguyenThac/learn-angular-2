@@ -71,23 +71,6 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ApiResponsePermissionTypeEntity'
-    delete:
-      tags:
-      - permission-type-controller
-      operationId: delete_1
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          description: OK
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/ApiResponseString'
   /v1/groups/{id}:
     put:
       tags:
@@ -115,7 +98,7 @@ paths:
     delete:
       tags:
       - group-controller
-      operationId: delete_2
+      operationId: delete_1
       parameters:
       - name: id
         in: path
@@ -129,22 +112,44 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ApiResponseString'
-  /v1/credentials/updateInfo/{id}:
+  /v1/credentials:
+    get:
+      tags:
+      - admin-account-controller
+      operationId: getInFo
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseAdminAccountEntity'
     put:
       tags:
       - admin-account-controller
       operationId: updateInfo
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UpdateInfoProviderAccountRequest'
+              $ref: '#/components/schemas/UpdateInfoAdminAccountRequest'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseAdminAccountEntity'
+    post:
+      tags:
+      - admin-account-controller
+      operationId: create_3
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateProviderAccountRequest'
         required: true
       responses:
         "200":
@@ -168,7 +173,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UpdateFullInfoProviderAccountRequest'
+              $ref: '#/components/schemas/UpdateFullInfoAdminAccountRequest'
         required: true
       responses:
         "200":
@@ -372,6 +377,24 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ApiResponseGroupEntity'
+  /v1/groups/updatePermissions:
+    post:
+      tags:
+      - group-controller
+      operationId: updatePermissions
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdatePermissionsRequest'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseString'
   /v1/groups/removePermissions:
     post:
       tags:
@@ -447,7 +470,7 @@ paths:
   /v1/customers/unLockCustomer/{accountId}:
     post:
       tags:
-      - lock-customer-controller
+      - customer-controller
       operationId: unLockAccount
       parameters:
       - name: accountId
@@ -462,10 +485,22 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ApiResponseCustomerAccountEntity'
+  /v1/customers/signOut:
+    post:
+      tags:
+      - customer-controller
+      operationId: signOut
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseString'
   /v1/customers/lockCustomer:
     post:
       tags:
-      - lock-customer-controller
+      - customer-controller
       operationId: lockAccount
       requestBody:
         content:
@@ -480,24 +515,6 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ApiResponseCustomerAccountEntity'
-  /v1/credentials:
-    post:
-      tags:
-      - admin-account-controller
-      operationId: create_3
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/CreateProviderAccountRequest'
-        required: true
-      responses:
-        "200":
-          description: OK
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/ApiResponseAdminAccountEntity'
   /v1/credentials/unLockAccount/{accountId}:
     post:
       tags:
@@ -516,6 +533,24 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ApiResponseAdminAccountEntity'
+  /v1/credentials/lockMultiAccount:
+    post:
+      tags:
+      - admin-account-controller
+      operationId: lockMultiAccount
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LockMultiAccountRequest'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseString'
   /v1/credentials/lockAccount:
     post:
       tags:
@@ -570,6 +605,18 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ApiResponseObject'
+  /v1/permissions/account:
+    get:
+      tags:
+      - permission-controller
+      operationId: getPermissionsByAccount
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseListString'
   /v1/groups/{groupId}:
     get:
       tags:
@@ -591,8 +638,8 @@ paths:
   /v1/customers/{accountId}:
     delete:
       tags:
-      - lock-customer-controller
-      operationId: delete_3
+      - customer-controller
+      operationId: delete_2
       parameters:
       - name: accountId
         in: path
@@ -746,7 +793,7 @@ components:
           type: string
         description:
           type: string
-    UpdateInfoProviderAccountRequest:
+    UpdateInfoAdminAccountRequest:
       required:
       - fullName
       - mobile
@@ -803,7 +850,7 @@ components:
         responseCode:
           type: integer
           format: int32
-    UpdateFullInfoProviderAccountRequest:
+    UpdateFullInfoAdminAccountRequest:
       required:
       - email
       - fullName
@@ -1024,6 +1071,18 @@ components:
           type: string
         description:
           type: string
+    UpdatePermissionsRequest:
+      required:
+      - groupId
+      - permissionIds
+      type: object
+      properties:
+        permissionIds:
+          type: array
+          items:
+            type: string
+        groupId:
+          type: string
     RemovePermissionsRequest:
       required:
       - groupId
@@ -1139,6 +1198,15 @@ components:
           type: string
         position:
           type: string
+    LockMultiAccountRequest:
+      required:
+      - accountIds
+      type: object
+      properties:
+        accountIds:
+          type: array
+          items:
+            type: string
     GetTokenRequest:
       type: object
       properties:
@@ -1195,6 +1263,20 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/PermissionEntity'
+        errorCode:
+          type: string
+        message:
+          type: object
+        responseCode:
+          type: integer
+          format: int32
+    ApiResponseListString:
+      type: object
+      properties:
+        result:
+          type: array
+          items:
+            type: string
         errorCode:
           type: string
         message:

@@ -11,7 +11,7 @@
  */
 
 
-export interface UpdateFullInfoProviderAccountRequest { 
+export interface UpdateFullInfoAdminAccountRequest { 
     fullName: string;
     email: string;
     mobile: string;

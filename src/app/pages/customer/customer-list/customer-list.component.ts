@@ -14,6 +14,7 @@ import {
 import { MultiLanguageService } from '../../../share/translate/multiLanguageService';
 import { Observable, Subscription } from 'rxjs';
 import {
+  AdminAccountEntity,
   ApiResponseSearchAndPaginationResponseCompanyInfo,
   ApiResponseSearchAndPaginationResponseCustomerInfo,
   CompanyControllerService,
@@ -36,7 +37,7 @@ import {
   PAYDAY_LOAN_UI_STATUS,
   PAYDAY_LOAN_UI_STATUS_TEXT,
 } from '../../../core/common/enum/payday-loan';
-import _ from 'lodash';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-customer-list',
@@ -130,7 +131,7 @@ export class CustomerListComponent implements OnInit, OnDestroy {
     {
       title: this.multiLanguageService.instant('filter.account_status'),
       type: FILTER_TYPE.SELECT,
-      controlName: 'unknow',
+      controlName: 'userStatus',
       value: null,
       options: [
         {
@@ -139,11 +140,11 @@ export class CustomerListComponent implements OnInit, OnDestroy {
         },
         {
           title: this.multiLanguageService.instant('common.active'),
-          value: PAYDAY_LOAN_UI_STATUS.NOT_COMPLETE_EKYC_YET,
+          value: AdminAccountEntity.UserStatusEnum.Active,
         },
         {
           title: this.multiLanguageService.instant('common.inactive'),
-          value: PAYDAY_LOAN_UI_STATUS.NOT_COMPLETE_FILL_EKYC_YET,
+          value: AdminAccountEntity.UserStatusEnum.Locked,
         },
       ],
     },
@@ -320,6 +321,15 @@ export class CustomerListComponent implements OnInit, OnDestroy {
       format: 'dd/MM/yyyy HH:mm',
       showed: true,
     },
+    {
+      key: 'userStatus',
+      title: this.multiLanguageService.instant(
+        'customer.individual_info.active_status'
+      ),
+      type: DATA_CELL_TYPE.STATUS,
+      format: DATA_STATUS_TYPE.USER_STATUS,
+      showed: false,
+    },
   ];
   dataSource: MatTableDataSource<any> = new MatTableDataSource([]);
   pages: Array<number>;
@@ -363,6 +373,7 @@ export class CustomerListComponent implements OnInit, OnDestroy {
       companyId: [''],
       id: [''],
       paydayLoanStatus: [''],
+      userStatus: [''],
       orderBy: ['createdAt'],
       sortDirection: ['desc'],
       accountClassification: [ACCOUNT_CLASSIFICATION.REAL],
@@ -372,7 +383,8 @@ export class CustomerListComponent implements OnInit, OnDestroy {
       dateFilterTitle: [''],
       filterConditions: {
         companyId: QUERY_CONDITION_TYPE.IN,
-        paydayLoanStatus: QUERY_CONDITION_TYPE.IN,
+        paydayLoanStatus: QUERY_CONDITION_TYPE.EQUAL,
+        userStatus: QUERY_CONDITION_TYPE.EQUAL,
         id: QUERY_CONDITION_TYPE.EQUAL,
       },
     });
@@ -384,6 +396,7 @@ export class CustomerListComponent implements OnInit, OnDestroy {
       companyId: '',
       id: '',
       paydayLoanStatus: '',
+      userStatus: '',
       orderBy: 'createdAt',
       sortDirection: 'desc',
       accountClassification: ACCOUNT_CLASSIFICATION.REAL,
@@ -393,13 +406,23 @@ export class CustomerListComponent implements OnInit, OnDestroy {
       dateFilterTitle: '',
       filterConditions: {
         companyId: QUERY_CONDITION_TYPE.IN,
-        paydayLoanStatus: QUERY_CONDITION_TYPE.IN,
+        paydayLoanStatus: QUERY_CONDITION_TYPE.EQUAL,
+        userStatus: QUERY_CONDITION_TYPE.EQUAL,
         id: QUERY_CONDITION_TYPE.EQUAL,
       },
     });
   }
 
   private _parseQueryParams(params) {
+    this._initFilterFormFromQueryParams(params);
+    this._initFilterOptionsFromQueryParams(params);
+
+    this.breadcrumbOptions.keyword = params.keyword;
+    this.pageIndex = params.pageIndex || 0;
+    this.pageSize = params.pageSize || 20;
+  }
+
+  private _initFilterFormFromQueryParams(params) {
     let filterConditionsValue =
       this.filterForm.controls.filterConditions?.value;
     if (_.isEmpty(params)) {
@@ -423,7 +446,9 @@ export class CustomerListComponent implements OnInit, OnDestroy {
     }
 
     this.filterForm.controls.filterConditions.setValue(filterConditionsValue);
+  }
 
+  private _initFilterOptionsFromQueryParams(params) {
     this.filterOptions.forEach((filterOption) => {
       if (filterOption.type === FILTER_TYPE.DATETIME) {
         filterOption.value = {
@@ -436,8 +461,12 @@ export class CustomerListComponent implements OnInit, OnDestroy {
           : [];
       } else if (filterOption.controlName === 'paydayLoanStatus') {
         filterOption.value = this.filterForm.controls.paydayLoanStatus.value
-          ? this.filterForm.controls.paydayLoanStatus.value.split(',')
-          : [];
+          ? this.filterForm.controls.paydayLoanStatus.value
+          : null;
+      } else if (filterOption.controlName === 'userStatus') {
+        filterOption.value = this.filterForm.controls.userStatus.value
+          ? this.filterForm.controls.userStatus.value
+          : null;
       } else if (filterOption.controlName === 'accountClassification') {
         filterOption.value = this.filterForm.controls.accountClassification
           .value
@@ -445,11 +474,6 @@ export class CustomerListComponent implements OnInit, OnDestroy {
           : '';
       }
     });
-    console.log('filter option', this.filterOptions);
-
-    this.breadcrumbOptions.keyword = params.keyword;
-    this.pageIndex = params.pageIndex || 0;
-    this.pageSize = params.pageSize || 20;
   }
 
   private _resetFilterOptions() {
@@ -571,6 +595,10 @@ export class CustomerListComponent implements OnInit, OnDestroy {
           );
         } else if (event.controlName === 'paydayLoanStatus') {
           this.filterForm.controls.paydayLoanStatus.setValue(
+            event.value ? event.value : ''
+          );
+        } else if (event.controlName === 'userStatus') {
+          this.filterForm.controls.userStatus.setValue(
             event.value ? event.value : ''
           );
         } else if (event.controlName === 'accountClassification') {

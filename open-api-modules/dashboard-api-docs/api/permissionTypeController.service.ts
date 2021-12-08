@@ -17,7 +17,7 @@ import { HttpClient, HttpHeaders, HttpParams,
 import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
-import { ApiResponseCollectionParentPermissionTypeResponse } from '../model/models';
+import { ApiResponseListParentPermissionTypeResponse } from '../model/models';
 import { ApiResponsePermissionTypeEntity } from '../model/models';
 import { ApiResponseSearchAndPaginationResponsePermissionTypeEntity } from '../model/models';
 
@@ -134,9 +134,9 @@ export class PermissionTypeControllerService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getPermissionTypeByTreeFormat(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseCollectionParentPermissionTypeResponse>;
-    public getPermissionTypeByTreeFormat(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseCollectionParentPermissionTypeResponse>>;
-    public getPermissionTypeByTreeFormat(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseCollectionParentPermissionTypeResponse>>;
+    public getPermissionTypeByTreeFormat(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseListParentPermissionTypeResponse>;
+    public getPermissionTypeByTreeFormat(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseListParentPermissionTypeResponse>>;
+    public getPermissionTypeByTreeFormat(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseListParentPermissionTypeResponse>>;
     public getPermissionTypeByTreeFormat(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
 
         let headers = this.defaultHeaders;
@@ -159,7 +159,7 @@ export class PermissionTypeControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.get<ApiResponseCollectionParentPermissionTypeResponse>(`${this.configuration.basePath}/v1/permissionTypes`,
+        return this.httpClient.get<ApiResponseListParentPermissionTypeResponse>(`${this.configuration.basePath}/v1/permissionTypes`,
             {
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,

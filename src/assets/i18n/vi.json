@@ -70,6 +70,9 @@
     "active": "Đang hoạt động",
     "inactive": "Ngừng hoạt động",
     "update_success": "Cập nhật dữ liệu thành công",
+    "create_success": "Tạo người dùng thành công",
+    "lock_success": "Khóa tài khoản thành công",
+    "unlock_success": "Mở khóa tài khoản thành công",
     "process_downloading": "Đang tải xuống tài liệu"
   },
   "auth": {
@@ -220,6 +223,7 @@
       "unlock": "Cho phép hoạt động",
       "cancel_update": "Hủy cập nhật",
       "save_update": "Lưu cập nhật",
+      "active_status": "Trạng thái hoạt động",
       "gender": "Giới tính",
       "gender_male": "Nam",
       "gender_female": "Nữ",
@@ -227,6 +231,7 @@
       "company": "Công ty",
       "status": "Trạng thái tài khoản",
       "update_individual_info": "Cập nhật thông tin khách hàng",
+      "verify": "Yêu cầu xác thực lại thông tin",
       "update_company_info": "Cập nhật thông tin công ty",
       "disable_customer": {
         "title": "Ngừng hoạt động",
@@ -236,6 +241,9 @@
       },
       "enable_customer": {
         "dialog_title": "Bạn có chắc chắn cho phép người dùng này hoạt động trở lại?"
+      },
+      "verify_customer": {
+        "dialog_title": "Bạn có chắc chắn muốn yêu cầu xác thực lại thông tin?"
       }
     },
     "identity": {
@@ -450,11 +458,12 @@
     },
     "service_fee": {
       "service_fee": "Phí dịch vụ",
-      "service_fee_hmg": "2 % giá trị khoản vay tối thiểu là 100,000 VND",
+      "service_fee_hmg": "2 % giá trị khoản vay",
       "service_fee_tng": "2.5 % giá trị khoản vay tối thiểu là 100,000 VND",
       "transaction_fee": "Phí xử lý giao dịch",
-      "vat_fee": "Phí xử lý giao dịch",
-      "vat_fee_description": "Phí xử lý giao dịch",
+      "transaction_fee_description": "Phí chuyển khoản 7k7 + phí cổng thanh toán 3.5k",
+      "vat_fee": "Phí VAT",
+      "vat_fee_description": "10% của Phí dịch vụ",
       "discount_fee": "Ưu đãi phí",
       "total_fee": "Tổng phí phải trả"
     },
@@ -478,6 +487,8 @@
     "account_status": "Trạng thái hoạt động",
     "loan_status": "Trạng thái khoản ứng",
     "merchant_group": "Nhóm nhà cung cấp",
+    "role_group": "Vai trò",
+    "select_all": "Chọn tất cả",
     "account_classification": "Phân loại tài khoản",
     "account_classification_test": "Tài khoản test",
     "account_classification_real": "Tài khoản thực",
@@ -556,6 +567,7 @@
     "manage_payday_loan": "Quản lý khoản ứng",
     "search_field_payday_loan": "Mã khoản ứng, Tên, Số điện thoại...",
     "search_field_customer_list": "Họ tên, Mã nhân viên, Số điện thoại, Email",
+    "search_field_user_list": "Tên đăng nhập, tên người dùng",
     "manage_user": "Quản lý người dùng",
     "merchant": "Quản lý nhà cung cấp"
   },
@@ -565,6 +577,7 @@
       "user_account": "Tên đăng nhập",
       "username": "Tên người dùng",
       "role": "Vai trò",
+      "position": "Vị trí công việc",
       "status": "Trạng thái",
       "active_user": "Đang hoạt động",
       "inactive_user": "Ngừng hoạt động",

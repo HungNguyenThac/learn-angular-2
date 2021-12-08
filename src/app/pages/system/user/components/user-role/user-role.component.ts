@@ -1,13 +1,12 @@
+
 import { PermissionTreeComponent } from './../../../../../share/components/operators/user-account/permission-tree/permission-tree.component';
-import { Component, OnInit, Injectable, ViewChild, ViewChildren, QueryList } from '@angular/core';
+import { Component, OnInit, Injectable, ViewChild, ViewChildren, QueryList, Input } from '@angular/core';
 import { MultiLanguageService } from '../../../../../share/translate/multiLanguageService';
 import { MatDialog } from '@angular/material/dialog';
 import { EditRoleDialogComponent } from '../../../../../share/components/operators/user-account/edit-role-dialog/edit-role-dialog.component';
-import { ApiResponseListCity } from '../../../../../../../open-api-modules/customer-api-docs';
 import { Subscription } from 'rxjs';
 import {
-  ApiResponseCollectionParentPermissionTypeResponse,
-  ParentPermissionTypeResponse,
+  ApiResponseListParentPermissionTypeResponse,
   PermissionTypeControllerService,
 } from '../../../../../../../open-api-modules/dashboard-api-docs';
 
@@ -17,7 +16,7 @@ import {
   styleUrls: ['./user-role.component.scss'],
 })
 export class UserRoleComponent implements OnInit {
-  treeData: Array<ParentPermissionTypeResponse>;
+  @Input() treeData;
   subManager = new Subscription();
   roles = [
     { title: 'Kiểm duyệt viên', id: '1' },
@@ -94,30 +93,25 @@ export class UserRoleComponent implements OnInit {
     this.subManager.add(
       this.permissionTypeControllerService
         .getPermissionTypeByTreeFormat()
-        .subscribe(
-          (result: ApiResponseCollectionParentPermissionTypeResponse) => {
-            if (!result || result.responseCode !== 200) {
-              // return this.handleResponseError(result.errorCode);
-            }
-            this.treeData = result.result;
-            console.log(this.treeData);
+        .subscribe((result: ApiResponseListParentPermissionTypeResponse) => {
+          if (!result || result.responseCode !== 200) {
+            // return this.handleResponseError(result.errorCode);
           }
-        )
+          this.treeData = result.result;
+          console.log(this.treeData);
+        })
     );
   }
 
   addRoleToUser() {
     const arrayPermissionTreeComponent = this.permissionTree.toArray();
-    let arrayPermission = []
+    let arrayPermission = [];
     for (let i = 0; i < arrayPermissionTreeComponent.length; i++) {
-      if (
-        arrayPermissionTreeComponent[i].totalPermissionSelected().length > 0
-      )
+      if (arrayPermissionTreeComponent[i].totalPermissionSelected().length > 0)
         arrayPermission.push(
           ...arrayPermissionTreeComponent[i].totalPermissionSelected()
         );
     }
     console.log(arrayPermission);
-
   }
 }

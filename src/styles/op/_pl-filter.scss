@@ -97,6 +97,18 @@
   text-overflow: ellipsis;
 }
 
+.filter-action-title {
+  font-family: $sfPro;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 20px;
+  text-align: right;
+  letter-spacing: 0.1px;
+  color: $system-color-blue;
+  cursor: pointer;
+}
+
 .filter-form-container-expand {
   display: none;
   position: absolute;

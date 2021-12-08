@@ -1,6 +1,5 @@
 import { MatDialog } from '@angular/material/dialog';
 import {
-  AfterViewInit,
   Component,
   EventEmitter,
   Input,
@@ -10,10 +9,14 @@ import {
 } from '@angular/core';
 import { MultiLanguageService } from '../../../../share/translate/multiLanguageService';
 import {
+  ApiResponseCity,
   ApiResponseCommune,
   ApiResponseDistrict,
   Bank,
+  CityControllerService,
+  CommuneControllerService,
   CustomerInfo,
+  DistrictControllerService,
 } from '../../../../../../open-api-modules/dashboard-api-docs';
 import { CustomerDetailUpdateDialogComponent } from '../customer-individual-info-update-dialog/customer-detail-update-dialog.component';
 import { Subscription } from 'rxjs';
@@ -29,16 +32,15 @@ import { ToastrService } from 'ngx-toastr';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { VirtualAccount } from '../../../../../../open-api-modules/payment-api-docs';
 import * as moment from 'moment';
-import { AddNewUserDialogComponent } from '../../../../share/components/operators/user-account/add-new-user-dialog/add-new-user-dialog.component';
-import { PlPromptComponent } from '../../../../share/components';
 import { NotificationService } from '../../../../core/services/notification.service';
 import {
-  ApiResponseCity,
-  ApiResponseListDistrict,
-  CityControllerService,
-  CommuneControllerService,
-  DistrictControllerService,
-} from '../../../../../../open-api-modules/dashboard-api-docs';
+  ApiResponseString,
+  InfoControllerService,
+} from '../../../../../../open-api-modules/customer-api-docs';
+import {
+  ApiResponseCustomerAccountEntity,
+  CustomerControllerService,
+} from '../../../../../../open-api-modules/identity-api-docs';
 
 @Component({
   selector: 'app-customer-individual-info',
@@ -50,7 +52,7 @@ export class CustomerIndividualInfoComponent implements OnInit, OnDestroy {
   subManager = new Subscription();
   selfieSrc: string;
   diableTime: string;
-  showDisableOption: boolean = true;
+  customerStatus: string;
 
   communeById: string;
   timeDisableOptions: any = [
@@ -129,9 +131,11 @@ export class CustomerIndividualInfoComponent implements OnInit, OnDestroy {
     private notifier: ToastrService,
     private formBuilder: FormBuilder,
     private notificationService: NotificationService,
+    private infoControllerService: InfoControllerService,
     private cityControllerService: CityControllerService,
     private districtControllerService: DistrictControllerService,
-    private communeControllerService: CommuneControllerService
+    private communeControllerService: CommuneControllerService,
+    private customerControllerService: CustomerControllerService
   ) {
     this.customerIndividualForm = this.formBuilder.group({
       note: [''],
@@ -150,6 +154,7 @@ export class CustomerIndividualInfoComponent implements OnInit, OnDestroy {
   set customerInfo(value: CustomerInfo) {
     this._customerInfo = value;
     this.virtualAccount = this._customerInfo?.virtualAccount;
+    this.customerStatus = value?.userStatus;
     this._getSelfieDocument(this.customerId, value);
     this._initIndividualFormData(this.customerId, value);
     this.getCustomerLocation(value);
@@ -180,6 +185,32 @@ export class CustomerIndividualInfoComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {}
+
+  verifyInfo() {
+    const confirmVerifyRef = this.notificationService.openPrompt({
+      imgUrl: '../../../../../assets/img/icon/group-5/unlock-dialog.svg',
+      title: this.multiLanguageService.instant(
+        'customer.individual_info.verify_customer.dialog_title'
+      ),
+      content: '',
+      primaryBtnText: this.multiLanguageService.instant('common.allow'),
+      primaryBtnClass: 'btn-primary',
+      secondaryBtnText: this.multiLanguageService.instant('common.skip'),
+    });
+    confirmVerifyRef.afterClosed().subscribe((result) => {
+      if (result === 'PRIMARY') {
+        this.subManager.add(
+          this.infoControllerService
+            .returnConfirmInformation(this.customerId)
+            .subscribe((result: ApiResponseString) => {
+              if (!result || result.responseCode !== 200) {
+                // return this.handleResponseError(result.errorCode);
+              }
+            })
+        );
+      }
+    });
+  }
 
   openUpdateDialog() {
     const updateDialogRef = this.dialog.open(
@@ -242,7 +273,28 @@ export class CustomerIndividualInfoComponent implements OnInit, OnDestroy {
     });
     confirmDisableRef.afterClosed().subscribe((result) => {
       if (result === 'PRIMARY') {
-        this.showDisableOption = false;
+        let now = new Date();
+        const unlockTime = new Date(now.getTime() + value * 1000);
+        this.subManager.add(
+          this.customerControllerService
+            .lockAccount({
+              accountId: this.customerId,
+              unLockTime: this.formatTimeSecond(unlockTime),
+            })
+            .subscribe((result: ApiResponseCustomerAccountEntity) => {
+              if (!result || result.responseCode !== 200) {
+                // return this.handleResponseError(result.errorCode);
+              }
+              if (result.responseCode === 200) {
+                this.triggerUpdateInfo.emit();
+                setTimeout(() => {
+                  this.notifier.success(
+                    this.multiLanguageService.instant('common.lock_success')
+                  );
+                }, 500);
+              }
+            })
+        );
       }
     });
   }
@@ -260,7 +312,23 @@ export class CustomerIndividualInfoComponent implements OnInit, OnDestroy {
     });
     confirmEnableRef.afterClosed().subscribe((result) => {
       if (result === 'PRIMARY') {
-        this.showDisableOption = true;
+        this.subManager.add(
+          this.customerControllerService
+            .unLockAccount(this.customerId)
+            .subscribe((result: ApiResponseCustomerAccountEntity) => {
+              if (!result || result.responseCode !== 200) {
+                // return this.handleResponseError(result.errorCode);
+              }
+              if (result.responseCode === 200) {
+                this.triggerUpdateInfo.emit();
+                setTimeout(() => {
+                  this.notifier.success(
+                    this.multiLanguageService.instant('common.unlock_success')
+                  );
+                }, 500);
+              }
+            })
+        );
       }
     });
   }
@@ -276,6 +344,13 @@ export class CustomerIndividualInfoComponent implements OnInit, OnDestroy {
     if (!timeInput) return;
     return moment(new Date(timeInput), 'YYYY-MM-DD HH:mm:ss').format(
       'DD/MM/YYYY'
+    );
+  }
+
+  formatTimeSecond(timeInput) {
+    if (!timeInput) return;
+    return moment(new Date(timeInput), 'YYYY-MM-DD HH:mm:ss').format(
+      'DD/MM/YYYY HH:mm:ss'
     );
   }
 
