@@ -64,7 +64,7 @@ export class DialogUserInfoUpdateComponent implements OnInit {
       fullName: userInfo?.fullName,
       username: userInfo?.username,
       groupId: userInfo?.groupId,
-      groupName: userInfo?.groupEntity.name,
+      groupName: userInfo?.groupEntity?.name,
       mobile: userInfo?.mobile,
       email: userInfo?.email,
       position: userInfo?.position,
