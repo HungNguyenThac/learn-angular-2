@@ -29,7 +29,7 @@
   <app-user-element
     *ngxPermissionsOnly="['dashboardAdminAccounts:getAdminAccountById']"
     [treeData]="treeData"
-    [userId]="expandedElementId"
+    [userId]="userInfo"
     (triggerUpdateElementInfo)="updateElementInfo($event)"
     class="w-100"
   ></app-user-element>
