@@ -32,16 +32,9 @@ const routes: Routes = [
           ),
       },
       {
-        path: 'user',
+        path: 'system',
         loadChildren: () =>
-          import('./pages/system/user/user.module').then((m) => m.UserModule),
-      },
-      {
-        path: 'merchant',
-        loadChildren: () =>
-          import('./pages/system/merchant/merchant.module').then(
-            (m) => m.MerchantModule
-          ),
+          import('./pages/system/system.module').then((m) => m.SystemModule),
       },
       {
         path: 'auth',

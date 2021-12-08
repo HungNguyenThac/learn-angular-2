@@ -24,6 +24,7 @@
 
 <ng-template #detailElementTemplate>
   <app-customer-detail-element
+    *ngxPermissionsOnly="['dashboardCustomers:getCustomerById']"
     class="w-100"
     [customerId]="expandedElementId"
     (updateElementInfo)="updateElementInfo($event)"

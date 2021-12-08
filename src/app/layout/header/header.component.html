@@ -45,6 +45,7 @@
                   <mat-menu #settingMenu="matMenu">
                     <span (mouseleave)="settingMenuTrigger.closeMenu()">
                       <button
+                        *ngxPermissionsOnly="['dashboardAdminAccounts:getAdminAccounts']"
                         (click)="onClickManageUser()"
                         class="gap-1"
                         mat-menu-item
@@ -57,11 +58,11 @@
                           <span>{{ "header.mange_user" | translate }}</span>
                         </div>
                       </button>
-                      <button class="gap-1" mat-menu-item>
-                        <div class="d-flex gap-1 align-items-center">
-                          <span>Setting Option</span>
-                        </div>
-                      </button>
+<!--                      <button class="gap-1" mat-menu-item>-->
+<!--                        <div class="d-flex gap-1 align-items-center">-->
+<!--                          <span>Setting Option</span>-->
+<!--                        </div>-->
+<!--                      </button>-->
                     </span>
                   </mat-menu>
                 </section>
