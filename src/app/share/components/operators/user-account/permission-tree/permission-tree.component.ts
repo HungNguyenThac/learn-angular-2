@@ -8,6 +8,7 @@ import {
   MatTreeFlattener,
 } from '@angular/material/tree';
 import { BehaviorSubject, combineLatest } from 'rxjs';
+import { ChangeDetectorRef } from '@angular/core';
 
 /**
  * Node for to-do item
@@ -245,7 +246,7 @@ export class PermissionTreeComponent implements OnInit, AfterViewInit {
   //   this.updateItem(nestedNode!, itemValue);
   // }
 
-  constructor() {}
+  constructor(private changeDetectorRef: ChangeDetectorRef) {}
 
   ngOnInit(): void {
     this.initialize();
@@ -266,29 +267,26 @@ export class PermissionTreeComponent implements OnInit, AfterViewInit {
     this.dataChange.subscribe((data) => {
       this.dataSource.data = data;
     });
-
   }
 
   ngAfterViewInit() {
     this.treeControl.dataNodes.map((ele) => {
       const descendants = this.treeControl.getDescendants(ele);
       descendants.map((ele) => {
-
         if (this.activePermissions.includes(ele?.item?.id)) {
-          console.log(ele);
           this.checklistSelection.select(ele);
         }
         return ele;
       });
     });
+    this.changeDetectorRef.detectChanges();
   }
 
   totalPermissionSelected() {
-
-    return this.checklistSelection.selected.filter((ele)=>
-      ele.level > 0
-    ).map((ele)=>{
-      return ele.item?.id
-    })
+    return this.checklistSelection.selected
+      .filter((ele) => ele.level > 0)
+      .map((ele) => {
+        return ele.item?.id;
+      });
   }
 }
