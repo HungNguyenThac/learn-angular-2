@@ -39,6 +39,7 @@ import formatPunishStartTimeHmg from '../../../../../core/utils/format-punish-st
 import formatPunishStartTimeTng from '../../../../../core/utils/format-punish-start-time-tng';
 import formatPunishCountHmg from '../../../../../core/utils/format-punish-count-hmg';
 import formatPunishCountTng from '../../../../../core/utils/format-punish-count-tng';
+import { GlobalConstants } from '../../../../../core/common/global-constants';
 
 @Component({
   selector: 'app-loan-detail-info',
@@ -267,7 +268,7 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
         subTitle: this.multiLanguageService.instant(
           'payday_loan.service_fee.service_fee_hmg'
         ),
-        value: 0.02 * this.loanDetail?.expectedAmount,
+        value: this.calculateServiceFee(this.loanDetail),
         type: DATA_CELL_TYPE.CURRENCY,
         format: null,
       },
@@ -278,7 +279,7 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
         subTitle: this.multiLanguageService.instant(
           'payday_loan.service_fee.transaction_fee_description'
         ),
-        value: '11200',
+        value: GlobalConstants.PL_VALUE_DEFAULT.TRANSACTION_FEE,
         type: DATA_CELL_TYPE.CURRENCY,
         format: null,
       },
@@ -312,7 +313,7 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
         subTitle: this.multiLanguageService.instant(
           'payday_loan.service_fee.service_fee_tng'
         ),
-        value: 0.025 * this.loanDetail?.expectedAmount,
+        value: this.calculateServiceFee(this.loanDetail),
         type: DATA_CELL_TYPE.CURRENCY,
         format: null,
       },
@@ -323,7 +324,7 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
         subTitle: this.multiLanguageService.instant(
           'payday_loan.service_fee.transaction_fee_description'
         ),
-        value: '11200',
+        value: GlobalConstants.PL_VALUE_DEFAULT.TRANSACTION_FEE,
         type: DATA_CELL_TYPE.CURRENCY,
         format: null,
       },
@@ -343,7 +344,10 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
         subTitle: this.multiLanguageService.instant(
           'payday_loan.service_fee.vat_fee_description'
         ),
-        value: 0.1 * 0.025 * this.loanDetail?.expectedAmount,
+        value:
+          GlobalConstants.PL_VALUE_DEFAULT.TAX_FEE_TNG *
+          GlobalConstants.PL_VALUE_DEFAULT.SERVICE_FEE_TNG *
+          this.loanDetail?.expectedAmount,
         type: DATA_CELL_TYPE.CURRENCY,
         format: null,
       },
@@ -357,6 +361,28 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
         format: null,
       },
     ];
+  }
+
+  calculateServiceFee(loanDetail) {
+    if (loanDetail?.companyGroupName === 'TNG') {
+      if (
+        loanDetail?.expectedAmount *
+          GlobalConstants.PL_VALUE_DEFAULT.SERVICE_FEE_TNG <
+        GlobalConstants.PL_VALUE_DEFAULT.MINIMUM_SERVICE_FEE_TNG
+      ) {
+        return GlobalConstants.PL_VALUE_DEFAULT.MINIMUM_SERVICE_FEE_TNG;
+      } else {
+        return (
+          loanDetail?.expectedAmount *
+          GlobalConstants.PL_VALUE_DEFAULT.SERVICE_FEE_TNG
+        );
+      }
+    } else {
+      return (
+        loanDetail?.expectedAmount *
+        GlobalConstants.PL_VALUE_DEFAULT.SERVICE_FEE_HMG
+      );
+    }
   }
 
   getDiscountValue(voucher: Voucher) {

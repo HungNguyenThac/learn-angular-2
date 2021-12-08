@@ -42,7 +42,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   logoSrc: string = 'assets/img/monex-logo.svg';
   showProfileBtn: boolean = false;
   shortName: string = '0';
-  userInfo;
+  userInfo: AdminAccountEntity;
 
   accountInfo: AccountInfo = {
     fullName: 'Nguyễn Văn A',
@@ -185,7 +185,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     );
     this.subManager.add(
       this.customerInfo$.subscribe((customerInfo: AdminAccountEntity) => {
-        console.log('customerInfo', customerInfo);
+        this.userInfo = customerInfo;
       })
     );
     this.subManager.add(
