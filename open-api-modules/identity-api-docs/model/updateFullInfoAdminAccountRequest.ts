@@ -12,6 +12,7 @@
 
 
 export interface UpdateFullInfoAdminAccountRequest { 
+    groupId?: string;
     fullName: string;
     email: string;
     mobile: string;

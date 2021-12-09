@@ -5,7 +5,8 @@ import { Subscription } from 'rxjs';
 import {
   BUTTON_TYPE,
   DATA_CELL_TYPE,
-  DATA_STATUS_TYPE, RESPONSE_CODE,
+  DATA_STATUS_TYPE,
+  RESPONSE_CODE,
 } from '../../../../../core/common/enum/operator';
 import { NotificationService } from '../../../../../core/services/notification.service';
 import { ToastrService } from 'ngx-toastr';
@@ -213,6 +214,7 @@ export class UserDetailComponent implements OnInit {
 
   _bindingDialogIndividualData(data) {
     return {
+      groupId: data?.accountRole,
       fullName: data?.accountName,
       email: data?.accountEmail,
       mobile: data?.accountPhone,
