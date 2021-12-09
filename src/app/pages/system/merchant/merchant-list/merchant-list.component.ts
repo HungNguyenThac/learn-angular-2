@@ -7,6 +7,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { Sort } from '@angular/material/sort';
 import { FilterEventModel } from '../../../../public/models/filter/filter-event.model';
 import {
+  BUTTON_TYPE,
   DATA_CELL_TYPE,
   DATA_STATUS_TYPE,
   FILTER_TYPE,
@@ -458,7 +459,7 @@ export class MerchantListComponent implements OnInit {
       secondaryBtnText: this.multiLanguageService.instant('common.skip'),
     });
     confirmDeleteRef.afterClosed().subscribe((result) => {
-      if (result === 'PRIMARY') {
+      if (result === BUTTON_TYPE.PRIMARY) {
         this.notifier.success(
           this.multiLanguageService.instant(
             'system.user_detail.delete_user.toast'

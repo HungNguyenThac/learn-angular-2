@@ -11,7 +11,10 @@ import { Component, Inject, OnInit } from '@angular/core';
 import * as moment from 'moment';
 import { VirtualAccount } from '../../../../../../open-api-modules/payment-api-docs';
 import { Bank } from 'open-api-modules/dashboard-api-docs';
-import { BUTTON_TYPE } from '../../../../core/common/enum/operator';
+import {
+  BUTTON_TYPE,
+  RESPONSE_CODE,
+} from '../../../../core/common/enum/operator';
 import { Subject, Subscription } from 'rxjs';
 import {
   ApiResponseListCity,
@@ -222,7 +225,7 @@ export class CustomerDetailUpdateDialogComponent implements OnInit {
       this.cityControllerService
         .getAllCity()
         .subscribe((result: ApiResponseListCity) => {
-          if (!result || result.responseCode !== 200) {
+          if (!result || result.responseCode !== RESPONSE_CODE.SUCCESS) {
             // return this.handleResponseError(result.errorCode);
           }
           this.cityData = result.result;
@@ -239,7 +242,7 @@ export class CustomerDetailUpdateDialogComponent implements OnInit {
       this.cityControllerService
         .getDistrictsByCityId(this.customerIndividualForm.controls.cityId.value)
         .subscribe((result: ApiResponseListDistrict) => {
-          if (!result || result.responseCode !== 200) {
+          if (!result || result.responseCode !== RESPONSE_CODE.SUCCESS) {
             // return this.handleResponseError(result.errorCode);
           }
           this.districtData = result.result;
@@ -258,7 +261,7 @@ export class CustomerDetailUpdateDialogComponent implements OnInit {
           this.customerIndividualForm.controls.districtId.value
         )
         .subscribe((result: ApiResponseListDistrict) => {
-          if (!result || result.responseCode !== 200) {
+          if (!result || result.responseCode !== RESPONSE_CODE.SUCCESS) {
             // return this.handleResponseError(result.errorCode);
           }
           this.communeData = result.result;

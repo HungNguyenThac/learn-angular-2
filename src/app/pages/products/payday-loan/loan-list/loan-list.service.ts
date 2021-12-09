@@ -129,7 +129,6 @@ export class LoanListService {
         .getContractByLoanId(loanId, customerId)
         .pipe(
           map((results: ApiResponseContract) => {
-            console.log('display ok');
             return results;
           }),
 
@@ -144,7 +143,6 @@ export class LoanListService {
         .getContract(loanId, customerId)
         .pipe(
           map((results: ApiResponseContract) => {
-            console.log('display ok');
             return results;
           }),
 

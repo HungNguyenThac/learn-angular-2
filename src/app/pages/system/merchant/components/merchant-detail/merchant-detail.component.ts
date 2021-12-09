@@ -80,7 +80,7 @@ export class MerchantDetailComponent implements OnInit {
       secondaryBtnText: this.multiLanguageService.instant('common.skip'),
     });
     confirmLockRef.afterClosed().subscribe((result) => {
-      if (result === 'PRIMARY') {
+      if (result === BUTTON_TYPE.PRIMARY) {
         this.showEnableBtn = true;
       }
     });
@@ -98,7 +98,7 @@ export class MerchantDetailComponent implements OnInit {
       secondaryBtnText: this.multiLanguageService.instant('common.skip'),
     });
     confirmUnlockRef.afterClosed().subscribe((result) => {
-      if (result === 'PRIMARY') {
+      if (result === BUTTON_TYPE.PRIMARY) {
         this.showEnableBtn = false;
       }
     });
@@ -118,7 +118,7 @@ export class MerchantDetailComponent implements OnInit {
       secondaryBtnText: this.multiLanguageService.instant('common.skip'),
     });
     confirmDeleteRef.afterClosed().subscribe((result) => {
-      if (result === 'PRIMARY') {
+      if (result === BUTTON_TYPE.PRIMARY) {
         this.notifier.success(
           this.multiLanguageService.instant(
             'system.user_detail.delete_user.toast'

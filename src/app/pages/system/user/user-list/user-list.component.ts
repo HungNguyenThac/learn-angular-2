@@ -10,8 +10,8 @@ import {
   DATA_STATUS_TYPE,
   FILTER_ACTION_TYPE,
   FILTER_TYPE,
-  NAV_ITEM,
   QUERY_CONDITION_TYPE,
+  RESPONSE_CODE,
 } from '../../../../core/common/enum/operator';
 import { MultiLanguageService } from '../../../../share/translate/multiLanguageService';
 import { Observable, Subscription } from 'rxjs';
@@ -50,7 +50,6 @@ import { UserListService } from './user-list.service';
 import {
   AdminAccountControllerService,
   ApiResponseAdminAccountEntity,
-  ApiResponseListString,
   ApiResponseString,
 } from '../../../../../../open-api-modules/identity-api-docs';
 import * as moment from 'moment';
@@ -68,6 +67,7 @@ export class UserListComponent implements OnInit, OnDestroy {
   //Mock data
   selectButtons: TableSelectActionModel[] = [
     {
+      hidden: false,
       action: 'delete',
       color: 'accent',
       content: this.multiLanguageService.instant(
@@ -77,6 +77,7 @@ export class UserListComponent implements OnInit, OnDestroy {
       style: 'background-color: rgba(255, 255, 255, 0.1);',
     },
     {
+      hidden: false,
       action: 'lock',
       color: 'accent',
       content: this.multiLanguageService.instant(
@@ -99,7 +100,7 @@ export class UserListComponent implements OnInit, OnDestroy {
       'breadcrumb.search_field_user_list'
     ),
     searchable: true,
-    showBtnAdd: true,
+    showBtnAdd: false,
     btnAddText: this.multiLanguageService.instant('system.add_user'),
     keyword: '',
   };
@@ -218,7 +219,38 @@ export class UserListComponent implements OnInit, OnDestroy {
     );
     this.store.dispatch(new fromActions.SetOperatorInfo(null));
     this._initSubscription();
-    this.getPermissionList();
+    this._getPermissionList();
+  }
+
+  private async _checkActionPermissions() {
+    const hasCredentialsCreatePermission =
+      await this.permissionsService.hasPermission('credentials:create');
+    const hasDeleteAccountPermission =
+      await this.permissionsService.hasPermission(
+        'credentials:deleteAdminAccount'
+      );
+    const hasLockMultipleAccountPermission =
+      await this.permissionsService.hasPermission(
+        'credentials:lockMultiAccount'
+      );
+
+    //TODO
+    // if (hasCredentialsCreatePermission) {
+      this.breadcrumbOptions.showBtnAdd = true;
+    // }
+
+    let selectedButtons = JSON.parse(JSON.stringify(this.selectButtons));
+    selectedButtons.forEach((button) => {
+      if (button.action === 'delete') {
+        button.hidden = !hasDeleteAccountPermission;
+        return;
+      }
+      if (button.action === 'lock') {
+        button.hidden = !hasLockMultipleAccountPermission;
+      }
+    });
+
+    this.selectButtons = selectedButtons;
   }
 
   private _getUserList() {
@@ -338,31 +370,35 @@ export class UserListComponent implements OnInit, OnDestroy {
       secondaryBtnText: this.multiLanguageService.instant('common.skip'),
     });
     confirmLockRef.afterClosed().subscribe((result) => {
-      if (result === 'PRIMARY') {
-        let now = new Date();
-        const unlockTime = new Date(now.getTime() + 999999999 * 1000);
-        this.subManager.add(
-          this.adminAccountControllerService
-            .lockMultiAccount({
-              accountIds: userIds,
-            })
-            .subscribe((result: ApiResponseString) => {
-              if (!result || result.responseCode !== 200) {
-                // return this.handleResponseError(result.errorCode);
-              }
-              if (result.responseCode === 200) {
-                this.refreshContent();
-                this.triggerDeselectUsers();
-                setTimeout(() => {
-                  this.notifier.success(
-                    this.multiLanguageService.instant('common.lock_success')
-                  );
-                }, 3000);
-              }
-            })
-        );
+      if (result === BUTTON_TYPE.PRIMARY) {
+        this._lockMultipleAccount(userIds);
       }
     });
+  }
+
+  private _lockMultipleAccount(userIds) {
+    if (!userIds) {
+      return;
+    }
+    this.subManager.add(
+      this.adminAccountControllerService
+        .lockMultiAccount({
+          accountIds: userIds,
+        })
+        .subscribe((result: ApiResponseString) => {
+          if (!result || result.responseCode !== RESPONSE_CODE.SUCCESS) {
+            return;
+          }
+          this.triggerDeselectUsers();
+
+          setTimeout(() => {
+            this.refreshContent();
+            this.notifier.success(
+              this.multiLanguageService.instant('common.lock_success')
+            );
+          }, 3000);
+        })
+    );
   }
 
   public deleteMultiplePrompt(userIds) {
@@ -380,30 +416,46 @@ export class UserListComponent implements OnInit, OnDestroy {
     });
     confirmDeleteRef.afterClosed().subscribe((event) => {
       if (event === BUTTON_TYPE.PRIMARY) {
-        userIds.forEach((userId) => {
-          this.subManager.add(
-            this.adminAccountControllerService
-              .deleteAdminAccount(userId)
-              .subscribe((result: ApiResponseAdminAccountEntity) => {
-                if (!result || result.responseCode !== 200) {
-                  // return this.handleResponseError(result.errorCode);
-                }
-                if (result.responseCode === 200) {
-                }
-              })
-          );
-        });
-        this.refreshContent();
-        this.triggerDeselectUsers();
-        setTimeout(() => {
+        this._deleteMultipleUser(userIds);
+      }
+    });
+  }
+
+  private _deleteMultipleUser(userIds) {
+    if (!userIds) {
+      return;
+    }
+    userIds.forEach((userId) => {
+      this._deleteUserById(userId);
+    });
+  }
+
+  private _deleteUserById(userId: string) {
+    if (!userId) {
+      return;
+    }
+    this.subManager.add(
+      this.adminAccountControllerService.deleteAdminAccount(userId).subscribe(
+        (result: ApiResponseAdminAccountEntity) => {
+          if (!result || result.responseCode !== RESPONSE_CODE.SUCCESS) {
+            return;
+          }
+
           this.notifier.success(
             this.multiLanguageService.instant(
               'system.user_detail.delete_user.toast'
             )
           );
-        }, 3000);
-      }
-    });
+        },
+        (error) => {},
+        () => {
+          setTimeout(() => {
+            this.triggerDeselectUsers();
+            this.refreshContent();
+          }, 3000);
+        }
+      )
+    );
   }
 
   formatTimeSecond(timeInput) {
@@ -439,6 +491,14 @@ export class UserListComponent implements OnInit, OnDestroy {
         this._getUserList();
         this._getCompanyList();
         this.getRoleList();
+      })
+    );
+
+    this.subManager.add(
+      this.permissionsService.permissions$.subscribe((permissions) => {
+        if (permissions) {
+          this._checkActionPermissions();
+        }
       })
     );
   }
@@ -580,8 +640,8 @@ export class UserListComponent implements OnInit, OnDestroy {
       this.adminAccountControllerService
         .create3(updateInfoRequest)
         .subscribe((result: ApiResponseAdminAccountEntity) => {
-          if (!result || result.responseCode !== 200) {
-            // return this.handleResponseError(result.errorCode);
+          if (!result || result.responseCode !== RESPONSE_CODE.SUCCESS) {
+            return;
           }
           setTimeout(() => {
             this.notifier.success(
@@ -613,13 +673,13 @@ export class UserListComponent implements OnInit, OnDestroy {
     };
   }
 
-  getPermissionList() {
+  _getPermissionList() {
     this.subManager.add(
       this.permissionTypeControllerService
         .getPermissionTypeByTreeFormat()
         .subscribe((result: ApiResponseListParentPermissionTypeResponse) => {
-          if (!result || result.responseCode !== 200) {
-            // return this.handleResponseError(result.errorCode);
+          if (!result || result.responseCode !== RESPONSE_CODE.SUCCESS) {
+            return;
           }
           this.treeData = result.result;
           console.log(this.treeData);
@@ -632,8 +692,8 @@ export class UserListComponent implements OnInit, OnDestroy {
       .getGroups(100, 0, {})
       .subscribe(
         (result: ApiResponseSearchAndPaginationResponseGroupEntity) => {
-          if (!result || result.responseCode !== 200) {
-            // return this.handleResponseError(result.errorCode);
+          if (!result || result.responseCode !== RESPONSE_CODE.SUCCESS) {
+            return;
           }
           this.roleList = result?.result?.data;
           this._initRoleOptions();
@@ -684,7 +744,6 @@ export class UserListComponent implements OnInit, OnDestroy {
   }
 
   public updateElementInfo(updatedUserInfo) {
-    console.log('asbdihasdgastdftqwd', updatedUserInfo);
     if (!updatedUserInfo) {
       setTimeout(() => {
         this.triggerDeselectUsers();
