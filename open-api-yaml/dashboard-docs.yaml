@@ -1826,6 +1826,38 @@ components:
         responseCode:
           type: integer
           format: int32
+    CompanyInfo:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        groupName:
+          type: string
+        code:
+          type: string
+        businessCode:
+          type: string
+        mobile:
+          type: string
+        owner:
+          type: string
+        address:
+          type: string
+        payday:
+          type: integer
+          format: int32
+        avatar:
+          type: string
+        createdBy:
+          type: string
+        updatedBy:
+          type: string
+        createdAt:
+          type: string
+        updatedAt:
+          type: string
     CustomerInfo:
       type: object
       properties:
@@ -1879,13 +1911,9 @@ components:
           type: string
         idOrigin:
           type: string
+        companyInfo:
+          $ref: '#/components/schemas/CompanyInfo'
         companyId:
-          type: string
-        companyName:
-          type: string
-        companyGroupName:
-          type: string
-        companyCode:
           type: string
         officeCode:
           type: string
@@ -1963,6 +1991,14 @@ components:
           type: string
         updatedAt:
           type: string
+        loanTngIds:
+          type: array
+          items:
+            type: object
+        loanHmgIds:
+          type: array
+          items:
+            type: object
     FraudCheck:
       type: object
       properties:
@@ -2085,23 +2121,11 @@ components:
           type: string
         personInChargeId:
           type: string
-        customerName:
-          type: string
-        customerMobileNumber:
-          type: string
-        customerEmail:
-          type: string
-        customerOrganizationName:
-          type: string
-        customerIdentityNumberOne:
-          type: string
+        customerInfo:
+          $ref: '#/components/schemas/CustomerInfo'
+        companyInfo:
+          $ref: '#/components/schemas/CompanyInfo'
         companyId:
-          type: string
-        companyName:
-          type: string
-        companyCode:
-          type: string
-        companyGroupName:
           type: string
         ratingInfo:
           $ref: '#/components/schemas/Rating'
@@ -2109,8 +2133,6 @@ components:
           $ref: '#/components/schemas/VoucherTransaction'
         voucher:
           $ref: '#/components/schemas/Voucher'
-        customerInfo:
-          $ref: '#/components/schemas/CustomerInfo'
     Rating:
       type: object
       properties:
@@ -2666,23 +2688,11 @@ components:
           type: string
         personInChargeId:
           type: string
-        customerName:
-          type: string
-        customerMobileNumber:
-          type: string
-        customerEmail:
-          type: string
-        customerOrganizationName:
-          type: string
-        customerIdentityNumberOne:
-          type: string
+        customerInfo:
+          $ref: '#/components/schemas/CustomerInfo'
+        companyInfo:
+          $ref: '#/components/schemas/CompanyInfo'
         companyId:
-          type: string
-        companyName:
-          type: string
-        companyCode:
-          type: string
-        companyGroupName:
           type: string
         ratingInfo:
           $ref: '#/components/schemas/Rating'
@@ -2835,38 +2845,6 @@ components:
         responseCode:
           type: integer
           format: int32
-    CompanyInfo:
-      type: object
-      properties:
-        id:
-          type: string
-        name:
-          type: string
-        groupName:
-          type: string
-        code:
-          type: string
-        businessCode:
-          type: string
-        mobile:
-          type: string
-        owner:
-          type: string
-        address:
-          type: string
-        payday:
-          type: integer
-          format: int32
-        avatar:
-          type: string
-        createdBy:
-          type: string
-        updatedBy:
-          type: string
-        createdAt:
-          type: string
-        updatedAt:
-          type: string
     SearchAndPaginationResponseCompanyInfo:
       type: object
       properties:
