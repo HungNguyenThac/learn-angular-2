@@ -205,7 +205,10 @@ export class CustomerIndividualInfoComponent implements OnInit, OnDestroy {
             .returnConfirmInformation(this.customerId)
             .subscribe((result: ApiResponseString) => {
               if (!result || result.responseCode !== RESPONSE_CODE.SUCCESS) {
-                // return this.handleResponseError(result.errorCode);
+                return this.notifier.error(
+                  JSON.stringify(result?.message),
+                  result?.errorCode
+                );
               }
             })
         );
@@ -284,7 +287,10 @@ export class CustomerIndividualInfoComponent implements OnInit, OnDestroy {
             })
             .subscribe((result: ApiResponseCustomerAccountEntity) => {
               if (!result || result.responseCode !== RESPONSE_CODE.SUCCESS) {
-                // return this.handleResponseError(result.errorCode);
+                return this.notifier.error(
+                  JSON.stringify(result?.message),
+                  result?.errorCode
+                );
               }
               if (result.responseCode === 200) {
                 this.triggerUpdateInfo.emit();
@@ -318,7 +324,10 @@ export class CustomerIndividualInfoComponent implements OnInit, OnDestroy {
             .unLockAccount(this.customerId)
             .subscribe((result: ApiResponseCustomerAccountEntity) => {
               if (!result || result.responseCode !== RESPONSE_CODE.SUCCESS) {
-                // return this.handleResponseError(result.errorCode);
+                return this.notifier.error(
+                  JSON.stringify(result?.message),
+                  result?.errorCode
+                );
               }
               if (result.responseCode === 200) {
                 this.triggerUpdateInfo.emit();
@@ -573,7 +582,10 @@ export class CustomerIndividualInfoComponent implements OnInit, OnDestroy {
         .getCityById(id)
         .subscribe((result: ApiResponseCity) => {
           if (!result || result.responseCode !== RESPONSE_CODE.SUCCESS) {
-            // return this.handleResponseError(result.errorCode);
+            return this.notifier.error(
+              JSON.stringify(result?.message),
+              result?.errorCode
+            );
           }
           this.leftIndividualInfos.forEach((elementInfo) => {
             if (elementInfo.key && elementInfo.key === 'city') {
@@ -591,7 +603,10 @@ export class CustomerIndividualInfoComponent implements OnInit, OnDestroy {
         .getDistrictById(id)
         .subscribe((result: ApiResponseDistrict) => {
           if (!result || result.responseCode !== RESPONSE_CODE.SUCCESS) {
-            // return this.handleResponseError(result.errorCode);
+            return this.notifier.error(
+              JSON.stringify(result?.message),
+              result?.errorCode
+            );
           }
           this.leftIndividualInfos.forEach((elementInfo) => {
             if (elementInfo.key && elementInfo.key === 'district') {
@@ -609,7 +624,10 @@ export class CustomerIndividualInfoComponent implements OnInit, OnDestroy {
         .getCommuneById(id)
         .subscribe((result: ApiResponseCommune) => {
           if (!result || result.responseCode !== RESPONSE_CODE.SUCCESS) {
-            // return this.handleResponseError(result.errorCode);
+            return this.notifier.error(
+              JSON.stringify(result?.message),
+              result?.errorCode
+            );
           }
           this.leftIndividualInfos.forEach((elementInfo) => {
             if (elementInfo.key && elementInfo.key === 'commune') {

@@ -165,7 +165,7 @@ export class EkycUploadComponent implements OnInit, AfterViewInit {
               !ekycResponse.result ||
               ekycResponse.responseCode !== RESPONSE_CODE.SUCCESS
             ) {
-              this.handleEkycError(ekycResponse);
+              return this.handleEkycError(ekycResponse);
             }
 
             this.completeEkyc.emit({

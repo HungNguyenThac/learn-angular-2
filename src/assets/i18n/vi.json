@@ -607,9 +607,22 @@
       "add_role": "Thêm vai trò",
       "edit_role": "Chỉnh sửa vai trò",
       "add_role_placeholder": "Nhập tên vai trò",
+      "code": "Mã vai trò",
+      "description": "Mô tả",
       "system": "Hệ thống",
       "transaction": "Giao dịch",
-      "customer": "Khách hàng"
+      "customer": "Khách hàng",
+      "role": "Vai trò",
+      "add_new_role": "Tạo vai trò mới",
+      "delete": "Xóa vai trò",
+      "save": "Lưu cập nhật",
+      "delete_role": {
+        "title": "Xóa vai trò",
+        "content": "Bạn có chắc chắn muốn xóa vai trò {{groupName}}?"
+      },
+      "delete_success": "Xóa vai trò '{{groupName}}' thành công!",
+      "update_success": "Cập nhật vai trò '{{groupName}}' thành công!",
+      "create_success": "Thêm mới vai trò '{{groupName}}' thành công!"
     },
     "user_time_log": {
       "title": "Thời gian truy cập"
