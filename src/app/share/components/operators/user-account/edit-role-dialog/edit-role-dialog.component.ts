@@ -19,6 +19,7 @@ import { ApiResponseListString } from '../../../../../../../open-api-modules/das
 import { Subscription } from 'rxjs';
 import { GroupControllerService as DashboardGroupControllerService } from '../../../../../../../open-api-modules/dashboard-api-docs';
 import { ToastrService } from 'ngx-toastr';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-edit-role-dialog',
@@ -69,7 +70,7 @@ export class EditRoleDialogComponent implements OnInit, OnDestroy {
 
   initDialogData(data: any) {
     this.updateRoleForm.patchValue({
-      code: data?.code,
+      code: data?.code || moment(new Date()).format('YYYY_DD_MM'),
       groupName: data?.groupName,
       description: data?.description,
     });
@@ -78,7 +79,7 @@ export class EditRoleDialogComponent implements OnInit, OnDestroy {
         data?.groupName + ' COPY'
       );
       this.updateRoleForm.controls.code.setValue(
-        data?.code + '_COPY'
+        data?.code + '_' + moment(new Date()).format('YYYY_DD_MM')
       );
     }
     this.getPermissionsByGroupId(data?.groupId);
