@@ -14,6 +14,8 @@
       <app-user-role
         [treeData]="treeData"
         [roleList]="roleList"
+        [roleId]="userInfo?.groupId"
+        (updateElementInfo)="reloadRoleInfo()"
       ></app-user-role>
     </ng-template>
   </mat-tab>
