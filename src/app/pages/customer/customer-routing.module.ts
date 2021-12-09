@@ -10,7 +10,7 @@ export const CustomerRoutes: Routes = [
       {
         path: 'list',
         component: CustomerListComponent,
-        canActivate: [NgxPermissionsGuard],
+        canActivateChild: [NgxPermissionsGuard],
         data: {
           animation: true,
           permissions: {

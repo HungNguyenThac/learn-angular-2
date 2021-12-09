@@ -400,7 +400,7 @@ export class InfoControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.get<ApiResponseCustomerInfoResponse>(`${this.configuration.basePath}/v1/infos/me`,
+        return this.httpClient.get<ApiResponseCustomerInfoResponse>(`${this.configuration.basePath}/v1/infos`,
             {
                 params: queryParameters,
                 responseType: <any>responseType_,
