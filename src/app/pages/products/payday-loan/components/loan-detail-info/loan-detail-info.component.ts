@@ -612,7 +612,7 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
   }
 
   getOverdueDate() {
-    if (this.loanDetail?.companyInfo.groupName === 'HMG') {
+    if (this.loanDetail?.companyInfo?.groupName === 'HMG') {
       return formatPunishStartTimeHmg(
         this.loanDetail?.createdAt,
         this.loanDetail?.expectedTenure
@@ -626,7 +626,7 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
   }
 
   getOverdueDateCount() {
-    if (this.loanDetail?.companyInfo.groupName === 'HMG') {
+    if (this.loanDetail?.companyInfo?.groupName === 'HMG') {
       return formatPunishCountHmg(
         this.loanDetail?.createdAt,
         this.loanDetail?.expectedTenure

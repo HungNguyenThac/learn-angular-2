@@ -38,6 +38,7 @@ import {
   PAYDAY_LOAN_UI_STATUS_TEXT,
 } from '../../../core/common/enum/payday-loan';
 import * as _ from 'lodash';
+import { DisplayedFieldsModel } from '../../../public/models/filter/displayed-fields.model';
 
 @Component({
   selector: 'app-customer-list',
@@ -172,40 +173,9 @@ export class CustomerListComponent implements OnInit, OnDestroy {
         },
       ],
     },
-    // {
-    //   title: this.multiLanguageService.instant('filter.time'),
-    //   type: FILTER_TYPE.MULTIPLE_CHOICE,
-    //   controlName: 'companyId',
-    //   value: null,
-    //   showAction: true,
-    //   titleAction: 'them moi ',
-    //   actionIconClass: 'sprite-group-5-home',
-    //   options: [
-    //     {
-    //       title: 'cvas',
-    //       value: 'avs',
-    //       showAction: true,
-    //       actionTitle: 'Toi la day',
-    //       actionIconClass: 'sprite-group-5-coin',
-    //       subTitle: 'casca',
-    //       disabled: false,
-    //       count: 0,
-    //     },
-    //     {
-    //       title: 'vcasvsa',
-    //       value: 'váva',
-    //       showAction: false,
-    //       actionTitle: 'DDay la toi',
-    //       actionIconClass: 'sprite-group-5-coin',
-    //       subTitle: 'váv',
-    //       disabled: false,
-    //       count: 0,
-    //     },
-    //   ],
-    // },
   ];
 
-  allColumns: any[] = [
+  allColumns: DisplayedFieldsModel[] = [
     {
       key: 'id',
       title: this.multiLanguageService.instant('customer.individual_info.id'),
@@ -295,7 +265,7 @@ export class CustomerListComponent implements OnInit, OnDestroy {
       showed: true,
     },
     {
-      key: 'companyName',
+      key: 'companyInfo.name',
       title: this.multiLanguageService.instant(
         'customer.individual_info.company'
       ),
