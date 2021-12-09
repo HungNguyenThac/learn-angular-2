@@ -55,6 +55,7 @@ import {
 import * as moment from 'moment';
 import * as _ from 'lodash';
 import { NgxPermissionsService } from 'ngx-permissions';
+import {DisplayedFieldsModel} from "../../../../public/models/filter/displayed-fields.model";
 
 @Component({
   selector: 'app-user-list',
@@ -137,7 +138,7 @@ export class UserListComponent implements OnInit, OnDestroy {
     },
   ];
 
-  allColumns: any[] = [
+  allColumns: DisplayedFieldsModel[] = [
     {
       key: 'username',
       title: this.multiLanguageService.instant(

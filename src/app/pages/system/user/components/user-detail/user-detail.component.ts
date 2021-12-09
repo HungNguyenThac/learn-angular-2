@@ -16,15 +16,10 @@ import {
 } from '../../../../../../../open-api-modules/identity-api-docs';
 import * as moment from 'moment';
 import {
-  ApiResponseCustomerInfo,
-  CompanyInfo,
-  CustomerInfo,
+  AdminAccountEntity,
+  GroupEntity,
 } from '../../../../../../../open-api-modules/dashboard-api-docs';
-import {
-  AddNewUserDialogComponent,
-  DialogUserInfoUpdateComponent,
-  MerchantDetailDialogComponent,
-} from '../../../../../share/components';
+import { AddNewUserDialogComponent } from '../../../../../share/components';
 import { MatDialog } from '@angular/material/dialog';
 
 @Component({
@@ -36,16 +31,16 @@ export class UserDetailComponent implements OnInit {
   leftCompanyInfos: any[] = [];
   rightCompanyInfos: any[] = [];
   subManager = new Subscription();
-  _userInfo;
+  _userInfo: AdminAccountEntity;
 
-  @Input() roleList;
+  @Input() roleList: Array<GroupEntity>;
 
   @Input()
   get userInfo() {
     return this._userInfo;
   }
 
-  set userInfo(value) {
+  set userInfo(value: AdminAccountEntity) {
     this._userInfo = value;
     this.leftCompanyInfos = this._initLeftCompanyInfos();
     this.rightCompanyInfos = this._initRightCompanyInfos();

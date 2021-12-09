@@ -61,33 +61,37 @@ export class LoanListService {
     if (params.keyword) {
       requestBody['loanCode' + QUERY_CONDITION_TYPE.LIKE_KEYWORD] =
         params.keyword;
-      requestBody['customerName' + QUERY_CONDITION_TYPE.LIKE_KEYWORD] =
-        params.keyword;
-      requestBody['customerMobileNumber' + QUERY_CONDITION_TYPE.LIKE_KEYWORD] =
-        params.keyword;
-      requestBody['customerEmail' + QUERY_CONDITION_TYPE.LIKE_KEYWORD] =
-        params.keyword;
       requestBody[
-        'customerOrganizationName' + QUERY_CONDITION_TYPE.LIKE_KEYWORD
+        'customerInfo.firstName' + QUERY_CONDITION_TYPE.LIKE_KEYWORD
       ] = params.keyword;
       requestBody[
-        'customerIdentityNumberOne' + QUERY_CONDITION_TYPE.LIKE_KEYWORD
+        'customerInfo.mobileNumber' + QUERY_CONDITION_TYPE.LIKE_KEYWORD
+      ] = params.keyword;
+      requestBody[
+        'customerInfo.emailAddress' + QUERY_CONDITION_TYPE.LIKE_KEYWORD
+      ] = params.keyword;
+      requestBody[
+        'customerInfo.organizationName' + QUERY_CONDITION_TYPE.LIKE_KEYWORD
+      ] = params.keyword;
+      requestBody[
+        'customerInfo.identityNumberOne' + QUERY_CONDITION_TYPE.LIKE_KEYWORD
       ] = params.keyword;
     }
 
     switch (params.accountClassification) {
       case ACCOUNT_CLASSIFICATION.ALL:
-        delete requestBody['customerMobileNumber'];
+        delete requestBody['customerInfo.mobileNumber'];
         break;
 
       case ACCOUNT_CLASSIFICATION.TEST:
-        requestBody['customerMobileNumber' + QUERY_CONDITION_TYPE.START_WITH] =
-          GlobalConstants.PL_VALUE_DEFAULT.PREFIX_MOBILE_NUMBER_TEST;
+        requestBody[
+          'customerInfo.mobileNumber' + QUERY_CONDITION_TYPE.START_WITH
+        ] = GlobalConstants.PL_VALUE_DEFAULT.PREFIX_MOBILE_NUMBER_TEST;
         break;
       case ACCOUNT_CLASSIFICATION.REAL:
       default:
         requestBody[
-          'customerMobileNumber' + QUERY_CONDITION_TYPE.NOT_START_WITH
+          'customerInfo.mobileNumber' + QUERY_CONDITION_TYPE.NOT_START_WITH
         ] = GlobalConstants.PL_VALUE_DEFAULT.PREFIX_MOBILE_NUMBER_TEST;
         break;
     }

@@ -29,6 +29,7 @@ import { MerchantDetailDialogComponent } from '../../../../share/components/oper
 import { MerchantGroupDialogComponent } from '../../../../share/components/operators/merchant/merchant-group-dialog/merchant-group-dialog.component';
 import { GlobalConstants } from '../../../../core/common/global-constants';
 import { Title } from '@angular/platform-browser';
+import {DisplayedFieldsModel} from "../../../../public/models/filter/displayed-fields.model";
 
 @Component({
   selector: 'app-merchant-list',
@@ -126,7 +127,7 @@ export class MerchantListComponent implements OnInit {
       note: '',
     },
   ];
-  allColumns: any[] = [
+  allColumns: DisplayedFieldsModel[] = [
     {
       key: 'merchantId',
       title: this.multiLanguageService.instant('merchant.merchant_list.id'),

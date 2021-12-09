@@ -5,7 +5,6 @@ import {
   OnInit,
   Output,
   TemplateRef,
-  ViewChild,
 } from '@angular/core';
 import { detailExpandAnimation } from '../../../../core/common/animations/detail-expand.animation';
 import { Sort } from '@angular/material/sort';
@@ -20,7 +19,7 @@ import { MultiLanguageService } from '../../../translate/multiLanguageService';
 import { NotificationService } from '../../../../core/services/notification.service';
 import { ToastrService } from 'ngx-toastr';
 import { TableSelectActionModel } from '../../../../public/models/external/table-select-action.model';
-import { MatCheckbox } from '@angular/material/checkbox';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-base-expanded-table',
@@ -42,7 +41,7 @@ export class BaseExpandedTableComponent implements OnInit {
   @Input() pageSize: number;
   @Input() orderBy: string;
   @Input() sortDirection: SortDirection;
-  @Input() allColumns: any[];
+  @Input() allColumns: DisplayedFieldsModel[];
   @Input() hasSelect: boolean;
   @Input() selectButtons: TableSelectActionModel[];
   _expandElementByDefault;
@@ -167,7 +166,6 @@ export class BaseExpandedTableComponent implements OnInit {
 
   private _initSelectedFields() {
     this.selectedFields = this.allColumns.map((item, index) => {
-
       return {
         key: item.key,
         title: item.title,
@@ -184,5 +182,26 @@ export class BaseExpandedTableComponent implements OnInit {
       action: action,
       selectedList: this.selection.selected,
     });
+  }
+
+  getPropByString(obj, propString) {
+    if (!propString || !obj) return obj;
+
+    var prop,
+      props = propString.split('.');
+
+    for (var i = 0, iLen = props.length - 1; i < iLen; i++) {
+      prop = props[i];
+
+      var candidate = obj[prop];
+
+      if (!_.isEmpty(candidate)) {
+        obj = candidate;
+      } else {
+        break;
+      }
+    }
+
+    return obj[props[i]];
   }
 }
