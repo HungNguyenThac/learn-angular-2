@@ -346,8 +346,8 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
         ),
         value:
           GlobalConstants.PL_VALUE_DEFAULT.TAX_FEE_TNG *
-          GlobalConstants.PL_VALUE_DEFAULT.SERVICE_FEE_TNG *
-          this.loanDetail?.expectedAmount,
+          (this.calculateServiceFee(this.loanDetail) -
+            this.getDiscountValue(this.loanDetail?.voucher)),
         type: DATA_CELL_TYPE.CURRENCY,
         format: null,
       },
@@ -612,7 +612,7 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
   }
 
   getOverdueDate() {
-    if (this.loanDetail?.companyGroupName === 'HMG') {
+    if (this.loanDetail?.companyInfo?.groupName === 'HMG') {
       return formatPunishStartTimeHmg(
         this.loanDetail?.createdAt,
         this.loanDetail?.expectedTenure
@@ -626,7 +626,7 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
   }
 
   getOverdueDateCount() {
-    if (this.loanDetail?.companyGroupName === 'HMG') {
+    if (this.loanDetail?.companyInfo?.groupName === 'HMG') {
       return formatPunishCountHmg(
         this.loanDetail?.createdAt,
         this.loanDetail?.expectedTenure

@@ -3,8 +3,8 @@ import {
   AdminAccountControllerService,
   AdminAccountEntity,
   ApiResponseAdminAccountEntity,
-  ApiResponseCustomerInfo,
-  CompanyInfo,
+  GroupEntity,
+  ParentPermissionTypeResponse,
 } from '../../../../../../../open-api-modules/dashboard-api-docs';
 import { Subscription } from 'rxjs';
 import { AdminAccountControllerService as AdminAccountControllerService1 } from '../../../../../../../open-api-modules/identity-api-docs';
@@ -20,8 +20,8 @@ import { RESPONSE_CODE } from '../../../../../core/common/enum/operator';
   styleUrls: ['./user-element.component.scss'],
 })
 export class UserElementComponent implements OnInit {
-  @Input() roleList;
-  @Input() treeData;
+  @Input() roleList: Array<GroupEntity>;
+  @Input() treeData: Array<ParentPermissionTypeResponse>;
   @Output() triggerUpdateElementInfo = new EventEmitter();
 
   private _userId;

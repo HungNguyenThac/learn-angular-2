@@ -51,7 +51,6 @@ export class CustomerCompanyInfoComponent implements OnInit, OnDestroy {
 
   @Output() triggerUpdateInfo = new EventEmitter<any>();
 
-
   isCanCheckSalary: boolean = false;
 
   leftCompanyInfos: any[] = [];
@@ -69,7 +68,7 @@ export class CustomerCompanyInfoComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    if (this.customerInfo.companyGroupName === 'TNG') {
+    if (this.customerInfo.companyInfo?.groupName === 'TNG') {
       this.isCanCheckSalary = true;
     }
   }
@@ -80,7 +79,7 @@ export class CustomerCompanyInfoComponent implements OnInit, OnDestroy {
         title: this.multiLanguageService.instant(
           'customer.company_info.company_name'
         ),
-        value: this.customerInfo.companyName,
+        value: this.customerInfo.companyInfo?.groupName,
         type: DATA_CELL_TYPE.TEXT,
         format: null,
       },

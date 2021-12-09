@@ -1,26 +1,26 @@
 <mat-tab-group dynamicHeight class="op-tab-group">
-
   <mat-tab [label]="'system.user_detail.title' | translate">
     <ng-template matTabContent>
-      <app-user-detail [userInfo]="userInfo"
-                       [roleList]="roleList"
-                       (updateElementInfo)="updateElementInfo($event)"
+      <app-user-detail
+        [userInfo]="userInfo"
+        [roleList]="roleList"
+        (updateElementInfo)="updateElementInfo($event)"
       ></app-user-detail>
     </ng-template>
   </mat-tab>
 
   <mat-tab [label]="'system.user_role.title' | translate">
     <ng-template matTabContent>
-      <app-user-role [treeData]="treeData"></app-user-role>
-    </ng-template
-    >
+      <app-user-role
+        [treeData]="treeData"
+        [roleList]="roleList"
+      ></app-user-role>
+    </ng-template>
   </mat-tab>
 
   <mat-tab [label]="'system.user_time_log.title' | translate">
     <ng-template matTabContent>
       <app-user-time-log></app-user-time-log>
-    </ng-template
-    >
+    </ng-template>
   </mat-tab>
-
 </mat-tab-group>

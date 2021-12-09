@@ -54,7 +54,7 @@
                   >
                     <mat-label>{{
                       "account.info.log_in" | translate
-                    }}</mat-label>
+                      }}</mat-label>
                     <mat-icon class="profile-icon" matPrefix></mat-icon>
                     <input
                       [placeholder]="'account.info.log_in' | translate"
@@ -105,13 +105,13 @@
                   <mat-form-field appearance="outline" class="w-100">
                     <mat-label>{{
                       "account.info.position" | translate
-                    }}</mat-label>
+                      }}</mat-label>
                     <mat-icon class="role-icon" matPrefix></mat-icon>
                     <mat-select disabled formControlName="position">
                       <mat-option
                         *ngFor="let positionOption of positionOptions.options"
                         [value]="positionOption"
-                        >{{ positionOption }}
+                      >{{ positionOption }}
                       </mat-option>
                     </mat-select>
                   </mat-form-field>
@@ -128,7 +128,7 @@
                   >
                     <mat-label>{{
                       "account.info.phone" | translate
-                    }}</mat-label>
+                      }}</mat-label>
                     <mat-icon
                       [ngClass]="
                         accountInfoForm.controls.mobile.value != '' ||
@@ -159,7 +159,7 @@
                   >
                     <mat-label>{{
                       "account.info.email" | translate
-                    }}</mat-label>
+                      }}</mat-label>
                     <mat-icon class="email-icon" matPrefix></mat-icon>
                     <input
                       [placeholder]="'account.info.email' | translate"
@@ -178,12 +178,12 @@
                     floatLabel="never"
                   >
                     <mat-label>{{ "account.info.note" | translate }}</mat-label>
-<!--                    [ngClass]="-->
-<!--                    accountInfoForm.controls.note.value != '' ||-->
-<!--                    isNoteInputFocus-->
-<!--                    ? 'is-focused-icon'-->
-<!--                    : ''-->
-<!--                    "-->
+                    <!--                    [ngClass]="-->
+                    <!--                    accountInfoForm.controls.note.value != '' ||-->
+                    <!--                    isNoteInputFocus-->
+                    <!--                    ? 'is-focused-icon'-->
+                    <!--                    : ''-->
+                    <!--                    "-->
                     <mat-icon
                       class="note-icon"
                       matPrefix
@@ -194,7 +194,7 @@
                     <input
                       [placeholder]="'account.info.note' | translate"
                       [value]="accountInfoForm.controls.note.value"
-                      disabled
+                      formControlName="note"
                       matInput
                     />
                   </mat-form-field>
@@ -214,7 +214,7 @@
               <span class="sprite-group-5-save-white"></span>
               <span class="ms-1">{{
                 "account.info.save_update" | translate
-              }}</span>
+                }}</span>
             </button>
           </div>
         </div>
@@ -241,7 +241,7 @@
               <span class="sprite-group-7-edit-gray"></span>
               <span class="ms-1">{{
                 "account.setting.change_password" | translate
-              }}</span>
+                }}</span>
             </button>
           </div>
         </div>
@@ -264,7 +264,7 @@
                 <p>
                   <span class="current">{{
                     "account.logged_device.status_current" | translate
-                  }}</span
+                    }}</span
                   ><span class="ms-2">Chrome, 20/10/2021 14:03</span>
                 </p>
               </div>
@@ -272,7 +272,7 @@
             <button class="bg-grey fixed-width" mat-button>
               <span class="ms-1">{{
                 "account.logged_device.log_out" | translate
-              }}</span>
+                }}</span>
             </button>
           </div>
         </div>
@@ -286,7 +286,7 @@
                 <p>
                   <span class="logged_out">{{
                     "account.logged_device.status_logout" | translate
-                  }}</span
+                    }}</span
                   ><span class="ms-2">Safari, 20/10/2021 14:03</span>
                 </p>
               </div>

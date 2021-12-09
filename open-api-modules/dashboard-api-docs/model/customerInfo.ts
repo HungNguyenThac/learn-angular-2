@@ -12,6 +12,7 @@
 import { KalapaResponse } from './kalapaResponse';
 import { VirtualAccount } from './virtualAccount';
 import { TNGInformationResponse } from './tNGInformationResponse';
+import { CompanyInfo } from './companyInfo';
 
 
 export interface CustomerInfo { 
@@ -40,10 +41,8 @@ export interface CustomerInfo {
     idFeatures?: string;
     idExpiredDate?: string;
     idOrigin?: string;
+    companyInfo?: CompanyInfo;
     companyId?: string;
-    companyName?: string;
-    companyGroupName?: string;
-    companyCode?: string;
     officeCode?: string;
     organizationName?: string;
     officeName?: string;
@@ -79,6 +78,8 @@ export interface CustomerInfo {
     createdAt?: string;
     updatedBy?: string;
     updatedAt?: string;
+    loanTngIds?: Array<object>;
+    loanHmgIds?: Array<object>;
 }
 export namespace CustomerInfo {
     export type UserStatusEnum = 'ACTIVE' | 'LOCKED';

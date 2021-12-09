@@ -17,6 +17,7 @@ import { Sort } from '@angular/material/sort';
 import { PageEvent } from '@angular/material/paginator/public-api';
 import { TableSelectActionModel } from '../../../../public/models/external/table-select-action.model';
 import { BaseExpandedTableComponent } from '../base-expanded-table/base-expanded-table.component';
+import {DisplayedFieldsModel} from "../../../../public/models/filter/displayed-fields.model";
 
 @Component({
   selector: 'app-base-management-layout',
@@ -25,7 +26,7 @@ import { BaseExpandedTableComponent } from '../base-expanded-table/base-expanded
 })
 export class BaseManagementLayoutComponent implements OnInit {
   @Input() detailElementTemplate: TemplateRef<any>;
-  @Input() allColumns: any[] = [];
+  @Input() allColumns: DisplayedFieldsModel[] = [];
   @Input() tableTitle: string;
   @Input() dataSource: MatTableDataSource<any> = new MatTableDataSource([]);
   @Input() pageSize: number = 10;

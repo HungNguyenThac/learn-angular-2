@@ -14,5 +14,6 @@
 export interface UpdateInfoAdminAccountRequest { 
     fullName: string;
     mobile: string;
+    note?: string;
 }
 
