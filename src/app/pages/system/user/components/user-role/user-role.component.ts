@@ -1,20 +1,19 @@
 import { PermissionTreeComponent } from './../../../../../share/components/operators/user-account/permission-tree/permission-tree.component';
 import {
   Component,
-  OnInit,
-  Injectable,
-  ViewChild,
-  ViewChildren,
-  QueryList,
   Input,
+  OnInit,
+  QueryList,
+  ViewChildren,
 } from '@angular/core';
 import { MultiLanguageService } from '../../../../../share/translate/multiLanguageService';
 import { MatDialog } from '@angular/material/dialog';
 import { EditRoleDialogComponent } from '../../../../../share/components/operators/user-account/edit-role-dialog/edit-role-dialog.component';
 import { Subscription } from 'rxjs';
 import {
-  ApiResponseListParentPermissionTypeResponse,
-  PermissionTypeControllerService,
+  GroupEntity,
+  ParentPermissionTypeResponse,
+  PermissionTypeControllerService
 } from '../../../../../../../open-api-modules/dashboard-api-docs';
 
 @Component({
@@ -23,12 +22,9 @@ import {
   styleUrls: ['./user-role.component.scss'],
 })
 export class UserRoleComponent implements OnInit {
-  @Input() treeData;
+  @Input() treeData: Array<ParentPermissionTypeResponse>;
+  @Input() roleList: Array<GroupEntity>;
   subManager = new Subscription();
-  roles = [
-    { title: 'Kiểm duyệt viên', id: '1' },
-    { title: 'Quản trị viên', id: '2' },
-  ];
 
   constructor(
     private multiLanguageService: MultiLanguageService,
