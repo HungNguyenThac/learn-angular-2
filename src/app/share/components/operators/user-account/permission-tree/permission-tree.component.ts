@@ -2,7 +2,13 @@ import { PermissionEntity } from './../../../../../../../open-api-modules/identi
 import { ChildPermissionTypeResponse } from './../../../../../../../open-api-modules/dashboard-api-docs/model/childPermissionTypeResponse';
 import { SelectionModel } from '@angular/cdk/collections';
 import { FlatTreeControl } from '@angular/cdk/tree';
-import { Component, OnInit, Injectable, Input, AfterViewInit } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Injectable,
+  Input,
+  AfterViewInit,
+} from '@angular/core';
 import {
   MatTreeFlatDataSource,
   MatTreeFlattener,
@@ -46,11 +52,18 @@ export class TodoItemFlatNode {
   styleUrls: ['./permission-tree.component.scss'],
 })
 export class PermissionTreeComponent implements OnInit, AfterViewInit {
-  activePermissions = [
-    '9aa75fcc-3739-40e7-9363-69e369d24641',
-    'f9969a3d-9d1e-47ff-9f74-215cec6506e5',
-  ];
   @Input() TREE_DATA;
+
+  _activePermissions: string[];
+  @Input()
+  get activePermissions(): string[] {
+    return this._activePermissions;
+  }
+
+  set activePermissions(value: string[]) {
+    this._activePermissions = value;
+    this.initActivePermissions();
+  }
 
   dataChange = new BehaviorSubject<TodoItemNode[]>([]);
 
@@ -270,11 +283,20 @@ export class PermissionTreeComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
+    this.initActivePermissions();
+  }
+
+  initActivePermissions() {
+    if (!this.treeControl || !this.activePermissions) {
+      return;
+    }
     this.treeControl.dataNodes.map((ele) => {
       const descendants = this.treeControl.getDescendants(ele);
       descendants.map((ele) => {
         if (this.activePermissions.includes(ele?.item?.id)) {
           this.checklistSelection.select(ele);
+        } else {
+          this.checklistSelection.deselect(ele);
         }
         return ele;
       });

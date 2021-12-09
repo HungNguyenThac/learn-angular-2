@@ -23,6 +23,7 @@ export class UserElementComponent implements OnInit {
   @Input() roleList: Array<GroupEntity>;
   @Input() treeData: Array<ParentPermissionTypeResponse>;
   @Output() triggerUpdateElementInfo = new EventEmitter();
+  @Output() triggerUpdateRoleInfo = new EventEmitter();
 
   private _userId;
   @Input()
@@ -50,6 +51,10 @@ export class UserElementComponent implements OnInit {
     this._getUserInfoById(this.userId);
   }
 
+  public reloadRoleInfo() {
+    this.triggerUpdateRoleInfo.emit();
+  }
+
   public refreshContent() {
     setTimeout(() => {
       this._getUserInfoById(this.userId);
@@ -63,7 +68,8 @@ export class UserElementComponent implements OnInit {
         .getAdminAccountById(this.userId)
         .subscribe((data: ApiResponseAdminAccountEntity) => {
           if (!data || data.responseCode !== RESPONSE_CODE.SUCCESS) {
-            // return this.handleResponseError(result.errorCode);
+            this.notifier.error(JSON.stringify(data?.message), data?.errorCode);
+            return;
           }
           if (data.responseCode === 200) {
             this.userInfo = data?.result;
@@ -79,7 +85,10 @@ export class UserElementComponent implements OnInit {
         .updateFullInfo(this.userId, updateInfoRequest)
         .subscribe((data: ApiResponseAdminAccountEntity) => {
           if (!data || data.responseCode !== RESPONSE_CODE.SUCCESS) {
-            // return this.handleResponseError(result.errorCode);
+            return this.notifier.error(
+              JSON.stringify(data?.message),
+              data?.errorCode
+            );
           }
           if (data.responseCode === 200) {
             this.userInfo = data?.result;

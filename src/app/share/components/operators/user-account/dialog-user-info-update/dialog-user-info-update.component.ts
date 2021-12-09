@@ -12,6 +12,7 @@ import {
 } from '../../../../../../../open-api-modules/dashboard-api-docs';
 import { Subscription } from 'rxjs';
 import { NgxPermissionsService } from 'ngx-permissions';
+import {ToastrService} from "ngx-toastr";
 
 @Component({
   selector: 'app-dialog-user-info-update',
@@ -37,6 +38,7 @@ export class DialogUserInfoUpdateComponent implements OnInit {
     private groupControllerService: GroupControllerService,
     private permissionsService: NgxPermissionsService,
     private formBuilder: FormBuilder,
+    private notifier: ToastrService,
     @Inject(MAT_DIALOG_DATA) data: any
   ) {
     this.buildAccountInfoForm();
@@ -85,7 +87,10 @@ export class DialogUserInfoUpdateComponent implements OnInit {
         .subscribe(
           (result: ApiResponseSearchAndPaginationResponseGroupEntity) => {
             if (!result || result.responseCode !== RESPONSE_CODE.SUCCESS) {
-              return;
+              return this.notifier.error(
+                JSON.stringify(result?.message),
+                result?.errorCode
+              );
             }
             this.roleOptions = result?.result?.data;
           }

@@ -112,7 +112,10 @@ export class UserDetailComponent implements OnInit {
             })
             .subscribe((result: ApiResponseAdminAccountEntity) => {
               if (!result || result.responseCode !== RESPONSE_CODE.SUCCESS) {
-                // return this.handleResponseError(result.errorCode);
+               return this.notifier.error(
+                JSON.stringify(result?.message),
+                result?.errorCode
+              );
               }
               if (result.responseCode === 200) {
                 this.updateElementInfo.emit();
@@ -146,7 +149,10 @@ export class UserDetailComponent implements OnInit {
             .unLockAccount1(this.userInfo.id)
             .subscribe((result: ApiResponseAdminAccountEntity) => {
               if (!result || result.responseCode !== RESPONSE_CODE.SUCCESS) {
-                // return this.handleResponseError(result.errorCode);
+               return this.notifier.error(
+                JSON.stringify(result?.message),
+                result?.errorCode
+              );
               }
               if (result.responseCode === 200) {
                 this.updateElementInfo.emit();
@@ -182,7 +188,10 @@ export class UserDetailComponent implements OnInit {
             .deleteAdminAccount(this.userInfo.id)
             .subscribe((result: ApiResponseAdminAccountEntity) => {
               if (!result || result.responseCode !== RESPONSE_CODE.SUCCESS) {
-                // return this.handleResponseError(result.errorCode);
+               return this.notifier.error(
+                JSON.stringify(result?.message),
+                result?.errorCode
+              );
               }
               if (result.responseCode === 200) {
                 this.updateElementInfo.emit('delete');
