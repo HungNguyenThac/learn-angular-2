@@ -177,6 +177,22 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.router.navigateByUrl('/system/user/list');
   }
 
+  onClickPdGroup() {
+    this.router.navigateByUrl('/system/pd-group/list');
+  }
+
+  onClickPdQuestions() {
+    this.router.navigateByUrl('/system/pd-questions/list');
+  }
+
+  onClickPdAnswers() {
+    this.router.navigateByUrl('/system/pd-answers/list');
+  }
+
+  onClickPdModel() {
+    this.router.navigateByUrl('/system/pd-model/list');
+  }
+
   logout() {
     this.store.dispatch(new fromActions.Logout(null));
   }

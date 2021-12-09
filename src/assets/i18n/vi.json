@@ -119,7 +119,16 @@
   "header": {
     "op": "OPERATOR",
     "notification": "Thông báo",
-    "setting": "Thiết lập hệ thống",
+    "setting": {
+      "title": "Thiết lập hệ thống",
+      "product_setting": "Cấu hình sản phẩm",
+      "cde_setting": "Thiết lập CDE",
+      "pd_setting": "Thiết lập PD Model",
+      "pd_group": "Quản lý Nhóm câu hỏi PD",
+      "pd_questions": "Quản lý Câu hỏi PD",
+      "pd_answers": "Quản lý Câu trả lời PD",
+      "pd_model": "Quản lý PD Model"
+    },
     "account": "Tài khoản",
     "navigation": {
       "dashboard": "Tổng quan",
@@ -570,7 +579,11 @@
     "search_field_customer_list": "Họ tên, Mã nhân viên, Số điện thoại, Email",
     "search_field_user_list": "Tên đăng nhập, tên người dùng",
     "manage_user": "Quản lý người dùng",
-    "merchant": "Quản lý nhà cung cấp"
+    "merchant": "Quản lý nhà cung cấp",
+    "pd_group": "Quản lý Nhóm câu hỏi PD",
+    "pd_questions": "Quản lý Câu hỏi PD",
+    "pd_answers": "Quản lý Câu trả lời PD",
+    "pd_model": "Quản lý PD Model"
   },
   "system": {
     "add_user": "Thêm người dùng",
@@ -682,6 +695,48 @@
       "edit_merchant_title": "Chỉnh sửa nhà cung cấp",
       "cancel": "Bỏ qua",
       "save": "Lưu"
+    }
+  },
+  "pd_system": {
+    "pd_group": {
+      "title": "Danh sách nhóm câu hỏi",
+      "add_group": "Thêm nhóm câu hỏi",
+      "id": "Mã nhóm câu hỏi",
+      "name": "Tên nhóm câu hỏi",
+      "created_date": "Ngày tạo",
+      "update_date": "Ngày cập nhật"
+    },
+    "pd_questions": {
+      "title": "Danh sách câu hỏi",
+      "add_question": "Thêm câu hỏi",
+      "id": "Mã câu hỏi",
+      "content": "Nội dung câu hỏi",
+      "created_date": "Ngày tạo",
+      "update_date": "Ngày cập nhật"
+    },
+    "pd_answers": {
+      "title": "Danh sách câu trả lời",
+      "add_answer": "Thêm câu trả lời",
+      "id": "Mã câu trả lời",
+      "question": "Câu hỏi",
+      "content": "Nội dung câu trả lời",
+      "created_date": "Ngày tạo",
+      "update_date": "Ngày cập nhật"
+    },
+    "pd_model": {
+      "title": "Danh sách PD model",
+      "add_model": "Thêm PD model",
+      "id": "Mã PD model",
+      "name": "Tên PD model",
+      "group": "Nhóm câu hỏi",
+      "created_date": "Ngày tạo",
+      "update_date": "Ngày cập nhật"
+    },
+    "add_pd_dialog": {
+      "group_name": "Tên nhóm câu hỏi",
+      "group_code": "Mã nhóm câu hỏi",
+      "description": "Mô tả",
+      "active": "Active"
     }
   }
 }

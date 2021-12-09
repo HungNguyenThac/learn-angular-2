@@ -11,6 +11,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { NgxPermissionsModule } from 'ngx-permissions';
 import { NgxViewerModule } from 'ngx-viewer';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
+import { AddNewPdDialogComponent } from './components/operators/pd-system/add-new-pd-dialog/add-new-pd-dialog.component';
 
 @NgModule({
   declarations: [
@@ -18,6 +19,7 @@ import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
     ...fromValidators.validators,
     ...fromDirectives.directives,
     ...fromPipes.pipes,
+    AddNewPdDialogComponent,
   ],
   imports: [
     CommonModule,
