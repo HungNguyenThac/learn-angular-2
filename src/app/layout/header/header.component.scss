@@ -70,6 +70,7 @@ header {
 
 #logo-monex-container {
   text-decoration: none;
+
   &:hover {
     text-decoration: none;
   }
@@ -174,6 +175,14 @@ header {
 }
 
 ::ng-deep .sub-menu-desktop {
+  button {
+    background-color: #fff !important;
+  }
+
+  button:hover {
+    background-color: $dim-light-blue !important
+  }
+
   .mat-menu-content:not(:empty) {
     padding: 0;
   }

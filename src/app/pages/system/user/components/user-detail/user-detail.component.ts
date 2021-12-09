@@ -209,6 +209,7 @@ export class UserDetailComponent implements OnInit {
 
   _bindingDialogIndividualData(data) {
     return {
+      groupId: data?.accountRole,
       fullName: data?.accountName,
       email: data?.accountEmail,
       mobile: data?.accountPhone,
