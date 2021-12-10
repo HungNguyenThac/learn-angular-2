@@ -145,9 +145,17 @@
                       [ngClass]="isPhoneInputFocus ? 'is-focused-input' : ''"
                       [placeholder]="'account.info.phone' | translate"
                       formControlName="mobile"
+                      required
+                      phone-number-validate
                       matInput
-                      type="tel"
+                      type="text"
                     />
+                    <show-errors
+                      [control]="accountInfoForm.controls['mobile']"
+                      [controlLabel]="'account.info.phone'| translate"
+                      [hasIconPrefix]="true"
+                    >
+                    </show-errors>
                   </mat-form-field>
                 </div>
 
