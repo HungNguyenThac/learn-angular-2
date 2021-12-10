@@ -27,6 +27,7 @@ import { NotificationService } from '../../services/notification.service';
 import { MultiLanguageService } from '../../../share/translate/multiLanguageService';
 import { ToastrService } from 'ngx-toastr';
 import { RESPONSE_CODE } from '../../common/enum/operator';
+import {ERROR_CODE_KEY} from "../../common/enum/payday-loan";
 
 @Injectable()
 export class LoginEffects {
@@ -127,7 +128,9 @@ export class LoginEffects {
         map((action: fromActions.SigninError) => action.payload),
         tap((errorCode: any) => {
           this.notifier.error(
-            this.multiLanguageService.instant('common.something_went_wrong')
+            errorCode
+              ? this.multiLanguageService.instant(ERROR_CODE_KEY[errorCode])
+              : this.multiLanguageService.instant('common.something_went_wrong')
           );
         })
       ),

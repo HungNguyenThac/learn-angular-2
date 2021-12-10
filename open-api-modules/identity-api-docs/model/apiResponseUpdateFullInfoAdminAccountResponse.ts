@@ -9,11 +9,13 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { UpdateFullInfoAdminAccountResponse } from './updateFullInfoAdminAccountResponse';
 
 
-export interface ChangePassProviderRequest { 
-    username: string;
-    newSecret: string;
-    confirmSecret: string;
+export interface ApiResponseUpdateFullInfoAdminAccountResponse { 
+    result?: UpdateFullInfoAdminAccountResponse;
+    errorCode?: string;
+    message?: object;
+    responseCode?: number;
 }
 
