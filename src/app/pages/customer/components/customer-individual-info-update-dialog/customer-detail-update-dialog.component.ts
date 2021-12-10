@@ -23,6 +23,7 @@ import {
   DistrictControllerService,
 } from '../../../../../../open-api-modules/customer-api-docs';
 import { takeUntil } from 'rxjs/operators';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-customer-detail-update-dialog',
@@ -81,7 +82,8 @@ export class CustomerDetailUpdateDialogComponent implements OnInit {
     private multiLanguageService: MultiLanguageService,
     private formBuilder: FormBuilder,
     private cityControllerService: CityControllerService,
-    private districtControllerService: DistrictControllerService
+    private districtControllerService: DistrictControllerService,
+    private notifier: ToastrService
   ) {
     this.buildIndividualForm();
 
@@ -226,7 +228,10 @@ export class CustomerDetailUpdateDialogComponent implements OnInit {
         .getAllCity()
         .subscribe((result: ApiResponseListCity) => {
           if (!result || result.responseCode !== RESPONSE_CODE.SUCCESS) {
-            // return this.handleResponseError(result.errorCode);
+            return this.notifier.error(
+              JSON.stringify(result?.message),
+              result?.errorCode
+            );
           }
           this.cityData = result.result;
           this.filteredCities = result.result;
@@ -243,7 +248,10 @@ export class CustomerDetailUpdateDialogComponent implements OnInit {
         .getDistrictsByCityId(this.customerIndividualForm.controls.cityId.value)
         .subscribe((result: ApiResponseListDistrict) => {
           if (!result || result.responseCode !== RESPONSE_CODE.SUCCESS) {
-            // return this.handleResponseError(result.errorCode);
+            return this.notifier.error(
+              JSON.stringify(result?.message),
+              result?.errorCode
+            );
           }
           this.districtData = result.result;
           this.filteredDistricts = result.result;
@@ -262,7 +270,10 @@ export class CustomerDetailUpdateDialogComponent implements OnInit {
         )
         .subscribe((result: ApiResponseListDistrict) => {
           if (!result || result.responseCode !== RESPONSE_CODE.SUCCESS) {
-            // return this.handleResponseError(result.errorCode);
+            return this.notifier.error(
+              JSON.stringify(result?.message),
+              result?.errorCode
+            );
           }
           this.communeData = result.result;
           this.filteredCommunes = result.result;

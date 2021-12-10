@@ -100,14 +100,14 @@ export class LoanContractComponent implements OnInit, OnDestroy {
 
   checkSignable() {
     if (
-      this.loanDetail?.companyGroupName === 'HMG' &&
+      this.loanDetail?.companyInfo?.groupName === 'HMG' &&
       this.loanDetail?.status === 'CONTRACT_AWAITING'
     ) {
       return (this.enableSign = true);
     }
 
     if (
-      this.loanDetail?.companyGroupName === 'TNG' &&
+      this.loanDetail?.companyInfo?.groupName === 'TNG' &&
       this.loanDetail?.status === 'FUNDED' &&
       this.loanContractData?.status === 'AWAITING_EPAY_SIGNATURE'
     ) {
@@ -187,7 +187,7 @@ export class LoanContractComponent implements OnInit, OnDestroy {
     this.subManager.add(
       this.LoanListService.getContractData(
         this.loanDetail?.id,
-        this.loanDetail?.companyGroupName
+        this.loanDetail.companyInfo?.groupName
       ).subscribe((response: ApiResponseContract) => {
         if (response.result === null) {
           return (this.loanContractData = null);

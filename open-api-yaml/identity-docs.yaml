@@ -671,24 +671,6 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ApiResponseAdminAccountEntity'
-  /v1/credentials/list:
-    delete:
-      tags:
-      - admin-account-controller
-      operationId: deleteMultiAdminAccount
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/DeleteMultiAdminAccountsRequest'
-        required: true
-      responses:
-        "200":
-          description: OK
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/ApiResponseListString'
 components:
   schemas:
     UpdatePermissionRequest:
@@ -838,6 +820,9 @@ components:
         fullName:
           type: string
         mobile:
+          pattern: "^0\\d{9}$"
+          type: string
+        note:
           type: string
     AdminAccountEntity:
       type: object
@@ -895,11 +880,14 @@ components:
       - mobile
       type: object
       properties:
+        groupId:
+          type: string
         fullName:
           type: string
         email:
           type: string
         mobile:
+          pattern: "^0\\d{9}$"
           type: string
         note:
           type: string
@@ -923,6 +911,7 @@ components:
       type: object
       properties:
         mobile:
+          pattern: "^0\\d{9}$"
           type: string
         provider:
           type: string
@@ -962,6 +951,7 @@ components:
       type: object
       properties:
         mobile:
+          pattern: "^0\\d{9}$"
           type: string
         signature:
           type: string
@@ -980,6 +970,7 @@ components:
       type: object
       properties:
         mobile:
+          pattern: "^0\\d{9}$"
           type: string
         password:
           type: string
@@ -998,6 +989,7 @@ components:
       type: object
       properties:
         mobile:
+          pattern: "^0\\d{9}$"
           type: string
         password:
           type: string
@@ -1034,6 +1026,7 @@ components:
       type: object
       properties:
         mobile:
+          pattern: "^0\\d{9}$"
           type: string
         password:
           type: string
@@ -1223,6 +1216,7 @@ components:
         groupId:
           type: string
         username:
+          pattern: "^[A-Za-z0-9]+$"
           type: string
         secret:
           type: string
@@ -1231,6 +1225,7 @@ components:
         email:
           type: string
         mobile:
+          pattern: "^0\\d{9}$"
           type: string
         note:
           type: string
@@ -1277,6 +1272,7 @@ components:
       type: object
       properties:
         username:
+          pattern: "^[A-Za-z0-9]+$"
           type: string
         oldSecret:
           type: string
@@ -1350,15 +1346,6 @@ components:
         responseCode:
           type: integer
           format: int32
-    DeleteMultiAdminAccountsRequest:
-      required:
-      - accountIds
-      type: object
-      properties:
-        accountIds:
-          type: array
-          items:
-            type: string
   securitySchemes:
     Bearer:
       type: apiKey

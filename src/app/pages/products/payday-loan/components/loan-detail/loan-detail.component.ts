@@ -127,6 +127,7 @@ export class LoanDetailComponent implements OnInit, OnDestroy {
           .subscribe((data: ApiResponsePaydayLoanTng) => {
             this.loanDetail = data?.result;
             this.loanDetailTriggerUpdateStatus.emit(this.loanDetail);
+            this.detectUpdateLoanAfterSign.emit(this.loanDetail);
             console.log(this.loanDetail, 'loanDetail----------------------');
           })
       );

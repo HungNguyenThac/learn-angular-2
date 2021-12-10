@@ -55,12 +55,12 @@
                   <div class="card op-card op-drop-shadow">
                     <div class="card-title d-flex align-items-center gap-1">
                       {{
-                        "loan_app.loan_info.total_service_charge" | translate
+                      "loan_app.loan_info.total_service_charge" | translate
                       }}
                     </div>
                     <div class="card-body">
                       <div
-                        *ngIf="loanDetail?.companyGroupName === 'HMG'"
+                        *ngIf="loanDetail?.companyInfo?.groupName === 'HMG'"
                         class="service-fee-container d-flex gap-3 flex-column"
                       >
                         <div
@@ -87,7 +87,7 @@
                         </div>
                       </div>
                       <div
-                        *ngIf="loanDetail?.companyGroupName === 'TNG'"
+                        *ngIf="loanDetail?.companyInfo?.groupName === 'TNG'"
                         class="service-fee-container d-flex gap-3 flex-column"
                       >
                         <div

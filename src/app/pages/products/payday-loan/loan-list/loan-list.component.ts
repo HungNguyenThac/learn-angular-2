@@ -38,6 +38,7 @@ import { MultiLanguageService } from '../../../../share/translate/multiLanguageS
 import { MatTableDataSource } from '@angular/material/table';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { FilterOptionModel } from 'src/app/public/models/filter/filter-option.model';
+import { DisplayedFieldsModel } from '../../../../public/models/filter/displayed-fields.model';
 
 @Component({
   selector: 'app-loan-list',
@@ -269,7 +270,7 @@ export class LoanListComponent implements OnInit, OnDestroy {
     .slice(0, 6)
     .concat(this.statusFilterOptionsHmg.slice(7));
 
-  allColumns: any[] = [
+  allColumns: DisplayedFieldsModel[] = [
     {
       key: 'loanCode',
       title: this.multiLanguageService.instant('loan_app.loan_info.loan_code'),
@@ -285,14 +286,14 @@ export class LoanListComponent implements OnInit, OnDestroy {
       showed: true,
     },
     {
-      key: 'customerName',
+      key: 'customerInfo.firstName',
       title: this.multiLanguageService.instant('loan_app.loan_info.customer'),
       type: DATA_CELL_TYPE.TEXT,
       format: null,
       showed: true,
     },
     {
-      key: 'customerMobileNumber',
+      key: 'customerInfo.mobileNumber',
       title: this.multiLanguageService.instant(
         'loan_app.loan_info.phone_number'
       ),
@@ -326,7 +327,7 @@ export class LoanListComponent implements OnInit, OnDestroy {
       showed: false,
     },
     {
-      key: 'customerEmail',
+      key: 'customerInfo.emailAddress',
       title: this.multiLanguageService.instant(
         'customer.individual_info.email'
       ),
@@ -335,7 +336,7 @@ export class LoanListComponent implements OnInit, OnDestroy {
       showed: false,
     },
     {
-      key: 'customerIdentityNumberOne',
+      key: 'customerInfo.identityNumberOne',
       title: this.multiLanguageService.instant('customer.individual_info.cmnd'),
       type: DATA_CELL_TYPE.TEXT,
       format: null,
@@ -461,11 +462,11 @@ export class LoanListComponent implements OnInit, OnDestroy {
       companyId: [''],
       groupName: [''],
       loanCode: [''],
-      customerMobileNumber: [''],
-      customerEmail: [''],
+      'customerInfo.mobileNumber': [''],
+      'customerInfo.emailAddress': [''],
       status: [''],
-      customerOrganizationName: [''],
-      customerIdentityNumberOne: [''],
+      'customerInfo.organizationName': [''],
+      'customerInfo.identityNumberOne': [''],
       updatedAt: [''],
       orderBy: ['createdAt'],
       sortDirection: ['desc'],
