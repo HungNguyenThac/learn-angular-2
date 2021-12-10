@@ -386,7 +386,6 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
   }
 
   getDiscountValue(voucher: Voucher) {
-    console.log(voucher);
     if (!voucher) {
       return 0;
     }

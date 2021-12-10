@@ -98,7 +98,6 @@ export class LoanDetailComponent implements OnInit, OnDestroy {
   triggerUpdateLoanElement() {
     this.notificationService.showLoading({ showContent: true });
     this.timeOut = setTimeout(() => {
-      console.log('stop loading');
       this._getLoanById(this.loanId);
       this.notificationService.hideLoading();
       this.notifier.success(
