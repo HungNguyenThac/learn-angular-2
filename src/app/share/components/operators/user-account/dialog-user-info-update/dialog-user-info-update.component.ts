@@ -42,7 +42,7 @@ export class DialogUserInfoUpdateComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) data: any
   ) {
     this.buildAccountInfoForm();
-    this.getRoleList();
+    // this.getRoleList();
     if (data) {
       this.initDialogData(data);
     }
