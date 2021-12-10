@@ -1,0 +1,181 @@
+<div class="container-fluid">
+  <div class="card op-card">
+    <button class="close-btn" mat-dialog-close mat-icon-button tabindex="-1">
+      <span class="sprite-group-7-close"></span>
+    </button>
+
+    <div class="card-title title">
+      {{dialogTitle}}
+    </div>
+    <div class="card-body">
+      <form [formGroup]="addPdForm" (ngSubmit)="submitForm()" autocomplete="off">
+        <div class="row">
+          <!--  Info  -->
+          <section class="col-12">
+            <div class="row">
+
+              <!-- Left Individual Info -->
+              <div class="col-4 col-sm-4 col-md-4 col-lg-4 pr-2">
+                <div>
+                  <mat-form-field autofilled="false" appearance="outline" class="w-100" floatLabel="never">
+                    <mat-label>{{ inputName}}</mat-label>
+                    <!--                    <div-->
+                    <!--                      [ngClass]="addPdForm.controls.accountName.value != '' || isAccountNameInputFocus ? 'is-focused-icon' : ''"-->
+                    <!--                      class="profile-icon icon-prefix-padding" matPrefix>-->
+                    <!--                    </div>-->
+                    <input (blur)="isAccountNameInputFocus = false"
+                           (focus)="isAccountNameInputFocus = true"
+                           [ngClass]="
+                        isAccountNameInputFocus ? 'is-focused-input' : ''
+                      " [placeholder]="inputName"
+                           formControlName="accountName"
+                           aria-autocomplete="none"
+                           matInput
+                    >
+                    <show-errors
+                      [control]="addPdForm.controls['accountName']"
+                      [controlLabel]="inputName"
+                      [hasIconPrefix]="false"
+                    >
+                    </show-errors>
+                  </mat-form-field>
+                </div>
+
+                <div>
+                  <mat-form-field appearance="outline" class="w-100" floatLabel="never">
+                    <mat-label>{{inputCode}}</mat-label>
+                    <!--                    <mat-icon [ngClass]="-->
+                    <!--                        addPdForm.controls.username.value != '' ||-->
+                    <!--                        isLoginInputFocus-->
+                    <!--                          ? 'is-focused-icon'-->
+                    <!--                          : ''-->
+                    <!--                      "-->
+                    <!--                              class="profile-icon" matPrefix>-->
+                    <!--                    </mat-icon>-->
+                    <input
+                      (blur)="isLoginInputFocus = false"
+                      (focus)="isLoginInputFocus = true"
+                      [ngClass]="
+                        isLoginInputFocus ? 'is-focused-input' : ''
+                      "
+                      [placeholder]="inputCode"
+                      formControlName="username"
+                      aria-autocomplete="none"
+                      matInput
+                    />
+                    <show-errors
+                      [control]="addPdForm.controls['username']"
+                      [controlLabel]="inputCode"
+                      [hasIconPrefix]="false"
+                    >
+                    </show-errors>
+                  </mat-form-field>
+                </div>
+
+                <div>
+                  <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>{{
+                      "pd_system.add_pd_dialog.description" | translate
+                      }}</mat-label>
+                    <!--                    <mat-icon [ngClass]="-->
+                    <!--                        addPdForm.controls.accountPhone.value != '' ||-->
+                    <!--                        isPhoneInputFocus-->
+                    <!--                          ? 'is-focused-icon'-->
+                    <!--                          : ''-->
+                    <!--                      "-->
+                    <!--                              class="phone-icon"-->
+                    <!--                              matPrefix></mat-icon>-->
+                    <textarea
+                      style="height: 180px"
+                      matInput
+                      class="text-area"
+                      id="review"
+                      name="review"
+                      formControlName="note"
+                      [placeholder]="'pd_system.add_pd_dialog.description' | translate"
+                    ></textarea>
+                    <show-errors
+                      [control]="addPdForm.controls['note']"
+                      [controlLabel]="
+                        'pd_system.add_pd_dialog.description' | translate
+                      "
+                      [hasIconPrefix]="false"
+                    >
+                    </show-errors>
+                  </mat-form-field>
+                </div>
+
+                <div>
+                  <mat-checkbox class="example-margin">{{"pd_system.add_pd_dialog.active" | translate}}</mat-checkbox>
+                </div>
+              </div>
+
+              <!-- Right Individual Info -->
+              <div class="col-8 col-sm-8 col-md-8 col-lg-8 pr-2">
+                <div class="row">
+                  <div class="select-section d-flex justify-content-between">
+                    <div class="col-5">
+                      <span>{{list}}</span>
+                      <div class="box">
+                        <div (click)="onClickQuestion($event, question)" *ngFor="let question of leftArr"
+                             class="item w-100">
+                          {{question.name}}
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-2">
+                      <div class="move-button d-flex flex-column justify-content-center gap-3">
+                        <button
+                          type="button"
+                          (click)="moveToChosen()"
+                          mat-flat-button
+                          color="accent">
+                          <span> >> </span>
+                        </button>
+                        <button
+                          color="accent"
+                          type="button"
+                          (click)="moveBack()"
+                          mat-flat-button>
+                          <span> << </span>
+                        </button>
+                      </div>
+                    </div>
+                    <div class="col-5">
+                      <span>Danh sách được chọn</span>
+                      <div class="box">
+                        <div (click)="onClickChosenQuestion($event, chosenQuestion)"
+                             *ngFor="let chosenQuestion of rightArr" class="item w-100">
+                          {{chosenQuestion.name}}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <!--  Actions -->
+        <div class="row mt-2">
+          <div class="col-12 d-flex gap-2 justify-content-end">
+            <button class="bg-grey"
+                    mat-button
+                    mat-dialog-close
+            >
+              {{ "account.info.cancel_update" | translate }}
+            </button>
+            <button
+              type="submit"
+              color="accent"
+              mat-flat-button>
+              <span class="sprite-group-5-save-white"></span>
+              <span class="ms-1">{{ "account.info.save_update" | translate }}</span>
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

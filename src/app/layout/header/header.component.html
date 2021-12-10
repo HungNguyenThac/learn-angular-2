@@ -37,58 +37,113 @@
                     [matMenuTriggerFor]="settingMenu"
                     class="header-nav-btn gap-1"
                   >
-                    <span>{{ "header.setting" | translate }}</span>
+                    <span>{{ "header.setting.title" | translate }}</span>
                     <div class="sprite-group-5-setting-white"></div>
                   </button>
 
                   <!--Setting pop-up menu-->
-                  <mat-menu #settingMenu="matMenu">
-                    <span (mouseleave)="settingMenuTrigger.closeMenu()">
-                      <button
-                        *ngxPermissionsOnly="['dashboardAdminAccounts:getAdminAccounts']"
-                        (click)="onClickManageUser()"
-                        class="gap-1"
-                        mat-menu-item
-                      >
-                        <div class="d-flex gap-1 align-items-center">
-                          <img
-                            src="assets/img/icon/group-7/svg/manage-user.svg"
-                            alt=""
-                          />
-                          <span>{{ "header.mange_user" | translate }}</span>
-                        </div>
-                      </button>
-                      <button class="gap-1" mat-menu-item>
-                        <div class="d-flex gap-1 align-items-center">
-                          <span>Setting Option</span>
-                        </div>
-                      </button>
-                    </span>
-                  </mat-menu>
+                  <div>
+                    <mat-menu #settingMenu="matMenu">
+                      <span>
+                        <button
+                          *ngxPermissionsOnly="[
+                            'dashboardAdminAccounts:getAdminAccounts'
+                          ]"
+                          (click)="onClickManageUser()"
+                          class="gap-1"
+                          mat-menu-item
+                        >
+                          <div class="d-flex gap-1 align-items-center">
+                            <img
+                              src="assets/img/icon/group-7/svg/manage-user.svg"
+                              alt=""
+                            />
+                            <span>{{ "header.mange_user" | translate }}</span>
+                          </div>
+                        </button>
+                        <button
+                          class="gap-1"
+                          mat-menu-item
+                          [matMenuTriggerFor]="cdeSetting"
+                        >
+                          <div class="d-flex gap-1 align-items-center">
+                            <span>{{ "header.setting.product_setting" | translate }}</span>
+                          </div>
+                        </button>
+                      </span>
+                    </mat-menu>
 
-                  <!--                  <mat-menu #testMenu="matMenu">-->
-                  <!--                    <span (mouseleave)="settingMenuTrigger.closeMenu()">-->
-                  <!--                      <button-->
-                  <!--                        *ngxPermissionsOnly="['dashboardAdminAccounts:getAdminAccounts']"-->
-                  <!--                        (click)="onClickManageUser()"-->
-                  <!--                        class="gap-1"-->
-                  <!--                        mat-menu-item-->
-                  <!--                      >-->
-                  <!--                        <div class="d-flex gap-1 align-items-center">-->
-                  <!--                          <img-->
-                  <!--                            src="assets/img/icon/group-7/svg/manage-user.svg"-->
-                  <!--                            alt=""-->
-                  <!--                          />-->
-                  <!--                          <span>{{ "header.mange_user" | translate }}</span>-->
-                  <!--                        </div>-->
-                  <!--                      </button>-->
-                  <!--                      <button class="gap-1" mat-menu-item>-->
-                  <!--                        <div class="d-flex gap-1 align-items-center">-->
-                  <!--                          <span>Setting Option</span>-->
-                  <!--                        </div>-->
-                  <!--                      </button>-->
-                  <!--                    </span>-->
-                  <!--                  </mat-menu>-->
+                    <mat-menu #cdeSetting="matMenu">
+                      <span>
+                        <button
+                          class="gap-1"
+                          mat-menu-item
+                          [matMenuTriggerFor]="pdSetting"
+                        >
+                          <div class="d-flex gap-1 align-items-center">
+                            <span>{{ "header.setting.cde_setting" | translate }}</span>
+                          </div>
+                        </button>
+                      </span>
+                    </mat-menu>
+
+                    <mat-menu #pdSetting="matMenu">
+                      <span>
+                        <button
+                          class="gap-1"
+                          mat-menu-item
+                          [matMenuTriggerFor]="pdManage"
+                        >
+                          <div class="d-flex gap-1 align-items-center">
+                            <span>{{ "header.setting.pd_setting" | translate }}</span>
+                          </div>
+                        </button>
+                      </span>
+                    </mat-menu>
+
+                    <mat-menu #pdManage="matMenu">
+                      <span>
+                        <button
+                          (click)="onClickPdGroup()"
+                          class="gap-1"
+                          mat-menu-item
+                        >
+                          <div class="d-flex gap-1 align-items-center">
+                            <span>{{ "header.setting.pd_group" | translate }}</span>
+                          </div>
+                        </button>
+                        <button
+                          (click)="onClickPdQuestions()"
+                          class="gap-1"
+                          mat-menu-item
+                        >
+                          <div class="d-flex gap-1 align-items-center">
+                            <span>{{ "header.setting.pd_questions" | translate }}</span>
+                          </div>
+                        </button>
+                        <button
+                          (click)="onClickPdAnswers()"
+                          class="gap-1"
+                          mat-menu-item
+                        >
+                          <div class="d-flex gap-1 align-items-center">
+                            <span>{{ "header.setting.pd_answers" | translate }}</span>
+                          </div>
+                        </button>
+                        <button
+                          (click)="onClickPdModel()"
+                          class="gap-1"
+                          mat-menu-item
+                        >
+                          <div class="d-flex gap-1 align-items-center">
+                            <span>{{ "header.setting.pd_model" | translate }}</span>
+                          </div>
+                        </button>
+                      </span>
+                    </mat-menu>
+
+
+                  </div>
                 </section>
 
                 <section>
