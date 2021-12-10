@@ -197,24 +197,6 @@ paths:
       responses:
         "200":
           description: OK
-  /v1/hmgPromotions/vouchers/{voucherTransactionId}:
-    get:
-      tags:
-      - promotion-controller
-      operationId: getVoucherTransaction
-      parameters:
-      - name: voucherTransactionId
-        in: path
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          description: OK
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/ApiResponseVoucherTransaction'
   /v1/hmgPromotions/vouchers/{voucherCode}:
     get:
       tags:
@@ -233,6 +215,42 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ApiResponseVoucher'
+  /v1/hmgPromotions/voucherTransactions/{voucherTransactionId}:
+    get:
+      tags:
+      - promotion-controller
+      operationId: getVoucherTransaction
+      parameters:
+      - name: voucherTransactionId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseVoucherTransaction'
+  /v1/hmgPaydayLoans/{loanId}/contracts:
+    get:
+      tags:
+      - payday-loan-controller
+      operationId: getLoanContractByLoanId
+      parameters:
+      - name: loanId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseContract'
   /v1/hmgPaydayLoans/{customerId}/activeLoan:
     get:
       tags:
@@ -634,20 +652,6 @@ components:
           type: string
         personInChargeId:
           type: string
-    ApiResponseListPaydayLoan:
-      type: object
-      properties:
-        result:
-          type: array
-          items:
-            $ref: '#/components/schemas/PaydayLoan'
-        errorCode:
-          type: string
-        message:
-          type: object
-        responseCode:
-          type: integer
-          format: int32
     ApiResponseContract:
       type: object
       properties:
@@ -681,6 +685,20 @@ components:
           type: string
         createdAt:
           type: string
+    ApiResponseListPaydayLoan:
+      type: object
+      properties:
+        result:
+          type: array
+          items:
+            $ref: '#/components/schemas/PaydayLoan'
+        errorCode:
+          type: string
+        message:
+          type: object
+        responseCode:
+          type: integer
+          format: int32
   securitySchemes:
     Bearer:
       type: apiKey

@@ -386,7 +386,6 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
   }
 
   getDiscountValue(voucher: Voucher) {
-    console.log(voucher);
     if (!voucher) {
       return 0;
     }
@@ -410,6 +409,8 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
   @Input() groupName: string;
   nextLoanStatus: string = PAYDAY_LOAN_STATUS.UNKNOWN_STATUS;
   nextLoanStatusDisplay: string;
+  prevLoanStatus: string = null
+  prevLoanStatusDisplay: string;
   rejectLoanStatus: string = PAYDAY_LOAN_STATUS.UNKNOWN_STATUS;
   rejectLoanStatusDisplay: string;
   salaryStatus: string;
@@ -563,11 +564,13 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
         break;
 
       case PAYDAY_LOAN_STATUS.CONTRACT_ACCEPTED:
+        this.prevLoanStatus = PAYDAY_LOAN_STATUS.FUNDED;
         this.nextLoanStatus = PAYDAY_LOAN_STATUS.AWAITING_DISBURSEMENT;
         this.rejectLoanStatus = PAYDAY_LOAN_STATUS.WITHDRAW;
         break;
 
       case PAYDAY_LOAN_STATUS.AWAITING_DISBURSEMENT:
+        this.prevLoanStatus = PAYDAY_LOAN_STATUS.CONTRACT_ACCEPTED;
         this.nextLoanStatus = PAYDAY_LOAN_STATUS.DISBURSED;
         this.rejectLoanStatus = PAYDAY_LOAN_STATUS.WITHDRAW;
         break;
@@ -593,7 +596,10 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
     );
     this.rejectLoanStatusDisplay = this.multiLanguageService.instant(
       `payday_loan.status.${this.rejectLoanStatus.toLowerCase()}_action`
-    );
+    )
+    this.prevLoanStatusDisplay = this.prevLoanStatus ? this.multiLanguageService.instant(
+      `payday_loan.status.${this.prevLoanStatus.toLowerCase()}`
+    ) : null
 
     return;
   }

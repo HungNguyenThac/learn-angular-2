@@ -327,6 +327,18 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ApiResponseString'
+  /v1/paydays/cronjob/latePayment:
+    post:
+      tags:
+      - payday-loan-controller
+      operationId: updateLatePenaltyPayment
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseString'
   /v1/tngApplications:
     get:
       tags:
@@ -380,6 +392,24 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ApiResponseVoucherDTO'
+  /v1/paydays/{loanId}/contracts:
+    get:
+      tags:
+      - payday-loan-controller
+      operationId: getLoanContractByLoanId
+      parameters:
+      - name: loanId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseContract'
   /v1/paydays/{customerId}/activeLoan:
     get:
       tags:

@@ -13,6 +13,7 @@ import * as _ from 'lodash';
 import { QUERY_CONDITION_TYPE } from '../../../../core/common/enum/operator';
 import {
   ApiResponseContract,
+  PaydayLoanControllerService as PaydayLoanTngControllerService,
   ContractControllerService,
 } from '../../../../../../open-api-modules/loanapp-tng-api-docs';
 import { FileControllerService } from '../../../../../../open-api-modules/com-api-docs';
@@ -26,6 +27,7 @@ import { GlobalConstants } from '../../../../core/common/global-constants';
 export class LoanListService {
   constructor(
     private paydayLoanControllerService: PaydayLoanControllerService,
+    private paydayLoanTngControllerService: PaydayLoanTngControllerService,
     private applicationTngControllerService: ApplicationTngControllerService,
     private applicationHmgControllerService: ApplicationHmgControllerService,
     private customerControllerService: CustomerControllerService,
@@ -125,12 +127,11 @@ export class LoanListService {
 
   public getContractData(
     loanId: string,
-    customerId: string,
     groupName: string
   ) {
     if (groupName === 'TNG') {
-      return this.contractControllerService
-        .getContractByLoanId(loanId, customerId)
+      return this.paydayLoanTngControllerService
+        .getLoanContractByLoanId(loanId)
         .pipe(
           map((results: ApiResponseContract) => {
             return results;
@@ -143,8 +144,8 @@ export class LoanListService {
     }
 
     if (groupName === 'HMG') {
-      return this.contractHmgControllerService
-        .getContract(loanId, customerId)
+      return this.paydayLoanControllerService
+        .getLoanContractByLoanId(loanId)
         .pipe(
           map((results: ApiResponseContract) => {
             return results;
