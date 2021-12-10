@@ -1,7 +1,7 @@
-import {Component, Inject, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {BUTTON_TYPE} from "../../../../../core/common/enum/operator";
-import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
+import { Component, Inject, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { BUTTON_TYPE } from '../../../../../core/common/enum/operator';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-add-new-pd-dialog',
@@ -9,6 +9,37 @@ import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
   styleUrls: ['./add-new-pd-dialog.component.scss'],
 })
 export class AddNewPdDialogComponent implements OnInit {
+  //Mock data
+  leftArr = [
+    {
+      name: 'Item 1',
+      id: '1',
+    },
+    {
+      name: 'Item 2',
+      id: '2',
+    },
+    {
+      name: 'Item 3',
+      id: '3',
+    },
+    {
+      name: 'Item 4',
+      id: '4',
+    },
+    {
+      name: 'Item 5',
+      id: '5',
+    },
+    {
+      name: 'Item 6',
+      id: '6',
+    },
+  ];
+  rightArr = [];
+  leftTemp = [];
+  rightTemp = [];
+
   addPdForm: FormGroup;
   isAccountNameInputFocus: boolean = false;
   isLoginInputFocus: boolean = false;
@@ -32,8 +63,7 @@ export class AddNewPdDialogComponent implements OnInit {
     }
   }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   buildAccountInfoForm() {
     this.addPdForm = this.formBuilder.group({
@@ -48,7 +78,7 @@ export class AddNewPdDialogComponent implements OnInit {
       accountPhone: [''],
       accountEmail: ['', [Validators.email]],
       accountPosition: [''],
-      accountNote: [''],
+      note: [''],
     });
   }
 
@@ -76,5 +106,44 @@ export class AddNewPdDialogComponent implements OnInit {
       type: BUTTON_TYPE.PRIMARY,
       data: this.addPdForm.getRawValue(),
     });
+  }
+
+  onClickQuestion(event, question) {
+    event.target.classList.toggle('gray');
+    if (this.leftTemp.includes(question)) {
+      const index = this.leftTemp.indexOf(question);
+      this.leftTemp.splice(index, 1);
+      console.log(this.leftTemp);
+    } else {
+      this.leftTemp.push(question);
+    }
+  }
+
+  onClickChosenQuestion(event, question) {
+    event.target.classList.toggle('gray');
+    if (this.rightTemp.includes(question)) {
+      const index = this.rightTemp.indexOf(question);
+      this.rightTemp.splice(index, 1);
+    } else {
+      this.rightTemp.push(question);
+    }
+  }
+
+  moveToChosen() {
+    this.rightArr = this.rightArr.concat(this.leftTemp);
+    const tempSet = new Set(this.leftTemp);
+    this.leftArr = this.leftArr.filter((question) => {
+      return !tempSet.has(question);
+    });
+    this.leftTemp = [];
+  }
+
+  moveBack() {
+    this.leftArr = this.leftArr.concat(this.rightTemp);
+    const tempSet = new Set(this.rightTemp);
+    this.rightArr = this.rightArr.filter((question) => {
+      return !tempSet.has(question);
+    });
+    this.rightTemp = [];
   }
 }
