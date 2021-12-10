@@ -20,7 +20,7 @@
                       "customer.company_info.company_name" | translate
                       }}</mat-label>
                     <mat-select
-                      [disabled]="disabledColumns.includes('companyId')"
+                      [disabled]="disabledColumns.includes('companyId') || customerInfo.companyInfo.groupName === 'TNG'"
                       formControlName="companyId"
                     >
                       <mat-option
