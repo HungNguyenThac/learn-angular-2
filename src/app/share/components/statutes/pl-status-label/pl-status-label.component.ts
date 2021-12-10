@@ -21,6 +21,8 @@ export class PlStatusLabelComponent implements OnInit {
       'pl-status-label-funded': this.statusType === PL_LABEL_STATUS.FUNDED,
       'pl-status-label-contract-awaiting':
         this.statusType === PL_LABEL_STATUS.CONTRACT_AWAITING,
+      'pl-status-label-contract-accepted':
+        this.statusType === PL_LABEL_STATUS.CONTRACT_ACCEPTED,
       'pl-status-label-awaiting-disbursement':
         this.statusType === PL_LABEL_STATUS.AWAITING_DISBURSEMENT,
       'pl-status-label-disbursed':
