@@ -45,7 +45,7 @@
     </div>
   </div>
 
-  <div class="row permission-tree">
+  <div class="row permission-tree" [hidden]="!  selectedRole">
     <div class="grid-table">
       <div *ngFor="let tableData of treeData" class="table">
         <div class="table-title">{{ tableData.name }}</div>
@@ -61,9 +61,16 @@
   </div>
 
   <div class="action text-end">
-    <button color="accent" mat-flat-button (click)="updatePermissionForGroup()">
-      <span class="sprite-group-5-pen-white"></span>
-      {{ "customer.individual_info.update" | translate }}
-    </button>
+    <ng-container *ngxPermissionsOnly="['groups:update']">
+      <button
+        color="accent"
+        mat-flat-button
+        (click)="updatePermissionForGroup()"
+        *ngIf="selectedRole"
+      >
+        <span class="sprite-group-5-pen-white"></span>
+        {{ "customer.individual_info.update" | translate }}
+      </button>
+    </ng-container>
   </div>
 </div>
