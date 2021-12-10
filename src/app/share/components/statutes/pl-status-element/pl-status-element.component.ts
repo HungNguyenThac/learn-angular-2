@@ -252,6 +252,13 @@ export class PlStatusElementComponent implements OnInit {
           ),
           labelStatus: PL_LABEL_STATUS.CONTRACT_AWAITING,
         };
+      case PAYDAY_LOAN_STATUS.CONTRACT_ACCEPTED:
+        return {
+          label: this.multiLanguageService.instant(
+            `payday_loan.status.${status.toLowerCase()}`
+          ),
+          labelStatus: PL_LABEL_STATUS.CONTRACT_AWAITING,
+        };
       case PAYDAY_LOAN_STATUS.AWAITING_DISBURSEMENT:
         return {
           label: this.multiLanguageService.instant(

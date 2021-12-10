@@ -9,11 +9,11 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { AdminAccountEntity } from './adminAccountEntity';
 
 
-export interface ChangePassProviderRequest { 
-    username: string;
-    newSecret: string;
-    confirmSecret: string;
+export interface UpdateFullInfoAdminAccountResponse { 
+    account?: AdminAccountEntity;
+    groupId?: string;
 }
 

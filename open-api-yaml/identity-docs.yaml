@@ -181,7 +181,7 @@ paths:
           content:
             '*/*':
               schema:
-                $ref: '#/components/schemas/ApiResponseAdminAccountEntity'
+                $ref: '#/components/schemas/ApiResponseUpdateFullInfoAdminAccountResponse'
   /v1/signOn/signOut:
     post:
       tags:
@@ -893,6 +893,25 @@ components:
           type: string
         position:
           type: string
+    ApiResponseUpdateFullInfoAdminAccountResponse:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/UpdateFullInfoAdminAccountResponse'
+        errorCode:
+          type: string
+        message:
+          type: object
+        responseCode:
+          type: integer
+          format: int32
+    UpdateFullInfoAdminAccountResponse:
+      type: object
+      properties:
+        account:
+          $ref: '#/components/schemas/AdminAccountEntity'
+        groupId:
+          type: string
     ApiResponseString:
       type: object
       properties:
@@ -1266,17 +1285,17 @@ components:
           type: string
     ChangePassProviderRequest:
       required:
+      - confirmSecret
       - newSecret
-      - oldSecret
       - username
       type: object
       properties:
         username:
           pattern: "^[A-Za-z0-9]+$"
           type: string
-        oldSecret:
-          type: string
         newSecret:
+          type: string
+        confirmSecret:
           type: string
     ApiResponseObject:
       type: object

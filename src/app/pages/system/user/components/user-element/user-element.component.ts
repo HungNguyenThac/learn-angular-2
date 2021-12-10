@@ -91,7 +91,7 @@ export class UserElementComponent implements OnInit {
             );
           }
           if (data.responseCode === 200) {
-            this.userInfo = data?.result;
+            this.refreshContent();
             this.triggerUpdateElementInfo.emit(this.userInfo);
             setTimeout(() => {
               this.notifier.success(

@@ -30,6 +30,7 @@ model/apiResponsePermissionEntity.ts
 model/apiResponsePermissionTypeEntity.ts
 model/apiResponseResetPasswordResponse.ts
 model/apiResponseString.ts
+model/apiResponseUpdateFullInfoAdminAccountResponse.ts
 model/assignGroupRequest.ts
 model/changePassProviderRequest.ts
 model/createCustomerAccountRequest.ts
@@ -56,6 +57,7 @@ model/resetPasswordResponse.ts
 model/resetPasswordVerifiedAccountRequest.ts
 model/resetVerifiedPasswordOtpRequest.ts
 model/updateFullInfoAdminAccountRequest.ts
+model/updateFullInfoAdminAccountResponse.ts
 model/updateGroupRequest.ts
 model/updateInfoAdminAccountRequest.ts
 model/updatePermissionRequest.ts
