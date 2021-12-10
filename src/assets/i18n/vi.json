@@ -243,6 +243,7 @@
       "update_individual_info": "Cập nhật thông tin khách hàng",
       "verify": "Yêu cầu xác thực lại thông tin",
       "update_company_info": "Cập nhật thông tin công ty",
+      "change_pass": "Đổi mật khẩu",
       "disable_customer": {
         "title": "Ngừng hoạt động",
         "dialog_title": "Bạn có chắc chắn muốn dừng hoạt động khách hàng này trong {{time}} không?",
@@ -526,8 +527,8 @@
     }
   },
   "error_code": {
-    "account_not_exist": "Số điện thoại hoặc mật khẩu không chính xác!",
-    "account_not_existed": "Số điện thoại không chính xác!",
+    "account_not_exist": "Tên tài khoản hoặc mật khẩu không chính xác!",
+    "account_not_existed": "Tài khoản không tồn tại!",
     "account_existed": "Số điện thoại đã tồn tại trên hệ thống",
     "email_already_exists": "Email đã tồn tại, vui lòng thử email khác",
     "miss_param": "Thiếu tham số, vui lòng kiểm tra dữ liệu đầu vào",
@@ -605,6 +606,7 @@
       "phone": "Số điện thoại",
       "note": "Ghi chú",
       "status": "Trạng thái",
+      "change_pass_success": "Đổi mật khẩu thành công",
       "lock_user": {
         "title": "Ngừng hoạt động",
         "content": "Sau khi ngừng hoạt động, lịch sử giao dịch của nhân viên vẫn sẽ được giữ. Bạn có chắc chắn muốn ngừng hoạt động nhân viên này?"
@@ -620,9 +622,22 @@
       "add_role": "Thêm vai trò",
       "edit_role": "Chỉnh sửa vai trò",
       "add_role_placeholder": "Nhập tên vai trò",
+      "code": "Mã vai trò",
+      "description": "Mô tả",
       "system": "Hệ thống",
       "transaction": "Giao dịch",
-      "customer": "Khách hàng"
+      "customer": "Khách hàng",
+      "role": "Vai trò",
+      "add_new_role": "Tạo vai trò mới",
+      "delete": "Xóa vai trò",
+      "save": "Lưu cập nhật",
+      "delete_role": {
+        "title": "Xóa vai trò",
+        "content": "Bạn có chắc chắn muốn xóa vai trò {{groupName}}?"
+      },
+      "delete_success": "Xóa vai trò '{{groupName}}' thành công!",
+      "update_success": "Cập nhật vai trò '{{groupName}}' thành công!",
+      "create_success": "Thêm mới vai trò '{{groupName}}' thành công!"
     },
     "user_time_log": {
       "title": "Thời gian truy cập"

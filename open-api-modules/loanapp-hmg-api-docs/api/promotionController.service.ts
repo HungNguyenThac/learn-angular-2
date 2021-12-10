@@ -357,7 +357,7 @@ export class PromotionControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.get<ApiResponseVoucherTransaction>(`${this.configuration.basePath}/v1/hmgPromotions/vouchers/${encodeURIComponent(String(voucherTransactionId))}`,
+        return this.httpClient.get<ApiResponseVoucherTransaction>(`${this.configuration.basePath}/v1/hmgPromotions/voucherTransactions/${encodeURIComponent(String(voucherTransactionId))}`,
             {
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,

@@ -55,6 +55,7 @@ import {
 import * as moment from 'moment';
 import * as _ from 'lodash';
 import { NgxPermissionsService } from 'ngx-permissions';
+import { DisplayedFieldsModel } from '../../../../public/models/filter/displayed-fields.model';
 
 @Component({
   selector: 'app-user-list',
@@ -137,7 +138,7 @@ export class UserListComponent implements OnInit, OnDestroy {
     },
   ];
 
-  allColumns: any[] = [
+  allColumns: DisplayedFieldsModel[] = [
     {
       key: 'username',
       title: this.multiLanguageService.instant(
@@ -234,10 +235,9 @@ export class UserListComponent implements OnInit, OnDestroy {
         'credentials:lockMultiAccount'
       );
 
-    //TODO
-    // if (hasCredentialsCreatePermission) {
+    if (hasCredentialsCreatePermission) {
       this.breadcrumbOptions.showBtnAdd = true;
-    // }
+    }
 
     let selectedButtons = JSON.parse(JSON.stringify(this.selectButtons));
     selectedButtons.forEach((button) => {
@@ -387,7 +387,10 @@ export class UserListComponent implements OnInit, OnDestroy {
         })
         .subscribe((result: ApiResponseString) => {
           if (!result || result.responseCode !== RESPONSE_CODE.SUCCESS) {
-            return;
+            return this.notifier.error(
+              JSON.stringify(result?.message),
+              result?.errorCode
+            );
           }
           this.triggerDeselectUsers();
 
@@ -438,7 +441,10 @@ export class UserListComponent implements OnInit, OnDestroy {
       this.adminAccountControllerService.deleteAdminAccount(userId).subscribe(
         (result: ApiResponseAdminAccountEntity) => {
           if (!result || result.responseCode !== RESPONSE_CODE.SUCCESS) {
-            return;
+            return this.notifier.error(
+              JSON.stringify(result?.message),
+              result?.errorCode
+            );
           }
 
           this.notifier.success(
@@ -641,7 +647,10 @@ export class UserListComponent implements OnInit, OnDestroy {
         .create3(updateInfoRequest)
         .subscribe((result: ApiResponseAdminAccountEntity) => {
           if (!result || result.responseCode !== RESPONSE_CODE.SUCCESS) {
-            return;
+            return this.notifier.error(
+              JSON.stringify(result?.message),
+              result?.errorCode
+            );
           }
           setTimeout(() => {
             this.notifier.success(
@@ -673,27 +682,32 @@ export class UserListComponent implements OnInit, OnDestroy {
     };
   }
 
-  _getPermissionList() {
+  private _getPermissionList() {
     this.subManager.add(
       this.permissionTypeControllerService
         .getPermissionTypeByTreeFormat()
         .subscribe((result: ApiResponseListParentPermissionTypeResponse) => {
           if (!result || result.responseCode !== RESPONSE_CODE.SUCCESS) {
-            return;
+            return this.notifier.error(
+              JSON.stringify(result?.message),
+              result?.errorCode
+            );
           }
           this.treeData = result.result;
-          console.log(this.treeData);
         })
     );
   }
 
-  getRoleList() {
+  private getRoleList() {
     this.groupControllerService
       .getGroups(100, 0, {})
       .subscribe(
         (result: ApiResponseSearchAndPaginationResponseGroupEntity) => {
           if (!result || result.responseCode !== RESPONSE_CODE.SUCCESS) {
-            return;
+            return this.notifier.error(
+              JSON.stringify(result?.message),
+              result?.errorCode
+            );
           }
           this.roleList = result?.result?.data;
           this._initRoleOptions();
@@ -741,6 +755,10 @@ export class UserListComponent implements OnInit, OnDestroy {
         };
       });
     });
+  }
+
+  public updateRoleInfo() {
+    this.subManager.add(this.getRoleList());
   }
 
   public updateElementInfo(updatedUserInfo) {

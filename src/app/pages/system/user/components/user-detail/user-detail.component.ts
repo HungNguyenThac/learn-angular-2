@@ -1,28 +1,35 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output,
+} from '@angular/core';
 import { MultiLanguageService } from '../../../../../share/translate/multiLanguageService';
 import { Subscription } from 'rxjs';
 
 import {
   BUTTON_TYPE,
   DATA_CELL_TYPE,
-  DATA_STATUS_TYPE, RESPONSE_CODE,
+  DATA_STATUS_TYPE,
+  RESPONSE_CODE,
 } from '../../../../../core/common/enum/operator';
 import { NotificationService } from '../../../../../core/services/notification.service';
 import { ToastrService } from 'ngx-toastr';
 import {
   AdminAccountControllerService,
   ApiResponseAdminAccountEntity,
+  ChangePassProviderRequest,
 } from '../../../../../../../open-api-modules/identity-api-docs';
 import * as moment from 'moment';
 import {
-  ApiResponseCustomerInfo,
-  CompanyInfo,
-  CustomerInfo,
+  AdminAccountEntity,
+  GroupEntity,
 } from '../../../../../../../open-api-modules/dashboard-api-docs';
 import {
   AddNewUserDialogComponent,
-  DialogUserInfoUpdateComponent,
-  MerchantDetailDialogComponent,
+  ChangeUserPasswordDialogComponent,
 } from '../../../../../share/components';
 import { MatDialog } from '@angular/material/dialog';
 
@@ -31,20 +38,20 @@ import { MatDialog } from '@angular/material/dialog';
   templateUrl: './user-detail.component.html',
   styleUrls: ['./user-detail.component.scss'],
 })
-export class UserDetailComponent implements OnInit {
+export class UserDetailComponent implements OnInit, OnDestroy {
   leftCompanyInfos: any[] = [];
   rightCompanyInfos: any[] = [];
   subManager = new Subscription();
-  _userInfo;
+  _userInfo: AdminAccountEntity;
 
-  @Input() roleList;
+  @Input() roleList: Array<GroupEntity>;
 
   @Input()
   get userInfo() {
     return this._userInfo;
   }
 
-  set userInfo(value) {
+  set userInfo(value: AdminAccountEntity) {
     this._userInfo = value;
     this.leftCompanyInfos = this._initLeftCompanyInfos();
     this.rightCompanyInfos = this._initRightCompanyInfos();
@@ -62,7 +69,11 @@ export class UserDetailComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  ngOnDestroy(): void {}
+  ngOnDestroy(): void {
+    if (this.subManager) {
+      this.subManager.unsubscribe();
+    }
+  }
 
   public openUpdateDialog() {
     const updateDialogRef = this.dialog.open(AddNewUserDialogComponent, {
@@ -116,16 +127,17 @@ export class UserDetailComponent implements OnInit {
             })
             .subscribe((result: ApiResponseAdminAccountEntity) => {
               if (!result || result.responseCode !== RESPONSE_CODE.SUCCESS) {
-                // return this.handleResponseError(result.errorCode);
+                return this.notifier.error(
+                  JSON.stringify(result?.message),
+                  result?.errorCode
+                );
               }
-              if (result.responseCode === 200) {
+              setTimeout(() => {
                 this.updateElementInfo.emit();
-                setTimeout(() => {
-                  this.notifier.success(
-                    this.multiLanguageService.instant('common.lock_success')
-                  );
-                }, 3000);
-              }
+                this.notifier.success(
+                  this.multiLanguageService.instant('common.lock_success')
+                );
+              }, 3000);
             })
         );
       }
@@ -150,7 +162,10 @@ export class UserDetailComponent implements OnInit {
             .unLockAccount1(this.userInfo.id)
             .subscribe((result: ApiResponseAdminAccountEntity) => {
               if (!result || result.responseCode !== RESPONSE_CODE.SUCCESS) {
-                // return this.handleResponseError(result.errorCode);
+                return this.notifier.error(
+                  JSON.stringify(result?.message),
+                  result?.errorCode
+                );
               }
               if (result.responseCode === 200) {
                 this.updateElementInfo.emit();
@@ -186,7 +201,10 @@ export class UserDetailComponent implements OnInit {
             .deleteAdminAccount(this.userInfo.id)
             .subscribe((result: ApiResponseAdminAccountEntity) => {
               if (!result || result.responseCode !== RESPONSE_CODE.SUCCESS) {
-                // return this.handleResponseError(result.errorCode);
+                return this.notifier.error(
+                  JSON.stringify(result?.message),
+                  result?.errorCode
+                );
               }
               if (result.responseCode === 200) {
                 this.updateElementInfo.emit('delete');
@@ -213,6 +231,7 @@ export class UserDetailComponent implements OnInit {
 
   _bindingDialogIndividualData(data) {
     return {
+      groupId: data?.accountRole,
       fullName: data?.accountName,
       email: data?.accountEmail,
       mobile: data?.accountPhone,
@@ -271,5 +290,55 @@ export class UserDetailComponent implements OnInit {
 
   get userStatus() {
     return this.userInfo?.userStatus;
+  }
+
+  public openChangePasswordDialog() {
+    const updateDialogRef = this.dialog.open(
+      ChangeUserPasswordDialogComponent,
+      {
+        panelClass: 'custom-info-dialog-container',
+        maxWidth: '600px',
+        width: '60%',
+        data: {},
+      }
+    );
+    this.subManager.add(
+      updateDialogRef.afterClosed().subscribe((result: any) => {
+        if (result && result.type === BUTTON_TYPE.PRIMARY) {
+          this.changeUserPass({
+            username: this.userInfo.username,
+            newSecret: result?.data?.accountPassword,
+            confirmSecret: result?.data?.confirmPassword,
+          });
+        }
+      })
+    );
+  }
+
+  private changeUserPass(changePassData: ChangePassProviderRequest) {
+    this.subManager.add(
+      this.adminAccountControllerService
+        .changePass({
+          username: changePassData.username,
+          newSecret: changePassData.newSecret,
+          confirmSecret: changePassData.confirmSecret,
+        })
+        .subscribe((result) => {
+          if (!result || result.responseCode !== RESPONSE_CODE.SUCCESS) {
+            return this.notifier.error(
+              JSON.stringify(result?.message),
+              result?.errorCode
+            );
+          }
+          setTimeout(() => {
+            this.updateElementInfo.emit();
+            this.notifier.success(
+              this.multiLanguageService.instant(
+                'system.user_detail.change_pass_success'
+              )
+            );
+          }, 500);
+        })
+    );
   }
 }

@@ -141,7 +141,7 @@
             <app-table-cell-format-data
               [format]="column?.format"
               [type]="column?.type"
-              [value]="element[column?.key]"
+              [value]="getPropByString(element, column?.key)"
               class="table-cell-format-data"
             ></app-table-cell-format-data>
           </td>

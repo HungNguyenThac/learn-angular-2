@@ -19,12 +19,11 @@ import { Observable }                                        from 'rxjs';
 
 import { ApiResponseAdminAccountEntity } from '../model/models';
 import { ApiResponseGetTokenResponse } from '../model/models';
-import { ApiResponseListString } from '../model/models';
 import { ApiResponseObject } from '../model/models';
 import { ApiResponseString } from '../model/models';
+import { ApiResponseUpdateFullInfoAdminAccountResponse } from '../model/models';
 import { ChangePassProviderRequest } from '../model/models';
 import { CreateProviderAccountRequest } from '../model/models';
-import { DeleteMultiAdminAccountsRequest } from '../model/models';
 import { GetTokenRequest } from '../model/models';
 import { LockAccountRequest } from '../model/models';
 import { LockMultiAccountRequest } from '../model/models';
@@ -238,59 +237,6 @@ export class AdminAccountControllerService {
         }
 
         return this.httpClient.delete<ApiResponseAdminAccountEntity>(`${this.configuration.basePath}/v1/credentials/${encodeURIComponent(String(accountId))}`,
-            {
-                responseType: <any>responseType_,
-                withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress
-            }
-        );
-    }
-
-    /**
-     * @param deleteMultiAdminAccountsRequest 
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public deleteMultiAdminAccount(deleteMultiAdminAccountsRequest: DeleteMultiAdminAccountsRequest, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseListString>;
-    public deleteMultiAdminAccount(deleteMultiAdminAccountsRequest: DeleteMultiAdminAccountsRequest, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseListString>>;
-    public deleteMultiAdminAccount(deleteMultiAdminAccountsRequest: DeleteMultiAdminAccountsRequest, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseListString>>;
-    public deleteMultiAdminAccount(deleteMultiAdminAccountsRequest: DeleteMultiAdminAccountsRequest, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
-        if (deleteMultiAdminAccountsRequest === null || deleteMultiAdminAccountsRequest === undefined) {
-            throw new Error('Required parameter deleteMultiAdminAccountsRequest was null or undefined when calling deleteMultiAdminAccount.');
-        }
-
-        let headers = this.defaultHeaders;
-
-        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-        if (httpHeaderAcceptSelected === undefined) {
-            // to determine the Accept header
-            const httpHeaderAccepts: string[] = [
-                '*/*'
-            ];
-            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        }
-        if (httpHeaderAcceptSelected !== undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
-        }
-
-
-        // to determine the Content-Type header
-        const consumes: string[] = [
-            'application/json'
-        ];
-        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
-        if (httpContentTypeSelected !== undefined) {
-            headers = headers.set('Content-Type', httpContentTypeSelected);
-        }
-
-        let responseType_: 'text' | 'json' = 'json';
-        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
-            responseType_ = 'text';
-        }
-
-        return this.httpClient.delete<ApiResponseListString>(`${this.configuration.basePath}/v1/credentials/list`,
             {
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
@@ -554,9 +500,9 @@ export class AdminAccountControllerService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public updateFullInfo(id: string, updateFullInfoAdminAccountRequest: UpdateFullInfoAdminAccountRequest, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseAdminAccountEntity>;
-    public updateFullInfo(id: string, updateFullInfoAdminAccountRequest: UpdateFullInfoAdminAccountRequest, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseAdminAccountEntity>>;
-    public updateFullInfo(id: string, updateFullInfoAdminAccountRequest: UpdateFullInfoAdminAccountRequest, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseAdminAccountEntity>>;
+    public updateFullInfo(id: string, updateFullInfoAdminAccountRequest: UpdateFullInfoAdminAccountRequest, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseUpdateFullInfoAdminAccountResponse>;
+    public updateFullInfo(id: string, updateFullInfoAdminAccountRequest: UpdateFullInfoAdminAccountRequest, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseUpdateFullInfoAdminAccountResponse>>;
+    public updateFullInfo(id: string, updateFullInfoAdminAccountRequest: UpdateFullInfoAdminAccountRequest, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseUpdateFullInfoAdminAccountResponse>>;
     public updateFullInfo(id: string, updateFullInfoAdminAccountRequest: UpdateFullInfoAdminAccountRequest, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
         if (id === null || id === undefined) {
             throw new Error('Required parameter id was null or undefined when calling updateFullInfo.');
@@ -594,7 +540,7 @@ export class AdminAccountControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.put<ApiResponseAdminAccountEntity>(`${this.configuration.basePath}/v1/credentials/updateFullInfo/${encodeURIComponent(String(id))}`,
+        return this.httpClient.put<ApiResponseUpdateFullInfoAdminAccountResponse>(`${this.configuration.basePath}/v1/credentials/updateFullInfo/${encodeURIComponent(String(id))}`,
             updateFullInfoAdminAccountRequest,
             {
                 responseType: <any>responseType_,

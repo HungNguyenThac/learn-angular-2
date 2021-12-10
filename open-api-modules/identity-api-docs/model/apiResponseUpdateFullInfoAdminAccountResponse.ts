@@ -9,9 +9,13 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { UpdateFullInfoAdminAccountResponse } from './updateFullInfoAdminAccountResponse';
 
 
-export interface DeleteMultiAdminAccountsRequest { 
-    accountIds: Array<string>;
+export interface ApiResponseUpdateFullInfoAdminAccountResponse { 
+    result?: UpdateFullInfoAdminAccountResponse;
+    errorCode?: string;
+    message?: object;
+    responseCode?: number;
 }
 

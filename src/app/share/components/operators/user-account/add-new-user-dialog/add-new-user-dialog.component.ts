@@ -51,7 +51,7 @@ export class AddNewUserDialogComponent implements OnInit {
       ],
       accountRePassword: [''],
       accountRole: [''],
-      accountPhone: [''],
+      accountPhone: ['', [Validators.minLength(10), Validators.maxLength(12)]],
       accountEmail: ['', [Validators.email]],
       accountPosition: [''],
       accountNote: [''],

@@ -145,6 +145,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
           this.updateUserInfo({
             fullName: result?.data.fullName,
             mobile: result?.data.mobile,
+            note: result?.data.note,
           });
         }
       })
@@ -152,6 +153,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   updateUserInfo(updateUserInfoRequest: UpdateInfoAdminAccountRequest) {
+    console.log('updateUserInfoRequest', updateUserInfoRequest);
     this.subManager.add(
       this.adminAccountControllerService
         .updateInfo(updateUserInfoRequest)

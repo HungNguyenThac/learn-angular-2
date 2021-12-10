@@ -13,7 +13,7 @@
 
 export interface ChangePassProviderRequest { 
     username: string;
-    oldSecret: string;
     newSecret: string;
+    confirmSecret: string;
 }
 

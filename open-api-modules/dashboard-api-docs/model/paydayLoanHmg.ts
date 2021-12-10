@@ -10,6 +10,8 @@
  * Do not edit the class manually.
  */
 import { Rating } from './rating';
+import { CompanyInfo } from './companyInfo';
+import { CustomerInfo } from './customerInfo';
 import { Voucher } from './voucher';
 import { VoucherTransaction } from './voucherTransaction';
 
@@ -36,15 +38,9 @@ export interface PaydayLoanHmg {
     updatedAt?: string;
     note?: string;
     personInChargeId?: string;
-    customerName?: string;
-    customerMobileNumber?: string;
-    customerEmail?: string;
-    customerOrganizationName?: string;
-    customerIdentityNumberOne?: string;
+    customerInfo?: CustomerInfo;
+    companyInfo?: CompanyInfo;
     companyId?: string;
-    companyName?: string;
-    companyCode?: string;
-    companyGroupName?: string;
     ratingInfo?: Rating;
     voucherTransaction?: VoucherTransaction;
     voucher?: Voucher;

@@ -9,14 +9,11 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { AdminAccountEntity } from './adminAccountEntity';
 
 
-export interface UpdateFullInfoAdminAccountRequest { 
+export interface UpdateFullInfoAdminAccountResponse { 
+    account?: AdminAccountEntity;
     groupId?: string;
-    fullName: string;
-    email: string;
-    mobile: string;
-    note?: string;
-    position?: string;
 }
 
