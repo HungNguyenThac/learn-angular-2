@@ -212,6 +212,8 @@
                       [ngClass]="isPhoneInputFocus ? 'is-focused-input' : ''"
                       [placeholder]="'account.add.phone' | translate"
                       formControlName="accountPhone"
+                      appPhoneNumberOnly
+                      phone-number-validate
                       matInput
                       type="tel"
                     />
