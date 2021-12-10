@@ -263,7 +263,7 @@ export class UserRoleComponent implements OnInit, OnDestroy {
               { groupName: groupName }
             )
           );
-          this.addPermissionToGroup(groupId, permissionIds, groupName);
+          this.updatePermissionByGroupId(groupId, permissionIds);
           setTimeout(() => {
             this.getPermissionsByGroupId(groupId);
             this.updateElementInfo.emit();
@@ -349,14 +349,14 @@ export class UserRoleComponent implements OnInit, OnDestroy {
     this.updatePermissionByGroupId(this.selectedRole, arrayPermission);
   }
 
-  updatePermissionByGroupId(groupId: string, permissions: string[]) {
+  updatePermissionByGroupId(groupId: string, permissionIds: string[]) {
     if (!groupId) {
       return;
     }
     this.subManager.add(
       this.identityGroupControllerService
         .updatePermissions({
-          permissionIds: permissions,
+          permissionIds: permissionIds,
           groupId: groupId,
         })
         .subscribe((response) => {
