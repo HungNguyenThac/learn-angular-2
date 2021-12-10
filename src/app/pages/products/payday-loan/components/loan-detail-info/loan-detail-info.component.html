@@ -160,6 +160,14 @@
           'paydays:changeLoanStatus'
         ]"
       >
+       <button
+          mat-flat-button
+          color="warn"
+          (click)="changeLoanStatus(prevLoanStatus, prevLoanStatusDisplay)"
+          [hidden]="!prevLoanStatus"
+        >
+          {{ prevLoanStatusDisplay }}
+        </button>
         <button
           mat-flat-button
           color="accent"

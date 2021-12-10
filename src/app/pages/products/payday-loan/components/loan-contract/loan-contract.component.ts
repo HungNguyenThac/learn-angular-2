@@ -186,8 +186,7 @@ export class LoanContractComponent implements OnInit, OnDestroy {
   private _getLoanContractData() {
     this.subManager.add(
       this.LoanListService.getContractData(
-        this.loanDetail.id,
-        this.loanDetail.customerId,
+        this.loanDetail?.id,
         this.loanDetail.companyInfo?.groupName
       ).subscribe((response: ApiResponseContract) => {
         if (response.result === null) {

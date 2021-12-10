@@ -98,7 +98,6 @@ export class LoanDetailComponent implements OnInit, OnDestroy {
   triggerUpdateLoanElement() {
     this.notificationService.showLoading({ showContent: true });
     this.timeOut = setTimeout(() => {
-      console.log('stop loading');
       this._getLoanById(this.loanId);
       this.notificationService.hideLoading();
       this.notifier.success(
@@ -128,6 +127,7 @@ export class LoanDetailComponent implements OnInit, OnDestroy {
           .subscribe((data: ApiResponsePaydayLoanTng) => {
             this.loanDetail = data?.result;
             this.loanDetailTriggerUpdateStatus.emit(this.loanDetail);
+            this.detectUpdateLoanAfterSign.emit(this.loanDetail);
             console.log(this.loanDetail, 'loanDetail----------------------');
           })
       );
