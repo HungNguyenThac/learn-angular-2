@@ -55,7 +55,7 @@ import {
 import * as moment from 'moment';
 import * as _ from 'lodash';
 import { NgxPermissionsService } from 'ngx-permissions';
-import {DisplayedFieldsModel} from "../../../../public/models/filter/displayed-fields.model";
+import { DisplayedFieldsModel } from '../../../../public/models/filter/displayed-fields.model';
 
 @Component({
   selector: 'app-user-list',
@@ -235,10 +235,9 @@ export class UserListComponent implements OnInit, OnDestroy {
         'credentials:lockMultiAccount'
       );
 
-    //TODO
-    // if (hasCredentialsCreatePermission) {
+    if (hasCredentialsCreatePermission) {
       this.breadcrumbOptions.showBtnAdd = true;
-    // }
+    }
 
     let selectedButtons = JSON.parse(JSON.stringify(this.selectButtons));
     selectedButtons.forEach((button) => {
@@ -683,7 +682,7 @@ export class UserListComponent implements OnInit, OnDestroy {
     };
   }
 
-  private  _getPermissionList() {
+  private _getPermissionList() {
     this.subManager.add(
       this.permissionTypeControllerService
         .getPermissionTypeByTreeFormat()

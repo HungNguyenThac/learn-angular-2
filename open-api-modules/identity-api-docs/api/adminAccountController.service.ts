@@ -21,6 +21,7 @@ import { ApiResponseAdminAccountEntity } from '../model/models';
 import { ApiResponseGetTokenResponse } from '../model/models';
 import { ApiResponseObject } from '../model/models';
 import { ApiResponseString } from '../model/models';
+import { ApiResponseUpdateFullInfoAdminAccountResponse } from '../model/models';
 import { ChangePassProviderRequest } from '../model/models';
 import { CreateProviderAccountRequest } from '../model/models';
 import { GetTokenRequest } from '../model/models';
@@ -499,9 +500,9 @@ export class AdminAccountControllerService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public updateFullInfo(id: string, updateFullInfoAdminAccountRequest: UpdateFullInfoAdminAccountRequest, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseAdminAccountEntity>;
-    public updateFullInfo(id: string, updateFullInfoAdminAccountRequest: UpdateFullInfoAdminAccountRequest, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseAdminAccountEntity>>;
-    public updateFullInfo(id: string, updateFullInfoAdminAccountRequest: UpdateFullInfoAdminAccountRequest, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseAdminAccountEntity>>;
+    public updateFullInfo(id: string, updateFullInfoAdminAccountRequest: UpdateFullInfoAdminAccountRequest, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ApiResponseUpdateFullInfoAdminAccountResponse>;
+    public updateFullInfo(id: string, updateFullInfoAdminAccountRequest: UpdateFullInfoAdminAccountRequest, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ApiResponseUpdateFullInfoAdminAccountResponse>>;
+    public updateFullInfo(id: string, updateFullInfoAdminAccountRequest: UpdateFullInfoAdminAccountRequest, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ApiResponseUpdateFullInfoAdminAccountResponse>>;
     public updateFullInfo(id: string, updateFullInfoAdminAccountRequest: UpdateFullInfoAdminAccountRequest, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
         if (id === null || id === undefined) {
             throw new Error('Required parameter id was null or undefined when calling updateFullInfo.');
@@ -539,7 +540,7 @@ export class AdminAccountControllerService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.put<ApiResponseAdminAccountEntity>(`${this.configuration.basePath}/v1/credentials/updateFullInfo/${encodeURIComponent(String(id))}`,
+        return this.httpClient.put<ApiResponseUpdateFullInfoAdminAccountResponse>(`${this.configuration.basePath}/v1/credentials/updateFullInfo/${encodeURIComponent(String(id))}`,
             updateFullInfoAdminAccountRequest,
             {
                 responseType: <any>responseType_,

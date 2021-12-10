@@ -61,6 +61,17 @@
         <span class="sprite-group-5-pen-white"></span>
         {{ "customer.individual_info.update" | translate }}
       </button>
+
+      <button
+        *ngxPermissionsOnly="['credentials:changePassword']"
+        (click)="openChangePasswordDialog()"
+        color="accent"
+        mat-flat-button
+      >
+        <span class="sprite-group-5-lock-white"></span>
+        {{ "customer.individual_info.change_pass" | translate }}
+      </button>
+
       <ng-container *ngxPermissionsOnly="['credentials:lockAccount']">
         <button
           (click)="lockPrompt()"
