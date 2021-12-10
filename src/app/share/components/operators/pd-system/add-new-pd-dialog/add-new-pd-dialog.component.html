@@ -30,7 +30,6 @@
                       " [placeholder]="'pd_system.add_pd_dialog.group_name' | translate"
                            formControlName="accountName"
                            aria-autocomplete="none"
-                           required
                            matInput
                     >
                     <show-errors
@@ -66,7 +65,6 @@
                       [placeholder]="'pd_system.add_pd_dialog.group_code' | translate"
                       formControlName="username"
                       aria-autocomplete="none"
-                      required
                       matInput
                     />
                     <show-errors
@@ -124,12 +122,39 @@
                   <div class="select-section d-flex justify-content-between">
                     <div class="col-5">
                       <span>Danh sách câu hỏi</span>
-                      <div style="width: 100%;height: 120px;background-color: #0c0540"></div>
-
+                      <div class="box">
+                        <div (click)="onClickQuestion($event, question)" *ngFor="let question of leftArr"
+                             class="item w-100">
+                          {{question.name}}
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-2">
+                      <div class="move-button d-flex flex-column justify-content-center gap-3">
+                        <button
+                          type="button"
+                          (click)="moveToChosen()"
+                          mat-flat-button
+                          color="accent">
+                          <span> >> </span>
+                        </button>
+                        <button
+                          color="accent"
+                          type="button"
+                          (click)="moveBack()"
+                          mat-flat-button>
+                          <span> << </span>
+                        </button>
+                      </div>
                     </div>
                     <div class="col-5">
                       <span>Danh sách được chọn</span>
-                      <div style="width: 100%;height: 120px;background-color: #0c0540"></div>
+                      <div class="box">
+                        <div (click)="onClickChosenQuestion($event, chosenQuestion)"
+                             *ngFor="let chosenQuestion of rightArr" class="item w-100">
+                          {{chosenQuestion.name}}
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
