@@ -18,7 +18,7 @@
               <div class="col-4 col-sm-4 col-md-4 col-lg-4 pr-2">
                 <div>
                   <mat-form-field autofilled="false" appearance="outline" class="w-100" floatLabel="never">
-                    <mat-label>{{ "pd_system.add_pd_dialog.group_name" | translate}}</mat-label>
+                    <mat-label>{{ inputName}}</mat-label>
                     <!--                    <div-->
                     <!--                      [ngClass]="addPdForm.controls.accountName.value != '' || isAccountNameInputFocus ? 'is-focused-icon' : ''"-->
                     <!--                      class="profile-icon icon-prefix-padding" matPrefix>-->
@@ -27,16 +27,14 @@
                            (focus)="isAccountNameInputFocus = true"
                            [ngClass]="
                         isAccountNameInputFocus ? 'is-focused-input' : ''
-                      " [placeholder]="'pd_system.add_pd_dialog.group_name' | translate"
+                      " [placeholder]="inputName"
                            formControlName="accountName"
                            aria-autocomplete="none"
                            matInput
                     >
                     <show-errors
                       [control]="addPdForm.controls['accountName']"
-                      [controlLabel]="
-                        'pd_system.add_pd_dialog.group_name' | translate
-                      "
+                      [controlLabel]="inputName"
                       [hasIconPrefix]="false"
                     >
                     </show-errors>
@@ -45,9 +43,7 @@
 
                 <div>
                   <mat-form-field appearance="outline" class="w-100" floatLabel="never">
-                    <mat-label>{{
-                      "pd_system.add_pd_dialog.group_code" | translate
-                      }}</mat-label>
+                    <mat-label>{{inputCode}}</mat-label>
                     <!--                    <mat-icon [ngClass]="-->
                     <!--                        addPdForm.controls.username.value != '' ||-->
                     <!--                        isLoginInputFocus-->
@@ -62,16 +58,14 @@
                       [ngClass]="
                         isLoginInputFocus ? 'is-focused-input' : ''
                       "
-                      [placeholder]="'pd_system.add_pd_dialog.group_code' | translate"
+                      [placeholder]="inputCode"
                       formControlName="username"
                       aria-autocomplete="none"
                       matInput
                     />
                     <show-errors
                       [control]="addPdForm.controls['username']"
-                      [controlLabel]="
-                        'pd_system.add_pd_dialog.group_code' | translate
-                      "
+                      [controlLabel]="inputCode"
                       [hasIconPrefix]="false"
                     >
                     </show-errors>
@@ -121,7 +115,7 @@
                 <div class="row">
                   <div class="select-section d-flex justify-content-between">
                     <div class="col-5">
-                      <span>Danh sách câu hỏi</span>
+                      <span>{{list}}</span>
                       <div class="box">
                         <div (click)="onClickQuestion($event, question)" *ngFor="let question of leftArr"
                              class="item w-100">

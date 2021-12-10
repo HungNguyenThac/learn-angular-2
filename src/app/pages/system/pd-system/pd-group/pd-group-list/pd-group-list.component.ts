@@ -453,6 +453,9 @@ export class PdGroupListComponent implements OnInit {
       width: '90%',
       data: {
         dialogTitle: 'Thêm nhóm câu hỏi',
+        inputName: 'Tên nhóm câu hỏi',
+        inputCode: 'Mã nhóm câu hỏi',
+        list: 'Danh sách câu hỏi',
       },
     });
   }

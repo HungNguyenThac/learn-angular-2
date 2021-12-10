@@ -12,6 +12,7 @@ import { NgxPermissionsModule } from 'ngx-permissions';
 import { NgxViewerModule } from 'ngx-viewer';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { AddNewPdDialogComponent } from './components/operators/pd-system/add-new-pd-dialog/add-new-pd-dialog.component';
+import { AddNewQuestionComponent } from './components/operators/pd-system/add-new-question/add-new-question.component';
 
 @NgModule({
   declarations: [
@@ -20,6 +21,7 @@ import { AddNewPdDialogComponent } from './components/operators/pd-system/add-ne
     ...fromDirectives.directives,
     ...fromPipes.pipes,
     AddNewPdDialogComponent,
+    AddNewQuestionComponent,
   ],
   imports: [
     CommonModule,

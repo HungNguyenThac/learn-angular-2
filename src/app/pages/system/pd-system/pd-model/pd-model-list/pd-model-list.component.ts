@@ -459,13 +459,16 @@ export class PdModelListComponent implements OnInit {
   }
 
   onClickBtnAdd(event) {
-    const addMerchantDialogRef = this.dialog.open(
-      MerchantDetailDialogComponent,
-      {
-        panelClass: 'custom-info-dialog-container',
-        maxWidth: '800px',
-        width: '90%',
-      }
-    );
+    const addPdModelDialogRef = this.dialog.open(AddNewPdDialogComponent, {
+      panelClass: 'custom-info-dialog-container',
+      maxWidth: '1200px',
+      width: '90%',
+      data: {
+        dialogTitle: 'Thêm Pd model',
+        inputName: 'Tên Pd model',
+        inputCode: 'Mã Pd model',
+        list: 'Danh sách nhóm câu hỏi',
+      },
+    });
   }
 }

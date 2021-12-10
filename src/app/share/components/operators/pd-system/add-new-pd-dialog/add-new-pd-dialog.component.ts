@@ -51,6 +51,9 @@ export class AddNewPdDialogComponent implements OnInit {
   isPositionInputFocus: boolean = false;
   isNoteInputFocus: boolean = false;
   dialogTitle: string;
+  inputCode: string;
+  list: string;
+  inputName: string;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) private data: any,
@@ -84,6 +87,9 @@ export class AddNewPdDialogComponent implements OnInit {
 
   initDialogData(data) {
     this.dialogTitle = data?.dialogTitle;
+    this.inputName = data?.inputName;
+    this.inputCode = data?.inputCode;
+    this.list = data?.list;
 
     // this.addPdForm.patchValue({
     //   accountName: this.userInfo?.fullName,
