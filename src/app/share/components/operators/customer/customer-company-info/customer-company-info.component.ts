@@ -79,7 +79,7 @@ export class CustomerCompanyInfoComponent implements OnInit, OnDestroy {
         title: this.multiLanguageService.instant(
           'customer.company_info.company_name'
         ),
-        value: this.customerInfo.companyInfo?.groupName,
+        value: this.customerInfo.companyInfo?.name,
         type: DATA_CELL_TYPE.TEXT,
         format: null,
       },
