@@ -7,7 +7,6 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class MerchantElementComponent implements OnInit {
   @Input() merchantInfo;
-  @Input() merchantVerify;
 
   constructor() {}
 

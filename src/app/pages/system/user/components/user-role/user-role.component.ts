@@ -90,7 +90,7 @@ export class UserRoleComponent implements OnInit, OnDestroy {
       updateDialogRef.afterClosed().subscribe((result: any) => {
         if (result && result.type === 'UPDATE') {
           this.updateGroup(
-            result?.code,
+            result?.groupName,
             result?.groupId,
             result?.groupName,
             result?.permissionIds,
@@ -124,7 +124,7 @@ export class UserRoleComponent implements OnInit, OnDestroy {
       updateDialogRef.afterClosed().subscribe((result: any) => {
         if (result && result.type === 'CREATE') {
           this.createNewGroup(
-            result?.code,
+            result?.groupName,
             result?.groupName,
             result?.permissionIds,
             result?.description
@@ -174,7 +174,7 @@ export class UserRoleComponent implements OnInit, OnDestroy {
       updateDialogRef.afterClosed().subscribe((result: any) => {
         if (result && result.type === 'CREATE') {
           this.createNewGroup(
-            result?.code,
+            result?.groupName,
             result?.groupName,
             result?.permissionIds,
             result?.description
@@ -195,7 +195,7 @@ export class UserRoleComponent implements OnInit, OnDestroy {
         .create2({
           code: code,
           name: groupName,
-          description: description,
+          description: 'ko có mô tả',
         })
         .subscribe((response: ApiResponseGroupEntity) => {
           if (
@@ -240,9 +240,9 @@ export class UserRoleComponent implements OnInit, OnDestroy {
     this.subManager.add(
       this.identityGroupControllerService
         .update2(groupId, {
-          code: code,
+          code: groupName,
           name: groupName,
-          description: description,
+          description: 'ko có mô tả',
         })
         .subscribe((response) => {
           if (
