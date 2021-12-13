@@ -1,17 +1,15 @@
 import {
   PAYDAY_LOAN_OTHER_STATUS,
   PAYDAY_LOAN_RATING_STATUS,
-} from '../../../../core/common/enum/payday-loan';
-import { Component, Input, OnInit } from '@angular/core';
-import { DATA_STATUS_TYPE } from '../../../../core/common/enum/operator';
-import {
   PAYDAY_LOAN_STATUS,
   PAYDAY_LOAN_UI_STATUS,
   REPAYMENT_STATUS,
 } from '../../../../core/common/enum/payday-loan';
-import { PL_LABEL_STATUS } from '../../../../core/common/enum/label-status';
-import { MultiLanguageService } from '../../../translate/multiLanguageService';
-import { AdminAccountEntity } from '../../../../../../open-api-modules/dashboard-api-docs';
+import {Component, Input, OnInit} from '@angular/core';
+import {DATA_STATUS_TYPE} from '../../../../core/common/enum/operator';
+import {PL_LABEL_STATUS} from '../../../../core/common/enum/label-status';
+import {MultiLanguageService} from '../../../translate/multiLanguageService';
+import {AdminAccountEntity} from '../../../../../../open-api-modules/dashboard-api-docs';
 import UserStatusEnum = AdminAccountEntity.UserStatusEnum;
 
 @Component({
@@ -22,9 +20,10 @@ import UserStatusEnum = AdminAccountEntity.UserStatusEnum;
 export class PlStatusElementComponent implements OnInit {
   @Input() statusType: DATA_STATUS_TYPE;
 
-  // @Input() statusValue: string;
+  @Input() externalValue: string;
 
-  constructor(private multiLanguageService: MultiLanguageService) {}
+  constructor(private multiLanguageService: MultiLanguageService) {
+  }
 
   _statusValue: string;
 
@@ -41,7 +40,7 @@ export class PlStatusElementComponent implements OnInit {
     switch (this.statusType) {
       case DATA_STATUS_TYPE.PL_HMG_STATUS:
       case DATA_STATUS_TYPE.PL_TNG_STATUS:
-        return this.loanStatusContent(this.statusValue);
+        return this.loanStatusContent(this.statusValue, this.externalValue);
       case DATA_STATUS_TYPE.PL_UI_STATUS:
         return this.loanUIStatusContent(this.statusValue);
       case DATA_STATUS_TYPE.PL_OTHER_STATUS:
@@ -60,7 +59,8 @@ export class PlStatusElementComponent implements OnInit {
     }
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+  }
 
   loanUIStatusContent(status) {
     switch (status) {
@@ -201,15 +201,23 @@ export class PlStatusElementComponent implements OnInit {
     }
   }
 
-  loanStatusContent(status) {
+  loanStatusContent(status: string, repaymentStatus?: string) {
+    console.log(status, repaymentStatus)
+    if (repaymentStatus) {
+      switch (repaymentStatus) {
+        case REPAYMENT_STATUS.OVERDUE:
+          return {
+            label: this.multiLanguageService.instant(
+              `payday_loan.repayment_status.${repaymentStatus.toLowerCase()}`
+            ),
+            labelStatus: PL_LABEL_STATUS.CANCEL,
+          };
+        default:
+          break;
+      }
+    }
+
     switch (status) {
-      case REPAYMENT_STATUS.OVERDUE:
-        return {
-          label: this.multiLanguageService.instant(
-            `payday_loan.repayment_status.${status.toLowerCase()}`
-          ),
-          labelStatus: PL_LABEL_STATUS.CANCEL,
-        };
       case PAYDAY_LOAN_STATUS.INITIALIZED:
         return {
           label: this.multiLanguageService.instant(

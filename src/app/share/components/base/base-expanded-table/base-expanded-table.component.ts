@@ -65,8 +65,8 @@ export class BaseExpandedTableComponent implements OnInit {
   selectedFields: DisplayedFieldsModel[] = [];
   panelOpenState = false;
   selection = new SelectionModel<PeriodicElement>(true, []);
-  displayColumn;
-  arrDisplayColumn;
+  displayColumn: any;
+  arrDisplayColumn: any;
 
   constructor(
     private multiLanguageService: MultiLanguageService,
