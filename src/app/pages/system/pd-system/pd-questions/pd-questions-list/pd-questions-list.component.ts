@@ -26,6 +26,8 @@ import {
   MerchantDetailDialogComponent,
   MerchantGroupDialogComponent,
 } from '../../../../../share/components';
+import { AddNewPdDialogComponent } from '../../../../../share/components/operators/pd-system/add-new-pd-dialog/add-new-pd-dialog.component';
+import { AddNewQuestionComponent } from '../../../../../share/components/operators/pd-system/add-new-question/add-new-question.component';
 
 @Component({
   selector: 'app-pd-questions-list',
@@ -38,30 +40,35 @@ export class PdQuestionsListComponent implements OnInit {
     {
       id: 'PDQ-268',
       content: 'Câu hỏi số 1',
+      type: 'String',
       createdDate: '09/12/2021 16:20',
       updateDate: '09/12/2021 05:21',
     },
     {
       id: 'PDQ-142',
       content: 'Câu hỏi số 2',
+      type: 'StringList',
       createdDate: '12/21/2021 16:20',
       updateDate: '10/12/2021 05:21',
     },
     {
       id: 'PDQ-521',
       content: 'Câu hỏi số 3',
+      type: 'Checkbox',
       createdDate: '06/21/2021 16:20',
       updateDate: '10/11/2021 05:21',
     },
     {
       id: 'PDQ-831',
       content: 'Câu hỏi số 4',
+      type: 'RadioButton',
       createdDate: '09/12/2021 16:20',
       updateDate: '09/12/2021 05:21',
     },
     {
       id: 'PDQ-028',
       content: 'Câu hỏi số 5',
+      type: 'String',
       createdDate: '09/12/2021 16:20',
       updateDate: '09/12/2021 05:21',
     },
@@ -76,6 +83,15 @@ export class PdQuestionsListComponent implements OnInit {
     },
     {
       key: 'content',
+      title: this.multiLanguageService.instant(
+        'pd_system.pd_questions.content'
+      ),
+      type: DATA_CELL_TYPE.TEXT,
+      format: null,
+      showed: true,
+    },
+    {
+      key: 'type',
       title: this.multiLanguageService.instant(
         'pd_system.pd_questions.content'
       ),
@@ -449,13 +465,17 @@ export class PdQuestionsListComponent implements OnInit {
   }
 
   onClickBtnAdd(event) {
-    const addMerchantDialogRef = this.dialog.open(
-      MerchantDetailDialogComponent,
-      {
-        panelClass: 'custom-info-dialog-container',
-        maxWidth: '800px',
-        width: '90%',
+    const addGroupDialogRef = this.dialog.open(AddNewQuestionComponent, {
+      panelClass: 'custom-info-dialog-container',
+      maxWidth: '1200px',
+      width: '90%',
+      data: {
+        dialogTitle: 'Thêm câu hỏi',
+      },
+    });
+    addGroupDialogRef.afterClosed().subscribe((result: any) => {
+      if (result && result.type === BUTTON_TYPE.PRIMARY) {
       }
-    );
+    });
   }
 }
