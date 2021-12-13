@@ -19,7 +19,7 @@
               >
                 <mat-label>{{
                   "system.user_role.add_role_placeholder" | translate
-                }}</mat-label>
+                  }}</mat-label>
                 <svg
                   matPrefix
                   width="20"
@@ -41,34 +41,34 @@
                 />
               </mat-form-field>
 
-              <mat-form-field
-                appearance="outline"
-                class="w-100"
-                floatLabel="never"
-              >
-                <mat-label>{{ "system.user_role.code" | translate }}</mat-label>
-                <input
-                  formControlName="code"
-                  [value]="updateRoleForm.controls.code.value"
-                  required
-                  matInput
-                />
-              </mat-form-field>
+              <!--              <mat-form-field-->
+              <!--                appearance="outline"-->
+              <!--                class="w-100"-->
+              <!--                floatLabel="never"-->
+              <!--              >-->
+              <!--                <mat-label>{{ "system.user_role.code" | translate }}</mat-label>-->
+              <!--                <input-->
+              <!--                  formControlName="code"-->
+              <!--                  [value]="updateRoleForm.controls.code.value"-->
+              <!--                  required-->
+              <!--                  matInput-->
+              <!--                />-->
+              <!--              </mat-form-field>-->
 
-              <mat-form-field
-                appearance="outline"
-                class="w-100"
-                floatLabel="never"
-              >
-                <mat-label>{{
-                  "system.user_role.description" | translate
-                }}</mat-label>
-                <input
-                  formControlName="description"
-                  [value]="updateRoleForm.controls.description.value"
-                  matInput
-                />
-              </mat-form-field>
+              <!--              <mat-form-field-->
+              <!--                appearance="outline"-->
+              <!--                class="w-100"-->
+              <!--                floatLabel="never"-->
+              <!--              >-->
+              <!--                <mat-label>{{-->
+              <!--                  "system.user_role.description" | translate-->
+              <!--                }}</mat-label>-->
+              <!--                <input-->
+              <!--                  formControlName="description"-->
+              <!--                  [value]="updateRoleForm.controls.description.value"-->
+              <!--                  matInput-->
+              <!--                />-->
+              <!--              </mat-form-field>-->
             </ng-container>
 
             <div class="row permission-tree">
