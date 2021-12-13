@@ -62,24 +62,17 @@ export class EditRoleDialogComponent implements OnInit, OnDestroy {
 
   buildAccountInfoForm() {
     this.updateRoleForm = this.formBuilder.group({
-      code: [''],
       groupName: [''],
-      description: [''],
     });
   }
 
   initDialogData(data: any) {
     this.updateRoleForm.patchValue({
-      code: data?.code || moment(new Date()).format('YYYY_DD_MM'),
       groupName: data?.groupName,
-      description: data?.description,
     });
     if (data?.isDuplicate) {
       this.updateRoleForm.controls.groupName.setValue(
         data?.groupName + ' COPY'
-      );
-      this.updateRoleForm.controls.code.setValue(
-        data?.code + '_' + moment(new Date()).format('YYYY_DD_MM')
       );
     }
     this.getPermissionsByGroupId(data?.groupId);
@@ -111,8 +104,6 @@ export class EditRoleDialogComponent implements OnInit, OnDestroy {
       type: 'CREATE',
       groupName: this.updateRoleForm.controls.groupName.value,
       permissionIds: this.getPermissionIdsFromGroup(),
-      code: this.updateRoleForm.controls.code.value,
-      description: this.updateRoleForm.controls.description.value,
     });
   }
 
@@ -122,8 +113,6 @@ export class EditRoleDialogComponent implements OnInit, OnDestroy {
       groupId: this.groupId,
       groupName: this.updateRoleForm.controls.groupName.value,
       permissionIds: this.getPermissionIdsFromGroup(),
-      code: this.updateRoleForm.controls.code.value,
-      description: this.updateRoleForm.controls.description.value,
     });
   }
 
