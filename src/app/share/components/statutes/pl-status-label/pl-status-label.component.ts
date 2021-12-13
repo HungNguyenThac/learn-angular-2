@@ -7,43 +7,65 @@ import { PL_LABEL_STATUS } from '../../../../core/common/enum/label-status';
   styleUrls: ['./pl-status-label.component.scss'],
 })
 export class PlStatusLabelComponent implements OnInit {
-  @Input() statusType: string = PL_LABEL_STATUS.SUCCESS;
+  statusClasses: string;
+  _statusType: PL_LABEL_STATUS = PL_LABEL_STATUS.SUCCESS;
 
-  get statusClasses() {
-    return {
-      'pl-status-label-initialized':
-        this.statusType === PL_LABEL_STATUS.INITIALIZED,
-      'pl-status-label-document-awaiting':
-        this.statusType === PL_LABEL_STATUS.DOCUMENT_AWAITING,
-      'pl-status-label-document-complete':
-        this.statusType === PL_LABEL_STATUS.DOCUMENTATION_COMPLETE,
-      'pl-status-label-auction': this.statusType === PL_LABEL_STATUS.AUCTION,
-      'pl-status-label-funded': this.statusType === PL_LABEL_STATUS.FUNDED,
-      'pl-status-label-contract-awaiting':
-        this.statusType === PL_LABEL_STATUS.CONTRACT_AWAITING,
-      'pl-status-label-contract-accepted':
-        this.statusType === PL_LABEL_STATUS.CONTRACT_ACCEPTED,
-      'pl-status-label-awaiting-disbursement':
-        this.statusType === PL_LABEL_STATUS.AWAITING_DISBURSEMENT,
-      'pl-status-label-disbursed':
-        this.statusType === PL_LABEL_STATUS.DISBURSED,
-      'pl-status-label-in-repayment':
-        this.statusType === PL_LABEL_STATUS.IN_REPAYMENT,
-      'pl-status-label-completed':
-        this.statusType === PL_LABEL_STATUS.COMPLETED,
-      'pl-status-label-rejected': this.statusType === PL_LABEL_STATUS.REJECTED,
-      'pl-status-label-withdraw': this.statusType === PL_LABEL_STATUS.WITHDRAW,
-      'pl-status-label-pending': this.statusType === PL_LABEL_STATUS.PENDING,
-      'pl-status-label-success': this.statusType === PL_LABEL_STATUS.SUCCESS,
-      'pl-status-label-disbursement':
-        this.statusType === PL_LABEL_STATUS.DISBURSEMENT,
-      'pl-status-label-rejected2': this.statusType === PL_LABEL_STATUS.REJECT,
-      'pl-status-label-cancel': this.statusType === PL_LABEL_STATUS.CANCEL,
-      'pl-status-label-info': this.statusType === PL_LABEL_STATUS.INFO,
-    };
+  @Input()
+  get statusType(): PL_LABEL_STATUS {
+    return this._statusType;
+  }
+
+  set statusType(value: PL_LABEL_STATUS) {
+    this._statusType = value;
+    this.statusClasses = this.initStatusClasses();
   }
 
   constructor() {}
 
   ngOnInit(): void {}
+
+  public initStatusClasses() {
+    switch (this.statusType) {
+      case PL_LABEL_STATUS.INITIALIZED:
+        return 'pl-status-label-initialized';
+      case PL_LABEL_STATUS.DOCUMENT_AWAITING:
+        return 'pl-status-label-document-awaiting';
+      case PL_LABEL_STATUS.DOCUMENTATION_COMPLETE:
+        return 'pl-status-label-document-complete';
+      case PL_LABEL_STATUS.AUCTION:
+        return 'pl-status-label-auction';
+      case PL_LABEL_STATUS.FUNDED:
+        return 'pl-status-label-funded';
+      case PL_LABEL_STATUS.CONTRACT_AWAITING:
+        return 'pl-status-label-contract-awaiting';
+      case PL_LABEL_STATUS.CONTRACT_ACCEPTED:
+        return 'pl-status-label-contract-accepted';
+      case PL_LABEL_STATUS.AWAITING_DISBURSEMENT:
+        return 'pl-status-label-awaiting-disbursement';
+      case PL_LABEL_STATUS.DISBURSED:
+        return 'pl-status-label-disbursed';
+      case PL_LABEL_STATUS.IN_REPAYMENT:
+        return 'pl-status-label-in-repayment';
+      case PL_LABEL_STATUS.COMPLETED:
+        return 'pl-status-label-completed';
+      case PL_LABEL_STATUS.REJECTED:
+        return 'pl-status-label-rejected';
+      case PL_LABEL_STATUS.WITHDRAW:
+        return 'pl-status-label-withdraw';
+      case PL_LABEL_STATUS.PENDING:
+        return 'pl-status-label-pending';
+      case PL_LABEL_STATUS.SUCCESS:
+        return 'pl-status-label-success';
+      case PL_LABEL_STATUS.DISBURSEMENT:
+        return 'pl-status-label-disbursement';
+      case PL_LABEL_STATUS.REJECT:
+        return 'pl-status-label-rejected2';
+      case PL_LABEL_STATUS.CANCEL:
+        return 'pl-status-label-cancel';
+      case PL_LABEL_STATUS.INFO:
+        return 'pl-status-label-info';
+      default:
+        return '';
+    }
+  }
 }
