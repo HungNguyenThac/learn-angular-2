@@ -12,6 +12,8 @@ import {
 export class FormatDataComponent implements OnInit {
   @Input() type: DATA_CELL_TYPE;
   @Input() value: string;
+  @Input() externalValue: string;
+
   _format: any;
   @Input() get format() {
     return this._format;
