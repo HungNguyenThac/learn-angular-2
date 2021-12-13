@@ -726,6 +726,7 @@
       "add_question": "Thêm câu hỏi",
       "id": "Mã câu hỏi",
       "content": "Nội dung câu hỏi",
+      "type": "Kiểu câu trả lời",
       "created_date": "Ngày tạo",
       "update_date": "Ngày cập nhật"
     },
@@ -751,6 +752,16 @@
       "group_name": "Tên nhóm câu hỏi",
       "group_code": "Mã nhóm câu hỏi",
       "description": "Mô tả",
+      "active": "Active"
+    },
+    "add_question_dialog": {
+      "name": "Nội dung câu hỏi",
+      "code": "Mã câu hỏi",
+      "types": "Kiểu câu trả lời",
+      "description": "Mô tả",
+      "answers": "Nội dung câu trả lời",
+      "string_input": "Nội dung câu trả lời do người dùng nhập",
+      "answer_input": "Nội dung câu trả lời",
       "active": "Active"
     }
   }
