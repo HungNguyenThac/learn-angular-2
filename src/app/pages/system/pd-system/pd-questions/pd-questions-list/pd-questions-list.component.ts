@@ -36,7 +36,7 @@ import { AddNewQuestionComponent } from '../../../../../share/components/operato
 })
 export class PdQuestionsListComponent implements OnInit {
   //Mock data
-  merchantList: any[] = [
+  mockData: any[] = [
     {
       id: 'PDQ-268',
       content: 'Câu hỏi số 1',
@@ -225,7 +225,7 @@ export class PdQuestionsListComponent implements OnInit {
         ' - ' +
         GlobalConstants.PL_VALUE_DEFAULT.PROJECT_NAME
     );
-    this.dataSource.data = this.merchantList;
+    this.dataSource.data = this.mockData;
   }
 
   public onSortChange(sortState: Sort) {
@@ -459,7 +459,7 @@ export class PdQuestionsListComponent implements OnInit {
 
   public onExpandElementChange(element: any) {
     this.expandedElementId = element.merchantId;
-    this.merchantInfo = this.merchantList.filter(
+    this.merchantInfo = this.mockData.filter(
       (merchant) => merchant.merchantId === element.merchantId
     )[0];
   }
