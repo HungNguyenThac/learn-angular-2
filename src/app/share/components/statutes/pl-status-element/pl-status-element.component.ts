@@ -5,7 +5,7 @@ import {
   PAYDAY_LOAN_UI_STATUS,
   REPAYMENT_STATUS,
 } from '../../../../core/common/enum/payday-loan';
-import {Component, Input, OnInit} from '@angular/core';
+import {AfterViewInit, ChangeDetectorRef, Component, Input, OnInit} from '@angular/core';
 import {DATA_STATUS_TYPE} from '../../../../core/common/enum/operator';
 import {PL_LABEL_STATUS} from '../../../../core/common/enum/label-status';
 import {MultiLanguageService} from '../../../translate/multiLanguageService';
@@ -17,13 +17,15 @@ import UserStatusEnum = AdminAccountEntity.UserStatusEnum;
   templateUrl: './pl-status-element.component.html',
   styleUrls: ['./pl-status-element.component.scss'],
 })
-export class PlStatusElementComponent implements OnInit {
+export class PlStatusElementComponent implements OnInit, AfterViewInit {
   @Input() statusType: DATA_STATUS_TYPE;
 
   @Input() externalValue: string;
 
-  constructor(private multiLanguageService: MultiLanguageService) {
-  }
+  constructor(
+    private multiLanguageService: MultiLanguageService,
+    private cdr: ChangeDetectorRef
+  ) {}
 
   _statusValue: string;
 
@@ -36,7 +38,9 @@ export class PlStatusElementComponent implements OnInit {
     this._statusValue = value;
   }
 
-  get dataStatus() {
+  dataStatus: any;
+
+  getDataStatus() {
     switch (this.statusType) {
       case DATA_STATUS_TYPE.PL_HMG_STATUS:
       case DATA_STATUS_TYPE.PL_TNG_STATUS:
@@ -59,7 +63,11 @@ export class PlStatusElementComponent implements OnInit {
     }
   }
 
-  ngOnInit(): void {
+  ngOnInit(): void {}
+
+  ngAfterViewInit() {
+    this.dataStatus = this.getDataStatus();
+    this.cdr.detectChanges();
   }
 
   loanUIStatusContent(status) {
@@ -202,7 +210,6 @@ export class PlStatusElementComponent implements OnInit {
   }
 
   loanStatusContent(status: string, repaymentStatus?: string) {
-    console.log(status, repaymentStatus)
     if (repaymentStatus) {
       switch (repaymentStatus) {
         case REPAYMENT_STATUS.OVERDUE:
