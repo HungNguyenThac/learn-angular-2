@@ -1,3 +1,5 @@
+import { PAYDAY_LOAN_REPAYMENT_STATUS } from './../../../../core/common/enum/payday-loan';
+import { PlStatusLabelComponent } from './../pl-status-label/pl-status-label.component';
 import {
   PAYDAY_LOAN_OTHER_STATUS,
   PAYDAY_LOAN_RATING_STATUS,
@@ -5,11 +7,18 @@ import {
   PAYDAY_LOAN_UI_STATUS,
   REPAYMENT_STATUS,
 } from '../../../../core/common/enum/payday-loan';
-import {AfterViewInit, ChangeDetectorRef, Component, Input, OnInit} from '@angular/core';
-import {DATA_STATUS_TYPE} from '../../../../core/common/enum/operator';
-import {PL_LABEL_STATUS} from '../../../../core/common/enum/label-status';
-import {MultiLanguageService} from '../../../translate/multiLanguageService';
-import {AdminAccountEntity} from '../../../../../../open-api-modules/dashboard-api-docs';
+import {
+  AfterViewInit,
+  ChangeDetectorRef,
+  Component,
+  Input,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
+import { DATA_STATUS_TYPE } from '../../../../core/common/enum/operator';
+import { PL_LABEL_STATUS } from '../../../../core/common/enum/label-status';
+import { MultiLanguageService } from '../../../translate/multiLanguageService';
+import { AdminAccountEntity } from '../../../../../../open-api-modules/dashboard-api-docs';
 import UserStatusEnum = AdminAccountEntity.UserStatusEnum;
 
 @Component({
@@ -18,9 +27,11 @@ import UserStatusEnum = AdminAccountEntity.UserStatusEnum;
   styleUrls: ['./pl-status-element.component.scss'],
 })
 export class PlStatusElementComponent implements OnInit, AfterViewInit {
-  @Input() statusType: DATA_STATUS_TYPE;
+  // @Input() statusType: DATA_STATUS_TYPE;
 
   @Input() externalValue: string;
+
+  @ViewChild(PlStatusLabelComponent) child: PlStatusLabelComponent;
 
   constructor(
     private multiLanguageService: MultiLanguageService,
@@ -29,6 +40,18 @@ export class PlStatusElementComponent implements OnInit, AfterViewInit {
 
   _statusValue: string;
 
+  _statusType: DATA_STATUS_TYPE;
+
+  @Input()
+  get statusType(): DATA_STATUS_TYPE {
+    return this._statusType;
+  }
+
+  set statusType(value: DATA_STATUS_TYPE) {
+    this._statusType = value;
+    this.dataStatus = this.getDataStatus();
+  }
+
   @Input()
   get statusValue(): string {
     return this._statusValue;
@@ -36,6 +59,7 @@ export class PlStatusElementComponent implements OnInit, AfterViewInit {
 
   set statusValue(value: string) {
     this._statusValue = value;
+    this.dataStatus = this.getDataStatus();
   }
 
   dataStatus: any;
@@ -67,6 +91,7 @@ export class PlStatusElementComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {
     this.dataStatus = this.getDataStatus();
+    this.child.initStatusClasses();
     this.cdr.detectChanges();
   }
 
@@ -196,10 +221,17 @@ export class PlStatusElementComponent implements OnInit, AfterViewInit {
 
   loanRepaymentStatusContent(status) {
     switch (status) {
-      case PAYDAY_LOAN_OTHER_STATUS.COMPLETED_PAID:
+      case PAYDAY_LOAN_REPAYMENT_STATUS.COMPLETED_PAID:
         return {
           label: this.multiLanguageService.instant('loan_app.loan_info.paid'),
           labelStatus: PL_LABEL_STATUS.SUCCESS,
+        };
+      case PAYDAY_LOAN_REPAYMENT_STATUS.OVERDUE:
+        return {
+          label: this.multiLanguageService.instant(
+            'loan_app.loan_info.overdue'
+          ),
+          labelStatus: PL_LABEL_STATUS.CANCEL,
         };
       default:
         return {
@@ -316,6 +348,13 @@ export class PlStatusElementComponent implements OnInit, AfterViewInit {
             `payday_loan.status.${status.toLowerCase()}`
           ),
           labelStatus: PL_LABEL_STATUS.WITHDRAW,
+        };
+      case REPAYMENT_STATUS.OVERDUE:
+        return {
+          label: this.multiLanguageService.instant(
+            `payday_loan.status.${status.toLowerCase()}`
+          ),
+          labelStatus: PL_LABEL_STATUS.CANCEL,
         };
       default:
         return {
