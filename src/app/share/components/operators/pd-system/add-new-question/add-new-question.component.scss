@@ -211,6 +211,8 @@
   letter-spacing: 0.1px;
 
   .heading {
+    margin-bottom: 10px;
+
     .add-answer {
       cursor: pointer;
 
@@ -221,7 +223,6 @@
   }
 
   .box {
-    margin-top: 10px;
     border: 2px solid #F7F7FC;
     border-radius: 8px;
     height: 360px;
