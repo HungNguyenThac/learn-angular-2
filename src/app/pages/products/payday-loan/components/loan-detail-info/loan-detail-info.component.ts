@@ -4,7 +4,10 @@ import { UpdateLoanStatusRequest } from './../../../../../../../open-api-modules
 import { Subscription } from 'rxjs';
 import { PaydayLoanControllerService as PaydayLoanHmgControllerService } from './../../../../../../../open-api-modules/loanapp-hmg-api-docs/api/paydayLoanController.service';
 import { PaydayLoanControllerService as PaydayLoanTngControllerService } from './../../../../../../../open-api-modules/loanapp-tng-api-docs/api/paydayLoanController.service';
-import { PAYDAY_LOAN_STATUS, REPAYMENT_STATUS } from './../../../../../core/common/enum/payday-loan';
+import {
+  PAYDAY_LOAN_STATUS,
+  REPAYMENT_STATUS,
+} from './../../../../../core/common/enum/payday-loan';
 import {
   BUTTON_TYPE,
   DATA_CELL_TYPE,
@@ -368,13 +371,11 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
 
   calculateServiceFee(loanDetail) {
     if (loanDetail?.companyInfo.name === 'TNG') {
-      console.log('test1111111111111111111111111111111111111111');
       if (
         loanDetail?.expectedAmount *
           GlobalConstants.PL_VALUE_DEFAULT.SERVICE_FEE_TNG <
         GlobalConstants.PL_VALUE_DEFAULT.MINIMUM_SERVICE_FEE_TNG
       ) {
-        console.log('test22222222222222222222222222222222222222222222');
         return GlobalConstants.PL_VALUE_DEFAULT.MINIMUM_SERVICE_FEE_TNG;
       } else {
         return (
