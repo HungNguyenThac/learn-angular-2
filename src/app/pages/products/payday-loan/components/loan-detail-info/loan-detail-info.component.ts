@@ -364,12 +364,14 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
   }
 
   calculateServiceFee(loanDetail) {
-    if (loanDetail?.companyGroupName === 'TNG') {
+    if (loanDetail?.companyInfo.name === 'TNG') {
+      console.log('test1111111111111111111111111111111111111111');
       if (
         loanDetail?.expectedAmount *
           GlobalConstants.PL_VALUE_DEFAULT.SERVICE_FEE_TNG <
         GlobalConstants.PL_VALUE_DEFAULT.MINIMUM_SERVICE_FEE_TNG
       ) {
+        console.log('test22222222222222222222222222222222222222222222');
         return GlobalConstants.PL_VALUE_DEFAULT.MINIMUM_SERVICE_FEE_TNG;
       } else {
         return (
@@ -409,7 +411,7 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
   @Input() groupName: string;
   nextLoanStatus: string = PAYDAY_LOAN_STATUS.UNKNOWN_STATUS;
   nextLoanStatusDisplay: string;
-  prevLoanStatus: string = null
+  prevLoanStatus: string = null;
   prevLoanStatusDisplay: string;
   rejectLoanStatus: string = PAYDAY_LOAN_STATUS.UNKNOWN_STATUS;
   rejectLoanStatusDisplay: string;
@@ -596,10 +598,12 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
     );
     this.rejectLoanStatusDisplay = this.multiLanguageService.instant(
       `payday_loan.status.${this.rejectLoanStatus.toLowerCase()}_action`
-    )
-    this.prevLoanStatusDisplay = this.prevLoanStatus ? this.multiLanguageService.instant(
-      `payday_loan.status.${this.prevLoanStatus.toLowerCase()}`
-    ) : null
+    );
+    this.prevLoanStatusDisplay = this.prevLoanStatus
+      ? this.multiLanguageService.instant(
+          `payday_loan.status.${this.prevLoanStatus.toLowerCase()}`
+        )
+      : null;
 
     return;
   }
