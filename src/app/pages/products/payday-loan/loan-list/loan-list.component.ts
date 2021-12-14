@@ -1,3 +1,4 @@
+import { REPAYMENT_STATUS } from './../../../../core/common/enum/payday-loan';
 import { PaydayLoanHmg } from '../../../../../../open-api-modules/dashboard-api-docs';
 import { SearchAndPaginationResponsePaydayLoanHmg } from '../../../../../../open-api-modules/dashboard-api-docs';
 import { FilterActionEventModel } from '../../../../public/models/filter/filter-action-event.model';
@@ -155,6 +156,12 @@ export class LoanListComponent implements OnInit, OnDestroy {
         },
         {
           title: this.multiLanguageService.instant(
+            'payday_loan.repayment_status.overdue'
+          ),
+          value: REPAYMENT_STATUS.OVERDUE,
+        },
+        {
+          title: this.multiLanguageService.instant(
             'loan_app.loan_info.completed'
           ),
           value: PAYDAY_LOAN_STATUS.COMPLETED,
@@ -251,6 +258,12 @@ export class LoanListComponent implements OnInit, OnDestroy {
         'loan_app.loan_info.ỉn_repayment'
       ),
       value: PAYDAY_LOAN_STATUS.IN_REPAYMENT,
+    },
+    {
+      title: this.multiLanguageService.instant(
+        'payday_loan.repayment_status.overdue'
+      ),
+      value: REPAYMENT_STATUS.OVERDUE,
     },
     {
       title: this.multiLanguageService.instant('loan_app.loan_info.completed'),
@@ -403,10 +416,6 @@ export class LoanListComponent implements OnInit, OnDestroy {
   public onSubmitSearchForm(event) {
     this.filterForm.controls.keyword.setValue(event.keyword);
     this._onFilterChange();
-  }
-
-  loanDetailDetectChangeStatusTrigger(event) {
-    this.updateElementInfo(event);
   }
 
   public updateElementInfo(updatedLoan: PaydayLoanHmg) {

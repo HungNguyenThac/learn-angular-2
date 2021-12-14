@@ -146,12 +146,49 @@ export class MerchantDetailComponent implements OnInit {
       },
       {
         title: this.multiLanguageService.instant(
-          'merchant.merchant_detail.status'
+          'merchant.merchant_detail.location'
         ),
-        value: this.merchantInfo.merchantStatus,
-        type: DATA_CELL_TYPE.STATUS,
+        value: this.merchantInfo.merchantAddress,
+        type: DATA_CELL_TYPE.TEXT,
         format: null,
       },
+      {
+        title: this.multiLanguageService.instant(
+          'merchant.merchant_detail.area'
+        ),
+        value: this.merchantInfo.merchantArea,
+        type: DATA_CELL_TYPE.TEXT,
+        format: null,
+      },
+      {
+        title: this.multiLanguageService.instant(
+          'merchant.merchant_detail.commune'
+        ),
+        value: this.merchantInfo.merchantCommune,
+        type: DATA_CELL_TYPE.TEXT,
+        format: null,
+      },
+      {
+        title: this.multiLanguageService.instant(
+          'merchant.merchant_detail.manager'
+        ),
+        value: this.merchantInfo.merchantManager,
+        type: DATA_CELL_TYPE.TEXT,
+        format: null,
+      },
+      {
+        title: this.multiLanguageService.instant(
+          'merchant.merchant_detail.type'
+        ),
+        value: this.merchantInfo.merchantType,
+        type: DATA_CELL_TYPE.TEXT,
+        format: null,
+      },
+    ];
+  }
+
+  private _initRightCompanyInfos() {
+    return [
       {
         title: this.multiLanguageService.instant(
           'merchant.merchant_detail.phone_number'
@@ -170,38 +207,9 @@ export class MerchantDetailComponent implements OnInit {
       },
       {
         title: this.multiLanguageService.instant(
-          'merchant.merchant_detail.date'
+          'merchant.merchant_detail.website'
         ),
-        value: this.merchantInfo.merchantDate,
-        type: DATA_CELL_TYPE.TEXT,
-        format: null,
-      },
-      {
-        title: this.multiLanguageService.instant(
-          'merchant.merchant_detail.group'
-        ),
-        value: this.merchantInfo.merchantGroup,
-        type: DATA_CELL_TYPE.TEXT,
-        format: null,
-      },
-    ];
-  }
-
-  private _initRightCompanyInfos() {
-    return [
-      {
-        title: this.multiLanguageService.instant(
-          'merchant.merchant_detail.company'
-        ),
-        value: this.merchantInfo.merchantCompany,
-        type: DATA_CELL_TYPE.TEXT,
-        format: null,
-      },
-      {
-        title: this.multiLanguageService.instant(
-          'merchant.merchant_detail.tax_no'
-        ),
-        value: this.merchantInfo.merchantTaxNumber,
+        value: this.merchantInfo.merchantWebsite,
         type: DATA_CELL_TYPE.TEXT,
         format: null,
       },
@@ -215,34 +223,26 @@ export class MerchantDetailComponent implements OnInit {
       },
       {
         title: this.multiLanguageService.instant(
-          'merchant.merchant_detail.website'
+          'merchant.merchant_detail.establish'
         ),
-        value: this.merchantInfo.merchantWebsite,
+        value: this.merchantInfo.merchantEstablish,
         type: DATA_CELL_TYPE.TEXT,
         format: null,
       },
       {
         title: this.multiLanguageService.instant(
-          'merchant.merchant_detail.address'
+          'merchant.merchant_detail.product'
         ),
-        value: this.merchantInfo.merchantAddress,
+        value: this.merchantInfo.merchantProduct,
         type: DATA_CELL_TYPE.TEXT,
         format: null,
       },
       {
         title: this.multiLanguageService.instant(
-          'merchant.merchant_detail.creator'
+          'merchant.merchant_detail.status'
         ),
-        value: this.merchantInfo.creator,
-        type: DATA_CELL_TYPE.TEXT,
-        format: null,
-      },
-      {
-        title: this.multiLanguageService.instant(
-          'merchant.merchant_detail.create_date'
-        ),
-        value: this.merchantInfo.createDate,
-        type: DATA_CELL_TYPE.TEXT,
+        value: this.merchantInfo.merchantStatus,
+        type: DATA_CELL_TYPE.STATUS,
         format: null,
       },
     ];
