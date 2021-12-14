@@ -9,7 +9,16 @@
     </ng-template>
   </mat-tab>
 
-  <mat-tab [label]="'system.user_role.title' | translate">
+  <mat-tab
+    [label]="'system.user_role.title' | translate"
+    *ngxPermissionsOnly="[
+      'groups:create',
+      'groups:update',
+      'groups:addPermissions',
+      'groups:removePermissions',
+      'groups:removeAssign'
+    ]"
+  >
     <ng-template matTabContent>
       <app-user-role
         [treeData]="treeData"
