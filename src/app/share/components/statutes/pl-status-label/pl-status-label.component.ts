@@ -8,14 +8,14 @@ import { PL_LABEL_STATUS } from '../../../../core/common/enum/label-status';
 })
 export class PlStatusLabelComponent implements OnInit {
   statusClasses: string;
-  _statusType: PL_LABEL_STATUS = PL_LABEL_STATUS.SUCCESS;
+  _statusType: PL_LABEL_STATUS | string = PL_LABEL_STATUS.SUCCESS;
 
   @Input()
-  get statusType(): PL_LABEL_STATUS {
+  get statusType(): PL_LABEL_STATUS | string {
     return this._statusType;
   }
 
-  set statusType(value: PL_LABEL_STATUS) {
+  set statusType(value: PL_LABEL_STATUS | string) {
     this._statusType = value;
     this.statusClasses = this.initStatusClasses();
   }

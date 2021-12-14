@@ -4,7 +4,7 @@ import { UpdateLoanStatusRequest } from './../../../../../../../open-api-modules
 import { Subscription } from 'rxjs';
 import { PaydayLoanControllerService as PaydayLoanHmgControllerService } from './../../../../../../../open-api-modules/loanapp-hmg-api-docs/api/paydayLoanController.service';
 import { PaydayLoanControllerService as PaydayLoanTngControllerService } from './../../../../../../../open-api-modules/loanapp-tng-api-docs/api/paydayLoanController.service';
-import { PAYDAY_LOAN_STATUS } from './../../../../../core/common/enum/payday-loan';
+import { PAYDAY_LOAN_STATUS, REPAYMENT_STATUS } from './../../../../../core/common/enum/payday-loan';
 import {
   BUTTON_TYPE,
   DATA_CELL_TYPE,
@@ -82,6 +82,9 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
   set loanDetail(value: PaydayLoanHmg) {
     this._loanDetail = value;
     this.getChangeLoanStatus();
+    if (this._loanDetail.repaymentStatus === REPAYMENT_STATUS.OVERDUE) {
+      this.loanDetail.status = REPAYMENT_STATUS.OVERDUE;
+    }
     this.leftColumn = this._initLeftColumn();
     this.middleColumn = this._initMiddleColumn();
     this.rightColumn = this._initRightColumn();

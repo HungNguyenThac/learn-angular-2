@@ -1,3 +1,4 @@
+import { PAYDAY_LOAN_STATUS, REPAYMENT_STATUS } from './../../../../core/common/enum/payday-loan';
 import { query } from '@angular/animations';
 import { ApplicationTngControllerService } from '../../../../../../open-api-modules/dashboard-api-docs';
 import { ApplicationHmgControllerService } from '../../../../../../open-api-modules/dashboard-api-docs';
@@ -40,16 +41,23 @@ export class LoanListService {
 
   private _buildRequestBodyGetList(params) {
     let requestBody = {};
+    if (!params.status) delete requestBody['status'];
+    if (params.status === REPAYMENT_STATUS.OVERDUE) {
+      params.status = PAYDAY_LOAN_STATUS.IN_REPAYMENT;
+      requestBody['repaymentStatus__e'] = REPAYMENT_STATUS.OVERDUE;
+    } else if (params.status === PAYDAY_LOAN_STATUS.IN_REPAYMENT) {
+       requestBody['repaymentStatus__ne'] = REPAYMENT_STATUS.OVERDUE;
+    }
 
-    if (params.filterConditions) {
-      for (const [paramName, paramValue] of Object.entries(
-        params.filterConditions
-      )) {
-        if (!_.isEmpty(params[paramName])) {
-          requestBody[paramName + paramValue] = params[paramName] || '';
+      if (params.filterConditions) {
+        for (const [paramName, paramValue] of Object.entries(
+          params.filterConditions
+        )) {
+          if (!_.isEmpty(params[paramName])) {
+            requestBody[paramName + paramValue] = params[paramName] || '';
+          }
         }
       }
-    }
 
     if (params.startTime || params.endTime) {
       requestBody['createdAt' + QUERY_CONDITION_TYPE.BETWEEN] = {
@@ -59,7 +67,6 @@ export class LoanListService {
     }
     // requestBody['status'] = params.status;
 
-    if (!params.status) delete requestBody['status'];
     if (params.keyword) {
       requestBody['loanCode' + QUERY_CONDITION_TYPE.LIKE_KEYWORD] =
         params.keyword;
@@ -125,10 +132,7 @@ export class LoanListService {
     );
   }
 
-  public getContractData(
-    loanId: string,
-    groupName: string
-  ) {
+  public getContractData(loanId: string, groupName: string) {
     if (groupName === 'TNG') {
       return this.paydayLoanTngControllerService
         .getLoanContractByLoanId(loanId)

@@ -366,6 +366,7 @@
       "withdrew": "Đã hủy",
       "unpaid": "Chưa thanh toán",
       "paid": "Đã thanh toán",
+      "overdue": "Quá hạn",
       "update": "Cập nhật",
       "active": "Đang hoạt động",
       "lock": "Ngừng hoạt động",
@@ -462,7 +463,8 @@
       "disbursed": "Đã giải ngân",
       "completed": "Đã hoàn thành",
       "unknown_status": "Khoản ứng hiện tại",
-      "callback_payment_result": "Khoản ứng hiện tại"
+      "callback_payment_result": "Khoản ứng hiện tại",
+      "overdue": "Quá hạn"
     },
     "repayment_status": {
       "overdue": "Quá hạn"
