@@ -114,6 +114,7 @@ export class UserListComponent implements OnInit, OnDestroy {
       value: null,
       showAction: true,
       titleAction: this.multiLanguageService.instant('filter.select_all'),
+      actionControlName: 'SELECT_ALL_GROUP',
       options: [],
     },
     {
@@ -305,6 +306,15 @@ export class UserListComponent implements OnInit, OnDestroy {
           this.filterForm.controls.groupId.setValue(
             event.value ? event.value.join(',') : ''
           );
+          if (_.isEmpty(event.value)) {
+            this.changeActionSelectAllGroupTitle(
+              this.multiLanguageService.instant('filter.select_all')
+            );
+          } else {
+            this.changeActionSelectAllGroupTitle(
+              this.multiLanguageService.instant('filter.deselect_all')
+            );
+          }
         }
         break;
       case FILTER_TYPE.SELECT:
@@ -324,13 +334,43 @@ export class UserListComponent implements OnInit, OnDestroy {
     console.log('FilterActionEventModel', event);
     if (event.type === FILTER_ACTION_TYPE.FILTER_EXTRA_ACTION) {
       if (event.controlName === 'groupId') {
-        this.onFilterFormChange({
-          type: FILTER_TYPE.MULTIPLE_CHOICE,
-          controlName: 'groupId',
-          value: null,
-        });
+        this.handleFilterActionTriggerGroupId(event);
       }
     }
+  }
+
+  private handleFilterActionTriggerGroupId(event: FilterActionEventModel) {
+    if (event.actionControlName === 'SELECT_ALL_GROUP') {
+      let groupIdValue = null;
+
+      if (_.isEmpty(event.value)) {
+        groupIdValue = this.roleList.map((role) => {
+          return role.id;
+        });
+        this.changeActionSelectAllGroupTitle(
+          this.multiLanguageService.instant('filter.deselect_all')
+        );
+      } else {
+        this.changeActionSelectAllGroupTitle(
+          this.multiLanguageService.instant('filter.select_all')
+        );
+      }
+
+      this.onFilterFormChange({
+        type: FILTER_TYPE.MULTIPLE_CHOICE,
+        controlName: 'groupId',
+        value: groupIdValue,
+      });
+    }
+  }
+
+  private changeActionSelectAllGroupTitle(title: string) {
+    this.filterOptions.forEach((filterOption) => {
+      if (filterOption.controlName === 'groupId') {
+        filterOption.titleAction =
+          title || this.multiLanguageService.instant('filter.select_all');
+      }
+    });
   }
 
   @ViewChild(BaseManagementLayoutComponent)

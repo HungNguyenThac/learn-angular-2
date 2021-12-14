@@ -8,6 +8,7 @@ export interface FilterItemModel {
   showAction?: boolean;
   actionTitle?: string;
   actionIconClass?: string;
+  actionControlName?: string;
   subTitle?: string;
   subOptions?: FilterSubItemsModel[];
   disabled?: boolean;

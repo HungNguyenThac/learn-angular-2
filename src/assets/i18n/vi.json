@@ -502,6 +502,7 @@
     "merchant_group": "Nhóm merchant",
     "role_group": "Vai trò",
     "select_all": "Chọn tất cả",
+    "deselect_all": "Bỏ chọn tất cả",
     "account_classification": "Phân loại tài khoản",
     "account_classification_test": "Tài khoản test",
     "account_classification_real": "Tài khoản thực",
