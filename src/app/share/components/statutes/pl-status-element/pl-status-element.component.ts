@@ -242,7 +242,11 @@ export class PlStatusElementComponent implements OnInit, AfterViewInit {
   }
 
   loanStatusContent(status: string, repaymentStatus?: string) {
-    if (repaymentStatus) {
+    if (
+      status &&
+      status === PAYDAY_LOAN_STATUS.IN_REPAYMENT &&
+      repaymentStatus
+    ) {
       switch (repaymentStatus) {
         case REPAYMENT_STATUS.OVERDUE:
           return {
@@ -348,13 +352,6 @@ export class PlStatusElementComponent implements OnInit, AfterViewInit {
             `payday_loan.status.${status.toLowerCase()}`
           ),
           labelStatus: PL_LABEL_STATUS.WITHDRAW,
-        };
-      case REPAYMENT_STATUS.OVERDUE:
-        return {
-          label: this.multiLanguageService.instant(
-            `payday_loan.status.${status.toLowerCase()}`
-          ),
-          labelStatus: PL_LABEL_STATUS.CANCEL,
         };
       default:
         return {
