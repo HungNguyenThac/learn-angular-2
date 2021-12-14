@@ -8,7 +8,7 @@
       appearance="standard"
       color="accent"
       class="w-100"
-      *ngxPermissionsOnly="['infos:updateInfo']; else canUpdate"
+      *ngxPermissionsOnly="['infos:updateInfo']; else cantUpdate"
     >
       <mat-label
         class="d-flex align-items-center gap-2 op-text-area-label-content"
@@ -28,7 +28,7 @@
       ></textarea>
     </mat-form-field>
 
-    <ng-template #canUpdate>
+    <ng-template #cantUpdate>
       <mat-form-field appearance="standard" color="accent" class="w-100">
         <mat-label
           class="d-flex align-items-center gap-2 op-text-area-label-content"
