@@ -1,10 +1,14 @@
-import { PAYDAY_LOAN_STATUS, REPAYMENT_STATUS } from './../../../../core/common/enum/payday-loan';
-import { query } from '@angular/animations';
-import { ApplicationTngControllerService } from '../../../../../../open-api-modules/dashboard-api-docs';
-import { ApplicationHmgControllerService } from '../../../../../../open-api-modules/dashboard-api-docs';
 import {
-  PaydayLoanControllerService,
+  PAYDAY_LOAN_STATUS,
+  REPAYMENT_STATUS,
+} from './../../../../core/common/enum/payday-loan';
+import {
+  ApplicationHmgControllerService,
+  ApplicationTngControllerService,
+} from '../../../../../../open-api-modules/dashboard-api-docs';
+import {
   ContractControllerService as ContractHmgControllerService,
+  PaydayLoanControllerService,
 } from '../../../../../../open-api-modules/loanapp-hmg-api-docs';
 import { ContractControllerService as ComSignContractAutomation } from 'open-api-modules/com-api-docs';
 import { Injectable } from '@angular/core';
@@ -14,8 +18,8 @@ import * as _ from 'lodash';
 import { QUERY_CONDITION_TYPE } from '../../../../core/common/enum/operator';
 import {
   ApiResponseContract,
-  PaydayLoanControllerService as PaydayLoanTngControllerService,
   ContractControllerService,
+  PaydayLoanControllerService as PaydayLoanTngControllerService,
 } from '../../../../../../open-api-modules/loanapp-tng-api-docs';
 import { FileControllerService } from '../../../../../../open-api-modules/com-api-docs';
 import { SignDocumentControllerService } from '../../../../../../open-api-modules/contract-api-docs';
@@ -46,18 +50,18 @@ export class LoanListService {
       params.status = PAYDAY_LOAN_STATUS.IN_REPAYMENT;
       requestBody['repaymentStatus__e'] = REPAYMENT_STATUS.OVERDUE;
     } else if (params.status === PAYDAY_LOAN_STATUS.IN_REPAYMENT) {
-       requestBody['repaymentStatus__ne'] = REPAYMENT_STATUS.OVERDUE;
+      requestBody['repaymentStatus__ne'] = REPAYMENT_STATUS.OVERDUE;
     }
 
-      if (params.filterConditions) {
-        for (const [paramName, paramValue] of Object.entries(
-          params.filterConditions
-        )) {
-          if (!_.isEmpty(params[paramName])) {
-            requestBody[paramName + paramValue] = params[paramName] || '';
-          }
+    if (params.filterConditions) {
+      for (const [paramName, paramValue] of Object.entries(
+        params.filterConditions
+      )) {
+        if (!_.isEmpty(params[paramName])) {
+          requestBody[paramName + paramValue] = params[paramName] || '';
         }
       }
+    }
 
     if (params.startTime || params.endTime) {
       requestBody['createdAt' + QUERY_CONDITION_TYPE.BETWEEN] = {
