@@ -85,9 +85,6 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
   set loanDetail(value: PaydayLoanHmg) {
     this._loanDetail = value;
     this.getChangeLoanStatus();
-    if (this._loanDetail.repaymentStatus === REPAYMENT_STATUS.OVERDUE) {
-      this.loanDetail.status = REPAYMENT_STATUS.OVERDUE;
-    }
     this.leftColumn = this._initLeftColumn();
     this.middleColumn = this._initMiddleColumn();
     this.rightColumn = this._initRightColumn();
