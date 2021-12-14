@@ -4,4 +4,5 @@ export interface FilterActionEventModel {
   type: FILTER_ACTION_TYPE;
   controlName: string;
   value: any;
+  actionControlName?: any;
 }

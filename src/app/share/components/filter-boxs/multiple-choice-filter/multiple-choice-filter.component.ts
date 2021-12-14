@@ -72,6 +72,7 @@ export class MultipleChoiceFilterComponent implements OnInit {
       type: FILTER_ACTION_TYPE.FILTER_EXTRA_ACTION,
       controlName: this.filterOption.controlName,
       value: filterItem.value,
+      actionControlName: filterItem.actionControlName,
     });
   }
 
@@ -80,6 +81,7 @@ export class MultipleChoiceFilterComponent implements OnInit {
       type: FILTER_ACTION_TYPE.ITEM_ACTION,
       controlName: this.filterOption.controlName,
       value: filterItem.value,
+      actionControlName: filterItem.actionControlName,
     });
   }
 }
