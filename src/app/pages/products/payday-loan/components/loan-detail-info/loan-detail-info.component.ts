@@ -4,7 +4,10 @@ import { UpdateLoanStatusRequest } from './../../../../../../../open-api-modules
 import { Subscription } from 'rxjs';
 import { PaydayLoanControllerService as PaydayLoanHmgControllerService } from './../../../../../../../open-api-modules/loanapp-hmg-api-docs/api/paydayLoanController.service';
 import { PaydayLoanControllerService as PaydayLoanTngControllerService } from './../../../../../../../open-api-modules/loanapp-tng-api-docs/api/paydayLoanController.service';
-import { PAYDAY_LOAN_STATUS, REPAYMENT_STATUS } from './../../../../../core/common/enum/payday-loan';
+import {
+  PAYDAY_LOAN_STATUS,
+  REPAYMENT_STATUS,
+} from './../../../../../core/common/enum/payday-loan';
 import {
   BUTTON_TYPE,
   DATA_CELL_TYPE,
@@ -367,7 +370,7 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
   }
 
   calculateServiceFee(loanDetail) {
-    if (loanDetail?.companyGroupName === 'TNG') {
+    if (loanDetail?.companyInfo.name === 'TNG') {
       if (
         loanDetail?.expectedAmount *
           GlobalConstants.PL_VALUE_DEFAULT.SERVICE_FEE_TNG <
@@ -412,7 +415,7 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
   @Input() groupName: string;
   nextLoanStatus: string = PAYDAY_LOAN_STATUS.UNKNOWN_STATUS;
   nextLoanStatusDisplay: string;
-  prevLoanStatus: string = null
+  prevLoanStatus: string = null;
   prevLoanStatusDisplay: string;
   rejectLoanStatus: string = PAYDAY_LOAN_STATUS.UNKNOWN_STATUS;
   rejectLoanStatusDisplay: string;
@@ -599,10 +602,12 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
     );
     this.rejectLoanStatusDisplay = this.multiLanguageService.instant(
       `payday_loan.status.${this.rejectLoanStatus.toLowerCase()}_action`
-    )
-    this.prevLoanStatusDisplay = this.prevLoanStatus ? this.multiLanguageService.instant(
-      `payday_loan.status.${this.prevLoanStatus.toLowerCase()}`
-    ) : null
+    );
+    this.prevLoanStatusDisplay = this.prevLoanStatus
+      ? this.multiLanguageService.instant(
+          `payday_loan.status.${this.prevLoanStatus.toLowerCase()}`
+        )
+      : null;
 
     return;
   }

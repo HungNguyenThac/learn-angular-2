@@ -37,7 +37,7 @@ export class AddNewQuestionComponent implements OnInit {
   manyAnswers: boolean = false;
   numAnswers: any[] = [
     {
-      id: '',
+      id: '1',
       value: '',
     },
   ];
