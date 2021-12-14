@@ -172,6 +172,7 @@ export class BaseExpandedTableComponent implements OnInit {
         type: item.type,
         format: item.format,
         showed: item.showed,
+        externalKey: item.externalKey,
       };
     });
     this.displayedColumns();
@@ -185,7 +186,7 @@ export class BaseExpandedTableComponent implements OnInit {
   }
 
   getPropByString(obj, propString) {
-    if (!propString || !obj) return obj;
+    if (!propString || !obj) return null;
 
     var prop,
       props = propString.split('.');

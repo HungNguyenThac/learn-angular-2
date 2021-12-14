@@ -158,9 +158,13 @@ export enum PAYDAY_LOAN_OTHER_STATUS {
   NOT_RECEIVED_SALARY_YET = 'loan_app.loan_info.not_received_salary',
   RECEIVED_SALARY = 'loan_app.loan_info.received_salary',
   NOT_PAID_YET = 'loan_app.loan_info.unpaid',
-  COMPLETED_PAID = 'success',
   ACTIVE_USER = 'system.system_management.active_user',
   INACTIVE_USER = 'system.system_management.inactive_user',
+}
+
+export enum PAYDAY_LOAN_REPAYMENT_STATUS {
+  COMPLETED_PAID = 'success',
+  OVERDUE = 'OVERDUE',
 }
 
 export enum PAYDAY_LOAN_RATING_STATUS {
