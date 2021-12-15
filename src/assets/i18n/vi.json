@@ -114,7 +114,8 @@
     "reset_password": "Khôi phục mật khẩu",
     "new_password": "Mật khẩu mới",
     "repeat_new_password": "Nhắc lại mật khẩu mới",
-    "phone_number_not_valid": "Số điện thoại không đúng hoặc chưa tồn tại trên hệ thống"
+    "phone_number_not_valid": "Số điện thoại không đúng hoặc chưa tồn tại trên hệ thống",
+    "logout_success": "Đăng xuất thành công"
   },
   "header": {
     "op": "OPERATOR",
