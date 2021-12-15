@@ -147,7 +147,9 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
   }
 
   private _initMiddleColumn() {
-    this.maxLoanAmount = this.getMaxLoanAmount();
+    this.maxLoanAmount = this.getMaxLoanAmount(
+      this.loanDetail?.companyInfo?.groupName
+    );
     this.totalSettlementAmount = this.getTotalSettlementAmount();
     return [
       {
@@ -510,8 +512,58 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
   }
 
   //Số tiền vay tối đa
-  getMaxLoanAmount() {
-    return this.customerInfo?.annualIncome * 0.8;
+  getMaxLoanAmount(companyGroupName: string) {
+    if (companyGroupName === 'HMG') {
+      return this.getMaxHMGValue(this.customerInfo?.annualIncome);
+    } else {
+      return this.getMaxTNGValue(this.customerInfo?.annualIncome);
+    }
+  }
+
+  getMaxTNGValue(annualIncome) {
+    let millionAnnualIncome =
+      (this.getPercentOfSalaryByDay() * annualIncome) / 1000000;
+    if (millionAnnualIncome % 1 >= 0.5) {
+      return (Math.round(millionAnnualIncome) - 0.5) * 1000000;
+    }
+    return Math.floor(millionAnnualIncome) * 1000000;
+  }
+
+  getPercentOfSalaryByDay() {
+    let today = moment(new Date(), 'DD/MM/YYYY').format('DD');
+    switch (today) {
+      case '10':
+      case '11':
+      case '12':
+      case '13':
+      case '14':
+      case '15':
+      case '16':
+        return 50.0 / 100;
+      case '17':
+      case '18':
+        return 57.5 / 100;
+      case '19':
+      case '20':
+        return 65.0 / 100;
+      case '21':
+      case '22':
+        return 72.5 / 100;
+      default:
+        return 80 / 100;
+    }
+  }
+
+  getMaxHMGValue(annualIncome) {
+    let millionAnnualIncome =
+      (GlobalConstants.PL_VALUE_DEFAULT.MAX_PERCENT_AMOUNT * annualIncome) /
+      1000000;
+
+    if (millionAnnualIncome % 1 >= 0.5) {
+      return (Math.round(millionAnnualIncome) - 0.5) * 1000000;
+    }
+
+    return Math.floor(millionAnnualIncome) * 1000000;
   }
 
   //Tổng tiền tất toán
