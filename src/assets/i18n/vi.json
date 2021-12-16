@@ -307,6 +307,11 @@
       "salary_sheet_2": "Ảnh bảng lương số 2",
       "salary_sheet_3": "Ảnh bảng lương số 3",
       "collateral_img": "Tài sản đảm bảo"
+    },
+    "customer_check_info": {
+      "status":"Trạng thái ekyc",
+      "success_status":"Thành công",
+      "fail_status":"Thất bại"
     }
   },
   "loan_app": {
