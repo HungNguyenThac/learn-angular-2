@@ -63,11 +63,17 @@ class LoginActions {
   logout() {
     return {
       ...this.state,
-      authorization: null,
       loginProcess: null,
       loginError: null,
       coreToken: null,
       password: null,
+    };
+  }
+
+  resetToken() {
+    return {
+      ...this.state,
+      authorization: null,
     };
   }
 }
@@ -93,6 +99,10 @@ export function loginReducer(
 
     case actions.LOGIN_SIGN_OUT: {
       return loginActions.logout();
+    }
+
+    case actions.LOGIN_RESET_TOKEN: {
+      return loginActions.resetToken();
     }
 
     default: {
