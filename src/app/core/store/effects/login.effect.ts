@@ -1,36 +1,28 @@
-import { RatingControllerService } from '../../../../../open-api-modules/customer-api-docs';
-import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
-import { Location } from '@angular/common';
-import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { map, switchMap, tap } from 'rxjs/operators';
+import {RatingControllerService} from '../../../../../open-api-modules/customer-api-docs';
+import {Injectable} from '@angular/core';
+import {Router} from '@angular/router';
+import {Location} from '@angular/common';
+import {Actions, createEffect, ofType} from '@ngrx/effects';
+import {map, switchMap, tap} from 'rxjs/operators';
 import * as fromActions from '../actions';
-import { LoginForm } from '../../../public/models';
+import {LoginForm} from '../../../public/models';
 import {
   AdminAccountControllerService,
   ApiResponseGetTokenResponse,
-  ApiResponseString,
   SignOnControllerService,
 } from '../../../../../open-api-modules/identity-api-docs';
-import { AdminAccountControllerService as dashboardAdminAccountControllerService } from '../../../../../open-api-modules/dashboard-api-docs';
-import {
-  CustomerInfoResponse,
-  InfoControllerService,
-} from 'open-api-modules/customer-api-docs';
-import {
-  LoginControllerService,
-  LoginInput,
-} from 'open-api-modules/core-api-docs';
-import { ApplicationControllerService } from '../../../../../open-api-modules/loanapp-tng-api-docs';
-import { Store } from '@ngrx/store';
+import {AdminAccountControllerService as dashboardAdminAccountControllerService} from '../../../../../open-api-modules/dashboard-api-docs';
+import {CustomerInfoResponse, InfoControllerService,} from 'open-api-modules/customer-api-docs';
+import {LoginControllerService, LoginInput,} from 'open-api-modules/core-api-docs';
+import {ApplicationControllerService} from '../../../../../open-api-modules/loanapp-tng-api-docs';
+import {Store} from '@ngrx/store';
 import * as fromStore from '../index';
-import { Observable, Subscription } from 'rxjs';
-import { NotificationService } from '../../services/notification.service';
-import { MultiLanguageService } from '../../../share/translate/multiLanguageService';
-import { ToastrService } from 'ngx-toastr';
-import { RESPONSE_CODE } from '../../common/enum/operator';
-import { ERROR_CODE_KEY } from '../../common/enum/payday-loan';
-import { Logout } from '../actions';
+import {Observable, Subscription} from 'rxjs';
+import {NotificationService} from '../../services/notification.service';
+import {MultiLanguageService} from '../../../share/translate/multiLanguageService';
+import {ToastrService} from 'ngx-toastr';
+import {RESPONSE_CODE} from '../../common/enum/operator';
+import {ERROR_CODE_KEY} from '../../common/enum/payday-loan';
 
 @Injectable()
 export class LoginEffects {
@@ -79,27 +71,11 @@ export class LoginEffects {
     () =>
       this.actions$.pipe(
         ofType(fromActions.LOGIN_SIGN_OUT),
-        map((action: fromActions.Logout) => action.payload),
-        switchMap(() => {
+        tap(() => {
           this.notificationService.destroyAllDialog();
-          return this.signOnControllerService
-            .signOut()
-            .pipe(
-              map((response: ApiResponseString) => {
-                if (response.responseCode === RESPONSE_CODE.SUCCESS) {
-                  this.notifier.success(
-                    this.multiLanguageService.instant('auth.logout_success')
-                  );
-                }
-              })
-            )
-            .pipe(
-              map(() => {
-                this.store$.dispatch(new fromActions.ResetCustomerInfo());
-                this.store$.dispatch(new fromActions.ResetToken());
-                this.router.navigateByUrl('/auth/sign-in');
-              })
-            );
+          this.store$.dispatch(new fromActions.ResetCustomerInfo());
+          this.store$.dispatch(new fromActions.ResetToken());
+          this.router.navigateByUrl('/auth/sign-in');
         })
       ),
     { dispatch: false }
