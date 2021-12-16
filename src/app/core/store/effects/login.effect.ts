@@ -9,6 +9,8 @@ import { LoginForm } from '../../../public/models';
 import {
   AdminAccountControllerService,
   ApiResponseGetTokenResponse,
+  ApiResponseString,
+  SignOnControllerService,
 } from '../../../../../open-api-modules/identity-api-docs';
 import { AdminAccountControllerService as dashboardAdminAccountControllerService } from '../../../../../open-api-modules/dashboard-api-docs';
 import {
@@ -27,7 +29,8 @@ import { NotificationService } from '../../services/notification.service';
 import { MultiLanguageService } from '../../../share/translate/multiLanguageService';
 import { ToastrService } from 'ngx-toastr';
 import { RESPONSE_CODE } from '../../common/enum/operator';
-import {ERROR_CODE_KEY} from "../../common/enum/payday-loan";
+import { ERROR_CODE_KEY } from '../../common/enum/payday-loan';
+import { Logout } from '../actions';
 
 @Injectable()
 export class LoginEffects {
@@ -47,6 +50,7 @@ export class LoginEffects {
     private router: Router,
     private location: Location,
     private AdminAccountControllerService: AdminAccountControllerService,
+    private signOnControllerService: SignOnControllerService,
     private dashboardAdminAccountControllerService: dashboardAdminAccountControllerService,
     private infoService: InfoControllerService,
     private loginService: LoginControllerService,
@@ -75,10 +79,27 @@ export class LoginEffects {
     () =>
       this.actions$.pipe(
         ofType(fromActions.LOGIN_SIGN_OUT),
-        tap(() => {
+        map((action: fromActions.Logout) => action.payload),
+        switchMap(() => {
           this.notificationService.destroyAllDialog();
-          this.store$.dispatch(new fromActions.ResetCustomerInfo());
-          this.router.navigateByUrl('/auth/sign-in');
+          return this.signOnControllerService
+            .signOut()
+            .pipe(
+              map((response: ApiResponseString) => {
+                if (response.responseCode === RESPONSE_CODE.SUCCESS) {
+                  this.notifier.success(
+                    this.multiLanguageService.instant('auth.logout_success')
+                  );
+                }
+              })
+            )
+            .pipe(
+              map(() => {
+                this.store$.dispatch(new fromActions.ResetCustomerInfo());
+                this.store$.dispatch(new fromActions.ResetToken());
+                this.router.navigateByUrl('/auth/sign-in');
+              })
+            );
         })
       ),
     { dispatch: false }
