@@ -170,6 +170,16 @@ export class PlStatusElementComponent implements OnInit, AfterViewInit {
           label: this.statusValue,
           labelStatus: PL_LABEL_STATUS.PENDING,
         };
+      case true:
+        return {
+          label: this.multiLanguageService.instant('common.success'),
+          labelStatus: PL_LABEL_STATUS.SUCCESS,
+        };
+      case false:
+        return {
+          label: this.multiLanguageService.instant('common.failure'),
+          labelStatus: PL_LABEL_STATUS.CANCEL,
+        };
       default:
         return {
           label: 'N/A',
