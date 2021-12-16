@@ -15,6 +15,17 @@
   </app-pl-status-element>
 </span>
 
+<span *ngIf="type === 'CHECK'">
+  <app-pl-check-element
+    [statusValue]="value"
+  >
+  </app-pl-check-element>
+</span>
+
+<span *ngIf="type === 'NUMBER'">
+  {{ value }}
+</span>
+
 <span *ngIf="!type || type === 'TEXT'">
   {{ value || "N/A" }}
 </span>
