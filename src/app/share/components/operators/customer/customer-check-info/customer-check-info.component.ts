@@ -1,4 +1,12 @@
-import { DATA_CELL_TYPE, DATA_STATUS_TYPE } from './../../../../../core/common/enum/operator';
+import { DialogEkycInfoDetailComponent } from './../dialog-ekyc-info-detail/dialog-ekyc-info-detail.component';
+import { MatDialog } from '@angular/material/dialog';
+import { Subscription } from 'rxjs';
+import { ApiResponseSearchAndPaginationResponseKalapaResponse } from './../../../../../../../open-api-modules/dashboard-api-docs/model/apiResponseSearchAndPaginationResponseKalapaResponse';
+import { EkycControllerService } from './../../../../../../../open-api-modules/dashboard-api-docs/api/ekycController.service';
+import {
+  DATA_CELL_TYPE,
+  DATA_STATUS_TYPE,
+} from './../../../../../core/common/enum/operator';
 import {
   Component,
   EventEmitter,
@@ -29,11 +37,10 @@ export class CustomerCheckInfoComponent implements OnInit {
   pageLength: number = 0;
   pageSizeOptions: number[] = [10, 20, 50];
   totalItems: number = 0;
-  @Input() orderBy: string;
-  @Input() sortDirection: SortDirection;
-  @Output() triggerPageChange = new EventEmitter<any>();
-  @Output() triggerSortChange = new EventEmitter<any>();
-  @Output() triggerExpandedElementChange = new EventEmitter<any>();
+  subManager = new Subscription();
+  @Input() customerId: string;
+  orderBy: string;
+  sortDirection: SortDirection;
   @Output() outputAction = new EventEmitter<any>();
 
   displayColumn = [
@@ -52,7 +59,7 @@ export class CustomerCheckInfoComponent implements OnInit {
         'customer.customer_check_info.status'
       ),
       type: DATA_CELL_TYPE.STATUS,
-      format: DATA_STATUS_TYPE.PL_HMG_STATUS,
+      format: DATA_STATUS_TYPE.PL_OTHER_STATUS,
       showed: true,
     },
   ];
@@ -63,17 +70,53 @@ export class CustomerCheckInfoComponent implements OnInit {
     private multiLanguageService: MultiLanguageService,
     private notificationService: NotificationService,
     private notifier: ToastrService,
-    private _liveAnnouncer: LiveAnnouncer
+    private _liveAnnouncer: LiveAnnouncer,
+    private ekycControllerService: EkycControllerService,
+    private dialog: MatDialog
   ) {
-    this.dataSource.data = [
-      { createdAt: new Date(), status: 'success' },
-      { createdAt: new Date(), status: 'fail' },
-    ];
     this.displayColumnRowDef = this.displayColumn.map((ele) => ele.key);
     console.log('this.displayColumnRowDef', this.displayColumnRowDef);
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this._getEkycList();
+  }
+
+  private _getEkycList() {
+    let requestBody = {};
+    requestBody['customerId'] = this.customerId;
+    let direction: boolean;
+    switch (this.sortDirection) {
+      case 'desc':
+        direction = true;
+        break;
+      case 'asc':
+        direction = false;
+        break;
+
+      default:
+        direction = null;
+        break;
+    }
+
+    this.subManager.add(
+      this.ekycControllerService
+        .getEkycInfo(
+          this.pageSize,
+          this.pageIndex,
+          requestBody,
+          this.orderBy,
+          direction
+        )
+        .subscribe(
+          (data: ApiResponseSearchAndPaginationResponseKalapaResponse) => {
+            this.dataSource.data = data.result.data;
+            this.pageLength = data.result?.pagination?.maxPage || 0;
+            this.totalItems = data.result?.pagination?.total || 0;
+          }
+        )
+    );
+  }
 
   /** Announce the change in sort state for assistive technology. */
   public announceSortChange(sortState: Sort) {
@@ -86,17 +129,27 @@ export class CustomerCheckInfoComponent implements OnInit {
     } else {
       this._liveAnnouncer.announce('Sorting cleared');
     }
-
-    this.triggerSortChange.emit(sortState);
-  }
-
-  public setPage(i, event: any) {
-    this.pageIndex = i;
-    event.preventDefault();
+    this.orderBy = sortState.active;
+    this.sortDirection = sortState.direction;
+    this._getEkycList();
   }
 
   public onPageChange(event: PageEvent) {
-    this.triggerPageChange.emit(event);
+    this.pageSize = event.pageSize;
+    this.pageIndex = event.pageIndex;
+    this._getEkycList();
+  }
+
+  openDialogDetailEkyc(element) {
+    console.log(element);
+    this.dialog.open(DialogEkycInfoDetailComponent, {
+      panelClass: 'custom-info-dialog-container',
+      maxWidth: '800px',
+      width: '60%',
+      data: {
+        data: element,
+      },
+    });
   }
 
   getPropByString(obj, propString) {

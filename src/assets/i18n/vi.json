@@ -310,9 +310,21 @@
       "collateral_img": "Tài sản đảm bảo"
     },
     "customer_check_info": {
-      "status":"Trạng thái ekyc",
-      "success_status":"Thành công",
-      "fail_status":"Thất bại"
+      "status": "Trạng thái ekyc",
+      "success_status": "Thành công",
+      "fail_status": "Thất bại"
+    },
+    "ekyc_detail": {
+      "title":"Thông tin ekyc",
+      "matched": "Trùng khớp khuôn mặt",
+      "matching_score": "Tỉ lệ trùng khớp",
+      "faces_matched": "Số khuôn mặt trùng khớp tại KALAPA",
+      "floating_mark": "Dấu hiệu nổi bất thường",
+      "screen_photo": "Ảnh chụp màn hình",
+      "blacklist": "Có trong blacklist của Kalapa",
+      "abnormal_text": "Định dạng font bất thường trên cmnd",
+      "abnormal_face": "Khuôn mặt bất thường",
+      "corner_cut": "Chứng minh nhân dân cắt góc"
     }
   },
   "loan_app": {

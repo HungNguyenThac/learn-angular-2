@@ -41,6 +41,7 @@
           mat-header-row
         ></tr>
         <tr
+          (click)="openDialogDetailEkyc(element)"
           *matRowDef="let element; columns: displayColumnRowDef"
           class="op-element-row gap-2 d-flex"
           mat-row
