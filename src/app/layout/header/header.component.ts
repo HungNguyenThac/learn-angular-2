@@ -1,26 +1,24 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Store } from '@ngrx/store';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Store} from '@ngrx/store';
 import * as fromStore from '../../core/store';
 import * as fromActions from '../../core/store';
-import { Router } from '@angular/router';
+import {Router} from '@angular/router';
 import * as fromSelectors from '../../core/store/selectors';
-import { Observable } from 'rxjs/Observable';
-import { CustomerInfoResponse } from '../../../../open-api-modules/customer-api-docs';
-import { Subscription } from 'rxjs';
-import {
-  BUTTON_TYPE,
-  NAV_ITEM,
-  RESPONSE_CODE,
-} from '../../core/common/enum/operator';
-import { MultiLanguageService } from '../../share/translate/multiLanguageService';
-import { MatDialog } from '@angular/material/dialog';
-import { DialogUserInfoUpdateComponent } from '../../share/components';
+import {Observable} from 'rxjs/Observable';
+import {CustomerInfoResponse} from '../../../../open-api-modules/customer-api-docs';
+import {Subscription} from 'rxjs';
+import {BUTTON_TYPE, NAV_ITEM, RESPONSE_CODE,} from '../../core/common/enum/operator';
+import {MultiLanguageService} from '../../share/translate/multiLanguageService';
+import {MatDialog} from '@angular/material/dialog';
+import {DialogUserInfoUpdateComponent} from '../../share/components';
 import {
   AdminAccountControllerService,
+  ApiResponseString,
+  SignOnControllerService,
   UpdateInfoAdminAccountRequest,
 } from '../../../../open-api-modules/identity-api-docs';
-import { AdminAccountEntity } from '../../../../open-api-modules/dashboard-api-docs';
-import { ToastrService } from 'ngx-toastr';
+import {AdminAccountEntity} from '../../../../open-api-modules/dashboard-api-docs';
+import {ToastrService} from 'ngx-toastr';
 
 @Component({
   selector: 'app-header',
@@ -63,7 +61,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
           ),
           iconClass: 'sprite-group-5-pl-24',
           path: '/payday-loan/list',
-          queryParams: { groupName: 'HMG' },
+          queryParams: {groupName: 'HMG'},
           canActivate: ['dashboardHmgApplications:findApplications'],
         },
         {
@@ -72,7 +70,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
           ),
           iconClass: 'sprite-group-5-pl-24',
           path: '/payday-loan/list',
-          queryParams: { groupName: 'TNG' },
+          queryParams: {groupName: 'TNG'},
           canActivate: ['dashboardTngApplications:findApplications'],
         },
       ],
@@ -109,6 +107,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     private store: Store<fromStore.State>,
     private dialog: MatDialog,
     private multiLanguageService: MultiLanguageService,
+    private signOnControllerService: SignOnControllerService,
     private notifier: ToastrService
   ) {
     this._subscribeHeaderInfo();
@@ -196,7 +195,22 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   logout() {
+    this.signOut();
     this.store.dispatch(new fromActions.Logout(null));
+  }
+
+  signOut() {
+    this.subManager.add(
+      this.signOnControllerService
+        .signOut()
+        .subscribe((response: ApiResponseString) => {
+          if (response.responseCode === RESPONSE_CODE.SUCCESS) {
+            this.notifier.success(
+              this.multiLanguageService.instant('auth.logout_success')
+            );
+          }
+        })
+    )
   }
 
   navigateToHomePage() {
