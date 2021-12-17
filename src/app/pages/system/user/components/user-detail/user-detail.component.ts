@@ -19,8 +19,8 @@ import { NotificationService } from '../../../../../core/services/notification.s
 import { ToastrService } from 'ngx-toastr';
 import {
   AdminAccountControllerService,
-  ApiResponseAdminAccountEntity,
   AdminChangePassProviderRequest,
+  ApiResponseAdminAccountEntity,
 } from '../../../../../../../open-api-modules/identity-api-docs';
 import * as moment from 'moment';
 import {

@@ -112,6 +112,7 @@
     "reset_password_successfully": "Khôi phục thành công",
     "back_to_login": "Về trang chủ",
     "reset_password": "Khôi phục mật khẩu",
+    "old_password": "Mật khẩu cũ",
     "new_password": "Mật khẩu mới",
     "repeat_new_password": "Nhắc lại mật khẩu mới",
     "phone_number_not_valid": "Số điện thoại không đúng hoặc chưa tồn tại trên hệ thống",
@@ -168,6 +169,7 @@
     "setting": {
       "security_title": "Đăng nhập và bảo mật",
       "change_password": "Đổi mật khẩu",
+      "change_password_toast": "Đổi mật khẩu thành công",
       "password_des": "Bạn nên sử dụng mật khẩu mạnh và chưa sử dụng ở nơi khác"
     },
     "logged_device": {
@@ -308,6 +310,23 @@
       "salary_sheet_2": "Ảnh bảng lương số 2",
       "salary_sheet_3": "Ảnh bảng lương số 3",
       "collateral_img": "Tài sản đảm bảo"
+    },
+    "customer_check_info": {
+      "status": "Trạng thái ekyc",
+      "success_status": "Thành công",
+      "fail_status": "Thất bại"
+    },
+    "ekyc_detail": {
+      "title": "Thông tin ekyc",
+      "matched": "Trùng khớp khuôn mặt",
+      "matching_score": "Tỉ lệ trùng khớp",
+      "faces_matched": "Số khuôn mặt trùng khớp tại KALAPA",
+      "floating_mark": "Dấu hiệu nổi bất thường",
+      "screen_photo": "Ảnh chụp màn hình",
+      "blacklist": "Có trong blacklist của Kalapa",
+      "abnormal_text": "Định dạng font bất thường trên cmnd",
+      "abnormal_face": "Khuôn mặt bất thường",
+      "corner_cut": "Chứng minh nhân dân cắt góc"
     }
   },
   "loan_app": {
@@ -687,12 +706,12 @@
     },
     "merchant_detail": {
       "info": "Thông tin",
-      "logo_images": "Logo hình ảnh, giới thiệu",
       "id": "Mã merchant",
       "name": "Tên merchant",
       "status": "Trạng thái",
       "phone": "Điện thoại",
       "product": "Ngành hàng",
+      "location": "Địa chỉ",
       "commune": "Phường xã",
       "manager": "Nhân viên BD phụ trách",
       "area": "Khu vực",
@@ -702,22 +721,34 @@
       "email": "Email",
       "date": "Ngày tất toán",
       "group": "Nhóm merchant",
-      "company": "Công ty",
-      "tax_no": "Mã số thuế",
+      "fee": "Phí áp dụng",
+      "discount": "Mức chiết khấu",
       "regis_no": "Mã số DKKD",
       "website": "Website",
       "address": "Địa chỉ",
-      "creator": "Người tạo",
       "create_date": "Ngày tạo",
       "note": "Ghi chú",
-      "contactor": "Người liên hệ",
-      "role": "Vai trò",
-      "mail_to": "Email đến",
-      "mail_cc": "Email CC",
-      "bank": "Ngân hàng",
-      "branch": "Chi nhánh",
-      "account_number": "Số tài khoản",
-      "account_name": "Chủ tài khoản"
+      "username": "Tên đăng nhập",
+      "password": "Mật khẩu",
+      "re_password": "Nhắc lại mật khẩu",
+      "admin_name": "Tên người dùng",
+      "position": "Chức vụ",
+      "show": "Cho phép hiển thị",
+      "delete": "Xóa merchant"
+    },
+    "merchant_image": {
+      "title": "Logo hình ảnh, giới thiệu",
+      "logo": "Logo",
+      "images": "Hình ảnh giới thiệu",
+      "image1": "Ảnh 1",
+      "image2": "Ảnh 2",
+      "image3": "Ảnh 3",
+      "image4": "Ảnh 4",
+      "image5": "Ảnh 5",
+      "introduction": "Giới thiệu chi tiết"
+    },
+    "merchant_qr": {
+      "title": "QR Code"
     },
     "merchant_dialog": {
       "add_group_title": "Thêm nhóm merchant",
@@ -726,6 +757,9 @@
       "note": "Ghi chú",
       "add_merchant_title": "Thêm merchant",
       "edit_merchant_title": "Chỉnh sửa merchant",
+      "merchant_heading": "Thông tin chung của merchant",
+      "admin_heading": "Thông tin tài khoản Admin",
+      "feature_heading": "Tính năng",
       "cancel": "Bỏ qua",
       "save": "Lưu"
     }

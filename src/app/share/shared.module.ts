@@ -13,6 +13,9 @@ import { NgxViewerModule } from 'ngx-viewer';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { AddNewPdDialogComponent } from './components/operators/pd-system/add-new-pd-dialog/add-new-pd-dialog.component';
 import { AddNewQuestionComponent } from './components/operators/pd-system/add-new-question/add-new-question.component';
+import { MerchantImageUploadComponent } from './components/operators/merchant/merchant-image-upload/merchant-image-upload.component';
+import { DialogEkycInfoDetailComponent } from './components/operators/customer/dialog-ekyc-info-detail/dialog-ekyc-info-detail.component';
+import { PlCheckElementComponent } from './components/statutes/pl-check-element/pl-check-element.component';
 
 @NgModule({
   declarations: [
@@ -22,6 +25,9 @@ import { AddNewQuestionComponent } from './components/operators/pd-system/add-ne
     ...fromPipes.pipes,
     AddNewPdDialogComponent,
     AddNewQuestionComponent,
+    DialogEkycInfoDetailComponent,
+    PlCheckElementComponent,
+    MerchantImageUploadComponent,
   ],
   imports: [
     CommonModule,
@@ -41,6 +47,7 @@ import { AddNewQuestionComponent } from './components/operators/pd-system/add-ne
     ...fromValidators.validators,
     ...fromDirectives.directives,
     ...fromPipes.pipes,
+    MerchantImageUploadComponent,
   ],
   providers: [
     { provide: MAT_DIALOG_DATA, useValue: {} },

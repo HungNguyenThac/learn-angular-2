@@ -1,0 +1,153 @@
+<div class="container-fluid">
+  <div class="row">
+    <!-- Logo -->
+    <article class="col-12 mb-2">
+      <mat-accordion>
+        <mat-expansion-panel>
+          <mat-expansion-panel-header class="pb-2 pt-2 ps-3 pe-3">
+            <mat-panel-title>{{
+              "merchant.merchant_image.logo" | translate
+              }}</mat-panel-title>
+          </mat-expansion-panel-header>
+          <div class="expansion-panel-content">
+            <div class="row">
+              <!-- Logo  -->
+              <article class="col-12">
+                <app-upload-document-area
+                  [id]="'logo'"
+                  name="logo"
+                  [classes]="'p-3'"
+                  [title]="'merchant.merchant_image.logo' | translate"
+                  [imgSrc]="frontIdSrc"
+                  [hiddenDeleteBtn]="hiddenDeleteBtn"
+                  [hiddenUploadBtn]="hiddenUploadBtn"
+                  (onChangeDocument)="
+                    onChangeDocument(
+                      $event,
+                      customerInfo?.frontId,
+                      documentTypes.FRONT_ID_CARD
+                    )
+                  "
+                ></app-upload-document-area>
+              </article>
+            </div>
+          </div>
+        </mat-expansion-panel>
+      </mat-accordion>
+    </article>
+  </div>
+
+  <div class="row">
+    <!-- Salary Document -->
+    <article class="col-12 mb-2">
+      <mat-accordion>
+        <mat-expansion-panel>
+          <mat-expansion-panel-header class="pb-2 pt-2 ps-3 pe-3">
+            <mat-panel-title>{{
+              "merchant.merchant_image.images" | translate
+              }}</mat-panel-title>
+          </mat-expansion-panel-header>
+          <div class="expansion-panel-content">
+            <div class="d-flex justify-content-between">
+              <!-- Salary 1  -->
+              <article>
+                <app-upload-document-area
+                  [id]="'image1'"
+                  name="image1"
+                  [classes]="'m-3'"
+                  [title]="'merchant.merchant_image.image1' | translate"
+                  [imgSrc]="salary1Src"
+                  [hiddenDeleteBtn]="hiddenDeleteBtn"
+                  [hiddenUploadBtn]="hiddenUploadBtn"
+                  (onChangeDocument)="
+                    onChangeDocument(
+                      $event,
+                      customerInfo?.salaryDocument1,
+                      documentTypes.SALARY_INFORMATION_ONE
+                    )
+                  "
+                ></app-upload-document-area>
+              </article>
+              <!-- Salary 2  -->
+              <article>
+                <app-upload-document-area
+                  [id]="'image2'"
+                  name="image2"
+                  [classes]="'m-3'"
+                  [title]="'merchant.merchant_image.image2' | translate"
+                  [imgSrc]="salary2Src"
+                  [hiddenDeleteBtn]="hiddenDeleteBtn"
+                  [hiddenUploadBtn]="hiddenUploadBtn"
+                  (onChangeDocument)="
+                    onChangeDocument(
+                      $event,
+                      customerInfo?.salaryDocument2,
+                      documentTypes.SALARY_INFORMATION_TWO
+                    )
+                  "
+                ></app-upload-document-area>
+              </article>
+              <!-- Salary 3  -->
+              <article>
+                <app-upload-document-area
+                  [id]="'image3'"
+                  name="image3"
+                  [classes]="'m-3'"
+                  [title]="'merchant.merchant_image.image3' | translate"
+                  [imgSrc]="salary3Src"
+                  [hiddenDeleteBtn]="hiddenDeleteBtn"
+                  [hiddenUploadBtn]="hiddenUploadBtn"
+                  (onChangeDocument)="
+                    onChangeDocument(
+                      $event,
+                      customerInfo?.salaryDocument3,
+                      documentTypes.SALARY_INFORMATION_THREE
+                    )
+                  "
+                ></app-upload-document-area>
+              </article>
+
+              <article>
+                <app-upload-document-area
+                  [id]="'image4'"
+                  name="image4"
+                  [classes]="'m-3'"
+                  [title]="'merchant.merchant_image.image4' | translate"
+                  [imgSrc]="salary3Src"
+                  [hiddenDeleteBtn]="hiddenDeleteBtn"
+                  [hiddenUploadBtn]="hiddenUploadBtn"
+                  (onChangeDocument)="
+                    onChangeDocument(
+                      $event,
+                      customerInfo?.salaryDocument3,
+                      documentTypes.SALARY_INFORMATION_THREE
+                    )
+                  "
+                ></app-upload-document-area>
+              </article>
+
+              <article>
+                <app-upload-document-area
+                  [id]="'image5'"
+                  name="image5"
+                  [classes]="'m-3'"
+                  [title]="'merchant.merchant_image.image5' | translate"
+                  [imgSrc]="salary3Src"
+                  [hiddenDeleteBtn]="hiddenDeleteBtn"
+                  [hiddenUploadBtn]="hiddenUploadBtn"
+                  (onChangeDocument)="
+                    onChangeDocument(
+                      $event,
+                      customerInfo?.salaryDocument3,
+                      documentTypes.SALARY_INFORMATION_THREE
+                    )
+                  "
+                ></app-upload-document-area>
+              </article>
+            </div>
+          </div>
+        </mat-expansion-panel>
+      </mat-accordion>
+    </article>
+  </div>
+</div>
