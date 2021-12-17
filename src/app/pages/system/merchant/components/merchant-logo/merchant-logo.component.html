@@ -1,0 +1,54 @@
+<div class="container-fluid">
+  <div class="card-body no-padding-bot">
+    <div class="row">
+      <section class="col-12">
+        <app-merchant-image-upload></app-merchant-image-upload>
+
+        <mat-form-field
+          appearance="standard"
+          color="primary"
+          class="w-100 mt-1"
+        >
+          <mat-label
+            class="d-flex align-items-center gap-2 op-text-area-label-content"
+          >
+                      <span class="op-text-area-label">{{
+                        "merchant.merchant_image.introduction" | translate
+                        }}</span>
+          </mat-label>
+          <textarea
+            matInput
+            class="note-area"
+            id="review"
+            name="review"
+            formControlName="introduction"
+            [placeholder]="'merchant.merchant_image.introduction' | translate"
+          ></textarea>
+        </mat-form-field>
+      </section>
+    </div>
+  </div>
+
+  <!--  Actions -->
+
+  <div class="row mt-3 mb-3">
+    <div class="col-12 d-flex gap-2 justify-content-end">
+      <button (click)="openUpdateDialog()" color="accent" mat-flat-button>
+        <span class="sprite-group-5-pen-white"></span>
+        {{ "customer.individual_info.update" | translate }}
+      </button>
+      <button (click)="lockPrompt()" *ngIf="!showEnableBtn" color="warn" mat-flat-button>
+        <span class="sprite-group-5-lock-white"></span>
+        {{ "customer.individual_info.lock" | translate }}
+      </button>
+      <button (click)="unlockPrompt()" *ngIf="showEnableBtn" color="primary" mat-flat-button>
+        <span class="sprite-group-7-unlock"></span>
+        {{ "customer.individual_info.unlock" | translate }}
+      </button>
+      <button (click)="deletePrompt()" color="warn" mat-flat-button>
+        <span class="sprite-group-7-trash"></span>
+        {{ "merchant.merchant_detail.delete" | translate }}
+      </button>
+    </div>
+  </div>
+</div>

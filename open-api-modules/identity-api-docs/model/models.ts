@@ -1,5 +1,7 @@
+export * from './accountChangePassRequest';
 export * from './addPermissionsRequest';
 export * from './adminAccountEntity';
+export * from './adminChangePassProviderRequest';
 export * from './apiResponseAdminAccountEntity';
 export * from './apiResponseCreateCustomerAccountResponse';
 export * from './apiResponseCustomerAccountEntity';
@@ -17,7 +19,6 @@ export * from './apiResponseResetPasswordResponse';
 export * from './apiResponseString';
 export * from './apiResponseUpdateFullInfoAdminAccountResponse';
 export * from './assignGroupRequest';
-export * from './changePassProviderRequest';
 export * from './createCustomerAccountRequest';
 export * from './createCustomerAccountResponse';
 export * from './createGroupRequest';
