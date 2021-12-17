@@ -10,6 +10,9 @@
 # dependencies
 /node_modules
 
+# openapi
+/open-api-modules
+
 # profiling files
 chrome-profiler-events*.json
 
