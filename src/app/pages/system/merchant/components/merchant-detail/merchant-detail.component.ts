@@ -6,6 +6,7 @@ import { ToastrService } from 'ngx-toastr';
 import {
   BUTTON_TYPE,
   DATA_CELL_TYPE,
+  DATA_STATUS_TYPE,
 } from '../../../../../core/common/enum/operator';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { CustomerDetailUpdateDialogComponent } from '../../../../customer/components/customer-individual-info-update-dialog/customer-detail-update-dialog.component';
@@ -55,7 +56,7 @@ export class MerchantDetailComponent implements OnInit {
   openUpdateDialog() {
     const updateDialogRef = this.dialog.open(MerchantDetailDialogComponent, {
       panelClass: 'custom-info-dialog-container',
-      maxWidth: '800px',
+      maxWidth: '1200px',
       width: '90%',
       data: {
         merchantInfo: this.merchantInfo,
@@ -243,7 +244,7 @@ export class MerchantDetailComponent implements OnInit {
         ),
         value: this.merchantInfo.merchantStatus,
         type: DATA_CELL_TYPE.STATUS,
-        format: null,
+        format: DATA_STATUS_TYPE.USER_STATUS,
       },
     ];
   }

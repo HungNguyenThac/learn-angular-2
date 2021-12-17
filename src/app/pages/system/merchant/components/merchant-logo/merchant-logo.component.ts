@@ -4,16 +4,19 @@ import { Subscription } from 'rxjs';
 import { MultiLanguageService } from '../../../../../share/translate/multiLanguageService';
 import { NotificationService } from '../../../../../core/services/notification.service';
 import { ToastrService } from 'ngx-toastr';
-import {BUTTON_TYPE, DATA_CELL_TYPE} from '../../../../../core/common/enum/operator';
+import {
+  BUTTON_TYPE,
+  DATA_CELL_TYPE,
+} from '../../../../../core/common/enum/operator';
 import { MerchantDetailDialogComponent } from '../../../../../share/components/operators/merchant/merchant-detail-dialog/merchant-detail-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 
 @Component({
-  selector: 'app-merchant-verify',
-  templateUrl: './merchant-verify.component.html',
-  styleUrls: ['./merchant-verify.component.scss'],
+  selector: 'app-merchant-logo',
+  templateUrl: './merchant-logo.component.html',
+  styleUrls: ['./merchant-logo.component.scss'],
 })
-export class MerchantVerifyComponent implements OnInit {
+export class MerchantLogoComponent implements OnInit {
   @Input() merchantInfo;
   @Output() triggerUpdateInfo = new EventEmitter<any>();
   merchantInfoForm: FormGroup;
@@ -44,10 +47,13 @@ export class MerchantVerifyComponent implements OnInit {
   openUpdateDialog() {
     const updateDialogRef = this.dialog.open(MerchantDetailDialogComponent, {
       panelClass: 'custom-info-dialog-container',
-      maxWidth: '800px',
+      maxWidth: '1200px',
       width: '90%',
       data: {
         merchantInfo: this.merchantInfo,
+        dialogTitle: this.multiLanguageService.instant(
+          'merchant.merchant_dialog.edit_merchant_title'
+        ),
         tabIndex: 1,
       },
     });

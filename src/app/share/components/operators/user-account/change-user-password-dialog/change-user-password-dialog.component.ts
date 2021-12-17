@@ -1,7 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import {BUTTON_TYPE} from "../../../../../core/common/enum/operator";
+import { BUTTON_TYPE } from '../../../../../core/common/enum/operator';
 
 @Component({
   selector: 'app-change-user-password-dialog',
@@ -14,8 +14,9 @@ export class ChangeUserPasswordDialogComponent implements OnInit {
   isPassVisible: boolean;
   isConfirmPassVisible: boolean;
   isConfirmPasswordInputFocus: boolean;
+
   constructor(
-    @Inject(MAT_DIALOG_DATA) private data: any,
+    @Inject(MAT_DIALOG_DATA) data: any,
     private dialogRef: MatDialogRef<ChangeUserPasswordDialogComponent>,
     private formBuilder: FormBuilder
   ) {
@@ -26,7 +27,10 @@ export class ChangeUserPasswordDialogComponent implements OnInit {
 
   buildChangePassForm() {
     this.changePassForm = this.formBuilder.group({
-      accountPassword: ['', [Validators.minLength(8), Validators.maxLength(50)]],
+      accountPassword: [
+        '',
+        [Validators.minLength(8), Validators.maxLength(50)],
+      ],
       confirmPassword: [''],
     });
   }

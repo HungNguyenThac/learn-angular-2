@@ -11,9 +11,9 @@
  */
 
 
-export interface ChangePassProviderRequest { 
-    username: string;
+export interface AccountChangePassRequest { 
     newSecret: string;
     confirmSecret: string;
+    currentSecret: string;
 }
 

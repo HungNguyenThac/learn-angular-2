@@ -59,6 +59,8 @@ Generate api docs
   ./open-api-modules/payment-api-docs
 - openapi-generator-cli generate -i open-api-yaml/contract-docs.yaml -g typescript-angular -o
   ./open-api-modules/contract-api-docs
+- openapi-generator-cli generate -i open-api-yaml/merchant-docs.yaml -g typescript-angular -o
+  ./open-api-modules/merchant-api-docs
 
 ## Note
 

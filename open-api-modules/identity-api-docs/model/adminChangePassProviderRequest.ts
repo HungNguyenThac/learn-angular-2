@@ -11,10 +11,9 @@
  */
 
 
-export interface UpdatePermissionRequest { 
-    code: string;
-    name: string;
-    description: string;
-    permissionTypeId?: string;
+export interface AdminChangePassProviderRequest { 
+    username: string;
+    newSecret: string;
+    confirmSecret: string;
 }
 

@@ -8,7 +8,8 @@ import { FormsModule } from '@angular/forms';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
 import { MerchantElementComponent } from './components/merchant-element/merchant-element.component';
 import { MerchantDetailComponent } from './components/merchant-detail/merchant-detail.component';
-import { MerchantVerifyComponent } from './components/merchant-verify/merchant-verify.component';
+import { MerchantLogoComponent } from './components/merchant-logo/merchant-logo.component';
+import { MerchantQrComponent } from './components/merchant-qr/merchant-qr.component';
 
 export const MerchantRoutes: Routes = [
   {
@@ -24,7 +25,13 @@ export const MerchantRoutes: Routes = [
 ];
 
 @NgModule({
-  declarations: [MerchantListComponent, MerchantElementComponent, MerchantDetailComponent, MerchantVerifyComponent],
+  declarations: [
+    MerchantListComponent,
+    MerchantElementComponent,
+    MerchantDetailComponent,
+    MerchantLogoComponent,
+    MerchantQrComponent,
+  ],
   imports: [
     CommonModule,
     RouterModule.forChild(MerchantRoutes),

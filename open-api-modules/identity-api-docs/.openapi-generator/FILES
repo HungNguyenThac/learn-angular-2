@@ -13,8 +13,10 @@ configuration.ts
 encoder.ts
 git_push.sh
 index.ts
+model/accountChangePassRequest.ts
 model/addPermissionsRequest.ts
 model/adminAccountEntity.ts
+model/adminChangePassProviderRequest.ts
 model/apiResponseAdminAccountEntity.ts
 model/apiResponseCreateCustomerAccountResponse.ts
 model/apiResponseCustomerAccountEntity.ts
@@ -32,7 +34,6 @@ model/apiResponseResetPasswordResponse.ts
 model/apiResponseString.ts
 model/apiResponseUpdateFullInfoAdminAccountResponse.ts
 model/assignGroupRequest.ts
-model/changePassProviderRequest.ts
 model/createCustomerAccountRequest.ts
 model/createCustomerAccountResponse.ts
 model/createGroupRequest.ts
