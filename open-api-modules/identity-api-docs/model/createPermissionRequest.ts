@@ -15,6 +15,6 @@ export interface CreatePermissionRequest {
     code: string;
     name: string;
     description: string;
-    permissionTypeId: string;
+    permissionTypeId?: string;
 }
 

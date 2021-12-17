@@ -596,7 +596,25 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ChangePassProviderRequest'
+              $ref: '#/components/schemas/AdminChangePassProviderRequest'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseObject'
+  /v1/credentials/accountChangePassword:
+    post:
+      tags:
+      - admin-account-controller
+      operationId: accountChangePassword
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AccountChangePassRequest'
         required: true
       responses:
         "200":
@@ -678,7 +696,6 @@ components:
       - code
       - description
       - name
-      - permissionTypeId
       type: object
       properties:
         code:
@@ -1084,7 +1101,6 @@ components:
       - code
       - description
       - name
-      - permissionTypeId
       type: object
       properties:
         code:
@@ -1283,7 +1299,7 @@ components:
       properties:
         token:
           type: string
-    ChangePassProviderRequest:
+    AdminChangePassProviderRequest:
       required:
       - confirmSecret
       - newSecret
@@ -1309,6 +1325,19 @@ components:
         responseCode:
           type: integer
           format: int32
+    AccountChangePassRequest:
+      required:
+      - confirmSecret
+      - currentSecret
+      - newSecret
+      type: object
+      properties:
+        newSecret:
+          type: string
+        confirmSecret:
+          type: string
+        currentSecret:
+          type: string
     ApiResponseListPermissionEntity:
       type: object
       properties:

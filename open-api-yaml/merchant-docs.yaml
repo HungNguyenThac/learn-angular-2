@@ -1,0 +1,294 @@
+---
+openapi: 3.0.3
+info:
+  title: bnpl-service API
+  version: 1.0-SNAPSHOT
+paths:
+  /v1/admin/merchants:
+    get:
+      tags:
+      - Admin Controller
+      parameters:
+      - name: bdStaff
+        in: query
+        schema:
+          type: string
+      - name: code
+        in: query
+        schema:
+          type: string
+      - name: email
+        in: query
+        schema:
+          type: string
+      - name: id
+        in: query
+        schema:
+          type: string
+      - name: mobile
+        in: query
+        schema:
+          type: string
+      - name: name
+        in: query
+        schema:
+          type: string
+      - name: productType
+        in: query
+        schema:
+          type: string
+      - name: status
+        in: query
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseListMerchant'
+    put:
+      tags:
+      - Admin Controller
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateMerchantRequestDto'
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseMerchant'
+    post:
+      tags:
+      - Admin Controller
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateMerchantRequestDto'
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseMerchant'
+    delete:
+      tags:
+      - Admin Controller
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseString'
+  /v1/admin/merchants/qrcode:
+    post:
+      tags:
+      - Admin Controller
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GenerateMerchantQrRequestDto'
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiResponse[B"
+  /v1/admin/merchants/{id}:
+    get:
+      tags:
+      - Admin Controller
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseMerchant'
+components:
+  schemas:
+    ApiResponseListMerchant:
+      type: object
+      properties:
+        result:
+          type: array
+          items:
+            $ref: '#/components/schemas/Merchant'
+        errorCode:
+          type: string
+        message:
+          type: string
+        responseCode:
+          format: int32
+          type: integer
+    ApiResponseMerchant:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/Merchant'
+        errorCode:
+          type: string
+        message:
+          type: string
+        responseCode:
+          format: int32
+          type: integer
+    ApiResponseString:
+      type: object
+      properties:
+        result:
+          type: string
+        errorCode:
+          type: string
+        message:
+          type: string
+        responseCode:
+          format: int32
+          type: integer
+    ApiResponse[B:
+      type: object
+      properties:
+        result:
+          format: binary
+          type: string
+          items:
+            format: byte
+            type: string
+        errorCode:
+          type: string
+        message:
+          type: string
+        responseCode:
+          format: int32
+          type: integer
+    CreateMerchantRequestDto:
+      required:
+      - name
+      - code
+      - mobile
+      - email
+      - productType
+      - status
+      - bdStaff
+      type: object
+      properties:
+        name:
+          pattern: \S
+          type: string
+          nullable: false
+        code:
+          pattern: \S
+          type: string
+          nullable: false
+        mobile:
+          pattern: \S
+          type: string
+          nullable: false
+        email:
+          pattern: \S
+          type: string
+          nullable: false
+        productType:
+          pattern: \S
+          type: string
+          nullable: false
+        status:
+          pattern: \S
+          type: string
+          nullable: false
+        bdStaff:
+          pattern: \S
+          type: string
+          nullable: false
+        addressLineOne:
+          type: string
+        addressLineTwo:
+          type: string
+        addressLineThree:
+          type: string
+    GenerateMerchantQrRequestDto:
+      required:
+      - id
+      type: object
+      properties:
+        id:
+          pattern: \S
+          type: string
+          nullable: false
+    Merchant:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        code:
+          type: string
+        mobile:
+          type: string
+        email:
+          type: string
+        productType:
+          type: string
+        status:
+          type: string
+        bdStaff:
+          type: string
+        addressLineOne:
+          type: string
+        addressLineTwo:
+          type: string
+        addressLineThree:
+          type: string
+    UpdateMerchantRequestDto:
+      required:
+      - id
+      type: object
+      properties:
+        id:
+          pattern: \S
+          type: string
+          nullable: false
+        name:
+          type: string
+        code:
+          type: string
+        mobile:
+          type: string
+        email:
+          type: string
+        productType:
+          type: string
+        status:
+          type: string
+        bdStaff:
+          type: string
+        addressLineOne:
+          type: string
+        addressLineTwo:
+          type: string
+        addressLineThree:
+          type: string

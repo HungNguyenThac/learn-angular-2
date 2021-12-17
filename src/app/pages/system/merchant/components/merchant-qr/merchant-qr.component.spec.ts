@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { MerchantVerifyComponent } from './merchant-verify.component';
+import { MerchantQrComponent } from './merchant-qr.component';
 
-describe('MerchantVerifyComponent', () => {
-  let component: MerchantVerifyComponent;
-  let fixture: ComponentFixture<MerchantVerifyComponent>;
+describe('MerchantQrComponent', () => {
+  let component: MerchantQrComponent;
+  let fixture: ComponentFixture<MerchantQrComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ MerchantVerifyComponent ]
+      declarations: [ MerchantQrComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(MerchantVerifyComponent);
+    fixture = TestBed.createComponent(MerchantQrComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
