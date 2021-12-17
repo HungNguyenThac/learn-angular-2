@@ -12,7 +12,7 @@ whoami
 nginx stop
 pwd
 ls
-cd /code
+cd /code || exit
 ls
 cd ..
 #more ./generate_env-config.sh
@@ -36,7 +36,7 @@ echo ""
 echo "*********************"
 echo "Create ./code/environments/environment.ts"
 echo "*******Exists?*********"
-cd code
+cd code || exit
 ls
 ########################################
 # Create config.ts file in the public folder
@@ -47,7 +47,7 @@ echo ""
 echo "*********************"
 echo "Content ./code/environments/environment.ts"
 echo "*********************"
-cd /code
+cd /code || exit
 more ./environments/environment.ts
 
 ########################################

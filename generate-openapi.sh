@@ -1,3 +1,5 @@
+#!/bin/bash
+
 echo "*********************"
 echo "Generate open api modules"
 echo "*********************"
@@ -23,4 +25,5 @@ openapi-generator-cli generate -i open-api-yaml/payment-docs.yaml -g typescript-
 
 openapi-generator-cli generate -i open-api-yaml/contract-docs.yaml -g typescript-angular -o ./open-api-modules/contract-api-docs
 
+ls
 

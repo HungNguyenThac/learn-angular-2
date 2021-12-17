@@ -20,7 +20,7 @@ import { ToastrService } from 'ngx-toastr';
 import {
   AdminAccountControllerService,
   ApiResponseAdminAccountEntity,
-  ChangePassProviderRequest,
+  AdminChangePassProviderRequest,
 } from '../../../../../../../open-api-modules/identity-api-docs';
 import * as moment from 'moment';
 import {
@@ -315,7 +315,7 @@ export class UserDetailComponent implements OnInit, OnDestroy {
     );
   }
 
-  private changeUserPass(changePassData: ChangePassProviderRequest) {
+  private changeUserPass(changePassData: AdminChangePassProviderRequest) {
     this.subManager.add(
       this.adminAccountControllerService
         .changePass({
