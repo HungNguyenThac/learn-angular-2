@@ -6,7 +6,7 @@ export const environment = {
   COM_API_PATH: '/com',
   LOANAPP_API_PATH: '/loanapp',
   LOANAPP_HMG_API_PATH: '/loanapp-hmg',
-  DASHBOARD_API_PATH: '/dashboard-temp',
+  DASHBOARD_API_PATH: '/dashboard',
   CORE_API_PATH: '/core',
   PAYMENT_API_PATH: '/payment',
   CONTRACT_API_PATH: '/contract',
