@@ -50,7 +50,7 @@ export class CustomerCheckInfoComponent implements OnInit {
         'loan_app.loan_info.register_at'
       ),
       type: DATA_CELL_TYPE.DATETIME,
-      format: 'dd/MM/yyyy HH:mm',
+      format: 'dd/MM/yyyy HH:mm:ss',
       showed: true,
     },
     {
@@ -85,20 +85,6 @@ export class CustomerCheckInfoComponent implements OnInit {
   private _getEkycList() {
     let requestBody = {};
     requestBody['customerId'] = this.customerId;
-    let direction: boolean;
-    switch (this.sortDirection) {
-      case 'desc':
-        direction = true;
-        break;
-      case 'asc':
-        direction = false;
-        break;
-
-      default:
-        direction = null;
-        break;
-    }
-
     this.subManager.add(
       this.ekycControllerService
         .getEkycInfo(
@@ -106,7 +92,7 @@ export class CustomerCheckInfoComponent implements OnInit {
           this.pageIndex,
           requestBody,
           this.orderBy,
-          direction
+          this.sortDirection === 'desc'
         )
         .subscribe(
           (data: ApiResponseSearchAndPaginationResponseKalapaResponse) => {

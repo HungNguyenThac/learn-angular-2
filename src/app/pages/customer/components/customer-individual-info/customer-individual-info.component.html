@@ -82,7 +82,7 @@
       <ng-container *ngxPermissionsOnly="['infos:returnConfirmInformation']">
         <button
           *ngIf="
-            customerInfo?.companyGroupName === 'TNG' &&
+            customerInfo?.companyInfo?.groupName === 'TNG' &&
             customerInfo?.paydayLoanStatus === 'NOT_ACCEPTING_TERM_YET'
           "
           (click)="verifyInfo()"
