@@ -247,6 +247,11 @@
       "verify": "Yêu cầu xác thực lại thông tin",
       "update_company_info": "Cập nhật thông tin công ty",
       "change_pass": "Đổi mật khẩu",
+      "customer_status": {
+        "not_verified": "Chưa xác thực",
+        "already_ekyc": "Đã eKYC",
+        "already_verified": "Đã xác thực thông tin"
+      },
       "disable_customer": {
         "title": "Ngừng hoạt động",
         "dialog_title": "Bạn có chắc chắn muốn dừng hoạt động khách hàng này trong {{time}} không?",

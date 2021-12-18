@@ -17,6 +17,7 @@ import {
   CommuneControllerService,
   CustomerInfo,
   DistrictControllerService,
+  KalapaResponse,
 } from '../../../../../../open-api-modules/dashboard-api-docs';
 import { CustomerDetailUpdateDialogComponent } from '../customer-individual-info-update-dialog/customer-detail-update-dialog.component';
 import { Subscription } from 'rxjs';
@@ -53,7 +54,9 @@ export class CustomerIndividualInfoComponent implements OnInit, OnDestroy {
   subManager = new Subscription();
   selfieSrc: string;
   diableTime: string;
-  customerStatus: string;
+  activeStatus: string;
+  isVerified: boolean;
+  kalapaData: KalapaResponse;
 
   communeById: string;
   timeDisableOptions: any = [
@@ -155,7 +158,9 @@ export class CustomerIndividualInfoComponent implements OnInit, OnDestroy {
   set customerInfo(value: CustomerInfo) {
     this._customerInfo = value;
     this.virtualAccount = this._customerInfo?.virtualAccount;
-    this.customerStatus = value?.userStatus;
+    this.activeStatus = this._customerInfo?.userStatus;
+    this.kalapaData = this._customerInfo?.kalapaData;
+    this.isVerified = this._customerInfo?.isVerified;
     this._getSelfieDocument(this.customerId, value);
     this._initIndividualFormData(this.customerId, value);
     // this.getCustomerLocation(value);

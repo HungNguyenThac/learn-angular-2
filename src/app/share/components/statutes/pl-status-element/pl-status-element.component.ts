@@ -1,4 +1,7 @@
-import { PAYDAY_LOAN_REPAYMENT_STATUS } from './../../../../core/common/enum/payday-loan';
+import {
+  CUSTOMER_STATUS,
+  PAYDAY_LOAN_REPAYMENT_STATUS,
+} from './../../../../core/common/enum/payday-loan';
 import { PlStatusLabelComponent } from './../pl-status-label/pl-status-label.component';
 import {
   PAYDAY_LOAN_OTHER_STATUS,
@@ -27,10 +30,6 @@ import UserStatusEnum = AdminAccountEntity.UserStatusEnum;
   styleUrls: ['./pl-status-element.component.scss'],
 })
 export class PlStatusElementComponent implements OnInit, AfterViewInit {
-  // @Input() statusType: DATA_STATUS_TYPE;
-
-  @Input() externalValue: string;
-
   @ViewChild(PlStatusLabelComponent) child: PlStatusLabelComponent;
 
   constructor(
@@ -38,7 +37,9 @@ export class PlStatusElementComponent implements OnInit, AfterViewInit {
     private cdr: ChangeDetectorRef
   ) {}
 
-  _statusValue: string;
+  _statusValue: any;
+
+  _externalValue: any;
 
   _statusType: DATA_STATUS_TYPE;
 
@@ -53,12 +54,22 @@ export class PlStatusElementComponent implements OnInit, AfterViewInit {
   }
 
   @Input()
-  get statusValue(): string {
+  get statusValue(): any {
     return this._statusValue;
   }
 
-  set statusValue(value: string) {
+  set statusValue(value: any) {
     this._statusValue = value;
+    this.dataStatus = this.getDataStatus();
+  }
+
+  @Input()
+  get externalValue(): any {
+    return this._externalValue;
+  }
+
+  set externalValue(value: any) {
+    this._externalValue = value;
     this.dataStatus = this.getDataStatus();
   }
 
@@ -69,6 +80,8 @@ export class PlStatusElementComponent implements OnInit, AfterViewInit {
       case DATA_STATUS_TYPE.PL_HMG_STATUS:
       case DATA_STATUS_TYPE.PL_TNG_STATUS:
         return this.loanStatusContent(this.statusValue, this.externalValue);
+      case DATA_STATUS_TYPE.CUSTOMER_STATUS:
+        return this.customerStatusContent(this.statusValue, this.externalValue);
       case DATA_STATUS_TYPE.PL_UI_STATUS:
         return this.loanUIStatusContent(this.statusValue);
       case DATA_STATUS_TYPE.PL_OTHER_STATUS:
@@ -93,6 +106,36 @@ export class PlStatusElementComponent implements OnInit, AfterViewInit {
     this.dataStatus = this.getDataStatus();
     this.child.initStatusClasses();
     this.cdr.detectChanges();
+  }
+
+  customerStatusContent(isVerified, kalapaData) {
+    if (isVerified) {
+      return {
+        label: this.multiLanguageService.instant(
+          'customer.individual_info.customer_status.already_verified'
+        ),
+        labelStatus: PL_LABEL_STATUS.SUCCESS,
+      };
+    } else if (!isVerified && kalapaData?.createdAt) {
+      return {
+        label: this.multiLanguageService.instant(
+          'customer.individual_info.customer_status.already_ekyc'
+        ),
+        labelStatus: PL_LABEL_STATUS.INFO,
+      };
+    } else if (!isVerified && !kalapaData?.createdAt) {
+      return {
+        label: this.multiLanguageService.instant(
+          'customer.individual_info.customer_status.not_verified'
+        ),
+        labelStatus: PL_LABEL_STATUS.PENDING,
+      };
+    } else {
+      return {
+        label: status,
+        labelStatus: PL_LABEL_STATUS.REJECT,
+      };
+    }
   }
 
   loanUIStatusContent(status) {

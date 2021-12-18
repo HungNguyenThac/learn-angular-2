@@ -11,11 +11,9 @@ import {
 })
 export class FormatDataComponent implements OnInit {
   @Input() type: DATA_CELL_TYPE;
-  @Input() value: string;
-  @Input() externalValue: string;
+  @Input() value: any;
+  @Input() externalValue: any;
   @Input() format: string | DATA_STATUS_TYPE;
-
-  link: string;
 
   constructor() {}
 
