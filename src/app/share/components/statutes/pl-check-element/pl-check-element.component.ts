@@ -6,8 +6,8 @@ import { Component, Input, OnInit } from '@angular/core';
   styleUrls: ['./pl-check-element.component.scss'],
 })
 export class PlCheckElementComponent implements OnInit {
-  @Input() statusValue:boolean;
-  
+  @Input() statusValue: boolean;
+
   constructor() {}
 
   ngOnInit(): void {}

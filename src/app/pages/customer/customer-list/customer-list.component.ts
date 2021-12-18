@@ -34,8 +34,7 @@ import { FilterEventModel } from '../../../public/models/filter/filter-event.mod
 import { FilterActionEventModel } from '../../../public/models/filter/filter-action-event.model';
 import {
   ACCOUNT_CLASSIFICATION,
-  PAYDAY_LOAN_UI_STATUS,
-  PAYDAY_LOAN_UI_STATUS_TEXT,
+  CUSTOMER_STATUS,
 } from '../../../core/common/enum/payday-loan';
 import * as _ from 'lodash';
 import { DisplayedFieldsModel } from '../../../public/models/filter/displayed-fields.model';
@@ -90,42 +89,30 @@ export class CustomerListComponent implements OnInit, OnDestroy {
     {
       title: this.multiLanguageService.instant('filter.pl_ui_status'),
       type: FILTER_TYPE.SELECT,
-      controlName: 'paydayLoanStatus',
+      controlName: 'customerStatus',
       value: null,
       options: [
         {
           title: this.multiLanguageService.instant('common.all'),
-          value: null,
+          value: CUSTOMER_STATUS.ALL,
         },
         {
           title: this.multiLanguageService.instant(
-            PAYDAY_LOAN_UI_STATUS_TEXT.NOT_COMPLETE_EKYC_YET
+            'customer.individual_info.customer_status.not_verified'
           ),
-          value: PAYDAY_LOAN_UI_STATUS.NOT_COMPLETE_EKYC_YET,
+          value: CUSTOMER_STATUS.NOT_VERIFIED,
         },
         {
           title: this.multiLanguageService.instant(
-            PAYDAY_LOAN_UI_STATUS_TEXT.NOT_COMPLETE_FILL_EKYC_YET
+            'customer.individual_info.customer_status.already_ekyc'
           ),
-          value: PAYDAY_LOAN_UI_STATUS.NOT_COMPLETE_FILL_EKYC_YET,
+          value: CUSTOMER_STATUS.ALREADY_EKYC,
         },
         {
           title: this.multiLanguageService.instant(
-            PAYDAY_LOAN_UI_STATUS_TEXT.NOT_ACCEPTING_TERM_YET
+            'customer.individual_info.customer_status.already_verified'
           ),
-          value: PAYDAY_LOAN_UI_STATUS.NOT_ACCEPTING_TERM_YET,
-        },
-        {
-          title: this.multiLanguageService.instant(
-            PAYDAY_LOAN_UI_STATUS_TEXT.NOT_COMPLETE_CDE_YET
-          ),
-          value: PAYDAY_LOAN_UI_STATUS.NOT_COMPLETE_CDE_YET,
-        },
-        {
-          title: this.multiLanguageService.instant(
-            PAYDAY_LOAN_UI_STATUS_TEXT.COMPLETED_CDE
-          ),
-          value: PAYDAY_LOAN_UI_STATUS.COMPLETED_CDE,
+          value: CUSTOMER_STATUS.ALREADY_VERIFIED,
         },
       ],
     },
@@ -256,12 +243,13 @@ export class CustomerListComponent implements OnInit, OnDestroy {
       showed: false,
     },
     {
-      key: 'paydayLoanStatus',
+      key: 'isVerified',
+      externalKey: 'kalapaData',
       title: this.multiLanguageService.instant(
         'customer.individual_info.status'
       ),
       type: DATA_CELL_TYPE.STATUS,
-      format: DATA_STATUS_TYPE.PL_UI_STATUS,
+      format: DATA_STATUS_TYPE.CUSTOMER_STATUS,
       showed: true,
     },
     {
@@ -342,7 +330,7 @@ export class CustomerListComponent implements OnInit, OnDestroy {
       keyword: [''],
       companyId: [''],
       id: [''],
-      paydayLoanStatus: [''],
+      customerStatus: [ACCOUNT_CLASSIFICATION.ALL],
       userStatus: [''],
       orderBy: ['createdAt'],
       sortDirection: ['desc'],
@@ -353,7 +341,6 @@ export class CustomerListComponent implements OnInit, OnDestroy {
       dateFilterTitle: [''],
       filterConditions: {
         companyId: QUERY_CONDITION_TYPE.IN,
-        paydayLoanStatus: QUERY_CONDITION_TYPE.EQUAL,
         userStatus: QUERY_CONDITION_TYPE.EQUAL,
         id: QUERY_CONDITION_TYPE.EQUAL,
       },
@@ -365,7 +352,7 @@ export class CustomerListComponent implements OnInit, OnDestroy {
       keyword: '',
       companyId: '',
       id: '',
-      paydayLoanStatus: '',
+      customerStatus: CUSTOMER_STATUS.ALL,
       userStatus: '',
       orderBy: 'createdAt',
       sortDirection: 'desc',
@@ -376,7 +363,6 @@ export class CustomerListComponent implements OnInit, OnDestroy {
       dateFilterTitle: '',
       filterConditions: {
         companyId: QUERY_CONDITION_TYPE.IN,
-        paydayLoanStatus: QUERY_CONDITION_TYPE.EQUAL,
         userStatus: QUERY_CONDITION_TYPE.EQUAL,
         id: QUERY_CONDITION_TYPE.EQUAL,
       },
@@ -429,9 +415,9 @@ export class CustomerListComponent implements OnInit, OnDestroy {
         filterOption.value = this.filterForm.controls.companyId.value
           ? this.filterForm.controls.companyId.value.split(',')
           : [];
-      } else if (filterOption.controlName === 'paydayLoanStatus') {
-        filterOption.value = this.filterForm.controls.paydayLoanStatus.value
-          ? this.filterForm.controls.paydayLoanStatus.value
+      } else if (filterOption.controlName === 'customerStatus') {
+        filterOption.value = this.filterForm.controls.customerStatus.value
+          ? this.filterForm.controls.customerStatus.value
           : null;
       } else if (filterOption.controlName === 'userStatus') {
         filterOption.value = this.filterForm.controls.userStatus.value
@@ -563,9 +549,9 @@ export class CustomerListComponent implements OnInit, OnDestroy {
           this.filterForm.controls.companyId.setValue(
             event.value ? event.value.join(',') : ''
           );
-        } else if (event.controlName === 'paydayLoanStatus') {
-          this.filterForm.controls.paydayLoanStatus.setValue(
-            event.value ? event.value : ''
+        } else if (event.controlName === 'customerStatus') {
+          this.filterForm.controls.customerStatus.setValue(
+            event.value ? event.value : CUSTOMER_STATUS.ALL
           );
         } else if (event.controlName === 'userStatus') {
           this.filterForm.controls.userStatus.setValue(
@@ -616,6 +602,7 @@ export class CustomerListComponent implements OnInit, OnDestroy {
     queryParams['keyword'] = data.keyword;
 
     queryParams['accountClassification'] = data.accountClassification;
+    queryParams['customerStatus'] = data.customerStatus;
 
     this.router
       .navigate([], {
