@@ -645,6 +645,35 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ApiResponseObject'
+  /v1/infos/uploadSalaryDocument:
+    post:
+      tags:
+      - info-controller
+      operationId: uploadSalaryInformationToAzure
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/SalaryInformationRequest'
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseString'
+  /v1/infos/updateStatusVerified:
+    post:
+      tags:
+      - info-controller
+      operationId: updateStatusVerified
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseString'
   /v1/infos/updateFinance:
     post:
       tags:
@@ -1081,6 +1110,18 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ApiResponseBank'
+  /v1/banks/importBanks:
+    get:
+      tags:
+      - bank-controller
+      operationId: importBanks
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseString'
   /v1/approvalLetters/{customerId}:
     get:
       tags:
@@ -1442,12 +1483,9 @@ components:
           type: string
     ConfirmInformationV2Request:
       required:
+      - addressOneLine1
       - addressTwoLine1
-      - apartmentNumber
-      - cityId
-      - communeId
       - dateOfBirth
-      - districtId
       - emailAddress
       - firstName
       - gender
@@ -1472,15 +1510,9 @@ components:
           type: string
         idIssuePlace:
           type: string
+        addressOneLine1:
+          type: string
         coreUserId:
-          type: string
-        cityId:
-          type: string
-        districtId:
-          type: string
-        communeId:
-          type: string
-        apartmentNumber:
           type: string
     AdditionalInformationV2Request:
       required:
@@ -1544,11 +1576,11 @@ components:
           type: string
         apartmentNumber:
           type: string
-        cityId:
+        city:
           type: string
-        districtId:
+        district:
           type: string
-        communeId:
+        commune:
           type: string
         borrowerDetailTextVariable1:
           type: string
@@ -1879,12 +1911,9 @@ components:
           format: int32
     ConfirmInformationRequest:
       required:
+      - addressOneLine1
       - addressTwoLine1
-      - apartmentNumber
-      - cityId
-      - communeId
       - dateOfBirth
-      - districtId
       - emailAddress
       - firstName
       - gender
@@ -1914,14 +1943,24 @@ components:
           type: string
         coreUserId:
           type: string
-        cityId:
+        addressOneLine1:
           type: string
-        districtId:
+    SalaryInformationRequest:
+      required:
+      - salaryInformationOne
+      - salaryInformationThree
+      - salaryInformationTwo
+      type: object
+      properties:
+        salaryInformationOne:
           type: string
-        communeId:
+          format: binary
+        salaryInformationTwo:
           type: string
-        apartmentNumber:
+          format: binary
+        salaryInformationThree:
           type: string
+          format: binary
     FinancialData:
       type: object
       properties:
