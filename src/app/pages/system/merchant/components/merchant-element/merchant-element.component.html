@@ -7,9 +7,16 @@
     </ng-template>
   </mat-tab>
 
-  <mat-tab [label]="'merchant.merchant_detail.verify' | translate">
+  <mat-tab [label]="'merchant.merchant_image.title' | translate">
     <ng-template matTabContent>
-      <app-merchant-verify [merchantInfo]="merchantInfo"></app-merchant-verify>
+      <app-merchant-logo [merchantInfo]="merchantInfo"></app-merchant-logo>
+    </ng-template
+    >
+  </mat-tab>
+
+  <mat-tab [label]="'merchant.merchant_qr.title' | translate">
+    <ng-template matTabContent>
+      <app-merchant-qr [merchantInfo]="merchantInfo"></app-merchant-qr>
     </ng-template
     >
   </mat-tab>

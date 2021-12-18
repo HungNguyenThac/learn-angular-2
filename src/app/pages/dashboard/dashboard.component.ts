@@ -13,6 +13,7 @@ import * as fromStore from '../../core/store';
 import * as fromActions from '../../core/store';
 import { MultiLanguageService } from '../../share/translate/multiLanguageService';
 import { NAV_ITEM } from '../../core/common/enum/operator';
+import {DisplayedFieldsModel} from "../../public/models/filter/displayed-fields.model";
 
 export interface PeriodicElement {
   name: string;
@@ -72,7 +73,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   lineChartPlugins = [];
   lineChartType = 'line';
 
-  allColumns: any[] = [];
+  allColumns: DisplayedFieldsModel[] = [];
   dataSource = new MatTableDataSource([]);
 
   pageSize: number = 10;

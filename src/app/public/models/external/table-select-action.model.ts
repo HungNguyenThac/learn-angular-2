@@ -5,4 +5,5 @@ export interface TableSelectActionModel {
   color: string;
   content: string;
   style?: string;
+  hidden?: boolean;
 }

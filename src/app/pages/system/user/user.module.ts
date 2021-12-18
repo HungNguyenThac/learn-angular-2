@@ -10,6 +10,7 @@ import { UserElementComponent } from './components/user-element/user-element.com
 import { UserDetailComponent } from './components/user-detail/user-detail.component';
 import { UserRoleComponent } from './components/user-role/user-role.component';
 import { UserTimeLogComponent } from './components/user-time-log/user-time-log.component';
+import {NgxPermissionsGuard} from "ngx-permissions";
 
 export const UserRoutes: Routes = [
   {
@@ -18,7 +19,14 @@ export const UserRoutes: Routes = [
       {
         path: 'list',
         component: UserListComponent,
-        data: { animation: true },
+        canActivateChild: [NgxPermissionsGuard],
+        data: {
+          animation: true,
+          permissions: {
+            only: ['dashboardAdminAccounts:getAdminAccounts'],
+            redirectTo: '/',
+          },
+        },
       },
     ],
   },
@@ -33,7 +41,6 @@ export const UserRoutes: Routes = [
     UserTimeLogComponent,
   ],
   imports: [
-    CommonModule,
     CommonModule,
     RouterModule.forChild(UserRoutes),
     SharedModule,

@@ -15,6 +15,7 @@ import { NotificationService } from '../../../../../core/services/notification.s
 import { MultiLanguageService } from '../../../../translate/multiLanguageService';
 import { ToastrService } from 'ngx-toastr';
 import { UpdatedDocumentModel } from '../../../../../public/models/external/updated-document.model';
+import { NgxPermissionsService } from 'ngx-permissions';
 
 @Component({
   selector: 'app-customer-document-info',
@@ -56,15 +57,30 @@ export class CustomerDocumentInfoComponent implements OnInit {
   salary3Src: string;
   collateralSrc: string;
   documentTypes = DOCUMENT_TYPE;
+  hiddenUploadBtn: boolean = false;
+  hiddenDeleteBtn: boolean = false;
 
   constructor(
     private customerDetailService: CustomerDetailService,
     private notificationService: NotificationService,
     private multiLanguageService: MultiLanguageService,
-    private notifier: ToastrService
+    private notifier: ToastrService,
+    private permissionsService: NgxPermissionsService
   ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this._initSubscription();
+  }
+
+  private _initSubscription() {
+    this.subManager.add(
+      this.permissionsService.permissions$.subscribe((permissions) => {
+        if (permissions) {
+          this._checkActionPermissions();
+        }
+      })
+    );
+  }
 
   private _getDocumentByPath(customerId: string, customerInfo: CustomerInfo) {
     if (!customerId || !customerInfo) {
@@ -192,6 +208,17 @@ export class CustomerDocumentInfoComponent implements OnInit {
         break;
       default:
         break;
+    }
+  }
+
+  private async _checkActionPermissions() {
+    const hasUpdateInfoPermission = await this.permissionsService.hasPermission(
+      'infos:updateInfo'
+    );
+
+    if (!hasUpdateInfoPermission) {
+      this.hiddenUploadBtn = true;
+      this.hiddenDeleteBtn = true;
     }
   }
 

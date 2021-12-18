@@ -13,35 +13,59 @@ export class MerchantDetailDialogComponent implements OnInit {
   tabIndex: number = 0;
   merchantInfoForm: FormGroup;
   merchantInfo;
-  dialogTitle: string = this.multiLanguageService.instant(
+  dialogTitle = this.multiLanguageService.instant(
     'merchant.merchant_dialog.add_merchant_title'
   );
-  merchantGroupOptions: any[] = [
+  typeOptions: any[] = [
     {
       id: 1,
-      name: 'Nhóm nhà cung cấp 1',
+      name: 'Tại cửa hàng',
     },
     {
       id: 2,
-      name: 'Nhóm nhà cung cấp 2',
-    },
-    {
-      id: 3,
-      name: 'Nhóm nhà cung cấp 3',
+      name: 'Trực tuyến',
     },
   ];
-  bankOptions: any[] = [
+  showOptions: any[] = [
     {
       id: 1,
-      name: 'Ngân hàng Việt Nam Thịnh Vượng',
+      name: 'Hiển thị',
     },
     {
       id: 2,
-      name: 'Ngân hàng Pro vip',
+      name: 'Hot Brand',
+    },
+    {
+      id: 2,
+      name: 'Promotion',
+    },
+  ];
+  products: any[] = [
+    {
+      id: 1,
+      name: 'Thực phẩm',
+    },
+    {
+      id: 2,
+      name: 'Thời trang',
     },
     {
       id: 3,
-      name: 'Ngân hàng Vip',
+      name: 'Điện tử',
+    },
+  ];
+  managers: any[] = [
+    {
+      id: 1,
+      name: 'user1',
+    },
+    {
+      id: 2,
+      name: 'user2',
+    },
+    {
+      id: 3,
+      name: 'user3',
     },
   ];
 
@@ -105,31 +129,32 @@ export class MerchantDetailDialogComponent implements OnInit {
 
   buildIndividualForm() {
     this.merchantInfoForm = this.formBuilder.group({
-      merchantId: '',
-      merchantName: '',
-      merchantStatus: '',
-      merchantPhone: '',
-      merchantEmail: '',
-      merchantDate: '',
-      merchantGroup: [''],
-      merchantCompany: '',
-      merchantTaxNumber: '',
-      merchantRegistrationNumber: '',
-      merchantWebsite: '',
-      merchantAddress: '',
-      creator: '',
-      createDate: '',
-      merchantNote: '',
-      contactor: '',
-      role: '',
-      phone: '',
-      mailTo: '',
-      mailCc: '',
-      bank: '',
-      branch: '',
-      accountNum: '',
-      accountName: '',
-      note: '',
+      merchantId: [''],
+      merchantName: [''],
+      merchantAddress: [''],
+      merchantArea: [''],
+      merchantCommune: [''],
+      merchantManager: [''],
+      merchantType: [''],
+      merchantPhone: [''],
+      merchantEmail: [''],
+      merchantWebsite: [''],
+      merchantRegistrationNumber: [''],
+      merchantEstablish: [''],
+      merchantProduct: [''],
+      merchantFee: [''],
+      merchantStatus: [''],
+      merchantDate: [''],
+      username: [''],
+      password: [''],
+      rePassword: [''],
+      name: [''],
+      position: [''],
+      phone: [''],
+      email: [''],
+      discount: [''],
+      show: [''],
+      introduction: [''],
     });
   }
 }

@@ -9,7 +9,7 @@ export const RESET_CUSTOMER_INFO = '[Customer] reset customer info';
 export class GetCustomerInfo implements Action {
   readonly type = GET_CUSTOMER_INFO;
 
-  constructor(public payload: any) {}
+  constructor(public payload?: any) {}
 }
 
 export class GetCustomerInfoError implements Action {

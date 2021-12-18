@@ -1,5 +1,5 @@
-import { Contract } from './../../../../../../../open-api-modules/loanapp-api-docs/model/contract';
-import { ApiResponseContract } from './../../../../../../../open-api-modules/loanapp-api-docs/model/apiResponseContract';
+import { Contract } from './../../../../../../../open-api-modules/loanapp-tng-api-docs/model/contract';
+import { ApiResponseContract } from './../../../../../../../open-api-modules/loanapp-tng-api-docs/model/apiResponseContract';
 import {
   CustomerInfo,
   PaydayLoanHmg,
@@ -16,13 +16,17 @@ import {
 } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
-import { PaydayLoan } from 'open-api-modules/loanapp-api-docs';
 import {
   DATA_CELL_TYPE,
-  DATA_STATUS_TYPE,
+  DATA_STATUS_TYPE, RESPONSE_CODE,
 } from 'src/app/core/common/enum/operator';
 import { LoanListService } from '../../loan-list/loan-list.service';
 import { Subscription } from 'rxjs';
+import {
+  COMPANY_NAME,
+  PAYDAY_LOAN_STATUS,
+  SIGN_STATUS,
+} from '../../../../../core/common/enum/payday-loan';
 
 @Component({
   selector: 'app-loan-contract',
@@ -100,16 +104,16 @@ export class LoanContractComponent implements OnInit, OnDestroy {
 
   checkSignable() {
     if (
-      this.loanDetail?.companyGroupName === 'HMG' &&
-      this.loanDetail?.status === 'CONTRACT_AWAITING'
+      this.loanDetail?.companyInfo?.groupName === COMPANY_NAME.HMG &&
+      this.loanDetail?.status === PAYDAY_LOAN_STATUS.CONTRACT_AWAITING
     ) {
       return (this.enableSign = true);
     }
 
     if (
-      this.loanDetail?.companyGroupName === 'TNG' &&
-      this.loanDetail?.status === 'FUNDED' &&
-      this.loanContractData?.status === 'AWAITING_EPAY_SIGNATURE'
+      this.loanDetail?.companyInfo?.groupName === COMPANY_NAME.TNG &&
+      this.loanDetail?.status === PAYDAY_LOAN_STATUS.FUNDED &&
+      this.loanContractData?.status === SIGN_STATUS.AWAITING_EPAY_SIGNATURE
     ) {
       return (this.enableSign = true);
     }
@@ -127,22 +131,23 @@ export class LoanContractComponent implements OnInit, OnDestroy {
         idRequest,
         idDocument
       ).subscribe((result) => {
-        if (result.responseCode === 200) {
-          this.triggerUpdateLoanAfterSign.emit();
-          setTimeout(() => {
-            this.notifier.success(
-              this.multiLanguageService.instant(
-                'loan_app.loan_info.sign_success'
-              )
-            );
-          }, 3000);
-        } else {
+        if (!result || result.responseCode !== RESPONSE_CODE.SUCCESS) {
           this.notifier.error(
             this.multiLanguageService.instant(
               'loan_app.loan_contract.sign_fail'
             )
           );
+          return;
         }
+        
+        this.triggerUpdateLoanAfterSign.emit();
+        setTimeout(() => {
+          this.notifier.success(
+            this.multiLanguageService.instant(
+              'loan_app.loan_info.sign_success'
+            )
+          );
+        }, 3000);
       })
     );
   }
@@ -186,9 +191,8 @@ export class LoanContractComponent implements OnInit, OnDestroy {
   private _getLoanContractData() {
     this.subManager.add(
       this.LoanListService.getContractData(
-        this.loanDetail.id,
-        this.loanDetail.customerId,
-        this.loanDetail.companyGroupName
+        this.loanDetail?.id,
+        this.loanDetail.companyInfo?.groupName
       ).subscribe((response: ApiResponseContract) => {
         if (response.result === null) {
           return (this.loanContractData = null);

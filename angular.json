@@ -29,7 +29,11 @@
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
-            "assets": ["src/favicon.ico", "src/assets", "src/environments"],
+            "assets": [
+              "src/favicon.ico",
+              "src/assets",
+              "src/environments"
+            ],
             "styles": [
               "src/styles/theme.scss",
               "./node_modules/bootstrap/dist/css/bootstrap.min.css",
@@ -74,11 +78,25 @@
               ],
               "outputHashing": "all"
             },
-            "development": {
+            "staging": {
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
                   "with": "src/environments/environment.staging.ts"
+                }
+              ],
+              "buildOptimizer": false,
+              "optimization": false,
+              "vendorChunk": true,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "namedChunks": true
+            },
+            "development": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.dev.ts"
                 }
               ],
               "buildOptimizer": false,
@@ -96,6 +114,9 @@
           "configurations": {
             "production": {
               "browserTarget": "monex-op:build:production"
+            },
+            "staging": {
+              "browserTarget": "monex-op:build:staging"
             },
             "development": {
               "browserTarget": "monex-op:build:development"
@@ -117,7 +138,11 @@
             "tsConfig": "tsconfig.spec.json",
             "karmaConfig": "karma.conf.js",
             "inlineStyleLanguage": "scss",
-            "assets": ["src/favicon.ico", "src/assets", "src/environments"],
+            "assets": [
+              "src/favicon.ico",
+              "src/assets",
+              "src/environments"
+            ],
             "styles": [
               "src/styles/theme.scss",
               "./node_modules/bootstrap/dist/css/bootstrap.min.css",

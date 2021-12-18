@@ -22,11 +22,18 @@
 </app-base-management-layout>
 
 <ng-template #detailElementTemplate>
-  <app-loan-detail (detectUpdateLoanAfterSign)="updateElementInfo($event)"
-                   (loanDetailTriggerUpdateStatus)="loanDetailDetectChangeStatusTrigger($event)"
-                   [customerId]="expandedElementCustomerId"
-                   [groupName]="filterForm.controls.groupName.value"
-                   [loanId]="expandedElementLoanId"
-                   class="w-100"
+  <app-loan-detail
+    *ngxPermissionsOnly="[
+      'dashboardTngApplications:getLoanById',
+      'dashboardHmgApplications:getLoanById'
+    ]"
+    (detectUpdateLoanAfterSign)="updateElementInfo($event)"
+    (loanDetailTriggerUpdateStatus)="
+      updateElementInfo($event)
+    "
+    [customerId]="expandedElementCustomerId"
+    [groupName]="filterForm.controls.groupName.value"
+    [loanId]="expandedElementLoanId"
+    class="w-100"
   ></app-loan-detail>
 </ng-template>

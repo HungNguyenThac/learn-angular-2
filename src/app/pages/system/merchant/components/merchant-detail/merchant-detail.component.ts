@@ -6,6 +6,7 @@ import { ToastrService } from 'ngx-toastr';
 import {
   BUTTON_TYPE,
   DATA_CELL_TYPE,
+  DATA_STATUS_TYPE,
 } from '../../../../../core/common/enum/operator';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { CustomerDetailUpdateDialogComponent } from '../../../../customer/components/customer-individual-info-update-dialog/customer-detail-update-dialog.component';
@@ -55,7 +56,7 @@ export class MerchantDetailComponent implements OnInit {
   openUpdateDialog() {
     const updateDialogRef = this.dialog.open(MerchantDetailDialogComponent, {
       panelClass: 'custom-info-dialog-container',
-      maxWidth: '800px',
+      maxWidth: '1200px',
       width: '90%',
       data: {
         merchantInfo: this.merchantInfo,
@@ -80,7 +81,7 @@ export class MerchantDetailComponent implements OnInit {
       secondaryBtnText: this.multiLanguageService.instant('common.skip'),
     });
     confirmLockRef.afterClosed().subscribe((result) => {
-      if (result === 'PRIMARY') {
+      if (result === BUTTON_TYPE.PRIMARY) {
         this.showEnableBtn = true;
       }
     });
@@ -98,7 +99,7 @@ export class MerchantDetailComponent implements OnInit {
       secondaryBtnText: this.multiLanguageService.instant('common.skip'),
     });
     confirmUnlockRef.afterClosed().subscribe((result) => {
-      if (result === 'PRIMARY') {
+      if (result === BUTTON_TYPE.PRIMARY) {
         this.showEnableBtn = false;
       }
     });
@@ -118,7 +119,7 @@ export class MerchantDetailComponent implements OnInit {
       secondaryBtnText: this.multiLanguageService.instant('common.skip'),
     });
     confirmDeleteRef.afterClosed().subscribe((result) => {
-      if (result === 'PRIMARY') {
+      if (result === BUTTON_TYPE.PRIMARY) {
         this.notifier.success(
           this.multiLanguageService.instant(
             'system.user_detail.delete_user.toast'
@@ -146,12 +147,49 @@ export class MerchantDetailComponent implements OnInit {
       },
       {
         title: this.multiLanguageService.instant(
-          'merchant.merchant_detail.status'
+          'merchant.merchant_detail.location'
         ),
-        value: this.merchantInfo.merchantStatus,
-        type: DATA_CELL_TYPE.STATUS,
+        value: this.merchantInfo.merchantAddress,
+        type: DATA_CELL_TYPE.TEXT,
         format: null,
       },
+      {
+        title: this.multiLanguageService.instant(
+          'merchant.merchant_detail.area'
+        ),
+        value: this.merchantInfo.merchantArea,
+        type: DATA_CELL_TYPE.TEXT,
+        format: null,
+      },
+      {
+        title: this.multiLanguageService.instant(
+          'merchant.merchant_detail.commune'
+        ),
+        value: this.merchantInfo.merchantCommune,
+        type: DATA_CELL_TYPE.TEXT,
+        format: null,
+      },
+      {
+        title: this.multiLanguageService.instant(
+          'merchant.merchant_detail.manager'
+        ),
+        value: this.merchantInfo.merchantManager,
+        type: DATA_CELL_TYPE.TEXT,
+        format: null,
+      },
+      {
+        title: this.multiLanguageService.instant(
+          'merchant.merchant_detail.type'
+        ),
+        value: this.merchantInfo.merchantType,
+        type: DATA_CELL_TYPE.TEXT,
+        format: null,
+      },
+    ];
+  }
+
+  private _initRightCompanyInfos() {
+    return [
       {
         title: this.multiLanguageService.instant(
           'merchant.merchant_detail.phone_number'
@@ -170,38 +208,9 @@ export class MerchantDetailComponent implements OnInit {
       },
       {
         title: this.multiLanguageService.instant(
-          'merchant.merchant_detail.date'
+          'merchant.merchant_detail.website'
         ),
-        value: this.merchantInfo.merchantDate,
-        type: DATA_CELL_TYPE.TEXT,
-        format: null,
-      },
-      {
-        title: this.multiLanguageService.instant(
-          'merchant.merchant_detail.group'
-        ),
-        value: this.merchantInfo.merchantGroup,
-        type: DATA_CELL_TYPE.TEXT,
-        format: null,
-      },
-    ];
-  }
-
-  private _initRightCompanyInfos() {
-    return [
-      {
-        title: this.multiLanguageService.instant(
-          'merchant.merchant_detail.company'
-        ),
-        value: this.merchantInfo.merchantCompany,
-        type: DATA_CELL_TYPE.TEXT,
-        format: null,
-      },
-      {
-        title: this.multiLanguageService.instant(
-          'merchant.merchant_detail.tax_no'
-        ),
-        value: this.merchantInfo.merchantTaxNumber,
+        value: this.merchantInfo.merchantWebsite,
         type: DATA_CELL_TYPE.TEXT,
         format: null,
       },
@@ -215,35 +224,27 @@ export class MerchantDetailComponent implements OnInit {
       },
       {
         title: this.multiLanguageService.instant(
-          'merchant.merchant_detail.website'
+          'merchant.merchant_detail.establish'
         ),
-        value: this.merchantInfo.merchantWebsite,
+        value: this.merchantInfo.merchantEstablish,
         type: DATA_CELL_TYPE.TEXT,
         format: null,
       },
       {
         title: this.multiLanguageService.instant(
-          'merchant.merchant_detail.address'
+          'merchant.merchant_detail.product'
         ),
-        value: this.merchantInfo.merchantAddress,
+        value: this.merchantInfo.merchantProduct,
         type: DATA_CELL_TYPE.TEXT,
         format: null,
       },
       {
         title: this.multiLanguageService.instant(
-          'merchant.merchant_detail.creator'
+          'merchant.merchant_detail.status'
         ),
-        value: this.merchantInfo.creator,
-        type: DATA_CELL_TYPE.TEXT,
-        format: null,
-      },
-      {
-        title: this.multiLanguageService.instant(
-          'merchant.merchant_detail.create_date'
-        ),
-        value: this.merchantInfo.createDate,
-        type: DATA_CELL_TYPE.TEXT,
-        format: null,
+        value: this.merchantInfo.merchantStatus,
+        type: DATA_CELL_TYPE.STATUS,
+        format: DATA_STATUS_TYPE.USER_STATUS,
       },
     ];
   }

@@ -5,6 +5,7 @@ import {
   OnInit,
   Output,
   TemplateRef,
+  ViewChild,
 } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { BreadcrumbOptionsModel } from '../../../../public/models/external/breadcrumb-options.model';
@@ -15,6 +16,8 @@ import { FilterActionEventModel } from '../../../../public/models/filter/filter-
 import { Sort } from '@angular/material/sort';
 import { PageEvent } from '@angular/material/paginator/public-api';
 import { TableSelectActionModel } from '../../../../public/models/external/table-select-action.model';
+import { BaseExpandedTableComponent } from '../base-expanded-table/base-expanded-table.component';
+import {DisplayedFieldsModel} from "../../../../public/models/filter/displayed-fields.model";
 
 @Component({
   selector: 'app-base-management-layout',
@@ -23,7 +26,7 @@ import { TableSelectActionModel } from '../../../../public/models/external/table
 })
 export class BaseManagementLayoutComponent implements OnInit {
   @Input() detailElementTemplate: TemplateRef<any>;
-  @Input() allColumns: any[] = [];
+  @Input() allColumns: DisplayedFieldsModel[] = [];
   @Input() tableTitle: string;
   @Input() dataSource: MatTableDataSource<any> = new MatTableDataSource([]);
   @Input() pageSize: number = 10;
@@ -44,6 +47,12 @@ export class BaseManagementLayoutComponent implements OnInit {
   @Output() onFilterChange = new EventEmitter<FilterEventModel>();
   @Output() onFilterActionTrigger = new EventEmitter<FilterActionEventModel>();
   @Output() onOutputAction = new EventEmitter<any>();
+
+  @ViewChild(BaseExpandedTableComponent) child: BaseExpandedTableComponent;
+
+  triggerDeselectUsers() {
+    this.child.deselectAll();
+  }
 
   constructor() {}
 

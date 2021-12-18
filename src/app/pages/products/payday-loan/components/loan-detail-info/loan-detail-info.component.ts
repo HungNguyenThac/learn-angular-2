@@ -3,8 +3,11 @@ import { ToastrService } from 'ngx-toastr';
 import { UpdateLoanStatusRequest } from './../../../../../../../open-api-modules/loanapp-hmg-api-docs/model/updateLoanStatusRequest';
 import { Subscription } from 'rxjs';
 import { PaydayLoanControllerService as PaydayLoanHmgControllerService } from './../../../../../../../open-api-modules/loanapp-hmg-api-docs/api/paydayLoanController.service';
-import { PaydayLoanControllerService as PaydayLoanTngControllerService } from './../../../../../../../open-api-modules/loanapp-api-docs/api/paydayLoanController.service';
-import { PAYDAY_LOAN_STATUS } from './../../../../../core/common/enum/payday-loan';
+import { PaydayLoanControllerService as PaydayLoanTngControllerService } from './../../../../../../../open-api-modules/loanapp-tng-api-docs/api/paydayLoanController.service';
+import {
+  PAYDAY_LOAN_STATUS,
+  REPAYMENT_STATUS,
+} from './../../../../../core/common/enum/payday-loan';
 import {
   BUTTON_TYPE,
   DATA_CELL_TYPE,
@@ -29,7 +32,7 @@ import {
 import {
   ApiResponseObject,
   PaydayLoan,
-} from 'open-api-modules/loanapp-api-docs';
+} from 'open-api-modules/loanapp-tng-api-docs';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import {
   ApiResponseString,
@@ -39,6 +42,7 @@ import formatPunishStartTimeHmg from '../../../../../core/utils/format-punish-st
 import formatPunishStartTimeTng from '../../../../../core/utils/format-punish-start-time-tng';
 import formatPunishCountHmg from '../../../../../core/utils/format-punish-count-hmg';
 import formatPunishCountTng from '../../../../../core/utils/format-punish-count-tng';
+import { GlobalConstants } from '../../../../../core/common/global-constants';
 
 @Component({
   selector: 'app-loan-detail-info',
@@ -143,7 +147,9 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
   }
 
   private _initMiddleColumn() {
-    this.maxLoanAmount = this.getMaxLoanAmount();
+    this.maxLoanAmount = this.getMaxLoanAmount(
+      this.loanDetail?.companyInfo?.groupName
+    );
     this.totalSettlementAmount = this.getTotalSettlementAmount();
     return [
       {
@@ -267,7 +273,7 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
         subTitle: this.multiLanguageService.instant(
           'payday_loan.service_fee.service_fee_hmg'
         ),
-        value: 0.02 * this.loanDetail?.expectedAmount,
+        value: this.calculateServiceFee(this.loanDetail),
         type: DATA_CELL_TYPE.CURRENCY,
         format: null,
       },
@@ -278,7 +284,7 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
         subTitle: this.multiLanguageService.instant(
           'payday_loan.service_fee.transaction_fee_description'
         ),
-        value: '11200',
+        value: GlobalConstants.PL_VALUE_DEFAULT.TRANSACTION_FEE,
         type: DATA_CELL_TYPE.CURRENCY,
         format: null,
       },
@@ -312,7 +318,7 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
         subTitle: this.multiLanguageService.instant(
           'payday_loan.service_fee.service_fee_tng'
         ),
-        value: 0.025 * this.loanDetail?.expectedAmount,
+        value: this.calculateServiceFee(this.loanDetail),
         type: DATA_CELL_TYPE.CURRENCY,
         format: null,
       },
@@ -323,7 +329,7 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
         subTitle: this.multiLanguageService.instant(
           'payday_loan.service_fee.transaction_fee_description'
         ),
-        value: '11200',
+        value: GlobalConstants.PL_VALUE_DEFAULT.TRANSACTION_FEE,
         type: DATA_CELL_TYPE.CURRENCY,
         format: null,
       },
@@ -343,7 +349,10 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
         subTitle: this.multiLanguageService.instant(
           'payday_loan.service_fee.vat_fee_description'
         ),
-        value: 0.1 * 0.025 * this.loanDetail?.expectedAmount,
+        value:
+          GlobalConstants.PL_VALUE_DEFAULT.TAX_FEE_TNG *
+          (this.calculateServiceFee(this.loanDetail) -
+            this.getDiscountValue(this.loanDetail?.voucher)),
         type: DATA_CELL_TYPE.CURRENCY,
         format: null,
       },
@@ -359,8 +368,29 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
     ];
   }
 
+  calculateServiceFee(loanDetail) {
+    if (loanDetail?.companyInfo.name === 'TNG') {
+      if (
+        loanDetail?.expectedAmount *
+          GlobalConstants.PL_VALUE_DEFAULT.SERVICE_FEE_TNG <
+        GlobalConstants.PL_VALUE_DEFAULT.MINIMUM_SERVICE_FEE_TNG
+      ) {
+        return GlobalConstants.PL_VALUE_DEFAULT.MINIMUM_SERVICE_FEE_TNG;
+      } else {
+        return (
+          loanDetail?.expectedAmount *
+          GlobalConstants.PL_VALUE_DEFAULT.SERVICE_FEE_TNG
+        );
+      }
+    } else {
+      return (
+        loanDetail?.expectedAmount *
+        GlobalConstants.PL_VALUE_DEFAULT.SERVICE_FEE_HMG
+      );
+    }
+  }
+
   getDiscountValue(voucher: Voucher) {
-    console.log(voucher);
     if (!voucher) {
       return 0;
     }
@@ -384,6 +414,8 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
   @Input() groupName: string;
   nextLoanStatus: string = PAYDAY_LOAN_STATUS.UNKNOWN_STATUS;
   nextLoanStatusDisplay: string;
+  prevLoanStatus: string = null;
+  prevLoanStatusDisplay: string;
   rejectLoanStatus: string = PAYDAY_LOAN_STATUS.UNKNOWN_STATUS;
   rejectLoanStatusDisplay: string;
   salaryStatus: string;
@@ -480,8 +512,58 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
   }
 
   //Số tiền vay tối đa
-  getMaxLoanAmount() {
-    return this.customerInfo?.annualIncome * 0.8;
+  getMaxLoanAmount(companyGroupName: string) {
+    if (companyGroupName === 'HMG') {
+      return this.getMaxHMGValue(this.customerInfo?.annualIncome);
+    } else {
+      return this.getMaxTNGValue(this.customerInfo?.annualIncome);
+    }
+  }
+
+  getMaxTNGValue(annualIncome) {
+    let millionAnnualIncome =
+      (this.getPercentOfSalaryByDay() * annualIncome) / 1000000;
+    if (millionAnnualIncome % 1 >= 0.5) {
+      return (Math.round(millionAnnualIncome) - 0.5) * 1000000;
+    }
+    return Math.floor(millionAnnualIncome) * 1000000;
+  }
+
+  getPercentOfSalaryByDay() {
+    let today = moment(new Date(), 'DD/MM/YYYY').format('DD');
+    switch (today) {
+      case '10':
+      case '11':
+      case '12':
+      case '13':
+      case '14':
+      case '15':
+      case '16':
+        return 50.0 / 100;
+      case '17':
+      case '18':
+        return 57.5 / 100;
+      case '19':
+      case '20':
+        return 65.0 / 100;
+      case '21':
+      case '22':
+        return 72.5 / 100;
+      default:
+        return 80 / 100;
+    }
+  }
+
+  getMaxHMGValue(annualIncome) {
+    let millionAnnualIncome =
+      (GlobalConstants.PL_VALUE_DEFAULT.MAX_PERCENT_AMOUNT * annualIncome) /
+      1000000;
+
+    if (millionAnnualIncome % 1 >= 0.5) {
+      return (Math.round(millionAnnualIncome) - 0.5) * 1000000;
+    }
+
+    return Math.floor(millionAnnualIncome) * 1000000;
   }
 
   //Tổng tiền tất toán
@@ -537,11 +619,13 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
         break;
 
       case PAYDAY_LOAN_STATUS.CONTRACT_ACCEPTED:
+        this.prevLoanStatus = PAYDAY_LOAN_STATUS.FUNDED;
         this.nextLoanStatus = PAYDAY_LOAN_STATUS.AWAITING_DISBURSEMENT;
         this.rejectLoanStatus = PAYDAY_LOAN_STATUS.WITHDRAW;
         break;
 
       case PAYDAY_LOAN_STATUS.AWAITING_DISBURSEMENT:
+        this.prevLoanStatus = PAYDAY_LOAN_STATUS.CONTRACT_ACCEPTED;
         this.nextLoanStatus = PAYDAY_LOAN_STATUS.DISBURSED;
         this.rejectLoanStatus = PAYDAY_LOAN_STATUS.WITHDRAW;
         break;
@@ -568,6 +652,11 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
     this.rejectLoanStatusDisplay = this.multiLanguageService.instant(
       `payday_loan.status.${this.rejectLoanStatus.toLowerCase()}_action`
     );
+    this.prevLoanStatusDisplay = this.prevLoanStatus
+      ? this.multiLanguageService.instant(
+          `payday_loan.status.${this.prevLoanStatus.toLowerCase()}`
+        )
+      : null;
 
     return;
   }
@@ -586,7 +675,7 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
   }
 
   getOverdueDate() {
-    if (this.loanDetail?.companyGroupName === 'HMG') {
+    if (this.loanDetail?.companyInfo?.groupName === 'HMG') {
       return formatPunishStartTimeHmg(
         this.loanDetail?.createdAt,
         this.loanDetail?.expectedTenure
@@ -600,7 +689,7 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
   }
 
   getOverdueDateCount() {
-    if (this.loanDetail?.companyGroupName === 'HMG') {
+    if (this.loanDetail?.companyInfo?.groupName === 'HMG') {
       return formatPunishCountHmg(
         this.loanDetail?.createdAt,
         this.loanDetail?.expectedTenure

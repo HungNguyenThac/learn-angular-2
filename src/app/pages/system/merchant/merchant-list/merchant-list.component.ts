@@ -7,6 +7,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { Sort } from '@angular/material/sort';
 import { FilterEventModel } from '../../../../public/models/filter/filter-event.model';
 import {
+  BUTTON_TYPE,
   DATA_CELL_TYPE,
   DATA_STATUS_TYPE,
   FILTER_TYPE,
@@ -28,6 +29,7 @@ import { MerchantDetailDialogComponent } from '../../../../share/components/oper
 import { MerchantGroupDialogComponent } from '../../../../share/components/operators/merchant/merchant-group-dialog/merchant-group-dialog.component';
 import { GlobalConstants } from '../../../../core/common/global-constants';
 import { Title } from '@angular/platform-browser';
+import { DisplayedFieldsModel } from '../../../../public/models/filter/displayed-fields.model';
 
 @Component({
   selector: 'app-merchant-list',
@@ -38,94 +40,64 @@ export class MerchantListComponent implements OnInit {
   //Mock data
   merchantList: any[] = [
     {
-      merchantId: 'NCC-726',
-      merchantName: 'EPAY',
-      merchantStatus: 'Đang hoạt động',
+      merchantId: 'MCT-726',
+      merchantName: 'name1',
+      merchantAddress: '36 Hoàng Cầu',
+      merchantArea: 'Miền Bắc',
+      merchantCommune: 'Ô Chợ Dừa',
+      merchantManager: 'user1',
+      merchantType: 'Tại cửa hàng',
       merchantPhone: '0982737261',
-      merchantEmail: 'email@gmail.com',
+      merchantEmail: 'email1@gmail.com',
+      merchantWebsite: 'https://www.msig.com.vn/',
+      merchantRegistrationNumber: '16413340',
+      merchantEstablish: '2002',
+      merchantProduct: 'Quần áo',
+      merchantFee: '10%',
+      merchantStatus: 'Đang hoạt động',
       merchantDate: '01/12/2012',
-      merchantGroup: ['Nhóm nhà cung cấp 1'],
-      merchantGroupId: [1],
-      merchantCompany: 'EGO',
-      merchantTaxNumber: '70294762',
-      merchantRegistrationNumber: '16413340',
-      merchantWebsite: 'https://www.msig.com.vn/',
-      merchantAddress: '36 Hoàng Cầu, Ô Chợ Dừa, Đống Đa, Hà Nội',
-      creator: 'Minh Nguyễn',
-      createDate: 'Ngày tạo',
       merchantNote: '',
-      contactor: 'Tạ Sơn Quỳnh',
-      role: 'Nhân viên',
-      phone: '0938729394',
-      mailTo: 'email@gmail.com',
-      mailCc: 'email@gmail.com',
-      bankId: 1,
-      bank: 'Ngân hàng Việt Nam Thịnh Vượng',
-      branch: 'Đông Đô',
-      accountNum: '16413340',
-      accountName: 'TA SON QUYNH',
-      note: '',
     },
     {
-      merchantId: 'NCC-40',
-      merchantName: 'CMC',
-      merchantStatus: 'Đang hoạt động',
-      merchantPhone: '0986375176',
-      merchantEmail: 'email@gmail.com',
-      merchantDate: '5/27/15',
-      merchantGroup: ['Nhóm nhà cung cấp 2'],
-      merchantGroupId: [2],
-      merchantCompany: 'CMC',
-      merchantTaxNumber: '16413340',
-      merchantRegistrationNumber: '16413340',
+      merchantId: 'MCT-726',
+      merchantName: 'name1',
+      merchantAddress: '36 Hoàng Cầu',
+      merchantArea: 'Miền Bắc',
+      merchantCommune: 'Ô Chợ Dừa',
+      merchantManager: 'user1',
+      merchantType: 'Tại cửa hàng',
+      merchantPhone: '0982737261',
+      merchantEmail: 'email1@gmail.com',
       merchantWebsite: 'https://www.msig.com.vn/',
-      merchantAddress: '36 Hoàng Cầu, Ô Chợ Dừa, Đống Đa, Hà Nội',
-      creator: 'Minh Nguyễn',
-      createDate: 'Ngày tạo',
+      merchantRegistrationNumber: '16413340',
+      merchantEstablish: '2002',
+      merchantProduct: 'Quần áo',
+      merchantFee: '10%',
+      merchantStatus: 'Đang hoạt động',
+      merchantDate: '01/12/2012',
       merchantNote: '',
-      contactor: 'Tạ Sơn Quỳnh',
-      role: 'Nhân viên',
-      phone: '0938729394',
-      mailTo: 'email@gmail.com',
-      mailCc: 'email@gmail.com',
-      bankId: 2,
-      bank: 'Ngân hàng Pro Vip',
-      branch: 'Đông Đô',
-      accountNum: '16413340',
-      accountName: 'TA SON QUYNH',
-      note: '',
     },
     {
-      merchantId: 'NCC-422',
-      merchantName: 'HMG',
-      merchantStatus: 'Đang hoạt động',
-      merchantPhone: '0917749254',
-      merchantEmail: 'email@gmail.com',
-      merchantDate: '8/15/17',
-      merchantGroup: ['Nhóm nhà cung cấp 3'],
-      merchantGroupId: [3],
-      merchantCompany: 'EGO',
-      merchantTaxNumber: '51497991',
-      merchantRegistrationNumber: '16413340',
+      merchantId: 'MCT-726',
+      merchantName: 'name1',
+      merchantAddress: '36 Hoàng Cầu',
+      merchantArea: 'Miền Bắc',
+      merchantCommune: 'Ô Chợ Dừa',
+      merchantManager: 'user1',
+      merchantType: 'Tại cửa hàng',
+      merchantPhone: '0982737261',
+      merchantEmail: 'email1@gmail.com',
       merchantWebsite: 'https://www.msig.com.vn/',
-      merchantAddress: '36 Hoàng Cầu, Ô Chợ Dừa, Đống Đa, Hà Nội',
-      creator: 'Minh Nguyễn',
-      createDate: '07/21/2018 08:37 PM',
+      merchantRegistrationNumber: '16413340',
+      merchantEstablish: '2002',
+      merchantProduct: 'Quần áo',
+      merchantFee: '10%',
+      merchantStatus: 'Đang hoạt động',
+      merchantDate: '01/12/2012',
       merchantNote: '',
-      contactor: 'Tạ Sơn Quỳnh',
-      role: 'Nhân viên',
-      phone: '0938729394',
-      mailTo: 'email@gmail.com',
-      mailCc: 'email@gmail.com',
-      bank: 'Ngân hàng Vip',
-      bankId: 3,
-      branch: 'Đông Đô',
-      accountNum: '16413340',
-      accountName: 'TA SON QUYNH',
-      note: '',
     },
   ];
-  allColumns: any[] = [
+  allColumns: DisplayedFieldsModel[] = [
     {
       key: 'merchantId',
       title: this.multiLanguageService.instant('merchant.merchant_list.id'),
@@ -148,27 +120,70 @@ export class MerchantListComponent implements OnInit {
       showed: true,
     },
     {
-      key: 'merchantDate',
-      title: this.multiLanguageService.instant('merchant.merchant_list.date'),
+      key: 'merchantEmail',
+      title: this.multiLanguageService.instant('merchant.merchant_list.email'),
       type: DATA_CELL_TYPE.TEXT,
       format: null,
       showed: true,
     },
     {
-      key: 'merchantCompany',
+      key: 'merchantProduct',
       title: this.multiLanguageService.instant(
-        'merchant.merchant_list.company'
+        'merchant.merchant_list.product'
       ),
       type: DATA_CELL_TYPE.TEXT,
       format: null,
       showed: true,
     },
     {
-      key: 'merchantTaxNumber',
-      title: this.multiLanguageService.instant('merchant.merchant_list.tax_no'),
+      key: 'merchantStatus',
+      title: this.multiLanguageService.instant('merchant.merchant_list.status'),
+      type: DATA_CELL_TYPE.STATUS,
+      format: DATA_STATUS_TYPE.USER_STATUS,
+      showed: true,
+    },
+    {
+      key: 'merchantManager',
+      title: this.multiLanguageService.instant(
+        'merchant.merchant_list.merchant_manager'
+      ),
       type: DATA_CELL_TYPE.TEXT,
       format: null,
-      showed: true,
+      showed: false,
+    },
+    {
+      key: 'merchantDate',
+      title: this.multiLanguageService.instant(
+        'merchant.merchant_list.register_date'
+      ),
+      type: DATA_CELL_TYPE.TEXT,
+      format: null,
+      showed: false,
+    },
+    {
+      key: 'merchantAddress',
+      title: this.multiLanguageService.instant(
+        'merchant.merchant_list.location'
+      ),
+      type: DATA_CELL_TYPE.TEXT,
+      format: null,
+      showed: false,
+    },
+    {
+      key: 'merchantArea',
+      title: this.multiLanguageService.instant('merchant.merchant_list.area'),
+      type: DATA_CELL_TYPE.TEXT,
+      format: null,
+      showed: false,
+    },
+    {
+      key: 'merchantCommune',
+      title: this.multiLanguageService.instant(
+        'merchant.merchant_list.commune'
+      ),
+      type: DATA_CELL_TYPE.TEXT,
+      format: null,
+      showed: false,
     },
   ];
   tableTitle: string = this.multiLanguageService.instant(
@@ -189,7 +204,8 @@ export class MerchantListComponent implements OnInit {
   breadcrumbOptions: BreadcrumbOptionsModel = {
     title: this.multiLanguageService.instant('breadcrumb.merchant'),
     iconImgSrc: 'assets/img/icon/group-7/svg/merchant.svg',
-    searchPlaceholder: 'Tên hoặc mã NCC, Số điện thoại, Email...',
+    searchPlaceholder:
+      'Tên merchant, Số điện thoại, Email, Mã merchant, Tên Admin, Ngành hàng…',
     searchable: true,
     showBtnAdd: true,
     btnAddText: this.multiLanguageService.instant(
@@ -199,38 +215,44 @@ export class MerchantListComponent implements OnInit {
   };
   filterOptions: FilterOptionModel[] = [
     {
-      title: this.multiLanguageService.instant('filter.merchant_group'),
-      type: FILTER_TYPE.MULTIPLE_CHOICE,
-      controlName: 'companyId',
+      title: this.multiLanguageService.instant('filter.time'),
+      type: FILTER_TYPE.DATETIME,
+      controlName: 'createdAt',
       value: null,
-      showAction: true,
-      titleAction: 'Thêm nhóm nhà cung cấp',
-      actionIconClass: 'sprite-group-7-add-blue',
-      options: [
-        {
-          title: 'Nhóm nhà cung cấp 1',
-          note: '',
-          value: '1',
-          showAction: true,
-          actionTitle: 'Sửa nhóm nhà cung cấp',
-          actionIconClass: 'sprite-group-5-edit-blue',
-          subTitle: 'casca',
-          disabled: false,
-          count: 0,
-        },
-        {
-          title: 'Nhóm nhà cung cấp 2',
-          note: 'zz',
-          value: '2',
-          showAction: true,
-          actionTitle: 'Sửa nhóm nhà cung cấp',
-          actionIconClass: 'sprite-group-5-edit-blue',
-          subTitle: 'váv',
-          disabled: false,
-          count: 0,
-        },
-      ],
     },
+    // {
+    //   title: this.multiLanguageService.instant('filter.merchant_group'),
+    //   type: FILTER_TYPE.MULTIPLE_CHOICE,
+    //   controlName: 'companyId',
+    //   value: null,
+    //   showAction: true,
+    //   titleAction: 'Thêm nhóm nhà cung cấp',
+    //   actionIconClass: 'sprite-group-7-add-blue',
+    //   options: [
+    //     {
+    //       title: 'Nhóm nhà cung cấp 1',
+    //       note: '',
+    //       value: '1',
+    //       showAction: true,
+    //       actionTitle: 'Sửa nhóm nhà cung cấp',
+    //       actionIconClass: 'sprite-group-5-edit-blue',
+    //       subTitle: 'casca',
+    //       disabled: false,
+    //       count: 0,
+    //     },
+    //     {
+    //       title: 'Nhóm nhà cung cấp 2',
+    //       note: 'zz',
+    //       value: '2',
+    //       showAction: true,
+    //       actionTitle: 'Sửa nhóm nhà cung cấp',
+    //       actionIconClass: 'sprite-group-5-edit-blue',
+    //       subTitle: 'váv',
+    //       disabled: false,
+    //       count: 0,
+    //     },
+    //   ],
+    // },
     {
       title: this.multiLanguageService.instant('filter.account_status'),
       type: FILTER_TYPE.SELECT,
@@ -458,7 +480,7 @@ export class MerchantListComponent implements OnInit {
       secondaryBtnText: this.multiLanguageService.instant('common.skip'),
     });
     confirmDeleteRef.afterClosed().subscribe((result) => {
-      if (result === 'PRIMARY') {
+      if (result === BUTTON_TYPE.PRIMARY) {
         this.notifier.success(
           this.multiLanguageService.instant(
             'system.user_detail.delete_user.toast'
@@ -516,7 +538,7 @@ export class MerchantListComponent implements OnInit {
       MerchantDetailDialogComponent,
       {
         panelClass: 'custom-info-dialog-container',
-        maxWidth: '800px',
+        maxWidth: '1200px',
         width: '90%',
       }
     );

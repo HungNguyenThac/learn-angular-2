@@ -52,19 +52,56 @@
 
   <div class="row mt-3 mb-3">
     <div class="col-12 d-flex gap-2 justify-content-end">
-      <button color="accent" mat-flat-button>
+      <button
+        *ngxPermissionsOnly="['credentials:updateInfo']"
+        (click)="openUpdateDialog()"
+        color="accent"
+        mat-flat-button
+      >
         <span class="sprite-group-5-pen-white"></span>
         {{ "customer.individual_info.update" | translate }}
       </button>
-      <button (click)="lockPrompt()" *ngIf="!showEnableBtn" color="warn" mat-flat-button>
+
+      <button
+        *ngxPermissionsOnly="['credentials:changePassword']"
+        (click)="openChangePasswordDialog()"
+        color="accent"
+        mat-flat-button
+      >
         <span class="sprite-group-5-lock-white"></span>
-        {{ "customer.individual_info.lock" | translate }}
+        {{ "customer.individual_info.change_pass" | translate }}
       </button>
-      <button (click)="unlockPrompt()" *ngIf="showEnableBtn" color="primary" mat-flat-button>
-        <span class="sprite-group-7-unlock"></span>
-        {{ "customer.individual_info.unlock" | translate }}
-      </button>
-      <button (click)="deletePrompt()" color="warn" mat-flat-button>
+
+      <ng-container *ngxPermissionsOnly="['credentials:lockAccount']">
+        <button
+          (click)="lockPrompt()"
+          *ngIf="userStatus === 'ACTIVE'"
+          color="warn"
+          mat-flat-button
+        >
+          <span class="sprite-group-5-lock-white"></span>
+          {{ "customer.individual_info.lock" | translate }}
+        </button>
+      </ng-container>
+
+      <ng-container *ngxPermissionsOnly="['credentials:unLockAccount']">
+        <button
+          (click)="unlockPrompt()"
+          *ngIf="userStatus === 'LOCKED'"
+          color="primary"
+          mat-flat-button
+        >
+          <span class="sprite-group-7-unlock"></span>
+          {{ "customer.individual_info.unlock" | translate }}
+        </button>
+      </ng-container>
+
+      <button
+        *ngxPermissionsOnly="['credentials:deleteAdminAccount']"
+        (click)="deletePrompt()"
+        color="warn"
+        mat-flat-button
+      >
         <span class="sprite-group-7-trash"></span>
         {{ "customer.individual_info.delete" | translate }}
       </button>

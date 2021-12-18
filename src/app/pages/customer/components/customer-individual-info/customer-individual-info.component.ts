@@ -1,6 +1,5 @@
 import { MatDialog } from '@angular/material/dialog';
 import {
-  AfterViewInit,
   Component,
   EventEmitter,
   Input,
@@ -10,10 +9,15 @@ import {
 } from '@angular/core';
 import { MultiLanguageService } from '../../../../share/translate/multiLanguageService';
 import {
+  ApiResponseCity,
   ApiResponseCommune,
   ApiResponseDistrict,
   Bank,
+  CityControllerService,
+  CommuneControllerService,
   CustomerInfo,
+  DistrictControllerService,
+  KalapaResponse,
 } from '../../../../../../open-api-modules/dashboard-api-docs';
 import { CustomerDetailUpdateDialogComponent } from '../customer-individual-info-update-dialog/customer-detail-update-dialog.component';
 import { Subscription } from 'rxjs';
@@ -24,25 +28,21 @@ import {
   LOCK_TIME_OPTIONS,
   LOCK_TIME_TEXT_OPTIONS,
   LOCK_TITLES,
+  RESPONSE_CODE,
 } from '../../../../core/common/enum/operator';
 import { ToastrService } from 'ngx-toastr';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { VirtualAccount } from '../../../../../../open-api-modules/payment-api-docs';
 import * as moment from 'moment';
-import { AddNewUserDialogComponent } from '../../../../share/components/operators/user-account/add-new-user-dialog/add-new-user-dialog.component';
-import { PlPromptComponent } from '../../../../share/components';
 import { NotificationService } from '../../../../core/services/notification.service';
-import {
-  ApiResponseCity,
-  ApiResponseListDistrict,
-  CityControllerService,
-  CommuneControllerService,
-  DistrictControllerService,
-} from '../../../../../../open-api-modules/dashboard-api-docs';
 import {
   ApiResponseString,
   InfoControllerService,
 } from '../../../../../../open-api-modules/customer-api-docs';
+import {
+  ApiResponseCustomerAccountEntity,
+  CustomerControllerService,
+} from '../../../../../../open-api-modules/identity-api-docs';
 
 @Component({
   selector: 'app-customer-individual-info',
@@ -54,7 +54,9 @@ export class CustomerIndividualInfoComponent implements OnInit, OnDestroy {
   subManager = new Subscription();
   selfieSrc: string;
   diableTime: string;
-  showDisableOption: boolean = true;
+  activeStatus: string;
+  isVerified: boolean;
+  kalapaData: KalapaResponse;
 
   communeById: string;
   timeDisableOptions: any = [
@@ -136,7 +138,8 @@ export class CustomerIndividualInfoComponent implements OnInit, OnDestroy {
     private infoControllerService: InfoControllerService,
     private cityControllerService: CityControllerService,
     private districtControllerService: DistrictControllerService,
-    private communeControllerService: CommuneControllerService
+    private communeControllerService: CommuneControllerService,
+    private customerControllerService: CustomerControllerService
   ) {
     this.customerIndividualForm = this.formBuilder.group({
       note: [''],
@@ -155,9 +158,12 @@ export class CustomerIndividualInfoComponent implements OnInit, OnDestroy {
   set customerInfo(value: CustomerInfo) {
     this._customerInfo = value;
     this.virtualAccount = this._customerInfo?.virtualAccount;
+    this.activeStatus = this._customerInfo?.userStatus;
+    this.kalapaData = this._customerInfo?.kalapaData;
+    this.isVerified = this._customerInfo?.isVerified;
     this._getSelfieDocument(this.customerId, value);
     this._initIndividualFormData(this.customerId, value);
-    this.getCustomerLocation(value);
+    // this.getCustomerLocation(value);
     this.leftIndividualInfos = this._initLeftIndividualInfos();
     this.rightIndividualInfos = this._initRightIndividualInfos();
   }
@@ -198,13 +204,16 @@ export class CustomerIndividualInfoComponent implements OnInit, OnDestroy {
       secondaryBtnText: this.multiLanguageService.instant('common.skip'),
     });
     confirmVerifyRef.afterClosed().subscribe((result) => {
-      if (result === 'PRIMARY') {
+      if (result === BUTTON_TYPE.PRIMARY) {
         this.subManager.add(
           this.infoControllerService
             .returnConfirmInformation(this.customerId)
             .subscribe((result: ApiResponseString) => {
-              if (!result || result.responseCode !== 200) {
-                // return this.handleResponseError(result.errorCode);
+              if (!result || result.responseCode !== RESPONSE_CODE.SUCCESS) {
+                return this.notifier.error(
+                  JSON.stringify(result?.message),
+                  result?.errorCode
+                );
               }
             })
         );
@@ -272,8 +281,31 @@ export class CustomerIndividualInfoComponent implements OnInit, OnDestroy {
       secondaryBtnText: this.multiLanguageService.instant('common.skip'),
     });
     confirmDisableRef.afterClosed().subscribe((result) => {
-      if (result === 'PRIMARY') {
-        this.showDisableOption = false;
+      if (result === BUTTON_TYPE.PRIMARY) {
+        let now = new Date();
+        const unlockTime = new Date(now.getTime() + value * 1000);
+        this.subManager.add(
+          this.customerControllerService
+            .lockAccount({
+              accountId: this.customerId,
+              unLockTime: this.formatTimeSecond(unlockTime),
+            })
+            .subscribe((result: ApiResponseCustomerAccountEntity) => {
+              if (!result || result.responseCode !== RESPONSE_CODE.SUCCESS) {
+                return this.notifier.error(
+                  JSON.stringify(result?.message),
+                  result?.errorCode
+                );
+              }
+
+              setTimeout(() => {
+                this.notifier.success(
+                  this.multiLanguageService.instant('common.lock_success')
+                );
+                this.triggerUpdateInfo.emit();
+              }, 2000);
+            })
+        );
       }
     });
   }
@@ -290,8 +322,26 @@ export class CustomerIndividualInfoComponent implements OnInit, OnDestroy {
       secondaryBtnText: this.multiLanguageService.instant('common.skip'),
     });
     confirmEnableRef.afterClosed().subscribe((result) => {
-      if (result === 'PRIMARY') {
-        this.showDisableOption = true;
+      if (result === BUTTON_TYPE.PRIMARY) {
+        this.subManager.add(
+          this.customerControllerService
+            .unLockAccount(this.customerId)
+            .subscribe((result: ApiResponseCustomerAccountEntity) => {
+              if (!result || result.responseCode !== RESPONSE_CODE.SUCCESS) {
+                return this.notifier.error(
+                  JSON.stringify(result?.message),
+                  result?.errorCode
+                );
+              }
+
+              setTimeout(() => {
+                this.notifier.success(
+                  this.multiLanguageService.instant('common.unlock_success')
+                );
+                this.triggerUpdateInfo.emit();
+              }, 2000);
+            })
+        );
       }
     });
   }
@@ -307,6 +357,13 @@ export class CustomerIndividualInfoComponent implements OnInit, OnDestroy {
     if (!timeInput) return;
     return moment(new Date(timeInput), 'YYYY-MM-DD HH:mm:ss').format(
       'DD/MM/YYYY'
+    );
+  }
+
+  formatTimeSecond(timeInput) {
+    if (!timeInput) return;
+    return moment(new Date(timeInput), 'YYYY-MM-DD HH:mm:ss').format(
+      'DD/MM/YYYY HH:mm:ss'
     );
   }
 
@@ -370,7 +427,7 @@ export class CustomerIndividualInfoComponent implements OnInit, OnDestroy {
         title: this.multiLanguageService.instant(
           'customer.individual_info.city'
         ),
-        value: '',
+        value: this.customerInfo?.city,
         type: DATA_CELL_TYPE.TEXT,
         format: null,
         key: 'city',
@@ -379,7 +436,7 @@ export class CustomerIndividualInfoComponent implements OnInit, OnDestroy {
         title: this.multiLanguageService.instant(
           'customer.individual_info.district'
         ),
-        value: '',
+        value: this.customerInfo?.district,
         type: DATA_CELL_TYPE.TEXT,
         format: null,
         key: 'district',
@@ -388,7 +445,7 @@ export class CustomerIndividualInfoComponent implements OnInit, OnDestroy {
         title: this.multiLanguageService.instant(
           'customer.individual_info.commune'
         ),
-        value: '',
+        value: this.customerInfo?.commune,
         type: DATA_CELL_TYPE.TEXT,
         format: null,
         key: 'commune',
@@ -513,71 +570,80 @@ export class CustomerIndividualInfoComponent implements OnInit, OnDestroy {
       'personalData.maritalStatus': data?.maritalStatus,
       'personalData.borrowerDetailTextVariable1': data?.numberOfDependents,
       'personalData.addressTwoLine1': data?.permanentAddress,
-      'personalData.cityId': data?.cityId,
-      'personalData.districtId': data?.districtId,
-      'personalData.communeId': data?.communeId,
+      'personalData.city': data?.city,
+      'personalData.district': data?.district,
+      'personalData.commune': data?.commune,
       'personalData.apartmentNumber': data?.apartmentNumber,
       'personalData.mobileNumber': data?.mobileNumber,
     };
   }
 
-  getCityById(id) {
-    if (!id) return;
-    this.subManager.add(
-      this.cityControllerService
-        .getCityById(id)
-        .subscribe((result: ApiResponseCity) => {
-          if (!result || result.responseCode !== 200) {
-            // return this.handleResponseError(result.errorCode);
-          }
-          this.leftIndividualInfos.forEach((elementInfo) => {
-            if (elementInfo.key && elementInfo.key === 'city') {
-              elementInfo.value = result.result?.name;
-            }
-          });
-        })
-    );
-  }
+  // getCityById(id) {
+  //   if (!id) return;
+  //   this.subManager.add(
+  //     this.cityControllerService
+  //       .getCityById(id)
+  //       .subscribe((result: ApiResponseCity) => {
+  //         if (!result || result.responseCode !== RESPONSE_CODE.SUCCESS) {
+  //           return this.notifier.error(
+  //             JSON.stringify(result?.message),
+  //             result?.errorCode
+  //           );
+  //         }
+  //         this.leftIndividualInfos.forEach((elementInfo) => {
+  //           if (elementInfo.key && elementInfo.key === 'city') {
+  //             elementInfo.value = result.result?.name;
+  //           }
+  //         });
+  //       })
+  //   );
+  // }
 
-  getDistrictById(id) {
-    if (!id) return;
-    this.subManager.add(
-      this.districtControllerService
-        .getDistrictById(id)
-        .subscribe((result: ApiResponseDistrict) => {
-          if (!result || result.responseCode !== 200) {
-            // return this.handleResponseError(result.errorCode);
-          }
-          this.leftIndividualInfos.forEach((elementInfo) => {
-            if (elementInfo.key && elementInfo.key === 'district') {
-              elementInfo.value = result.result?.name;
-            }
-          });
-        })
-    );
-  }
+  // getDistrictById(id) {
+  //   if (!id) return;
+  //   this.subManager.add(
+  //     this.districtControllerService
+  //       .getDistrictById(id)
+  //       .subscribe((result: ApiResponseDistrict) => {
+  //         if (!result || result.responseCode !== RESPONSE_CODE.SUCCESS) {
+  //           return this.notifier.error(
+  //             JSON.stringify(result?.message),
+  //             result?.errorCode
+  //           );
+  //         }
+  //         this.leftIndividualInfos.forEach((elementInfo) => {
+  //           if (elementInfo.key && elementInfo.key === 'district') {
+  //             elementInfo.value = result.result?.name;
+  //           }
+  //         });
+  //       })
+  //   );
+  // }
+  //
+  // getCommuneById(id) {
+  //   if (!id) return;
+  //   this.subManager.add(
+  //     this.communeControllerService
+  //       .getCommuneById(id)
+  //       .subscribe((result: ApiResponseCommune) => {
+  //         if (!result || result.responseCode !== RESPONSE_CODE.SUCCESS) {
+  //           return this.notifier.error(
+  //             JSON.stringify(result?.message),
+  //             result?.errorCode
+  //           );
+  //         }
+  //         this.leftIndividualInfos.forEach((elementInfo) => {
+  //           if (elementInfo.key && elementInfo.key === 'commune') {
+  //             elementInfo.value = result.result?.name;
+  //           }
+  //         });
+  //       })
+  //   );
+  // }
 
-  getCommuneById(id) {
-    if (!id) return;
-    this.subManager.add(
-      this.communeControllerService
-        .getCommuneById(id)
-        .subscribe((result: ApiResponseCommune) => {
-          if (!result || result.responseCode !== 200) {
-            // return this.handleResponseError(result.errorCode);
-          }
-          this.leftIndividualInfos.forEach((elementInfo) => {
-            if (elementInfo.key && elementInfo.key === 'commune') {
-              elementInfo.value = result.result?.name;
-            }
-          });
-        })
-    );
-  }
-
-  getCustomerLocation(customerInfo: CustomerInfo) {
-    this.getCityById(customerInfo?.cityId);
-    this.getDistrictById(customerInfo?.districtId);
-    this.getCommuneById(customerInfo?.communeId);
-  }
+  // getCustomerLocation(customerInfo: CustomerInfo) {
+  //   this.getCityById(customerInfo?.cityId);
+  //   this.getDistrictById(customerInfo?.districtId);
+  //   this.getCommuneById(customerInfo?.communeId);
+  // }
 }

@@ -1,6 +1,5 @@
 import { Routes } from '@angular/router';
 import { CustomerListComponent } from './customer-list/customer-list.component';
-import { AuthGuardService as AuthGuard } from '../../core/services/auth-guard.service';
 // import { AuthGuardService as AuthGuard } from '../../../core/services/auth-guard.service';
 import { NgxPermissionsGuard } from 'ngx-permissions';
 
@@ -11,11 +10,11 @@ export const CustomerRoutes: Routes = [
       {
         path: 'list',
         component: CustomerListComponent,
-        canActivate: [NgxPermissionsGuard],
+        canActivateChild: [NgxPermissionsGuard],
         data: {
           animation: true,
           permissions: {
-            only: ['ADMIN', 'MODERATOR'],
+            only: ['dashboardCustomers:getCustomers'],
             redirectTo: '/',
           },
         },

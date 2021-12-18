@@ -1,13 +1,13 @@
-import { PaydayLoanHmg } from './../../../../../../open-api-modules/dashboard-api-docs/model/paydayLoanHmg';
-import { SearchAndPaginationResponsePaydayLoanHmg } from './../../../../../../open-api-modules/dashboard-api-docs/model/searchAndPaginationResponsePaydayLoanHmg';
-import { FilterActionEventModel } from './../../../../public/models/filter/filter-action-event.model';
-import { FilterEventModel } from './../../../../public/models/filter/filter-event.model';
-import { CompanyInfo } from './../../../../../../open-api-modules/customer-api-docs/model/companyInfo';
+import { REPAYMENT_STATUS } from './../../../../core/common/enum/payday-loan';
+import { PaydayLoanHmg } from '../../../../../../open-api-modules/dashboard-api-docs';
+import { SearchAndPaginationResponsePaydayLoanHmg } from '../../../../../../open-api-modules/dashboard-api-docs';
+import { FilterActionEventModel } from '../../../../public/models/filter/filter-action-event.model';
+import { FilterEventModel } from '../../../../public/models/filter/filter-event.model';
+import { CompanyInfo } from '../../../../../../open-api-modules/customer-api-docs';
 import {
-  PAYDAY_LOAN_UI_STATUS_TEXT,
-  PAYDAY_LOAN_STATUS,
   ACCOUNT_CLASSIFICATION,
-} from './../../../../core/common/enum/payday-loan';
+  PAYDAY_LOAN_STATUS,
+} from '../../../../core/common/enum/payday-loan';
 import { FILTER_TYPE } from 'src/app/core/common/enum/operator';
 import { LoanListService } from './loan-list.service';
 import { PageEvent } from '@angular/material/paginator/public-api';
@@ -16,30 +16,30 @@ import {
   ApiResponseSearchAndPaginationResponseCompanyInfo,
   ApiResponseSearchAndPaginationResponsePaydayLoanHmg,
   ApiResponseSearchAndPaginationResponsePaydayLoanTng,
+  CompanyControllerService,
 } from '../../../../../../open-api-modules/dashboard-api-docs';
 import { CustomerListService } from '../../../customer/customer-list/customer-list.service';
-import { CompanyControllerService } from '../../../../../../open-api-modules/dashboard-api-docs';
-import { ActivatedRoute, Router, Params } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { BreadcrumbOptionsModel } from '../../../../public/models/external/breadcrumb-options.model';
-import { Subscription, Observable } from 'rxjs';
-import { SearchAndPaginationResponseCompanyInfo } from '../../../../../../open-api-modules/dashboard-api-docs';
+import { Observable, Subscription } from 'rxjs';
 import {
   DATA_CELL_TYPE,
   DATA_STATUS_TYPE,
+  NAV_ITEM,
   QUERY_CONDITION_TYPE,
 } from '../../../../core/common/enum/operator';
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { GlobalConstants } from 'src/app/core/common/global-constants';
 import { Store } from '@ngrx/store';
 import * as fromActions from '../../../../core/store';
 import * as fromStore from '../../../../core/store';
 import * as fromSelectors from '../../../../core/store/selectors';
-import { NAV_ITEM } from '../../../../core/common/enum/operator';
 import { MultiLanguageService } from '../../../../share/translate/multiLanguageService';
 import { MatTableDataSource } from '@angular/material/table';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { FilterOptionModel } from 'src/app/public/models/filter/filter-option.model';
+import { DisplayedFieldsModel } from '../../../../public/models/filter/displayed-fields.model';
 
 @Component({
   selector: 'app-loan-list',
@@ -156,6 +156,12 @@ export class LoanListComponent implements OnInit, OnDestroy {
         },
         {
           title: this.multiLanguageService.instant(
+            'payday_loan.repayment_status.overdue'
+          ),
+          value: REPAYMENT_STATUS.OVERDUE,
+        },
+        {
+          title: this.multiLanguageService.instant(
             'loan_app.loan_info.completed'
           ),
           value: PAYDAY_LOAN_STATUS.COMPLETED,
@@ -254,6 +260,12 @@ export class LoanListComponent implements OnInit, OnDestroy {
       value: PAYDAY_LOAN_STATUS.IN_REPAYMENT,
     },
     {
+      title: this.multiLanguageService.instant(
+        'payday_loan.repayment_status.overdue'
+      ),
+      value: REPAYMENT_STATUS.OVERDUE,
+    },
+    {
       title: this.multiLanguageService.instant('loan_app.loan_info.completed'),
       value: PAYDAY_LOAN_STATUS.COMPLETED,
     },
@@ -271,7 +283,7 @@ export class LoanListComponent implements OnInit, OnDestroy {
     .slice(0, 6)
     .concat(this.statusFilterOptionsHmg.slice(7));
 
-  allColumns: any[] = [
+  allColumns: DisplayedFieldsModel[] = [
     {
       key: 'loanCode',
       title: this.multiLanguageService.instant('loan_app.loan_info.loan_code'),
@@ -281,20 +293,21 @@ export class LoanListComponent implements OnInit, OnDestroy {
     },
     {
       key: 'status',
+      externalKey: 'repaymentStatus',
       title: this.multiLanguageService.instant('loan_app.loan_info.status'),
       type: DATA_CELL_TYPE.STATUS,
       format: DATA_STATUS_TYPE.PL_HMG_STATUS,
       showed: true,
     },
     {
-      key: 'customerName',
+      key: 'customerInfo.firstName',
       title: this.multiLanguageService.instant('loan_app.loan_info.customer'),
       type: DATA_CELL_TYPE.TEXT,
       format: null,
       showed: true,
     },
     {
-      key: 'customerMobileNumber',
+      key: 'customerInfo.mobileNumber',
       title: this.multiLanguageService.instant(
         'loan_app.loan_info.phone_number'
       ),
@@ -328,7 +341,7 @@ export class LoanListComponent implements OnInit, OnDestroy {
       showed: false,
     },
     {
-      key: 'customerEmail',
+      key: 'customerInfo.emailAddress',
       title: this.multiLanguageService.instant(
         'customer.individual_info.email'
       ),
@@ -337,7 +350,7 @@ export class LoanListComponent implements OnInit, OnDestroy {
       showed: false,
     },
     {
-      key: 'customerIdentityNumberOne',
+      key: 'customerInfo.identityNumberOne',
       title: this.multiLanguageService.instant('customer.individual_info.cmnd'),
       type: DATA_CELL_TYPE.TEXT,
       format: null,
@@ -405,10 +418,6 @@ export class LoanListComponent implements OnInit, OnDestroy {
     this._onFilterChange();
   }
 
-  loanDetailDetectChangeStatusTrigger(event) {
-    this.updateElementInfo(event);
-  }
-
   public updateElementInfo(updatedLoan: PaydayLoanHmg) {
     this.dataSource.data.map((item) => {
       if (item.id === updatedLoan.id) {
@@ -463,11 +472,11 @@ export class LoanListComponent implements OnInit, OnDestroy {
       companyId: [''],
       groupName: [''],
       loanCode: [''],
-      customerMobileNumber: [''],
-      customerEmail: [''],
+      'customerInfo.mobileNumber': [''],
+      'customerInfo.emailAddress': [''],
       status: [''],
-      customerOrganizationName: [''],
-      customerIdentityNumberOne: [''],
+      'customerInfo.organizationName': [''],
+      'customerInfo.identityNumberOne': [''],
       updatedAt: [''],
       orderBy: ['createdAt'],
       sortDirection: ['desc'],

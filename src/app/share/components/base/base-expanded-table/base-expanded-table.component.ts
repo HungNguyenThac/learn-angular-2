@@ -5,22 +5,21 @@ import {
   OnInit,
   Output,
   TemplateRef,
-  ViewChild,
 } from '@angular/core';
-import {detailExpandAnimation} from '../../../../core/common/animations/detail-expand.animation';
-import {Sort} from '@angular/material/sort';
-import {LiveAnnouncer} from '@angular/cdk/a11y';
-import {DisplayedFieldsModel} from '../../../../public/models/filter/displayed-fields.model';
-import {MatTableDataSource} from '@angular/material/table';
-import {PageEvent} from '@angular/material/paginator/public-api';
-import {SortDirection} from '@angular/material/sort/sort-direction';
-import {SelectionModel} from '@angular/cdk/collections';
-import {PeriodicElement} from '../../../../pages/dashboard/dashboard.component';
-import {MultiLanguageService} from '../../../translate/multiLanguageService';
-import {NotificationService} from '../../../../core/services/notification.service';
-import {ToastrService} from 'ngx-toastr';
-import {TableSelectActionModel} from '../../../../public/models/external/table-select-action.model';
-import {MatCheckbox} from '@angular/material/checkbox';
+import { detailExpandAnimation } from '../../../../core/common/animations/detail-expand.animation';
+import { Sort } from '@angular/material/sort';
+import { LiveAnnouncer } from '@angular/cdk/a11y';
+import { DisplayedFieldsModel } from '../../../../public/models/filter/displayed-fields.model';
+import { MatTableDataSource } from '@angular/material/table';
+import { PageEvent } from '@angular/material/paginator/public-api';
+import { SortDirection } from '@angular/material/sort/sort-direction';
+import { SelectionModel } from '@angular/cdk/collections';
+import { PeriodicElement } from '../../../../pages/dashboard/dashboard.component';
+import { MultiLanguageService } from '../../../translate/multiLanguageService';
+import { NotificationService } from '../../../../core/services/notification.service';
+import { ToastrService } from 'ngx-toastr';
+import { TableSelectActionModel } from '../../../../public/models/external/table-select-action.model';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-base-expanded-table',
@@ -42,19 +41,21 @@ export class BaseExpandedTableComponent implements OnInit {
   @Input() pageSize: number;
   @Input() orderBy: string;
   @Input() sortDirection: SortDirection;
-  @Input() allColumns: any[];
+  @Input() allColumns: DisplayedFieldsModel[];
   @Input() hasSelect: boolean;
   @Input() selectButtons: TableSelectActionModel[];
   _expandElementByDefault;
   @Input() get expandElementByDefault() {
-    return this._expandElementByDefault
+    return this._expandElementByDefault;
   }
+
   set expandElementByDefault(value) {
-    this._expandElementByDefault = value
+    this._expandElementByDefault = value;
     if (this._expandElementByDefault) {
       this.expandElement(this._expandElementByDefault);
     }
   }
+
   @Output() triggerPageChange = new EventEmitter<any>();
   @Output() triggerSortChange = new EventEmitter<any>();
   @Output() triggerExpandedElementChange = new EventEmitter<any>();
@@ -64,8 +65,8 @@ export class BaseExpandedTableComponent implements OnInit {
   selectedFields: DisplayedFieldsModel[] = [];
   panelOpenState = false;
   selection = new SelectionModel<PeriodicElement>(true, []);
-  displayColumn;
-  arrDisplayColumn;
+  displayColumn: any;
+  arrDisplayColumn: any;
 
   constructor(
     private multiLanguageService: MultiLanguageService,
@@ -159,6 +160,8 @@ export class BaseExpandedTableComponent implements OnInit {
 
   public resetDisplayFields() {
     this._initSelectedFields();
+    this.displayedColumns();
+    this.displayedColumnKeys();
   }
 
   private _initSelectedFields() {
@@ -169,6 +172,7 @@ export class BaseExpandedTableComponent implements OnInit {
         type: item.type,
         format: item.format,
         showed: item.showed,
+        externalKey: item.externalKey,
       };
     });
     this.displayedColumns();
@@ -179,5 +183,26 @@ export class BaseExpandedTableComponent implements OnInit {
       action: action,
       selectedList: this.selection.selected,
     });
+  }
+
+  getPropByString(obj, propString) {
+    if (!propString || !obj) return null;
+
+    var prop,
+      props = propString.split('.');
+
+    for (var i = 0, iLen = props.length - 1; i < iLen; i++) {
+      prop = props[i];
+
+      var candidate = obj[prop];
+
+      if (!_.isEmpty(candidate)) {
+        obj = candidate;
+      } else {
+        break;
+      }
+    }
+
+    return obj[props[i]];
   }
 }

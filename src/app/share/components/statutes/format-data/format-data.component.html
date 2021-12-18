@@ -7,8 +7,23 @@
 </span>
 
 <span *ngIf="type === 'STATUS'">
-  <app-pl-status-element [statusType]="format" [statusValue]="value">
+  <app-pl-status-element
+    [statusType]="format"
+    [statusValue]="value"
+    [externalValue]="externalValue"
+  >
   </app-pl-status-element>
+</span>
+
+<span *ngIf="type === 'CHECK'">
+  <app-pl-check-element
+    [statusValue]="value"
+  >
+  </app-pl-check-element>
+</span>
+
+<span *ngIf="type === 'NUMBER'">
+  {{ value }}
 </span>
 
 <span *ngIf="!type || type === 'TEXT'">

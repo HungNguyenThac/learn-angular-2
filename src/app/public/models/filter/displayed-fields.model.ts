@@ -5,8 +5,9 @@ import {
 
 export interface DisplayedFieldsModel {
   key: string;
+  externalKey?: string;
   title: string;
   type?: DATA_CELL_TYPE;
-  format?: DATA_STATUS_TYPE;
-  showed: boolean;
+  format?: DATA_STATUS_TYPE | string;
+  showed?: boolean;
 }

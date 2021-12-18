@@ -1,19 +1,21 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import {
-  ApiResponseString, PaydayLoanControllerService as PaydayLoanHmgControllerService,
+  ApiResponseString,
+  PaydayLoanControllerService as PaydayLoanHmgControllerService,
   UpdateLoanRequest,
 } from '../../../../../../../open-api-modules/loanapp-hmg-api-docs';
 import {
   ApiResponseObject,
-  PaydayLoanControllerService as PaydayLoanTngControllerService
-} from '../../../../../../../open-api-modules/loanapp-api-docs';
-import {FormBuilder, FormGroup} from "@angular/forms";
-import {MultiLanguageService} from "../../../../../share/translate/multiLanguageService";
-import {MatDialog} from "@angular/material/dialog";
-import {NotificationService} from "../../../../../core/services/notification.service";
-import {ToastrService} from "ngx-toastr";
-import {Subscription} from "rxjs";
-import {PaydayLoanHmg} from "../../../../../../../open-api-modules/dashboard-api-docs";
+  PaydayLoanControllerService as PaydayLoanTngControllerService,
+} from '../../../../../../../open-api-modules/loanapp-tng-api-docs';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { MultiLanguageService } from '../../../../../share/translate/multiLanguageService';
+import { MatDialog } from '@angular/material/dialog';
+import { NotificationService } from '../../../../../core/services/notification.service';
+import { ToastrService } from 'ngx-toastr';
+import { Subscription } from 'rxjs';
+import { PaydayLoanHmg } from '../../../../../../../open-api-modules/dashboard-api-docs';
+import { RESPONSE_CODE } from '../../../../../core/common/enum/operator';
 
 @Component({
   selector: 'app-loan-note',
@@ -21,7 +23,6 @@ import {PaydayLoanHmg} from "../../../../../../../open-api-modules/dashboard-api
   styleUrls: ['./loan-note.component.scss'],
 })
 export class LoanNoteComponent implements OnInit {
-  customerId: string = '';
   loanInfoForm: FormGroup;
   subManager = new Subscription();
   @Output() loanDetailDetectChangeStatus = new EventEmitter<any>();
@@ -61,8 +62,7 @@ export class LoanNoteComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   private _initLoanInfoData() {
     this.loanInfoForm.patchValue({
@@ -72,19 +72,18 @@ export class LoanNoteComponent implements OnInit {
 
   submitForm() {
     const updateLoanRequest: UpdateLoanRequest = {
-      customerId: this.customerId,
+      customerId: this.loanDetail?.customerId,
       updateInfo: {},
     };
     updateLoanRequest.updateInfo['note'] =
       this.loanInfoForm.controls.note.value;
-    console.log('updateLoanRequest', updateLoanRequest);
 
     if (this.groupName === 'HMG') {
       this.subManager.add(
         this.paydayLoanHmgControllerService
           .updateInfo(this.loanId, updateLoanRequest)
           .subscribe((res: ApiResponseString) => {
-            if (res.responseCode !== 200) {
+            if (res.responseCode !== RESPONSE_CODE.SUCCESS) {
               this.notifier.error(res.errorCode);
               return;
             }
@@ -98,7 +97,7 @@ export class LoanNoteComponent implements OnInit {
         this.paydayLoanTngControllerService
           .updateInfo(this.loanId, updateLoanRequest)
           .subscribe((res: ApiResponseObject) => {
-            if (res.responseCode !== 200) {
+            if (res.responseCode !== RESPONSE_CODE.SUCCESS) {
               this.notifier.error(res.errorCode);
               return;
             }

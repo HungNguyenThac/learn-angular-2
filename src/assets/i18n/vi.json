@@ -70,6 +70,9 @@
     "active": "Đang hoạt động",
     "inactive": "Ngừng hoạt động",
     "update_success": "Cập nhật dữ liệu thành công",
+    "create_success": "Tạo người dùng thành công",
+    "lock_success": "Khóa tài khoản thành công",
+    "unlock_success": "Mở khóa tài khoản thành công",
     "process_downloading": "Đang tải xuống tài liệu"
   },
   "auth": {
@@ -109,14 +112,25 @@
     "reset_password_successfully": "Khôi phục thành công",
     "back_to_login": "Về trang chủ",
     "reset_password": "Khôi phục mật khẩu",
+    "old_password": "Mật khẩu cũ",
     "new_password": "Mật khẩu mới",
     "repeat_new_password": "Nhắc lại mật khẩu mới",
-    "phone_number_not_valid": "Số điện thoại không đúng hoặc chưa tồn tại trên hệ thống"
+    "phone_number_not_valid": "Số điện thoại không đúng hoặc chưa tồn tại trên hệ thống",
+    "logout_success": "Đăng xuất thành công"
   },
   "header": {
     "op": "OPERATOR",
     "notification": "Thông báo",
-    "setting": "Thiết lập hệ thống",
+    "setting": {
+      "title": "Thiết lập hệ thống",
+      "product_setting": "Cấu hình sản phẩm",
+      "cde_setting": "Thiết lập CDE",
+      "pd_setting": "Thiết lập PD Model",
+      "pd_group": "Quản lý Nhóm câu hỏi PD",
+      "pd_questions": "Quản lý Câu hỏi PD",
+      "pd_answers": "Quản lý Câu trả lời PD",
+      "pd_model": "Quản lý PD Model"
+    },
     "account": "Tài khoản",
     "navigation": {
       "dashboard": "Tổng quan",
@@ -140,6 +154,7 @@
   },
   "account": {
     "info": {
+      "update_dialog_title": "Cập nhật thông tin người dùng",
       "_info": "Thông tin tài khoản",
       "name": "Tên người dùng",
       "log_in": "Tên đăng nhập",
@@ -154,6 +169,7 @@
     "setting": {
       "security_title": "Đăng nhập và bảo mật",
       "change_password": "Đổi mật khẩu",
+      "change_password_toast": "Đổi mật khẩu thành công",
       "password_des": "Bạn nên sử dụng mật khẩu mạnh và chưa sử dụng ở nơi khác"
     },
     "logged_device": {
@@ -220,6 +236,7 @@
       "unlock": "Cho phép hoạt động",
       "cancel_update": "Hủy cập nhật",
       "save_update": "Lưu cập nhật",
+      "active_status": "Trạng thái hoạt động",
       "gender": "Giới tính",
       "gender_male": "Nam",
       "gender_female": "Nữ",
@@ -229,6 +246,12 @@
       "update_individual_info": "Cập nhật thông tin khách hàng",
       "verify": "Yêu cầu xác thực lại thông tin",
       "update_company_info": "Cập nhật thông tin công ty",
+      "change_pass": "Đổi mật khẩu",
+      "customer_status": {
+        "not_verified": "Chưa xác thực",
+        "already_ekyc": "Đã eKYC",
+        "already_verified": "Đã xác thực thông tin"
+      },
       "disable_customer": {
         "title": "Ngừng hoạt động",
         "dialog_title": "Bạn có chắc chắn muốn dừng hoạt động khách hàng này trong {{time}} không?",
@@ -292,6 +315,23 @@
       "salary_sheet_2": "Ảnh bảng lương số 2",
       "salary_sheet_3": "Ảnh bảng lương số 3",
       "collateral_img": "Tài sản đảm bảo"
+    },
+    "customer_check_info": {
+      "status": "Trạng thái ekyc",
+      "success_status": "Thành công",
+      "fail_status": "Thất bại"
+    },
+    "ekyc_detail": {
+      "title": "Thông tin ekyc",
+      "matched": "Trùng khớp khuôn mặt",
+      "matching_score": "Tỉ lệ trùng khớp",
+      "faces_matched": "Số khuôn mặt trùng khớp tại KALAPA",
+      "floating_mark": "Dấu hiệu nổi bất thường",
+      "screen_photo": "Ảnh chụp màn hình",
+      "blacklist": "Có trong blacklist của Kalapa",
+      "abnormal_text": "Định dạng font bất thường trên cmnd",
+      "abnormal_face": "Khuôn mặt bất thường",
+      "corner_cut": "Chứng minh nhân dân cắt góc"
     }
   },
   "loan_app": {
@@ -351,6 +391,7 @@
       "withdrew": "Đã hủy",
       "unpaid": "Chưa thanh toán",
       "paid": "Đã thanh toán",
+      "overdue": "Quá hạn",
       "update": "Cập nhật",
       "active": "Đang hoạt động",
       "lock": "Ngừng hoạt động",
@@ -447,7 +488,8 @@
       "disbursed": "Đã giải ngân",
       "completed": "Đã hoàn thành",
       "unknown_status": "Khoản ứng hiện tại",
-      "callback_payment_result": "Khoản ứng hiện tại"
+      "callback_payment_result": "Khoản ứng hiện tại",
+      "overdue": "Quá hạn"
     },
     "repayment_status": {
       "overdue": "Quá hạn"
@@ -482,7 +524,10 @@
     "pl_ui_status": "Trạng thái tài khoản",
     "account_status": "Trạng thái hoạt động",
     "loan_status": "Trạng thái khoản ứng",
-    "merchant_group": "Nhóm nhà cung cấp",
+    "merchant_group": "Nhóm merchant",
+    "role_group": "Vai trò",
+    "select_all": "Chọn tất cả",
+    "deselect_all": "Bỏ chọn tất cả",
     "account_classification": "Phân loại tài khoản",
     "account_classification_test": "Tài khoản test",
     "account_classification_real": "Tài khoản thực",
@@ -510,8 +555,8 @@
     }
   },
   "error_code": {
-    "account_not_exist": "Số điện thoại hoặc mật khẩu không chính xác!",
-    "account_not_existed": "Số điện thoại không chính xác!",
+    "account_not_exist": "Tên tài khoản hoặc mật khẩu không chính xác!",
+    "account_not_existed": "Tài khoản không tồn tại!",
     "account_existed": "Số điện thoại đã tồn tại trên hệ thống",
     "email_already_exists": "Email đã tồn tại, vui lòng thử email khác",
     "miss_param": "Thiếu tham số, vui lòng kiểm tra dữ liệu đầu vào",
@@ -554,15 +599,20 @@
     "loan_list": "Danh sách khoản ứng",
     "dashboard": "Tổng quan",
     "user_list": "Danh sách người dùng",
-    "merchant_list": "Danh sách nhà cung cấp"
+    "merchant_list": "Danh sách merchant"
   },
   "breadcrumb": {
     "manage_customer": "Quản lý khách hàng",
     "manage_payday_loan": "Quản lý khoản ứng",
     "search_field_payday_loan": "Mã khoản ứng, Tên, Số điện thoại...",
     "search_field_customer_list": "Họ tên, Mã nhân viên, Số điện thoại, Email",
+    "search_field_user_list": "Tên đăng nhập, tên người dùng",
     "manage_user": "Quản lý người dùng",
-    "merchant": "Quản lý nhà cung cấp"
+    "merchant": "Quản lý Merchant",
+    "pd_group": "Quản lý Nhóm câu hỏi PD",
+    "pd_questions": "Quản lý Câu hỏi PD",
+    "pd_answers": "Quản lý Câu trả lời PD",
+    "pd_model": "Quản lý PD Model"
   },
   "system": {
     "add_user": "Thêm người dùng",
@@ -570,6 +620,7 @@
       "user_account": "Tên đăng nhập",
       "username": "Tên người dùng",
       "role": "Vai trò",
+      "position": "Vị trí công việc",
       "status": "Trạng thái",
       "active_user": "Đang hoạt động",
       "inactive_user": "Ngừng hoạt động",
@@ -583,6 +634,7 @@
       "phone": "Số điện thoại",
       "note": "Ghi chú",
       "status": "Trạng thái",
+      "change_pass_success": "Đổi mật khẩu thành công",
       "lock_user": {
         "title": "Ngừng hoạt động",
         "content": "Sau khi ngừng hoạt động, lịch sử giao dịch của nhân viên vẫn sẽ được giữ. Bạn có chắc chắn muốn ngừng hoạt động nhân viên này?"
@@ -598,9 +650,22 @@
       "add_role": "Thêm vai trò",
       "edit_role": "Chỉnh sửa vai trò",
       "add_role_placeholder": "Nhập tên vai trò",
+      "code": "Mã vai trò",
+      "description": "Mô tả",
       "system": "Hệ thống",
       "transaction": "Giao dịch",
-      "customer": "Khách hàng"
+      "customer": "Khách hàng",
+      "role": "Vai trò",
+      "add_new_role": "Tạo vai trò mới",
+      "delete": "Xóa vai trò",
+      "save": "Lưu cập nhật",
+      "delete_role": {
+        "title": "Xóa vai trò",
+        "content": "Bạn có chắc chắn muốn xóa vai trò {{groupName}}?"
+      },
+      "delete_success": "Xóa vai trò '{{groupName}}' thành công!",
+      "update_success": "Cập nhật vai trò '{{groupName}}' thành công!",
+      "create_success": "Thêm mới vai trò '{{groupName}}' thành công!"
     },
     "user_time_log": {
       "title": "Thời gian truy cập"
@@ -627,52 +692,134 @@
   },
   "merchant": {
     "merchant_list": {
-      "title": "Danh sách nhà cung cấp",
-      "id": "Mã nhà cung cấp",
-      "name": "Tên nhà cung cấp",
-      "phone": "Điện thoại",
+      "title": "Danh sách merchant",
+      "id": "Mã merchant",
+      "name": "Tên merchant",
+      "phone": "Số điện thoại",
+      "email": "Email",
+      "product": "Ngành hàng",
+      "status": "Trạng thái hoạt động",
+      "merchant_manager": "Nhân viên BD phụ trách",
+      "register_date": "Thời gian đăng ký",
+      "location": "Địa chỉ",
+      "area": "Khu vực",
+      "commune": "Phường xã",
       "date": "Ngày tất toán",
       "company": "Công ty",
       "tax_no": "Mã số thuế",
-      "add_merchant": "Thêm Nhà cung cấp"
+      "add_merchant": "Thêm Merchant"
     },
     "merchant_detail": {
       "info": "Thông tin",
-      "verify": "Đối soát",
-      "id": "Mã nhà cung cấp",
-      "name": "Tên nhà cung cấp",
+      "id": "Mã merchant",
+      "name": "Tên merchant",
       "status": "Trạng thái",
       "phone": "Điện thoại",
+      "product": "Ngành hàng",
+      "location": "Địa chỉ",
+      "commune": "Phường xã",
+      "manager": "Nhân viên BD phụ trách",
+      "area": "Khu vực",
+      "type": "Hình thức bán hàng",
       "phone_number": "Số điện thoại",
+      "establish": "Năm thành lập",
       "email": "Email",
       "date": "Ngày tất toán",
-      "group": "Nhóm nhà cung cấp",
-      "company": "Công ty",
-      "tax_no": "Mã số thuế",
+      "group": "Nhóm merchant",
+      "fee": "Phí áp dụng",
+      "discount": "Mức chiết khấu",
       "regis_no": "Mã số DKKD",
       "website": "Website",
       "address": "Địa chỉ",
-      "creator": "Người tạo",
       "create_date": "Ngày tạo",
       "note": "Ghi chú",
-      "contactor": "Người liên hệ",
-      "role": "Vai trò",
-      "mail_to": "Email đến",
-      "mail_cc": "Email CC",
-      "bank": "Ngân hàng",
-      "branch": "Chi nhánh",
-      "account_number": "Số tài khoản",
-      "account_name": "Chủ tài khoản"
+      "username": "Tên đăng nhập",
+      "password": "Mật khẩu",
+      "re_password": "Nhắc lại mật khẩu",
+      "admin_name": "Tên người dùng",
+      "position": "Chức vụ",
+      "show": "Cho phép hiển thị",
+      "delete": "Xóa merchant"
+    },
+    "merchant_image": {
+      "title": "Logo hình ảnh, giới thiệu",
+      "logo": "Logo",
+      "images": "Hình ảnh giới thiệu",
+      "image1": "Ảnh 1",
+      "image2": "Ảnh 2",
+      "image3": "Ảnh 3",
+      "image4": "Ảnh 4",
+      "image5": "Ảnh 5",
+      "introduction": "Giới thiệu chi tiết"
+    },
+    "merchant_qr": {
+      "title": "QR Code"
     },
     "merchant_dialog": {
-      "add_group_title": "Thêm nhóm nhà cung cấp",
-      "edit_group_title": "Chỉnh sửa nhóm nhà cung cấp",
-      "group_name": "Tên nhóm nhà cung cấp",
+      "add_group_title": "Thêm nhóm merchant",
+      "edit_group_title": "Chỉnh sửa nhóm merchant",
+      "group_name": "Tên nhóm merchant",
       "note": "Ghi chú",
-      "add_merchant_title": "Thêm nhà cung cấp",
-      "edit_merchant_title": "Chỉnh sửa nhà cung cấp",
+      "add_merchant_title": "Thêm merchant",
+      "edit_merchant_title": "Chỉnh sửa merchant",
+      "merchant_heading": "Thông tin chung của merchant",
+      "admin_heading": "Thông tin tài khoản Admin",
+      "feature_heading": "Tính năng",
       "cancel": "Bỏ qua",
       "save": "Lưu"
+    }
+  },
+  "pd_system": {
+    "pd_group": {
+      "title": "Danh sách nhóm câu hỏi",
+      "add_group": "Thêm nhóm câu hỏi",
+      "id": "Mã nhóm câu hỏi",
+      "name": "Tên nhóm câu hỏi",
+      "created_date": "Ngày tạo",
+      "update_date": "Ngày cập nhật"
+    },
+    "pd_questions": {
+      "title": "Danh sách câu hỏi",
+      "add_question": "Thêm câu hỏi",
+      "id": "Mã câu hỏi",
+      "content": "Nội dung câu hỏi",
+      "type": "Kiểu câu trả lời",
+      "created_date": "Ngày tạo",
+      "update_date": "Ngày cập nhật"
+    },
+    "pd_answers": {
+      "title": "Danh sách câu trả lời",
+      "add_answer": "Thêm câu trả lời",
+      "id": "Mã câu trả lời",
+      "question": "Câu hỏi",
+      "content": "Nội dung câu trả lời",
+      "created_date": "Ngày tạo",
+      "update_date": "Ngày cập nhật"
+    },
+    "pd_model": {
+      "title": "Danh sách PD model",
+      "add_model": "Thêm PD model",
+      "id": "Mã PD model",
+      "name": "Tên PD model",
+      "group": "Nhóm câu hỏi",
+      "created_date": "Ngày tạo",
+      "update_date": "Ngày cập nhật"
+    },
+    "add_pd_dialog": {
+      "group_name": "Tên nhóm câu hỏi",
+      "group_code": "Mã nhóm câu hỏi",
+      "description": "Mô tả",
+      "active": "Active"
+    },
+    "add_question_dialog": {
+      "name": "Nội dung câu hỏi",
+      "code": "Mã câu hỏi",
+      "types": "Kiểu câu trả lời",
+      "description": "Mô tả",
+      "answers": "Nội dung câu trả lời",
+      "string_input": "Nội dung câu trả lời do người dùng nhập",
+      "answer_input": "Nội dung câu trả lời",
+      "active": "Active"
     }
   }
 }

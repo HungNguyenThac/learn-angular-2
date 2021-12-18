@@ -8,7 +8,9 @@ export interface FilterOptionModel {
   value: any;
   multiple?: boolean;
   titleAction?: string;
+  actionControlName?: any;
   actionIconClass?: string;
   showAction?: boolean;
+  showIconAction?: boolean;
   options?: FilterItemModel[];
 }

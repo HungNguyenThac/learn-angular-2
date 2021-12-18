@@ -1,45 +1,87 @@
 import {
+  CUSTOMER_STATUS,
+  PAYDAY_LOAN_REPAYMENT_STATUS,
+} from './../../../../core/common/enum/payday-loan';
+import { PlStatusLabelComponent } from './../pl-status-label/pl-status-label.component';
+import {
   PAYDAY_LOAN_OTHER_STATUS,
   PAYDAY_LOAN_RATING_STATUS,
-} from '../../../../core/common/enum/payday-loan';
-import { Component, Input, OnInit } from '@angular/core';
-import { DATA_STATUS_TYPE } from '../../../../core/common/enum/operator';
-import {
   PAYDAY_LOAN_STATUS,
   PAYDAY_LOAN_UI_STATUS,
   REPAYMENT_STATUS,
 } from '../../../../core/common/enum/payday-loan';
+import {
+  AfterViewInit,
+  ChangeDetectorRef,
+  Component,
+  Input,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
+import { DATA_STATUS_TYPE } from '../../../../core/common/enum/operator';
 import { PL_LABEL_STATUS } from '../../../../core/common/enum/label-status';
 import { MultiLanguageService } from '../../../translate/multiLanguageService';
+import { AdminAccountEntity } from '../../../../../../open-api-modules/dashboard-api-docs';
+import UserStatusEnum = AdminAccountEntity.UserStatusEnum;
 
 @Component({
   selector: 'app-pl-status-element',
   templateUrl: './pl-status-element.component.html',
   styleUrls: ['./pl-status-element.component.scss'],
 })
-export class PlStatusElementComponent implements OnInit {
-  @Input() statusType: DATA_STATUS_TYPE;
+export class PlStatusElementComponent implements OnInit, AfterViewInit {
+  @ViewChild(PlStatusLabelComponent) child: PlStatusLabelComponent;
 
-  // @Input() statusValue: string;
+  constructor(
+    private multiLanguageService: MultiLanguageService,
+    private cdr: ChangeDetectorRef
+  ) {}
 
-  constructor(private multiLanguageService: MultiLanguageService) {}
+  _statusValue: any;
 
-  _statusValue: string;
+  _externalValue: any;
+
+  _statusType: DATA_STATUS_TYPE;
 
   @Input()
-  get statusValue(): string {
+  get statusType(): DATA_STATUS_TYPE {
+    return this._statusType;
+  }
+
+  set statusType(value: DATA_STATUS_TYPE) {
+    this._statusType = value;
+    this.dataStatus = this.getDataStatus();
+  }
+
+  @Input()
+  get statusValue(): any {
     return this._statusValue;
   }
 
-  set statusValue(value: string) {
+  set statusValue(value: any) {
     this._statusValue = value;
+    this.dataStatus = this.getDataStatus();
   }
 
-  get dataStatus() {
+  @Input()
+  get externalValue(): any {
+    return this._externalValue;
+  }
+
+  set externalValue(value: any) {
+    this._externalValue = value;
+    this.dataStatus = this.getDataStatus();
+  }
+
+  dataStatus: any;
+
+  getDataStatus() {
     switch (this.statusType) {
       case DATA_STATUS_TYPE.PL_HMG_STATUS:
       case DATA_STATUS_TYPE.PL_TNG_STATUS:
-        return this.loanStatusContent(this.statusValue);
+        return this.loanStatusContent(this.statusValue, this.externalValue);
+      case DATA_STATUS_TYPE.CUSTOMER_STATUS:
+        return this.customerStatusContent(this.statusValue, this.externalValue);
       case DATA_STATUS_TYPE.PL_UI_STATUS:
         return this.loanUIStatusContent(this.statusValue);
       case DATA_STATUS_TYPE.PL_OTHER_STATUS:
@@ -48,6 +90,8 @@ export class PlStatusElementComponent implements OnInit {
         return this.loanRepaymentStatusContent(this.statusValue);
       case DATA_STATUS_TYPE.PL_RATING_STATUS:
         return this.loanRatingStatusContent(this.statusValue);
+      case DATA_STATUS_TYPE.USER_STATUS:
+        return this.userStatus(this.statusValue);
       default:
         return {
           label: this.statusValue,
@@ -57,6 +101,42 @@ export class PlStatusElementComponent implements OnInit {
   }
 
   ngOnInit(): void {}
+
+  ngAfterViewInit() {
+    this.dataStatus = this.getDataStatus();
+    this.child.initStatusClasses();
+    this.cdr.detectChanges();
+  }
+
+  customerStatusContent(isVerified, kalapaData) {
+    if (isVerified) {
+      return {
+        label: this.multiLanguageService.instant(
+          'customer.individual_info.customer_status.already_verified'
+        ),
+        labelStatus: PL_LABEL_STATUS.SUCCESS,
+      };
+    } else if (!isVerified && kalapaData?.createdAt) {
+      return {
+        label: this.multiLanguageService.instant(
+          'customer.individual_info.customer_status.already_ekyc'
+        ),
+        labelStatus: PL_LABEL_STATUS.INFO,
+      };
+    } else if (!isVerified && !kalapaData?.createdAt) {
+      return {
+        label: this.multiLanguageService.instant(
+          'customer.individual_info.customer_status.not_verified'
+        ),
+        labelStatus: PL_LABEL_STATUS.PENDING,
+      };
+    } else {
+      return {
+        label: status,
+        labelStatus: PL_LABEL_STATUS.REJECT,
+      };
+    }
+  }
 
   loanUIStatusContent(status) {
     switch (status) {
@@ -133,6 +213,16 @@ export class PlStatusElementComponent implements OnInit {
           label: this.statusValue,
           labelStatus: PL_LABEL_STATUS.PENDING,
         };
+      case true:
+        return {
+          label: this.multiLanguageService.instant('common.success'),
+          labelStatus: PL_LABEL_STATUS.SUCCESS,
+        };
+      case false:
+        return {
+          label: this.multiLanguageService.instant('common.failure'),
+          labelStatus: PL_LABEL_STATUS.CANCEL,
+        };
       default:
         return {
           label: 'N/A',
@@ -184,10 +274,17 @@ export class PlStatusElementComponent implements OnInit {
 
   loanRepaymentStatusContent(status) {
     switch (status) {
-      case PAYDAY_LOAN_OTHER_STATUS.COMPLETED_PAID:
+      case PAYDAY_LOAN_REPAYMENT_STATUS.COMPLETED_PAID:
         return {
           label: this.multiLanguageService.instant('loan_app.loan_info.paid'),
           labelStatus: PL_LABEL_STATUS.SUCCESS,
+        };
+      case PAYDAY_LOAN_REPAYMENT_STATUS.OVERDUE:
+        return {
+          label: this.multiLanguageService.instant(
+            'loan_app.loan_info.overdue'
+          ),
+          labelStatus: PL_LABEL_STATUS.CANCEL,
         };
       default:
         return {
@@ -197,15 +294,26 @@ export class PlStatusElementComponent implements OnInit {
     }
   }
 
-  loanStatusContent(status) {
+  loanStatusContent(status: string, repaymentStatus?: string) {
+    if (
+      status &&
+      status === PAYDAY_LOAN_STATUS.IN_REPAYMENT &&
+      repaymentStatus
+    ) {
+      switch (repaymentStatus) {
+        case REPAYMENT_STATUS.OVERDUE:
+          return {
+            label: this.multiLanguageService.instant(
+              `payday_loan.repayment_status.${repaymentStatus.toLowerCase()}`
+            ),
+            labelStatus: PL_LABEL_STATUS.CANCEL,
+          };
+        default:
+          break;
+      }
+    }
+
     switch (status) {
-      case REPAYMENT_STATUS.OVERDUE:
-        return {
-          label: this.multiLanguageService.instant(
-            `payday_loan.repayment_status.${status.toLowerCase()}`
-          ),
-          labelStatus: PL_LABEL_STATUS.CANCEL,
-        };
       case PAYDAY_LOAN_STATUS.INITIALIZED:
         return {
           label: this.multiLanguageService.instant(
@@ -242,6 +350,13 @@ export class PlStatusElementComponent implements OnInit {
           labelStatus: PL_LABEL_STATUS.FUNDED,
         };
       case PAYDAY_LOAN_STATUS.CONTRACT_AWAITING:
+        return {
+          label: this.multiLanguageService.instant(
+            `payday_loan.status.${status.toLowerCase()}`
+          ),
+          labelStatus: PL_LABEL_STATUS.CONTRACT_AWAITING,
+        };
+      case PAYDAY_LOAN_STATUS.CONTRACT_ACCEPTED:
         return {
           label: this.multiLanguageService.instant(
             `payday_loan.status.${status.toLowerCase()}`
@@ -295,6 +410,22 @@ export class PlStatusElementComponent implements OnInit {
         return {
           label: status,
           labelStatus: PL_LABEL_STATUS.REJECT,
+        };
+    }
+  }
+
+  userStatus(status) {
+    switch (status) {
+      case UserStatusEnum.Locked:
+        return {
+          label: this.multiLanguageService.instant('common.inactive'),
+          labelStatus: PL_LABEL_STATUS.WITHDRAW,
+        };
+      case UserStatusEnum.Active:
+      default:
+        return {
+          label: this.multiLanguageService.instant('common.active'),
+          labelStatus: PL_LABEL_STATUS.SUCCESS,
         };
     }
   }

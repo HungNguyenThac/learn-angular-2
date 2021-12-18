@@ -36,7 +36,7 @@
                 [checked]="ele.showed"
                 class="checkbox"
                 color="primary"
-              >{{ ele?.title }}</mat-checkbox
+                >{{ ele?.title }}</mat-checkbox
               >
             </div>
           </div>
@@ -66,20 +66,23 @@
       ></h2>
     </div>
     <div class="d-flex align-items-center gap-3">
-      <button
-        *ngFor="let button of selectButtons"
-        (click)="onClick(button.action)"
-        [color]="button?.color"
-        [style]="button?.style"
-        mat-flat-button
-      >
-        <img *ngIf="button?.imageSrc" [src]="button?.imageSrc" alt=""/>
-        <span
-          *ngIf="button?.classImgSrc"
-          [ngClass]="button?.classImgSrc"
-        ></span>
-        {{ button?.content }}
-      </button>
+      <ng-container *ngFor="let button of selectButtons">
+        <button
+          *ngIf="!button.hidden"
+          (click)="onClick(button.action)"
+          [color]="button?.color"
+          [style]="button?.style"
+          mat-flat-button
+        >
+          <img *ngIf="button?.imageSrc" [src]="button?.imageSrc" alt="" />
+          <span
+            *ngIf="button?.classImgSrc"
+            [ngClass]="button?.classImgSrc"
+          ></span>
+          {{ button?.content }}
+        </button>
+      </ng-container>
+
       <span (click)="deselectAll()" class="sprite-group-7-close-white"></span>
     </div>
   </div>
@@ -106,7 +109,7 @@
               (change)="$event ? masterToggle() : null"
               [checked]="selection.hasValue() && isAllSelected()"
               [indeterminate]="selection.hasValue() && !isAllSelected()"
-            >>
+              >>
             </mat-checkbox>
           </th>
           <td *matCellDef="let row" mat-cell>
@@ -115,7 +118,7 @@
               (change)="$event ? this.selection.toggle(row) : null"
               (click)="$event.stopPropagation()"
               [checked]="selection.isSelected(row)"
-            >>
+              >>
             </mat-checkbox>
           </td>
         </ng-container>
@@ -138,7 +141,8 @@
             <app-table-cell-format-data
               [format]="column?.format"
               [type]="column?.type"
-              [value]="element[column?.key]"
+              [value]="getPropByString(element, column?.key)"
+              [externalValue]="getPropByString(element, column?.externalKey)"
               class="table-cell-format-data"
             ></app-table-cell-format-data>
           </td>

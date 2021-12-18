@@ -1,27 +1,26 @@
 import { NotificationService } from 'src/app/core/services/notification.service';
-import { PaydayLoanHmg } from './../../../../../../../open-api-modules/dashboard-api-docs/model/paydayLoanHmg';
-import { ApiResponsePaydayLoanTng } from './../../../../../../../open-api-modules/dashboard-api-docs/model/apiResponsePaydayLoanTng';
-import { ApplicationTngControllerService } from './../../../../../../../open-api-modules/dashboard-api-docs/api/applicationTngController.service';
-import { ApiResponseSearchAndPaginationResponseCompanyInfo } from './../../../../../../../open-api-modules/dashboard-api-docs/model/apiResponseSearchAndPaginationResponseCompanyInfo';
-import { ApiResponseSearchAndPaginationResponseBank } from './../../../../../../../open-api-modules/dashboard-api-docs/model/apiResponseSearchAndPaginationResponseBank';
-import { BankControllerService } from './../../../../../../../open-api-modules/dashboard-api-docs/api/bankController.service';
-import { CompanyInfo } from './../../../../../../../open-api-modules/customer-api-docs/model/companyInfo';
-import { Bank } from './../../../../../../../open-api-modules/dashboard-api-docs/model/bank';
-import { MultiLanguageService } from './../../../../../share/translate/multiLanguageService';
+import { PaydayLoanHmg } from '../../../../../../../open-api-modules/dashboard-api-docs';
+import { ApiResponsePaydayLoanTng } from '../../../../../../../open-api-modules/dashboard-api-docs';
+import { ApplicationTngControllerService } from '../../../../../../../open-api-modules/dashboard-api-docs';
+import { ApiResponseSearchAndPaginationResponseCompanyInfo } from '../../../../../../../open-api-modules/dashboard-api-docs';
+import { ApiResponseSearchAndPaginationResponseBank } from '../../../../../../../open-api-modules/dashboard-api-docs';
+import { BankControllerService } from '../../../../../../../open-api-modules/dashboard-api-docs';
+import { CompanyInfo } from '../../../../../../../open-api-modules/customer-api-docs';
+import { Bank } from '../../../../../../../open-api-modules/dashboard-api-docs';
+import { MultiLanguageService } from '../../../../../share/translate/multiLanguageService';
 import { ToastrService } from 'ngx-toastr';
-import { RESPONSE_CODE } from './../../../../../core/common/enum/operator';
-import { ApiResponseCustomerInfo } from './../../../../../../../open-api-modules/dashboard-api-docs/model/apiResponseCustomerInfo';
-import { ApiResponsePaydayLoanHmg } from './../../../../../../../open-api-modules/dashboard-api-docs/model/apiResponsePaydayLoanHmg';
+import { RESPONSE_CODE } from '../../../../../core/common/enum/operator';
+import { ApiResponseCustomerInfo } from '../../../../../../../open-api-modules/dashboard-api-docs';
+import { ApiResponsePaydayLoanHmg } from '../../../../../../../open-api-modules/dashboard-api-docs';
 import { Subscription } from 'rxjs';
 import {
   Component,
   EventEmitter,
   Input,
+  OnDestroy,
   OnInit,
   Output,
-  OnDestroy,
 } from '@angular/core';
-import { PaydayLoan } from 'open-api-modules/loanapp-api-docs';
 import {
   ApplicationHmgControllerService,
   CompanyControllerService,
@@ -99,7 +98,6 @@ export class LoanDetailComponent implements OnInit, OnDestroy {
   triggerUpdateLoanElement() {
     this.notificationService.showLoading({ showContent: true });
     this.timeOut = setTimeout(() => {
-      console.log('stop loading');
       this._getLoanById(this.loanId);
       this.notificationService.hideLoading();
       this.notifier.success(
@@ -129,6 +127,7 @@ export class LoanDetailComponent implements OnInit, OnDestroy {
           .subscribe((data: ApiResponsePaydayLoanTng) => {
             this.loanDetail = data?.result;
             this.loanDetailTriggerUpdateStatus.emit(this.loanDetail);
+            this.detectUpdateLoanAfterSign.emit(this.loanDetail);
             console.log(this.loanDetail, 'loanDetail----------------------');
           })
       );
@@ -153,7 +152,7 @@ export class LoanDetailComponent implements OnInit, OnDestroy {
   private _getBankOptions() {
     this.subManager.add(
       this.bankControllerService
-        .getBank(200, 0, {})
+        .getBanks(200, 0, {})
         .subscribe((response: ApiResponseSearchAndPaginationResponseBank) => {
           if (response.responseCode !== RESPONSE_CODE.SUCCESS) {
             this.notifier.error(

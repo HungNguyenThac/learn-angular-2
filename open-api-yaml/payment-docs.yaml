@@ -6,206 +6,7 @@ servers:
 - url: http://localhost:8004
   description: Generated server url
 paths:
-  /v1/virtual-account/gpay/update:
-    post:
-      tags:
-      - gpay-virtual-account-controller
-      operationId: updateVirtualAccount
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/UpdateVARequest'
-        required: true
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ApiResponseGpayVAResponse'
-  /v1/virtual-account/gpay/payment-order:
-    post:
-      tags:
-      - gpay-virtual-account-controller
-      operationId: createPaymentOrder
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/GpayChangeBalanceWebhook'
-        required: true
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ApiResponseString'
-  /v1/virtual-account/gpay/create-payment-order:
-    post:
-      tags:
-      - gpay-virtual-account-controller
-      operationId: createPaymentOrder_1
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/CreateRepaymentOrderRequest'
-        required: true
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ApiResponseString'
-  /v1/virtual-account/gpay/create:
-    post:
-      tags:
-      - gpay-virtual-account-controller
-      operationId: createVirtualAccount
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/CreateVARequest'
-        required: true
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ApiResponseVirtualAccount'
-  /v1/test-va-webhook:
-    post:
-      tags:
-      - check-connect-controller
-      operationId: testVaWebhook
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/GpayChangeBalanceEvent'
-        required: true
-      responses:
-        "200":
-          description: OK
-  /v1/repayment/gpay/webhook:
-    post:
-      tags:
-      - repayment-controller
-      operationId: gpayRepaymentWebhook
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/GpayRepaymentWebhook'
-        required: true
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ApiResponseString'
-  /v1/repayment/gpay/paydayloan:
-    post:
-      tags:
-      - repayment-controller
-      operationId: gpayRepaymentPaydayLoanTNG
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/RepaymentRequest'
-        required: true
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ApiResponseGpayRepaymentResponse'
-  /v1/repayment/gpay/insurance:
-    post:
-      tags:
-      - repayment-controller
-      operationId: gpayRepaymentInsuranceOrder
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/RepaymentRequest'
-        required: true
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ApiResponseGpayRepaymentResponse'
-  /v1/repayment/gpay/delete-token:
-    post:
-      tags:
-      - repayment-controller
-      operationId: gpayRepaymentCallback
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/DeleteTokenRequest'
-        required: true
-      responses:
-        "200":
-          description: OK
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/ApiResponseGpayDeleteTokenResponse'
-  /v1/disburse/gpay:
-    post:
-      tags:
-      - disburse-controller
-      operationId: disburse
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/CoreDisburseRequest'
-        required: true
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ApiResponseString'
-  /v1/virtual-account/gpay/{customerId}/repayment-transaction:
-    get:
-      tags:
-      - gpay-virtual-account-controller
-      operationId: getRepaymentTransactionVirtualAccount
-      parameters:
-      - name: customerId
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: loanId
-        in: query
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ApiResponseListRepaymentTransaction'
-  /v1/virtual-account/gpay/{customerId}:
+  /v1/gpayVirtualAccounts/{customerId}:
     get:
       tags:
       - gpay-virtual-account-controller
@@ -223,7 +24,206 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiResponseVirtualAccount'
-  /v1/virtual-account/gpay/access-token:
+    put:
+      tags:
+      - gpay-virtual-account-controller
+      operationId: updateVirtualAccount
+      parameters:
+      - name: customerId
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateVARequest'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseGpayVAResponse'
+  /v1/test-va-webhook:
+    post:
+      tags:
+      - check-connect-controller
+      operationId: testVaWebhook
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GpayChangeBalanceEvent'
+        required: true
+      responses:
+        "200":
+          description: OK
+  /v1/repayments/gpay/webhook:
+    post:
+      tags:
+      - repayment-controller
+      operationId: gpayRepaymentWebhook
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GpayRepaymentWebhook'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseString'
+  /v1/repayments/gpay/paydayloan:
+    post:
+      tags:
+      - repayment-controller
+      operationId: gpayRepaymentPaydayLoanTNG
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RepaymentRequest'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseGpayNapasOrderRepaymentResponse'
+  /v1/repayments/gpay/insurance:
+    post:
+      tags:
+      - repayment-controller
+      operationId: gpayRepaymentInsuranceOrder
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RepaymentRequest'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseGpayNapasOrderRepaymentResponse'
+  /v1/repayments/gpay/deleteToken:
+    post:
+      tags:
+      - repayment-controller
+      operationId: gpayRepaymentCallback
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeleteTokenRequest'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseGpayDeleteTokenResponse'
+  /v1/gpayVirtualAccounts/paymentOrders:
+    post:
+      tags:
+      - gpay-virtual-account-controller
+      operationId: createPaymentOrder
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateRepaymentOrderRequest'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseString'
+  /v1/gpayVirtualAccounts/gpayWebhook:
+    post:
+      tags:
+      - gpay-virtual-account-controller
+      operationId: createPaymentOrder_1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GpayChangeBalanceWebhook'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseString'
+  /v1/gpayVirtualAccounts:
+    post:
+      tags:
+      - gpay-virtual-account-controller
+      operationId: createVirtualAccount
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateVARequest'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseVirtualAccount'
+  /v1/disburses/gpay:
+    post:
+      tags:
+      - disburse-controller
+      operationId: disburse
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CoreDisburseRequest'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseString'
+  /v1/gpayVirtualAccounts/repaymentTransaction:
+    get:
+      tags:
+      - gpay-virtual-account-controller
+      operationId: getRepaymentTransactionVirtualAccount
+      parameters:
+      - name: loanId
+        in: query
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseListRepaymentTransaction'
+  /v1/gpayVirtualAccounts/accessToken:
     get:
       tags:
       - gpay-virtual-account-controller
@@ -274,7 +274,7 @@ components:
         errorCode:
           type: string
         message:
-          type: string
+          type: object
         responseCode:
           type: integer
           format: int32
@@ -327,6 +327,24 @@ components:
           format: int32
         signature:
           type: string
+    GpayChangeBalanceEvent:
+      type: object
+      properties:
+        source:
+          type: string
+        version:
+          type: integer
+          format: int32
+        id:
+          type: string
+        request:
+          $ref: '#/components/schemas/GpayChangeBalanceWebhook'
+        provider:
+          type: string
+        api_source:
+          type: string
+        actions:
+          type: string
     GpayChangeBalanceWebhook:
       type: object
       properties:
@@ -344,6 +362,15 @@ components:
           type: string
         action:
           type: string
+    GpayRepaymentWebhook:
+      type: object
+      properties:
+        type:
+          type: string
+        data:
+          type: string
+        hmac:
+          type: string
     ApiResponseString:
       type: object
       properties:
@@ -352,10 +379,81 @@ components:
         errorCode:
           type: string
         message:
-          type: string
+          type: object
         responseCode:
           type: integer
           format: int32
+    RepaymentRequest:
+      required:
+      - applicationId
+      - applicationType
+      - customerId
+      type: object
+      properties:
+        customerId:
+          type: string
+        applicationId:
+          type: string
+        applicationType:
+          type: string
+        amount:
+          type: integer
+          format: int32
+        tokenId:
+          type: string
+        bankCode:
+          type: string
+        callBackType:
+          type: string
+    ApiResponseGpayNapasOrderRepaymentResponse:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/GpayNapasOrderRepaymentResponse'
+        errorCode:
+          type: string
+        message:
+          type: object
+        responseCode:
+          type: integer
+          format: int32
+    GpayNapasOrderRepaymentResponse:
+      type: object
+      properties:
+        return_message:
+          type: string
+        return_code:
+          type: integer
+          format: int32
+        order_url:
+          type: string
+    DeleteTokenRequest:
+      type: object
+      properties:
+        customerId:
+          type: string
+        token_id:
+          type: string
+    ApiResponseGpayDeleteTokenResponse:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/GpayDeleteTokenResponse'
+        errorCode:
+          type: string
+        message:
+          type: object
+        responseCode:
+          type: integer
+          format: int32
+    GpayDeleteTokenResponse:
+      type: object
+      properties:
+        return_code:
+          type: integer
+          format: int32
+        return_message:
+          type: string
     CreateRepaymentOrderRequest:
       required:
       - applicationId
@@ -387,7 +485,7 @@ components:
         errorCode:
           type: string
         message:
-          type: string
+          type: object
         responseCode:
           type: integer
           format: int32
@@ -425,104 +523,6 @@ components:
         equalAmount:
           type: integer
           format: int32
-    GpayChangeBalanceEvent:
-      type: object
-      properties:
-        source:
-          type: string
-        version:
-          type: integer
-          format: int32
-        id:
-          type: string
-        request:
-          $ref: '#/components/schemas/GpayChangeBalanceWebhook'
-        provider:
-          type: string
-        api_source:
-          type: string
-        actions:
-          type: string
-    GpayRepaymentWebhook:
-      type: object
-      properties:
-        type:
-          type: string
-        data:
-          type: string
-        hmac:
-          type: string
-    RepaymentRequest:
-      required:
-      - applicationId
-      - applicationType
-      - customerId
-      type: object
-      properties:
-        customerId:
-          type: string
-        applicationId:
-          type: string
-        applicationType:
-          type: string
-        amount:
-          type: integer
-          format: int32
-        tokenId:
-          type: string
-        bankCode:
-          type: string
-        callBackType:
-          type: string
-    ApiResponseGpayRepaymentResponse:
-      type: object
-      properties:
-        result:
-          $ref: '#/components/schemas/GpayRepaymentResponse'
-        errorCode:
-          type: string
-        message:
-          type: string
-        responseCode:
-          type: integer
-          format: int32
-    GpayRepaymentResponse:
-      type: object
-      properties:
-        return_message:
-          type: string
-        return_code:
-          type: integer
-          format: int32
-        order_url:
-          type: string
-    DeleteTokenRequest:
-      type: object
-      properties:
-        customerId:
-          type: string
-        token_id:
-          type: string
-    ApiResponseGpayDeleteTokenResponse:
-      type: object
-      properties:
-        result:
-          $ref: '#/components/schemas/GpayDeleteTokenResponse'
-        errorCode:
-          type: string
-        message:
-          type: string
-        responseCode:
-          type: integer
-          format: int32
-    GpayDeleteTokenResponse:
-      type: object
-      properties:
-        return_code:
-          type: integer
-          format: int32
-        return_message:
-          type: string
     CoreDisburseRequest:
       type: object
       properties:
@@ -553,7 +553,7 @@ components:
         errorCode:
           type: string
         message:
-          type: string
+          type: object
         responseCode:
           type: integer
           format: int32
