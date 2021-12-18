@@ -30,6 +30,8 @@ export enum QUERY_CONDITION_TYPE {
   NOT_START_WITH = '__nsw',
   NOT_END_WITH = '__new',
   NOT_IN = '__nin',
+  EXIST = '__ex',
+  NOT_EXIST = '__nex',
 }
 
 export enum DATA_CELL_TYPE {
@@ -44,6 +46,7 @@ export enum DATA_CELL_TYPE {
 
 export enum DATA_STATUS_TYPE {
   PL_UI_STATUS = 'PL_UI_STATUS',
+  CUSTOMER_STATUS = 'CUSTOMER_STATUS',
   PL_HMG_STATUS = 'PL_HMG_STATUS',
   PL_TNG_STATUS = 'PL_TNG_STATUS',
   PL_OTHER_STATUS = 'PL_OTHER_STATUS',

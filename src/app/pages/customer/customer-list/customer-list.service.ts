@@ -1,4 +1,7 @@
-import { ACCOUNT_CLASSIFICATION } from '../../../core/common/enum/payday-loan';
+import {
+  ACCOUNT_CLASSIFICATION,
+  CUSTOMER_STATUS,
+} from '../../../core/common/enum/payday-loan';
 import { Injectable } from '@angular/core';
 import { CustomerControllerService } from 'open-api-modules/dashboard-api-docs';
 import * as _ from 'lodash';
@@ -67,6 +70,25 @@ export class CustomerListService {
       default:
         requestBody['mobileNumber' + QUERY_CONDITION_TYPE.NOT_START_WITH] =
           GlobalConstants.PL_VALUE_DEFAULT.PREFIX_MOBILE_NUMBER_TEST;
+        break;
+    }
+
+    switch (params.customerStatus) {
+      case CUSTOMER_STATUS.NOT_VERIFIED:
+        requestBody['isVerified' + QUERY_CONDITION_TYPE.NOT_EQUAL] = true;
+        requestBody['kalapaData.createdAt' + QUERY_CONDITION_TYPE.NOT_EXIST] = true;
+        break;
+      case CUSTOMER_STATUS.ALREADY_EKYC:
+        requestBody['isVerified' + QUERY_CONDITION_TYPE.NOT_EQUAL] = true;
+        requestBody['kalapaData.createdAt' + QUERY_CONDITION_TYPE.EXIST] = true;
+        break;
+      case CUSTOMER_STATUS.ALREADY_VERIFIED:
+        requestBody['isVerified' + QUERY_CONDITION_TYPE.EQUAL] = true;
+        break;
+      case CUSTOMER_STATUS.ALL:
+      default:
+        delete requestBody['isVerified'];
+        delete requestBody['kalapaData.createdAt'];
         break;
     }
 
