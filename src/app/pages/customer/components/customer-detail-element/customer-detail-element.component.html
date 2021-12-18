@@ -50,7 +50,10 @@
   <!--  Check Info: Ekyc history-->
   <mat-tab
     [label]="'customer.tabs.check_info' | translate"
-    *ngxPermissionsOnly="['dashboardCustomers:getEkycInfoByCustomerId']"
+    *ngxPermissionsOnly="[
+      'dashboardEkyc:getEkycInfo',
+      'dashboardCustomers:getEkycInfoByCustomerId'
+    ]"
   >
     <ng-template matTabContent>
       <app-customer-check-info
