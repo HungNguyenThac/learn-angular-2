@@ -158,7 +158,7 @@ export class CustomerIndividualInfoComponent implements OnInit, OnDestroy {
     this.customerStatus = value?.userStatus;
     this._getSelfieDocument(this.customerId, value);
     this._initIndividualFormData(this.customerId, value);
-    this.getCustomerLocation(value);
+    // this.getCustomerLocation(value);
     this.leftIndividualInfos = this._initLeftIndividualInfos();
     this.rightIndividualInfos = this._initRightIndividualInfos();
   }
@@ -292,14 +292,13 @@ export class CustomerIndividualInfoComponent implements OnInit, OnDestroy {
                   result?.errorCode
                 );
               }
-              if (result.responseCode === 200) {
+
+              setTimeout(() => {
+                this.notifier.success(
+                  this.multiLanguageService.instant('common.lock_success')
+                );
                 this.triggerUpdateInfo.emit();
-                setTimeout(() => {
-                  this.notifier.success(
-                    this.multiLanguageService.instant('common.lock_success')
-                  );
-                }, 2000);
-              }
+              }, 2000);
             })
         );
       }
@@ -329,14 +328,13 @@ export class CustomerIndividualInfoComponent implements OnInit, OnDestroy {
                   result?.errorCode
                 );
               }
-              if (result.responseCode === 200) {
+
+              setTimeout(() => {
+                this.notifier.success(
+                  this.multiLanguageService.instant('common.unlock_success')
+                );
                 this.triggerUpdateInfo.emit();
-                setTimeout(() => {
-                  this.notifier.success(
-                    this.multiLanguageService.instant('common.unlock_success')
-                  );
-                }, 2000);
-              }
+              }, 2000);
             })
         );
       }
@@ -424,7 +422,7 @@ export class CustomerIndividualInfoComponent implements OnInit, OnDestroy {
         title: this.multiLanguageService.instant(
           'customer.individual_info.city'
         ),
-        value: '',
+        value: this.customerInfo?.city,
         type: DATA_CELL_TYPE.TEXT,
         format: null,
         key: 'city',
@@ -433,7 +431,7 @@ export class CustomerIndividualInfoComponent implements OnInit, OnDestroy {
         title: this.multiLanguageService.instant(
           'customer.individual_info.district'
         ),
-        value: '',
+        value: this.customerInfo?.district,
         type: DATA_CELL_TYPE.TEXT,
         format: null,
         key: 'district',
@@ -442,7 +440,7 @@ export class CustomerIndividualInfoComponent implements OnInit, OnDestroy {
         title: this.multiLanguageService.instant(
           'customer.individual_info.commune'
         ),
-        value: '',
+        value: this.customerInfo?.commune,
         type: DATA_CELL_TYPE.TEXT,
         format: null,
         key: 'commune',
@@ -567,80 +565,80 @@ export class CustomerIndividualInfoComponent implements OnInit, OnDestroy {
       'personalData.maritalStatus': data?.maritalStatus,
       'personalData.borrowerDetailTextVariable1': data?.numberOfDependents,
       'personalData.addressTwoLine1': data?.permanentAddress,
-      'personalData.cityId': data?.cityId,
-      'personalData.districtId': data?.districtId,
-      'personalData.communeId': data?.communeId,
+      'personalData.city': data?.city,
+      'personalData.district': data?.district,
+      'personalData.commune': data?.commune,
       'personalData.apartmentNumber': data?.apartmentNumber,
       'personalData.mobileNumber': data?.mobileNumber,
     };
   }
 
-  getCityById(id) {
-    if (!id) return;
-    this.subManager.add(
-      this.cityControllerService
-        .getCityById(id)
-        .subscribe((result: ApiResponseCity) => {
-          if (!result || result.responseCode !== RESPONSE_CODE.SUCCESS) {
-            return this.notifier.error(
-              JSON.stringify(result?.message),
-              result?.errorCode
-            );
-          }
-          this.leftIndividualInfos.forEach((elementInfo) => {
-            if (elementInfo.key && elementInfo.key === 'city') {
-              elementInfo.value = result.result?.name;
-            }
-          });
-        })
-    );
-  }
+  // getCityById(id) {
+  //   if (!id) return;
+  //   this.subManager.add(
+  //     this.cityControllerService
+  //       .getCityById(id)
+  //       .subscribe((result: ApiResponseCity) => {
+  //         if (!result || result.responseCode !== RESPONSE_CODE.SUCCESS) {
+  //           return this.notifier.error(
+  //             JSON.stringify(result?.message),
+  //             result?.errorCode
+  //           );
+  //         }
+  //         this.leftIndividualInfos.forEach((elementInfo) => {
+  //           if (elementInfo.key && elementInfo.key === 'city') {
+  //             elementInfo.value = result.result?.name;
+  //           }
+  //         });
+  //       })
+  //   );
+  // }
 
-  getDistrictById(id) {
-    if (!id) return;
-    this.subManager.add(
-      this.districtControllerService
-        .getDistrictById(id)
-        .subscribe((result: ApiResponseDistrict) => {
-          if (!result || result.responseCode !== RESPONSE_CODE.SUCCESS) {
-            return this.notifier.error(
-              JSON.stringify(result?.message),
-              result?.errorCode
-            );
-          }
-          this.leftIndividualInfos.forEach((elementInfo) => {
-            if (elementInfo.key && elementInfo.key === 'district') {
-              elementInfo.value = result.result?.name;
-            }
-          });
-        })
-    );
-  }
+  // getDistrictById(id) {
+  //   if (!id) return;
+  //   this.subManager.add(
+  //     this.districtControllerService
+  //       .getDistrictById(id)
+  //       .subscribe((result: ApiResponseDistrict) => {
+  //         if (!result || result.responseCode !== RESPONSE_CODE.SUCCESS) {
+  //           return this.notifier.error(
+  //             JSON.stringify(result?.message),
+  //             result?.errorCode
+  //           );
+  //         }
+  //         this.leftIndividualInfos.forEach((elementInfo) => {
+  //           if (elementInfo.key && elementInfo.key === 'district') {
+  //             elementInfo.value = result.result?.name;
+  //           }
+  //         });
+  //       })
+  //   );
+  // }
+  //
+  // getCommuneById(id) {
+  //   if (!id) return;
+  //   this.subManager.add(
+  //     this.communeControllerService
+  //       .getCommuneById(id)
+  //       .subscribe((result: ApiResponseCommune) => {
+  //         if (!result || result.responseCode !== RESPONSE_CODE.SUCCESS) {
+  //           return this.notifier.error(
+  //             JSON.stringify(result?.message),
+  //             result?.errorCode
+  //           );
+  //         }
+  //         this.leftIndividualInfos.forEach((elementInfo) => {
+  //           if (elementInfo.key && elementInfo.key === 'commune') {
+  //             elementInfo.value = result.result?.name;
+  //           }
+  //         });
+  //       })
+  //   );
+  // }
 
-  getCommuneById(id) {
-    if (!id) return;
-    this.subManager.add(
-      this.communeControllerService
-        .getCommuneById(id)
-        .subscribe((result: ApiResponseCommune) => {
-          if (!result || result.responseCode !== RESPONSE_CODE.SUCCESS) {
-            return this.notifier.error(
-              JSON.stringify(result?.message),
-              result?.errorCode
-            );
-          }
-          this.leftIndividualInfos.forEach((elementInfo) => {
-            if (elementInfo.key && elementInfo.key === 'commune') {
-              elementInfo.value = result.result?.name;
-            }
-          });
-        })
-    );
-  }
-
-  getCustomerLocation(customerInfo: CustomerInfo) {
-    this.getCityById(customerInfo?.cityId);
-    this.getDistrictById(customerInfo?.districtId);
-    this.getCommuneById(customerInfo?.communeId);
-  }
+  // getCustomerLocation(customerInfo: CustomerInfo) {
+  //   this.getCityById(customerInfo?.cityId);
+  //   this.getDistrictById(customerInfo?.districtId);
+  //   this.getCommuneById(customerInfo?.communeId);
+  // }
 }

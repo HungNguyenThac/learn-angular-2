@@ -208,23 +208,16 @@
                     <mat-label>{{
                       "customer.individual_info.city" | translate
                       }}</mat-label>
-
-                    <mat-select required formControlName="cityId" (openedChange)="toggleSelect()"
-                                (selectionChange)="changeCity()">
-                      <mat-option>
-                        <ngx-mat-select-search [formControl]="citiesFilterCtrl"
-                                               placeholderLabel="Tìm Tỉnh/Thành Phố..."
-                                               noEntriesFoundLabel="Tỉnh/Thành Phố không tồn tại"
-                        ></ngx-mat-select-search>
-                      </mat-option>
-                      <mat-option *ngFor="let city of filteredCities" [value]="city.id">
-                        {{city.name}}
-                      </mat-option>
-                    </mat-select>
-
+                    <input
+                      matInput
+                      [placeholder]="
+                        'customer.individual_info.city' | translate
+                      "
+                      formControlName="city"
+                    />
                     <show-errors
                       [control]="
-                        customerIndividualForm.controls['cityId']
+                        customerIndividualForm.controls['city']
                       "
                       [controlLabel]="
                         'customer.individual_info.city' | translate
@@ -240,24 +233,16 @@
                     <mat-label>{{
                       "customer.individual_info.district" | translate
                       }}</mat-label>
-
-                    <mat-select [disabled]="!customerIndividualForm.controls.cityId.value" required
-                                formControlName="districtId" (selectionChange)="changeDistrict()"
-                                (openedChange)="toggleSelect()">
-                      <mat-option>
-                        <ngx-mat-select-search [formControl]="districtsFilterCtrl"
-                                               placeholderLabel="Tìm Quận/Huyện..."
-                                               noEntriesFoundLabel="Quận/Huyện không tồn tại"
-                        ></ngx-mat-select-search>
-                      </mat-option>
-                      <mat-option *ngFor="let district of filteredDistricts" [value]="district.id">
-                        {{district.name}}
-                      </mat-option>
-                    </mat-select>
-
+                    <input
+                      matInput
+                      [placeholder]="
+                        'customer.individual_info.district' | translate
+                      "
+                      formControlName="district"
+                    />
                     <show-errors
                       [control]="
-                        customerIndividualForm.controls['districtId']
+                        customerIndividualForm.controls['district']
                       "
                       [controlLabel]="
                         'customer.individual_info.district' | translate
@@ -273,23 +258,16 @@
                     <mat-label>{{
                       "customer.individual_info.commune" | translate
                       }}</mat-label>
-
-                    <mat-select [disabled]="!customerIndividualForm.controls.districtId.value" required
-                                formControlName="communeId" (openedChange)="toggleSelect()">
-                      <mat-option>
-                        <ngx-mat-select-search [formControl]="communesFilterCtrl"
-                                               placeholderLabel="Tìm Quận/Huyện..."
-                                               noEntriesFoundLabel="Quận/Huyện không tồn tại"
-                        ></ngx-mat-select-search>
-                      </mat-option>
-                      <mat-option *ngFor="let commune of filteredCommunes" [value]="commune.id">
-                        {{commune.name}}
-                      </mat-option>
-                    </mat-select>
-
+                    <input
+                      matInput
+                      [placeholder]="
+                        'customer.individual_info.commune' | translate
+                      "
+                      formControlName="commune"
+                    />
                     <show-errors
                       [control]="
-                        customerIndividualForm.controls['communeId']
+                        customerIndividualForm.controls['commune']
                       "
                       [controlLabel]="
                         'customer.individual_info.commune' | translate
@@ -299,6 +277,102 @@
                     </show-errors>
                   </mat-form-field>
                 </div>
+<!--                <div>-->
+<!--                  <mat-form-field appearance="outline" class="w-100">-->
+<!--                    <mat-label>{{-->
+<!--                      "customer.individual_info.city" | translate-->
+<!--                      }}</mat-label>-->
+
+<!--                    <mat-select required formControlName="cityId" (openedChange)="toggleSelect()"-->
+<!--                                (selectionChange)="changeCity()">-->
+<!--                      <mat-option>-->
+<!--                        <ngx-mat-select-search [formControl]="citiesFilterCtrl"-->
+<!--                                               placeholderLabel="Tìm Tỉnh/Thành Phố..."-->
+<!--                                               noEntriesFoundLabel="Tỉnh/Thành Phố không tồn tại"-->
+<!--                        ></ngx-mat-select-search>-->
+<!--                      </mat-option>-->
+<!--                      <mat-option *ngFor="let city of filteredCities" [value]="city.id">-->
+<!--                        {{city.name}}-->
+<!--                      </mat-option>-->
+<!--                    </mat-select>-->
+
+<!--                    <show-errors-->
+<!--                      [control]="-->
+<!--                        customerIndividualForm.controls['cityId']-->
+<!--                      "-->
+<!--                      [controlLabel]="-->
+<!--                        'customer.individual_info.city' | translate-->
+<!--                      "-->
+<!--                      [hasIconPrefix]="false"-->
+<!--                    >-->
+<!--                    </show-errors>-->
+<!--                  </mat-form-field>-->
+<!--                </div>-->
+
+<!--                <div>-->
+<!--                  <mat-form-field appearance="outline" class="w-100">-->
+<!--                    <mat-label>{{-->
+<!--                      "customer.individual_info.district" | translate-->
+<!--                      }}</mat-label>-->
+
+<!--                    <mat-select [disabled]="!customerIndividualForm.controls.cityId.value" required-->
+<!--                                formControlName="districtId" (selectionChange)="changeDistrict()"-->
+<!--                                (openedChange)="toggleSelect()">-->
+<!--                      <mat-option>-->
+<!--                        <ngx-mat-select-search [formControl]="districtsFilterCtrl"-->
+<!--                                               placeholderLabel="Tìm Quận/Huyện..."-->
+<!--                                               noEntriesFoundLabel="Quận/Huyện không tồn tại"-->
+<!--                        ></ngx-mat-select-search>-->
+<!--                      </mat-option>-->
+<!--                      <mat-option *ngFor="let district of filteredDistricts" [value]="district.id">-->
+<!--                        {{district.name}}-->
+<!--                      </mat-option>-->
+<!--                    </mat-select>-->
+
+<!--                    <show-errors-->
+<!--                      [control]="-->
+<!--                        customerIndividualForm.controls['districtId']-->
+<!--                      "-->
+<!--                      [controlLabel]="-->
+<!--                        'customer.individual_info.district' | translate-->
+<!--                      "-->
+<!--                      [hasIconPrefix]="false"-->
+<!--                    >-->
+<!--                    </show-errors>-->
+<!--                  </mat-form-field>-->
+<!--                </div>-->
+
+<!--                <div>-->
+<!--                  <mat-form-field appearance="outline" class="w-100">-->
+<!--                    <mat-label>{{-->
+<!--                      "customer.individual_info.commune" | translate-->
+<!--                      }}</mat-label>-->
+
+<!--                    <mat-select [disabled]="!customerIndividualForm.controls.districtId.value" required-->
+<!--                                formControlName="communeId" (openedChange)="toggleSelect()">-->
+<!--                      <mat-option>-->
+<!--                        <ngx-mat-select-search [formControl]="communesFilterCtrl"-->
+<!--                                               placeholderLabel="Tìm Quận/Huyện..."-->
+<!--                                               noEntriesFoundLabel="Quận/Huyện không tồn tại"-->
+<!--                        ></ngx-mat-select-search>-->
+<!--                      </mat-option>-->
+<!--                      <mat-option *ngFor="let commune of filteredCommunes" [value]="commune.id">-->
+<!--                        {{commune.name}}-->
+<!--                      </mat-option>-->
+<!--                    </mat-select>-->
+
+<!--                    <show-errors-->
+<!--                      [control]="-->
+<!--                        customerIndividualForm.controls['communeId']-->
+<!--                      "-->
+<!--                      [controlLabel]="-->
+<!--                        'customer.individual_info.commune' | translate-->
+<!--                      "-->
+<!--                      [hasIconPrefix]="false"-->
+<!--                    >-->
+<!--                    </show-errors>-->
+<!--                  </mat-form-field>-->
+<!--                </div>-->
 
                 <div>
                   <mat-form-field appearance="outline" class="w-100">

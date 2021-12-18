@@ -332,6 +332,51 @@ paths:
                 $ref: '#/components/schemas/ApiResponseSearchAndPaginationResponseRepaymentTransaction'
       security:
       - bearerAuth: []
+  /v1/merchants:
+    post:
+      tags:
+      - merchant-controller
+      operationId: getMerchants
+      parameters:
+      - name: pageSize
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: pageNumber
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: orderBy
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: descending
+        in: query
+        required: false
+        schema:
+          type: boolean
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties:
+                type: object
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseSearchAndPaginationResponseMerchant'
+      security:
+      - bearerAuth: []
   /v1/insurances/types:
     post:
       tags:
@@ -1272,6 +1317,26 @@ paths:
                 $ref: '#/components/schemas/ApiResponseVirtualAccount'
       security:
       - bearerAuth: []
+  /v1/merchants/{merchantId}:
+    get:
+      tags:
+      - merchant-controller
+      operationId: getRatingByApplicationId_1
+      parameters:
+      - name: merchantId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseMerchant'
+      security:
+      - bearerAuth: []
   /v1/insurances/types/{insuranceTypeId}:
     get:
       tags:
@@ -1485,13 +1550,13 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ApiResponseListString'
-  /v1/ekyc/{ekycId}:
+  /v1/ekyc/{customerId}:
     get:
       tags:
       - ekyc-controller
       operationId: getEkycInfoById
       parameters:
-      - name: ekycId
+      - name: customerId
         in: path
         required: true
         schema:
@@ -1502,7 +1567,7 @@ paths:
           content:
             '*/*':
               schema:
-                $ref: '#/components/schemas/ApiResponseKalapaResponse'
+                $ref: '#/components/schemas/ApiResponseListKalapaResponse'
       security:
       - bearerAuth: []
   /v1/districts/{districtId}:
@@ -1563,6 +1628,26 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ApiResponseCustomerInfo'
+      security:
+      - bearerAuth: []
+  /v1/customers/{customerId}/ekycs:
+    get:
+      tags:
+      - customer-controller
+      operationId: getEkycInfoByCustomerId
+      parameters:
+      - name: customerId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseListKalapaResponse'
       security:
       - bearerAuth: []
   /v1/companies/{companyId}:
@@ -1881,11 +1966,11 @@ components:
           type: string
         apartmentNumber:
           type: string
-        cityId:
+        city:
           type: string
-        districtId:
+        district:
           type: string
-        communeId:
+        commune:
           type: string
         borrowerDetailTextVariable1:
           type: string
@@ -2045,6 +2130,18 @@ components:
     KalapaResponse:
       type: object
       properties:
+        customerId:
+          type: string
+        createdBy:
+          type: string
+        provider:
+          type: string
+        status:
+          type: boolean
+        result:
+          type: object
+          additionalProperties:
+            type: object
         createdAt:
           type: string
         taxName:
@@ -2059,18 +2156,6 @@ components:
           $ref: '#/components/schemas/SelfieCheck'
         fraudCheck:
           $ref: '#/components/schemas/FraudCheck'
-        customerId:
-          type: string
-        createdBy:
-          type: string
-        provider:
-          type: string
-        status:
-          type: boolean
-        result:
-          type: object
-          additionalProperties:
-            type: object
     PaydayLoanTng:
       type: object
       properties:
@@ -2133,6 +2218,8 @@ components:
           $ref: '#/components/schemas/VoucherTransaction'
         voucher:
           $ref: '#/components/schemas/Voucher'
+        completedAt:
+          type: string
     Rating:
       type: object
       properties:
@@ -2427,6 +2514,52 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/RepaymentTransaction'
+    ApiResponseSearchAndPaginationResponseMerchant:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/SearchAndPaginationResponseMerchant'
+        errorCode:
+          type: string
+        message:
+          type: object
+        responseCode:
+          type: integer
+          format: int32
+    Merchant:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        code:
+          type: string
+        mobile:
+          type: string
+        email:
+          type: string
+        productType:
+          type: string
+        status:
+          type: string
+        bdStaff:
+          type: string
+        addressLineOne:
+          type: string
+        addressLineTwo:
+          type: string
+        addressLineThree:
+          type: string
+    SearchAndPaginationResponseMerchant:
+      type: object
+      properties:
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Merchant'
     ApiResponseSearchAndPaginationResponseInsuranceType:
       type: object
       properties:
@@ -2700,6 +2833,8 @@ components:
           $ref: '#/components/schemas/VoucherTransaction'
         voucher:
           $ref: '#/components/schemas/Voucher'
+        completedAt:
+          type: string
     SearchAndPaginationResponsePaydayLoanHmg:
       type: object
       properties:
@@ -3291,6 +3426,18 @@ components:
         responseCode:
           type: integer
           format: int32
+    ApiResponseMerchant:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/Merchant'
+        errorCode:
+          type: string
+        message:
+          type: object
+        responseCode:
+          type: integer
+          format: int32
     ApiResponseInsuranceType:
       type: object
       properties:
@@ -3377,11 +3524,13 @@ components:
         responseCode:
           type: integer
           format: int32
-    ApiResponseKalapaResponse:
+    ApiResponseListKalapaResponse:
       type: object
       properties:
         result:
-          $ref: '#/components/schemas/KalapaResponse'
+          type: array
+          items:
+            $ref: '#/components/schemas/KalapaResponse'
         errorCode:
           type: string
         message:
