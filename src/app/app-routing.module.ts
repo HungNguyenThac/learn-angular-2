@@ -4,7 +4,7 @@ import { NotFoundComponent } from './pages/errors/not-found/not-found.component'
 import { MainLayoutComponent } from './layout/main-layout/main-layout.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { AuthGuardService as AuthGuard } from './core/services/auth-guard.service';
-import { CustomerModule } from './pages/customer/customer.module';
+import { CustomPreloadingStrategy } from './core/common/providers/custom-preloading-strategy';
 
 const routes: Routes = [
   {
@@ -14,7 +14,7 @@ const routes: Routes = [
       {
         path: '',
         component: DashboardComponent,
-        data: { animation: true },
+        data: { animation: true, preload: true },
         canActivate: [AuthGuard],
       },
       {
@@ -50,10 +50,16 @@ const routes: Routes = [
   },
 ];
 
+// Reference :https://angular.io/api/router/ExtraOptions
+
 @NgModule({
   imports: [
-    RouterModule.forRoot(routes, { relativeLinkResolution: 'corrected' }),
+    RouterModule.forRoot(routes, {
+      relativeLinkResolution: 'corrected',
+      preloadingStrategy: CustomPreloadingStrategy,
+    }),
   ],
   exports: [RouterModule],
+  providers: [CustomPreloadingStrategy],
 })
 export class AppRoutingModule {}
