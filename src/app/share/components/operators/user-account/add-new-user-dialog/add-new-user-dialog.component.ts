@@ -13,6 +13,8 @@ export class AddNewUserDialogComponent implements OnInit {
   isAccountNameInputFocus: boolean = false;
   isLoginInputFocus: boolean = false;
   isPasswordInputFocus: boolean = false;
+  isPasswordVisible: boolean = false;
+  isRePasswordVisible: boolean = false;
   isRePasswordInputFocus: boolean = false;
   isRoleInputFocus: boolean = false;
   isPhoneInputFocus: boolean = false;
