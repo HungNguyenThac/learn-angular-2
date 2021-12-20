@@ -562,7 +562,7 @@
     "miss_param": "Thiếu tham số, vui lòng kiểm tra dữ liệu đầu vào",
     "data_error": "Đã có lỗi xảy ra, vui lòng kiểm tra dữ liệu đầu vào",
     "ekyc_failed": "Định danh điện tử thất bại, vui lòng thử lại",
-    "wrong_password": "Số điện thoại hoặc mật khẩu không chính xác!",
+    "wrong_password": "Tên đăng nhập hoặc mật khẩu không chính xác!",
     "otp_expire_time": "Mã OTP đã hết hạn, vui lòng lấy lại OTP",
     "otp_invalid": "Mã OTP không chính xác, vui lòng thử lại",
     "otp_confirm_maximum": "Đã quá số lần cho phép xác thực OTP, bạn bị tạm khóa chức năng. Vui lòng thử lại sau",

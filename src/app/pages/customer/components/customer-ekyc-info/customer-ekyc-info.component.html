@@ -15,7 +15,8 @@
                     class="op-customer-ekyc-img"
                     [src]="frontIdSrc"
                     alt=""
-                    ngxViewer [viewerOptions]="viewerOptions"
+                    ngxViewer
+                    [viewerOptions]="viewerOptions"
                   />
 
                   <ng-template #hasNotFrontId>
@@ -43,7 +44,7 @@
                     <span class="sprite-group-5-download-green"></span>
                     <span class="op-img-download-btn-title">{{
                       "customer.identity.download" | translate
-                      }}</span>
+                    }}</span>
                   </div>
                 </article>
               </section>
@@ -58,7 +59,8 @@
                     class="op-customer-ekyc-img"
                     [src]="backIdSrc"
                     alt=""
-                    (click)="openFullSizeImg(backIdSrc)"
+                    ngxViewer
+                    [viewerOptions]="viewerOptions"
                   />
 
                   <ng-template #hasNotBackId>
@@ -86,7 +88,7 @@
                     <span class="sprite-group-5-download-green"></span>
                     <span class="op-img-download-btn-title">{{
                       "customer.identity.download" | translate
-                      }}</span>
+                    }}</span>
                   </div>
                 </article>
               </section>
