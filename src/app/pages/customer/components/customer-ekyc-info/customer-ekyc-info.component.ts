@@ -150,6 +150,7 @@ export class CustomerEkycInfoComponent implements OnInit {
     ];
   }
 
+
   private _getEKYCDocument(customerId, customerInfo) {
     if (customerInfo?.frontId) {
       this.subManager.add(
