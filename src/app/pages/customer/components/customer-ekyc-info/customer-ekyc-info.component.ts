@@ -183,7 +183,7 @@ export class CustomerEkycInfoComponent implements OnInit {
     );
   }
 
-  openFullSizeImg(imageSrc) {
-    this.notificationService.openImgFullsizeDiaglog({ imageSrc: imageSrc });
-  }
+  // openFullSizeImg(imageSrc) {
+  //   this.notificationService.openImgFullsizeDiaglog({ imageSrc: imageSrc });
+  // }
 }
