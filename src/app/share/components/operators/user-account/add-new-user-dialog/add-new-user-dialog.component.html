@@ -17,7 +17,7 @@
               <!-- Left Individual Info -->
               <div class="col-12 col-sm-12 col-md-6 col-lg-6 pr-2">
                 <div>
-                  <mat-form-field autofilled="false" appearance="outline" class="w-100" floatLabel="never">
+                  <mat-form-field appearance="outline" class="w-100" floatLabel="never">
                     <mat-label>{{ "account.add.name" | translate}}</mat-label>
                     <div
                       [ngClass]="addAccountForm.controls.accountName.value != '' || isAccountNameInputFocus ? 'is-focused-icon' : ''"
@@ -29,11 +29,11 @@
                         isAccountNameInputFocus ? 'is-focused-input' : ''
                       " [placeholder]="'account.add.name' | translate"
                            formControlName="accountName"
-                           name="new_password"
-                           autocomplete='new-password'
+                           autocomplete="chrome-off"
                            aria-autocomplete="none"
                            required
                            matInput
+                           type="text"
                     >
                     <show-errors
                       [control]="addAccountForm.controls['accountName']"
@@ -67,10 +67,10 @@
                       "
                       [placeholder]="'account.add.log_in' | translate"
                       formControlName="username"
-                      name="new_password"
-                      autocomplete='new-password'
+                      autocomplete="chrome-off"
                       aria-autocomplete="none"
                       required
+                      type="text"
                       matInput
                     />
                     <show-errors
@@ -105,13 +105,43 @@
                       "
                       [placeholder]="'account.add.password' | translate"
                       formControlName="accountPassword"
-                      name="new_password"
-                      autocomplete='new-password'
+                      autocomplete="chrome-off"
                       aria-autocomplete="none"
                       matInput
                       required
-                      type="password"
+                      [type]="isPasswordVisible ? 'text' : 'password'"
                     />
+                    <button
+                      type="button"
+                      tabindex="-1"
+                      *ngIf="addAccountForm.controls.accountPassword.value"
+                      matSuffix
+                      mat-icon-button
+                      aria-label="Clear"
+                      (click)="addAccountForm.controls.accountPassword.setValue('')"
+                      disableRipple="true"
+                    >
+                      <div class="clear-icon"></div>
+                    </button>
+                    <button
+                      type="button"
+                      tabindex="-1"
+                      matSuffix
+                      mat-icon-button
+                      class="support-icon"
+                      (click)="isPasswordVisible = !isPasswordVisible"
+                    >
+                      <div
+                        class="password-suffix-icon"
+                        [ngClass]="[
+                    addAccountForm.controls.accountPassword.value != '' ||
+                    isPasswordInputFocus
+                      ? 'is-focused-icon'
+                      : '',
+                    isPasswordVisible ? 'password-show-icon' : 'password-hide-icon'
+                  ]"
+                      ></div>
+                    </button>
                     <show-errors
                       [control]="addAccountForm.controls['accountPassword']"
                       [controlLabel]="
@@ -147,8 +177,39 @@
                       matInput
                       confirm-password-validate
                       required
-                      type="password"
+                      [type]="isRePasswordVisible ? 'text' : 'password'"
                     />
+                    <button
+                      type="button"
+                      tabindex="-1"
+                      *ngIf="addAccountForm.controls.accountRePassword.value"
+                      matSuffix
+                      mat-icon-button
+                      aria-label="Clear"
+                      (click)="addAccountForm.controls.accountRePassword.setValue('')"
+                      disableRipple="true"
+                    >
+                      <div class="clear-icon"></div>
+                    </button>
+                    <button
+                      type="button"
+                      tabindex="-1"
+                      matSuffix
+                      mat-icon-button
+                      class="support-icon"
+                      (click)="isRePasswordVisible = !isRePasswordVisible"
+                    >
+                      <div
+                        class="password-suffix-icon"
+                        [ngClass]="[
+                    addAccountForm.controls.accountRePassword.value != '' ||
+                    isRePasswordInputFocus
+                      ? 'is-focused-icon'
+                      : '',
+                    isRePasswordVisible ? 'password-show-icon' : 'password-hide-icon'
+                  ]"
+                      ></div>
+                    </button>
                     <show-errors
                       [control]="addAccountForm.controls['accountRePassword']"
                       [controlLabel]="
