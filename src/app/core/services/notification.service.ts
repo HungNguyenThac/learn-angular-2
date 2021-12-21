@@ -1,13 +1,18 @@
 import { Injectable } from '@angular/core';
-import { PlPromptComponent } from '../../share/components';
+import {
+  FullsizeImageDialogComponent,
+  PlLoadingComponent,
+  PlPromptComponent,
+} from '../../share/components';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import { Prompt } from '../../public/models/external/prompt.model';
-import { PlLoadingComponent } from '../../share/components';
 import { PlLoading } from 'src/app/public/models/external/plloading.model';
 import { MultiLanguageService } from '../../share/translate/multiLanguageService';
-import { FullsizeImageDialogComponent } from '../../share/components';
 import { FullsizeImgModel } from '../../public/models/external/fullsizeImg.model';
+import { Store } from '@ngrx/store';
+import * as fromStore from '../store';
+import * as fromActions from '../../core/store';
 
 @Injectable({
   providedIn: 'root',
@@ -20,7 +25,8 @@ export class NotificationService {
     private loadingDialogRef: MatDialogRef<PlLoadingComponent>,
     private promptDialogRef: MatDialogRef<PlPromptComponent>,
     private fullsizeImgDialogRef: MatDialogRef<FullsizeImageDialogComponent>,
-    private multiLanguageService: MultiLanguageService
+    private multiLanguageService: MultiLanguageService,
+    private store: Store<fromStore.State>
   ) {}
 
   openImgFullsizeDiaglog(
@@ -74,7 +80,7 @@ export class NotificationService {
     return this.promptDialogRef;
   }
 
-  showLoading(payload?: PlLoading): MatDialogRef<PlLoadingComponent> {
+  openLoadingDialog(payload?: PlLoading): MatDialogRef<PlLoadingComponent> {
     this.loadingDialogRef = this.dialog.open(PlLoadingComponent, {
       panelClass: payload?.showContent
         ? 'custom-dialog-container'
@@ -97,15 +103,31 @@ export class NotificationService {
     return this.loadingDialogRef;
   }
 
+  closeLoadingDialog() {
+    if (!this.loadingDialogRef) {
+      return;
+    }
+    this.loadingDialogRef.close('hideLoading');
+  }
+
+  showLoading(payload?: PlLoading) {
+    this.store.dispatch(
+      new fromActions.SetLoadingStatus({
+        showLoading: true,
+        loadingContent: payload,
+      })
+    );
+  }
+
+  hideLoading() {
+    this.store.dispatch(new fromActions.ResetLoadingStatus());
+  }
+
   destroyAllDialog() {
     this.dialog.closeAll();
   }
 
   hidePrompt() {
     this.promptDialogRef.close('hidePrompt');
-  }
-
-  hideLoading() {
-    this.loadingDialogRef.close('hideLoading');
   }
 }

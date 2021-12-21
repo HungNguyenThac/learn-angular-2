@@ -16,7 +16,7 @@ export class PlLoadingComponent implements OnInit {
   };
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) private data: PlLoading,
+    @Inject(MAT_DIALOG_DATA) public data: PlLoading,
     private dialogRef: MatDialogRef<PlLoadingComponent>
   ) {
     dialogRef.disableClose = true;

@@ -271,6 +271,15 @@ export class CustomerListComponent implements OnInit, OnDestroy {
       showed: true,
     },
     {
+      key: 'userStatus',
+      title: this.multiLanguageService.instant(
+        'customer.individual_info.active_status'
+      ),
+      type: DATA_CELL_TYPE.STATUS,
+      format: DATA_STATUS_TYPE.USER_STATUS,
+      showed: false,
+    },
+    {
       key: 'createdAt',
       title: this.multiLanguageService.instant(
         'customer.individual_info.created_at'
@@ -280,12 +289,12 @@ export class CustomerListComponent implements OnInit, OnDestroy {
       showed: true,
     },
     {
-      key: 'userStatus',
+      key: 'updatedAt',
       title: this.multiLanguageService.instant(
-        'customer.individual_info.active_status'
+        'customer.individual_info.updated_at'
       ),
-      type: DATA_CELL_TYPE.STATUS,
-      format: DATA_STATUS_TYPE.USER_STATUS,
+      type: DATA_CELL_TYPE.DATETIME,
+      format: 'dd/MM/yyyy HH:mm',
       showed: false,
     },
   ];

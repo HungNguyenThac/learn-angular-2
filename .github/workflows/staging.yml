@@ -87,11 +87,11 @@ jobs:
         run: aws eks --region ap-southeast-1 update-kubeconfig --name pdl-staging
 
       #       Checkout multiple repos (nested)
-      - name: Checkout deployment repo
-        uses: actions/checkout@v2
-        with:
-          repository: EpayVNTech/cqrs-deployment
-          token: ${{ steps.getAzSecret.outputs.DEPLOYPAT }}
+#      - name: Checkout deployment repo
+#        uses: actions/checkout@v2
+#        with:
+#          repository: EpayVNTech/cqrs-deployment
+#          token: ${{ steps.getAzSecret.outputs.DEPLOYPAT }}
       - name: Checkout com-svc repo
         uses: actions/checkout@v2
         with:

@@ -1,5 +1,13 @@
 <div class="main-layout">
-  <app-header fxLayout="column"></app-header>
+  <app-header></app-header>
+
+  <div class="mir-mat-spinner-container" *ngIf="loadingStatus$ | async">
+    <img
+      src="/assets/img/payday-loan/gif/monex_loading.gif"
+      alt="loading"
+      class="monex-loading"
+    />
+  </div>
 
   <div id="main-layout-content">
     <div [@routeAnimations]="outlet.isActivated ? outlet.activatedRoute : ''">
