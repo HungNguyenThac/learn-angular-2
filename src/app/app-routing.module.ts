@@ -14,7 +14,7 @@ const routes: Routes = [
       {
         path: '',
         component: DashboardComponent,
-        data: { animation: true, preload: true },
+        data: { animation: true },
         canActivate: [AuthGuard],
       },
       {
@@ -23,6 +23,7 @@ const routes: Routes = [
           import('./pages/products/payday-loan/payday-loan.module').then(
             (m) => m.PaydayLoanModule
           ),
+        data: { preload: true, delay: true },
       },
       {
         path: 'customer',
@@ -30,16 +31,19 @@ const routes: Routes = [
           import('./pages/customer/customer.module').then(
             (m) => m.CustomerModule
           ),
+        data: { preload: true, delay: false },
       },
       {
         path: 'system',
         loadChildren: () =>
           import('./pages/system/system.module').then((m) => m.SystemModule),
+        data: { preload: true, delay: true },
       },
       {
         path: 'auth',
         loadChildren: () =>
           import('./pages/auth/auth.module').then((m) => m.AuthModule),
+        data: { preload: true, delay: false },
       },
       {
         path: '**',
