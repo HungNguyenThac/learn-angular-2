@@ -25,18 +25,15 @@ export class LoadingInterceptor implements HttpInterceptor {
     req: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
-      if (!req.reportProgress) {
-        Promise.resolve(null).then(() => {
-          this.totalRequests++;
-          this.notificationService.showLoading();
-        });
-      }
+    Promise.resolve(null).then(() => {
+      this.totalRequests++;
+      this.notificationService.showLoading();
+    });
 
     return next.handle(req).pipe(
       finalize(() => {
-        if (!req.reportProgress) {
-          this.completedRequests++;
-        }
+
+        this.completedRequests++
 
         if (this.completedRequests === this.totalRequests) {
           this.completedRequests = 0;
