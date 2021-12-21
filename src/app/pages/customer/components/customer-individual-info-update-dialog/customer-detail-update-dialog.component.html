@@ -35,7 +35,7 @@
                   <mat-form-field appearance="outline" class="w-100">
                     <mat-label>{{
                       "customer.individual_info.id" | translate
-                      }}</mat-label>
+                    }}</mat-label>
                     <input
                       matInput
                       [placeholder]="'customer.individual_info.id' | translate"
@@ -49,7 +49,7 @@
                   <mat-form-field appearance="outline" class="w-100">
                     <mat-label>{{
                       "customer.individual_info.fullname" | translate
-                      }}</mat-label>
+                    }}</mat-label>
                     <input
                       matInput
                       required
@@ -73,7 +73,7 @@
                   <mat-form-field appearance="outline" class="w-100">
                     <mat-label>{{
                       "customer.individual_info.phone_number" | translate
-                      }}</mat-label>
+                    }}</mat-label>
                     <input
                       matInput
                       required
@@ -101,7 +101,7 @@
                   <mat-form-field appearance="outline" class="w-100">
                     <mat-label>{{
                       "customer.individual_info.email" | translate
-                      }}</mat-label>
+                    }}</mat-label>
                     <input
                       matInput
                       required
@@ -125,7 +125,7 @@
                   <mat-form-field appearance="outline" class="w-50">
                     <mat-label>{{
                       "customer.individual_info.date_of_birth" | translate
-                      }}</mat-label>
+                    }}</mat-label>
                     <input
                       matInput
                       required
@@ -155,7 +155,7 @@
                   <mat-form-field appearance="outline" class="w-50">
                     <mat-label>{{
                       "customer.individual_info.gender" | translate
-                      }}</mat-label>
+                    }}</mat-label>
                     <mat-select formControlName="gender" required>
                       <mat-option
                         *ngFor="let gender of genderOptions"
@@ -180,7 +180,7 @@
                   <mat-form-field appearance="outline" class="w-100">
                     <mat-label>{{
                       "customer.individual_info.cmnd" | translate
-                      }}</mat-label>
+                    }}</mat-label>
                     <input
                       matInput
                       required
@@ -206,21 +206,19 @@
                 <div>
                   <mat-form-field appearance="outline" class="w-100">
                     <mat-label>{{
-                      "customer.individual_info.city" | translate
-                      }}</mat-label>
+                      "customer.individual_info.permanent_address" | translate
+                    }}</mat-label>
                     <input
                       matInput
                       [placeholder]="
-                        'customer.individual_info.city' | translate
+                        'customer.individual_info.permanent_address' | translate
                       "
-                      formControlName="city"
+                      formControlName="addressTwoLine1"
                     />
                     <show-errors
-                      [control]="
-                        customerIndividualForm.controls['city']
-                      "
+                      [control]="customerIndividualForm.controls['addressTwoLine1']"
                       [controlLabel]="
-                        'customer.individual_info.city' | translate
+                        'customer.individual_info.permanent_address' | translate
                       "
                       [hasIconPrefix]="false"
                     >
@@ -231,21 +229,19 @@
                 <div>
                   <mat-form-field appearance="outline" class="w-100">
                     <mat-label>{{
-                      "customer.individual_info.district" | translate
-                      }}</mat-label>
+                      "customer.individual_info.current_residence" | translate
+                    }}</mat-label>
                     <input
                       matInput
                       [placeholder]="
-                        'customer.individual_info.district' | translate
+                        'customer.individual_info.current_residence' | translate
                       "
-                      formControlName="district"
+                      formControlName="addressOneLine1"
                     />
                     <show-errors
-                      [control]="
-                        customerIndividualForm.controls['district']
-                      "
+                      [control]="customerIndividualForm.controls['addressOneLine1']"
                       [controlLabel]="
-                        'customer.individual_info.district' | translate
+                        'customer.individual_info.current_residence' | translate
                       "
                       [hasIconPrefix]="false"
                     >
@@ -253,152 +249,202 @@
                   </mat-form-field>
                 </div>
 
-                <div>
-                  <mat-form-field appearance="outline" class="w-100">
-                    <mat-label>{{
-                      "customer.individual_info.commune" | translate
-                      }}</mat-label>
-                    <input
-                      matInput
-                      [placeholder]="
-                        'customer.individual_info.commune' | translate
-                      "
-                      formControlName="commune"
-                    />
-                    <show-errors
-                      [control]="
-                        customerIndividualForm.controls['commune']
-                      "
-                      [controlLabel]="
-                        'customer.individual_info.commune' | translate
-                      "
-                      [hasIconPrefix]="false"
-                    >
-                    </show-errors>
-                  </mat-form-field>
-                </div>
-<!--                <div>-->
-<!--                  <mat-form-field appearance="outline" class="w-100">-->
-<!--                    <mat-label>{{-->
-<!--                      "customer.individual_info.city" | translate-->
-<!--                      }}</mat-label>-->
+                <!--                <div>-->
+                <!--                  <mat-form-field appearance="outline" class="w-100">-->
+                <!--                    <mat-label>{{-->
+                <!--                      "customer.individual_info.city" | translate-->
+                <!--                      }}</mat-label>-->
+                <!--                    <input-->
+                <!--                      matInput-->
+                <!--                      [placeholder]="-->
+                <!--                        'customer.individual_info.city' | translate-->
+                <!--                      "-->
+                <!--                      formControlName="city"-->
+                <!--                    />-->
+                <!--                    <show-errors-->
+                <!--                      [control]="-->
+                <!--                        customerIndividualForm.controls['city']-->
+                <!--                      "-->
+                <!--                      [controlLabel]="-->
+                <!--                        'customer.individual_info.city' | translate-->
+                <!--                      "-->
+                <!--                      [hasIconPrefix]="false"-->
+                <!--                    >-->
+                <!--                    </show-errors>-->
+                <!--                  </mat-form-field>-->
+                <!--                </div>-->
 
-<!--                    <mat-select required formControlName="cityId" (openedChange)="toggleSelect()"-->
-<!--                                (selectionChange)="changeCity()">-->
-<!--                      <mat-option>-->
-<!--                        <ngx-mat-select-search [formControl]="citiesFilterCtrl"-->
-<!--                                               placeholderLabel="Tìm Tỉnh/Thành Phố..."-->
-<!--                                               noEntriesFoundLabel="Tỉnh/Thành Phố không tồn tại"-->
-<!--                        ></ngx-mat-select-search>-->
-<!--                      </mat-option>-->
-<!--                      <mat-option *ngFor="let city of filteredCities" [value]="city.id">-->
-<!--                        {{city.name}}-->
-<!--                      </mat-option>-->
-<!--                    </mat-select>-->
+                <!--                <div>-->
+                <!--                  <mat-form-field appearance="outline" class="w-100">-->
+                <!--                    <mat-label>{{-->
+                <!--                      "customer.individual_info.district" | translate-->
+                <!--                      }}</mat-label>-->
+                <!--                    <input-->
+                <!--                      matInput-->
+                <!--                      [placeholder]="-->
+                <!--                        'customer.individual_info.district' | translate-->
+                <!--                      "-->
+                <!--                      formControlName="district"-->
+                <!--                    />-->
+                <!--                    <show-errors-->
+                <!--                      [control]="-->
+                <!--                        customerIndividualForm.controls['district']-->
+                <!--                      "-->
+                <!--                      [controlLabel]="-->
+                <!--                        'customer.individual_info.district' | translate-->
+                <!--                      "-->
+                <!--                      [hasIconPrefix]="false"-->
+                <!--                    >-->
+                <!--                    </show-errors>-->
+                <!--                  </mat-form-field>-->
+                <!--                </div>-->
 
-<!--                    <show-errors-->
-<!--                      [control]="-->
-<!--                        customerIndividualForm.controls['cityId']-->
-<!--                      "-->
-<!--                      [controlLabel]="-->
-<!--                        'customer.individual_info.city' | translate-->
-<!--                      "-->
-<!--                      [hasIconPrefix]="false"-->
-<!--                    >-->
-<!--                    </show-errors>-->
-<!--                  </mat-form-field>-->
-<!--                </div>-->
+                <!--                <div>-->
+                <!--                  <mat-form-field appearance="outline" class="w-100">-->
+                <!--                    <mat-label>{{-->
+                <!--                      "customer.individual_info.commune" | translate-->
+                <!--                      }}</mat-label>-->
+                <!--                    <input-->
+                <!--                      matInput-->
+                <!--                      [placeholder]="-->
+                <!--                        'customer.individual_info.commune' | translate-->
+                <!--                      "-->
+                <!--                      formControlName="commune"-->
+                <!--                    />-->
+                <!--                    <show-errors-->
+                <!--                      [control]="-->
+                <!--                        customerIndividualForm.controls['commune']-->
+                <!--                      "-->
+                <!--                      [controlLabel]="-->
+                <!--                        'customer.individual_info.commune' | translate-->
+                <!--                      "-->
+                <!--                      [hasIconPrefix]="false"-->
+                <!--                    >-->
+                <!--                    </show-errors>-->
+                <!--                  </mat-form-field>-->
+                <!--                </div>-->
+                <!--                <div>-->
+                <!--                  <mat-form-field appearance="outline" class="w-100">-->
+                <!--                    <mat-label>{{-->
+                <!--                      "customer.individual_info.city" | translate-->
+                <!--                      }}</mat-label>-->
 
-<!--                <div>-->
-<!--                  <mat-form-field appearance="outline" class="w-100">-->
-<!--                    <mat-label>{{-->
-<!--                      "customer.individual_info.district" | translate-->
-<!--                      }}</mat-label>-->
+                <!--                    <mat-select required formControlName="cityId" (openedChange)="toggleSelect()"-->
+                <!--                                (selectionChange)="changeCity()">-->
+                <!--                      <mat-option>-->
+                <!--                        <ngx-mat-select-search [formControl]="citiesFilterCtrl"-->
+                <!--                                               placeholderLabel="Tìm Tỉnh/Thành Phố..."-->
+                <!--                                               noEntriesFoundLabel="Tỉnh/Thành Phố không tồn tại"-->
+                <!--                        ></ngx-mat-select-search>-->
+                <!--                      </mat-option>-->
+                <!--                      <mat-option *ngFor="let city of filteredCities" [value]="city.id">-->
+                <!--                        {{city.name}}-->
+                <!--                      </mat-option>-->
+                <!--                    </mat-select>-->
 
-<!--                    <mat-select [disabled]="!customerIndividualForm.controls.cityId.value" required-->
-<!--                                formControlName="districtId" (selectionChange)="changeDistrict()"-->
-<!--                                (openedChange)="toggleSelect()">-->
-<!--                      <mat-option>-->
-<!--                        <ngx-mat-select-search [formControl]="districtsFilterCtrl"-->
-<!--                                               placeholderLabel="Tìm Quận/Huyện..."-->
-<!--                                               noEntriesFoundLabel="Quận/Huyện không tồn tại"-->
-<!--                        ></ngx-mat-select-search>-->
-<!--                      </mat-option>-->
-<!--                      <mat-option *ngFor="let district of filteredDistricts" [value]="district.id">-->
-<!--                        {{district.name}}-->
-<!--                      </mat-option>-->
-<!--                    </mat-select>-->
+                <!--                    <show-errors-->
+                <!--                      [control]="-->
+                <!--                        customerIndividualForm.controls['cityId']-->
+                <!--                      "-->
+                <!--                      [controlLabel]="-->
+                <!--                        'customer.individual_info.city' | translate-->
+                <!--                      "-->
+                <!--                      [hasIconPrefix]="false"-->
+                <!--                    >-->
+                <!--                    </show-errors>-->
+                <!--                  </mat-form-field>-->
+                <!--                </div>-->
 
-<!--                    <show-errors-->
-<!--                      [control]="-->
-<!--                        customerIndividualForm.controls['districtId']-->
-<!--                      "-->
-<!--                      [controlLabel]="-->
-<!--                        'customer.individual_info.district' | translate-->
-<!--                      "-->
-<!--                      [hasIconPrefix]="false"-->
-<!--                    >-->
-<!--                    </show-errors>-->
-<!--                  </mat-form-field>-->
-<!--                </div>-->
+                <!--                <div>-->
+                <!--                  <mat-form-field appearance="outline" class="w-100">-->
+                <!--                    <mat-label>{{-->
+                <!--                      "customer.individual_info.district" | translate-->
+                <!--                      }}</mat-label>-->
 
-<!--                <div>-->
-<!--                  <mat-form-field appearance="outline" class="w-100">-->
-<!--                    <mat-label>{{-->
-<!--                      "customer.individual_info.commune" | translate-->
-<!--                      }}</mat-label>-->
+                <!--                    <mat-select [disabled]="!customerIndividualForm.controls.cityId.value" required-->
+                <!--                                formControlName="districtId" (selectionChange)="changeDistrict()"-->
+                <!--                                (openedChange)="toggleSelect()">-->
+                <!--                      <mat-option>-->
+                <!--                        <ngx-mat-select-search [formControl]="districtsFilterCtrl"-->
+                <!--                                               placeholderLabel="Tìm Quận/Huyện..."-->
+                <!--                                               noEntriesFoundLabel="Quận/Huyện không tồn tại"-->
+                <!--                        ></ngx-mat-select-search>-->
+                <!--                      </mat-option>-->
+                <!--                      <mat-option *ngFor="let district of filteredDistricts" [value]="district.id">-->
+                <!--                        {{district.name}}-->
+                <!--                      </mat-option>-->
+                <!--                    </mat-select>-->
 
-<!--                    <mat-select [disabled]="!customerIndividualForm.controls.districtId.value" required-->
-<!--                                formControlName="communeId" (openedChange)="toggleSelect()">-->
-<!--                      <mat-option>-->
-<!--                        <ngx-mat-select-search [formControl]="communesFilterCtrl"-->
-<!--                                               placeholderLabel="Tìm Quận/Huyện..."-->
-<!--                                               noEntriesFoundLabel="Quận/Huyện không tồn tại"-->
-<!--                        ></ngx-mat-select-search>-->
-<!--                      </mat-option>-->
-<!--                      <mat-option *ngFor="let commune of filteredCommunes" [value]="commune.id">-->
-<!--                        {{commune.name}}-->
-<!--                      </mat-option>-->
-<!--                    </mat-select>-->
+                <!--                    <show-errors-->
+                <!--                      [control]="-->
+                <!--                        customerIndividualForm.controls['districtId']-->
+                <!--                      "-->
+                <!--                      [controlLabel]="-->
+                <!--                        'customer.individual_info.district' | translate-->
+                <!--                      "-->
+                <!--                      [hasIconPrefix]="false"-->
+                <!--                    >-->
+                <!--                    </show-errors>-->
+                <!--                  </mat-form-field>-->
+                <!--                </div>-->
 
-<!--                    <show-errors-->
-<!--                      [control]="-->
-<!--                        customerIndividualForm.controls['communeId']-->
-<!--                      "-->
-<!--                      [controlLabel]="-->
-<!--                        'customer.individual_info.commune' | translate-->
-<!--                      "-->
-<!--                      [hasIconPrefix]="false"-->
-<!--                    >-->
-<!--                    </show-errors>-->
-<!--                  </mat-form-field>-->
-<!--                </div>-->
+                <!--                <div>-->
+                <!--                  <mat-form-field appearance="outline" class="w-100">-->
+                <!--                    <mat-label>{{-->
+                <!--                      "customer.individual_info.commune" | translate-->
+                <!--                      }}</mat-label>-->
 
-                <div>
-                  <mat-form-field appearance="outline" class="w-100">
-                    <mat-label>{{
-                      "customer.individual_info.apartment_number" | translate
-                      }}</mat-label>
-                    <input
-                      matInput
-                      required
-                      [placeholder]="
-                        'customer.individual_info.apartment_number' | translate
-                      "
-                      formControlName="apartmentNumber"
-                    />
-                    <show-errors
-                      [control]="
-                        customerIndividualForm.controls['apartmentNumber']
-                      "
-                      [controlLabel]="
-                        'customer.individual_info.apartment_number' | translate
-                      "
-                      [hasIconPrefix]="false"
-                    >
-                    </show-errors>
-                  </mat-form-field>
-                </div>
+                <!--                    <mat-select [disabled]="!customerIndividualForm.controls.districtId.value" required-->
+                <!--                                formControlName="communeId" (openedChange)="toggleSelect()">-->
+                <!--                      <mat-option>-->
+                <!--                        <ngx-mat-select-search [formControl]="communesFilterCtrl"-->
+                <!--                                               placeholderLabel="Tìm Quận/Huyện..."-->
+                <!--                                               noEntriesFoundLabel="Quận/Huyện không tồn tại"-->
+                <!--                        ></ngx-mat-select-search>-->
+                <!--                      </mat-option>-->
+                <!--                      <mat-option *ngFor="let commune of filteredCommunes" [value]="commune.id">-->
+                <!--                        {{commune.name}}-->
+                <!--                      </mat-option>-->
+                <!--                    </mat-select>-->
+
+                <!--                    <show-errors-->
+                <!--                      [control]="-->
+                <!--                        customerIndividualForm.controls['communeId']-->
+                <!--                      "-->
+                <!--                      [controlLabel]="-->
+                <!--                        'customer.individual_info.commune' | translate-->
+                <!--                      "-->
+                <!--                      [hasIconPrefix]="false"-->
+                <!--                    >-->
+                <!--                    </show-errors>-->
+                <!--                  </mat-form-field>-->
+                <!--                </div>-->
+
+                <!--                <div>-->
+                <!--                  <mat-form-field appearance="outline" class="w-100">-->
+                <!--                    <mat-label>{{-->
+                <!--                      "customer.individual_info.apartment_number" | translate-->
+                <!--                      }}</mat-label>-->
+                <!--                    <input-->
+                <!--                      matInput-->
+                <!--                      required-->
+                <!--                      [placeholder]="-->
+                <!--                        'customer.individual_info.apartment_number' | translate-->
+                <!--                      "-->
+                <!--                      formControlName="apartmentNumber"-->
+                <!--                    />-->
+                <!--                    <show-errors-->
+                <!--                      [control]="-->
+                <!--                        customerIndividualForm.controls['apartmentNumber']-->
+                <!--                      "-->
+                <!--                      [controlLabel]="-->
+                <!--                        'customer.individual_info.apartment_number' | translate-->
+                <!--                      "-->
+                <!--                      [hasIconPrefix]="false"-->
+                <!--                    >-->
+                <!--                    </show-errors>-->
+                <!--                  </mat-form-field>-->
+                <!--                </div>-->
 
                 <!--                <div>-->
                 <!--                  <mat-form-field appearance="outline" class="w-100">-->
@@ -431,7 +477,7 @@
                     <mat-label>{{
                       "customer.individual_info.number_of_dependents"
                         | translate
-                      }}</mat-label>
+                    }}</mat-label>
                     <mat-select formControlName="numberOfDependents" required>
                       <mat-option
                         *ngFor="
@@ -461,7 +507,7 @@
                   <mat-form-field appearance="outline" class="w-100">
                     <mat-label>{{
                       "customer.individual_info.marital_status" | translate
-                      }}</mat-label>
+                    }}</mat-label>
                     <mat-select formControlName="maritalStatus" required>
                       <mat-option
                         *ngFor="
@@ -490,7 +536,7 @@
                   <mat-form-field appearance="outline" class="w-100">
                     <mat-label>{{
                       "customer.individual_info.bank_account_number" | translate
-                      }}</mat-label>
+                    }}</mat-label>
                     <input
                       matInput
                       appNumberOnly
@@ -518,15 +564,16 @@
                   <mat-form-field appearance="outline" class="w-100">
                     <mat-label>{{
                       "customer.individual_info.bank_name" | translate
-                      }}</mat-label>
+                    }}</mat-label>
                     <mat-select
                       formControlName="bankCode"
                       (selectionChange)="changeBank($event)"
                     >
                       <mat-option>
-                        <ngx-mat-select-search [formControl]="banksFilterCtrl"
-                                               placeholderLabel="Tìm Ngân Hàng"
-                                               noEntriesFoundLabel="Ngân Hàng không tồn tại"
+                        <ngx-mat-select-search
+                          [formControl]="banksFilterCtrl"
+                          placeholderLabel="Tìm Ngân Hàng"
+                          noEntriesFoundLabel="Ngân Hàng không tồn tại"
                         ></ngx-mat-select-search>
                       </mat-option>
                       <mat-option
@@ -540,10 +587,10 @@
                         "
                       >
                         {{
-                        bankNameOption.bankName +
-                        " (" +
-                        bankNameOption.bankCode +
-                        ")"
+                          bankNameOption.bankName +
+                            " (" +
+                            bankNameOption.bankCode +
+                            ")"
                         }}
                       </mat-option>
                     </mat-select>
@@ -562,7 +609,7 @@
                   <mat-form-field appearance="outline" class="w-100">
                     <mat-label>{{
                       "customer.individual_info.va_account_number" | translate
-                      }}</mat-label>
+                    }}</mat-label>
                     <input
                       matInput
                       [placeholder]="
@@ -597,7 +644,7 @@
                   <mat-form-field appearance="outline" class="w-100">
                     <mat-label>{{
                       "customer.individual_info.created_at" | translate
-                      }}</mat-label>
+                    }}</mat-label>
                     <input
                       matInput
                       [placeholder]="
@@ -613,7 +660,7 @@
                   <mat-form-field appearance="outline" class="w-100">
                     <mat-label>{{
                       "customer.individual_info.updated_at" | translate
-                      }}</mat-label>
+                    }}</mat-label>
                     <input
                       matInput
                       [placeholder]="

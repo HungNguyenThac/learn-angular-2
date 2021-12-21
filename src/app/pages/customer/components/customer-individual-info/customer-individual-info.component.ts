@@ -425,39 +425,55 @@ export class CustomerIndividualInfoComponent implements OnInit, OnDestroy {
       },
       {
         title: this.multiLanguageService.instant(
-          'customer.individual_info.city'
+          'customer.individual_info.permanent_address'
         ),
-        value: this.customerInfo?.city,
+        value: this.customerInfo?.addressTwoLine1,
         type: DATA_CELL_TYPE.TEXT,
         format: null,
-        key: 'city',
       },
       {
         title: this.multiLanguageService.instant(
-          'customer.individual_info.district'
+          'customer.individual_info.current_residence'
         ),
-        value: this.customerInfo?.district,
-        type: DATA_CELL_TYPE.TEXT,
-        format: null,
-        key: 'district',
-      },
-      {
-        title: this.multiLanguageService.instant(
-          'customer.individual_info.commune'
-        ),
-        value: this.customerInfo?.commune,
-        type: DATA_CELL_TYPE.TEXT,
-        format: null,
-        key: 'commune',
-      },
-      {
-        title: this.multiLanguageService.instant(
-          'customer.individual_info.apartment_number'
-        ),
-        value: this.customerInfo?.apartmentNumber,
+        value: this.customerInfo?.addressOneLine1,
         type: DATA_CELL_TYPE.TEXT,
         format: null,
       },
+      // {
+      //   title: this.multiLanguageService.instant(
+      //     'customer.individual_info.city'
+      //   ),
+      //   value: this.customerInfo?.city,
+      //   type: DATA_CELL_TYPE.TEXT,
+      //   format: null,
+      //   key: 'city',
+      // },
+      // {
+      //   title: this.multiLanguageService.instant(
+      //     'customer.individual_info.district'
+      //   ),
+      //   value: this.customerInfo?.district,
+      //   type: DATA_CELL_TYPE.TEXT,
+      //   format: null,
+      //   key: 'district',
+      // },
+      // {
+      //   title: this.multiLanguageService.instant(
+      //     'customer.individual_info.commune'
+      //   ),
+      //   value: this.customerInfo?.commune,
+      //   type: DATA_CELL_TYPE.TEXT,
+      //   format: null,
+      //   key: 'commune',
+      // },
+      // {
+      //   title: this.multiLanguageService.instant(
+      //     'customer.individual_info.apartment_number'
+      //   ),
+      //   value: this.customerInfo?.apartmentNumber,
+      //   type: DATA_CELL_TYPE.TEXT,
+      //   format: null,
+      // },
     ];
   }
 
@@ -557,7 +573,7 @@ export class CustomerIndividualInfoComponent implements OnInit, OnDestroy {
       'financialData.accountNumber': data?.accountNumber || null,
       'financialData.bankCode': data?.bankCode || null,
       'financialData.bankName': data?.bankName || null,
-      'personalData.addressOneLine1': data?.currentResidence,
+      'personalData.addressOneLine1': data?.addressOneLine1,
       'personalData.dateOfBirth': data?.dateOfBirth
         ? this.formatTime(data?.dateOfBirth)
         : null,
@@ -569,11 +585,11 @@ export class CustomerIndividualInfoComponent implements OnInit, OnDestroy {
       'personalData.identityNumberOne': data?.identityNumberOne,
       'personalData.maritalStatus': data?.maritalStatus,
       'personalData.borrowerDetailTextVariable1': data?.numberOfDependents,
-      'personalData.addressTwoLine1': data?.permanentAddress,
-      'personalData.city': data?.city,
-      'personalData.district': data?.district,
-      'personalData.commune': data?.commune,
-      'personalData.apartmentNumber': data?.apartmentNumber,
+      'personalData.addressTwoLine1': data?.addressTwoLine1,
+      // 'personalData.city': data?.city,
+      // 'personalData.district': data?.district,
+      // 'personalData.commune': data?.commune,
+      // 'personalData.apartmentNumber': data?.apartmentNumber,
       'personalData.mobileNumber': data?.mobileNumber,
     };
   }
