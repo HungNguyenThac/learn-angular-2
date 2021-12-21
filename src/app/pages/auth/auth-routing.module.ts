@@ -8,7 +8,7 @@ export const AuthRoutes: Routes = [
       {
         path: 'sign-in',
         component: SignInComponent,
-        data: { animation: true, preload: true },
+        data: { animation: true },
       },
       // {
       //   path: 'forgot-password',
