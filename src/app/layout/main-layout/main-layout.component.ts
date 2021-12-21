@@ -19,6 +19,7 @@ import { Subscription } from 'rxjs';
 export class MainLayoutComponent implements OnInit {
   customerId$: Observable<string>;
   accessToken$: Observable<string>;
+  loadingStatus$: Observable<boolean>;
 
   customerId: string;
   accessToken: string;
@@ -31,6 +32,7 @@ export class MainLayoutComponent implements OnInit {
     private dialog: MatDialog
   ) {
     this._initSubscribeState();
+    this.loadingStatus$ = this.store.select(fromStore.getLoadingStatus);
   }
 
   async ngOnInit() {
