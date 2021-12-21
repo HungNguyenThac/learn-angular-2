@@ -29,7 +29,6 @@ class LoginActions {
       ...this.state,
       loginProcess: 'Proccess login...',
       customerMobile: payload.username,
-      password: payload.password,
     };
   }
 
@@ -66,7 +65,6 @@ class LoginActions {
       loginProcess: null,
       loginError: null,
       coreToken: null,
-      password: null,
     };
   }
 
