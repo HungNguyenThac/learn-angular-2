@@ -34,6 +34,12 @@ import { DialogUserInfoUpdateComponent } from './operators/user-account/dialog-u
 import { MerchantDetailDialogComponent } from './operators/merchant/merchant-detail-dialog/merchant-detail-dialog.component';
 import { MerchantGroupDialogComponent } from './operators/merchant/merchant-group-dialog/merchant-group-dialog.component';
 import { ChangeUserPasswordDialogComponent } from './operators/user-account/change-user-password-dialog/change-user-password-dialog.component';
+import { AddNewPdDialogComponent } from './operators/pd-system/add-new-pd-dialog/add-new-pd-dialog.component';
+import { AddNewQuestionComponent } from './operators/pd-system/add-new-question/add-new-question.component';
+import { DialogEkycInfoDetailComponent } from './operators/customer/dialog-ekyc-info-detail/dialog-ekyc-info-detail.component';
+import { PlCheckElementComponent } from './statutes/pl-check-element/pl-check-element.component';
+import { MerchantImageUploadComponent } from './operators/merchant/merchant-image-upload/merchant-image-upload.component';
+import { MonexLoadingComponent } from './loading/monex-loading/monex-loading.component';
 
 export const components: any[] = [
   ConfirmationDialog,
@@ -72,6 +78,12 @@ export const components: any[] = [
   MerchantDetailDialogComponent,
   MerchantGroupDialogComponent,
   ChangeUserPasswordDialogComponent,
+  AddNewPdDialogComponent,
+  AddNewQuestionComponent,
+  DialogEkycInfoDetailComponent,
+  PlCheckElementComponent,
+  MerchantImageUploadComponent,
+  MonexLoadingComponent,
 ];
 
 export * from './dialogs/confirmation-dialog/confirmation-dialog.component';
@@ -110,3 +122,9 @@ export * from './operators/user-account/dialog-user-info-update/dialog-user-info
 export * from './operators/merchant/merchant-detail-dialog/merchant-detail-dialog.component';
 export * from './operators/merchant/merchant-group-dialog/merchant-group-dialog.component';
 export * from './operators/user-account/change-user-password-dialog/change-user-password-dialog.component';
+export * from './operators/pd-system/add-new-pd-dialog/add-new-pd-dialog.component';
+export * from './operators/pd-system/add-new-question/add-new-question.component';
+export * from './operators/customer/dialog-ekyc-info-detail/dialog-ekyc-info-detail.component';
+export * from './statutes/pl-check-element/pl-check-element.component';
+export * from './operators/merchant/merchant-image-upload/merchant-image-upload.component';
+export * from './loading/monex-loading/monex-loading.component';

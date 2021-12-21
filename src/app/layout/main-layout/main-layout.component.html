@@ -2,11 +2,7 @@
   <app-header></app-header>
 
   <div class="mir-mat-spinner-container" *ngIf="loadingStatus$ | async">
-    <img
-      src="/assets/img/payday-loan/gif/monex_loading.gif"
-      alt="loading"
-      class="monex-loading"
-    />
+    <app-monex-loading></app-monex-loading>
   </div>
 
   <div id="main-layout-content">
