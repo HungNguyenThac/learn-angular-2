@@ -230,7 +230,7 @@ export class CustomerCompanyInfoComponent implements OnInit, OnDestroy {
         data?.borrowerEmploymentHistoryTextVariable1,
       'personalData.firstName': data?.firstName,
       'tngData.ten': data?.tngFirstName || null,
-      'tngData.ho': data?.tngLastName || null,
+      'tngData.hoDem': data?.tngLastName || null,
       'financialData.accountNumber': data?.accountNumber || null,
       'financialData.bankCode': data?.bankCode || null,
       'financialData.bankName': data?.bankName || null,
