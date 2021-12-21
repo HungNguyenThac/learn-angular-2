@@ -32,8 +32,7 @@ export class LoadingInterceptor implements HttpInterceptor {
 
     return next.handle(req).pipe(
       finalize(() => {
-
-        this.completedRequests++
+        this.completedRequests++;
 
         if (this.completedRequests === this.totalRequests) {
           this.completedRequests = 0;
@@ -44,3 +43,4 @@ export class LoadingInterceptor implements HttpInterceptor {
     );
   }
 }
+
