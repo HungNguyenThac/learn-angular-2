@@ -9,7 +9,7 @@ const formatPunishStartTimeHmg = (createdAt, expectedTenure) => {
   return (
     '00h Ngày ' +
     moment(createdDate)
-      .add(parseInt(expectedTenure) + 3, 'days')
+      .add(parseInt(expectedTenure) + 4, 'days')
       .format('DD/MM/YYYY')
   );
 };
