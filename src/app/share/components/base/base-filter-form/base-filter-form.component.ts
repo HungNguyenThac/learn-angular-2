@@ -1,4 +1,11 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  HostListener,
+  Input,
+  OnInit,
+  Output,
+} from '@angular/core';
 import { FilterOptionModel } from '../../../../public/models/filter/filter-option.model';
 import { FilterEventModel } from '../../../../public/models/filter/filter-event.model';
 import { FilterActionEventModel } from '../../../../public/models/filter/filter-action-event.model';
@@ -14,15 +21,24 @@ export class BaseFilterFormComponent implements OnInit {
     return this._filterOptions;
   }
   set filterOptions(value) {
-    this._filterOptions = value
+    this._filterOptions = value;
   }
 
   @Output() triggerFilterChange = new EventEmitter<FilterEventModel>();
   @Output() triggerFilterAction = new EventEmitter<FilterActionEventModel>();
 
+  responsive: boolean = false;
+  resizeTimeout: any;
+
   constructor() {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.onResponsiveInverted();
+  }
+
+  onResponsiveInverted() {
+    this.responsive = window.innerWidth < 768;
+  }
 
   completeFilter(event: FilterEventModel) {
     this.triggerFilterChange.emit(event);
@@ -32,4 +48,15 @@ export class BaseFilterFormComponent implements OnInit {
     this.triggerFilterAction.emit(event);
   }
 
+  @HostListener('window:resize', ['$event'])
+  onResize(event) {
+    //debounce resize, wait for resize to finish before doing stuff
+    if (this.resizeTimeout) {
+      clearTimeout(this.resizeTimeout);
+    }
+
+    this.resizeTimeout = setTimeout(() => {
+      this.onResponsiveInverted();
+    }, 200);
+  }
 }

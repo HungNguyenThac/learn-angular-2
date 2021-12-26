@@ -531,6 +531,7 @@
     "account_classification": "Phân loại tài khoản",
     "account_classification_test": "Tài khoản test",
     "account_classification_real": "Tài khoản thực",
+    "filter_expand_title": "Lọc theo điều kiện",
     "options": {
       "by_day": "Theo ngày",
       "to_day": "Hôm nay",

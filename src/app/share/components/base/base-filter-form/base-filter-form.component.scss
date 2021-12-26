@@ -4,5 +4,11 @@
   background: $white;
   height: 100%;
   position: relative;
-}
 
+  mat-expansion-panel-header.mat-expansion-panel-header {
+    background: $alice-blue;
+    &.mat-expanded {
+      height: 48px;
+    }
+  }
+}
