@@ -1,7 +1,13 @@
 <div class="filter-form-container py-3">
   <!-- Mobile view -->
-  <mat-accordion *ngIf="responsive; else desktopView">
-    <mat-expansion-panel class="shadow-none rounded-0">
+  <mat-accordion
+    *ngIf="responsive; else desktopView"
+    (mouseleave)="panelOpenState = false"
+  >
+    <mat-expansion-panel
+      class="shadow-none rounded-0"
+      [expanded]="panelOpenState"
+    >
       <mat-expansion-panel-header
         id="expand-panel-filter"
         class="pb-2 pt-2 ps-3 pe-3"
@@ -31,6 +37,16 @@
             (clickActionBtn)="clickActionBtn($event)"
           ></app-multiple-choice-filter>
         </ng-container>
+
+        <div class="text-center">
+          <button
+            (click)="panelOpenState = !panelOpenState"
+            mat-flat-button
+            type="button"
+          >
+            <span class="sprite-group-1-arrow-up"></span>
+          </button>
+        </div>
       </div>
     </mat-expansion-panel>
   </mat-accordion>

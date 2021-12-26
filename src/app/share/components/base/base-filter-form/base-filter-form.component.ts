@@ -29,6 +29,7 @@ export class BaseFilterFormComponent implements OnInit {
 
   responsive: boolean = false;
   resizeTimeout: any;
+  panelOpenState = false;
 
   constructor() {}
 
