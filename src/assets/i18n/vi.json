@@ -518,6 +518,7 @@
     "all_time": "Toàn thời gian",
     "choose_range_time": "Chọn khoảng thời gian",
     "from_day": "Từ ngày",
+    "to_day": "Đến ngày",
     "selected_date": "{{date}} ngày {{day}}",
     "company": "Công ty",
     "choose_company": "Chọn công ty",

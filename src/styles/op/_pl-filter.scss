@@ -35,6 +35,19 @@
         background: $grey-01;
       }
     }
+
+    &.mobile-filter-datetime {
+      padding: 0 !important;
+      margin-bottom: 16px;
+      &:hover,
+      &.filter-child-item-active {
+        background: $grey-01;
+      }
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
   }
 
   .filter-status-count {
