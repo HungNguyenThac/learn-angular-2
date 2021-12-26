@@ -1,4 +1,4 @@
-import { EventEmitter, Input, Output } from '@angular/core';
+import {EventEmitter, HostListener, Input, Output} from '@angular/core';
 import { Component, OnInit } from '@angular/core';
 import { FilterOptionModel } from '../../../../public/models/filter/filter-option.model';
 import { FilterEventModel } from '../../../../public/models/filter/filter-event.model';
@@ -25,10 +25,18 @@ export class SelectFilterComponent implements OnInit {
   @Output() completeFilter = new EventEmitter<FilterEventModel>();
 
   selectedItems: string[] = [];
+  responsive: boolean = false;
+  resizeTimeout: any;
 
   constructor() {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.onResponsiveInverted();
+  }
+
+  onResponsiveInverted() {
+    this.responsive = window.innerWidth < 768;
+  }
 
   public selectSubItem(item) {
     const index = this.selectedItems.findIndex((ele) => ele === item);
@@ -37,6 +45,11 @@ export class SelectFilterComponent implements OnInit {
     } else {
       this.selectedItems.splice(index, 1);
     }
+  }
+
+  public mobileSelectSubItem(item) {
+    this.selectSubItem(item);
+    this._completeMultipleFilter();
   }
 
   get displayTitle() {
@@ -69,7 +82,7 @@ export class SelectFilterComponent implements OnInit {
     this._completeMultipleFilter();
   }
 
-  private _completeMultipleFilter() {
+  public _completeMultipleFilter() {
     this.completeFilter.emit({
       type: this.filterOption.type,
       controlName: this.filterOption.controlName,
@@ -110,5 +123,17 @@ export class SelectFilterComponent implements OnInit {
     filterFormList.forEach((ele) => {
       ele.setAttribute('style', 'display:none');
     });
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event) {
+    //debounce resize, wait for resize to finish before doing stuff
+    if (this.resizeTimeout) {
+      clearTimeout(this.resizeTimeout);
+    }
+
+    this.resizeTimeout = setTimeout(() => {
+      this.onResponsiveInverted();
+    }, 200);
   }
 }
