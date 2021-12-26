@@ -6,9 +6,11 @@ import { SharedModule } from 'src/app/share/shared.module';
 import { BlankComponent } from './blank/blank.component';
 import { NotFoundComponent } from '../pages/errors/not-found/not-found.component';
 import { MainLayoutComponent } from './main-layout/main-layout.component';
-import { HeaderComponent } from './header/header.component';
-import {AppRoutingModule} from "../app-routing.module";
-import {PaydayLoanModule} from "../pages/products/payday-loan/payday-loan.module";
+import { HeaderComponent } from './headers/header/header.component';
+import { AppRoutingModule } from '../app-routing.module';
+import { MobileMenuComponent } from './headers/navigation/mobile-menu/mobile-menu.component';
+import { DesktopMenuComponent } from './headers/navigation/desktop-menu/desktop-menu.component';
+import { ProfileToolbarComponent } from './headers/navigation/profile-toolbar/profile-toolbar.component';
 
 @NgModule({
   declarations: [
@@ -16,6 +18,9 @@ import {PaydayLoanModule} from "../pages/products/payday-loan/payday-loan.module
     MainLayoutComponent,
     NotFoundComponent,
     BlankComponent,
+    MobileMenuComponent,
+    DesktopMenuComponent,
+    ProfileToolbarComponent,
   ],
   imports: [
     MaterialModule,
@@ -23,7 +28,6 @@ import {PaydayLoanModule} from "../pages/products/payday-loan/payday-loan.module
     SharedModule,
     TranslateModule,
     AppRoutingModule,
-    PaydayLoanModule,
   ],
 })
 export class LayoutModule {}

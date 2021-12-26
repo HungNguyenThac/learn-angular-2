@@ -127,19 +127,14 @@
           *ngFor="let column of displayColumns; let i = index"
           matColumnDef="{{ column?.key }}"
         >
-          <th *matHeaderCellDef mat-header-cell>
-            <p
+          <th *matHeaderCellDef mat-header-cell [resizeColumn]="true" [index]="i">
+            <span
               arrowPosition="before"
               mat-sort-header
               sortActionDescription="Sort by field"
             >
               {{ column?.title }}
-            </p>
-
-            <span
-              class="resize-handle"
-              (mousedown)="onResizeColumn($event, i)"
-            ></span>
+            </span>
           </th>
 
           <td *matCellDef="let element" mat-cell>
@@ -175,11 +170,7 @@
             </div>
           </td>
         </ng-container>
-        <tr
-          *matHeaderRowDef="displayColumnKeys"
-          class=""
-          mat-header-row
-        ></tr>
+        <tr *matHeaderRowDef="displayColumnKeys" class="" mat-header-row></tr>
         <tr
           (click)="expandElement(element)"
           *matRowDef="let element; columns: displayColumnKeys"

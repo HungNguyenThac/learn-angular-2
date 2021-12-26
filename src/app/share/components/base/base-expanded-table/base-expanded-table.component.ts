@@ -70,12 +70,7 @@ export class BaseExpandedTableComponent implements OnInit, AfterViewInit {
   @Output() outputAction = new EventEmitter<any>();
 
   pressed: boolean = false;
-  currentResizeIndex: number;
-  startX: number;
-  startWidth: number;
-  isResizingRight: boolean;
-  resizableMousemove: () => void;
-  resizableMouseup: () => void;
+  resizeTimeout: any;
 
   expandedElement: any;
   selectedFields: DisplayedFieldsModel[] = [];
@@ -245,86 +240,6 @@ export class BaseExpandedTableComponent implements OnInit, AfterViewInit {
       column.width *= scale;
       this.setColumnWidth(column);
     });
-    this.cdr.detectChanges();
-  }
-
-  onResizeColumn(event: any, index: number) {
-    console.log('checkResizing', event, index);
-    this.checkResizing(event, index);
-    this.currentResizeIndex = index;
-    this.pressed = true;
-    this.startX = event.pageX;
-    this.startWidth = event.target.clientWidth;
-    console.log('this.startWidth', this.startWidth);
-    event.preventDefault();
-    this.mouseMove(index);
-  }
-
-  private checkResizing(event, index) {
-    const cellData = this.getCellData(index);
-    this.isResizingRight =
-      index === 0 ||
-      (Math.abs(event.pageX - cellData.right) < cellData.width / 2 &&
-        index !== this.displayColumns.length - 1);
-  }
-
-  private getCellData(index: number) {
-    const headerRow =
-      this.matTableRef.nativeElement.children[0].querySelector('tr');
-    const cell = headerRow.children[index];
-    return cell.getBoundingClientRect();
-  }
-
-  mouseMove(index: number) {
-    this.resizableMousemove = this.renderer.listen(
-      'document',
-      'mousemove',
-      (event) => {
-        if (this.pressed && event.buttons) {
-          const dx = this.isResizingRight
-            ? event.pageX - this.startX
-            : -event.pageX + this.startX;
-          const width = this.startWidth + dx;
-          console.log('width', width);
-          console.log('this.currentResizeIndex', this.currentResizeIndex);
-          console.log('index', index);
-          console.log(
-            'this.currentResizeIndex === index && width > 50',
-            this.currentResizeIndex === index && width > 50
-          );
-          if (this.currentResizeIndex === index && width > 50) {
-            this.setColumnWidthChanges(index, width);
-          }
-        }
-      }
-    );
-    this.resizableMouseup = this.renderer.listen(
-      'document',
-      'mouseup',
-      (event) => {
-        if (this.pressed) {
-          this.pressed = false;
-          this.currentResizeIndex = -1;
-          this.resizableMousemove();
-          this.resizableMouseup();
-        }
-      }
-    );
-  }
-
-  setColumnWidthChanges(index: number, width: number) {
-    const orgWidth = this.displayColumns[index].width;
-    const dx = width - orgWidth;
-    if (dx && dx !== 0) {
-      const j = this.isResizingRight ? index + 1 : index - 1;
-      const newWidth = this.displayColumns[j].width - dx;
-      if (newWidth > 50) {
-        this.displayColumns[index].width = width;
-        this.setColumnWidth(this.displayColumns[index]);
-        this.displayColumns[j].width = newWidth;
-        this.setColumnWidth(this.displayColumns[j]);
-      }
-    }
   }
 
   setColumnWidth(column: DisplayedFieldsModel) {
@@ -343,11 +258,17 @@ export class BaseExpandedTableComponent implements OnInit, AfterViewInit {
 
   @HostListener('window:resize', ['$event'])
   onResize(event) {
-    this.setTableResize(this.matTableRef.nativeElement.clientWidth);
+    //debounce resize, wait for resize to finish before doing stuff
+    if (this.resizeTimeout) {
+      clearTimeout(this.resizeTimeout);
+    }
+
+    this.resizeTimeout = setTimeout(() => {
+      this.setTableResize(this.matTableRef.nativeElement.clientWidth);
+    }, 200);
   }
 
   ngAfterViewInit(): void {
     this.setTableResize(this.matTableRef.nativeElement.clientWidth);
   }
-
 }

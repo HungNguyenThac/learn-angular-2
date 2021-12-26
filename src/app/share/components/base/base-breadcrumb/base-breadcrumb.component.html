@@ -4,45 +4,62 @@
       id="op-breadcrumb-content"
       class="d-flex justify-content-between align-items-center gap-2"
     >
-      <div class="d-inline-flex gap-3">
-        <span *ngIf="iconClass; else isIconImgSrc" [ngClass]="iconClass"></span>
-        <ng-template #isIconImgSrc>
-          <span>
-            <img [src]="iconImgSrc" class="op-breadcrumb-icon" alt=""/>
-          </span>
-        </ng-template>
-        <h2 class="op-breadcrumb-title d-inline-flex align-items-center">
-          {{ title }}
-        </h2>
-        <form
-          [formGroup]="searchForm"
-          class="form-container"
-          *ngIf="searchable"
-          (submit)="submitSearch()"
+      <div class="d-inline-flex row align-items-center gap-3">
+        <section
+          class="
+            col-12 col-sm-12 col-md-6 col-lg-5
+            d-flex
+            align-items-center
+            gap-2
+            pe-0
+          "
         >
-          <div class="row">
-            <div class="col-md-12">
-              <div
-                class="breadcrumb-search-input"
-                [matTooltip]="searchPlaceholder"
-              >
-                <div class="breadcrumb-input-icon" (click)="submitSearch()">
-                  <span class="sprite-group-5-search"></span>
-                </div>
+          <span
+            *ngIf="iconClass; else isIconImgSrc"
+            [ngClass]="iconClass"
+          ></span>
+          <ng-template #isIconImgSrc>
+            <span>
+              <img [src]="iconImgSrc" class="op-breadcrumb-icon" alt="" />
+            </span>
+          </ng-template>
+          <h2 class="op-breadcrumb-title d-inline-flex align-items-center">
+            {{ title }}
+          </h2>
+        </section>
 
-                <input
-                  class="breadcrumb-input"
-                  formControlName="keyword"
-                  [placeholder]="searchPlaceholder"
-                  [maxlength]="maxLengthSearchInput"
-                />
+        <section class="col-12 col-sm-12 col-md-6 col-lg-5">
+          <form
+            [formGroup]="searchForm"
+            class="form-container"
+            *ngIf="searchable"
+            (submit)="submitSearch()"
+          >
+            <div
+              class="breadcrumb-search-input"
+              [matTooltip]="searchPlaceholder"
+            >
+              <div class="breadcrumb-input-icon" (click)="submitSearch()">
+                <span class="sprite-group-5-search"></span>
               </div>
+
+              <input
+                class="breadcrumb-input"
+                formControlName="keyword"
+                [placeholder]="searchPlaceholder"
+                [maxlength]="maxLengthSearchInput"
+              />
             </div>
-          </div>
-        </form>
+          </form>
+        </section>
       </div>
       <div class="d-inline-flex gap-3">
-        <button (click)="onClickButton($event)" mat-button class="op-breadcrumb-add-btn" *ngIf="showBtnAdd">
+        <button
+          (click)="onClickButton($event)"
+          mat-button
+          class="op-breadcrumb-add-btn"
+          *ngIf="showBtnAdd"
+        >
           <span class="sprite-group-5-add-white"></span>
           <span class="ps-1">{{ btnAddText }}</span>
         </button>

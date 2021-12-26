@@ -8,6 +8,13 @@ table.mat-table {
   width: 100%;
   font-family: $sfPro;
 
+  &.resizing {
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    cursor: col-resize;
+  }
+
   .mat-header-row {
     display: flex;
     height: 32px;
@@ -52,6 +59,7 @@ table.mat-table {
   .mat-cell,
   .mat-footer-cell,
   .mat-header-cell {
+    padding: 0 5px;
     text-align: left;
     display: flex;
     align-items: center;
@@ -104,39 +112,43 @@ table.mat-table {
     display: contents;
   }
 
-  th {
+  .mat-header-cell {
     position: relative;
-  }
+    &:not(:last-child) {
+      .resize-holder {
+        display: inline-block;
+        border-right: 2px solid $grey-04;
+        cursor: col-resize;
+        height: 100%;
+        position: absolute;
+        right: 0;
+        top: 0;
+        z-index: 1;
+        opacity: 0;
 
-  th:hover .resize-handle {
-    opacity: 1;
-    transition: .3s ease-in-out;
+        &:hover {
+          width: 20px;
+        }
+      }
+
+      &:hover {
+        .resize-holder {
+          opacity: 1;
+          transition: 0.3s ease-in-out;
+        }
+      }
+    }
   }
 }
 
 .selected {
-  background-color: #007AFF;
+  background-color: #007aff;
   border-top-left-radius: 4px;
   border-top-right-radius: 4px;
 
   h2 {
     color: #fff;
   }
-}
-
-.resize-handle {
-  display: inline-block;
-  border-right: 2px solid lightgray;
-  position: absolute;
-  top: 0;
-  right: 0;
-  height: 100%;
-  cursor: col-resize;
-  opacity: 0;
-}
-
-.resize-handle:hover {
-  width: 20px;
 }
 
 ::ng-deep .mat-sort-header-arrow {
@@ -160,8 +172,8 @@ table.expanded-table {
   }
 
   tr.selected-user {
-    background-color: #F7FBFF !important;
-    border: 1px solid #007AFF;
+    background-color: #f7fbff !important;
+    border: 1px solid #007aff;
     border-radius: 4px;
   }
 
