@@ -55,9 +55,9 @@ table.mat-table {
     text-align: left;
     display: flex;
     align-items: center;
-    flex: 1 1 100px;
     overflow: hidden;
     border: none;
+    flex: none;
   }
 
   .mat-header-cell {
@@ -104,6 +104,39 @@ table.mat-table {
     display: contents;
   }
 
+  th {
+    position: relative;
+  }
+
+  th:hover .resize-handle {
+    opacity: 1;
+    transition: .3s ease-in-out;
+  }
+}
+
+.selected {
+  background-color: #007AFF;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+
+  h2 {
+    color: #fff;
+  }
+}
+
+.resize-handle {
+  display: inline-block;
+  border-right: 2px solid lightgray;
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 100%;
+  cursor: col-resize;
+  opacity: 0;
+}
+
+.resize-handle:hover {
+  width: 20px;
 }
 
 ::ng-deep .mat-sort-header-arrow {

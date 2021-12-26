@@ -6,6 +6,34 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 Node v12
 
+## Guide
+
+Auto migrate effect
+
+- ng generate @ngrx/schematics:create-effect-migration
+
+### Generate api docs
+
+```
+yarn generate
+```
+
+### Install dependencies
+
+```
+yarn install
+```
+
+### Run development
+
+```
+yarn start                              //develop
+
+yarn start --configuration development   //develop
+
+yarn start --configuration staging      //staging
+```
+
 ## Development server
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change
@@ -33,30 +61,6 @@ package that implements end-to-end testing capabilities.
 
 To get more help on the Angular CLI use `ng help` or go check out
 the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
-
-## Guide
-
-Auto migrate effect
-
-- ng generate @ngrx/schematics:create-effect-migration
-
-Generate api docs
-
-```
-yarn generate
-```
-
-Install dependencies
-
-```
-yarn install
-```
-
-Run development
-
-```
-yarn start
-```
 
 ## Note
 

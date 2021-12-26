@@ -166,6 +166,7 @@ export class CustomerListComponent implements OnInit, OnDestroy {
     {
       key: 'id',
       title: this.multiLanguageService.instant('customer.individual_info.id'),
+      width: 100,
       type: DATA_CELL_TYPE.TEXT,
       format: null,
       showed: false,
@@ -175,6 +176,7 @@ export class CustomerListComponent implements OnInit, OnDestroy {
       title: this.multiLanguageService.instant(
         'customer.individual_info.fullname'
       ),
+      width: 300,
       type: DATA_CELL_TYPE.TEXT,
       format: null,
       showed: true,
@@ -184,6 +186,7 @@ export class CustomerListComponent implements OnInit, OnDestroy {
       title: this.multiLanguageService.instant(
         'customer.individual_info.phone_number'
       ),
+      width: 100,
       type: DATA_CELL_TYPE.TEXT,
       format: null,
       showed: true,
@@ -193,6 +196,7 @@ export class CustomerListComponent implements OnInit, OnDestroy {
       title: this.multiLanguageService.instant(
         'customer.individual_info.email'
       ),
+      width: 100,
       type: DATA_CELL_TYPE.TEXT,
       format: null,
       showed: true,
@@ -202,6 +206,7 @@ export class CustomerListComponent implements OnInit, OnDestroy {
       title: this.multiLanguageService.instant(
         'customer.individual_info.date_of_birth'
       ),
+      width: 100,
       type: DATA_CELL_TYPE.TEXT,
       format: null,
       showed: false,
@@ -211,6 +216,7 @@ export class CustomerListComponent implements OnInit, OnDestroy {
       title: this.multiLanguageService.instant(
         'customer.individual_info.gender'
       ),
+      width: 100,
       type: DATA_CELL_TYPE.TEXT,
       format: null,
       showed: false,
@@ -220,6 +226,7 @@ export class CustomerListComponent implements OnInit, OnDestroy {
       title: this.multiLanguageService.instant(
         'customer.individual_info.permanent_address'
       ),
+      width: 100,
       type: DATA_CELL_TYPE.TEXT,
       format: null,
       showed: false,
@@ -229,6 +236,7 @@ export class CustomerListComponent implements OnInit, OnDestroy {
       title: this.multiLanguageService.instant(
         'customer.individual_info.current_residence'
       ),
+      width: 100,
       type: DATA_CELL_TYPE.TEXT,
       format: null,
       showed: false,
@@ -238,6 +246,7 @@ export class CustomerListComponent implements OnInit, OnDestroy {
       title: this.multiLanguageService.instant(
         'customer.individual_info.id_number'
       ),
+      width: 100,
       type: DATA_CELL_TYPE.TEXT,
       format: null,
       showed: false,
@@ -248,6 +257,7 @@ export class CustomerListComponent implements OnInit, OnDestroy {
       title: this.multiLanguageService.instant(
         'customer.individual_info.status'
       ),
+      width: 100,
       type: DATA_CELL_TYPE.STATUS,
       format: DATA_STATUS_TYPE.CUSTOMER_STATUS,
       showed: true,
@@ -257,6 +267,7 @@ export class CustomerListComponent implements OnInit, OnDestroy {
       title: this.multiLanguageService.instant(
         'customer.individual_info.company'
       ),
+      width: 100,
       type: DATA_CELL_TYPE.TEXT,
       format: null,
       showed: true,
@@ -266,6 +277,7 @@ export class CustomerListComponent implements OnInit, OnDestroy {
       title: this.multiLanguageService.instant(
         'customer.individual_info.employee_code'
       ),
+      width: 100,
       type: DATA_CELL_TYPE.TEXT,
       format: null,
       showed: true,
@@ -275,6 +287,7 @@ export class CustomerListComponent implements OnInit, OnDestroy {
       title: this.multiLanguageService.instant(
         'customer.individual_info.active_status'
       ),
+      width: 100,
       type: DATA_CELL_TYPE.STATUS,
       format: DATA_STATUS_TYPE.USER_STATUS,
       showed: false,
@@ -284,6 +297,7 @@ export class CustomerListComponent implements OnInit, OnDestroy {
       title: this.multiLanguageService.instant(
         'customer.individual_info.created_at'
       ),
+      width: 100,
       type: DATA_CELL_TYPE.DATETIME,
       format: 'dd/MM/yyyy HH:mm',
       showed: true,
@@ -293,6 +307,7 @@ export class CustomerListComponent implements OnInit, OnDestroy {
       title: this.multiLanguageService.instant(
         'customer.individual_info.updated_at'
       ),
+      width: 100,
       type: DATA_CELL_TYPE.DATETIME,
       format: 'dd/MM/yyyy HH:mm',
       showed: false,
@@ -332,6 +347,7 @@ export class CustomerListComponent implements OnInit, OnDestroy {
     );
     this.store.dispatch(new fromActions.SetOperatorInfo(NAV_ITEM.CUSTOMER));
     this._initSubscription();
+    this._getCompanyList();
   }
 
   private _initFilterForm() {
@@ -454,7 +470,6 @@ export class CustomerListComponent implements OnInit, OnDestroy {
       this.routeAllState$.subscribe((params) => {
         this._parseQueryParams(params?.queryParams);
         this._getCustomerList();
-        this._getCompanyList();
       })
     );
   }
@@ -474,14 +489,16 @@ export class CustomerListComponent implements OnInit, OnDestroy {
   }
 
   private _getCompanyList() {
-    // this.subManager.add(
-    this.companyControllerService
-      .getCompanies(100, 0, {})
-      .subscribe((data: ApiResponseSearchAndPaginationResponseCompanyInfo) => {
-        this.companyList = data?.result?.data;
-        this._initCompanyOptions();
-      });
-    // );
+    this.subManager.add(
+      this.companyControllerService
+        .getCompanies(100, 0, {})
+        .subscribe(
+          (response: ApiResponseSearchAndPaginationResponseCompanyInfo) => {
+            this.companyList = response?.result?.data;
+            this._initCompanyOptions();
+          }
+        )
+    );
   }
 
   private _initCompanyOptions() {
