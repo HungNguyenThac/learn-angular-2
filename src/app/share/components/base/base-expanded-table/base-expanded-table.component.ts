@@ -8,7 +8,6 @@ import {
   Input,
   OnInit,
   Output,
-  Renderer2,
   TemplateRef,
   ViewChild,
 } from '@angular/core';
@@ -84,7 +83,6 @@ export class BaseExpandedTableComponent implements OnInit, AfterViewInit {
     private notificationService: NotificationService,
     private notifier: ToastrService,
     private _liveAnnouncer: LiveAnnouncer,
-    private renderer: Renderer2,
     private cdr: ChangeDetectorRef
   ) {}
 
@@ -114,7 +112,6 @@ export class BaseExpandedTableComponent implements OnInit, AfterViewInit {
     ele.showed = !ele.showed;
     this.displayedColumns();
     this.displayedColumnKeys();
-    this.setTableResize(this.matTableRef.nativeElement.clientWidth);
   }
 
   deselectAll() {
@@ -177,7 +174,6 @@ export class BaseExpandedTableComponent implements OnInit, AfterViewInit {
     this._initSelectedFields();
     this.displayedColumns();
     this.displayedColumnKeys();
-    this.setTableResize(this.matTableRef.nativeElement.clientWidth);
   }
 
   private _initSelectedFields() {

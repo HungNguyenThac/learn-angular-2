@@ -328,3 +328,11 @@ ul.filter-boxes-ul {
     color: $grey-10;
   }
 }
+
+@media (max-width: 768px) {
+  .filter-form-expand-panel-container {
+    .datepicker-container .calendar-card {
+      min-width: auto;
+    }
+  }
+}
