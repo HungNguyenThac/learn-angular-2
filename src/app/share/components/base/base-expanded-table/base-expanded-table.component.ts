@@ -169,6 +169,7 @@ export class BaseExpandedTableComponent implements OnInit, AfterViewInit {
     console.log('expandElement', element);
     this.expandedElement = this.expandedElement === element ? null : element;
     this.triggerExpandedElementChange.emit(element);
+    this.triggerWindowResize();
   }
 
   public resetDisplayFields() {
