@@ -1,4 +1,11 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  HostListener,
+  Input,
+  OnInit,
+  Output,
+} from '@angular/core';
 import * as moment from 'moment';
 import { MultiLanguageService } from '../../../translate/multiLanguageService';
 import { FilterEventModel } from '../../../../public/models/filter/filter-event.model';
@@ -29,6 +36,8 @@ export class DatetimeFilterComponent implements OnInit {
 
   currentTime = new Date();
   currentQuarter = Math.floor((this.currentTime.getMonth() + 3) / 3);
+  responsive: boolean = false;
+  resizeTimeout: any;
 
   timeFilterOptions: any = [
     {
@@ -153,7 +162,13 @@ export class DatetimeFilterComponent implements OnInit {
 
   constructor(private multiLanguageService: MultiLanguageService) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.onResponsiveInverted();
+  }
+
+  onResponsiveInverted() {
+    this.responsive = window.innerWidth < 768;
+  }
 
   get filterOptionValue() {
     return this.filterOption.value;
@@ -358,6 +373,10 @@ export class DatetimeFilterComponent implements OnInit {
 
   public chooseTimeFilter(startDate, endDate, title, element) {
     element.style.display = 'none';
+    this.completeFilterDatetime(startDate, endDate, title);
+  }
+
+  public completeFilterDatetime(startDate, endDate, title) {
     let dateFormat = this.formatDateBeforeFilter(startDate, endDate);
 
     this.completeFilter.emit({
@@ -370,6 +389,16 @@ export class DatetimeFilterComponent implements OnInit {
         type: this.selectedTimeFilterMethod,
       },
     });
+  }
+
+  public onSelectEndDateMobile(event) {
+    this.selectedEndDate = event;
+    const selectedTimeShowOnRadioButton = `${this.selectedStartDateDisplay} - ${this.selectedEndDateDisplay}`;
+    this.completeFilterDatetime(
+      this.selectedStartDate,
+      this.selectedEndDate,
+      selectedTimeShowOnRadioButton
+    );
   }
 
   public formatDateBeforeFilter(startTime, endTime) {
@@ -390,6 +419,10 @@ export class DatetimeFilterComponent implements OnInit {
       startDate: startDate,
       endDate: endDate,
     };
+  }
+
+  public selectTimeFilterMethod(type) {
+    this.selectedTimeFilterMethod = type;
   }
 
   public displayDetailOption(currentElement, type) {
@@ -474,5 +507,17 @@ export class DatetimeFilterComponent implements OnInit {
         type: this.selectedTimeFilterMethod,
       },
     });
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event) {
+    //debounce resize, wait for resize to finish before doing stuff
+    if (this.resizeTimeout) {
+      clearTimeout(this.resizeTimeout);
+    }
+
+    this.resizeTimeout = setTimeout(() => {
+      this.onResponsiveInverted();
+    }, 200);
   }
 }

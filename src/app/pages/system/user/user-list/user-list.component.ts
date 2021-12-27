@@ -19,10 +19,8 @@ import {
   AdminAccountEntity,
   ApiResponseListParentPermissionTypeResponse,
   ApiResponseSearchAndPaginationResponseAdminAccountEntity,
-  ApiResponseSearchAndPaginationResponseCompanyInfo,
   ApiResponseSearchAndPaginationResponseGroupEntity,
   CompanyControllerService,
-  CompanyInfo,
   GroupControllerService,
   GroupEntity,
   ParentPermissionTypeResponse,
@@ -89,7 +87,6 @@ export class UserListComponent implements OnInit, OnDestroy {
     },
   ];
 
-  companyList: Array<CompanyInfo>;
   subManager = new Subscription();
   tableTitle: string = this.multiLanguageService.instant(
     'page_title.user_list'
@@ -535,7 +532,6 @@ export class UserListComponent implements OnInit, OnDestroy {
       this.routeAllState$.subscribe((params) => {
         this._parseQueryParams(params?.queryParams);
         this._getUserList();
-        this._getCompanyList();
         this.getRoleList();
       })
     );
@@ -601,14 +597,6 @@ export class UserListComponent implements OnInit, OnDestroy {
           : null;
       }
     });
-  }
-
-  private _getCompanyList() {
-    this.companyControllerService
-      .getCompanies(100, 0, {})
-      .subscribe((data: ApiResponseSearchAndPaginationResponseCompanyInfo) => {
-        this.companyList = data?.result?.data;
-      });
   }
 
   private _buildParams() {

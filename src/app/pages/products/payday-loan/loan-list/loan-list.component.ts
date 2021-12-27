@@ -392,6 +392,7 @@ export class LoanListComponent implements OnInit, OnDestroy {
     );
     this.store.dispatch(new fromActions.SetOperatorInfo(NAV_ITEM.LOANAPP));
     this._initSubscription();
+    this._getCompanyList();
   }
 
   onPageChange(event: PageEvent) {
@@ -554,7 +555,6 @@ export class LoanListComponent implements OnInit, OnDestroy {
         }
         this._parseQueryParams(params?.queryParams);
         this._getLoanList();
-        this._getCompanyList();
       })
     );
   }

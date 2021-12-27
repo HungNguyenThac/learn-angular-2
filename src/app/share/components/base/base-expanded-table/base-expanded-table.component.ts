@@ -1,16 +1,21 @@
 import {
+  AfterViewInit,
+  ChangeDetectorRef,
   Component,
+  ElementRef,
   EventEmitter,
+  HostListener,
   Input,
   OnInit,
   Output,
   TemplateRef,
+  ViewChild,
 } from '@angular/core';
 import { detailExpandAnimation } from '../../../../core/common/animations/detail-expand.animation';
 import { Sort } from '@angular/material/sort';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { DisplayedFieldsModel } from '../../../../public/models/filter/displayed-fields.model';
-import { MatTableDataSource } from '@angular/material/table';
+import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { PageEvent } from '@angular/material/paginator/public-api';
 import { SortDirection } from '@angular/material/sort/sort-direction';
 import { SelectionModel } from '@angular/cdk/collections';
@@ -30,7 +35,9 @@ import * as _ from 'lodash';
     // animation triggers go here
   ],
 })
-export class BaseExpandedTableComponent implements OnInit {
+export class BaseExpandedTableComponent implements OnInit, AfterViewInit {
+  @ViewChild(MatTable, { read: ElementRef }) private matTableRef: ElementRef;
+
   @Input() detailElementTemplate: TemplateRef<any>;
   @Input() tableTitle: string;
   @Input() dataSource: MatTableDataSource<any>;
@@ -61,18 +68,22 @@ export class BaseExpandedTableComponent implements OnInit {
   @Output() triggerExpandedElementChange = new EventEmitter<any>();
   @Output() outputAction = new EventEmitter<any>();
 
+  pressed: boolean = false;
+  resizeTimeout: any;
+
   expandedElement: any;
   selectedFields: DisplayedFieldsModel[] = [];
   panelOpenState = false;
   selection = new SelectionModel<PeriodicElement>(true, []);
-  displayColumn: any;
-  arrDisplayColumn: any;
+  displayColumns: DisplayedFieldsModel[] = [];
+  displayColumnKeys: string[] = [];
 
   constructor(
     private multiLanguageService: MultiLanguageService,
     private notificationService: NotificationService,
     private notifier: ToastrService,
-    private _liveAnnouncer: LiveAnnouncer
+    private _liveAnnouncer: LiveAnnouncer,
+    private cdr: ChangeDetectorRef
   ) {}
 
   get numSelected() {
@@ -84,16 +95,16 @@ export class BaseExpandedTableComponent implements OnInit {
   }
 
   displayedColumns() {
-    this.displayColumn =
+    this.displayColumns =
       this.selectedFields.filter((element) => element.showed === true) || [];
   }
 
   displayedColumnKeys() {
-    this.arrDisplayColumn = this.displayColumn.map((item, index) => {
+    this.displayColumnKeys = this.displayColumns.map((item, index) => {
       return item.key;
     });
     if (this.hasSelect) {
-      this.arrDisplayColumn.unshift('select');
+      this.displayColumnKeys.unshift('select');
     }
   }
 
@@ -101,6 +112,7 @@ export class BaseExpandedTableComponent implements OnInit {
     ele.showed = !ele.showed;
     this.displayedColumns();
     this.displayedColumnKeys();
+    this.triggerWindowResize();
   }
 
   deselectAll() {
@@ -125,6 +137,7 @@ export class BaseExpandedTableComponent implements OnInit {
 
   ngOnInit(): void {
     this._initSelectedFields();
+    this.displayedColumns();
     this.displayedColumnKeys();
   }
 
@@ -162,6 +175,7 @@ export class BaseExpandedTableComponent implements OnInit {
     this._initSelectedFields();
     this.displayedColumns();
     this.displayedColumnKeys();
+    this.triggerWindowResize();
   }
 
   private _initSelectedFields() {
@@ -170,12 +184,12 @@ export class BaseExpandedTableComponent implements OnInit {
         key: item.key,
         title: item.title,
         type: item.type,
+        width: item.width || 100,
         format: item.format,
         showed: item.showed,
         externalKey: item.externalKey,
       };
     });
-    this.displayedColumns();
   }
 
   onClick(action) {
@@ -204,5 +218,66 @@ export class BaseExpandedTableComponent implements OnInit {
     }
 
     return obj[props[i]];
+  }
+
+  resizeTableAfterContentChanged() {
+    this.setTableResize();
+  }
+
+  setTableResize() {
+    if (!this.matTableRef) {
+      return;
+    }
+    let tableWidth = this.matTableRef.nativeElement.clientWidth;
+    let totWidth = 0;
+    this.displayColumns.forEach((column) => {
+      totWidth += column.width;
+    });
+    const scale = (tableWidth - 5) / totWidth;
+    this.displayColumns.forEach((column) => {
+      column.width *= scale;
+      this.setColumnWidth(column);
+    });
+  }
+
+  setColumnWidth(column: DisplayedFieldsModel) {
+    const columnEls = Array.from(
+      this.matTableRef.nativeElement.getElementsByClassName(
+        'mat-column-' + column.key.replace(/\./g, '-')
+      )
+    );
+
+    columnEls.forEach((el: HTMLDivElement) => {
+      el.style.width = column.width + 'px';
+      console.log(el.style.width);
+    });
+  }
+
+  triggerWindowResize() {
+    if (typeof Event === 'function') {
+      // modern browsers
+      window.dispatchEvent(new Event('resize'));
+    } else {
+      // for IE and other old browsers
+      // causes deprecation warning on modern browsers
+      let evt = new UIEvent('resize');
+      window.dispatchEvent(evt);
+    }
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event) {
+    //debounce resize, wait for resize to finish before doing stuff
+    if (this.resizeTimeout) {
+      clearTimeout(this.resizeTimeout);
+    }
+
+    this.resizeTimeout = setTimeout(() => {
+      this.setTableResize();
+    }, 200);
+  }
+
+  ngAfterViewInit(): void {
+    this.setTableResize();
   }
 }

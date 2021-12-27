@@ -55,7 +55,7 @@
       selected
     "
   >
-    <div class="d-flex align-items-center gap-2">
+    <div class="d-flex align-items-center">
       <span class="sprite-group-7-tick"></span>
       <h2
         [innerHTML]="
@@ -100,6 +100,7 @@
         matSort
         matSortDisableClear
         multiTemplateDataRows
+        (contentChanged)="resizeTableAfterContentChanged()"
       >
         <!-- Checkbox Column -->
         <ng-container matColumnDef="select" style="display: none">
@@ -124,17 +125,22 @@
         </ng-container>
 
         <ng-container
-          *ngFor="let column of displayColumn"
+          *ngFor="let column of displayColumns; let i = index"
           matColumnDef="{{ column?.key }}"
         >
           <th
             *matHeaderCellDef
-            arrowPosition="before"
             mat-header-cell
-            mat-sort-header
-            sortActionDescription="Sort by field"
+            [resizeColumn]="true"
+            [index]="i"
           >
-            {{ column?.title }}
+            <span
+              arrowPosition="before"
+              mat-sort-header
+              sortActionDescription="Sort by field"
+            >
+              {{ column?.title }}
+            </span>
           </th>
 
           <td *matCellDef="let element" mat-cell>
@@ -152,7 +158,7 @@
         <ng-container matColumnDef="expandedDetail">
           <td
             *matCellDef="let element"
-            [attr.colspan]="displayColumn.length"
+            [attr.colspan]="displayColumns.length"
             [class.expanded-active]="element == expandedElement"
             mat-cell
           >
@@ -170,17 +176,13 @@
             </div>
           </td>
         </ng-container>
-        <tr
-          *matHeaderRowDef="arrDisplayColumn"
-          class="gap-2"
-          mat-header-row
-        ></tr>
+        <tr *matHeaderRowDef="displayColumnKeys" class="" mat-header-row></tr>
         <tr
           (click)="expandElement(element)"
-          *matRowDef="let element; columns: arrDisplayColumn"
+          *matRowDef="let element; columns: displayColumnKeys"
           [class.op-expanded-row]="expandedElement === element"
           [class.selected-user]="selection.isSelected(element)"
-          class="op-element-row gap-2"
+          class="op-element-row"
           mat-row
         ></tr>
         <tr
@@ -191,7 +193,7 @@
 
         <!-- Row shown when there is no matching data. -->
         <tr *matNoDataRow class="mat-row">
-          <td [attr.colspan]="displayColumn.length" class="mat-cell">
+          <td [attr.colspan]="displayColumns.length" class="mat-cell">
             {{ "common.no_matching_records" | translate }}
           </td>
         </tr>

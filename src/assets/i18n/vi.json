@@ -518,6 +518,7 @@
     "all_time": "Toàn thời gian",
     "choose_range_time": "Chọn khoảng thời gian",
     "from_day": "Từ ngày",
+    "to_day": "Đến ngày",
     "selected_date": "{{date}} ngày {{day}}",
     "company": "Công ty",
     "choose_company": "Chọn công ty",
@@ -531,6 +532,7 @@
     "account_classification": "Phân loại tài khoản",
     "account_classification_test": "Tài khoản test",
     "account_classification_real": "Tài khoản thực",
+    "filter_expand_title": "Lọc theo điều kiện",
     "options": {
       "by_day": "Theo ngày",
       "to_day": "Hôm nay",

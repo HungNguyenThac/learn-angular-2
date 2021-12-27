@@ -37,7 +37,7 @@ const routes: Routes = [
         path: 'system',
         loadChildren: () =>
           import('./pages/system/system.module').then((m) => m.SystemModule),
-        data: { preload: true, delay: true },
+        data: { preload: false, delay: true },
       },
       {
         path: 'auth',

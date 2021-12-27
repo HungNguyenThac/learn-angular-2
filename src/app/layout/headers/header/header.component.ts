@@ -1,24 +1,22 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {Store} from '@ngrx/store';
-import * as fromStore from '../../core/store';
-import * as fromActions from '../../core/store';
-import {Router} from '@angular/router';
-import * as fromSelectors from '../../core/store/selectors';
-import {Observable} from 'rxjs/Observable';
-import {CustomerInfoResponse} from '../../../../open-api-modules/customer-api-docs';
-import {Subscription} from 'rxjs';
-import {BUTTON_TYPE, NAV_ITEM, RESPONSE_CODE,} from '../../core/common/enum/operator';
-import {MultiLanguageService} from '../../share/translate/multiLanguageService';
-import {MatDialog} from '@angular/material/dialog';
-import {DialogUserInfoUpdateComponent} from '../../share/components';
+import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
+import { Store } from '@ngrx/store';
+import * as fromStore from '../../../core/store';
+import * as fromActions from '../../../core/store';
+import { Router } from '@angular/router';
+import * as fromSelectors from '../../../core/store/selectors';
+import { Observable } from 'rxjs/Observable';
+import { CustomerInfoResponse } from '../../../../../open-api-modules/customer-api-docs';
+import { Subscription } from 'rxjs';
+import { NAV_ITEM } from '../../../core/common/enum/operator';
+import { MultiLanguageService } from '../../../share/translate/multiLanguageService';
+import { MatDialog } from '@angular/material/dialog';
 import {
   AdminAccountControllerService,
-  ApiResponseString,
   SignOnControllerService,
-  UpdateInfoAdminAccountRequest,
-} from '../../../../open-api-modules/identity-api-docs';
-import {AdminAccountEntity} from '../../../../open-api-modules/dashboard-api-docs';
-import {ToastrService} from 'ngx-toastr';
+} from '../../../../../open-api-modules/identity-api-docs';
+import { AdminAccountEntity } from '../../../../../open-api-modules/dashboard-api-docs';
+import { ToastrService } from 'ngx-toastr';
+import { MenuItemModel } from '../../../public/models/external/menu-item.model';
 
 @Component({
   selector: 'app-header',
@@ -33,11 +31,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
   customerInfo: CustomerInfoResponse = null;
   logoSrc: string = 'assets/img/monex-logo.svg';
   showProfileBtn: boolean = false;
-  shortName: string = '0';
   userInfo: AdminAccountEntity;
+  resizeTimeout: any;
 
   selectedNavItem: NAV_ITEM = NAV_ITEM.DASHBOARD;
-  menuItems = [
+  menuItems: MenuItemModel[] = [
     {
       navItem: NAV_ITEM.DASHBOARD,
       title: this.multiLanguageService.instant('header.navigation.dashboard'),
@@ -61,7 +59,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
           ),
           iconClass: 'sprite-group-5-pl-24',
           path: '/payday-loan/list',
-          queryParams: {groupName: 'HMG'},
+          queryParams: { groupName: 'HMG' },
           canActivate: ['dashboardHmgApplications:findApplications'],
         },
         {
@@ -70,11 +68,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
           ),
           iconClass: 'sprite-group-5-pl-24',
           path: '/payday-loan/list',
-          queryParams: {groupName: 'TNG'},
+          queryParams: { groupName: 'TNG' },
           canActivate: ['dashboardTngApplications:findApplications'],
         },
       ],
-      path: '/payday-loan/list',
+      path: '#',
     },
     {
       navItem: NAV_ITEM.CUSTOMER,
@@ -115,11 +113,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.onResponsiveInverted();
-    window.addEventListener('resize', this.onResponsiveInverted);
   }
 
   ngOnDestroy(): void {
-    window.removeEventListener('resize', this.onResponsiveInverted);
     this.subManager.unsubscribe();
   }
 
@@ -129,88 +125,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   backToPrevPage() {
     this.store.dispatch(new fromActions.ClickBackBtn());
-  }
-
-  openUpdateDialog() {
-    const updateDialogRef = this.dialog.open(DialogUserInfoUpdateComponent, {
-      panelClass: 'custom-info-dialog-container',
-      maxWidth: '800px',
-      width: '90%',
-      data: this.userInfo,
-    });
-    this.subManager.add(
-      updateDialogRef.afterClosed().subscribe((result: any) => {
-        if (result && result.type === BUTTON_TYPE.PRIMARY) {
-          this.updateUserInfo({
-            fullName: result?.data.fullName,
-            mobile: result?.data.mobile,
-            note: result?.data.note,
-          });
-        }
-      })
-    );
-  }
-
-  updateUserInfo(updateUserInfoRequest: UpdateInfoAdminAccountRequest) {
-    console.log('updateUserInfoRequest', updateUserInfoRequest);
-    this.subManager.add(
-      this.adminAccountControllerService
-        .updateInfo(updateUserInfoRequest)
-        .subscribe((response) => {
-          if (response.responseCode !== RESPONSE_CODE.SUCCESS) {
-            this.notifier.error(
-              JSON.stringify(response?.message),
-              response?.errorCode
-            );
-            return;
-          }
-          setTimeout(() => {
-            this.store.dispatch(new fromActions.GetCustomerInfo());
-            this.notifier.success(
-              this.multiLanguageService.instant('common.update_success')
-            );
-          }, 1000);
-        })
-    );
-  }
-
-  onClickManageUser() {
-    this.router.navigateByUrl('/system/user/list');
-  }
-
-  onClickPdGroup() {
-    this.router.navigateByUrl('/system/pd-group/list');
-  }
-
-  onClickPdQuestions() {
-    this.router.navigateByUrl('/system/pd-questions/list');
-  }
-
-  onClickPdAnswers() {
-    this.router.navigateByUrl('/system/pd-answers/list');
-  }
-
-  onClickPdModel() {
-    this.router.navigateByUrl('/system/pd-model/list');
-  }
-
-  logout() {
-    this.signOut();
-    this.store.dispatch(new fromActions.Logout(null));
-  }
-
-  signOut() {
-    this.subManager.add(
-      this.signOnControllerService
-        .signOut()
-        .subscribe((response: ApiResponseString) => {
-          if (response.responseCode === RESPONSE_CODE.SUCCESS) {
-            this.notifier.success(
-              this.multiLanguageService.instant('auth.logout_success')
-            );
-          }
-        })
-    )
   }
 
   navigateToHomePage() {
@@ -228,12 +142,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.subManager.add(
       this.customerInfo$.subscribe((userInfo: AdminAccountEntity) => {
         this.userInfo = userInfo;
-        if (userInfo?.fullName) {
-          const names = userInfo?.fullName.split(' ');
-          this.shortName = names[names.length - 1].charAt(0);
-        } else {
-          this.shortName = '0';
-        }
       })
     );
     this.subManager.add(
@@ -247,5 +155,17 @@ export class HeaderComponent implements OnInit, OnDestroy {
         this.selectedNavItem = selectedNavItem;
       })
     );
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event) {
+    //debounce resize, wait for resize to finish before doing stuff
+    if (this.resizeTimeout) {
+      clearTimeout(this.resizeTimeout);
+    }
+
+    this.resizeTimeout = setTimeout(() => {
+      this.onResponsiveInverted();
+    }, 200);
   }
 }
