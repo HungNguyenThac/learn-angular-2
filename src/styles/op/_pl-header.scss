@@ -181,6 +181,10 @@ mat-expansion-panel-header.mat-expansion-panel-header {
       color: $white;
     }
   }
+
+  ::ng-deep .mat-expansion-indicator::after {
+    margin-top: -6px;
+  }
 }
 
 .mat-expansion-panel:not(.mat-expanded) {
@@ -196,6 +200,7 @@ mat-expansion-panel-header.mat-expansion-panel-header {
     background: $monex-color-00;
     color: $white;
   }
+
 }
 
 .mobile-sub-menu-item {

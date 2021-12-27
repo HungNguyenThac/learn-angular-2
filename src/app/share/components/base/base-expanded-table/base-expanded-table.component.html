@@ -100,6 +100,7 @@
         matSort
         matSortDisableClear
         multiTemplateDataRows
+        (contentChanged)="resizeTableAfterContentChanged()"
       >
         <!-- Checkbox Column -->
         <ng-container matColumnDef="select" style="display: none">
@@ -127,7 +128,12 @@
           *ngFor="let column of displayColumns; let i = index"
           matColumnDef="{{ column?.key }}"
         >
-          <th *matHeaderCellDef mat-header-cell [resizeColumn]="true" [index]="i">
+          <th
+            *matHeaderCellDef
+            mat-header-cell
+            [resizeColumn]="true"
+            [index]="i"
+          >
             <span
               arrowPosition="before"
               mat-sort-header

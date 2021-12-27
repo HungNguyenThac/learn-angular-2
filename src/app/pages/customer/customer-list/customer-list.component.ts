@@ -176,7 +176,7 @@ export class CustomerListComponent implements OnInit, OnDestroy {
       title: this.multiLanguageService.instant(
         'customer.individual_info.fullname'
       ),
-      width: 300,
+      width: 100,
       type: DATA_CELL_TYPE.TEXT,
       format: null,
       showed: true,

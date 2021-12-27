@@ -12,4 +12,10 @@
       height: 48px;
     }
   }
+
+  ::ng-deep .mat-expansion-indicator::after {
+    margin-top: -6px;
+  }
 }
+
+

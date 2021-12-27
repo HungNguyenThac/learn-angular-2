@@ -112,6 +112,7 @@ export class BaseExpandedTableComponent implements OnInit, AfterViewInit {
     ele.showed = !ele.showed;
     this.displayedColumns();
     this.displayedColumnKeys();
+    this.triggerWindowResize();
   }
 
   deselectAll() {
@@ -174,6 +175,7 @@ export class BaseExpandedTableComponent implements OnInit, AfterViewInit {
     this._initSelectedFields();
     this.displayedColumns();
     this.displayedColumnKeys();
+    this.triggerWindowResize();
   }
 
   private _initSelectedFields() {
@@ -218,15 +220,15 @@ export class BaseExpandedTableComponent implements OnInit, AfterViewInit {
     return obj[props[i]];
   }
 
-  setTableResize(tableWidth: number) {
-    const columnEls = Array.from(
-      this.matTableRef.nativeElement.getElementsByClassName(
-        'mat-column-firstName'
-      )
-    );
+  resizeTableAfterContentChanged() {
+    this.setTableResize();
+  }
 
-    console.log('columnEls', columnEls);
-
+  setTableResize() {
+    if (!this.matTableRef) {
+      return;
+    }
+    let tableWidth = this.matTableRef.nativeElement.clientWidth;
     let totWidth = 0;
     this.displayColumns.forEach((column) => {
       totWidth += column.width;
@@ -245,11 +247,22 @@ export class BaseExpandedTableComponent implements OnInit, AfterViewInit {
       )
     );
 
-    console.log('columnEls', columnEls);
     columnEls.forEach((el: HTMLDivElement) => {
       el.style.width = column.width + 'px';
       console.log(el.style.width);
     });
+  }
+
+  triggerWindowResize() {
+    if (typeof Event === 'function') {
+      // modern browsers
+      window.dispatchEvent(new Event('resize'));
+    } else {
+      // for IE and other old browsers
+      // causes deprecation warning on modern browsers
+      let evt = new UIEvent('resize');
+      window.dispatchEvent(evt);
+    }
   }
 
   @HostListener('window:resize', ['$event'])
@@ -260,11 +273,11 @@ export class BaseExpandedTableComponent implements OnInit, AfterViewInit {
     }
 
     this.resizeTimeout = setTimeout(() => {
-      this.setTableResize(this.matTableRef.nativeElement.clientWidth);
+      this.setTableResize();
     }, 200);
   }
 
   ngAfterViewInit(): void {
-    this.setTableResize(this.matTableRef.nativeElement.clientWidth);
+    this.setTableResize();
   }
 }
