@@ -85,9 +85,7 @@ paths:
         content:
           application/json:
             schema:
-              type: array
-              items:
-                type: string
+              $ref: '#/components/schemas/DeleteMerchantRequestDto'
       responses:
         "200":
           description: OK
@@ -110,11 +108,28 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ApiResponse[B"
+                $ref: '#/components/schemas/ApiResponseString'
   /v1/admin/merchants/{id}:
     get:
       tags:
-      - Admin Controller
+      - Bnpl Controller
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseMerchant'
+  /v1/merchants/{id}:
+    get:
+      tags:
+      - Merchant Controller
       parameters:
       - name: id
         in: path
@@ -168,41 +183,37 @@ components:
         responseCode:
           format: int32
           type: integer
-    ApiResponse[B:
-      type: object
-      properties:
-        result:
-          format: binary
-          type: string
-          items:
-            format: byte
-            type: string
-        errorCode:
-          type: string
-        message:
-          type: string
-        responseCode:
-          format: int32
-          type: integer
     CreateMerchantRequestDto:
       required:
-      - name
       - code
+      - name
       - mobile
       - email
-      - productType
+      - identificationNumber
+      - establishTime
       - status
-      - bdStaff
       type: object
       properties:
-        name:
-          pattern: \S
-          type: string
-          nullable: false
         code:
           pattern: \S
           type: string
           nullable: false
+        name:
+          pattern: \S
+          type: string
+          nullable: false
+        address:
+          type: string
+        ward:
+          type: string
+        district:
+          type: string
+        province:
+          type: string
+        bdStaffId:
+          type: string
+        sellType:
+          type: string
         mobile:
           pattern: \S
           type: string
@@ -211,24 +222,39 @@ components:
           pattern: \S
           type: string
           nullable: false
-        productType:
+        website:
+          type: string
+        identificationNumber:
           pattern: \S
           type: string
           nullable: false
+        establishTime:
+          pattern: \S
+          type: string
+          nullable: false
+        productType:
+          type: string
+        serviceFee:
+          format: double
+          type: number
         status:
           pattern: \S
           type: string
           nullable: false
-        bdStaff:
-          pattern: \S
+        icon:
           type: string
+        description:
+          type: string
+    DeleteMerchantRequestDto:
+      required:
+      - ids
+      type: object
+      properties:
+        ids:
+          type: array
+          items:
+            type: string
           nullable: false
-        addressLineOne:
-          type: string
-        addressLineTwo:
-          type: string
-        addressLineThree:
-          type: string
     GenerateMerchantQrRequestDto:
       required:
       - id
@@ -243,25 +269,50 @@ components:
       properties:
         id:
           type: string
+        code:
+          type: string
         name:
           type: string
-        code:
+        address:
+          type: string
+        ward:
+          type: string
+        district:
+          type: string
+        province:
+          type: string
+        bdStaffId:
+          type: string
+        sellType:
           type: string
         mobile:
           type: string
         email:
           type: string
+        website:
+          type: string
+        identificationNumber:
+          type: string
+        establishTime:
+          type: string
         productType:
           type: string
+        serviceFee:
+          format: double
+          type: number
         status:
           type: string
-        bdStaff:
+        icon:
           type: string
-        addressLineOne:
+        description:
           type: string
-        addressLineTwo:
+        createdAt:
           type: string
-        addressLineThree:
+        createdBy:
+          type: string
+        updatedAt:
+          type: string
+        updatedBy:
           type: string
     UpdateMerchantRequestDto:
       required:
@@ -272,23 +323,40 @@ components:
           pattern: \S
           type: string
           nullable: false
+        code:
+          type: string
         name:
           type: string
-        code:
+        address:
+          type: string
+        ward:
+          type: string
+        district:
+          type: string
+        province:
+          type: string
+        bdStaffId:
+          type: string
+        sellType:
           type: string
         mobile:
           type: string
         email:
           type: string
+        website:
+          type: string
+        identificationNumber:
+          type: string
+        establishTime:
+          type: string
         productType:
           type: string
+        serviceFee:
+          format: double
+          type: number
         status:
           type: string
-        bdStaff:
+        icon:
           type: string
-        addressLineOne:
-          type: string
-        addressLineTwo:
-          type: string
-        addressLineThree:
+        description:
           type: string

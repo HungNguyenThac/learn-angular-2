@@ -59,12 +59,12 @@
                         isLoginInputFocus ? 'is-focused-input' : ''
                       "
                       [placeholder]="'pd_system.add_question_dialog.name' | translate"
-                      formControlName="name"
+                      formControlName="content"
                       aria-autocomplete="none"
                       matInput
                     />
                     <show-errors
-                      [control]="addPdForm.controls['name']"
+                      [control]="addPdForm.controls['content']"
                       [controlLabel]="'pd_system.add_question_dialog.name' | translate"
                       [hasIconPrefix]="false"
                     >
@@ -104,11 +104,11 @@
                       class="text-area"
                       id="review"
                       name="review"
-                      formControlName="note"
+                      formControlName="description"
                       [placeholder]="'pd_system.add_pd_dialog.description' | translate"
                     ></textarea>
                     <show-errors
-                      [control]="addPdForm.controls['note']"
+                      [control]="addPdForm.controls['description']"
                       [controlLabel]="
                         'pd_system.add_pd_dialog.description' | translate
                       "

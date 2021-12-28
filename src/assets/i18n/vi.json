@@ -137,7 +137,9 @@
       "loanapp": "Khoản ứng",
       "loanapp_hmg": "Ứng lương HMG",
       "loanapp_tng": "Ứng lương TNG",
+      "loanapp_vac": "Ứng lương VAC",
       "customer": "Khách hàng",
+      "merchant": "Merchant",
       "insurance": "Bảo hiểm",
       "saving": "Đầu tư"
     },
@@ -522,6 +524,8 @@
     "selected_date": "{{date}} ngày {{day}}",
     "company": "Công ty",
     "choose_company": "Chọn công ty",
+    "bd": "BD phụ trách",
+    "choose_bd": "Chọn BD phụ trách",
     "pl_ui_status": "Trạng thái tài khoản",
     "account_status": "Trạng thái hoạt động",
     "loan_status": "Trạng thái khoản ứng",

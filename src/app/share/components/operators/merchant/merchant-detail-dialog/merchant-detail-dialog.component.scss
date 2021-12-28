@@ -253,6 +253,10 @@
   padding: 0 1rem 1rem 1rem;
 }
 
+.limit-height {
+  max-height: 658px;
+}
+
 ::ng-deep .op-tab-dialog {
   .mat-tab-body {
     min-height: 658px !important;

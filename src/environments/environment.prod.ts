@@ -10,6 +10,8 @@ export const environment = {
   CORE_API_PATH: '/core',
   PAYMENT_API_PATH: '/payment',
   CONTRACT_API_PATH: '/contract',
+  BNPL_API_PATH: '/bnpl',
+  MONEXCORE_API_PATH: '/monexcore',
   ZALO_URL: 'https://zalo.me/2848902721585176437',
   FB_MESSENGER_URL: 'https://m.me/monexvn',
   PAYMENT_ORDER_NAME: 'PaydayLoan-HMG',

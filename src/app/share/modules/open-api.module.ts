@@ -9,6 +9,8 @@ import * as identityApiDocs from '../../../../open-api-modules/identity-api-docs
 import * as coreApiDocs from '../../../../open-api-modules/core-api-docs';
 import * as paymentApiDocs from '../../../../open-api-modules/payment-api-docs';
 import * as contractApiDocs from '../../../../open-api-modules/contract-api-docs';
+import * as merchantApiDocs from '../../../../open-api-modules/merchant-api-docs';
+import * as monexCoreApiDocs from '../../../../open-api-modules/monexcore-api-docs';
 import { environment } from '../../../environments/environment';
 
 @NgModule({
@@ -59,6 +61,16 @@ import { environment } from '../../../environments/environment';
     contractApiDocs.ApiModule.forRoot(() => {
       return new contractApiDocs.Configuration({
         basePath: environment.API_BASE_URL + environment.CONTRACT_API_PATH,
+      });
+    }),
+    merchantApiDocs.ApiModule.forRoot(() => {
+      return new merchantApiDocs.Configuration({
+        basePath: environment.API_BASE_URL + environment.BNPL_API_PATH,
+      });
+    }),
+    monexCoreApiDocs.ApiModule.forRoot(() => {
+      return new monexCoreApiDocs.Configuration({
+        basePath: environment.API_BASE_URL + environment.MONEXCORE_API_PATH,
       });
     }),
   ],

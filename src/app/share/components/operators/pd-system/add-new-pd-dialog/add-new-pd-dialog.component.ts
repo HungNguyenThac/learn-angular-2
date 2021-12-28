@@ -52,7 +52,7 @@ export class AddNewPdDialogComponent implements OnInit {
   isNoteInputFocus: boolean = false;
   dialogTitle: string;
   inputCode: string;
-  list: string;
+  listTitle: string;
   inputName: string;
 
   constructor(
@@ -70,18 +70,9 @@ export class AddNewPdDialogComponent implements OnInit {
 
   buildAccountInfoForm() {
     this.addPdForm = this.formBuilder.group({
-      accountName: [''],
-      username: [''],
-      accountPassword: [
-        '',
-        [Validators.minLength(8), Validators.maxLength(50)],
-      ],
-      accountRePassword: [''],
-      accountRole: [''],
-      accountPhone: [''],
-      accountEmail: ['', [Validators.email]],
-      accountPosition: [''],
-      note: [''],
+      code: [''],
+      content: [''],
+      description: [''],
     });
   }
 
@@ -89,7 +80,7 @@ export class AddNewPdDialogComponent implements OnInit {
     this.dialogTitle = data?.dialogTitle;
     this.inputName = data?.inputName;
     this.inputCode = data?.inputCode;
-    this.list = data?.list;
+    this.listTitle = data?.listTitle;
 
     // this.addPdForm.patchValue({
     //   accountName: this.userInfo?.fullName,

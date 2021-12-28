@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Store } from '@ngrx/store';
+import * as fromActions from '../../../../core/store';
+import * as fromStore from '../../../../core/store';
 import { TableSelectActionModel } from '../../../../public/models/external/table-select-action.model';
 import { MultiLanguageService } from '../../../../share/translate/multiLanguageService';
 import { NotificationService } from '../../../../core/services/notification.service';
@@ -11,6 +14,7 @@ import {
   DATA_CELL_TYPE,
   DATA_STATUS_TYPE,
   FILTER_TYPE,
+  NAV_ITEM,
   QUERY_CONDITION_TYPE,
 } from '../../../../core/common/enum/operator';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -25,11 +29,24 @@ import { PageEvent } from '@angular/material/paginator/public-api';
 import { FilterActionEventModel } from '../../../../public/models/filter/filter-action-event.model';
 import { AddNewUserDialogComponent } from '../../../../share/components';
 import { MatDialog } from '@angular/material/dialog';
-import { MerchantDetailDialogComponent } from '../../../../share/components/operators/merchant/merchant-detail-dialog/merchant-detail-dialog.component';
-import { MerchantGroupDialogComponent } from '../../../../share/components/operators/merchant/merchant-group-dialog/merchant-group-dialog.component';
+import { MerchantDetailDialogComponent } from '../../../../share/components';
+import { MerchantGroupDialogComponent } from '../../../../share/components';
 import { GlobalConstants } from '../../../../core/common/global-constants';
 import { Title } from '@angular/platform-browser';
 import { DisplayedFieldsModel } from '../../../../public/models/filter/displayed-fields.model';
+import {
+  ApiResponseSearchAndPaginationResponseAdminAccountEntity,
+  ApiResponseSearchAndPaginationResponseCompanyInfo,
+  ApiResponseSearchAndPaginationResponseMerchant,
+  CompanyInfo,
+} from '../../../../../../open-api-modules/dashboard-api-docs';
+import {
+  AdminControllerService,
+  ApiResponseListMerchant,
+  MerchantControllerService,
+} from '../../../../../../open-api-modules/merchant-api-docs';
+import { Subscription } from 'rxjs';
+import { MerchantListService } from './merchant-list.service';
 
 @Component({
   selector: 'app-merchant-list',
@@ -37,97 +54,52 @@ import { DisplayedFieldsModel } from '../../../../public/models/filter/displayed
   styleUrls: ['./merchant-list.component.scss'],
 })
 export class MerchantListComponent implements OnInit {
-  //Mock data
-  merchantList: any[] = [
+  bdList = [
     {
-      merchantId: 'MCT-726',
-      merchantName: 'name1',
-      merchantAddress: '36 Hoàng Cầu',
-      merchantArea: 'Miền Bắc',
-      merchantCommune: 'Ô Chợ Dừa',
-      merchantManager: 'user1',
-      merchantType: 'Tại cửa hàng',
-      merchantPhone: '0982737261',
-      merchantEmail: 'email1@gmail.com',
-      merchantWebsite: 'https://www.msig.com.vn/',
-      merchantRegistrationNumber: '16413340',
-      merchantEstablish: '2002',
-      merchantProduct: 'Quần áo',
-      merchantFee: '10%',
-      merchantStatus: 'Đang hoạt động',
-      merchantDate: '01/12/2012',
-      merchantNote: '',
+      name: 'BD1',
+      id: '1',
     },
     {
-      merchantId: 'MCT-726',
-      merchantName: 'name1',
-      merchantAddress: '36 Hoàng Cầu',
-      merchantArea: 'Miền Bắc',
-      merchantCommune: 'Ô Chợ Dừa',
-      merchantManager: 'user1',
-      merchantType: 'Tại cửa hàng',
-      merchantPhone: '0982737261',
-      merchantEmail: 'email1@gmail.com',
-      merchantWebsite: 'https://www.msig.com.vn/',
-      merchantRegistrationNumber: '16413340',
-      merchantEstablish: '2002',
-      merchantProduct: 'Quần áo',
-      merchantFee: '10%',
-      merchantStatus: 'Đang hoạt động',
-      merchantDate: '01/12/2012',
-      merchantNote: '',
+      name: 'BD2',
+      id: '2',
     },
     {
-      merchantId: 'MCT-726',
-      merchantName: 'name1',
-      merchantAddress: '36 Hoàng Cầu',
-      merchantArea: 'Miền Bắc',
-      merchantCommune: 'Ô Chợ Dừa',
-      merchantManager: 'user1',
-      merchantType: 'Tại cửa hàng',
-      merchantPhone: '0982737261',
-      merchantEmail: 'email1@gmail.com',
-      merchantWebsite: 'https://www.msig.com.vn/',
-      merchantRegistrationNumber: '16413340',
-      merchantEstablish: '2002',
-      merchantProduct: 'Quần áo',
-      merchantFee: '10%',
-      merchantStatus: 'Đang hoạt động',
-      merchantDate: '01/12/2012',
-      merchantNote: '',
+      name: 'BD3',
+      id: '3',
     },
   ];
+
   allColumns: DisplayedFieldsModel[] = [
     {
-      key: 'merchantId',
+      key: 'code',
       title: this.multiLanguageService.instant('merchant.merchant_list.id'),
       type: DATA_CELL_TYPE.TEXT,
       format: null,
       showed: true,
     },
     {
-      key: 'merchantName',
+      key: 'name',
       title: this.multiLanguageService.instant('merchant.merchant_list.name'),
       type: DATA_CELL_TYPE.TEXT,
       format: null,
       showed: true,
     },
     {
-      key: 'merchantPhone',
+      key: 'mobile',
       title: this.multiLanguageService.instant('merchant.merchant_list.phone'),
       type: DATA_CELL_TYPE.TEXT,
       format: null,
       showed: true,
     },
     {
-      key: 'merchantEmail',
+      key: 'email',
       title: this.multiLanguageService.instant('merchant.merchant_list.email'),
       type: DATA_CELL_TYPE.TEXT,
       format: null,
       showed: true,
     },
     {
-      key: 'merchantProduct',
+      key: 'productType',
       title: this.multiLanguageService.instant(
         'merchant.merchant_list.product'
       ),
@@ -136,14 +108,14 @@ export class MerchantListComponent implements OnInit {
       showed: true,
     },
     {
-      key: 'merchantStatus',
+      key: 'status',
       title: this.multiLanguageService.instant('merchant.merchant_list.status'),
       type: DATA_CELL_TYPE.STATUS,
       format: DATA_STATUS_TYPE.USER_STATUS,
       showed: true,
     },
     {
-      key: 'merchantManager',
+      key: 'bdStaff',
       title: this.multiLanguageService.instant(
         'merchant.merchant_list.merchant_manager'
       ),
@@ -200,7 +172,9 @@ export class MerchantListComponent implements OnInit {
   pageLength: number = 0;
   pageSizeOptions: number[] = [10, 20, 50];
   expandedElementId: number;
+  expandElementFromLoan;
   merchantInfo: any;
+  subManager = new Subscription();
   breadcrumbOptions: BreadcrumbOptionsModel = {
     title: this.multiLanguageService.instant('breadcrumb.merchant'),
     iconImgSrc: 'assets/img/icon/group-7/svg/merchant.svg',
@@ -219,6 +193,23 @@ export class MerchantListComponent implements OnInit {
       type: FILTER_TYPE.DATETIME,
       controlName: 'createdAt',
       value: null,
+    },
+    {
+      title: this.multiLanguageService.instant('filter.bd'),
+      type: FILTER_TYPE.SELECT,
+      controlName: 'companyId',
+      value: null,
+      options: [
+        {
+          title: this.multiLanguageService.instant('filter.choose_bd'),
+          value: null,
+          showAction: false,
+          subTitle: this.multiLanguageService.instant('filter.choose_bd'),
+          subOptions: [],
+          disabled: false,
+          count: 0,
+        },
+      ],
     },
     // {
     //   title: this.multiLanguageService.instant('filter.merchant_group'),
@@ -276,6 +267,7 @@ export class MerchantListComponent implements OnInit {
   ];
 
   constructor(
+    private store: Store<fromStore.State>,
     private multiLanguageService: MultiLanguageService,
     private notificationService: NotificationService,
     private notifier: ToastrService,
@@ -283,7 +275,9 @@ export class MerchantListComponent implements OnInit {
     private router: Router,
     private dialog: MatDialog,
     private titleService: Title,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private merlistService: AdminControllerService,
+    private merchantListService: MerchantListService
   ) {
     this._initFilterForm();
   }
@@ -294,7 +288,30 @@ export class MerchantListComponent implements OnInit {
         ' - ' +
         GlobalConstants.PL_VALUE_DEFAULT.PROJECT_NAME
     );
-    this.dataSource.data = this.merchantList;
+    this.store.dispatch(new fromActions.SetOperatorInfo(NAV_ITEM.MERCHANT));
+    this._initBdOptions();
+    this._getMerchantList();
+  }
+
+  private _getMerchantList() {
+    const params = this._buildParams();
+    this.merchantListService
+      .getData(params)
+      .subscribe((data: ApiResponseSearchAndPaginationResponseMerchant) => {
+        console.log('merchant list', data?.result);
+        this._parseData(data?.result);
+        this.dataSource.data = data?.result?.data;
+        if (this.filterForm.controls.id.value) {
+          this.expandElementFromLoan = data?.result?.data;
+        }
+      });
+    // this.subManager.add(
+    //   this.merlistService
+    //     .v1AdminMerchantsGet()
+    //     .subscribe((data: ApiResponseListMerchant) => {
+    //       this.dataSource.data = data?.result;
+    //     })
+    // );
   }
 
   public onSortChange(sortState: Sort) {
@@ -336,6 +353,7 @@ export class MerchantListComponent implements OnInit {
 
   private _initFilterForm() {
     this.filterForm = this.formBuilder.group({
+      id: [''],
       keyword: [''],
       companyId: [''],
       paydayLoanStatus: [''],
@@ -449,8 +467,23 @@ export class MerchantListComponent implements OnInit {
     }
   }
 
-  // @ts-ignore
-  public lockPrompt(): boolean {
+  private _initBdOptions() {
+    this.filterOptions.forEach((filterOption: FilterOptionModel) => {
+      if (filterOption.controlName !== 'companyId' || !this.bdList) {
+        return;
+      }
+      filterOption.options[0].subOptions = this.bdList.map((bd) => {
+        return {
+          title: bd.name,
+          value: bd.id,
+          imgSrc: null,
+          code: null,
+        };
+      });
+    });
+  }
+
+  public lockPrompt() {
     const confirmLockRef = this.notificationService.openPrompt({
       imgUrl: '../../../../../assets/img/icon/group-5/Alert.svg',
       title: this.multiLanguageService.instant(
@@ -527,10 +560,7 @@ export class MerchantListComponent implements OnInit {
   }
 
   public onExpandElementChange(element: any) {
-    this.expandedElementId = element.merchantId;
-    this.merchantInfo = this.merchantList.filter(
-      (merchant) => merchant.merchantId === element.merchantId
-    )[0];
+    this.expandedElementId = element.id;
   }
 
   onClickBtnAdd(event) {

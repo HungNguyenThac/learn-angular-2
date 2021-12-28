@@ -94,6 +94,18 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ApiResponseSearchAndPaginationResponsePaydayLoanTng'
+  /v1/tngApplications/appendCustomerInfo:
+    post:
+      tags:
+      - application-tng-controller
+      operationId: appendCustomerInfoForTngLoan
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseString'
   /v1/ratings:
     post:
       tags:
@@ -600,6 +612,18 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ApiResponseSearchAndPaginationResponsePaydayLoanHmg'
+  /v1/hmgApplications/appendCustomerInfo:
+    post:
+      tags:
+      - application-hmg-controller
+      operationId: appendCustomerInfoForHmgLoan
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseString'
   /v1/groups:
     post:
       tags:
@@ -926,6 +950,186 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ApiResponseSearchAndPaginationResponseCity'
+      security:
+      - bearerAuth: []
+  /v1/cdes/questions:
+    post:
+      tags:
+      - cde-controller
+      operationId: getQuestions
+      parameters:
+      - name: pageSize
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: pageNumber
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: orderBy
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: descending
+        in: query
+        required: false
+        schema:
+          type: boolean
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties:
+                type: object
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseSearchAndPaginationResponseQuestion'
+      security:
+      - bearerAuth: []
+  /v1/cdes/models:
+    post:
+      tags:
+      - cde-controller
+      operationId: getModels
+      parameters:
+      - name: pageSize
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: pageNumber
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: orderBy
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: descending
+        in: query
+        required: false
+        schema:
+          type: boolean
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties:
+                type: object
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseSearchAndPaginationResponseModel'
+      security:
+      - bearerAuth: []
+  /v1/cdes/groups:
+    post:
+      tags:
+      - cde-controller
+      operationId: getGroups_1
+      parameters:
+      - name: pageSize
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: pageNumber
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: orderBy
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: descending
+        in: query
+        required: false
+        schema:
+          type: boolean
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties:
+                type: object
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseSearchAndPaginationResponseGroup'
+      security:
+      - bearerAuth: []
+  /v1/cdes/answers:
+    post:
+      tags:
+      - cde-controller
+      operationId: getAnswers
+      parameters:
+      - name: pageSize
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: pageNumber
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: orderBy
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: descending
+        in: query
+        required: false
+        schema:
+          type: boolean
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties:
+                type: object
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseSearchAndPaginationResponseAnswer'
       security:
       - bearerAuth: []
   /v1/banks:
@@ -1321,7 +1525,7 @@ paths:
     get:
       tags:
       - merchant-controller
-      operationId: getRatingByApplicationId_1
+      operationId: getMerchantById
       parameters:
       - name: merchantId
         in: path
@@ -1728,6 +1932,86 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ApiResponseListDistrict'
+      security:
+      - bearerAuth: []
+  /v1/cdes/questions/{questionId}:
+    get:
+      tags:
+      - cde-controller
+      operationId: getQuestionById
+      parameters:
+      - name: questionId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseQuestion'
+      security:
+      - bearerAuth: []
+  /v1/cdes/models/{modelId}:
+    get:
+      tags:
+      - cde-controller
+      operationId: getModelById
+      parameters:
+      - name: modelId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseModel'
+      security:
+      - bearerAuth: []
+  /v1/cdes/groups/{groupId}:
+    get:
+      tags:
+      - cde-controller
+      operationId: getGroupById_1
+      parameters:
+      - name: groupId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseGroup'
+      security:
+      - bearerAuth: []
+  /v1/cdes/answers/{answerId}:
+    get:
+      tags:
+      - cde-controller
+      operationId: getAnswerById
+      parameters:
+      - name: answerId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseAnswer'
       security:
       - bearerAuth: []
   /v1/banks/{bankId}:
@@ -2333,6 +2617,18 @@ components:
           format: int32
         createdAt:
           type: string
+    ApiResponseString:
+      type: object
+      properties:
+        result:
+          type: string
+        errorCode:
+          type: string
+        message:
+          type: object
+        responseCode:
+          type: integer
+          format: int32
     ApiResponseSearchAndPaginationResponseRating:
       type: object
       properties:
@@ -3067,6 +3363,201 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/City'
+    Answer:
+      type: object
+      properties:
+        id:
+          type: string
+        code:
+          type: string
+        content:
+          type: string
+        description:
+          type: string
+        createdAt:
+          type: string
+        createdBy:
+          type: string
+        updatedAt:
+          type: string
+        updatedBy:
+          type: string
+        question:
+          $ref: '#/components/schemas/Question'
+    ApiResponseSearchAndPaginationResponseQuestion:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/SearchAndPaginationResponseQuestion'
+        errorCode:
+          type: string
+        message:
+          type: object
+        responseCode:
+          type: integer
+          format: int32
+    Group:
+      type: object
+      properties:
+        id:
+          type: string
+        model:
+          $ref: '#/components/schemas/Model'
+        code:
+          type: string
+        content:
+          type: string
+        description:
+          type: string
+        createdAt:
+          type: string
+        createdBy:
+          type: string
+        updatedAt:
+          type: string
+        updatedBy:
+          type: string
+    LoanProduct:
+      type: object
+      properties:
+        id:
+          type: string
+        code:
+          type: string
+        name:
+          type: string
+        createdAt:
+          type: string
+        createdBy:
+          type: string
+        updatedAt:
+          type: string
+        updatedBy:
+          type: string
+        models:
+          type: array
+          items:
+            $ref: '#/components/schemas/Model'
+    Model:
+      type: object
+      properties:
+        id:
+          type: string
+        loanProduct:
+          $ref: '#/components/schemas/LoanProduct'
+        code:
+          type: string
+        content:
+          type: string
+        description:
+          type: string
+        createdAt:
+          type: string
+        createdBy:
+          type: string
+        updatedAt:
+          type: string
+        updatedBy:
+          type: string
+    Question:
+      type: object
+      properties:
+        id:
+          type: string
+        code:
+          type: string
+        content:
+          type: string
+        description:
+          type: string
+        createdAt:
+          type: string
+        createdBy:
+          type: string
+        updatedAt:
+          type: string
+        updatedBy:
+          type: string
+        answers:
+          type: array
+          items:
+            $ref: '#/components/schemas/Answer'
+        groups:
+          type: array
+          items:
+            $ref: '#/components/schemas/Group'
+    SearchAndPaginationResponseQuestion:
+      type: object
+      properties:
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Question'
+    ApiResponseSearchAndPaginationResponseModel:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/SearchAndPaginationResponseModel'
+        errorCode:
+          type: string
+        message:
+          type: object
+        responseCode:
+          type: integer
+          format: int32
+    SearchAndPaginationResponseModel:
+      type: object
+      properties:
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Model'
+    ApiResponseSearchAndPaginationResponseGroup:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/SearchAndPaginationResponseGroup'
+        errorCode:
+          type: string
+        message:
+          type: object
+        responseCode:
+          type: integer
+          format: int32
+    SearchAndPaginationResponseGroup:
+      type: object
+      properties:
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Group'
+    ApiResponseSearchAndPaginationResponseAnswer:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/SearchAndPaginationResponseAnswer'
+        errorCode:
+          type: string
+        message:
+          type: object
+        responseCode:
+          type: integer
+          format: int32
+    SearchAndPaginationResponseAnswer:
+      type: object
+      properties:
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Answer'
     ApiResponseSearchAndPaginationResponseBank:
       type: object
       properties:
@@ -3633,6 +4124,54 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/District'
+        errorCode:
+          type: string
+        message:
+          type: object
+        responseCode:
+          type: integer
+          format: int32
+    ApiResponseQuestion:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/Question'
+        errorCode:
+          type: string
+        message:
+          type: object
+        responseCode:
+          type: integer
+          format: int32
+    ApiResponseModel:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/Model'
+        errorCode:
+          type: string
+        message:
+          type: object
+        responseCode:
+          type: integer
+          format: int32
+    ApiResponseGroup:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/Group'
+        errorCode:
+          type: string
+        message:
+          type: object
+        responseCode:
+          type: integer
+          format: int32
+    ApiResponseAnswer:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/Answer'
         errorCode:
           type: string
         message:

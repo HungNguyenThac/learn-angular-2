@@ -4,6 +4,7 @@ import {
   DATA_CELL_TYPE,
   FILTER_TYPE,
   QUERY_CONDITION_TYPE,
+  RESPONSE_CODE,
 } from '../../../../../core/common/enum/operator';
 import { TableSelectActionModel } from '../../../../../public/models/external/table-select-action.model';
 import { FormBuilder, FormGroup } from '@angular/forms';
@@ -26,6 +27,14 @@ import {
   MerchantGroupDialogComponent,
 } from '../../../../../share/components';
 import { AddNewPdDialogComponent } from '../../../../../share/components/operators/pd-system/add-new-pd-dialog/add-new-pd-dialog.component';
+import { ApiResponseSearchAndPaginationResponseMerchant } from '../../../../../../../open-api-modules/dashboard-api-docs';
+import { PdModelListService } from './pd-model-list.service';
+import { Subscription } from 'rxjs';
+import { ApiResponseAdminAccountEntity } from '../../../../../../../open-api-modules/identity-api-docs';
+import {
+  ApiResponse,
+  CdeService,
+} from '../../../../../../../open-api-modules/monexcore-api-docs';
 
 @Component({
   selector: 'app-pd-model-list',
@@ -34,43 +43,6 @@ import { AddNewPdDialogComponent } from '../../../../../share/components/operato
 })
 export class PdModelListComponent implements OnInit {
   //Mock data
-  merchantList: any[] = [
-    {
-      id: 'PDM-268',
-      name: 'PD model 1',
-      group: 'Nhóm câu hỏi số 1',
-      createdDate: '09/12/2021 16:20',
-      updateDate: '09/12/2021 05:21',
-    },
-    {
-      id: 'PDM-142',
-      name: 'PD model 2',
-      group: 'Nhóm câu hỏi số 2',
-      createdDate: '12/21/2021 16:20',
-      updateDate: '10/12/2021 05:21',
-    },
-    {
-      id: 'PDM-521',
-      name: 'PD model 3',
-      group: 'Nhóm câu hỏi số 3',
-      createdDate: '06/21/2021 16:20',
-      updateDate: '10/11/2021 05:21',
-    },
-    {
-      id: 'PDM-831',
-      name: 'PD model 4',
-      group: 'Nhóm câu hỏi số 4',
-      createdDate: '09/12/2021 16:20',
-      updateDate: '09/12/2021 05:21',
-    },
-    {
-      id: 'PDM-028',
-      name: 'PD model 5',
-      group: 'Nhóm câu hỏi số 5',
-      createdDate: '09/12/2021 16:20',
-      updateDate: '09/12/2021 05:21',
-    },
-  ];
   allColumns: any[] = [
     {
       key: 'id',
@@ -126,7 +98,8 @@ export class PdModelListComponent implements OnInit {
   pageLength: number = 0;
   pageSizeOptions: number[] = [10, 20, 50];
   expandedElementId: number;
-  merchantInfo: any;
+
+  subManager = new Subscription();
   breadcrumbOptions: BreadcrumbOptionsModel = {
     title: this.multiLanguageService.instant('breadcrumb.pd_model'),
     iconImgSrc: 'assets/img/icon/group-7/svg/merchant.svg',
@@ -208,7 +181,9 @@ export class PdModelListComponent implements OnInit {
     private router: Router,
     private dialog: MatDialog,
     private titleService: Title,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private pdModelListService: PdModelListService,
+    private cdeService: CdeService
   ) {
     this._initFilterForm();
   }
@@ -219,7 +194,23 @@ export class PdModelListComponent implements OnInit {
         ' - ' +
         GlobalConstants.PL_VALUE_DEFAULT.PROJECT_NAME
     );
-    this.dataSource.data = this.merchantList;
+    this._getModelList();
+  }
+
+  public _getModelList() {
+    const params = this._buildParams();
+    this.pdModelListService
+      .getData(params)
+      .subscribe((data: ApiResponseSearchAndPaginationResponseMerchant) => {
+        console.log('question list', data?.result);
+        this._parseData(data?.result);
+        this.dataSource.data = data?.result?.data;
+      });
+    // this.subManager.add(
+    //   this.cdeService.cdeControllerGetPdQuestion().subscribe((data) => {
+    //     console.log('ahisgduiasd', data);
+    //   })
+    // );
   }
 
   public onSortChange(sortState: Sort) {
@@ -453,9 +444,6 @@ export class PdModelListComponent implements OnInit {
 
   public onExpandElementChange(element: any) {
     this.expandedElementId = element.merchantId;
-    this.merchantInfo = this.merchantList.filter(
-      (merchant) => merchant.merchantId === element.merchantId
-    )[0];
   }
 
   onClickBtnAdd(event) {
@@ -467,8 +455,53 @@ export class PdModelListComponent implements OnInit {
         dialogTitle: 'Thêm Pd model',
         inputName: 'Tên Pd model',
         inputCode: 'Mã Pd model',
-        list: 'Danh sách nhóm câu hỏi',
+        listTitle: 'Danh sách nhóm câu hỏi',
       },
     });
+    this.subManager.add(
+      addPdModelDialogRef.afterClosed().subscribe((result: any) => {
+        if (result && result.type === BUTTON_TYPE.PRIMARY) {
+          let createRequest = this._bindingDialogData(result.data);
+          this.sendAddRequest(createRequest);
+        }
+      })
+    );
+  }
+
+  sendAddRequest(addRequest) {
+    this.subManager.add(
+      this.cdeService
+        .cdeControllerCreatePdModel(addRequest)
+        .subscribe((result: ApiResponse) => {
+          if (!result || result.responseCode !== RESPONSE_CODE.SUCCESS) {
+            return this.notifier.error(
+              JSON.stringify(result?.message),
+              result?.errorCode
+            );
+          }
+          setTimeout(() => {
+            this.notifier.success(
+              this.multiLanguageService.instant('common.create_success')
+            );
+            this.refreshContent();
+            this.notificationService.hideLoading();
+          }, 3000);
+        })
+    );
+  }
+
+  public refreshContent() {
+    setTimeout(() => {
+      this._getModelList();
+    }, 2000);
+  }
+
+  private _bindingDialogData(data) {
+    return {
+      code: data?.code,
+      content: data?.content,
+      description: data?.description,
+      loanProductId: 1,
+    };
   }
 }

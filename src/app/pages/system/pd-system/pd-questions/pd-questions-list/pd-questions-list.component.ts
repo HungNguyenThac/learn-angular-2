@@ -28,6 +28,13 @@ import {
 } from '../../../../../share/components';
 import { AddNewPdDialogComponent } from '../../../../../share/components/operators/pd-system/add-new-pd-dialog/add-new-pd-dialog.component';
 import { AddNewQuestionComponent } from '../../../../../share/components/operators/pd-system/add-new-question/add-new-question.component';
+import {
+  ApiResponseSearchAndPaginationResponseAdminAccountEntity,
+  ApiResponseSearchAndPaginationResponseMerchant,
+} from '../../../../../../../open-api-modules/dashboard-api-docs';
+import { Subscription } from 'rxjs';
+import { PdQuestionsListService } from './pd-questions-list.service';
+import { CdeService } from '../../../../../../../open-api-modules/monexcore-api-docs';
 
 @Component({
   selector: 'app-pd-questions-list',
@@ -35,47 +42,9 @@ import { AddNewQuestionComponent } from '../../../../../share/components/operato
   styleUrls: ['./pd-questions-list.component.scss'],
 })
 export class PdQuestionsListComponent implements OnInit {
-  //Mock data
-  mockData: any[] = [
-    {
-      id: 'PDQ-268',
-      content: 'Câu hỏi số 1',
-      type: 'String',
-      createdDate: '09/12/2021 16:20',
-      updateDate: '09/12/2021 05:21',
-    },
-    {
-      id: 'PDQ-142',
-      content: 'Câu hỏi số 2',
-      type: 'StringList',
-      createdDate: '12/21/2021 16:20',
-      updateDate: '10/12/2021 05:21',
-    },
-    {
-      id: 'PDQ-521',
-      content: 'Câu hỏi số 3',
-      type: 'Checkbox',
-      createdDate: '06/21/2021 16:20',
-      updateDate: '10/11/2021 05:21',
-    },
-    {
-      id: 'PDQ-831',
-      content: 'Câu hỏi số 4',
-      type: 'RadioButton',
-      createdDate: '09/12/2021 16:20',
-      updateDate: '09/12/2021 05:21',
-    },
-    {
-      id: 'PDQ-028',
-      content: 'Câu hỏi số 5',
-      type: 'String',
-      createdDate: '09/12/2021 16:20',
-      updateDate: '09/12/2021 05:21',
-    },
-  ];
   allColumns: any[] = [
     {
-      key: 'id',
+      key: 'code',
       title: this.multiLanguageService.instant('pd_system.pd_questions.id'),
       type: DATA_CELL_TYPE.TEXT,
       format: null,
@@ -92,15 +61,13 @@ export class PdQuestionsListComponent implements OnInit {
     },
     {
       key: 'type',
-      title: this.multiLanguageService.instant(
-        'pd_system.pd_questions.content'
-      ),
+      title: this.multiLanguageService.instant('pd_system.pd_questions.type'),
       type: DATA_CELL_TYPE.TEXT,
       format: null,
       showed: true,
     },
     {
-      key: 'createdDate',
+      key: 'createdAt',
       title: this.multiLanguageService.instant(
         'pd_system.pd_questions.created_date'
       ),
@@ -109,7 +76,7 @@ export class PdQuestionsListComponent implements OnInit {
       showed: true,
     },
     {
-      key: 'updateDate',
+      key: 'updatedAt',
       title: this.multiLanguageService.instant(
         'pd_system.pd_questions.update_date'
       ),
@@ -132,7 +99,9 @@ export class PdQuestionsListComponent implements OnInit {
   pageLength: number = 0;
   pageSizeOptions: number[] = [10, 20, 50];
   expandedElementId: number;
+  expandElementFromLoan;
   merchantInfo: any;
+  subManager = new Subscription();
   breadcrumbOptions: BreadcrumbOptionsModel = {
     title: this.multiLanguageService.instant('breadcrumb.pd_questions'),
     iconImgSrc: 'assets/img/icon/group-7/svg/merchant.svg',
@@ -214,7 +183,9 @@ export class PdQuestionsListComponent implements OnInit {
     private router: Router,
     private dialog: MatDialog,
     private titleService: Title,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private pdQuestionsListService: PdQuestionsListService,
+    private cdeService: CdeService
   ) {
     this._initFilterForm();
   }
@@ -225,7 +196,23 @@ export class PdQuestionsListComponent implements OnInit {
         ' - ' +
         GlobalConstants.PL_VALUE_DEFAULT.PROJECT_NAME
     );
-    this.dataSource.data = this.mockData;
+    this._getQuestionsList();
+  }
+
+  public _getQuestionsList() {
+    const params = this._buildParams();
+    this.pdQuestionsListService
+      .getData(params)
+      .subscribe((data: ApiResponseSearchAndPaginationResponseMerchant) => {
+        console.log('question list', data?.result);
+        this._parseData(data?.result);
+        this.dataSource.data = data?.result?.data;
+      });
+    // this.subManager.add(
+    //   this.cdeService.cdeControllerGetPdQuestion().subscribe((data) => {
+    //     console.log('ahisgduiasd', data);
+    //   })
+    // );
   }
 
   public onSortChange(sortState: Sort) {
@@ -459,13 +446,10 @@ export class PdQuestionsListComponent implements OnInit {
 
   public onExpandElementChange(element: any) {
     this.expandedElementId = element.merchantId;
-    this.merchantInfo = this.mockData.filter(
-      (merchant) => merchant.merchantId === element.merchantId
-    )[0];
   }
 
   onClickBtnAdd(event) {
-    const addGroupDialogRef = this.dialog.open(AddNewQuestionComponent, {
+    const addQuestionDialogRef = this.dialog.open(AddNewQuestionComponent, {
       panelClass: 'custom-info-dialog-container',
       maxWidth: '1200px',
       width: '90%',
@@ -473,8 +457,9 @@ export class PdQuestionsListComponent implements OnInit {
         dialogTitle: 'Thêm câu hỏi',
       },
     });
-    addGroupDialogRef.afterClosed().subscribe((result: any) => {
+    addQuestionDialogRef.afterClosed().subscribe((result: any) => {
       if (result && result.type === BUTTON_TYPE.PRIMARY) {
+        console.log('asjdhaisyd', result.data);
       }
     });
   }

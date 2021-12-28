@@ -37,7 +37,6 @@ export class AddNewQuestionComponent implements OnInit {
   manyAnswers: boolean = false;
   numAnswers: any[] = [
     {
-      id: '1',
       value: '',
     },
   ];
@@ -69,9 +68,9 @@ export class AddNewQuestionComponent implements OnInit {
   buildAccountInfoForm() {
     this.addPdForm = this.formBuilder.group({
       code: [''],
-      name: [''],
+      content: [''],
       type: [''],
-      note: [''],
+      description: [''],
     });
   }
 
@@ -103,7 +102,6 @@ export class AddNewQuestionComponent implements OnInit {
 
   addAnswer() {
     this.numAnswers.push({
-      id: this.numAnswers.length + 1,
       value: '',
     });
   }
