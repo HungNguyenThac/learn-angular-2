@@ -34,11 +34,11 @@ export class SignInComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.titleService.setTitle(
-      this.multiLanguageService.instant('page_title.sign_in') +
-        ' - ' +
-        GlobalConstants.PL_VALUE_DEFAULT.PROJECT_NAME
-    );
+    // this.titleService.setTitle(
+    //   this.multiLanguageService.instant('page_title.sign_in') +
+    //     ' - ' +
+    //     GlobalConstants.PL_VALUE_DEFAULT.PROJECT_NAME
+    // );
     this.resetSession();
   }
 
@@ -52,6 +52,7 @@ export class SignInComponent implements OnInit {
 
     this.store.dispatch(new fromActions.Signin({ username, password }));
   }
+
   resetSession() {
     this.store.dispatch(new fromActions.Logout());
   }

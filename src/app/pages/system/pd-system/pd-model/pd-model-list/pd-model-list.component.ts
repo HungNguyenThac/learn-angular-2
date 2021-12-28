@@ -189,11 +189,6 @@ export class PdModelListComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.titleService.setTitle(
-      this.multiLanguageService.instant('page_title.merchant_list') +
-        ' - ' +
-        GlobalConstants.PL_VALUE_DEFAULT.PROJECT_NAME
-    );
     this._getModelList();
   }
 
