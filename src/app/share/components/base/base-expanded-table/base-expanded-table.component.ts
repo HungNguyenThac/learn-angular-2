@@ -231,11 +231,20 @@ export class BaseExpandedTableComponent implements OnInit, AfterViewInit {
     }
     let tableWidth = this.matTableRef.nativeElement.clientWidth;
     let totWidth = 0;
-    this.displayColumns.forEach((column) => {
+
+    let tableColumn: DisplayedFieldsModel[] = [...this.displayColumns];
+    if (this.hasSelect) {
+      tableColumn.unshift({
+        key: 'select',
+        width: 100,
+        title: '',
+      });
+    }
+    tableColumn.forEach((column) => {
       totWidth += column.width;
     });
     const scale = (tableWidth - 5) / totWidth;
-    this.displayColumns.forEach((column) => {
+    tableColumn.forEach((column) => {
       column.width *= scale;
       this.setColumnWidth(column);
     });

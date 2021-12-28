@@ -36,7 +36,7 @@
                 [checked]="ele.showed"
                 class="checkbox"
                 color="primary"
-                >{{ ele?.title }}</mat-checkbox
+              >{{ ele?.title }}</mat-checkbox
               >
             </div>
           </div>
@@ -74,7 +74,7 @@
           [style]="button?.style"
           mat-flat-button
         >
-          <img *ngIf="button?.imageSrc" [src]="button?.imageSrc" alt="" />
+          <img *ngIf="button?.imageSrc" [src]="button?.imageSrc" alt=""/>
           <span
             *ngIf="button?.classImgSrc"
             [ngClass]="button?.classImgSrc"
@@ -110,7 +110,7 @@
               (change)="$event ? masterToggle() : null"
               [checked]="selection.hasValue() && isAllSelected()"
               [indeterminate]="selection.hasValue() && !isAllSelected()"
-              >>
+            >
             </mat-checkbox>
           </th>
           <td *matCellDef="let row" mat-cell>
@@ -119,7 +119,7 @@
               (change)="$event ? this.selection.toggle(row) : null"
               (click)="$event.stopPropagation()"
               [checked]="selection.isSelected(row)"
-              >>
+            >
             </mat-checkbox>
           </td>
         </ng-container>
@@ -132,7 +132,7 @@
             *matHeaderCellDef
             mat-header-cell
             [resizeColumn]="true"
-            [index]="i"
+            [index]="hasSelect ? i + 1 : i"
           >
             <span
               arrowPosition="before"
