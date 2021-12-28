@@ -129,17 +129,32 @@
     <!--Profile-popup-->
     <mat-menu #profileMenu="matMenu">
       <span (mouseleave)="profileMenuTrigger.closeMenu()">
-        <button mat-menu-item class="gap-1" *ngIf="responsive">
-          <div class="d-flex gap-1 align-items-center">
-            <span>{{ "header.notification" | translate }}</span>
-            <div class="sprite-group-5-notification-on"></div>
-          </div>
-        </button>
+        <!--        <button mat-menu-item class="gap-1" *ngIf="responsive">-->
+        <!--          <div class="d-flex gap-1 align-items-center">-->
+        <!--            <span>{{ "header.notification" | translate }}</span>-->
+        <!--            <div class="sprite-group-5-notification-on"></div>-->
+        <!--          </div>-->
+        <!--        </button>-->
 
-        <button mat-menu-item class="gap-1" *ngIf="responsive">
+        <!--        <button mat-menu-item class="gap-1" *ngIf="responsive">-->
+        <!--          <div class="d-flex gap-1 align-items-center">-->
+        <!--            <span>{{ "header.setting.title" | translate }}</span>-->
+        <!--            <div class="sprite-group-5-setting"></div>-->
+        <!--          </div>-->
+        <!--        </button>-->
+
+        <button
+          *ngxPermissionsOnly="['dashboardAdminAccounts:getAdminAccounts']"
+          (click)="onClickManageUser()"
+          class="gap-1"
+          mat-menu-item
+        >
           <div class="d-flex gap-1 align-items-center">
-            <span>{{ "header.setting" | translate }}</span>
-            <div class="sprite-group-5-setting"></div>
+            <img
+              src="../../../../../assets/img/icon/group-7/svg/manage-user.svg"
+              alt=""
+            />
+            <span>{{ "header.mange_user" | translate }}</span>
           </div>
         </button>
 
