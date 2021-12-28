@@ -2,8 +2,8 @@ import 'rxjs/add/observable/of';
 import { Injectable } from '@angular/core';
 import { PreloadingStrategy, Route } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
-import {timer} from "rxjs";
-import {mergeMap} from "rxjs/operators";
+import { of, timer } from 'rxjs';
+import { mergeMap } from 'rxjs/operators';
 
 // Reference: https://viblo.asia/p/angular-cai-thien-hieu-nang-va-trai-nghiem-nguoi-dung-voi-lazy-loading-djeZ1BkRlWz
 // Reference: https://www.concretepage.com/angular-2/angular-custom-preloading-strategy
@@ -14,8 +14,9 @@ export class CustomPreloadingStrategy implements PreloadingStrategy {
 
   preload(route: Route, load: () => Observable<any>): Observable<any> {
     if (route.data && route.data['preload']) {
-
-      console.log('Preload Path: ' + route.path + ', delay:' + route.data['delay']);
+      console.log(
+        'Preload Path: ' + route.path + ', delay:' + route.data['delay']
+      );
 
       this.preloadedModules.push(route.path);
 
@@ -25,7 +26,7 @@ export class CustomPreloadingStrategy implements PreloadingStrategy {
 
       return load();
     } else {
-      return Observable.of(null);
+      return of(null);
     }
   }
 }

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MultiLanguageService } from './share/translate/multiLanguageService';
 import { fadeAnimation } from './core/common/animations/router.animation';
 import { NgxPermissionsService } from 'ngx-permissions';
@@ -9,8 +9,11 @@ import {
 import * as fromStore from './core/store';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
-import { Subscription } from 'rxjs';
-import {RESPONSE_CODE} from "./core/common/enum/operator";
+import { RESPONSE_CODE } from './core/common/enum/operator';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { Title } from '@angular/platform-browser';
+import { filter, map, mergeMap } from 'rxjs/operators';
+import { GlobalConstants } from './core/common/global-constants';
 
 @Component({
   selector: 'app-root',
@@ -21,7 +24,7 @@ import {RESPONSE_CODE} from "./core/common/enum/operator";
     // animation triggers go here
   ],
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'monex-op';
 
   accessToken: string;
@@ -31,7 +34,10 @@ export class AppComponent {
     private multiLanguageService: MultiLanguageService,
     private permissionsService: NgxPermissionsService,
     private permissionControllerService: PermissionControllerService,
-    private store: Store<fromStore.State>
+    private store: Store<fromStore.State>,
+    private router: Router,
+    private route: ActivatedRoute,
+    private titleService: Title
   ) {
     sessionStorage.clear();
     this.multiLanguageService.changeLanguage('vi');
@@ -53,10 +59,50 @@ export class AppComponent {
     this.permissionControllerService
       .getPermissionsByAccount()
       .subscribe((response: ApiResponseListString) => {
-        if (!response || !response.result || response.responseCode !== RESPONSE_CODE.SUCCESS) {
+        if (
+          !response ||
+          !response.result ||
+          response.responseCode !== RESPONSE_CODE.SUCCESS
+        ) {
           return;
         }
         this.permissionsService.loadPermissions(response.result);
       });
   }
+
+  ngOnInit(): void {
+    // this.setBrowserTabTitle();
+  }
+
+  // private setBrowserTabTitle(): void {
+  //   this.router.events
+  //     .pipe(
+  //       filter((event) => event instanceof NavigationEnd),
+  //       map(() => this.route),
+  //       map((route) => this.getRouteFirstChild(route)),
+  //       filter((route) => route.outlet === 'primary'),
+  //       mergeMap((route) => route.data)
+  //     )
+  //     .subscribe((event) =>
+  //       this.titleService.setTitle(this.buildTitle(event['title']))
+  //     );
+  // }
+  //
+  // private getRouteFirstChild(route: ActivatedRoute): ActivatedRoute {
+  //   while (route.firstChild) {
+  //     route = route.firstChild;
+  //   }
+  //
+  //   return route;
+  // }
+  //
+  // private buildTitle(pageTitle: string): string {
+  //   if (pageTitle) {
+  //     return [pageTitle, GlobalConstants.PL_VALUE_DEFAULT.PROJECT_NAME].join(
+  //       GlobalConstants.PL_VALUE_DEFAULT.BROWSER_TAB_TITLE_DELIMITER
+  //     );
+  //   }
+  //
+  //   return GlobalConstants.PL_VALUE_DEFAULT.PROJECT_NAME;
+  // }
 }
