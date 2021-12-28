@@ -385,11 +385,6 @@ export class LoanListComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.titleService.setTitle(
-      this.multiLanguageService.instant('page_title.loan_list') +
-        ' - ' +
-        GlobalConstants.PL_VALUE_DEFAULT.PROJECT_NAME
-    );
     this.store.dispatch(new fromActions.SetOperatorInfo(NAV_ITEM.LOANAPP));
     this._initSubscription();
     this._getCompanyList();

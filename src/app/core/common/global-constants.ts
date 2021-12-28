@@ -33,6 +33,6 @@ export class GlobalConstants {
     COUNTDOWN_START_TIME: '2021-09-01 18:00:00',
     CLOSE_ADS_POPUP_TIME: '2021-09-01 00:00:00',
     PROJECT_NAME: 'Kênh vận hành Monex',
-    BROWSER_TAB_TITLE_DELIMITER: '-',
+    BROWSER_TAB_TITLE_DELIMITER: ' - ',
   };
 }

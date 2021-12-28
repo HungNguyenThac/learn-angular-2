@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { SignInComponent } from './sign-in/sign-in.component';
+import { TitleConstants } from '../../core/common/providers/title-constants';
 
 export const AuthRoutes: Routes = [
   {
@@ -8,7 +9,10 @@ export const AuthRoutes: Routes = [
       {
         path: 'sign-in',
         component: SignInComponent,
-        data: { animation: true },
+        data: {
+          title: TitleConstants.TITLE_VALUE.SIGN_IN,
+          animation: true,
+        },
       },
       // {
       //   path: 'forgot-password',

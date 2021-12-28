@@ -71,38 +71,38 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // this.setBrowserTabTitle();
+    this.setBrowserTabTitle();
   }
 
-  // private setBrowserTabTitle(): void {
-  //   this.router.events
-  //     .pipe(
-  //       filter((event) => event instanceof NavigationEnd),
-  //       map(() => this.route),
-  //       map((route) => this.getRouteFirstChild(route)),
-  //       filter((route) => route.outlet === 'primary'),
-  //       mergeMap((route) => route.data)
-  //     )
-  //     .subscribe((event) =>
-  //       this.titleService.setTitle(this.buildTitle(event['title']))
-  //     );
-  // }
-  //
-  // private getRouteFirstChild(route: ActivatedRoute): ActivatedRoute {
-  //   while (route.firstChild) {
-  //     route = route.firstChild;
-  //   }
-  //
-  //   return route;
-  // }
-  //
-  // private buildTitle(pageTitle: string): string {
-  //   if (pageTitle) {
-  //     return [pageTitle, GlobalConstants.PL_VALUE_DEFAULT.PROJECT_NAME].join(
-  //       GlobalConstants.PL_VALUE_DEFAULT.BROWSER_TAB_TITLE_DELIMITER
-  //     );
-  //   }
-  //
-  //   return GlobalConstants.PL_VALUE_DEFAULT.PROJECT_NAME;
-  // }
+  private setBrowserTabTitle(): void {
+    this.router.events
+      .pipe(
+        filter((event) => event instanceof NavigationEnd),
+        map(() => this.route),
+        map((route) => this.getRouteFirstChild(route)),
+        filter((route) => route.outlet === 'primary'),
+        mergeMap((route) => route.data)
+      )
+      .subscribe((event) =>
+        this.titleService.setTitle(this.buildTitle(event['title']))
+      );
+  }
+
+  private getRouteFirstChild(route: ActivatedRoute): ActivatedRoute {
+    while (route.firstChild) {
+      route = route.firstChild;
+    }
+
+    return route;
+  }
+
+  private buildTitle(pageTitle: string): string {
+    if (pageTitle) {
+      return [pageTitle, GlobalConstants.PL_VALUE_DEFAULT.PROJECT_NAME].join(
+        GlobalConstants.PL_VALUE_DEFAULT.BROWSER_TAB_TITLE_DELIMITER
+      );
+    }
+
+    return GlobalConstants.PL_VALUE_DEFAULT.PROJECT_NAME;
+  }
 }

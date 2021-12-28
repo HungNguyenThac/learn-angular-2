@@ -211,11 +211,11 @@ export class UserListComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.titleService.setTitle(
-      this.multiLanguageService.instant('page_title.user_list') +
-        ' - ' +
-        GlobalConstants.PL_VALUE_DEFAULT.PROJECT_NAME
-    );
+    // this.titleService.setTitle(
+    //   this.multiLanguageService.instant('page_title.user_list') +
+    //     ' - ' +
+    //     GlobalConstants.PL_VALUE_DEFAULT.PROJECT_NAME
+    // );
     this.store.dispatch(new fromActions.SetOperatorInfo(null));
     this._initSubscription();
     this._getPermissionList();

@@ -1,6 +1,7 @@
 import { LoanListComponent } from './loan-list/loan-list.component';
 import { Routes } from '@angular/router';
-import {NgxPermissionsGuard} from "ngx-permissions";
+import { NgxPermissionsGuard } from 'ngx-permissions';
+import { TitleConstants } from '../../../core/common/providers/title-constants';
 
 export const PaydayLoanRoutes: Routes = [
   {
@@ -11,6 +12,7 @@ export const PaydayLoanRoutes: Routes = [
         component: LoanListComponent,
         canActivateChild: [NgxPermissionsGuard],
         data: {
+          title: TitleConstants.TITLE_VALUE.PAYDAY_LOAN,
           animation: true,
           permissions: {
             only: [
