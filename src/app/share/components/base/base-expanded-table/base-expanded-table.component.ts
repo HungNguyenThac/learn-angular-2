@@ -250,7 +250,6 @@ export class BaseExpandedTableComponent implements OnInit, AfterViewInit {
 
     columnEls.forEach((el: HTMLDivElement) => {
       el.style.width = column.width + 'px';
-      console.log(el.style.width);
     });
   }
 
