@@ -12,7 +12,10 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { CustomerDetailUpdateDialogComponent } from '../../../../customer/components/customer-individual-info-update-dialog/customer-detail-update-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { MerchantDetailDialogComponent } from '../../../../../share/components/operators/merchant/merchant-detail-dialog/merchant-detail-dialog.component';
-import { CustomerInfo } from '../../../../../../../open-api-modules/dashboard-api-docs';
+import {
+  AdminAccountEntity,
+  CustomerInfo,
+} from '../../../../../../../open-api-modules/dashboard-api-docs';
 
 @Component({
   selector: 'app-merchant-detail',
@@ -20,12 +23,23 @@ import { CustomerInfo } from '../../../../../../../open-api-modules/dashboard-ap
   styleUrls: ['./merchant-detail.component.scss'],
 })
 export class MerchantDetailComponent implements OnInit {
-  @Input() merchantInfo;
-
-  @Output() triggerUpdateInfo = new EventEmitter<any>();
-  merchantInfoForm: FormGroup;
+  _merchantInfo;
   leftCompanyInfos: any[] = [];
   rightCompanyInfos: any[] = [];
+
+  @Input()
+  get merchantInfo() {
+    return this._merchantInfo;
+  }
+
+  set merchantInfo(value) {
+    this._merchantInfo = value;
+    this.leftCompanyInfos = this._initLeftCompanyInfos();
+    this.rightCompanyInfos = this._initRightCompanyInfos();
+  }
+
+  @Output() triggerUpdateInfo = new EventEmitter<any>();
+  // merchantInfoForm: FormGroup;
   showEnableBtn: boolean = false;
   subManager = new Subscription();
 
@@ -36,27 +50,28 @@ export class MerchantDetailComponent implements OnInit {
     private dialog: MatDialog,
     private formBuilder: FormBuilder
   ) {
-    this.merchantInfoForm = this.formBuilder.group({
-      note: [''],
-    });
+    // this.merchantInfoForm = this.formBuilder.group({
+    //   note: [''],
+    // });
   }
 
   ngOnInit(): void {
     this.leftCompanyInfos = this._initLeftCompanyInfos();
     this.rightCompanyInfos = this._initRightCompanyInfos();
+    console.log('oooooo', this.merchantInfo);
   }
 
-  submitForm() {
-    const data = this.merchantInfoForm.getRawValue();
-    this.triggerUpdateInfo.emit({
-      'personalData.note': data.note,
-    });
-  }
+  // submitForm() {
+  //   const data = this.merchantInfoForm.getRawValue();
+  //   this.triggerUpdateInfo.emit({
+  //     'personalData.note': data.note,
+  //   });
+  // }
 
   openUpdateDialog() {
     const updateDialogRef = this.dialog.open(MerchantDetailDialogComponent, {
       panelClass: 'custom-info-dialog-container',
-      maxWidth: '1200px',
+      maxWidth: '1000px',
       width: '90%',
       data: {
         merchantInfo: this.merchantInfo,
@@ -133,7 +148,7 @@ export class MerchantDetailComponent implements OnInit {
     return [
       {
         title: this.multiLanguageService.instant('merchant.merchant_detail.id'),
-        value: this.merchantInfo.merchantId,
+        value: this.merchantInfo?.id,
         type: DATA_CELL_TYPE.TEXT,
         format: null,
       },
@@ -141,7 +156,7 @@ export class MerchantDetailComponent implements OnInit {
         title: this.multiLanguageService.instant(
           'merchant.merchant_detail.name'
         ),
-        value: this.merchantInfo.merchantName,
+        value: this.merchantInfo?.name,
         type: DATA_CELL_TYPE.TEXT,
         format: null,
       },
@@ -149,7 +164,7 @@ export class MerchantDetailComponent implements OnInit {
         title: this.multiLanguageService.instant(
           'merchant.merchant_detail.location'
         ),
-        value: this.merchantInfo.merchantAddress,
+        value: this.merchantInfo?.merchantAddress,
         type: DATA_CELL_TYPE.TEXT,
         format: null,
       },
@@ -157,7 +172,7 @@ export class MerchantDetailComponent implements OnInit {
         title: this.multiLanguageService.instant(
           'merchant.merchant_detail.area'
         ),
-        value: this.merchantInfo.merchantArea,
+        value: this.merchantInfo?.merchantArea,
         type: DATA_CELL_TYPE.TEXT,
         format: null,
       },
@@ -165,7 +180,7 @@ export class MerchantDetailComponent implements OnInit {
         title: this.multiLanguageService.instant(
           'merchant.merchant_detail.commune'
         ),
-        value: this.merchantInfo.merchantCommune,
+        value: this.merchantInfo?.merchantCommune,
         type: DATA_CELL_TYPE.TEXT,
         format: null,
       },
@@ -173,7 +188,7 @@ export class MerchantDetailComponent implements OnInit {
         title: this.multiLanguageService.instant(
           'merchant.merchant_detail.manager'
         ),
-        value: this.merchantInfo.merchantManager,
+        value: this.merchantInfo?.bdStaff,
         type: DATA_CELL_TYPE.TEXT,
         format: null,
       },
@@ -181,7 +196,7 @@ export class MerchantDetailComponent implements OnInit {
         title: this.multiLanguageService.instant(
           'merchant.merchant_detail.type'
         ),
-        value: this.merchantInfo.merchantType,
+        value: this.merchantInfo?.type,
         type: DATA_CELL_TYPE.TEXT,
         format: null,
       },
@@ -194,7 +209,7 @@ export class MerchantDetailComponent implements OnInit {
         title: this.multiLanguageService.instant(
           'merchant.merchant_detail.phone_number'
         ),
-        value: this.merchantInfo.merchantPhone,
+        value: this.merchantInfo?.phone,
         type: DATA_CELL_TYPE.TEXT,
         format: null,
       },
@@ -202,7 +217,7 @@ export class MerchantDetailComponent implements OnInit {
         title: this.multiLanguageService.instant(
           'merchant.merchant_detail.email'
         ),
-        value: this.merchantInfo.merchantEmail,
+        value: this.merchantInfo?.email,
         type: DATA_CELL_TYPE.TEXT,
         format: null,
       },
@@ -210,7 +225,7 @@ export class MerchantDetailComponent implements OnInit {
         title: this.multiLanguageService.instant(
           'merchant.merchant_detail.website'
         ),
-        value: this.merchantInfo.merchantWebsite,
+        value: this.merchantInfo?.merchantWebsite,
         type: DATA_CELL_TYPE.TEXT,
         format: null,
       },
@@ -218,7 +233,7 @@ export class MerchantDetailComponent implements OnInit {
         title: this.multiLanguageService.instant(
           'merchant.merchant_detail.regis_no'
         ),
-        value: this.merchantInfo.merchantRegistrationNumber,
+        value: this.merchantInfo?.merchantRegistrationNumber,
         type: DATA_CELL_TYPE.TEXT,
         format: null,
       },
@@ -226,7 +241,7 @@ export class MerchantDetailComponent implements OnInit {
         title: this.multiLanguageService.instant(
           'merchant.merchant_detail.establish'
         ),
-        value: this.merchantInfo.merchantEstablish,
+        value: this.merchantInfo?.merchantEstablish,
         type: DATA_CELL_TYPE.TEXT,
         format: null,
       },
@@ -234,7 +249,7 @@ export class MerchantDetailComponent implements OnInit {
         title: this.multiLanguageService.instant(
           'merchant.merchant_detail.product'
         ),
-        value: this.merchantInfo.merchantProduct,
+        value: this.merchantInfo?.merchantProduct,
         type: DATA_CELL_TYPE.TEXT,
         format: null,
       },
@@ -242,7 +257,7 @@ export class MerchantDetailComponent implements OnInit {
         title: this.multiLanguageService.instant(
           'merchant.merchant_detail.status'
         ),
-        value: this.merchantInfo.merchantStatus,
+        value: this.merchantInfo?.merchantStatus,
         type: DATA_CELL_TYPE.STATUS,
         format: DATA_STATUS_TYPE.USER_STATUS,
       },

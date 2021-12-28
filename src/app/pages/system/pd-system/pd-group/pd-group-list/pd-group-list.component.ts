@@ -4,6 +4,7 @@ import {
   DATA_CELL_TYPE,
   FILTER_TYPE,
   QUERY_CONDITION_TYPE,
+  RESPONSE_CODE,
 } from '../../../../../core/common/enum/operator';
 import { TableSelectActionModel } from '../../../../../public/models/external/table-select-action.model';
 import { FormBuilder, FormGroup } from '@angular/forms';
@@ -26,6 +27,13 @@ import {
   MerchantGroupDialogComponent,
 } from '../../../../../share/components';
 import { AddNewPdDialogComponent } from '../../../../../share/components/operators/pd-system/add-new-pd-dialog/add-new-pd-dialog.component';
+import { ApiResponseSearchAndPaginationResponseMerchant } from '../../../../../../../open-api-modules/dashboard-api-docs';
+import { PdGroupListService } from './pd-group-list.service';
+import { Subscription } from 'rxjs';
+import {
+  ApiResponse,
+  CdeService,
+} from '../../../../../../../open-api-modules/monexcore-api-docs';
 
 @Component({
   selector: 'app-pd-group-list',
@@ -114,7 +122,7 @@ export class PdGroupListComponent implements OnInit {
   pageLength: number = 0;
   pageSizeOptions: number[] = [10, 20, 50];
   expandedElementId: number;
-  merchantInfo: any;
+  subManager = new Subscription();
   breadcrumbOptions: BreadcrumbOptionsModel = {
     title: this.multiLanguageService.instant('breadcrumb.pd_group'),
     iconImgSrc: 'assets/img/icon/group-7/svg/merchant.svg',
@@ -196,7 +204,9 @@ export class PdGroupListComponent implements OnInit {
     private router: Router,
     private dialog: MatDialog,
     private titleService: Title,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private pdGroupListService: PdGroupListService,
+    private cdeService: CdeService
   ) {
     this._initFilterForm();
   }
@@ -207,7 +217,18 @@ export class PdGroupListComponent implements OnInit {
         ' - ' +
         GlobalConstants.PL_VALUE_DEFAULT.PROJECT_NAME
     );
-    this.dataSource.data = this.merchantList;
+    this._getGroupList();
+  }
+
+  public _getGroupList() {
+    const params = this._buildParams();
+    this.pdGroupListService
+      .getData(params)
+      .subscribe((data: ApiResponseSearchAndPaginationResponseMerchant) => {
+        console.log('question list', data?.result);
+        this._parseData(data?.result);
+        this.dataSource.data = data?.result?.data;
+      });
   }
 
   public onSortChange(sortState: Sort) {
@@ -441,9 +462,6 @@ export class PdGroupListComponent implements OnInit {
 
   public onExpandElementChange(element: any) {
     this.expandedElementId = element.merchantId;
-    this.merchantInfo = this.merchantList.filter(
-      (merchant) => merchant.merchantId === element.merchantId
-    )[0];
   }
 
   onClickBtnAdd(event) {
@@ -455,8 +473,53 @@ export class PdGroupListComponent implements OnInit {
         dialogTitle: 'Thêm nhóm câu hỏi',
         inputName: 'Tên nhóm câu hỏi',
         inputCode: 'Mã nhóm câu hỏi',
-        list: 'Danh sách câu hỏi',
+        listTitle: 'Danh sách câu hỏi',
       },
     });
+    this.subManager.add(
+      addGroupDialogRef.afterClosed().subscribe((result: any) => {
+        if (result && result.type === BUTTON_TYPE.PRIMARY) {
+          let createRequest = this._bindingDialogData(result.data);
+          this.sendAddRequest(createRequest);
+        }
+      })
+    );
+  }
+
+  sendAddRequest(addRequest) {
+    this.subManager.add(
+      this.cdeService
+        .cdeControllerCreatePdGroup(addRequest)
+        .subscribe((result: ApiResponse) => {
+          if (!result || result.responseCode !== RESPONSE_CODE.SUCCESS) {
+            return this.notifier.error(
+              JSON.stringify(result?.message),
+              result?.errorCode
+            );
+          }
+          setTimeout(() => {
+            this.notifier.success(
+              this.multiLanguageService.instant('common.create_success')
+            );
+            this.refreshContent();
+            this.notificationService.hideLoading();
+          }, 3000);
+        })
+    );
+  }
+
+  public refreshContent() {
+    setTimeout(() => {
+      this._getGroupList();
+    }, 2000);
+  }
+
+  private _bindingDialogData(data) {
+    return {
+      code: data?.code,
+      content: data?.content,
+      description: data?.description,
+      modelId: 1,
+    };
   }
 }

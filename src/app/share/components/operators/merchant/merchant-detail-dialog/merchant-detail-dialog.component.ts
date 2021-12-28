@@ -94,12 +94,13 @@ export class MerchantDetailDialogComponent implements OnInit {
   }
 
   initDialogData(data: any) {
+    console.log('iashodhasodoas', data.merchantInfo);
     this.merchantInfo = data?.merchantInfo;
     this.tabIndex = data?.tabIndex;
     this.dialogTitle = data?.dialogTitle;
 
     this.merchantInfoForm.patchValue({
-      merchantId: this.merchantInfo?.merchantId,
+      merchantCoded: this.merchantInfo?.merchantId,
       merchantName: this.merchantInfo?.merchantName,
       merchantStatus: this.merchantInfo?.merchantStatus,
       merchantPhone: this.merchantInfo?.merchantPhone,

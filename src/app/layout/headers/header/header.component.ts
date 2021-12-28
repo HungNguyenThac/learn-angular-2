@@ -12,6 +12,7 @@ import { MultiLanguageService } from '../../../share/translate/multiLanguageServ
 import { MatDialog } from '@angular/material/dialog';
 import {
   AdminAccountControllerService,
+  ApiResponseString,
   SignOnControllerService,
 } from '../../../../../open-api-modules/identity-api-docs';
 import { AdminAccountEntity } from '../../../../../open-api-modules/dashboard-api-docs';
@@ -31,6 +32,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   customerInfo: CustomerInfoResponse = null;
   logoSrc: string = 'assets/img/monex-logo.svg';
   showProfileBtn: boolean = false;
+  shortName: string = '0';
   userInfo: AdminAccountEntity;
   resizeTimeout: any;
 
@@ -59,7 +61,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
           ),
           iconClass: 'sprite-group-5-pl-24',
           path: '/payday-loan/list',
-          queryParams: { groupName: 'HMG' },
+          queryParams: {groupName: 'HMG'},
           canActivate: ['dashboardHmgApplications:findApplications'],
         },
         {
@@ -68,11 +70,20 @@ export class HeaderComponent implements OnInit, OnDestroy {
           ),
           iconClass: 'sprite-group-5-pl-24',
           path: '/payday-loan/list',
-          queryParams: { groupName: 'TNG' },
+          queryParams: {groupName: 'TNG'},
           canActivate: ['dashboardTngApplications:findApplications'],
         },
+        {
+          title: this.multiLanguageService.instant(
+            'header.navigation.loanapp_vac'
+          ),
+          iconClass: 'sprite-group-5-pl-24',
+          path: '/payday-loan/list',
+          queryParams: { groupName: 'VAC' },
+          canActivate: [],
+        },
       ],
-      path: '#',
+      path: '/payday-loan/list',
     },
     {
       navItem: NAV_ITEM.CUSTOMER,
@@ -81,6 +92,14 @@ export class HeaderComponent implements OnInit, OnDestroy {
       activeIconClass: 'sprite-group-5-customer-white',
       path: '/customer/list',
       canActivate: ['dashboardCustomers:getCustomers'],
+    },
+    {
+      navItem: NAV_ITEM.MERCHANT,
+      title: this.multiLanguageService.instant('header.navigation.merchant'),
+      defaultIconClass: 'sprite-group-5-customer',
+      activeIconClass: 'sprite-group-5-customer-white',
+      path: '/system/merchant/list',
+      canActivate: [],
     },
     // {
     //   navItem: NAV_ITEM.INSURANCE,
@@ -113,9 +132,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.onResponsiveInverted();
+    window.addEventListener('resize', this.onResponsiveInverted);
   }
 
   ngOnDestroy(): void {
+    window.removeEventListener('resize', this.onResponsiveInverted);
     this.subManager.unsubscribe();
   }
 
@@ -142,6 +163,12 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.subManager.add(
       this.customerInfo$.subscribe((userInfo: AdminAccountEntity) => {
         this.userInfo = userInfo;
+        if (userInfo?.fullName) {
+          const names = userInfo?.fullName.split(' ');
+          this.shortName = names[names.length - 1].charAt(0);
+        } else {
+          this.shortName = '0';
+        }
       })
     );
     this.subManager.add(

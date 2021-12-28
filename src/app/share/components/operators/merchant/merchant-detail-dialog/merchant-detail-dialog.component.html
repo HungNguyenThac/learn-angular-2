@@ -10,12 +10,11 @@
     <form [formGroup]="merchantInfoForm">
       <mat-tab-group
         [selectedIndex]="tabIndex"
-        dynamicHeight
         class="op-tab-dialog"
       >
         <mat-tab [label]="'merchant.merchant_detail.info' | translate">
           <ng-template matTabContent>
-            <div class="card-body no-padding-bot">
+            <div class="card-body no-padding-bot limit-height">
 
               <div class="row">
                 <section class="col-12">
@@ -722,7 +721,7 @@
       </mat-tab-group>
 
       <!--  Actions -->
-      <div class="action row mt-2">
+      <div class="action mt-2">
         <div class="col-12 d-flex gap-2 justify-content-end">
           <button class="bg-grey" mat-button mat-dialog-close>
             {{ "merchant.merchant_dialog.cancel" | translate }}

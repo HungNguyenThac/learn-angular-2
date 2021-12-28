@@ -28,12 +28,12 @@
                            [ngClass]="
                         isAccountNameInputFocus ? 'is-focused-input' : ''
                       " [placeholder]="inputName"
-                           formControlName="accountName"
+                           formControlName="content"
                            aria-autocomplete="none"
                            matInput
                     >
                     <show-errors
-                      [control]="addPdForm.controls['accountName']"
+                      [control]="addPdForm.controls['content']"
                       [controlLabel]="inputName"
                       [hasIconPrefix]="false"
                     >
@@ -59,12 +59,12 @@
                         isLoginInputFocus ? 'is-focused-input' : ''
                       "
                       [placeholder]="inputCode"
-                      formControlName="username"
+                      formControlName="code"
                       aria-autocomplete="none"
                       matInput
                     />
                     <show-errors
-                      [control]="addPdForm.controls['username']"
+                      [control]="addPdForm.controls['code']"
                       [controlLabel]="inputCode"
                       [hasIconPrefix]="false"
                     >
@@ -91,11 +91,11 @@
                       class="text-area"
                       id="review"
                       name="review"
-                      formControlName="note"
+                      formControlName="description"
                       [placeholder]="'pd_system.add_pd_dialog.description' | translate"
                     ></textarea>
                     <show-errors
-                      [control]="addPdForm.controls['note']"
+                      [control]="addPdForm.controls['description']"
                       [controlLabel]="
                         'pd_system.add_pd_dialog.description' | translate
                       "
@@ -115,7 +115,7 @@
                 <div class="row">
                   <div class="select-section d-flex justify-content-between">
                     <div class="col-5">
-                      <span>{{list}}</span>
+                      <span>{{listTitle}}</span>
                       <div class="box">
                         <div (click)="onClickQuestion($event, question)" *ngFor="let question of leftArr"
                              class="item w-100">
