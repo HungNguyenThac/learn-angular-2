@@ -34,8 +34,8 @@ export class DatetimeFilterComponent implements OnInit {
 
   @Output() completeFilter = new EventEmitter<FilterEventModel>();
 
-  currentTime = new Date();
-  currentQuarter = Math.floor((this.currentTime.getMonth() + 3) / 3);
+  currentDate = moment();
+  currentQuarter = moment().quarter();
   responsive: boolean = false;
   resizeTimeout: any;
 
@@ -204,170 +204,121 @@ export class DatetimeFilterComponent implements OnInit {
   }
 
   get today() {
-    const startDate = this.startDate(this.currentTime);
-    const endDate = this.endDate(this.currentTime);
+    const startDate = this.startDate(moment());
+    const endDate = this.endDate(moment());
     return { startDate, endDate };
   }
 
   get yesterday() {
-    const timeOption = new Date().setDate(this.currentTime.getDate() - 1);
+    const timeOption = moment().subtract(1, 'days');
     const startDate = this.startDate(timeOption);
     const endDate = this.endDate(timeOption);
     return { startDate, endDate };
   }
 
   get currentWeek() {
-    const firstDayOfWeek =
-      this.currentTime.getDate() - this.currentTime.getDay() + 1;
-    const timeOptionStart = new Date().setDate(firstDayOfWeek);
-    const startDate = this.startDate(timeOptionStart);
-    const endDate = this.endDate(this.currentTime);
+    const weekStart = moment().startOf('isoWeek').isoWeekday(2);
+    const startDate = this.startDate(weekStart);
+    const endDate = this.endDate(moment());
     return { startDate, endDate };
   }
 
   get lastWeek() {
-    const firstDayOfLastWeek =
-      this.currentTime.getDate() - this.currentTime.getDay() - 6;
-    const timeOptionStart = new Date().setDate(firstDayOfLastWeek);
-    const lastDayOfLastWeek =
-      this.currentTime.getDate() - this.currentTime.getDay();
-    const timeOptionEnd = new Date().setDate(lastDayOfLastWeek);
-    const startDate = this.startDate(timeOptionStart);
-    const endDate = this.endDate(timeOptionEnd);
+    const firstDayOfLastWeek = moment()
+      .subtract(1, 'weeks')
+      .startOf('isoWeek')
+      .isoWeekday(2);
+    const lastDayOfLastWeek = moment().subtract(1, 'weeks').endOf('isoWeek');
+    const startDate = this.startDate(firstDayOfLastWeek);
+    const endDate = this.endDate(lastDayOfLastWeek);
     return { startDate, endDate };
   }
 
   get last7days() {
-    const firstDay = this.currentTime.getDate() - 7;
-    const timeOptionStart = new Date().setDate(firstDay);
-    const startDate = this.formatTime(timeOptionStart);
-    const endDate = this.formatTime(this.currentTime);
+    const firstDay = moment().subtract(7, 'days');
+    const startDate = this.formatTime(firstDay);
+    const endDate = this.formatTime(moment());
     return { startDate, endDate };
   }
 
   get currentMonth() {
-    const timeOptionStart = new Date(new Date().setDate(1));
+    const timeOptionStart = moment().startOf('month').add(1, 'day');
     const startDate = this.startDate(timeOptionStart);
-    const endDate = this.endDate(this.currentTime);
+    const endDate = this.endDate(moment());
     return { startDate, endDate };
   }
 
   get lastMonth() {
-    const now = new Date();
-    now.setDate(1);
-    now.setMonth(now.getMonth() - 1);
-    const timeOptionStart = new Date(now);
-    const timeOptionEnd = new Date().setDate(0);
+    const timeOptionStart = moment().subtract(1, 'months').startOf('month').add(1,'day')
+    const timeOptionEnd = moment().subtract(1, 'months').endOf('month');
     const startDate = this.startDate(timeOptionStart);
     const endDate = this.endDate(timeOptionEnd);
     return { startDate, endDate };
   }
 
   get last30days() {
-    const firstDay = this.currentTime.getDate() - 30;
-    const timeOptionStart = new Date().setDate(firstDay);
-    const startDate = this.formatTime(timeOptionStart);
-    const endDate = this.formatTime(this.currentTime);
+    const firstDay = moment().subtract(30, 'days');
+    const startDate = this.formatTime(firstDay);
+    const endDate = this.formatTime(moment());
     return { startDate, endDate };
   }
 
   get firstQuarter() {
-    const firstDayOfQuarter = new Date();
-    firstDayOfQuarter.setMonth(0);
-    firstDayOfQuarter.setDate(1);
-    const timeOptionStart = new Date(firstDayOfQuarter);
-    const lastDayOfQuarter = new Date();
-    let endDate;
-    if (this.currentQuarter > 1) {
-      lastDayOfQuarter.setMonth(2);
-      lastDayOfQuarter.setDate(31);
-    }
-    const timeOptionEnd = new Date(lastDayOfQuarter);
-    endDate = this.endDate(timeOptionEnd);
-    const startDate = this.startDate(timeOptionStart);
+    const firstDayOfQuarter = moment().month(0).startOf('month').add(1, 'day');
+    const lastDayOfQuarter = moment().month(2).endOf('month');
+    const startDate = this.startDate(firstDayOfQuarter);
+    const endDate = this.endDate(lastDayOfQuarter);
     return { startDate, endDate };
   }
 
   get secondQuarter() {
-    if (this.currentQuarter < 2) {
-      return;
-    }
-    const firstDayOfQuarter = new Date();
-    firstDayOfQuarter.setMonth(3);
-    firstDayOfQuarter.setDate(1);
-    const timeOptionStart = new Date(firstDayOfQuarter);
-    const lastDayOfQuarter = new Date();
-    let endDate;
-    if (this.currentQuarter > 2) {
-      lastDayOfQuarter.setMonth(5);
-      lastDayOfQuarter.setDate(30);
-    }
-    const timeOptionEnd = new Date(lastDayOfQuarter);
-    endDate = this.endDate(timeOptionEnd);
-    const startDate = this.startDate(timeOptionStart);
+    // if (this.currentQuarter < 2) {
+    //   return;
+    // }
+    const firstDayOfQuarter = moment().month(3).startOf('month').add(1, 'day');
+    const lastDayOfQuarter = moment().month(5).endOf('month');
+    const startDate = this.startDate(firstDayOfQuarter);
+    const endDate = this.endDate(lastDayOfQuarter);
     return { startDate, endDate };
   }
 
   get thirdQuarter() {
-    if (this.currentQuarter < 3) {
-      return;
-    }
-    const firstDayOfQuarter = new Date();
-    firstDayOfQuarter.setMonth(6);
-    firstDayOfQuarter.setDate(1);
-    const timeOptionStart = new Date(firstDayOfQuarter);
-    const lastDayOfQuarter = new Date();
-    let endDate;
-    if (this.currentQuarter > 3) {
-      lastDayOfQuarter.setMonth(8);
-      lastDayOfQuarter.setDate(30);
-    }
-    const timeOptionEnd = new Date(lastDayOfQuarter);
-    endDate = this.endDate(timeOptionEnd);
-    const startDate = this.startDate(timeOptionStart);
+    // if (this.currentQuarter < 3) {
+    //   return;
+    // }
+    const firstDayOfQuarter = moment().month(6).startOf('month').add(1, 'day');
+    const lastDayOfQuarter = moment().month(8).endOf('month');
+    const startDate = this.startDate(firstDayOfQuarter);
+    const endDate = this.endDate(lastDayOfQuarter);
     return { startDate, endDate };
   }
 
   get fourthQuarter() {
-    if (this.currentQuarter < 4) {
-      return;
-    }
-    const firstDayOfQuarter = new Date();
-    firstDayOfQuarter.setMonth(9);
-    firstDayOfQuarter.setDate(1);
-    const timeOptionStart = new Date(firstDayOfQuarter);
-    const lastDayOfQuarter = new Date();
-    let endDate;
-    const timeOptionEnd = new Date(lastDayOfQuarter);
-    endDate = this.endDate(timeOptionEnd);
-    const startDate = this.startDate(timeOptionStart);
+    // if (this.currentQuarter < 4) {
+    //   return;
+    // }
+    const firstDayOfQuarter = moment().month(9).startOf('month').add(1, 'day');
+    const lastDayOfQuarter = moment().month(11).endOf('month');
+    const startDate = this.startDate(firstDayOfQuarter);
+    const endDate = this.endDate(lastDayOfQuarter);
     return { startDate, endDate };
   }
 
   get currentYear() {
-    const firstDayOfYear = new Date();
-    firstDayOfYear.setMonth(0);
-    firstDayOfYear.setDate(1);
-    const timeOptionStart = new Date(firstDayOfYear);
-    const startDate = this.startDate(timeOptionStart);
-    const endDate = this.endDate(this.currentTime);
+    const firstDayOfYear = moment().startOf('year').add(1, 'day');
+    const startDate = this.startDate(firstDayOfYear);
+    const endDate = this.endDate(moment());
     return { startDate, endDate };
   }
 
   get lastYear() {
-    const firstDayOfLastYear = new Date();
-    firstDayOfLastYear.setMonth(0);
-    firstDayOfLastYear.setDate(1);
-    firstDayOfLastYear.setFullYear(this.currentTime.getFullYear() - 1);
-    const timeOptionStart = new Date(firstDayOfLastYear);
-    const startDate = this.startDate(timeOptionStart);
-
-    const lastDayOfLastYear = new Date();
-    lastDayOfLastYear.setMonth(11);
-    lastDayOfLastYear.setDate(31);
-    lastDayOfLastYear.setFullYear(this.currentTime.getFullYear() - 1);
-    const timeOptionEnd = new Date(lastDayOfLastYear);
-    const endDate = this.endDate(timeOptionEnd);
+    const firstDayOfLastYear = moment()
+      .subtract(1, 'year')
+      .startOf('year')
+      .add(1, 'day');
+    const lastDayOfLastYear = moment().subtract(1, 'year').endOf('year');
+    const startDate = this.startDate(firstDayOfLastYear);
+    const endDate = this.endDate(lastDayOfLastYear);
     return { startDate, endDate };
   }
 
@@ -457,14 +408,14 @@ export class DatetimeFilterComponent implements OnInit {
 
   get selectedEndDateDisplay() {
     if (!this.selectedEndDate) {
-      this.selectedEndDate = this.currentTime;
+      this.selectedEndDate = new Date();
     }
     return moment(new Date(this.selectedEndDate)).format('DD/MM/YYYY');
   }
 
   get selectedEndDay() {
     if (!this.selectedEndDate) {
-      this.selectedEndDate = this.currentTime;
+      this.selectedEndDate = new Date();
     }
     const endDay = moment(new Date(this.selectedEndDate))
       .locale('vi')
