@@ -2,21 +2,25 @@
 
   <mat-tab [label]="'merchant.merchant_detail.info' | translate">
     <ng-template matTabContent>
-      <app-merchant-detail [merchantInfo]="merchantInfo"
+      <app-merchant-detail [merchantInfo]="merchantInfo" (updateElementInfo)="updateElementInfo($event)"
       ></app-merchant-detail>
     </ng-template>
   </mat-tab>
 
   <mat-tab [label]="'merchant.merchant_image.title' | translate">
     <ng-template matTabContent>
-      <app-merchant-logo [merchantInfo]="merchantInfo"></app-merchant-logo>
+      <app-merchant-logo [merchantInfo]="merchantInfo"
+                         [merchantId]="merchantId"
+      ></app-merchant-logo>
     </ng-template
     >
   </mat-tab>
 
   <mat-tab [label]="'merchant.merchant_qr.title' | translate">
     <ng-template matTabContent>
-      <app-merchant-qr [merchantInfo]="merchantInfo"></app-merchant-qr>
+      <app-merchant-qr [merchantInfo]="merchantInfo"
+                       [merchantQr]="merchantQr"
+      ></app-merchant-qr>
     </ng-template
     >
   </mat-tab>

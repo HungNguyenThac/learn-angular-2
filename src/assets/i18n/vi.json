@@ -524,6 +524,8 @@
     "selected_date": "{{date}} ngày {{day}}",
     "company": "Công ty",
     "choose_company": "Chọn công ty",
+    "product_type": "Ngành hàng",
+    "choose_product": "Chọn ngành hàng",
     "bd": "BD phụ trách",
     "choose_bd": "Chọn BD phụ trách",
     "pl_ui_status": "Trạng thái tài khoản",
@@ -709,13 +711,34 @@
       "register_date": "Thời gian đăng ký",
       "location": "Địa chỉ",
       "area": "Khu vực",
-      "commune": "Phường xã",
+      "create_at": "Thời gian tạo",
+      "updated_at": "Cập nhật gần nhất",
+      "updated_by": "Cập nhật bởi",
+      "district": "Phường xã",
       "date": "Ngày tất toán",
       "company": "Công ty",
       "tax_no": "Mã số thuế",
-      "add_merchant": "Thêm Merchant"
+      "add_merchant": "Thêm Merchant",
+      "delete_merchant": "Xoá Merchant",
+      "merchant_fee": "Chiết khấu",
+      "customer_fee": "Phí người mua"
     },
     "merchant_detail": {
+      "delete_merchant": {
+        "title": "Xoá Merchant",
+        "content": "Hệ thống sẽ xóa Merchant được chọn nhưng vẫn giữ nhưng giao dịch lịch sử nếu có. Bạn có chắc chắn muốn xóa?",
+        "toast": "Xoá Merchant thành công"
+      },
+      "lock_merchant": {
+        "title": "Khoá Merchant",
+        "content": "Bạn có chắc chắn muốn ngừng hoạt động Merchant này? Thông tin và giao dịch của nhà cung cấp này vẫn sẽ được giữ.",
+        "toast": "Ngừng hoạt động Merchant thành công"
+      },
+      "unlock_merchant": {
+        "title": "Bạn có chắc chắn muốn cho phép Merchant này hoạt động trở lại?",
+        "content": "Sau khi ngừng hoạt động, lịch sử giao dịch của merchant vẫn sẽ được giữ. Bạn có chắc chắn muốn ngừng hoạt động merchant này?",
+        "toast": "Mở khoá Merchant thành công"
+      },
       "info": "Thông tin",
       "id": "Mã merchant",
       "name": "Tên merchant",
@@ -751,11 +774,7 @@
       "title": "Logo hình ảnh, giới thiệu",
       "logo": "Logo",
       "images": "Hình ảnh giới thiệu",
-      "image1": "Ảnh 1",
-      "image2": "Ảnh 2",
-      "image3": "Ảnh 3",
-      "image4": "Ảnh 4",
-      "image5": "Ảnh 5",
+      "image": "Ảnh {{i}}",
       "introduction": "Giới thiệu chi tiết"
     },
     "merchant_qr": {
@@ -777,6 +796,7 @@
   },
   "pd_system": {
     "pd_group": {
+      "delete": "Xoá nhóm câu hỏi",
       "title": "Danh sách nhóm câu hỏi",
       "add_group": "Thêm nhóm câu hỏi",
       "id": "Mã nhóm câu hỏi",
@@ -785,6 +805,7 @@
       "update_date": "Ngày cập nhật"
     },
     "pd_questions": {
+      "delete": "Xoá câu hỏi",
       "title": "Danh sách câu hỏi",
       "add_question": "Thêm câu hỏi",
       "id": "Mã câu hỏi",
@@ -803,6 +824,7 @@
       "update_date": "Ngày cập nhật"
     },
     "pd_model": {
+      "delete": "Xoá PD model",
       "title": "Danh sách PD model",
       "add_model": "Thêm PD model",
       "id": "Mã PD model",
@@ -820,7 +842,9 @@
     "add_question_dialog": {
       "name": "Nội dung câu hỏi",
       "code": "Mã câu hỏi",
+      "placeholder": "Placeholder",
       "types": "Kiểu câu trả lời",
+      "order": "Thứ tự câu hỏi",
       "description": "Mô tả",
       "answers": "Nội dung câu trả lời",
       "string_input": "Nội dung câu trả lời do người dùng nhập",

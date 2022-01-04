@@ -26,6 +26,7 @@ export class UploadDocumentAreaComponent implements OnInit, AfterViewInit {
   @Input() description: string;
   @Input() name: string = 'image-upload-area';
   @Input() hiddenUploadBtn: boolean = false;
+  @Input() hiddenUpdateBtn: boolean = false;
   @Input() hiddenDownloadBtn: boolean = false;
   @Input() acceptFileType: string = 'image/*';
   @Input() hiddenDeleteBtn: boolean = false;

@@ -11,33 +11,50 @@ import { BUTTON_TYPE } from '../../../../../core/common/enum/operator';
 export class AddNewQuestionComponent implements OnInit {
   answerTypes = [
     {
-      id: '1',
       name: 'String',
     },
     {
-      id: '2',
       name: 'ListString',
     },
     {
-      id: '3',
       name: 'DateTime',
     },
     {
-      id: '4',
       name: 'Checkbox',
     },
     {
-      id: '5',
       name: 'RadioButton',
+    },
+    {
+      name: 'Slider',
     },
   ];
 
   addPdForm: FormGroup;
   oneAnswer: boolean = false;
   manyAnswers: boolean = false;
+  sliderType: boolean = false;
   numAnswers: any[] = [
     {
       value: '',
+    },
+  ];
+  sliderAnswers: any[] = [
+    {
+      value: '',
+      placeholder: 'MinNumber',
+    },
+    {
+      value: '',
+      placeholder: 'MaxNumber',
+    },
+    {
+      value: '',
+      placeholder: 'StepSize',
+    },
+    {
+      value: '',
+      placeholder: 'Đơn vị',
     },
   ];
 
@@ -51,6 +68,7 @@ export class AddNewQuestionComponent implements OnInit {
   isPositionInputFocus: boolean = false;
   isNoteInputFocus: boolean = false;
   dialogTitle: string;
+  questionInfo;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) private data: any,
@@ -69,34 +87,40 @@ export class AddNewQuestionComponent implements OnInit {
     this.addPdForm = this.formBuilder.group({
       code: [''],
       content: [''],
-      type: [''],
+      answerType: [''],
+      placeholder: [''],
       description: [''],
+      order: [''],
     });
   }
 
   initDialogData(data) {
+    this.questionInfo = data?.questionInfo;
     this.dialogTitle = data?.dialogTitle;
 
-    // this.addPdForm.patchValue({
-    //   accountName: this.userInfo?.fullName,
-    //   username: this.userInfo?.username,
-    //   accountPassword: '',
-    //   accountRePassword: '',
-    //   accountRole: this.userInfo?.groupId,
-    //   accountPhone: this.userInfo?.mobile,
-    //   accountEmail: this.userInfo?.email,
-    //   accountPosition: this.userInfo?.position,
-    //   accountNote: this.userInfo?.note,
-    // });
+    this.addPdForm.patchValue({
+      code: this.questionInfo?.code,
+      content: this.questionInfo?.content,
+      answerType: this.questionInfo?.answerType,
+      groupIds: this.questionInfo?.groupIds,
+      description: this.questionInfo?.description,
+      order: this.questionInfo?.order,
+    });
   }
 
   selectType(type) {
-    if (type === '1' || type === '3') {
+    if (type === 'String' || type === 'DateTime') {
       this.oneAnswer = true;
       this.manyAnswers = false;
+      this.sliderType = false;
+    } else if (type === 'Slider') {
+      this.oneAnswer = false;
+      this.manyAnswers = false;
+      this.sliderType = true;
     } else {
       this.oneAnswer = false;
       this.manyAnswers = true;
+      this.sliderType = false;
     }
   }
 
@@ -112,7 +136,7 @@ export class AddNewQuestionComponent implements OnInit {
 
   submitForm() {
     this.numAnswers = this.numAnswers.filter((answer) => answer.value !== '');
-    console.log(this.numAnswers);
+    console.log('sliderAnswers', this.sliderAnswers);
     if (this.addPdForm.invalid) {
       return;
     }

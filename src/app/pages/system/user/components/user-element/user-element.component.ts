@@ -92,7 +92,6 @@ export class UserElementComponent implements OnInit {
           }
           if (data.responseCode === 200) {
             this.refreshContent();
-            this.triggerUpdateElementInfo.emit(this.userInfo);
             setTimeout(() => {
               this.notifier.success(
                 this.multiLanguageService.instant('common.update_success')

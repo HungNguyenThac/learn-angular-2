@@ -1,10 +1,12 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
 import { DATA_CELL_TYPE } from '../../../../../core/common/enum/operator';
 import { MultiLanguageService } from '../../../../../share/translate/multiLanguageService';
 import { NotificationService } from '../../../../../core/services/notification.service';
 import { ToastrService } from 'ngx-toastr';
 import { MatDialog } from '@angular/material/dialog';
 import { FormBuilder } from '@angular/forms';
+import { DomSanitizer } from '@angular/platform-browser';
+import { AdminAccountEntity } from '../../../../../../../open-api-modules/dashboard-api-docs';
 
 @Component({
   selector: 'app-merchant-qr',
@@ -12,7 +14,26 @@ import { FormBuilder } from '@angular/forms';
   styleUrls: ['./merchant-qr.component.scss'],
 })
 export class MerchantQrComponent implements OnInit {
-  @Input() merchantInfo;
+  _merchantInfo;
+  @Input()
+  get merchantInfo() {
+    return this._merchantInfo;
+  }
+
+  set merchantInfo(value) {
+    this._merchantInfo = value;
+    this.leftCompanyInfos = this._initLeftCompanyInfos();
+  }
+
+  _merchantQr;
+  @Input()
+  get merchantQr() {
+    return this._merchantQr;
+  }
+
+  set merchantQr(value) {
+    this._merchantQr = value;
+  }
 
   leftCompanyInfos: any[] = [];
 
@@ -21,7 +42,8 @@ export class MerchantQrComponent implements OnInit {
     private notificationService: NotificationService,
     private notifier: ToastrService,
     private dialog: MatDialog,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private _sanitizer: DomSanitizer
   ) {}
 
   ngOnInit(): void {
@@ -34,13 +56,13 @@ export class MerchantQrComponent implements OnInit {
         title: this.multiLanguageService.instant(
           'merchant.merchant_detail.name'
         ),
-        value: this.merchantInfo.merchantName,
+        value: this.merchantInfo?.name,
         type: DATA_CELL_TYPE.TEXT,
         format: null,
       },
       {
         title: this.multiLanguageService.instant('merchant.merchant_detail.id'),
-        value: this.merchantInfo.merchantId,
+        value: this.merchantInfo?.code,
         type: DATA_CELL_TYPE.TEXT,
         format: null,
       },
