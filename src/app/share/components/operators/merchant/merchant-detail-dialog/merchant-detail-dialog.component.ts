@@ -1,4 +1,11 @@
-import { Component, Inject, Input, OnInit } from '@angular/core';
+import {
+  AfterViewChecked,
+  ChangeDetectorRef,
+  Component,
+  Inject,
+  Input,
+  OnInit,
+} from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MultiLanguageService } from '../../../../translate/multiLanguageService';
@@ -9,7 +16,7 @@ import { BUTTON_TYPE } from '../../../../../core/common/enum/operator';
   templateUrl: './merchant-detail-dialog.component.html',
   styleUrls: ['./merchant-detail-dialog.component.scss'],
 })
-export class MerchantDetailDialogComponent implements OnInit {
+export class MerchantDetailDialogComponent implements OnInit, AfterViewChecked {
   tabIndex: number = 0;
   merchantInfoForm: FormGroup;
   merchantInfo;
@@ -73,7 +80,8 @@ export class MerchantDetailDialogComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) private data: any,
     private dialogRef: MatDialogRef<MerchantDetailDialogComponent>,
     private multiLanguageService: MultiLanguageService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private readonly changeDetectorRef: ChangeDetectorRef
   ) {
     this.buildIndividualForm();
     if (data) {
@@ -82,6 +90,10 @@ export class MerchantDetailDialogComponent implements OnInit {
   }
 
   ngOnInit(): void {}
+
+  ngAfterViewChecked(): void {
+    this.changeDetectorRef.detectChanges();
+  }
 
   submitForm() {
     if (this.merchantInfoForm.invalid) {
@@ -100,62 +112,56 @@ export class MerchantDetailDialogComponent implements OnInit {
     this.dialogTitle = data?.dialogTitle;
 
     this.merchantInfoForm.patchValue({
-      merchantCoded: this.merchantInfo?.merchantId,
-      merchantName: this.merchantInfo?.merchantName,
-      merchantStatus: this.merchantInfo?.merchantStatus,
-      merchantPhone: this.merchantInfo?.merchantPhone,
-      merchantEmail: this.merchantInfo?.merchantEmail,
-      merchantDate: this.merchantInfo?.merchantDate,
-      merchantGroup: this.merchantInfo?.merchantGroup,
-      merchantCompany: this.merchantInfo?.merchantCompany,
-      merchantTaxNumber: this.merchantInfo?.merchantTaxNumber,
-      merchantRegistrationNumber: this.merchantInfo?.merchantRegistrationNumber,
-      merchantWebsite: this.merchantInfo?.merchantWebsite,
-      merchantAddress: this.merchantInfo?.merchantAddress,
-      creator: this.merchantInfo?.creator,
-      createDate: this.merchantInfo?.createDate,
-      merchantNote: this.merchantInfo?.merchantNote,
-      contactor: this.merchantInfo?.contactor,
-      role: this.merchantInfo?.role,
-      phone: this.merchantInfo?.phone,
-      mailTo: this.merchantInfo?.mailTo,
-      mailCc: this.merchantInfo?.mailCc,
-      bank: this.merchantInfo?.bankId,
-      branch: this.merchantInfo?.branch,
-      accountNum: this.merchantInfo?.accountNum,
-      accountName: this.merchantInfo?.accountName,
-      note: this.merchantInfo?.note,
+      id: this.merchantInfo?.id,
+      code: this.merchantInfo?.code,
+      name: this.merchantInfo?.name,
+      address: this.merchantInfo?.address,
+      ward: this.merchantInfo?.ward,
+      district: this.merchantInfo?.district,
+      province: this.merchantInfo?.province,
+      bdStaffId: this.merchantInfo?.bdStaffId,
+      sellTypes: this.merchantInfo?.sellTypes
+        ? this.merchantInfo?.sellTypes
+        : '',
+      mobile: this.merchantInfo?.mobile,
+      email: this.merchantInfo?.email,
+      website: this.merchantInfo?.website,
+      identificationNumber: this.merchantInfo?.identificationNumber,
+      establishTime: this.merchantInfo?.establishTime,
+      productTypes: this.merchantInfo?.productTypes
+        ? this.merchantInfo?.productTypes
+        : '',
+      merchantServiceFee: this.merchantInfo?.merchantServiceFee,
+      customerServiceFee: this.merchantInfo?.customerServiceFee,
+      status: this.merchantInfo?.status,
+      logo: this.merchantInfo?.logo,
+      descriptionImg: this.merchantInfo?.descriptionImg,
+      description: this.merchantInfo?.description,
     });
   }
 
   buildIndividualForm() {
     this.merchantInfoForm = this.formBuilder.group({
-      merchantId: [''],
-      merchantName: [''],
-      merchantAddress: [''],
-      merchantArea: [''],
-      merchantCommune: [''],
-      merchantManager: [''],
-      merchantType: [''],
-      merchantPhone: [''],
-      merchantEmail: [''],
-      merchantWebsite: [''],
-      merchantRegistrationNumber: [''],
-      merchantEstablish: [''],
-      merchantProduct: [''],
-      merchantFee: [''],
-      merchantStatus: [''],
-      merchantDate: [''],
-      username: [''],
-      password: [''],
-      rePassword: [''],
+      id: [''],
+      code: [''],
       name: [''],
-      position: [''],
-      phone: [''],
+      address: [''],
+      ward: [''],
+      district: [''],
+      province: [''],
+      bdStaffId: [''],
+      sellTypes: [''],
+      mobile: [''],
       email: [''],
-      discount: [''],
-      show: [''],
-      introduction: [''],
+      website: [''],
+      identificationNumber: [''],
+      establishTime: [''],
+      productTypes: [''],
+      merchantServiceFee: [''],
+      status: [''],
+      logo: [''],
+      descriptionImg: [''],
+      description: [''],
     });
   }
 }

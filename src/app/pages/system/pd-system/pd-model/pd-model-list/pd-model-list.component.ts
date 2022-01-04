@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import {
   BUTTON_TYPE,
   DATA_CELL_TYPE,
@@ -23,6 +23,8 @@ import { FilterEventModel } from '../../../../../public/models/filter/filter-eve
 import { PageEvent } from '@angular/material/paginator/public-api';
 import { FilterActionEventModel } from '../../../../../public/models/filter/filter-action-event.model';
 import {
+  AddNewQuestionComponent,
+  BaseManagementLayoutComponent,
   MerchantDetailDialogComponent,
   MerchantGroupDialogComponent,
 } from '../../../../../share/components';
@@ -45,14 +47,14 @@ export class PdModelListComponent implements OnInit {
   //Mock data
   allColumns: any[] = [
     {
-      key: 'id',
+      key: 'code',
       title: this.multiLanguageService.instant('pd_system.pd_model.id'),
       type: DATA_CELL_TYPE.TEXT,
       format: null,
       showed: true,
     },
     {
-      key: 'name',
+      key: 'content',
       title: this.multiLanguageService.instant('pd_system.pd_model.name'),
       type: DATA_CELL_TYPE.TEXT,
       format: null,
@@ -66,7 +68,7 @@ export class PdModelListComponent implements OnInit {
       showed: true,
     },
     {
-      key: 'createdDate',
+      key: 'createdAt',
       title: this.multiLanguageService.instant(
         'pd_system.pd_model.created_date'
       ),
@@ -75,7 +77,7 @@ export class PdModelListComponent implements OnInit {
       showed: true,
     },
     {
-      key: 'updateDate',
+      key: 'updatedAt',
       title: this.multiLanguageService.instant(
         'pd_system.pd_model.update_date'
       ),
@@ -87,8 +89,27 @@ export class PdModelListComponent implements OnInit {
   tableTitle: string = this.multiLanguageService.instant(
     'pd_system.pd_model.title'
   );
-  hasSelect: boolean = false;
-  selectButtons: TableSelectActionModel[];
+  hasSelect: boolean = true;
+  selectButtons: TableSelectActionModel[] = [
+    {
+      hidden: false,
+      action: 'delete',
+      color: 'accent',
+      content: this.multiLanguageService.instant('pd_system.pd_model.delete'),
+      imageSrc: 'assets/img/icon/group-5/trash.svg',
+      style: 'background-color: rgba(255, 255, 255, 0.1);',
+    },
+    {
+      hidden: false,
+      action: 'lock',
+      color: 'accent',
+      content: this.multiLanguageService.instant(
+        'customer.individual_info.lock'
+      ),
+      imageSrc: 'assets/img/icon/group-5/lock-white.svg',
+      style: 'background-color: rgba(255, 255, 255, 0.1);',
+    },
+  ];
   totalItems: number = 0;
   filterForm: FormGroup;
   dataSource: MatTableDataSource<any> = new MatTableDataSource([]);
@@ -98,6 +119,7 @@ export class PdModelListComponent implements OnInit {
   pageLength: number = 0;
   pageSizeOptions: number[] = [10, 20, 50];
   expandedElementId: number;
+  pdModelInfo;
 
   subManager = new Subscription();
   breadcrumbOptions: BreadcrumbOptionsModel = {
@@ -345,23 +367,43 @@ export class PdModelListComponent implements OnInit {
       .then((r) => {});
   }
 
+  @ViewChild(BaseManagementLayoutComponent)
+  child: BaseManagementLayoutComponent;
+
+  triggerDeselectUsers() {
+    this.child.triggerDeselectUsers();
+  }
+
   public onOutputAction(event) {
     const action = event.action;
     const list = event.selectedList;
+    const idArr = list.map((model) => model.id);
     switch (action) {
       case 'lock':
-        this.lockPrompt();
+        this.lockMultiplePrompt(idArr);
         break;
       case 'delete':
-        this.deletePrompt();
+        this.deleteMultiplePrompt(idArr);
         break;
       default:
         return;
     }
   }
 
-  // @ts-ignore
-  public lockPrompt(): boolean {
+  public _doMultipleAction(ids, action) {
+    if (!ids) {
+      return;
+    }
+    ids.forEach((id) => {
+      if (action === 'lock') {
+        this._lockById(id);
+      } else {
+        this._deleteById(id);
+      }
+    });
+  }
+
+  public lockMultiplePrompt(ids) {
     const confirmLockRef = this.notificationService.openPrompt({
       imgUrl: '../../../../../assets/img/icon/group-5/Alert.svg',
       title: this.multiLanguageService.instant(
@@ -374,17 +416,55 @@ export class PdModelListComponent implements OnInit {
       primaryBtnClass: 'btn-error',
       secondaryBtnText: this.multiLanguageService.instant('common.skip'),
     });
-    confirmLockRef.afterClosed().subscribe((result) => {});
+    confirmLockRef.afterClosed().subscribe((result) => {
+      if (result === BUTTON_TYPE.PRIMARY) {
+        this._doMultipleAction(ids, 'lock');
+      }
+    });
   }
 
-  public deletePrompt() {
+  private _lockById(id: string) {
+    if (!id) {
+      return;
+    }
+    // this.subManager.add(
+    //   this.adminControllerService
+    //     .v1AdminMerchantsIdPut(merchantId, {status: 'LOCKED'})
+    //     .subscribe(
+    //       (result: ApiResponseMerchant) => {
+    //         if (!result || result.responseCode !== RESPONSE_CODE.SUCCESS) {
+    //           return this.notifier.error(
+    //             JSON.stringify(result?.message),
+    //             result?.errorCode
+    //           );
+    //         }
+    //
+    //         this.notifier.success(
+    //           this.multiLanguageService.instant(
+    //             'merchant.merchant_detail.lock_merchant.toast'
+    //           )
+    //         );
+    //       },
+    //       (error) => {
+    //       },
+    //       () => {
+    //         setTimeout(() => {
+    //           this.triggerDeselectUsers();
+    //           this.refreshContent();
+    //         }, 3000);
+    //       }
+    //     )
+    // );
+  }
+
+  public deleteMultiplePrompt(ids) {
     const confirmDeleteRef = this.notificationService.openPrompt({
       imgUrl: '../../../../../assets/img/icon/group-5/delete-dialog.svg',
       title: this.multiLanguageService.instant(
-        'system.user_detail.delete_user.title'
+        'merchant.merchant_detail.delete_merchant.title'
       ),
       content: this.multiLanguageService.instant(
-        'system.user_detail.delete_user.content'
+        'merchant.merchant_detail.delete_merchant.content'
       ),
       primaryBtnText: this.multiLanguageService.instant('common.delete'),
       primaryBtnClass: 'btn-error',
@@ -392,13 +472,40 @@ export class PdModelListComponent implements OnInit {
     });
     confirmDeleteRef.afterClosed().subscribe((result) => {
       if (result === BUTTON_TYPE.PRIMARY) {
-        this.notifier.success(
-          this.multiLanguageService.instant(
-            'system.user_detail.delete_user.toast'
-          )
-        );
+        this._doMultipleAction(ids, 'delete');
       }
     });
+  }
+
+  private _deleteById(id: string) {
+    if (!id) {
+      return;
+    }
+    this.subManager.add(
+      this.cdeService.cdeControllerDeletePdModel(parseInt(id), {}).subscribe(
+        (result: ApiResponse) => {
+          if (!result || result.responseCode !== RESPONSE_CODE.SUCCESS) {
+            return this.notifier.error(
+              JSON.stringify(result?.message),
+              result?.errorCode
+            );
+          }
+
+          this.notifier.success(
+            this.multiLanguageService.instant(
+              'merchant.merchant_detail.delete_merchant.toast'
+            )
+          );
+        },
+        (error) => {},
+        () => {
+          setTimeout(() => {
+            this.triggerDeselectUsers();
+            this.refreshContent();
+          }, 3000);
+        }
+      )
+    );
   }
 
   public onPageChange(event: PageEvent) {
@@ -438,7 +545,53 @@ export class PdModelListComponent implements OnInit {
   }
 
   public onExpandElementChange(element: any) {
-    this.expandedElementId = element.merchantId;
+    this.openUpdateDialog(element);
+    this.pdModelInfo = element;
+  }
+
+  public openUpdateDialog(info) {
+    const addPdModelDialogRef = this.dialog.open(AddNewPdDialogComponent, {
+      panelClass: 'custom-info-dialog-container',
+      maxWidth: '1200px',
+      width: '90%',
+      data: {
+        dialogTitle: 'Thêm Pd model',
+        inputName: 'Tên Pd model',
+        inputCode: 'Mã Pd model',
+        listTitle: 'Danh sách nhóm câu hỏi',
+        pdInfo: info,
+      },
+    });
+    this.subManager.add(
+      addPdModelDialogRef.afterClosed().subscribe((result: any) => {
+        if (result && result.type === BUTTON_TYPE.PRIMARY) {
+          let updateRequest = this._bindingDialogData(result.data);
+          this.sendUpdateRequest(updateRequest);
+        }
+      })
+    );
+  }
+
+  sendUpdateRequest(updateRequest) {
+    this.subManager.add(
+      this.cdeService
+        .cdeControllerUpdatePdModel(this.pdModelInfo, updateRequest)
+        .subscribe((result: ApiResponse) => {
+          if (!result || result.responseCode !== RESPONSE_CODE.SUCCESS) {
+            return this.notifier.error(
+              JSON.stringify(result?.message),
+              result?.errorCode
+            );
+          }
+          setTimeout(() => {
+            this.notifier.success(
+              this.multiLanguageService.instant('common.update_success')
+            );
+            this.refreshContent();
+            this.notificationService.hideLoading();
+          }, 3000);
+        })
+    );
   }
 
   onClickBtnAdd(event) {
@@ -495,8 +648,9 @@ export class PdModelListComponent implements OnInit {
     return {
       code: data?.code,
       content: data?.content,
-      description: data?.description,
-      loanProductId: 1,
+      description: data?.description ? data?.description : null,
+      loanProductId: data?.loanProductId ? data?.loanProductId : null,
+      groupIds: data?.groupIds ? data?.groupIds : null,
     };
   }
 }

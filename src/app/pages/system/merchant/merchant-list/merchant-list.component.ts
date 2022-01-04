@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Store } from '@ngrx/store';
 import * as fromActions from '../../../../core/store';
 import * as fromStore from '../../../../core/store';
@@ -16,6 +16,7 @@ import {
   FILTER_TYPE,
   NAV_ITEM,
   QUERY_CONDITION_TYPE,
+  RESPONSE_CODE,
 } from '../../../../core/common/enum/operator';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FilterOptionModel } from '../../../../public/models/filter/filter-option.model';
@@ -27,7 +28,10 @@ import { BreadcrumbOptionsModel } from '../../../../public/models/external/bread
 import { MatTableDataSource } from '@angular/material/table';
 import { PageEvent } from '@angular/material/paginator/public-api';
 import { FilterActionEventModel } from '../../../../public/models/filter/filter-action-event.model';
-import { AddNewUserDialogComponent } from '../../../../share/components';
+import {
+  AddNewUserDialogComponent,
+  BaseManagementLayoutComponent,
+} from '../../../../share/components';
 import { MatDialog } from '@angular/material/dialog';
 import { MerchantDetailDialogComponent } from '../../../../share/components';
 import { MerchantGroupDialogComponent } from '../../../../share/components';
@@ -43,10 +47,15 @@ import {
 import {
   AdminControllerService,
   ApiResponseListMerchant,
+  ApiResponseMerchant,
+  ApiResponseString,
+  CreateMerchantRequestDto,
   MerchantControllerService,
 } from '../../../../../../open-api-modules/merchant-api-docs';
 import { Subscription } from 'rxjs';
 import { MerchantListService } from './merchant-list.service';
+import { ApiResponse } from '../../../../../../open-api-modules/monexcore-api-docs';
+import { ApiResponseAdminAccountEntity } from '../../../../../../open-api-modules/identity-api-docs';
 
 @Component({
   selector: 'app-merchant-list',
@@ -99,7 +108,7 @@ export class MerchantListComponent implements OnInit {
       showed: true,
     },
     {
-      key: 'productType',
+      key: 'productTypes',
       title: this.multiLanguageService.instant(
         'merchant.merchant_list.product'
       ),
@@ -161,8 +170,29 @@ export class MerchantListComponent implements OnInit {
   tableTitle: string = this.multiLanguageService.instant(
     'merchant.merchant_list.title'
   );
-  hasSelect: boolean = false;
-  selectButtons: TableSelectActionModel[];
+  hasSelect: boolean = true;
+  selectButtons: TableSelectActionModel[] = [
+    {
+      hidden: false,
+      action: 'delete',
+      color: 'accent',
+      content: this.multiLanguageService.instant(
+        'merchant.merchant_list.delete_merchant'
+      ),
+      imageSrc: 'assets/img/icon/group-5/trash.svg',
+      style: 'background-color: rgba(255, 255, 255, 0.1);',
+    },
+    {
+      hidden: false,
+      action: 'lock',
+      color: 'accent',
+      content: this.multiLanguageService.instant(
+        'customer.individual_info.lock'
+      ),
+      imageSrc: 'assets/img/icon/group-5/lock-white.svg',
+      style: 'background-color: rgba(255, 255, 255, 0.1);',
+    },
+  ];
   totalItems: number = 0;
   filterForm: FormGroup;
   dataSource: MatTableDataSource<any> = new MatTableDataSource([]);
@@ -276,7 +306,7 @@ export class MerchantListComponent implements OnInit {
     private dialog: MatDialog,
     private titleService: Title,
     private activatedRoute: ActivatedRoute,
-    private merlistService: AdminControllerService,
+    private adminControllerService: AdminControllerService,
     private merchantListService: MerchantListService
   ) {
     this._initFilterForm();
@@ -447,15 +477,23 @@ export class MerchantListComponent implements OnInit {
       .then((r) => {});
   }
 
+  @ViewChild(BaseManagementLayoutComponent)
+  child: BaseManagementLayoutComponent;
+
+  triggerDeselectUsers() {
+    this.child.triggerDeselectUsers();
+  }
+
   public onOutputAction(event) {
     const action = event.action;
     const list = event.selectedList;
+    const idArr = list.map((merchant) => merchant.id);
     switch (action) {
       case 'lock':
-        this.lockPrompt();
+        this.lockMultiplePrompt(idArr);
         break;
       case 'delete':
-        this.deletePrompt();
+        this.deleteMultiplePrompt(idArr);
         break;
       default:
         return;
@@ -478,7 +516,7 @@ export class MerchantListComponent implements OnInit {
     });
   }
 
-  public lockPrompt() {
+  public lockMultiplePrompt(ids) {
     const confirmLockRef = this.notificationService.openPrompt({
       imgUrl: '../../../../../assets/img/icon/group-5/Alert.svg',
       title: this.multiLanguageService.instant(
@@ -491,17 +529,67 @@ export class MerchantListComponent implements OnInit {
       primaryBtnClass: 'btn-error',
       secondaryBtnText: this.multiLanguageService.instant('common.skip'),
     });
-    confirmLockRef.afterClosed().subscribe((result) => {});
+    confirmLockRef.afterClosed().subscribe((result) => {
+      if (result === BUTTON_TYPE.PRIMARY) {
+        this._doMultipleAction(ids, 'lock');
+      }
+    });
   }
 
-  public deletePrompt() {
+  public _doMultipleAction(ids, action) {
+    if (!ids) {
+      return;
+    }
+    ids.forEach((id) => {
+      if (action === 'lock') {
+        this._lockById(id);
+      } else {
+        this._deleteById(id);
+      }
+    });
+  }
+
+  private _lockById(id: string) {
+    if (!id) {
+      return;
+    }
+    this.subManager.add(
+      this.adminControllerService
+        .v1AdminMerchantsIdPut(id, { status: 'LOCKED' })
+        .subscribe(
+          (result: ApiResponseMerchant) => {
+            if (!result || result.responseCode !== RESPONSE_CODE.SUCCESS) {
+              return this.notifier.error(
+                JSON.stringify(result?.message),
+                result?.errorCode
+              );
+            }
+
+            this.notifier.success(
+              this.multiLanguageService.instant(
+                'merchant.merchant_detail.lock_merchant.toast'
+              )
+            );
+          },
+          (error) => {},
+          () => {
+            setTimeout(() => {
+              this.triggerDeselectUsers();
+              this.refreshContent();
+            }, 3000);
+          }
+        )
+    );
+  }
+
+  public deleteMultiplePrompt(ids) {
     const confirmDeleteRef = this.notificationService.openPrompt({
       imgUrl: '../../../../../assets/img/icon/group-5/delete-dialog.svg',
       title: this.multiLanguageService.instant(
-        'system.user_detail.delete_user.title'
+        'merchant.merchant_detail.delete_merchant.title'
       ),
       content: this.multiLanguageService.instant(
-        'system.user_detail.delete_user.content'
+        'merchant.merchant_detail.delete_merchant.content'
       ),
       primaryBtnText: this.multiLanguageService.instant('common.delete'),
       primaryBtnClass: 'btn-error',
@@ -509,13 +597,40 @@ export class MerchantListComponent implements OnInit {
     });
     confirmDeleteRef.afterClosed().subscribe((result) => {
       if (result === BUTTON_TYPE.PRIMARY) {
-        this.notifier.success(
-          this.multiLanguageService.instant(
-            'system.user_detail.delete_user.toast'
-          )
-        );
+        this._doMultipleAction(ids, 'delete');
       }
     });
+  }
+
+  private _deleteById(id: string) {
+    if (!id) {
+      return;
+    }
+    this.subManager.add(
+      this.adminControllerService.v1AdminMerchantsIdDelete(id).subscribe(
+        (result: ApiResponseString) => {
+          if (!result || result.responseCode !== RESPONSE_CODE.SUCCESS) {
+            return this.notifier.error(
+              JSON.stringify(result?.message),
+              result?.errorCode
+            );
+          }
+
+          this.notifier.success(
+            this.multiLanguageService.instant(
+              'merchant.merchant_detail.delete_merchant.toast'
+            )
+          );
+        },
+        (error) => {},
+        () => {
+          setTimeout(() => {
+            this.triggerDeselectUsers();
+            this.refreshContent();
+          }, 3000);
+        }
+      )
+    );
   }
 
   public onPageChange(event: PageEvent) {
@@ -567,5 +682,90 @@ export class MerchantListComponent implements OnInit {
         width: '90%',
       }
     );
+    this.subManager.add(
+      addMerchantDialogRef.afterClosed().subscribe((result: any) => {
+        if (result && result.type === BUTTON_TYPE.PRIMARY) {
+          let createRequest = this._bindingDialogData(result.data);
+          this.sendAddRequest(createRequest);
+        }
+      })
+    );
+  }
+
+  sendAddRequest(addRequest) {
+    this.subManager.add(
+      this.adminControllerService
+        .v1AdminMerchantsPost(addRequest)
+        .subscribe((result: ApiResponseMerchant) => {
+          if (!result || result.responseCode !== RESPONSE_CODE.SUCCESS) {
+            return this.notifier.error(
+              JSON.stringify(result?.message),
+              result?.errorCode
+            );
+          }
+          setTimeout(() => {
+            this.notifier.success(
+              this.multiLanguageService.instant('common.create_success')
+            );
+            this.refreshContent();
+            this.notificationService.hideLoading();
+          }, 3000);
+        })
+    );
+  }
+
+  public refreshContent() {
+    setTimeout(() => {
+      this._getMerchantList();
+    }, 2000);
+  }
+
+  private _bindingDialogData(data) {
+    return {
+      code: data?.code ? data?.code : null,
+      name: data?.name ? data?.name : null,
+      address: data?.address ? data?.address : null,
+      ward: data?.ward ? data?.ward : null,
+      district: data?.district ? data?.district : null,
+      province: data?.province ? data?.province : null,
+      bdStaffId: data?.bdStaffId ? data?.bdStaffId : null,
+      sellTypes: data?.sellTypes ? data?.sellTypes : null,
+      mobile: data?.mobile ? data?.mobile : null,
+      email: data?.email ? data?.email : null,
+      website: data?.website ? data?.website : null,
+      identificationNumber: data?.identificationNumber
+        ? data?.identificationNumber
+        : null,
+      establishTime: data?.establishTime ? data?.establishTime : null,
+      productTypes: data?.productTypes ? data?.productTypes : null,
+      merchantServiceFee: data?.merchantServiceFee
+        ? parseInt(data?.merchantServiceFee)
+        : 0.0,
+      customerServiceFee: parseInt(data?.customerServiceFee)
+        ? data?.customerServiceFee
+        : 0.0,
+      status: data?.status ? data?.status : 'ACTIVE',
+      logo: data?.logo ? data?.logo : null,
+      description: data?.description ? data?.description : null,
+      descriptionImg: data?.descriptionImg ? data?.descriptionImg : null,
+    };
+  }
+
+  public updateElementInfo(updatedMerchantInfo) {
+    if (!updatedMerchantInfo) {
+      setTimeout(() => {
+        // this.triggerDeselectUsers();
+        this._getMerchantList();
+      }, 2000);
+    }
+    this.dataSource.data.map((item) => {
+      if (item.id === updatedMerchantInfo.id) {
+        this.allColumns.forEach((column) => {
+          item[column.key] = updatedMerchantInfo[column.key];
+        });
+      }
+      return item;
+    });
+    // this.refreshContent();
   }
 }

@@ -56,11 +56,11 @@
         <span class="sprite-group-5-pen-white"></span>
         {{ "customer.individual_info.update" | translate }}
       </button>
-      <button (click)="lockPrompt()" *ngIf="!showEnableBtn" color="warn" mat-flat-button>
+      <button (click)="lockPrompt()" *ngIf="status === 'ACTIVE'" color="warn" mat-flat-button>
         <span class="sprite-group-5-lock-white"></span>
         {{ "customer.individual_info.lock" | translate }}
       </button>
-      <button (click)="unlockPrompt()" *ngIf="showEnableBtn" color="primary" mat-flat-button>
+      <button (click)="unlockPrompt()" *ngIf="status === 'LOCKED'" color="primary" mat-flat-button>
         <span class="sprite-group-7-unlock"></span>
         {{ "customer.individual_info.unlock" | translate }}
       </button>

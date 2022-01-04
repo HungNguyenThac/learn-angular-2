@@ -1,7 +1,20 @@
 @import "../../../../../../styles/op/pl-expansion-panel";
 
 .expansion-panel-content {
+  .image-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+  }
+
   article {
     display: inline-block;
   }
+}
+
+.addBtn {
+
+}
+
+.w-90 {
+  width: 90%;
 }
