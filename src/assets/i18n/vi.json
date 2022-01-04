@@ -524,6 +524,8 @@
     "selected_date": "{{date}} ngày {{day}}",
     "company": "Công ty",
     "choose_company": "Chọn công ty",
+    "product_type": "Ngành hàng",
+    "choose_product": "Chọn ngành hàng",
     "bd": "BD phụ trách",
     "choose_bd": "Chọn BD phụ trách",
     "pl_ui_status": "Trạng thái tài khoản",
@@ -709,12 +711,17 @@
       "register_date": "Thời gian đăng ký",
       "location": "Địa chỉ",
       "area": "Khu vực",
-      "commune": "Phường xã",
+      "create_at": "Thời gian tạo",
+      "updated_at": "Cập nhật gần nhất",
+      "updated_by": "Cập nhật bởi",
+      "district": "Phường xã",
       "date": "Ngày tất toán",
       "company": "Công ty",
       "tax_no": "Mã số thuế",
       "add_merchant": "Thêm Merchant",
-      "delete_merchant": "Xoá Merchant"
+      "delete_merchant": "Xoá Merchant",
+      "merchant_fee": "Chiết khấu",
+      "customer_fee": "Phí người mua"
     },
     "merchant_detail": {
       "delete_merchant": {

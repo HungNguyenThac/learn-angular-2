@@ -1,14 +1,15 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { Store } from '@ngrx/store';
+import {Component, OnInit, ViewChild} from '@angular/core';
+import {Store} from '@ngrx/store';
 import * as fromActions from '../../../../core/store';
 import * as fromStore from '../../../../core/store';
-import { TableSelectActionModel } from '../../../../public/models/external/table-select-action.model';
-import { MultiLanguageService } from '../../../../share/translate/multiLanguageService';
-import { NotificationService } from '../../../../core/services/notification.service';
-import { ToastrService } from 'ngx-toastr';
-import { FormBuilder, FormGroup } from '@angular/forms';
-import { Sort } from '@angular/material/sort';
-import { FilterEventModel } from '../../../../public/models/filter/filter-event.model';
+import {TableSelectActionModel} from '../../../../public/models/external/table-select-action.model';
+import {MultiLanguageService} from '../../../../share/translate/multiLanguageService';
+import {NotificationService} from '../../../../core/services/notification.service';
+import {ToastrService} from 'ngx-toastr';
+import {FormBuilder, FormGroup} from '@angular/forms';
+import {Sort} from '@angular/material/sort';
+import {FilterEventModel} from '../../../../public/models/filter/filter-event.model';
+import * as _ from 'lodash';
 import {
   BUTTON_TYPE,
   DATA_CELL_TYPE,
@@ -18,26 +19,26 @@ import {
   QUERY_CONDITION_TYPE,
   RESPONSE_CODE,
 } from '../../../../core/common/enum/operator';
-import { ActivatedRoute, Router } from '@angular/router';
-import { FilterOptionModel } from '../../../../public/models/filter/filter-option.model';
+import {ActivatedRoute, Params, Router} from '@angular/router';
+import {FilterOptionModel} from '../../../../public/models/filter/filter-option.model';
 import {
   PAYDAY_LOAN_UI_STATUS,
   PAYDAY_LOAN_UI_STATUS_TEXT,
 } from '../../../../core/common/enum/payday-loan';
-import { BreadcrumbOptionsModel } from '../../../../public/models/external/breadcrumb-options.model';
-import { MatTableDataSource } from '@angular/material/table';
-import { PageEvent } from '@angular/material/paginator/public-api';
-import { FilterActionEventModel } from '../../../../public/models/filter/filter-action-event.model';
+import {BreadcrumbOptionsModel} from '../../../../public/models/external/breadcrumb-options.model';
+import {MatTableDataSource} from '@angular/material/table';
+import {PageEvent} from '@angular/material/paginator/public-api';
+import {FilterActionEventModel} from '../../../../public/models/filter/filter-action-event.model';
 import {
   AddNewUserDialogComponent,
   BaseManagementLayoutComponent,
 } from '../../../../share/components';
-import { MatDialog } from '@angular/material/dialog';
-import { MerchantDetailDialogComponent } from '../../../../share/components';
-import { MerchantGroupDialogComponent } from '../../../../share/components';
-import { GlobalConstants } from '../../../../core/common/global-constants';
-import { Title } from '@angular/platform-browser';
-import { DisplayedFieldsModel } from '../../../../public/models/filter/displayed-fields.model';
+import {MatDialog} from '@angular/material/dialog';
+import {MerchantDetailDialogComponent} from '../../../../share/components';
+import {MerchantGroupDialogComponent} from '../../../../share/components';
+import {GlobalConstants} from '../../../../core/common/global-constants';
+import {Title} from '@angular/platform-browser';
+import {DisplayedFieldsModel} from '../../../../public/models/filter/displayed-fields.model';
 import {
   ApiResponseSearchAndPaginationResponseAdminAccountEntity,
   ApiResponseSearchAndPaginationResponseCompanyInfo,
@@ -52,10 +53,11 @@ import {
   CreateMerchantRequestDto,
   MerchantControllerService,
 } from '../../../../../../open-api-modules/merchant-api-docs';
-import { Subscription } from 'rxjs';
-import { MerchantListService } from './merchant-list.service';
-import { ApiResponse } from '../../../../../../open-api-modules/monexcore-api-docs';
-import { ApiResponseAdminAccountEntity } from '../../../../../../open-api-modules/identity-api-docs';
+import {Observable, Subscription} from 'rxjs';
+import {MerchantListService} from './merchant-list.service';
+import {ApiResponse} from '../../../../../../open-api-modules/monexcore-api-docs';
+import {ApiResponseAdminAccountEntity} from '../../../../../../open-api-modules/identity-api-docs';
+import * as fromSelectors from '../../../../core/store/selectors';
 
 @Component({
   selector: 'app-merchant-list',
@@ -74,6 +76,21 @@ export class MerchantListComponent implements OnInit {
     },
     {
       name: 'BD3',
+      id: '3',
+    },
+  ];
+
+  productList = [
+    {
+      name: 'Thời trang',
+      id: '1',
+    },
+    {
+      name: 'Thực phẩm',
+      id: '2',
+    },
+    {
+      name: 'Điện tử',
       id: '3',
     },
   ];
@@ -124,7 +141,7 @@ export class MerchantListComponent implements OnInit {
       showed: true,
     },
     {
-      key: 'bdStaff',
+      key: 'bdStaffId',
       title: this.multiLanguageService.instant(
         'merchant.merchant_list.merchant_manager'
       ),
@@ -133,16 +150,34 @@ export class MerchantListComponent implements OnInit {
       showed: false,
     },
     {
-      key: 'merchantDate',
+      key: 'createdAt',
       title: this.multiLanguageService.instant(
-        'merchant.merchant_list.register_date'
+        'merchant.merchant_list.create_at'
+      ),
+      type: DATA_CELL_TYPE.DATETIME,
+      format: 'dd/MM/yyyy hh:mm:ss',
+      showed: true,
+    },
+    {
+      key: 'updatedAt',
+      title: this.multiLanguageService.instant(
+        'merchant.merchant_list.updated_at'
+      ),
+      type: DATA_CELL_TYPE.DATETIME,
+      format: 'dd/MM/yyyy hh:mm:ss',
+      showed: true,
+    },
+    {
+      key: 'updatedBy',
+      title: this.multiLanguageService.instant(
+        'merchant.merchant_list.updated_by'
       ),
       type: DATA_CELL_TYPE.TEXT,
       format: null,
-      showed: false,
+      showed: true,
     },
     {
-      key: 'merchantAddress',
+      key: 'address',
       title: this.multiLanguageService.instant(
         'merchant.merchant_list.location'
       ),
@@ -151,16 +186,27 @@ export class MerchantListComponent implements OnInit {
       showed: false,
     },
     {
-      key: 'merchantArea',
-      title: this.multiLanguageService.instant('merchant.merchant_list.area'),
+      key: 'district',
+      title: this.multiLanguageService.instant(
+        'merchant.merchant_list.district'
+      ),
       type: DATA_CELL_TYPE.TEXT,
       format: null,
       showed: false,
     },
     {
-      key: 'merchantCommune',
+      key: 'merchantServiceFee',
       title: this.multiLanguageService.instant(
-        'merchant.merchant_list.commune'
+        'merchant.merchant_list.merchant_fee'
+      ),
+      type: DATA_CELL_TYPE.TEXT,
+      format: null,
+      showed: false,
+    },
+    {
+      key: 'customerServiceFee',
+      title: this.multiLanguageService.instant(
+        'merchant.merchant_list.customer_fee'
       ),
       type: DATA_CELL_TYPE.TEXT,
       format: null,
@@ -193,6 +239,7 @@ export class MerchantListComponent implements OnInit {
       style: 'background-color: rgba(255, 255, 255, 0.1);',
     },
   ];
+  private readonly routeAllState$: Observable<Params>;
   totalItems: number = 0;
   filterForm: FormGroup;
   dataSource: MatTableDataSource<any> = new MatTableDataSource([]);
@@ -235,6 +282,23 @@ export class MerchantListComponent implements OnInit {
           value: null,
           showAction: false,
           subTitle: this.multiLanguageService.instant('filter.choose_bd'),
+          subOptions: [],
+          disabled: false,
+          count: 0,
+        },
+      ],
+    },
+    {
+      title: this.multiLanguageService.instant('filter.product_type'),
+      type: FILTER_TYPE.SELECT,
+      controlName: 'productTypes',
+      value: null,
+      options: [
+        {
+          title: this.multiLanguageService.instant('filter.choose_product'),
+          value: null,
+          showAction: false,
+          subTitle: this.multiLanguageService.instant('filter.choose_product'),
           subOptions: [],
           disabled: false,
           count: 0,
@@ -309,13 +373,14 @@ export class MerchantListComponent implements OnInit {
     private adminControllerService: AdminControllerService,
     private merchantListService: MerchantListService
   ) {
+    this.routeAllState$ = store.select(fromSelectors.getRouterAllState);
     this._initFilterForm();
   }
 
   ngOnInit(): void {
     this.store.dispatch(new fromActions.SetOperatorInfo(NAV_ITEM.MERCHANT));
-    this._initBdOptions();
-    this._getMerchantList();
+    this._initOptions();
+    this._initSubscription();
   }
 
   private _getMerchantList() {
@@ -362,12 +427,14 @@ export class MerchantListComponent implements OnInit {
       case FILTER_TYPE.MULTIPLE_CHOICE:
         break;
       case FILTER_TYPE.SELECT:
-        if (event.controlName === 'companyId') {
-          this.filterForm.controls.companyId.setValue(
+        if (event.controlName === 'bdStaffId') {
+          this.filterForm.controls.bdStaffId.setValue(
             event.value ? event.value.join(',') : ''
           );
-        } else if (event.controlName === 'paydayLoanStatus') {
-          this.filterForm.controls.paydayLoanStatus.setValue(event.value);
+        } else if (event.controlName === 'productTypes') {
+          this.filterForm.controls.productTypes.setValue(
+            event.value ? event.value.join(',') : ''
+          );
         }
         break;
       default:
@@ -380,8 +447,8 @@ export class MerchantListComponent implements OnInit {
     this.filterForm = this.formBuilder.group({
       id: [''],
       keyword: [''],
-      companyId: [''],
-      paydayLoanStatus: [''],
+      bdStaffId: [''],
+      productTypes: [''],
       orderBy: ['createdAt'],
       sortDirection: ['desc'],
       startTime: [null],
@@ -389,47 +456,103 @@ export class MerchantListComponent implements OnInit {
       dateFilterType: [''],
       dateFilterTitle: [''],
       filterConditions: {
-        companyId: QUERY_CONDITION_TYPE.IN,
-        paydayLoanStatus: QUERY_CONDITION_TYPE.EQUAL,
+        bdStaffId: QUERY_CONDITION_TYPE.IN,
+        productTypes: QUERY_CONDITION_TYPE.IN,
       },
     });
   }
 
+  private _resetFilterForm() {
+    this.filterForm = this.formBuilder.group({
+      id: [''],
+      keyword: [''],
+      bdStaffId: [''],
+      productTypes: [''],
+      orderBy: ['createdAt'],
+      sortDirection: ['desc'],
+      startTime: [null],
+      endTime: [null],
+      dateFilterType: [''],
+      dateFilterTitle: [''],
+      filterConditions: {
+        bdStaffId: QUERY_CONDITION_TYPE.IN,
+        productTypes: QUERY_CONDITION_TYPE.IN,
+      },
+    });
+  }
+
+  private _initSubscription() {
+    this.subManager.add(
+      this.routeAllState$.subscribe((params) => {
+        this._parseQueryParams(params?.queryParams);
+        this._getMerchantList();
+      })
+    );
+  }
+
   private _parseQueryParams(params) {
+    this._initFilterFormFromQueryParams(params);
+    this._initFilterOptionsFromQueryParams(params);
+
+    this.breadcrumbOptions.keyword = params.keyword;
+    this.pageIndex = params.pageIndex || 0;
+    this.pageSize = params.pageSize || 20;
+  }
+
+  private _initFilterFormFromQueryParams(params) {
     let filterConditionsValue =
       this.filterForm.controls.filterConditions?.value;
+    if (_.isEmpty(params)) {
+      this._resetFilterForm();
+      this._resetFilterOptions();
+    }
+
     for (const [param, paramValue] of Object.entries(params)) {
       let paramHasCondition = param.split('__');
       if (paramHasCondition.length > 1) {
-        this.filterForm.controls[paramHasCondition[0]].setValue(
+        this.filterForm.controls[paramHasCondition[0]]?.setValue(
           paramValue || ''
         );
         filterConditionsValue[paramHasCondition[0]] =
           '__' + paramHasCondition[1];
       } else {
         if (this.filterForm.controls[param]) {
-          this.filterForm.controls[param].setValue(paramValue || '');
+          this.filterForm.controls[param]?.setValue(paramValue || '');
         }
       }
     }
     this.filterForm.controls.filterConditions.setValue(filterConditionsValue);
+  }
+
+  private _initFilterOptionsFromQueryParams(params) {
     this.filterOptions.forEach((filterOption) => {
       if (filterOption.type === FILTER_TYPE.DATETIME) {
         filterOption.value = {
           type: params.dateFilterType,
           title: params.dateFilterTitle,
         };
-      } else if (filterOption.controlName === 'companyId') {
-        filterOption.value = this.filterForm.controls.companyId.value
-          ? this.filterForm.controls.companyId.value.split(',')
+      } else if (filterOption.controlName === 'productTypes') {
+        filterOption.value = this.filterForm.controls.productTypes.value
+          ? this.filterForm.controls.productTypes.value.split(',')
           : [];
-      } else if (filterOption.controlName === 'paydayLoanStatus') {
-        filterOption.value = this.filterForm.controls.paydayLoanStatus.value;
+      } else if (filterOption.controlName === 'bdStaffId') {
+        filterOption.value = this.filterForm.controls.bdStaffId.value
+          ? this.filterForm.controls.bdStaffId.value.split(',')
+          : [];
+      } else if (filterOption.controlName === 'status') {
+        filterOption.value = this.filterForm.controls.status.value
+          ? this.filterForm.controls.status.value
+          : null;
       }
     });
-    this.breadcrumbOptions.keyword = params.keyword;
-    this.pageIndex = params.pageIndex || 0;
-    this.pageSize = params.pageSize || 20;
+  }
+
+  private _resetFilterOptions() {
+    let newFilterOptions = JSON.parse(JSON.stringify(this.filterOptions));
+    newFilterOptions.forEach((filterOption) => {
+      filterOption.value = null;
+    });
+    this.filterOptions = newFilterOptions;
   }
 
   private _buildParams() {
@@ -456,7 +579,7 @@ export class MerchantListComponent implements OnInit {
     )) {
       queryParams[formControlName + queryCondition || ''] = data[
         formControlName
-      ]
+        ]
         ? data[formControlName].trim()
         : '';
     }
@@ -474,7 +597,8 @@ export class MerchantListComponent implements OnInit {
         relativeTo: this.activatedRoute,
         queryParams,
       })
-      .then((r) => {});
+      .then((r) => {
+      });
   }
 
   @ViewChild(BaseManagementLayoutComponent)
@@ -500,7 +624,7 @@ export class MerchantListComponent implements OnInit {
     }
   }
 
-  private _initBdOptions() {
+  private _initOptions() {
     this.filterOptions.forEach((filterOption: FilterOptionModel) => {
       if (filterOption.controlName !== 'bdStaffId' || !this.bdList) {
         return;
@@ -509,6 +633,19 @@ export class MerchantListComponent implements OnInit {
         return {
           title: bd.name,
           value: bd.id,
+          imgSrc: null,
+          code: null,
+        };
+      });
+    });
+    this.filterOptions.forEach((filterOption: FilterOptionModel) => {
+      if (filterOption.controlName !== 'productTypes' || !this.productList) {
+        return;
+      }
+      filterOption.options[0].subOptions = this.productList.map((product) => {
+        return {
+          title: product.name,
+          value: product.id,
           imgSrc: null,
           code: null,
         };
@@ -555,7 +692,7 @@ export class MerchantListComponent implements OnInit {
     }
     this.subManager.add(
       this.adminControllerService
-        .v1AdminMerchantsIdPut(id, { status: 'LOCKED' })
+        .v1AdminMerchantsIdPut(id, {status: 'LOCKED'})
         .subscribe(
           (result: ApiResponseMerchant) => {
             if (!result || result.responseCode !== RESPONSE_CODE.SUCCESS) {
@@ -571,7 +708,8 @@ export class MerchantListComponent implements OnInit {
               )
             );
           },
-          (error) => {},
+          (error) => {
+          },
           () => {
             setTimeout(() => {
               this.triggerDeselectUsers();
@@ -622,7 +760,8 @@ export class MerchantListComponent implements OnInit {
             )
           );
         },
-        (error) => {},
+        (error) => {
+        },
         () => {
           setTimeout(() => {
             this.triggerDeselectUsers();
