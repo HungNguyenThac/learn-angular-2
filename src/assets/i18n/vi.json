@@ -719,16 +719,16 @@
     "merchant_detail": {
       "delete_merchant": {
         "title": "Xoá Merchant",
-        "content": "Hệ thống sẽ xóa merchant được chọn nhưng vẫn giữ nhưng giao dịch lịch sử nếu có. Bạn có chắc chắn muốn xóa?",
+        "content": "Hệ thống sẽ xóa Merchant được chọn nhưng vẫn giữ nhưng giao dịch lịch sử nếu có. Bạn có chắc chắn muốn xóa?",
         "toast": "Xoá Merchant thành công"
       },
       "lock_merchant": {
         "title": "Khoá Merchant",
-        "content": "Sau khi ngừng hoạt động, lịch sử giao dịch của merchant vẫn sẽ được giữ. Bạn có chắc chắn muốn ngừng hoạt động merchant này?",
+        "content": "Bạn có chắc chắn muốn ngừng hoạt động Merchant này? Thông tin và giao dịch của nhà cung cấp này vẫn sẽ được giữ.",
         "toast": "Ngừng hoạt động Merchant thành công"
       },
       "unlock_merchant": {
-        "title": "Bạn có chắc chắn cho phép Merchant này hoạt động trở lại?",
+        "title": "Bạn có chắc chắn muốn cho phép Merchant này hoạt động trở lại?",
         "content": "Sau khi ngừng hoạt động, lịch sử giao dịch của merchant vẫn sẽ được giữ. Bạn có chắc chắn muốn ngừng hoạt động merchant này?",
         "toast": "Mở khoá Merchant thành công"
       },

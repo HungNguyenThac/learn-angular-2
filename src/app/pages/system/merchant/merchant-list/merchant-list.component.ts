@@ -227,7 +227,7 @@ export class MerchantListComponent implements OnInit {
     {
       title: this.multiLanguageService.instant('filter.bd'),
       type: FILTER_TYPE.SELECT,
-      controlName: 'companyId',
+      controlName: 'bdStaffId',
       value: null,
       options: [
         {
@@ -502,7 +502,7 @@ export class MerchantListComponent implements OnInit {
 
   private _initBdOptions() {
     this.filterOptions.forEach((filterOption: FilterOptionModel) => {
-      if (filterOption.controlName !== 'companyId' || !this.bdList) {
+      if (filterOption.controlName !== 'bdStaffId' || !this.bdList) {
         return;
       }
       filterOption.options[0].subOptions = this.bdList.map((bd) => {
