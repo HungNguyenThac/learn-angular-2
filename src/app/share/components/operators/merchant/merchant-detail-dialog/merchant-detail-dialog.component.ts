@@ -6,10 +6,10 @@ import {
   Input,
   OnInit,
 } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MultiLanguageService } from '../../../../translate/multiLanguageService';
-import { BUTTON_TYPE } from '../../../../../core/common/enum/operator';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {MultiLanguageService} from '../../../../translate/multiLanguageService';
+import {BUTTON_TYPE} from '../../../../../core/common/enum/operator';
 
 @Component({
   selector: 'app-merchant-detail-dialog',
@@ -60,6 +60,10 @@ export class MerchantDetailDialogComponent implements OnInit, AfterViewChecked {
       id: 3,
       name: 'Điện tử',
     },
+    {
+      id: 4,
+      name: 'Bảo hiểm',
+    },
   ];
   managers: any[] = [
     {
@@ -89,7 +93,8 @@ export class MerchantDetailDialogComponent implements OnInit, AfterViewChecked {
     }
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+  }
 
   ngAfterViewChecked(): void {
     this.changeDetectorRef.detectChanges();
@@ -158,6 +163,7 @@ export class MerchantDetailDialogComponent implements OnInit, AfterViewChecked {
       establishTime: [''],
       productTypes: [''],
       merchantServiceFee: [''],
+      customerServiceFee: [''],
       status: [''],
       logo: [''],
       descriptionImg: [''],

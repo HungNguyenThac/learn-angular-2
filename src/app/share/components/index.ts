@@ -40,6 +40,9 @@ import { DialogEkycInfoDetailComponent } from './operators/customer/dialog-ekyc-
 import { PlCheckElementComponent } from './statutes/pl-check-element/pl-check-element.component';
 import { MerchantImageUploadComponent } from './operators/merchant/merchant-image-upload/merchant-image-upload.component';
 import { MonexLoadingComponent } from './loading/monex-loading/monex-loading.component';
+import { ProductStatusDialogComponent } from './operators/product-config/product-status-dialog/product-status-dialog.component';
+import { ProductWorkflowDialogComponent } from './operators/product-config/product-workflow-dialog/product-workflow-dialog.component';
+import { MonexProductDialogComponent } from './operators/product-config/monex-product-dialog/monex-product-dialog.component';
 
 export const components: any[] = [
   ConfirmationDialog,
@@ -84,6 +87,9 @@ export const components: any[] = [
   PlCheckElementComponent,
   MerchantImageUploadComponent,
   MonexLoadingComponent,
+  ProductStatusDialogComponent,
+  ProductWorkflowDialogComponent,
+  MonexProductDialogComponent,
 ];
 
 export * from './dialogs/confirmation-dialog/confirmation-dialog.component';
@@ -128,3 +134,6 @@ export * from './operators/customer/dialog-ekyc-info-detail/dialog-ekyc-info-det
 export * from './statutes/pl-check-element/pl-check-element.component';
 export * from './operators/merchant/merchant-image-upload/merchant-image-upload.component';
 export * from './loading/monex-loading/monex-loading.component';
+export * from './operators/product-config/product-status-dialog/product-status-dialog.component';
+export * from './operators/product-config/product-workflow-dialog/product-workflow-dialog.component';
+export * from "./operators/product-config/monex-product-dialog/monex-product-dialog.component";

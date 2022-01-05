@@ -4,9 +4,12 @@ export class TitleConstants {
     CUSTOMER: 'Danh sách khách hàng',
     PAYDAY_LOAN: 'Danh sách khoản ứng',
     USER: 'Danh sách người dùng',
+    MONEX_PRODUCT: 'Danh sách sản phẩm Monex',
     MERCHANT: 'Danh sách Merchant',
     PD_QUESTION: 'Danh sách câu hỏi PD',
     PD_GROUP: 'Danh sách nhóm câu hỏi PD',
     PD_MODEL: 'Danh sách PD Model',
+    PRODUCT_STATUS: 'Danh sách trạng thái',
+    PRODUCT_WORKFLOW: 'Danh sách luồng trạng thái',
   };
 }

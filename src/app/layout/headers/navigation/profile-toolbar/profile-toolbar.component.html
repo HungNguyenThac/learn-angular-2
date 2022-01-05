@@ -35,27 +35,42 @@
               <span>{{ "header.mange_user" | translate }}</span>
             </div>
           </button>
-          <button class="gap-1" mat-menu-item [matMenuTriggerFor]="cdeSetting">
+          <button class="gap-1" mat-menu-item [matMenuTriggerFor]="lv2">
             <div class="d-flex gap-1 align-items-center">
               <span>{{ "header.setting.product_setting" | translate }}</span>
             </div>
           </button>
-        </span>
-      </mat-menu>
-
-      <mat-menu #cdeSetting="matMenu">
-        <span>
-          <button class="gap-1" mat-menu-item [matMenuTriggerFor]="pdSetting">
+          <button (click)="onClickMonexProduct()" class="gap-1" mat-menu-item>
             <div class="d-flex gap-1 align-items-center">
-              <span>{{ "header.setting.cde_setting" | translate }}</span>
+              <span>{{ "header.setting.monex_product" | translate }}</span>
             </div>
           </button>
         </span>
       </mat-menu>
 
-      <mat-menu #pdSetting="matMenu">
+      <mat-menu #lv2="matMenu">
         <span>
-          <button class="gap-1" mat-menu-item [matMenuTriggerFor]="pdManage">
+          <button class="gap-1" mat-menu-item [matMenuTriggerFor]="lv3">
+            <div class="d-flex gap-1 align-items-center">
+              <span>{{ "header.setting.cde_setting" | translate }}</span>
+            </div>
+          </button>
+          <button (click)="onClickProductStatus()" class="gap-1" mat-menu-item>
+            <div class="d-flex gap-1 align-items-center">
+              <span>{{ "header.setting.manage_status" | translate }}</span>
+            </div>
+          </button>
+          <button (click)="onClickStatusFlow()" class="gap-1" mat-menu-item>
+            <div class="d-flex gap-1 align-items-center">
+              <span>{{ "header.setting.workflow" | translate }}</span>
+            </div>
+          </button>
+        </span>
+      </mat-menu>
+
+      <mat-menu #lv3="matMenu">
+        <span>
+          <button class="gap-1" mat-menu-item [matMenuTriggerFor]="lv4">
             <div class="d-flex gap-1 align-items-center">
               <span>{{ "header.setting.pd_setting" | translate }}</span>
             </div>
@@ -63,7 +78,7 @@
         </span>
       </mat-menu>
 
-      <mat-menu #pdManage="matMenu">
+      <mat-menu #lv4="matMenu">
         <span>
           <button (click)="onClickPdGroup()" class="gap-1" mat-menu-item>
             <div class="d-flex gap-1 align-items-center">
