@@ -1008,6 +1008,18 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ApiResponseCustomerInfoResponse'
+  /v1/infos/appendCompanyInfoToCustomerInfo:
+    get:
+      tags:
+      - info-controller
+      operationId: appendCompanyInfoToCustomerInfo
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseObject'
   /v1/districts/{districtId}/communes:
     get:
       tags:
@@ -1142,6 +1154,24 @@ paths:
                 $ref: '#/components/schemas/ApiResponseListApprovalLetter'
       security:
       - bearerAuth: []
+  /v1/approvalLetters/{customerId}/latest:
+    get:
+      tags:
+      - approval-letter-controller
+      operationId: getApprovalLetterByCustomerIdFromAdmin
+      parameters:
+      - name: customerId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseApprovalLetter'
   /v1/approvalLetters/latest:
     get:
       tags:
@@ -1536,6 +1566,11 @@ components:
           minimum: 1000000
           type: number
           format: float
+        employeeType:
+          type: string
+          enum:
+          - OFFICE
+          - FACTORY
     ApiResponseCheckIsPaydayByCustomerIdResponse:
       type: object
       properties:
@@ -1608,6 +1643,10 @@ components:
           type: string
         companyId:
           type: string
+        companyName:
+          type: string
+        companyGroupName:
+          type: string
         officeCode:
           type: string
         organizationName:
@@ -1622,6 +1661,11 @@ components:
           format: float
         borrowerEmploymentHistoryTextVariable1:
           type: string
+        employeeType:
+          type: string
+          enum:
+          - OFFICE
+          - FACTORY
         stepOne:
           type: string
         stepTwoIndividual:
@@ -2016,12 +2060,15 @@ components:
         borrowerEmploymentHistoryTextVariable1:
           type: string
     AdditionalEmployeeDataRequest:
-      required:
-      - organizationName
       type: object
       properties:
         organizationName:
           type: string
+        employeeType:
+          type: string
+          enum:
+          - OFFICE
+          - FACTORY
     CreateDistrictRequest:
       type: object
       properties:

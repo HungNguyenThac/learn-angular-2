@@ -4,7 +4,7 @@ import {
   AdminAccountEntity,
   ApiResponseAdminAccountEntity,
   GroupEntity,
-  ParentPermissionTypeResponse,
+  PermissionTypeLevelOneResponse,
 } from '../../../../../../../open-api-modules/dashboard-api-docs';
 import { Subscription } from 'rxjs';
 import { AdminAccountControllerService as AdminAccountControllerService1 } from '../../../../../../../open-api-modules/identity-api-docs';
@@ -21,7 +21,7 @@ import { RESPONSE_CODE } from '../../../../../core/common/enum/operator';
 })
 export class UserElementComponent implements OnInit {
   @Input() roleList: Array<GroupEntity>;
-  @Input() treeData: Array<ParentPermissionTypeResponse>;
+  @Input() treeData: Array<PermissionTypeLevelOneResponse>;
   @Output() triggerUpdateElementInfo = new EventEmitter();
   @Output() triggerUpdateRoleInfo = new EventEmitter();
 

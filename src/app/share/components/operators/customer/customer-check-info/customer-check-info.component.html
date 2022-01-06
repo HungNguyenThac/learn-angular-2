@@ -10,10 +10,11 @@
         matSort
         matSortDisableClear
         multiTemplateDataRows
+        (contentChanged)="resizeTableAfterContentChanged()"
         class="expanded-table"
       >
         <ng-container
-          *ngFor="let column of displayColumn"
+          *ngFor="let column of displayColumns"
           matColumnDef="{{ column?.key }}"
         >
           <th
@@ -49,7 +50,7 @@
 
         <!-- Row shown when there is no matching data. -->
         <tr *matNoDataRow class="mat-row">
-          <td [attr.colspan]="displayColumn.length" class="mat-cell">
+          <td [attr.colspan]="displayColumns.length" class="mat-cell">
             {{ "common.no_matching_records" | translate }}
           </td>
         </tr>

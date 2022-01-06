@@ -1,19 +1,16 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {
   AdminAccountEntity,
-  ApiResponseListParentPermissionTypeResponse,
   ApiResponseSearchAndPaginationResponseAdminAccountEntity,
-  ApiResponseSearchAndPaginationResponseGroupEntity,
   CompanyControllerService,
   GroupControllerService,
   GroupEntity,
-  ParentPermissionTypeResponse,
   PermissionTypeControllerService,
 } from '../../../../../../../open-api-modules/dashboard-api-docs';
-import { TableSelectActionModel } from '../../../../../public/models/external/table-select-action.model';
-import { Observable, Subscription } from 'rxjs';
-import { BreadcrumbOptionsModel } from '../../../../../public/models/external/breadcrumb-options.model';
-import { FilterOptionModel } from '../../../../../public/models/filter/filter-option.model';
+import {TableSelectActionModel} from '../../../../../public/models/external/table-select-action.model';
+import {Observable, Subscription} from 'rxjs';
+import {BreadcrumbOptionsModel} from '../../../../../public/models/external/breadcrumb-options.model';
+import {FilterOptionModel} from '../../../../../public/models/filter/filter-option.model';
 import * as _ from 'lodash';
 import {
   BUTTON_TYPE,
@@ -24,38 +21,34 @@ import {
   QUERY_CONDITION_TYPE,
   RESPONSE_CODE,
 } from '../../../../../core/common/enum/operator';
-import { DisplayedFieldsModel } from '../../../../../public/models/filter/displayed-fields.model';
-import { MatTableDataSource } from '@angular/material/table';
-import { FormBuilder, FormGroup } from '@angular/forms';
-import { ActivatedRoute, Params, Router } from '@angular/router';
-import { Title } from '@angular/platform-browser';
-import { Store } from '@ngrx/store';
+import {DisplayedFieldsModel} from '../../../../../public/models/filter/displayed-fields.model';
+import {MatTableDataSource} from '@angular/material/table';
+import {FormBuilder, FormGroup} from '@angular/forms';
+import {ActivatedRoute, Params, Router} from '@angular/router';
+import {Title} from '@angular/platform-browser';
+import {Store} from '@ngrx/store';
 import * as fromStore from '../../../../../core/store';
-import { MultiLanguageService } from '../../../../../share/translate/multiLanguageService';
-import { NotificationService } from '../../../../../core/services/notification.service';
-import { ToastrService } from 'ngx-toastr';
+import * as fromSelectors from '../../../../../core/store';
+import * as fromActions from '../../../../../core/store';
+import {MultiLanguageService} from '../../../../../share/translate/multiLanguageService';
+import {NotificationService} from '../../../../../core/services/notification.service';
+import {ToastrService} from 'ngx-toastr';
 import {
   AdminAccountControllerService,
   ApiResponseAdminAccountEntity,
-  ApiResponseString,
 } from '../../../../../../../open-api-modules/identity-api-docs';
-import { MatDialog } from '@angular/material/dialog';
-import { UserListService } from '../../../user/user-list/user-list.service';
-import { NgxPermissionsService } from 'ngx-permissions';
-import * as fromSelectors from '../../../../../core/store';
-import * as fromActions from '../../../../../core/store';
-import { PageEvent } from '@angular/material/paginator/public-api';
-import { Sort } from '@angular/material/sort';
-import { FilterEventModel } from '../../../../../public/models/filter/filter-event.model';
-import { FilterActionEventModel } from '../../../../../public/models/filter/filter-action-event.model';
-import {
-  AddNewPdDialogComponent,
-  AddNewUserDialogComponent,
-  BaseManagementLayoutComponent,
-} from '../../../../../share/components';
+import {MatDialog} from '@angular/material/dialog';
+import {UserListService} from '../../../user/user-list/user-list.service';
+import {NgxPermissionsService} from 'ngx-permissions';
+import {PageEvent} from '@angular/material/paginator/public-api';
+import {Sort} from '@angular/material/sort';
+import {FilterEventModel} from '../../../../../public/models/filter/filter-event.model';
+import {FilterActionEventModel} from '../../../../../public/models/filter/filter-action-event.model';
+import {BaseManagementLayoutComponent,} from '../../../../../share/components';
 import * as moment from 'moment';
-import { ApiResponse } from '../../../../../../../open-api-modules/monexcore-api-docs';
-import { ProductStatusDialogComponent } from '../../../../../share/components/operators/product-config/product-status-dialog/product-status-dialog.component';
+import {
+  ProductStatusDialogComponent
+} from '../../../../../share/components/operators/product-config/product-status-dialog/product-status-dialog.component';
 
 @Component({
   selector: 'app-product-status-list',

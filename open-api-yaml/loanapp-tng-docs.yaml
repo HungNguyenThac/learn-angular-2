@@ -65,6 +65,11 @@ paths:
         required: true
         schema:
           type: string
+      - name: applicationType
+        in: query
+        required: true
+        schema:
+          type: string
       responses:
         "200":
           description: OK
@@ -94,7 +99,31 @@ paths:
           content:
             '*/*':
               schema:
-                $ref: '#/components/schemas/ApiResponseObject'
+                $ref: '#/components/schemas/ApiResponsePaydayLoan'
+  /v1/paydays/updateAmount/{loanId}:
+    put:
+      tags:
+      - payday-loan-controller
+      operationId: updateAmount
+      parameters:
+      - name: loanId
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateLoanAmountRequest'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponsePaydayLoan'
   /v1/promotions/vouchers:
     get:
       tags:
@@ -258,7 +287,7 @@ paths:
           content:
             '*/*':
               schema:
-                $ref: '#/components/schemas/ApiResponseApplyResponse'
+                $ref: '#/components/schemas/ApiResponsePaydayLoan'
   /v1/paydays/{loanId}/changeStatus:
     post:
       tags:
@@ -283,6 +312,18 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ApiResponseString'
+  /v1/paydays/updateApplicationTypeOldTNGLoan:
+    post:
+      tags:
+      - payday-loan-controller
+      operationId: updateApplicationTypeOldTNGLoan
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseString'
   /v1/paydays/getServiceToken:
     post:
       tags:
@@ -296,18 +337,12 @@ paths:
       tags:
       - payday-loan-controller
       operationId: withdraw
-      responses:
-        "200":
-          description: OK
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/ApiResponseString'
-  /v1/paydays/cronjob/overdue:
-    post:
-      tags:
-      - payday-loan-controller
-      operationId: setLoanOverdue
+      parameters:
+      - name: applicationType
+        in: query
+        required: true
+        schema:
+          type: string
       responses:
         "200":
           description: OK
@@ -320,6 +355,12 @@ paths:
       tags:
       - payday-loan-controller
       operationId: notifyBeforeGetSalary
+      parameters:
+      - name: applicationType
+        in: query
+        required: true
+        schema:
+          type: string
       responses:
         "200":
           description: OK
@@ -332,6 +373,12 @@ paths:
       tags:
       - payday-loan-controller
       operationId: updateLatePenaltyPayment
+      parameters:
+      - name: applicationType
+        in: query
+        required: true
+        schema:
+          type: string
       responses:
         "200":
           description: OK
@@ -344,6 +391,12 @@ paths:
       tags:
       - application-controller
       operationId: getAllPaydayLoan
+      parameters:
+      - name: applicationType
+        in: query
+        required: true
+        schema:
+          type: string
       responses:
         "200":
           description: OK
@@ -358,6 +411,11 @@ paths:
       operationId: getActivePaydayLoan
       parameters:
       - name: coreToken
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: applicationType
         in: query
         required: true
         schema:
@@ -421,6 +479,11 @@ paths:
         required: true
         schema:
           type: string
+      - name: applicationType
+        in: query
+        required: true
+        schema:
+          type: string
       responses:
         "200":
           description: OK
@@ -435,6 +498,11 @@ paths:
       operationId: getLoanByStatus
       parameters:
       - name: status
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: applicationType
         in: query
         required: true
         schema:
@@ -586,6 +654,8 @@ components:
         expiredAt:
           type: string
     UpdateLoanRequest:
+      required:
+      - applicationType
       type: object
       properties:
         customerId:
@@ -594,11 +664,13 @@ components:
           type: object
           additionalProperties:
             type: object
-    ApiResponseObject:
+        applicationType:
+          type: string
+    ApiResponsePaydayLoan:
       type: object
       properties:
         result:
-          type: object
+          $ref: '#/components/schemas/PaydayLoan'
         errorCode:
           type: string
         message:
@@ -606,6 +678,87 @@ components:
         responseCode:
           type: integer
           format: int32
+    PaydayLoan:
+      type: object
+      properties:
+        id:
+          type: string
+        coreLoanUuid:
+          type: string
+        customerId:
+          type: string
+        expectedAmount:
+          type: integer
+          format: int32
+        expectedTenure:
+          type: integer
+          format: int32
+        actualAmount:
+          type: integer
+          format: int32
+        status:
+          type: string
+        oldStatus:
+          type: string
+        appTypeUuid:
+          type: string
+        appType:
+          type: string
+        loanCode:
+          type: string
+        purpose:
+          type: string
+        voucherTransactionId:
+          type: string
+        repaymentStatus:
+          type: string
+        latePenaltyPayment:
+          type: integer
+          format: int32
+        totalServiceFees:
+          type: integer
+          format: int32
+        getSalaryAt:
+          type: string
+        createdAt:
+          type: string
+        updatedAt:
+          type: string
+        note:
+          type: string
+        personInChargeId:
+          type: string
+        applicationType:
+          type: string
+        termType:
+          type: string
+        disbursedAt:
+          type: string
+        approvedAt:
+          type: string
+    UpdateLoanAmountRequest:
+      required:
+      - applicationType
+      - coreToken
+      - customerId
+      - expectedAmount
+      type: object
+      properties:
+        coreToken:
+          type: string
+        customerId:
+          type: string
+        expectedAmount:
+          type: integer
+          format: int32
+        applicationType:
+          type: string
+        termType:
+          type: string
+        purpose:
+          type: string
+        voucherTransactionId:
+          type: string
     CreateVoucherRequest:
       type: object
       properties:
@@ -704,59 +857,34 @@ components:
           type: string
     CreateApplicationRequest:
       required:
+      - applicationType
       - coreToken
-      - customerId
       - expectedAmount
       type: object
       properties:
         coreToken:
           type: string
-        customerId:
-          type: string
         expectedAmount:
           type: integer
           format: int32
+        applicationType:
+          type: string
+        termType:
+          type: string
         purpose:
           type: string
         voucherTransactionId:
           type: string
-    ApiResponseApplyResponse:
-      type: object
-      properties:
-        result:
-          $ref: '#/components/schemas/ApplyResponse'
-        errorCode:
-          type: string
-        message:
-          type: object
-        responseCode:
-          type: integer
-          format: int32
-    ApplyResponse:
-      type: object
-      properties:
-        code:
-          type: string
-        status:
-          type: string
-        message:
-          type: string
-        loanUuid:
-          type: string
-        loanAmount:
-          type: string
-        loanTenure:
-          type: string
-        epayCustomerId:
-          type: string
-        epayLoanId:
-          type: string
     UpdateLoanStatusRequest:
+      required:
+      - applicationType
       type: object
       properties:
         customerId:
           type: string
         status:
+          type: string
+        applicationType:
           type: string
     ApiResponseString:
       type: object
@@ -777,68 +905,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/PaydayLoan'
-        errorCode:
-          type: string
-        message:
-          type: object
-        responseCode:
-          type: integer
-          format: int32
-    PaydayLoan:
-      type: object
-      properties:
-        id:
-          type: string
-        coreLoanUuid:
-          type: string
-        customerId:
-          type: string
-        expectedAmount:
-          type: integer
-          format: int32
-        expectedTenure:
-          type: integer
-          format: int32
-        actualAmount:
-          type: integer
-          format: int32
-        status:
-          type: string
-        oldStatus:
-          type: string
-        appTypeUuid:
-          type: string
-        appType:
-          type: string
-        loanCode:
-          type: string
-        purpose:
-          type: string
-        voucherTransactionId:
-          type: string
-        repaymentStatus:
-          type: string
-        latePenaltyPayment:
-          type: integer
-          format: int32
-        totalServiceFees:
-          type: integer
-          format: int32
-        getSalaryAt:
-          type: string
-        createdAt:
-          type: string
-        updatedAt:
-          type: string
-        note:
-          type: string
-        personInChargeId:
-          type: string
-    ApiResponsePaydayLoan:
-      type: object
-      properties:
-        result:
-          $ref: '#/components/schemas/PaydayLoan'
         errorCode:
           type: string
         message:

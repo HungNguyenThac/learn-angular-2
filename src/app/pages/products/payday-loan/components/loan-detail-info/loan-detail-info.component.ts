@@ -1,48 +1,28 @@
-import { NotificationService } from 'src/app/core/services/notification.service';
-import { ToastrService } from 'ngx-toastr';
-import { UpdateLoanStatusRequest } from './../../../../../../../open-api-modules/loanapp-hmg-api-docs/model/updateLoanStatusRequest';
-import { Subscription } from 'rxjs';
-import { PaydayLoanControllerService as PaydayLoanHmgControllerService } from './../../../../../../../open-api-modules/loanapp-hmg-api-docs/api/paydayLoanController.service';
-import { PaydayLoanControllerService as PaydayLoanTngControllerService } from './../../../../../../../open-api-modules/loanapp-tng-api-docs/api/paydayLoanController.service';
+import {NotificationService} from 'src/app/core/services/notification.service';
+import {ToastrService} from 'ngx-toastr';
 import {
-  PAYDAY_LOAN_STATUS,
-  REPAYMENT_STATUS,
-} from './../../../../../core/common/enum/payday-loan';
+  UpdateLoanStatusRequest
+} from './../../../../../../../open-api-modules/loanapp-tng-api-docs/model/updateLoanStatusRequest';
+import {Subscription} from 'rxjs';
 import {
-  BUTTON_TYPE,
-  DATA_CELL_TYPE,
-  DATA_STATUS_TYPE,
-} from './../../../../../core/common/enum/operator';
-import { MultiLanguageService } from './../../../../../share/translate/multiLanguageService';
-import { MatDialog } from '@angular/material/dialog';
+  PaydayLoanControllerService as PaydayLoanHmgControllerService
+} from './../../../../../../../open-api-modules/loanapp-hmg-api-docs/api/paydayLoanController.service';
 import {
-  Component,
-  EventEmitter,
-  Input,
-  OnInit,
-  Output,
-  OnDestroy,
-} from '@angular/core';
+  PaydayLoanControllerService as PaydayLoanTngControllerService
+} from './../../../../../../../open-api-modules/loanapp-tng-api-docs/api/paydayLoanController.service';
+import {APPLICATION_TYPE, PAYDAY_LOAN_STATUS,} from '../../../../../core/common/enum/payday-loan';
+import {BUTTON_TYPE, DATA_CELL_TYPE, DATA_STATUS_TYPE,} from '../../../../../core/common/enum/operator';
+import {MultiLanguageService} from '../../../../../share/translate/multiLanguageService';
+import {MatDialog} from '@angular/material/dialog';
+import {Component, EventEmitter, Input, OnDestroy, OnInit, Output,} from '@angular/core';
 import * as moment from 'moment';
-import {
-  CustomerInfo,
-  PaydayLoanHmg,
-  Voucher,
-} from 'open-api-modules/dashboard-api-docs';
-import {
-  ApiResponseObject,
-  PaydayLoan,
-} from 'open-api-modules/loanapp-tng-api-docs';
-import { FormBuilder, FormGroup } from '@angular/forms';
-import {
-  ApiResponseString,
-  UpdateLoanRequest,
-} from 'open-api-modules/loanapp-hmg-api-docs';
+import {CustomerInfo, PaydayLoanHmg, Voucher} from 'open-api-modules/dashboard-api-docs';
+import {FormBuilder, FormGroup} from '@angular/forms';
 import formatPunishStartTimeHmg from '../../../../../core/utils/format-punish-start-time-hmg';
 import formatPunishStartTimeTng from '../../../../../core/utils/format-punish-start-time-tng';
 import formatPunishCountHmg from '../../../../../core/utils/format-punish-count-hmg';
 import formatPunishCountTng from '../../../../../core/utils/format-punish-count-tng';
-import { GlobalConstants } from '../../../../../core/common/global-constants';
+import {GlobalConstants} from '../../../../../core/common/global-constants';
 
 @Component({
   selector: 'app-loan-detail-info',
@@ -372,7 +352,7 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
     if (loanDetail?.companyInfo.name === 'TNG') {
       if (
         loanDetail?.expectedAmount *
-          GlobalConstants.PL_VALUE_DEFAULT.SERVICE_FEE_TNG <
+        GlobalConstants.PL_VALUE_DEFAULT.SERVICE_FEE_TNG <
         GlobalConstants.PL_VALUE_DEFAULT.MINIMUM_SERVICE_FEE_TNG
       ) {
         return GlobalConstants.PL_VALUE_DEFAULT.MINIMUM_SERVICE_FEE_TNG;
@@ -440,7 +420,8 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+  }
 
   changeLoanStatus(newStatus, newStatusDisplay) {
     const currentLoanStatusDisplay = this.multiLanguageService.instant(
@@ -467,8 +448,10 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
           const updateLoanStatusRequest: UpdateLoanStatusRequest = {
             customerId: this.loanDetail.customerId,
             status: newStatus,
+            applicationType: APPLICATION_TYPE.PDL_TNG
           };
           if (this.groupName === 'HMG') {
+            updateLoanStatusRequest.applicationType = APPLICATION_TYPE.PDL_HMG
             this.paydayLoanHmgControllerService
               .changeLoanStatus(this.loanDetail.id, updateLoanStatusRequest)
               .subscribe((result) => {
@@ -481,6 +464,7 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
           }
 
           if (this.groupName === 'TNG') {
+            updateLoanStatusRequest.applicationType = APPLICATION_TYPE.PDL_TNG
             this.paydayLoanTngControllerService
               .changeLoanStatus(this.loanDetail.id, updateLoanStatusRequest)
               .subscribe((result) => {
@@ -654,8 +638,8 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
     );
     this.prevLoanStatusDisplay = this.prevLoanStatus
       ? this.multiLanguageService.instant(
-          `payday_loan.status.${this.prevLoanStatus.toLowerCase()}`
-        )
+        `payday_loan.status.${this.prevLoanStatus.toLowerCase()}`
+      )
       : null;
 
     return;

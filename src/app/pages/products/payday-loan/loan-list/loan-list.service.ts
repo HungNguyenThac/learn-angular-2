@@ -1,30 +1,31 @@
 import {
+  APPLICATION_TYPE,
   PAYDAY_LOAN_STATUS,
   REPAYMENT_STATUS,
 } from './../../../../core/common/enum/payday-loan';
 import {
   ApplicationHmgControllerService,
-  ApplicationTngControllerService,
+  ApplicationControllerService,
 } from '../../../../../../open-api-modules/dashboard-api-docs';
 import {
   ContractControllerService as ContractHmgControllerService,
   PaydayLoanControllerService,
 } from '../../../../../../open-api-modules/loanapp-hmg-api-docs';
-import { ContractControllerService as ComSignContractAutomation } from 'open-api-modules/com-api-docs';
-import { Injectable } from '@angular/core';
-import { catchError, map } from 'rxjs/operators';
-import { CustomerControllerService } from 'open-api-modules/dashboard-api-docs';
+import {ContractControllerService as ComSignContractAutomation} from 'open-api-modules/com-api-docs';
+import {Injectable} from '@angular/core';
+import {catchError, map} from 'rxjs/operators';
+import {CustomerControllerService} from 'open-api-modules/dashboard-api-docs';
 import * as _ from 'lodash';
-import { QUERY_CONDITION_TYPE } from '../../../../core/common/enum/operator';
+import {QUERY_CONDITION_TYPE} from '../../../../core/common/enum/operator';
 import {
   ApiResponseContract,
   ContractControllerService,
   PaydayLoanControllerService as PaydayLoanTngControllerService,
 } from '../../../../../../open-api-modules/loanapp-tng-api-docs';
-import { FileControllerService } from '../../../../../../open-api-modules/com-api-docs';
-import { SignDocumentControllerService } from '../../../../../../open-api-modules/contract-api-docs';
-import { ACCOUNT_CLASSIFICATION } from 'src/app/core/common/enum/payday-loan';
-import { GlobalConstants } from '../../../../core/common/global-constants';
+import {FileControllerService} from '../../../../../../open-api-modules/com-api-docs';
+import {SignDocumentControllerService} from '../../../../../../open-api-modules/contract-api-docs';
+import {ACCOUNT_CLASSIFICATION} from 'src/app/core/common/enum/payday-loan';
+import {GlobalConstants} from '../../../../core/common/global-constants';
 
 @Injectable({
   providedIn: 'root',
@@ -33,7 +34,7 @@ export class LoanListService {
   constructor(
     private paydayLoanControllerService: PaydayLoanControllerService,
     private paydayLoanTngControllerService: PaydayLoanTngControllerService,
-    private applicationTngControllerService: ApplicationTngControllerService,
+    private applicationTngControllerService: ApplicationControllerService,
     private applicationHmgControllerService: ApplicationHmgControllerService,
     private customerControllerService: CustomerControllerService,
     private contractControllerService: ContractControllerService,
@@ -41,7 +42,8 @@ export class LoanListService {
     private contractHmgControllerService: ContractHmgControllerService,
     private signContractAutomation: SignDocumentControllerService,
     private fileControllerService: FileControllerService
-  ) {}
+  ) {
+  }
 
   private _buildRequestBodyGetList(params) {
     let requestBody = {};
@@ -75,20 +77,20 @@ export class LoanListService {
       requestBody['loanCode' + QUERY_CONDITION_TYPE.LIKE_KEYWORD] =
         params.keyword;
       requestBody[
-        'customerInfo.firstName' + QUERY_CONDITION_TYPE.LIKE_KEYWORD
-      ] = params.keyword;
+      'customerInfo.firstName' + QUERY_CONDITION_TYPE.LIKE_KEYWORD
+        ] = params.keyword;
       requestBody[
-        'customerInfo.mobileNumber' + QUERY_CONDITION_TYPE.LIKE_KEYWORD
-      ] = params.keyword;
+      'customerInfo.mobileNumber' + QUERY_CONDITION_TYPE.LIKE_KEYWORD
+        ] = params.keyword;
       requestBody[
-        'customerInfo.emailAddress' + QUERY_CONDITION_TYPE.LIKE_KEYWORD
-      ] = params.keyword;
+      'customerInfo.emailAddress' + QUERY_CONDITION_TYPE.LIKE_KEYWORD
+        ] = params.keyword;
       requestBody[
-        'customerInfo.organizationName' + QUERY_CONDITION_TYPE.LIKE_KEYWORD
-      ] = params.keyword;
+      'customerInfo.organizationName' + QUERY_CONDITION_TYPE.LIKE_KEYWORD
+        ] = params.keyword;
       requestBody[
-        'customerInfo.identityNumberOne' + QUERY_CONDITION_TYPE.LIKE_KEYWORD
-      ] = params.keyword;
+      'customerInfo.identityNumberOne' + QUERY_CONDITION_TYPE.LIKE_KEYWORD
+        ] = params.keyword;
     }
 
     switch (params.accountClassification) {
@@ -98,14 +100,14 @@ export class LoanListService {
 
       case ACCOUNT_CLASSIFICATION.TEST:
         requestBody[
-          'customerInfo.mobileNumber' + QUERY_CONDITION_TYPE.START_WITH
-        ] = GlobalConstants.PL_VALUE_DEFAULT.PREFIX_MOBILE_NUMBER_TEST;
+        'customerInfo.mobileNumber' + QUERY_CONDITION_TYPE.START_WITH
+          ] = GlobalConstants.PL_VALUE_DEFAULT.PREFIX_MOBILE_NUMBER_TEST;
         break;
       case ACCOUNT_CLASSIFICATION.REAL:
       default:
         requestBody[
-          'customerInfo.mobileNumber' + QUERY_CONDITION_TYPE.NOT_START_WITH
-        ] = GlobalConstants.PL_VALUE_DEFAULT.PREFIX_MOBILE_NUMBER_TEST;
+        'customerInfo.mobileNumber' + QUERY_CONDITION_TYPE.NOT_START_WITH
+          ] = GlobalConstants.PL_VALUE_DEFAULT.PREFIX_MOBILE_NUMBER_TEST;
         break;
     }
     console.log('requestBody--------------------------------', requestBody);
@@ -130,6 +132,7 @@ export class LoanListService {
     return this.applicationTngControllerService.findApplications(
       params.pageSize,
       params.pageNumber,
+      APPLICATION_TYPE.PDL_TNG,
       requestBody,
       params.orderBy,
       params.sortDirection === 'desc'
@@ -186,7 +189,7 @@ export class LoanListService {
 
     // com svc
     return this.comSignContractAutomation
-      .adminSignContract({ customerId, idRequest, idDocument })
+      .adminSignContract({customerId, idRequest, idDocument})
       .pipe(
         map((results) => {
           return results;
@@ -200,7 +203,7 @@ export class LoanListService {
 
   public downloadSingleFileContract(documentPath: string, customerId: string) {
     return this.fileControllerService
-      .downloadFile({ documentPath, customerId })
+      .downloadFile({documentPath, customerId})
       .pipe(
         map((results) => {
           return this.convertBlobType(results, 'application/pdf');
@@ -224,7 +227,7 @@ export class LoanListService {
   }
 
   public convertBlobType(data: any, type: string) {
-    let blob = new Blob([data], { type: type });
+    let blob = new Blob([data], {type: type});
     let url = window.URL.createObjectURL(blob);
     return url;
   }
