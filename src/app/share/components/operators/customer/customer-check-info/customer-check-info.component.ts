@@ -1,29 +1,34 @@
-import { DialogEkycInfoDetailComponent } from './../dialog-ekyc-info-detail/dialog-ekyc-info-detail.component';
-import { MatDialog } from '@angular/material/dialog';
-import { Subscription } from 'rxjs';
-import { ApiResponseSearchAndPaginationResponseKalapaResponse } from './../../../../../../../open-api-modules/dashboard-api-docs/model/apiResponseSearchAndPaginationResponseKalapaResponse';
-import { EkycControllerService } from './../../../../../../../open-api-modules/dashboard-api-docs/api/ekycController.service';
+import {DialogEkycInfoDetailComponent} from '../dialog-ekyc-info-detail/dialog-ekyc-info-detail.component';
+import {MatDialog} from '@angular/material/dialog';
+import {Subscription} from 'rxjs';
+import {
+  ApiResponseSearchAndPaginationResponseKalapaResponse
+} from '../../../../../../../open-api-modules/dashboard-api-docs';
+import {
+  EkycControllerService
+} from '../../../../../../../open-api-modules/dashboard-api-docs';
 import {
   DATA_CELL_TYPE,
   DATA_STATUS_TYPE,
-} from './../../../../../core/common/enum/operator';
+} from '../../../../../core/common/enum/operator';
 import {
-  Component,
-  EventEmitter,
+  Component, ElementRef,
+  EventEmitter, HostListener,
   Input,
   OnInit,
   Output,
-  TemplateRef,
+  TemplateRef, ViewChild,
 } from '@angular/core';
-import { Sort } from '@angular/material/sort';
-import { LiveAnnouncer } from '@angular/cdk/a11y';
-import { MatTableDataSource } from '@angular/material/table';
-import { PageEvent } from '@angular/material/paginator/public-api';
-import { SortDirection } from '@angular/material/sort/sort-direction';
-import { MultiLanguageService } from '../../../../translate/multiLanguageService';
-import { NotificationService } from '../../../../../core/services/notification.service';
-import { ToastrService } from 'ngx-toastr';
+import {Sort} from '@angular/material/sort';
+import {LiveAnnouncer} from '@angular/cdk/a11y';
+import {MatTable, MatTableDataSource} from '@angular/material/table';
+import {PageEvent} from '@angular/material/paginator/public-api';
+import {SortDirection} from '@angular/material/sort/sort-direction';
+import {MultiLanguageService} from '../../../../translate/multiLanguageService';
+import {NotificationService} from '../../../../../core/services/notification.service';
+import {ToastrService} from 'ngx-toastr';
 import * as _ from 'lodash';
+import {DisplayedFieldsModel} from "../../../../../public/models/filter/displayed-fields.model";
 
 @Component({
   selector: 'app-customer-check-info',
@@ -31,6 +36,10 @@ import * as _ from 'lodash';
   styleUrls: ['./customer-check-info.component.scss'],
 })
 export class CustomerCheckInfoComponent implements OnInit {
+  @Input() customerId: string;
+  @Output() outputAction = new EventEmitter<any>();
+  @ViewChild(MatTable, { read: ElementRef }) private matTableRef: ElementRef;
+
   dataSource: MatTableDataSource<any> = new MatTableDataSource([]);
   pageSize: number = 10;
   pageIndex: number = 0;
@@ -38,12 +47,10 @@ export class CustomerCheckInfoComponent implements OnInit {
   pageSizeOptions: number[] = [10, 20, 50];
   totalItems: number = 0;
   subManager = new Subscription();
-  @Input() customerId: string;
   orderBy: string;
   sortDirection: SortDirection;
-  @Output() outputAction = new EventEmitter<any>();
 
-  displayColumn = [
+  displayColumns: DisplayedFieldsModel[] = [
     {
       key: 'createdAt',
       title: this.multiLanguageService.instant(
@@ -52,6 +59,7 @@ export class CustomerCheckInfoComponent implements OnInit {
       type: DATA_CELL_TYPE.DATETIME,
       format: 'dd/MM/yyyy HH:mm:ss',
       showed: true,
+      width: 100
     },
     {
       key: 'status',
@@ -61,10 +69,13 @@ export class CustomerCheckInfoComponent implements OnInit {
       type: DATA_CELL_TYPE.STATUS,
       format: DATA_STATUS_TYPE.PL_OTHER_STATUS,
       showed: true,
+      width: 100
     },
   ];
 
   displayColumnRowDef: string[];
+  pressed: boolean = false;
+  resizeTimeout: any;
 
   constructor(
     private multiLanguageService: MultiLanguageService,
@@ -74,7 +85,7 @@ export class CustomerCheckInfoComponent implements OnInit {
     private ekycControllerService: EkycControllerService,
     private dialog: MatDialog
   ) {
-    this.displayColumnRowDef = this.displayColumn.map((ele) => ele.key);
+    this.displayColumnRowDef = this.displayColumns.map((ele) => ele.key);
     console.log('this.displayColumnRowDef', this.displayColumnRowDef);
   }
 
@@ -157,5 +168,68 @@ export class CustomerCheckInfoComponent implements OnInit {
     }
 
     return obj[props[i]];
+  }
+
+  setColumnWidth(column: DisplayedFieldsModel) {
+    const columnEls = Array.from(
+      this.matTableRef.nativeElement.getElementsByClassName(
+        'mat-column-' + column.key.replace(/\./g, '-')
+      )
+    );
+
+    columnEls.forEach((el: HTMLDivElement) => {
+      el.style.width = column.width + 'px';
+    });
+  }
+
+  setTableResize() {
+    if (!this.matTableRef) {
+      return;
+    }
+    let tableWidth = this.matTableRef.nativeElement.clientWidth;
+    let totWidth = 0;
+
+    let tableColumn: DisplayedFieldsModel[] = [...this.displayColumns];
+    tableColumn.forEach((column) => {
+      totWidth += column.width;
+    });
+    const scale = (tableWidth - 5) / totWidth;
+    tableColumn.forEach((column) => {
+      column.width *= scale;
+      this.setColumnWidth(column);
+    });
+  }
+
+
+  triggerWindowResize() {
+    if (typeof Event === 'function') {
+      // modern browsers
+      window.dispatchEvent(new Event('resize'));
+    } else {
+      // for IE and other old browsers
+      // causes deprecation warning on modern browsers
+      let evt = new UIEvent('resize');
+      window.dispatchEvent(evt);
+    }
+  }
+
+  resizeTableAfterContentChanged() {
+    this.setTableResize();
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event) {
+    //debounce resize, wait for resize to finish before doing stuff
+    if (this.resizeTimeout) {
+      clearTimeout(this.resizeTimeout);
+    }
+
+    this.resizeTimeout = setTimeout(() => {
+      this.setTableResize();
+    }, 200);
+  }
+
+  ngAfterViewInit(): void {
+    this.setTableResize();
   }
 }

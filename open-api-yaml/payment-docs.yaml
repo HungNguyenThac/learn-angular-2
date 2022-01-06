@@ -83,7 +83,7 @@ paths:
     post:
       tags:
       - repayment-controller
-      operationId: gpayRepaymentPaydayLoanTNG
+      operationId: gpayRepaymentPaydayLoan
       requestBody:
         content:
           application/json:
@@ -155,7 +155,7 @@ paths:
     post:
       tags:
       - gpay-virtual-account-controller
-      operationId: createPaymentOrder_1
+      operationId: gpayWebhook
       requestBody:
         content:
           application/json:

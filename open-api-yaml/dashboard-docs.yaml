@@ -54,7 +54,7 @@ paths:
   /v1/tngApplications/list:
     post:
       tags:
-      - application-tng-controller
+      - application-controller
       operationId: findApplications
       parameters:
       - name: pageSize
@@ -79,6 +79,11 @@ paths:
         required: false
         schema:
           type: boolean
+      - name: applicationType
+        in: query
+        required: true
+        schema:
+          type: string
       requestBody:
         content:
           application/json:
@@ -94,10 +99,47 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ApiResponseSearchAndPaginationResponsePaydayLoanTng'
+  /v1/tngApplications/exportExcel:
+    post:
+      tags:
+      - application-controller
+      operationId: exportTngLoanToExcel
+      parameters:
+      - name: orderBy
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: descending
+        in: query
+        required: false
+        schema:
+          type: boolean
+      - name: applicationType
+        in: query
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties:
+                type: object
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+                format: binary
   /v1/tngApplications/appendCustomerInfo:
     post:
       tags:
-      - application-tng-controller
+      - application-controller
       operationId: appendCustomerInfoForTngLoan
       responses:
         "200":
@@ -207,7 +249,7 @@ paths:
           content:
             '*/*':
               schema:
-                $ref: '#/components/schemas/ApiResponseListParentPermissionTypeResponse'
+                $ref: '#/components/schemas/ApiResponseListPermissionTypeLevelOneResponse'
       security:
       - bearerAuth: []
     post:
@@ -612,6 +654,38 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ApiResponseSearchAndPaginationResponsePaydayLoanHmg'
+  /v1/hmgApplications/exportExcel:
+    post:
+      tags:
+      - application-hmg-controller
+      operationId: exportHmgLoanToExcel
+      parameters:
+      - name: orderBy
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: descending
+        in: query
+        required: false
+        schema:
+          type: boolean
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties:
+                type: object
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+                format: binary
   /v1/hmgApplications/appendCustomerInfo:
     post:
       tags:
@@ -1298,7 +1372,7 @@ paths:
   /v1/tngApplications:
     get:
       tags:
-      - application-tng-controller
+      - application-controller
       operationId: findApplication
       parameters:
       - name: query
@@ -1338,11 +1412,16 @@ paths:
   /v1/tngApplications/{loanId}:
     get:
       tags:
-      - application-tng-controller
+      - application-controller
       operationId: getLoanById
       parameters:
       - name: loanId
         in: path
+        required: true
+        schema:
+          type: string
+      - name: applicationType
+        in: query
         required: true
         schema:
           type: string
@@ -1356,7 +1435,7 @@ paths:
   /v1/tngApplications/{loanId}/voucher:
     get:
       tags:
-      - application-tng-controller
+      - application-controller
       operationId: getVoucherInfo
       parameters:
       - name: loanId
@@ -1376,18 +1455,6 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ApiResponseSearchVoucherInfoResponse'
-  /v1/tngApplications/exportExcel:
-    get:
-      tags:
-      - application-tng-controller
-      operationId: exportTngLoanToExcel
-      responses:
-        "200":
-          description: OK
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/ApiResponsePaydayTngExcelExport'
   /v1/ratings/{applicationId}:
     get:
       tags:
@@ -1669,18 +1736,6 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ApiResponseSearchVoucherInfoResponse'
-  /v1/hmgApplications/exportExcel:
-    get:
-      tags:
-      - application-hmg-controller
-      operationId: exportHmgLoanToExcel
-      responses:
-        "200":
-          description: OK
-          content:
-            application/octet-stream:
-              schema:
-                $ref: '#/components/schemas/ApiResponsePaydayHmgExcelExport'
   /v1/groups/{groupId}:
     get:
       tags:
@@ -2192,8 +2247,8 @@ components:
         applicationType:
           type: string
           enum:
-          - PDL_TNG PDL_TNG
-          - PDL_HMG PDL_HMG
+          - PaydayLoan-TNG PDL_TNG
+          - PaydayLoan-HMG PDL_HMG
           - PDL_VAC_OFFICE PDL_VAC_OFFICE
           - PDL_VAC_FACTORY PDL_VAC_FACTORY
         id:
@@ -2482,6 +2537,8 @@ components:
           $ref: '#/components/schemas/VoucherTransaction'
         voucher:
           $ref: '#/components/schemas/Voucher'
+        applicationType:
+          type: string
         completedAt:
           type: string
         approvedAt:
@@ -3151,6 +3208,8 @@ components:
           $ref: '#/components/schemas/VoucherTransaction'
         voucher:
           $ref: '#/components/schemas/Voucher'
+        applicationType:
+          type: string
         completedAt:
           type: string
         approvedAt:
@@ -3410,8 +3469,10 @@ components:
           type: string
         modelId:
           type: string
-        pdModel:
-          $ref: '#/components/schemas/Model'
+        pdModelGroups:
+          type: array
+          items:
+            $ref: '#/components/schemas/ModelGroup'
         code:
           type: string
         content:
@@ -3420,9 +3481,6 @@ components:
           type: string
         status:
           type: string
-          enum:
-          - ACTIVE
-          - INACTIVE
         createdAt:
           type: string
         createdBy:
@@ -3431,6 +3489,23 @@ components:
           type: string
         updatedBy:
           type: string
+    GroupQuestion:
+      type: object
+      properties:
+        id:
+          type: string
+        modelId:
+          type: string
+        order:
+          type: string
+        pdGroupId:
+          type: string
+        pdQuestionId:
+          type: string
+        pdGroup:
+          $ref: '#/components/schemas/Group'
+        pdQuestion:
+          $ref: '#/components/schemas/Question'
     LoanProduct:
       type: object
       properties:
@@ -3471,9 +3546,6 @@ components:
           type: string
         status:
           type: string
-          enum:
-          - ACTIVE
-          - INACTIVE
         createdAt:
           type: string
         createdBy:
@@ -3482,6 +3554,23 @@ components:
           type: string
         updatedBy:
           type: string
+    ModelGroup:
+      type: object
+      properties:
+        id:
+          type: string
+        modelId:
+          type: string
+        order:
+          type: string
+        pdModelId:
+          type: string
+        pdGroupId:
+          type: string
+        pdModel:
+          $ref: '#/components/schemas/Model'
+        pdGroup:
+          $ref: '#/components/schemas/Group'
     Question:
       type: object
       properties:
@@ -3493,6 +3582,8 @@ components:
           type: string
         content:
           type: string
+        isMandatory:
+          type: boolean
         description:
           type: string
         answerType:
@@ -3511,10 +3602,10 @@ components:
           type: array
           items:
             type: string
-        pdGroups:
+        pdGroupQuestions:
           type: array
           items:
-            $ref: '#/components/schemas/Group'
+            $ref: '#/components/schemas/GroupQuestion'
     SearchAndPaginationResponseQuestion:
       type: object
       properties:
@@ -3819,20 +3910,6 @@ components:
           $ref: '#/components/schemas/Voucher'
         voucherTransaction:
           $ref: '#/components/schemas/VoucherTransaction'
-    ApiResponsePaydayTngExcelExport:
-      type: object
-      properties:
-        result:
-          $ref: '#/components/schemas/PaydayTngExcelExport'
-        errorCode:
-          type: string
-        message:
-          type: object
-        responseCode:
-          type: integer
-          format: int32
-    PaydayTngExcelExport:
-      type: object
     ApiResponseListRating:
       type: object
       properties:
@@ -3859,13 +3936,13 @@ components:
         responseCode:
           type: integer
           format: int32
-    ApiResponseListParentPermissionTypeResponse:
+    ApiResponseListPermissionTypeLevelOneResponse:
       type: object
       properties:
         result:
           type: array
           items:
-            $ref: '#/components/schemas/ParentPermissionTypeResponse'
+            $ref: '#/components/schemas/PermissionTypeLevelOneResponse'
         errorCode:
           type: string
         message:
@@ -3873,7 +3950,21 @@ components:
         responseCode:
           type: integer
           format: int32
-    ChildPermissionTypeResponse:
+    PermissionTypeLevelOneResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        level:
+          type: integer
+          format: int32
+        permissionTypeLevelTwoResponse:
+          type: array
+          items:
+            $ref: '#/components/schemas/PermissionTypeLevelTwoResponse'
+    PermissionTypeLevelTwoResponse:
       type: object
       properties:
         id:
@@ -3889,20 +3980,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/PermissionEntity'
-    ParentPermissionTypeResponse:
-      type: object
-      properties:
-        id:
-          type: string
-        name:
-          type: string
-        level:
-          type: integer
-          format: int32
-        childPermissionTypeResponses:
-          type: array
-          items:
-            $ref: '#/components/schemas/ChildPermissionTypeResponse'
     ApiResponsePermissionTypeEntity:
       type: object
       properties:
@@ -4011,20 +4088,6 @@ components:
         responseCode:
           type: integer
           format: int32
-    ApiResponsePaydayHmgExcelExport:
-      type: object
-      properties:
-        result:
-          $ref: '#/components/schemas/PaydayHmgExcelExport'
-        errorCode:
-          type: string
-        message:
-          type: object
-        responseCode:
-          type: integer
-          format: int32
-    PaydayHmgExcelExport:
-      type: object
     ApiResponseGroupEntity:
       type: object
       properties:
