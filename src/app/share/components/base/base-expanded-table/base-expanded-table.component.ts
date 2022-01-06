@@ -236,7 +236,7 @@ export class BaseExpandedTableComponent implements OnInit, AfterViewInit {
     if (this.hasSelect) {
       tableColumn.unshift({
         key: 'select',
-        width: 100,
+        width: 30,
         title: '',
       });
     }

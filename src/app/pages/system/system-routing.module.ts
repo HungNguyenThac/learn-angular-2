@@ -3,6 +3,9 @@ import { PdQuestionsModule } from './pd-system/pd-questions/pd-questions.module'
 import { PdAnswersModule } from './pd-system/pd-answers/pd-answers.module';
 import { PdGroupModule } from './pd-system/pd-group/pd-group.module';
 import { TitleConstants } from '../../core/common/providers/title-constants';
+import { ProductStatusModule } from './product-config/product-status/product-status.module';
+import { ProductWorkflowModule } from './product-config/product-workflow/product-workflow.module';
+import { MonexProductModule } from './product-config/monex-product/monex-product.module';
 
 export const SystemRoutes: Routes = [
   {
@@ -14,6 +17,16 @@ export const SystemRoutes: Routes = [
           import('./user/user.module').then((m) => m.UserModule),
         data: {
           title: TitleConstants.TITLE_VALUE.USER,
+        },
+      },
+      {
+        path: 'monex-product',
+        loadChildren: () =>
+          import('./product-config/monex-product/monex-product.module').then(
+            (m) => m.MonexProductModule
+          ),
+        data: {
+          title: TitleConstants.TITLE_VALUE.MONEX_PRODUCT,
         },
       },
       {
@@ -59,6 +72,26 @@ export const SystemRoutes: Routes = [
           ),
         data: {
           title: TitleConstants.TITLE_VALUE.PD_MODEL,
+        },
+      },
+      {
+        path: 'product-status',
+        loadChildren: () =>
+          import('./product-config/product-status/product-status.module').then(
+            (m) => m.ProductStatusModule
+          ),
+        data: {
+          title: TitleConstants.TITLE_VALUE.PRODUCT_STATUS,
+        },
+      },
+      {
+        path: 'product-workflow',
+        loadChildren: () =>
+          import(
+            './product-config/product-workflow/product-workflow.module'
+          ).then((m) => m.ProductWorkflowModule),
+        data: {
+          title: TitleConstants.TITLE_VALUE.PRODUCT_WORKFLOW,
         },
       },
     ],

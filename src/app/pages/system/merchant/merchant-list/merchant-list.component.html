@@ -8,8 +8,8 @@
   (onOutputAction)="onOutputAction($event)"
   (onClickBtnAdd)="onClickBtnAdd($event)"
   [allColumns]="allColumns"
-  [dataSource]="dataSource"
   [breadcrumbOptions]="breadcrumbOptions"
+  [dataSource]="dataSource"
   [detailElementTemplate]="detailElementTemplate"
   [filterOptions]="filterOptions"
   [orderBy]="filterForm.controls.orderBy?.value"
@@ -28,6 +28,7 @@
 <ng-template #detailElementTemplate>
   <app-merchant-element
     [merchantId]="expandedElementId"
+    (triggerUpdateElementInfo)="updateElementInfo($event)"
     class="w-100"
   ></app-merchant-element>
 </ng-template>

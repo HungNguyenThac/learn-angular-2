@@ -19,10 +19,6 @@
                 <div>
                   <mat-form-field autofilled="false" appearance="outline" class="w-100" floatLabel="never">
                     <mat-label>{{ inputName}}</mat-label>
-                    <!--                    <div-->
-                    <!--                      [ngClass]="addPdForm.controls.accountName.value != '' || isAccountNameInputFocus ? 'is-focused-icon' : ''"-->
-                    <!--                      class="profile-icon icon-prefix-padding" matPrefix>-->
-                    <!--                    </div>-->
                     <input (blur)="isAccountNameInputFocus = false"
                            (focus)="isAccountNameInputFocus = true"
                            [ngClass]="
@@ -44,14 +40,6 @@
                 <div>
                   <mat-form-field appearance="outline" class="w-100" floatLabel="never">
                     <mat-label>{{inputCode}}</mat-label>
-                    <!--                    <mat-icon [ngClass]="-->
-                    <!--                        addPdForm.controls.username.value != '' ||-->
-                    <!--                        isLoginInputFocus-->
-                    <!--                          ? 'is-focused-icon'-->
-                    <!--                          : ''-->
-                    <!--                      "-->
-                    <!--                              class="profile-icon" matPrefix>-->
-                    <!--                    </mat-icon>-->
                     <input
                       (blur)="isLoginInputFocus = false"
                       (focus)="isLoginInputFocus = true"
@@ -77,14 +65,6 @@
                     <mat-label>{{
                       "pd_system.add_pd_dialog.description" | translate
                       }}</mat-label>
-                    <!--                    <mat-icon [ngClass]="-->
-                    <!--                        addPdForm.controls.accountPhone.value != '' ||-->
-                    <!--                        isPhoneInputFocus-->
-                    <!--                          ? 'is-focused-icon'-->
-                    <!--                          : ''-->
-                    <!--                      "-->
-                    <!--                              class="phone-icon"-->
-                    <!--                              matPrefix></mat-icon>-->
                     <textarea
                       style="height: 180px"
                       matInput
@@ -106,7 +86,8 @@
                 </div>
 
                 <div>
-                  <mat-checkbox class="example-margin">{{"pd_system.add_pd_dialog.active" | translate}}</mat-checkbox>
+                  <mat-checkbox formControlName="status"
+                                class="example-margin">{{"pd_system.add_pd_dialog.active" | translate}}</mat-checkbox>
                 </div>
               </div>
 

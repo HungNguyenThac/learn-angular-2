@@ -215,11 +215,6 @@
   padding: 0 1rem 1rem 1rem;
 }
 
-::ng-deep .op-tab-dialog {
-  .mat-tab-body {
-    min-height: 450px;
-  }
-}
 
 @media (max-width: 768px) {
   .op-customer-avatar {

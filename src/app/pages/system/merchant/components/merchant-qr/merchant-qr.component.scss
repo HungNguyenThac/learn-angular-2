@@ -261,11 +261,11 @@
   }
 }
 
-::ng-deep .op-tab-dialog {
-  .mat-tab-body {
-    min-height: 658px !important;
-  }
-}
+//::ng-deep .op-tab-dialog {
+//  .mat-tab-body {
+//    min-height: 658px !important;
+//  }
+//}
 
 @media (max-width: 768px) {
   .op-customer-avatar {

@@ -110,8 +110,20 @@ export class ProfileToolbarComponent implements OnInit, OnDestroy {
     this.router.navigateByUrl('/system/user/list');
   }
 
+  onClickMonexProduct() {
+    this.router.navigateByUrl('/system/monex-product/list');
+  }
+
   onClickPdGroup() {
     this.router.navigateByUrl('/system/pd-group/list');
+  }
+
+  onClickProductStatus() {
+    this.router.navigateByUrl('/system/product-status/list');
+  }
+
+  onClickStatusFlow() {
+    this.router.navigateByUrl('/system/product-workflow/list');
   }
 
   onClickPdQuestions() {

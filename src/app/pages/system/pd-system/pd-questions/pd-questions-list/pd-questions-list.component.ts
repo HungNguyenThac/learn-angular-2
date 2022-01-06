@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import {
   BUTTON_TYPE,
   DATA_CELL_TYPE,
   FILTER_TYPE,
   QUERY_CONDITION_TYPE,
+  RESPONSE_CODE,
 } from '../../../../../core/common/enum/operator';
 import { TableSelectActionModel } from '../../../../../public/models/external/table-select-action.model';
 import { FormBuilder, FormGroup } from '@angular/forms';
@@ -23,6 +24,8 @@ import { FilterEventModel } from '../../../../../public/models/filter/filter-eve
 import { PageEvent } from '@angular/material/paginator/public-api';
 import { FilterActionEventModel } from '../../../../../public/models/filter/filter-action-event.model';
 import {
+  AddNewUserDialogComponent,
+  BaseManagementLayoutComponent,
   MerchantDetailDialogComponent,
   MerchantGroupDialogComponent,
 } from '../../../../../share/components';
@@ -34,7 +37,14 @@ import {
 } from '../../../../../../../open-api-modules/dashboard-api-docs';
 import { Subscription } from 'rxjs';
 import { PdQuestionsListService } from './pd-questions-list.service';
-import { CdeService } from '../../../../../../../open-api-modules/monexcore-api-docs';
+import {
+  ApiResponse,
+  CdeService,
+} from '../../../../../../../open-api-modules/monexcore-api-docs';
+import {
+  ApiResponseMerchant,
+  ApiResponseString,
+} from '../../../../../../../open-api-modules/merchant-api-docs';
 
 @Component({
   selector: 'app-pd-questions-list',
@@ -88,8 +98,30 @@ export class PdQuestionsListComponent implements OnInit {
   tableTitle: string = this.multiLanguageService.instant(
     'pd_system.pd_questions.title'
   );
-  hasSelect: boolean = false;
-  selectButtons: TableSelectActionModel[];
+  hasSelect: boolean = true;
+  selectButtons: TableSelectActionModel[] = [
+    {
+      hidden: false,
+      action: 'delete',
+      color: 'accent',
+      content: this.multiLanguageService.instant(
+        'pd_system.pd_questions.delete'
+      ),
+      imageSrc: 'assets/img/icon/group-5/trash.svg',
+      style: 'background-color: rgba(255, 255, 255, 0.1);',
+    },
+    {
+      hidden: false,
+      action: 'lock',
+      color: 'accent',
+      content: this.multiLanguageService.instant(
+        'customer.individual_info.lock'
+      ),
+      imageSrc: 'assets/img/icon/group-5/lock-white.svg',
+      style: 'background-color: rgba(255, 255, 255, 0.1);',
+    },
+  ];
+  questionInfo;
   totalItems: number = 0;
   filterForm: FormGroup;
   dataSource: MatTableDataSource<any> = new MatTableDataSource([]);
@@ -99,7 +131,6 @@ export class PdQuestionsListComponent implements OnInit {
   pageLength: number = 0;
   pageSizeOptions: number[] = [10, 20, 50];
   expandedElementId: number;
-  expandElementFromLoan;
   merchantInfo: any;
   subManager = new Subscription();
   breadcrumbOptions: BreadcrumbOptionsModel = {
@@ -347,23 +378,30 @@ export class PdQuestionsListComponent implements OnInit {
       .then((r) => {});
   }
 
+  @ViewChild(BaseManagementLayoutComponent)
+  child: BaseManagementLayoutComponent;
+
+  triggerDeselectUsers() {
+    this.child.triggerDeselectUsers();
+  }
+
   public onOutputAction(event) {
     const action = event.action;
     const list = event.selectedList;
+    const idArr = list.map((question) => question.id);
     switch (action) {
       case 'lock':
-        this.lockPrompt();
+        this.lockMultiplePrompt(idArr);
         break;
       case 'delete':
-        this.deletePrompt();
+        this.deleteMultiplePrompt(idArr);
         break;
       default:
         return;
     }
   }
 
-  // @ts-ignore
-  public lockPrompt(): boolean {
+  public lockMultiplePrompt(ids) {
     const confirmLockRef = this.notificationService.openPrompt({
       imgUrl: '../../../../../assets/img/icon/group-5/Alert.svg',
       title: this.multiLanguageService.instant(
@@ -376,17 +414,68 @@ export class PdQuestionsListComponent implements OnInit {
       primaryBtnClass: 'btn-error',
       secondaryBtnText: this.multiLanguageService.instant('common.skip'),
     });
-    confirmLockRef.afterClosed().subscribe((result) => {});
+    confirmLockRef.afterClosed().subscribe((result) => {
+      if (result === BUTTON_TYPE.PRIMARY) {
+        this._doMultipleAction(ids, 'lock');
+      }
+    });
   }
 
-  public deletePrompt() {
+  public _doMultipleAction(ids, action) {
+    if (!ids) {
+      return;
+    }
+    ids.forEach((id) => {
+      if (action === 'lock') {
+        this._lockById(id);
+      } else {
+        this._deleteById(id);
+      }
+    });
+  }
+
+  private _lockById(id: string) {
+    if (!id) {
+      return;
+    }
+    // this.subManager.add(
+    //   this.adminControllerService
+    //     .v1AdminMerchantsIdPut(merchantId, {status: 'LOCKED'})
+    //     .subscribe(
+    //       (result: ApiResponseMerchant) => {
+    //         if (!result || result.responseCode !== RESPONSE_CODE.SUCCESS) {
+    //           return this.notifier.error(
+    //             JSON.stringify(result?.message),
+    //             result?.errorCode
+    //           );
+    //         }
+    //
+    //         this.notifier.success(
+    //           this.multiLanguageService.instant(
+    //             'merchant.merchant_detail.lock_merchant.toast'
+    //           )
+    //         );
+    //       },
+    //       (error) => {
+    //       },
+    //       () => {
+    //         setTimeout(() => {
+    //           this.triggerDeselectUsers();
+    //           this.refreshContent();
+    //         }, 3000);
+    //       }
+    //     )
+    // );
+  }
+
+  public deleteMultiplePrompt(ids) {
     const confirmDeleteRef = this.notificationService.openPrompt({
       imgUrl: '../../../../../assets/img/icon/group-5/delete-dialog.svg',
       title: this.multiLanguageService.instant(
-        'system.user_detail.delete_user.title'
+        'merchant.merchant_detail.delete_merchant.title'
       ),
       content: this.multiLanguageService.instant(
-        'system.user_detail.delete_user.content'
+        'merchant.merchant_detail.delete_merchant.content'
       ),
       primaryBtnText: this.multiLanguageService.instant('common.delete'),
       primaryBtnClass: 'btn-error',
@@ -394,13 +483,40 @@ export class PdQuestionsListComponent implements OnInit {
     });
     confirmDeleteRef.afterClosed().subscribe((result) => {
       if (result === BUTTON_TYPE.PRIMARY) {
-        this.notifier.success(
-          this.multiLanguageService.instant(
-            'system.user_detail.delete_user.toast'
-          )
-        );
+        this._doMultipleAction(ids, 'delete');
       }
     });
+  }
+
+  private _deleteById(id: string) {
+    if (!id) {
+      return;
+    }
+    this.subManager.add(
+      this.cdeService.cdeControllerDeletePdQuestion(parseInt(id), {}).subscribe(
+        (result: ApiResponse) => {
+          if (!result || result.responseCode !== RESPONSE_CODE.SUCCESS) {
+            return this.notifier.error(
+              JSON.stringify(result?.message),
+              result?.errorCode
+            );
+          }
+
+          this.notifier.success(
+            this.multiLanguageService.instant(
+              'merchant.merchant_detail.delete_merchant.toast'
+            )
+          );
+        },
+        (error) => {},
+        () => {
+          setTimeout(() => {
+            this.triggerDeselectUsers();
+            this.refreshContent();
+          }, 3000);
+        }
+      )
+    );
   }
 
   public onPageChange(event: PageEvent) {
@@ -440,7 +556,50 @@ export class PdQuestionsListComponent implements OnInit {
   }
 
   public onExpandElementChange(element: any) {
-    this.expandedElementId = element.merchantId;
+    this.questionInfo = element;
+    this.openUpdateDialog(element);
+  }
+
+  public openUpdateDialog(questionInfo) {
+    const updateDialogRef = this.dialog.open(AddNewQuestionComponent, {
+      panelClass: 'custom-info-dialog-container',
+      maxWidth: '1200px',
+      width: '90%',
+      data: {
+        questionInfo: questionInfo,
+        dialogTitle: 'Chỉnh sửa câu hỏi',
+      },
+    });
+    this.subManager.add(
+      updateDialogRef.afterClosed().subscribe((result: any) => {
+        if (result && result.type === BUTTON_TYPE.PRIMARY) {
+          let updateRequest = this._bindingDialogData(result.data);
+          this.sendUpdateRequest(updateRequest);
+        }
+      })
+    );
+  }
+
+  sendUpdateRequest(updateRequest) {
+    this.subManager.add(
+      this.cdeService
+        .cdeControllerUpdatePdQuestion(this.questionInfo.id, updateRequest)
+        .subscribe((result: ApiResponse) => {
+          if (!result || result.responseCode !== RESPONSE_CODE.SUCCESS) {
+            return this.notifier.error(
+              JSON.stringify(result?.message),
+              result?.errorCode
+            );
+          }
+          setTimeout(() => {
+            this.notifier.success(
+              this.multiLanguageService.instant('common.update_success')
+            );
+            this.refreshContent();
+            this.notificationService.hideLoading();
+          }, 3000);
+        })
+    );
   }
 
   onClickBtnAdd(event) {
@@ -452,10 +611,52 @@ export class PdQuestionsListComponent implements OnInit {
         dialogTitle: 'Thêm câu hỏi',
       },
     });
-    addQuestionDialogRef.afterClosed().subscribe((result: any) => {
-      if (result && result.type === BUTTON_TYPE.PRIMARY) {
-        console.log('asjdhaisyd', result.data);
-      }
-    });
+    this.subManager.add(
+      addQuestionDialogRef.afterClosed().subscribe((result: any) => {
+        if (result && result.type === BUTTON_TYPE.PRIMARY) {
+          let createRequest = this._bindingDialogData(result.data);
+          this.sendAddRequest(createRequest);
+        }
+      })
+    );
+  }
+
+  sendAddRequest(addRequest) {
+    this.subManager.add(
+      this.cdeService
+        .cdeControllerCreatePdQuestion(addRequest)
+        .subscribe((result: ApiResponse) => {
+          if (!result || result.responseCode !== RESPONSE_CODE.SUCCESS) {
+            return this.notifier.error(
+              JSON.stringify(result?.message),
+              result?.errorCode
+            );
+          }
+          setTimeout(() => {
+            this.notifier.success(
+              this.multiLanguageService.instant('common.create_success')
+            );
+            this.refreshContent();
+            this.notificationService.hideLoading();
+          }, 3000);
+        })
+    );
+  }
+
+  public refreshContent() {
+    setTimeout(() => {
+      this._getQuestionsList();
+    }, 2000);
+  }
+
+  private _bindingDialogData(data) {
+    return {
+      code: data?.code,
+      content: data?.content,
+      description: data?.description ? data?.description : null,
+      groupIds: data?.groupIds ? data?.groupIds : null,
+      answerType: data?.answerType,
+      order: data?.order,
+    };
   }
 }

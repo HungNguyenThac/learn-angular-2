@@ -1,8 +1,6 @@
-import { ApiResponseListPermissionTypeLevelOneResponse } from './../../../../../../open-api-modules/dashboard-api-docs/model/apiResponseListPermissionTypeLevelOneResponse';
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { Title } from '@angular/platform-browser';
-import { GlobalConstants } from 'src/app/core/common/global-constants';
-import { Store } from '@ngrx/store';
+import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Title} from '@angular/platform-browser';
+import {Store} from '@ngrx/store';
 import * as fromActions from '../../../../core/store';
 import * as fromStore from '../../../../core/store';
 import {
@@ -14,36 +12,35 @@ import {
   QUERY_CONDITION_TYPE,
   RESPONSE_CODE,
 } from '../../../../core/common/enum/operator';
-import { MultiLanguageService } from '../../../../share/translate/multiLanguageService';
-import { Observable, Subscription } from 'rxjs';
+import {MultiLanguageService} from '../../../../share/translate/multiLanguageService';
+import {Observable, Subscription} from 'rxjs';
 import {
   AdminAccountEntity,
+  ApiResponseListPermissionTypeLevelOneResponse,
   ApiResponseSearchAndPaginationResponseAdminAccountEntity,
   ApiResponseSearchAndPaginationResponseGroupEntity,
   CompanyControllerService,
   GroupControllerService,
   GroupEntity,
   PermissionTypeControllerService,
+  PermissionTypeLevelOneResponse,
 } from '../../../../../../open-api-modules/dashboard-api-docs';
-import { MatTableDataSource } from '@angular/material/table';
-import { FormBuilder, FormGroup } from '@angular/forms';
-import { ActivatedRoute, Params, Router } from '@angular/router';
+import {MatTableDataSource} from '@angular/material/table';
+import {FormBuilder, FormGroup} from '@angular/forms';
+import {ActivatedRoute, Params, Router} from '@angular/router';
 import * as fromSelectors from '../../../../core/store/selectors';
-import { BreadcrumbOptionsModel } from '../../../../public/models/external/breadcrumb-options.model';
-import { PageEvent } from '@angular/material/paginator/public-api';
-import { Sort } from '@angular/material/sort';
-import { FilterOptionModel } from 'src/app/public/models/filter/filter-option.model';
-import { FilterEventModel } from '../../../../public/models/filter/filter-event.model';
-import { FilterActionEventModel } from '../../../../public/models/filter/filter-action-event.model';
-import { NotificationService } from '../../../../core/services/notification.service';
-import { ToastrService } from 'ngx-toastr';
-import { TableSelectActionModel } from '../../../../public/models/external/table-select-action.model';
-import {
-  AddNewUserDialogComponent,
-  BaseManagementLayoutComponent,
-} from '../../../../share/components';
-import { MatDialog } from '@angular/material/dialog';
-import { UserListService } from './user-list.service';
+import {BreadcrumbOptionsModel} from '../../../../public/models/external/breadcrumb-options.model';
+import {PageEvent} from '@angular/material/paginator/public-api';
+import {Sort} from '@angular/material/sort';
+import {FilterOptionModel} from 'src/app/public/models/filter/filter-option.model';
+import {FilterEventModel} from '../../../../public/models/filter/filter-event.model';
+import {FilterActionEventModel} from '../../../../public/models/filter/filter-action-event.model';
+import {NotificationService} from '../../../../core/services/notification.service';
+import {ToastrService} from 'ngx-toastr';
+import {TableSelectActionModel} from '../../../../public/models/external/table-select-action.model';
+import {AddNewUserDialogComponent, BaseManagementLayoutComponent,} from '../../../../share/components';
+import {MatDialog} from '@angular/material/dialog';
+import {UserListService} from './user-list.service';
 import {
   AdminAccountControllerService,
   ApiResponseAdminAccountEntity,
@@ -51,9 +48,8 @@ import {
 } from '../../../../../../open-api-modules/identity-api-docs';
 import * as moment from 'moment';
 import * as _ from 'lodash';
-import { NgxPermissionsService } from 'ngx-permissions';
-import { DisplayedFieldsModel } from '../../../../public/models/filter/displayed-fields.model';
-import { ParentPermissionTypeResponse } from 'open-api-modules/dashboard-api-docs/model/parentPermissionTypeResponse';
+import {NgxPermissionsService} from 'ngx-permissions';
+import {DisplayedFieldsModel} from '../../../../public/models/filter/displayed-fields.model';
 
 @Component({
   selector: 'app-user-list',
@@ -61,7 +57,7 @@ import { ParentPermissionTypeResponse } from 'open-api-modules/dashboard-api-doc
   styleUrls: ['./user-list.component.scss'],
 })
 export class UserListComponent implements OnInit, OnDestroy {
-  treeData: Array<ParentPermissionTypeResponse>;
+  treeData: Array<PermissionTypeLevelOneResponse>;
   roleList: Array<GroupEntity>;
   //Mock data
   selectButtons: TableSelectActionModel[] = [

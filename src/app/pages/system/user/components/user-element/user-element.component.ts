@@ -4,6 +4,7 @@ import {
   AdminAccountEntity,
   ApiResponseAdminAccountEntity,
   GroupEntity,
+  PermissionTypeLevelOneResponse,
 } from '../../../../../../../open-api-modules/dashboard-api-docs';
 import { Subscription } from 'rxjs';
 import { AdminAccountControllerService as AdminAccountControllerService1 } from '../../../../../../../open-api-modules/identity-api-docs';
@@ -12,7 +13,6 @@ import { NotificationService } from '../../../../../core/services/notification.s
 import { MatDialog } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
 import { RESPONSE_CODE } from '../../../../../core/common/enum/operator';
-import { ParentPermissionTypeResponse } from 'open-api-modules/dashboard-api-docs/model/parentPermissionTypeResponse';
 
 @Component({
   selector: 'app-user-element',
@@ -21,7 +21,7 @@ import { ParentPermissionTypeResponse } from 'open-api-modules/dashboard-api-doc
 })
 export class UserElementComponent implements OnInit {
   @Input() roleList: Array<GroupEntity>;
-  @Input() treeData: Array<ParentPermissionTypeResponse>;
+  @Input() treeData: Array<PermissionTypeLevelOneResponse>;
   @Output() triggerUpdateElementInfo = new EventEmitter();
   @Output() triggerUpdateRoleInfo = new EventEmitter();
 
@@ -92,7 +92,6 @@ export class UserElementComponent implements OnInit {
           }
           if (data.responseCode === 200) {
             this.refreshContent();
-            this.triggerUpdateElementInfo.emit(this.userInfo);
             setTimeout(() => {
               this.notifier.success(
                 this.multiLanguageService.instant('common.update_success')

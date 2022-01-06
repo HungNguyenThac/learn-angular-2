@@ -1,5 +1,5 @@
 import { PermissionEntity } from './../../../../../../../open-api-modules/identity-api-docs/model/permissionEntity';
-import { ChildPermissionTypeResponse } from './../../../../../../../open-api-modules/dashboard-api-docs/model/childPermissionTypeResponse';
+import { PermissionTypeLevelTwoResponse } from './../../../../../../../open-api-modules/dashboard-api-docs/model/PermissionTypeLevelTwoResponse';
 import { SelectionModel } from '@angular/cdk/collections';
 import { FlatTreeControl } from '@angular/cdk/tree';
 import {
@@ -31,7 +31,7 @@ export class TodoItemFlatNode {
   expandable: boolean;
   id?: string;
   name?: string;
-  childPermissionTypeResponses?: Array<ChildPermissionTypeResponse>;
+  permissionTypeLevelTwoResponse?: Array<PermissionTypeLevelTwoResponse>;
   parentId?: string;
   permissionEntities?: Array<PermissionEntity>;
 }

@@ -19,6 +19,7 @@ import {
   ApiResponseListString,
   GroupControllerService as DashboardGroupControllerService,
   GroupEntity,
+  PermissionTypeLevelOneResponse,
   PermissionTypeControllerService,
 } from '../../../../../../../open-api-modules/dashboard-api-docs';
 import {
@@ -28,7 +29,6 @@ import {
 
 import { RESPONSE_CODE } from '../../../../../core/common/enum/operator';
 import { ToastrService } from 'ngx-toastr';
-import { ParentPermissionTypeResponse } from 'open-api-modules/dashboard-api-docs/model/parentPermissionTypeResponse';
 
 @Component({
   selector: 'app-user-role',
@@ -36,7 +36,7 @@ import { ParentPermissionTypeResponse } from 'open-api-modules/dashboard-api-doc
   styleUrls: ['./user-role.component.scss'],
 })
 export class UserRoleComponent implements OnInit, OnDestroy {
-  @Input() treeData: Array<ParentPermissionTypeResponse>;
+  @Input() treeData: Array<PermissionTypeLevelOneResponse>;
   @Input() roleList: Array<GroupEntity>;
   @Output() updateElementInfo = new EventEmitter();
 

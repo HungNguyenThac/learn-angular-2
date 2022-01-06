@@ -41,6 +41,7 @@ export class AddNewPdDialogComponent implements OnInit {
   rightTemp = [];
 
   addPdForm: FormGroup;
+  pdInfo;
   isAccountNameInputFocus: boolean = false;
   isLoginInputFocus: boolean = false;
   isPasswordInputFocus: boolean = false;
@@ -73,10 +74,12 @@ export class AddNewPdDialogComponent implements OnInit {
       code: [''],
       content: [''],
       description: [''],
+      status: [''],
     });
   }
 
   initDialogData(data) {
+    this.pdInfo = data?.pdInfo;
     this.dialogTitle = data?.dialogTitle;
     this.inputName = data?.inputName;
     this.inputCode = data?.inputCode;
@@ -96,6 +99,12 @@ export class AddNewPdDialogComponent implements OnInit {
   }
 
   submitForm() {
+    console.log('asdjias', this.rightArr);
+    if (this.addPdForm.controls.status.value) {
+      this.addPdForm.patchValue({
+        status: 'ACTIVE',
+      });
+    }
     if (this.addPdForm.invalid) {
       return;
     }
