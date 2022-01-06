@@ -123,7 +123,10 @@
     "notification": "Thông báo",
     "setting": {
       "title": "Thiết lập hệ thống",
+      "manage_status": "Quản lý trạng thái",
+      "workflow": "Cấu hình luồng trạng thái",
       "product_setting": "Cấu hình sản phẩm",
+      "monex_product": "Quản lý sản phẩm",
       "cde_setting": "Thiết lập CDE",
       "pd_setting": "Thiết lập PD Model",
       "pd_group": "Quản lý Nhóm câu hỏi PD",
@@ -620,7 +623,10 @@
     "pd_group": "Quản lý Nhóm câu hỏi PD",
     "pd_questions": "Quản lý Câu hỏi PD",
     "pd_answers": "Quản lý Câu trả lời PD",
-    "pd_model": "Quản lý PD Model"
+    "pd_model": "Quản lý PD Model",
+    "product_status": "Quản lý trạng thái",
+    "product_workflow": "Quản lý luồng trạng thái",
+    "monex_product": "Quản lý sản phẩm"
   },
   "system": {
     "add_user": "Thêm người dùng",
@@ -755,8 +761,8 @@
       "email": "Email",
       "date": "Ngày tất toán",
       "group": "Nhóm merchant",
-      "fee": "Phí áp dụng",
-      "discount": "Mức chiết khấu",
+      "merchant_fee": "Chiết khấu",
+      "customer_fee": "Phí người mua",
       "regis_no": "Mã số DKKD",
       "website": "Website",
       "address": "Địa chỉ",
@@ -851,5 +857,53 @@
       "answer_input": "Nội dung câu trả lời",
       "active": "Active"
     }
+  },
+  "product_status": {
+    "name": "Tên trạng thái",
+    "description": "Mô tả",
+    "status": "Trạng thái",
+    "active": "Active",
+    "add": "Thêm trạng thái",
+    "update": "Chỉnh sửa trạng thái",
+    "delete": "Xoá trạng thái",
+    "list": "Danh sách trạng thái",
+    "created_at": "Ngày tạo",
+    "updated_at": "Ngày cập nhật",
+    "updated_by": "Người cập nhật"
+  },
+  "product_workflow": {
+    "code": "Mã luồng",
+    "name": "Tên luồng",
+    "description": "Mô tả",
+    "status": "Trạng thái",
+    "active": "Active",
+    "add": "Thêm luồng",
+    "update": "Chỉnh sửa luồng",
+    "delete": "Xoá luồng",
+    "list": "Danh sách luồng",
+    "status_list": "Danh sách trạng thái",
+    "created_at": "Ngày tạo",
+    "updated_at": "Ngày cập nhật",
+    "updated_by": "Người cập nhật"
+  },
+  "monex_product": {
+    "code": "Mã sản phẩm",
+    "name": "Tên sản phẩm",
+    "description": "Mô tả",
+    "status": "Trạng thái",
+    "workflow": "Luồng sản phẩm",
+    "pd_model": "PD Model",
+    "matrix": "Litmit Control Matrix",
+    "contract": "Hợp đồng",
+    "mifos": "Mifos Product ID",
+    "active": "Active",
+    "add": "Thêm sản phẩm",
+    "update": "Chỉnh sửa sản phẩm",
+    "delete": "Xoá sản phẩm",
+    "list": "Danh sách sản phẩm",
+    "status_list": "Danh sách trạng thái",
+    "created_at": "Ngày tạo",
+    "updated_at": "Ngày cập nhật",
+    "updated_by": "Người cập nhật"
   }
 }

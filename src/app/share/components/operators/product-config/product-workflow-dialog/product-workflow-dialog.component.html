@@ -8,29 +8,34 @@
       {{dialogTitle}}
     </div>
     <div class="card-body">
-      <form [formGroup]="addPdForm" (ngSubmit)="submitForm()" autocomplete="off">
+      <form [formGroup]="form" (ngSubmit)="submitForm()" autocomplete="off">
         <div class="row">
           <!--  Info  -->
           <section class="col-12">
             <div class="row">
 
               <!-- Left Individual Info -->
-              <div class="col-4 col-sm-4 col-md-4 col-lg-4 pr-2">
+              <div class="col-4 col-sm-4 col-md-4 col-lg-4  pr-2">
                 <div>
-                  <mat-form-field autofilled="false" appearance="outline" class="w-100" floatLabel="never">
-                    <mat-label>{{ inputName}}</mat-label>
+                  <mat-form-field appearance="outline" class="w-100" floatLabel="never">
+                    <mat-label>{{ "product_workflow.name" | translate}}</mat-label>
                     <input (blur)="isAccountNameInputFocus = false"
                            (focus)="isAccountNameInputFocus = true"
                            [ngClass]="
                         isAccountNameInputFocus ? 'is-focused-input' : ''
-                      " [placeholder]="inputName"
-                           formControlName="content"
+                      " [placeholder]="'product_workflow.name' | translate"
+                           formControlName="name"
+                           autocomplete="chrome-off"
                            aria-autocomplete="none"
+                           required
                            matInput
+                           type="text"
                     >
                     <show-errors
-                      [control]="addPdForm.controls['content']"
-                      [controlLabel]="inputName"
+                      [control]="form.controls['name']"
+                      [controlLabel]="
+                        'product_workflow.name' | translate
+                      "
                       [hasIconPrefix]="false"
                     >
                     </show-errors>
@@ -39,45 +44,33 @@
 
                 <div>
                   <mat-form-field appearance="outline" class="w-100" floatLabel="never">
-                    <mat-label>{{inputCode}}</mat-label>
-                    <input
-                      (blur)="isLoginInputFocus = false"
-                      (focus)="isLoginInputFocus = true"
-                      [ngClass]="
-                        isLoginInputFocus ? 'is-focused-input' : ''
-                      "
-                      [placeholder]="inputCode"
-                      formControlName="code"
-                      aria-autocomplete="none"
-                      matInput
-                    />
-                    <show-errors
-                      [control]="addPdForm.controls['code']"
-                      [controlLabel]="inputCode"
-                      [hasIconPrefix]="false"
+                    <mat-label>{{ "product_workflow.code" | translate}}</mat-label>
+                    <input [placeholder]="'product_workflow.code' | translate"
+                           [value]="form.controls.code.value ? form.controls.code.value : 'PW-XXX'"
+                           disabled
+                           matInput
                     >
-                    </show-errors>
                   </mat-form-field>
                 </div>
 
                 <div>
                   <mat-form-field appearance="outline" class="w-100">
                     <mat-label>{{
-                      "pd_system.add_pd_dialog.description" | translate
+                      "product_workflow.description" | translate
                       }}</mat-label>
                     <textarea
-                      style="height: 180px"
+                      style="height: 80px"
                       matInput
                       class="text-area"
                       id="review"
                       name="review"
                       formControlName="description"
-                      [placeholder]="'pd_system.add_pd_dialog.description' | translate"
+                      [placeholder]="'product_workflow.description' | translate"
                     ></textarea>
                     <show-errors
-                      [control]="addPdForm.controls['description']"
+                      [control]="form.controls['description']"
                       [controlLabel]="
-                        'pd_system.add_pd_dialog.description' | translate
+                        'product_workflow.description' | translate
                       "
                       [hasIconPrefix]="false"
                     >
@@ -87,7 +80,7 @@
 
                 <div>
                   <mat-checkbox formControlName="status"
-                                class="example-margin">{{"pd_system.add_pd_dialog.active" | translate}}</mat-checkbox>
+                                class="example-margin">{{"product_workflow.active" | translate}}</mat-checkbox>
                 </div>
               </div>
 
@@ -96,7 +89,7 @@
                 <div class="row">
                   <div class="select-section d-flex justify-content-between">
                     <div class="col-5">
-                      <span>{{listTitle}}</span>
+                      <span>{{"product_workflow.status_list" | translate}}</span>
                       <div class="box">
                         <div (click)="onClickQuestion($event, question)" *ngFor="let question of leftArr"
                              class="item w-100">
@@ -134,12 +127,36 @@
                   </div>
                 </div>
               </div>
+
             </div>
           </section>
         </div>
 
+
+        <!-- Preview-->
+        <div class="row mt-3">
+          <div class="col-12 d-flex justify-content-center">
+            <div class="preview-section w-100">
+              <div class="preview-title">Xem trước luồng {{form.controls.name.value}}</div>
+              <div class="w-100">
+                <div class="item">
+                  <div class="box green-border">Bắt đầu</div>
+                </div>
+                <div *ngFor="let item of rightArr" class="item">
+                  <span class="arrow sprite-group-1-arrow-right"></span>
+                  <div class="box">{{item.name}}</div>
+                </div>
+                <div class="item">
+                  <span class="arrow sprite-group-1-arrow-right"></span>
+                  <div class="box green-border">Kết thúc</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <!--  Actions -->
-        <div class="row mt-2">
+        <div class="row mt-3">
           <div class="col-12 d-flex gap-2 justify-content-end">
             <button class="bg-grey"
                     mat-button
@@ -158,5 +175,6 @@
         </div>
       </form>
     </div>
+
   </div>
 </div>

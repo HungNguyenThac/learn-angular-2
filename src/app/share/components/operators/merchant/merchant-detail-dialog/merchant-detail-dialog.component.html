@@ -224,14 +224,14 @@
                       <div>
                         <mat-form-field appearance="outline" class="w-100">
                           <mat-label>{{
-                            "merchant.merchant_detail.fee" | translate
+                            "merchant.merchant_detail.merchant_fee" | translate
                             }}</mat-label>
                           <input
 
                             matInput
                             appNumberOnly
                             [placeholder]="
-                              'merchant.merchant_detail.fee' | translate
+                              'merchant.merchant_detail.merchant_fee' | translate
                             "
                             formControlName="merchantServiceFee"
                           />
@@ -240,7 +240,34 @@
                               merchantInfoForm.controls['merchantServiceFee']
                             "
                             [controlLabel]="
-                              'merchant.merchant_detail.fee' | translate
+                              'merchant.merchant_detail.merchant_fee' | translate
+                            "
+                            [hasIconPrefix]="false"
+                          >
+                          </show-errors>
+                        </mat-form-field>
+                      </div>
+
+                      <div>
+                        <mat-form-field appearance="outline" class="w-100">
+                          <mat-label>{{
+                            "merchant.merchant_detail.customer_fee" | translate
+                            }}</mat-label>
+                          <input
+
+                            matInput
+                            appNumberOnly
+                            [placeholder]="
+                              'merchant.merchant_detail.customer_fee' | translate
+                            "
+                            formControlName="customerServiceFee"
+                          />
+                          <show-errors
+                            [control]="
+                              merchantInfoForm.controls['customerServiceFee']
+                            "
+                            [controlLabel]="
+                              'merchant.merchant_detail.customer_fee' | translate
                             "
                             [hasIconPrefix]="false"
                           >
