@@ -2881,15 +2881,9 @@ components:
         district:
           type: string
         province:
-<<<<<<< HEAD
           type: string
         bdStaffId:
           type: string
-=======
-          type: string
-        bdStaffId:
-          type: string
->>>>>>> ad98e92c1a34e5647344e5e395ea900713498fdd
         sellTypes:
           type: array
           items:
@@ -2917,7 +2911,6 @@ components:
         status:
           type: string
         logo:
-<<<<<<< HEAD
           type: string
         descriptionImg:
           type: array
@@ -2931,21 +2924,6 @@ components:
           type: string
         updatedAt:
           type: string
-=======
-          type: string
-        descriptionImg:
-          type: array
-          items:
-            type: string
-        description:
-          type: string
-        createdAt:
-          type: string
-        createdBy:
-          type: string
-        updatedAt:
-          type: string
->>>>>>> ad98e92c1a34e5647344e5e395ea900713498fdd
         updatedBy:
           type: string
     SearchAndPaginationResponseMerchant:
@@ -3491,15 +3469,10 @@ components:
           type: string
         modelId:
           type: string
-<<<<<<< HEAD
-        pdModel:
-          $ref: '#/components/schemas/Model'
-=======
         pdModelGroups:
           type: array
           items:
             $ref: '#/components/schemas/ModelGroup'
->>>>>>> ad98e92c1a34e5647344e5e395ea900713498fdd
         code:
           type: string
         content:
@@ -3629,11 +3602,7 @@ components:
           type: array
           items:
             type: string
-<<<<<<< HEAD
-        pdGroups:
-=======
         pdGroupQuestions:
->>>>>>> ad98e92c1a34e5647344e5e395ea900713498fdd
           type: array
           items:
             $ref: '#/components/schemas/GroupQuestion'
@@ -3991,11 +3960,7 @@ components:
         level:
           type: integer
           format: int32
-<<<<<<< HEAD
-        permissionTypeLevelTwoRespons:
-=======
         permissionTypeLevelTwoResponse:
->>>>>>> ad98e92c1a34e5647344e5e395ea900713498fdd
           type: array
           items:
             $ref: '#/components/schemas/PermissionTypeLevelTwoResponse'
