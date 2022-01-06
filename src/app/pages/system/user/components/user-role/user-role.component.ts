@@ -19,7 +19,6 @@ import {
   ApiResponseListString,
   GroupControllerService as DashboardGroupControllerService,
   GroupEntity,
-  ParentPermissionTypeResponse,
   PermissionTypeControllerService,
 } from '../../../../../../../open-api-modules/dashboard-api-docs';
 import {
@@ -29,6 +28,7 @@ import {
 
 import { RESPONSE_CODE } from '../../../../../core/common/enum/operator';
 import { ToastrService } from 'ngx-toastr';
+import { ParentPermissionTypeResponse } from 'open-api-modules/dashboard-api-docs/model/parentPermissionTypeResponse';
 
 @Component({
   selector: 'app-user-role',

@@ -120,9 +120,11 @@ export enum REPAYMENT_STATUS {
 }
 
 export enum APPLICATION_TYPE {
-  PAYDAYLOAN_TNG = 'PaydayLoan-TNG',
-  PAYDAYLOAN_HMG = 'PaydayLoan-HMG',
   INSURANCE = 'Insurance',
+  PDL_TNG = 'PDL_TNG',
+  PDL_HMG = 'PDL_HMG',
+  PDL_VAC_OFFICE = 'PDL_VAC_OFFICE',
+  PDL_VAC_FACTORY = 'PDL_VAC_FACTORY',
 }
 
 // export enum RATING_STATUS {

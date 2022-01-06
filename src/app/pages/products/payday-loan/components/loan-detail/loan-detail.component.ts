@@ -1,7 +1,7 @@
 import { NotificationService } from 'src/app/core/services/notification.service';
 import { PaydayLoanHmg } from '../../../../../../../open-api-modules/dashboard-api-docs';
 import { ApiResponsePaydayLoanTng } from '../../../../../../../open-api-modules/dashboard-api-docs';
-import { ApplicationTngControllerService } from '../../../../../../../open-api-modules/dashboard-api-docs';
+import { ApplicationControllerService } from '../../../../../../../open-api-modules/dashboard-api-docs';
 import { ApiResponseSearchAndPaginationResponseCompanyInfo } from '../../../../../../../open-api-modules/dashboard-api-docs';
 import { ApiResponseSearchAndPaginationResponseBank } from '../../../../../../../open-api-modules/dashboard-api-docs';
 import { BankControllerService } from '../../../../../../../open-api-modules/dashboard-api-docs';
@@ -27,6 +27,7 @@ import {
   CustomerInfo,
 } from 'open-api-modules/dashboard-api-docs';
 import { CustomerDetailService } from 'src/app/pages/customer/components/customer-detail-element/customer-detail.service';
+import { APPLICATION_TYPE } from 'src/app/core/common/enum/payday-loan';
 
 @Component({
   selector: 'app-loan-detail',
@@ -47,7 +48,7 @@ export class LoanDetailComponent implements OnInit, OnDestroy {
 
   constructor(
     private applicationHmgControllerService: ApplicationHmgControllerService,
-    private applicationTngControllerService: ApplicationTngControllerService,
+    private applicationTngControllerService: ApplicationControllerService,
     private customerDetailService: CustomerDetailService,
     private notifier: ToastrService,
     private multiLanguageService: MultiLanguageService,
@@ -123,7 +124,7 @@ export class LoanDetailComponent implements OnInit, OnDestroy {
     if (this.groupName === 'TNG') {
       this.subManager.add(
         this.applicationTngControllerService
-          .getLoanById(this.loanId)
+          .getLoanById(this.loanId, APPLICATION_TYPE.PDL_TNG)
           .subscribe((data: ApiResponsePaydayLoanTng) => {
             this.loanDetail = data?.result;
             this.loanDetailTriggerUpdateStatus.emit(this.loanDetail);

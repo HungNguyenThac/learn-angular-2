@@ -4,7 +4,6 @@ import {
   AdminAccountEntity,
   ApiResponseAdminAccountEntity,
   GroupEntity,
-  ParentPermissionTypeResponse,
 } from '../../../../../../../open-api-modules/dashboard-api-docs';
 import { Subscription } from 'rxjs';
 import { AdminAccountControllerService as AdminAccountControllerService1 } from '../../../../../../../open-api-modules/identity-api-docs';
@@ -13,6 +12,7 @@ import { NotificationService } from '../../../../../core/services/notification.s
 import { MatDialog } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
 import { RESPONSE_CODE } from '../../../../../core/common/enum/operator';
+import { ParentPermissionTypeResponse } from 'open-api-modules/dashboard-api-docs/model/parentPermissionTypeResponse';
 
 @Component({
   selector: 'app-user-element',

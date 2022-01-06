@@ -1,10 +1,12 @@
+import { query } from '@angular/animations';
 import {
+  APPLICATION_TYPE,
   PAYDAY_LOAN_STATUS,
   REPAYMENT_STATUS,
 } from './../../../../core/common/enum/payday-loan';
 import {
   ApplicationHmgControllerService,
-  ApplicationTngControllerService,
+  ApplicationControllerService,
 } from '../../../../../../open-api-modules/dashboard-api-docs';
 import {
   ContractControllerService as ContractHmgControllerService,
@@ -33,7 +35,7 @@ export class LoanListService {
   constructor(
     private paydayLoanControllerService: PaydayLoanControllerService,
     private paydayLoanTngControllerService: PaydayLoanTngControllerService,
-    private applicationTngControllerService: ApplicationTngControllerService,
+    private applicationTngControllerService: ApplicationControllerService,
     private applicationHmgControllerService: ApplicationHmgControllerService,
     private customerControllerService: CustomerControllerService,
     private contractControllerService: ContractControllerService,
@@ -130,9 +132,23 @@ export class LoanListService {
     return this.applicationTngControllerService.findApplications(
       params.pageSize,
       params.pageNumber,
+      APPLICATION_TYPE.PDL_TNG,
       requestBody,
       params.orderBy,
       params.sortDirection === 'desc'
+    );
+  }
+
+  public exportHmgLoanToExcel(params) {
+    let query = this._buildRequestBodyGetList(params);
+    return this.applicationHmgControllerService.exportHmgLoanToExcel(query);
+  }
+
+  public exportLoanToExcel(params, applicationType) {
+    let query = this._buildRequestBodyGetList(params);
+    return this.applicationTngControllerService.exportTngLoanToExcel(
+      applicationType,
+      query
     );
   }
 

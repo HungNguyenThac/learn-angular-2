@@ -43,6 +43,7 @@ export class BaseManagementLayoutComponent implements OnInit {
   @Output() onSortChange = new EventEmitter<Sort>();
   @Output() onExpandElementChange = new EventEmitter<any>();
   @Output() onClickBtnAdd = new EventEmitter<any>();
+  @Output() onClickBtnExport = new EventEmitter<any>();
   @Output() onSubmitSearchForm = new EventEmitter<any>();
   @Output() onFilterChange = new EventEmitter<FilterEventModel>();
   @Output() onFilterActionTrigger = new EventEmitter<FilterActionEventModel>();
@@ -79,6 +80,10 @@ export class BaseManagementLayoutComponent implements OnInit {
 
   clickBtnAdd(event) {
     this.onClickBtnAdd.emit(event);
+  }
+
+  clickBtnExport(event) {
+    this.onClickBtnExport.emit(event);
   }
 
   submitSearchForm(event) {

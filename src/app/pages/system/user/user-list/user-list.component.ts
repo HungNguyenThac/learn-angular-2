@@ -1,3 +1,4 @@
+import { ApiResponseListPermissionTypeLevelOneResponse } from './../../../../../../open-api-modules/dashboard-api-docs/model/apiResponseListPermissionTypeLevelOneResponse';
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { GlobalConstants } from 'src/app/core/common/global-constants';
@@ -17,13 +18,11 @@ import { MultiLanguageService } from '../../../../share/translate/multiLanguageS
 import { Observable, Subscription } from 'rxjs';
 import {
   AdminAccountEntity,
-  ApiResponseListParentPermissionTypeResponse,
   ApiResponseSearchAndPaginationResponseAdminAccountEntity,
   ApiResponseSearchAndPaginationResponseGroupEntity,
   CompanyControllerService,
   GroupControllerService,
   GroupEntity,
-  ParentPermissionTypeResponse,
   PermissionTypeControllerService,
 } from '../../../../../../open-api-modules/dashboard-api-docs';
 import { MatTableDataSource } from '@angular/material/table';
@@ -54,6 +53,7 @@ import * as moment from 'moment';
 import * as _ from 'lodash';
 import { NgxPermissionsService } from 'ngx-permissions';
 import { DisplayedFieldsModel } from '../../../../public/models/filter/displayed-fields.model';
+import { ParentPermissionTypeResponse } from 'open-api-modules/dashboard-api-docs/model/parentPermissionTypeResponse';
 
 @Component({
   selector: 'app-user-list',
@@ -714,7 +714,7 @@ export class UserListComponent implements OnInit, OnDestroy {
     this.subManager.add(
       this.permissionTypeControllerService
         .getPermissionTypeByTreeFormat()
-        .subscribe((result: ApiResponseListParentPermissionTypeResponse) => {
+        .subscribe((result: ApiResponseListPermissionTypeLevelOneResponse) => {
           if (!result || result.responseCode !== RESPONSE_CODE.SUCCESS) {
             return this.notifier.error(
               JSON.stringify(result?.message),

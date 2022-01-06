@@ -1,8 +1,10 @@
 <div class="op-background-container">
   <app-base-breadcrumb
     (clickBtnAdd)="clickBtnAdd($event)"
+    (clickBtnExport)="clickBtnExport($event)"
     (submitSearchForm)="submitSearchForm($event)"
     [btnAddText]="breadcrumbOptions.btnAddText"
+    [btnExportText]="breadcrumbOptions.btnExportText"
     [extraActionLabel]="breadcrumbOptions.extraActionLabel"
     [iconClass]="breadcrumbOptions.iconClass"
     [iconImgSrc]="breadcrumbOptions.iconImgSrc"
@@ -10,6 +12,7 @@
     [searchPlaceholder]="breadcrumbOptions.searchPlaceholder"
     [searchable]="breadcrumbOptions.searchable"
     [showBtnAdd]="breadcrumbOptions.showBtnAdd"
+    [showBtnExport]="breadcrumbOptions.showBtnExport"
     [title]="breadcrumbOptions.title"
   ></app-base-breadcrumb>
 

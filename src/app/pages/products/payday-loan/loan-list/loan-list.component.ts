@@ -1,4 +1,9 @@
-import { REPAYMENT_STATUS } from './../../../../core/common/enum/payday-loan';
+import { ToastrService } from 'ngx-toastr';
+import { ApiResponsePaydayHmgExcelExport } from './../../../../../../open-api-modules/dashboard-api-docs/model/apiResponsePaydayHmgExcelExport';
+import {
+  APPLICATION_TYPE,
+  REPAYMENT_STATUS,
+} from './../../../../core/common/enum/payday-loan';
 import { PaydayLoanHmg } from '../../../../../../open-api-modules/dashboard-api-docs';
 import { SearchAndPaginationResponsePaydayLoanHmg } from '../../../../../../open-api-modules/dashboard-api-docs';
 import { FilterActionEventModel } from '../../../../public/models/filter/filter-action-event.model';
@@ -40,6 +45,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { FilterOptionModel } from 'src/app/public/models/filter/filter-option.model';
 import { DisplayedFieldsModel } from '../../../../public/models/filter/displayed-fields.model';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-loan-list',
@@ -63,8 +69,8 @@ export class LoanListComponent implements OnInit, OnDestroy {
       'breadcrumb.search_field_payday_loan'
     ),
     searchable: true,
-    showBtnAdd: false,
-    // btnAddText: 'Thêm nhà cung cấp',
+    showBtnExport: true,
+    btnExportText: 'Xuất file',
     keyword: '',
   };
 
@@ -378,7 +384,8 @@ export class LoanListComponent implements OnInit, OnDestroy {
     private formBuilder: FormBuilder,
     private router: Router,
     private activatedRoute: ActivatedRoute,
-    private loanListService: LoanListService
+    private loanListService: LoanListService,
+    private notifier: ToastrService
   ) {
     this.routeAllState$ = store.select(fromSelectors.getRouterAllState);
     this._initFilterForm();
@@ -672,6 +679,61 @@ export class LoanListComponent implements OnInit, OnDestroy {
         queryParams,
       })
       .then((r) => {});
+  }
+
+  onClickBtnExport(event) {
+    let params = this._buildParams();
+    switch (this.groupName) {
+      case 'HMG':
+        this.loanListService.exportHmgLoanToExcel(params).subscribe((data) => {
+          this.downloadExcelFile(data);
+        });
+        break;
+
+      case 'TNG':
+        this.loanListService
+          .exportLoanToExcel(params, APPLICATION_TYPE.PDL_TNG)
+          .subscribe((data) => {
+            this.downloadExcelFile(data);
+          });
+      case 'VAC':
+        this.loanListService
+          .exportLoanToExcel(params, APPLICATION_TYPE.PDL_VAC_FACTORY)
+          .subscribe((data) => {
+            this.downloadExcelFile(data);
+          });
+      default:
+        break;
+    }
+  }
+
+  public downloadExcelFile(data) {
+    const convertData = this.loanListService.convertBlobType(
+      data,
+      'application/xlxs'
+    );
+    const a = document.createElement('a');
+    a.setAttribute('target', '_blank');
+    a.setAttribute('href', convertData);
+    const startTime = this.filterForm.getRawValue().startTime
+      ? '-' + moment(this.filterForm.getRawValue().startTime).format('DDMMYYYY')
+      : '';
+    const endTime = this.filterForm.getRawValue().endTime
+      ? '-' + moment(this.filterForm.getRawValue().endTime).format('DDMMYYYY')
+      : '';
+    const convertFile =
+      'DanhSachKhoanứng-' +
+      this.groupName +
+      startTime +
+      endTime +
+      '.xlsx';
+    a.setAttribute('download', convertFile);
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    this.notifier.info(
+      this.multiLanguageService.instant('loan_app.loan_contract.downloading')
+    );
   }
 
   ngOnDestroy(): void {
