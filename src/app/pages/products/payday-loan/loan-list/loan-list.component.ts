@@ -686,6 +686,13 @@ export class LoanListComponent implements OnInit, OnDestroy {
     switch (this.groupName) {
       case 'HMG':
         this.loanListService.exportHmgLoanToExcel(params).subscribe((data) => {
+          if (!data) {
+            return this.notifier.error(
+              this.multiLanguageService.instant(
+                'loan_app.loan_contract.downloading_fail'
+              )
+            );
+          }
           this.downloadExcelFile(data);
         });
         break;
@@ -694,12 +701,26 @@ export class LoanListComponent implements OnInit, OnDestroy {
         this.loanListService
           .exportLoanToExcel(params, APPLICATION_TYPE.PDL_TNG)
           .subscribe((data) => {
+            if (!data) {
+              return this.notifier.error(
+                this.multiLanguageService.instant(
+                  'loan_app.loan_contract.downloading_fail'
+                )
+              );
+            }
             this.downloadExcelFile(data);
           });
       case 'VAC':
         this.loanListService
           .exportLoanToExcel(params, APPLICATION_TYPE.PDL_VAC_FACTORY)
           .subscribe((data) => {
+            if (!data) {
+              return this.notifier.error(
+                this.multiLanguageService.instant(
+                  'loan_app.loan_contract.downloading_fail'
+                )
+              );
+            }
             this.downloadExcelFile(data);
           });
       default:
@@ -722,11 +743,7 @@ export class LoanListComponent implements OnInit, OnDestroy {
       ? '-' + moment(this.filterForm.getRawValue().endTime).format('DDMMYYYY')
       : '';
     const convertFile =
-      'DanhSachKhoanứng-' +
-      this.groupName +
-      startTime +
-      endTime +
-      '.xlsx';
+      'DanhSachKhoanứng-' + this.groupName + startTime + endTime + '.xlsx';
     a.setAttribute('download', convertFile);
     document.body.appendChild(a);
     a.click();
