@@ -441,6 +441,45 @@ paths:
           description: ''
       tags:
         - loan-products
+  "/v1/loan-products/{id}":
+    put:
+      operationId: LoanProductController_updateLoanProduct
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/UpdateLoanProductDto"
+      responses:
+        '200':
+          description: ''
+      tags:
+        - loan-products
+    delete:
+      operationId: LoanProductController_deleteLoanProduct
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/DeleteLoanProductDto"
+      responses:
+        '200':
+          description: ''
+      tags:
+        - loan-products
   "/loan-status/{id}":
     get:
       operationId: LoanStatusController_getStatusById
@@ -457,6 +496,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/ApiResponse"
+      tags:
+        - loan-status
     put:
       operationId: LoanStatusController_updateStatus
       parameters:
@@ -478,6 +519,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/ApiResponse"
+      tags:
+        - loan-status
     delete:
       operationId: LoanStatusController_deleteStatus
       parameters:
@@ -499,6 +542,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/ApiResponse"
+      tags:
+        - loan-status
   "/loan-status":
     get:
       operationId: LoanStatusController_getListStatus
@@ -524,17 +569,17 @@ paths:
           schema:
             type: string
         - name: code
-          required: true
+          required: false
           in: query
           schema:
             type: string
         - name: name
-          required: true
+          required: false
           in: query
           schema:
             type: string
         - name: description
-          required: true
+          required: false
           in: query
           schema:
             type: string
@@ -545,6 +590,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/ApiResponse"
+      tags:
+        - loan-status
     post:
       operationId: LoanStatusController_createStatus
       parameters: [ ]
@@ -561,6 +608,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/ApiResponse"
+      tags:
+        - loan-status
   "/loan-status/groups/{id}":
     get:
       operationId: LoanStatusController_getStatusGroupById
@@ -577,6 +626,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/ApiResponse"
+      tags:
+        - loan-status
     put:
       operationId: LoanStatusController_updateStatusGroup
       parameters:
@@ -598,6 +649,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/ApiResponse"
+      tags:
+        - loan-status
     delete:
       operationId: LoanStatusController_deleteStatusGroup
       parameters:
@@ -619,6 +672,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/ApiResponse"
+      tags:
+        - loan-status
   "/loan-status/groups":
     get:
       operationId: LoanStatusController_getListStatusGroup
@@ -644,17 +699,17 @@ paths:
           schema:
             type: string
         - name: code
-          required: true
+          required: false
           in: query
           schema:
             type: string
         - name: name
-          required: true
+          required: false
           in: query
           schema:
             type: string
         - name: description
-          required: true
+          required: false
           in: query
           schema:
             type: string
@@ -665,6 +720,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/ApiResponse"
+      tags:
+        - loan-status
     post:
       operationId: LoanStatusController_createStatusGroup
       parameters: [ ]
@@ -681,7 +738,9 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/ApiResponse"
-  "/loan-status/models/{id}/{action}":
+      tags:
+        - loan-status
+  "/loan-status/groups/{id}/{action}":
     put:
       operationId: LoanStatusController_updatePdModelGroup
       parameters:
@@ -708,6 +767,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/ApiResponse"
+      tags:
+        - loan-status
 info:
   title: MonexcoreService
   description: ''
@@ -953,9 +1014,40 @@ components:
           type: string
         name:
           type: string
+        statusGroupId:
+          type: number
       required:
         - code
         - name
+        - statusGroupId
+    UpdateLoanProductDto:
+      type: object
+      properties:
+        createdAt:
+          type: string
+        createdBy:
+          type: string
+        updatedAt:
+          type: string
+        updatedBy:
+          type: string
+        code:
+          type: string
+        name:
+          type: string
+        statusGroupId:
+          type: number
+    DeleteLoanProductDto:
+      type: object
+      properties:
+        createdAt:
+          type: string
+        createdBy:
+          type: string
+        updatedAt:
+          type: string
+        updatedBy:
+          type: string
     CreateLoanStatusDto:
       type: object
       properties:
@@ -1016,19 +1108,13 @@ components:
           type: string
         updatedBy:
           type: string
-        loanProductId:
-          type: number
         code:
           type: string
         name:
           type: string
-        order:
-          type: number
       required:
-        - loanProductId
         - code
         - name
-        - order
     UpdateGroupLoanStatusDto:
       type: object
       properties:
@@ -1042,14 +1128,10 @@ components:
           type: string
         id:
           type: number
-        loanProductId:
-          type: number
         code:
           type: string
         name:
           type: string
-        order:
-          type: number
         description:
           type: string
       required:

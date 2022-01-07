@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import {
   AdminAccountEntity,
   ApiResponseSearchAndPaginationResponseAdminAccountEntity,
@@ -7,10 +7,10 @@ import {
   GroupEntity,
   PermissionTypeControllerService,
 } from '../../../../../../../open-api-modules/dashboard-api-docs';
-import {TableSelectActionModel} from '../../../../../public/models/external/table-select-action.model';
-import {Observable, Subscription} from 'rxjs';
-import {BreadcrumbOptionsModel} from '../../../../../public/models/external/breadcrumb-options.model';
-import {FilterOptionModel} from '../../../../../public/models/filter/filter-option.model';
+import { TableSelectActionModel } from '../../../../../public/models/external/table-select-action.model';
+import { Observable, Subscription } from 'rxjs';
+import { BreadcrumbOptionsModel } from '../../../../../public/models/external/breadcrumb-options.model';
+import { FilterOptionModel } from '../../../../../public/models/filter/filter-option.model';
 import * as _ from 'lodash';
 import {
   BUTTON_TYPE,
@@ -21,34 +21,37 @@ import {
   QUERY_CONDITION_TYPE,
   RESPONSE_CODE,
 } from '../../../../../core/common/enum/operator';
-import {DisplayedFieldsModel} from '../../../../../public/models/filter/displayed-fields.model';
-import {MatTableDataSource} from '@angular/material/table';
-import {FormBuilder, FormGroup} from '@angular/forms';
-import {ActivatedRoute, Params, Router} from '@angular/router';
-import {Title} from '@angular/platform-browser';
-import {Store} from '@ngrx/store';
+import { DisplayedFieldsModel } from '../../../../../public/models/filter/displayed-fields.model';
+import { MatTableDataSource } from '@angular/material/table';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { ActivatedRoute, Params, Router } from '@angular/router';
+import { Title } from '@angular/platform-browser';
+import { Store } from '@ngrx/store';
 import * as fromStore from '../../../../../core/store';
 import * as fromSelectors from '../../../../../core/store';
 import * as fromActions from '../../../../../core/store';
-import {MultiLanguageService} from '../../../../../share/translate/multiLanguageService';
-import {NotificationService} from '../../../../../core/services/notification.service';
-import {ToastrService} from 'ngx-toastr';
+import { MultiLanguageService } from '../../../../../share/translate/multiLanguageService';
+import { NotificationService } from '../../../../../core/services/notification.service';
+import { ToastrService } from 'ngx-toastr';
 import {
   AdminAccountControllerService,
   ApiResponseAdminAccountEntity,
 } from '../../../../../../../open-api-modules/identity-api-docs';
-import {MatDialog} from '@angular/material/dialog';
-import {UserListService} from '../../../user/user-list/user-list.service';
-import {NgxPermissionsService} from 'ngx-permissions';
-import {PageEvent} from '@angular/material/paginator/public-api';
-import {Sort} from '@angular/material/sort';
-import {FilterEventModel} from '../../../../../public/models/filter/filter-event.model';
-import {FilterActionEventModel} from '../../../../../public/models/filter/filter-action-event.model';
-import {BaseManagementLayoutComponent,} from '../../../../../share/components';
+import { MatDialog } from '@angular/material/dialog';
+import { UserListService } from '../../../user/user-list/user-list.service';
+import { NgxPermissionsService } from 'ngx-permissions';
+import { PageEvent } from '@angular/material/paginator/public-api';
+import { Sort } from '@angular/material/sort';
+import { FilterEventModel } from '../../../../../public/models/filter/filter-event.model';
+import { FilterActionEventModel } from '../../../../../public/models/filter/filter-action-event.model';
+import { BaseManagementLayoutComponent } from '../../../../../share/components';
 import * as moment from 'moment';
+import { ProductStatusDialogComponent } from '../../../../../share/components/operators/product-config/product-status-dialog/product-status-dialog.component';
 import {
-  ProductStatusDialogComponent
-} from '../../../../../share/components/operators/product-config/product-status-dialog/product-status-dialog.component';
+  ApiResponse,
+  CdeService,
+  LoanStatusService,
+} from '../../../../../../../open-api-modules/monexcore-api-docs';
 
 @Component({
   selector: 'app-product-status-list',
@@ -142,6 +145,13 @@ export class ProductStatusListComponent implements OnInit {
 
   allColumns: DisplayedFieldsModel[] = [
     {
+      key: 'code',
+      title: this.multiLanguageService.instant('product_status.code'),
+      type: DATA_CELL_TYPE.TEXT,
+      format: null,
+      showed: true,
+    },
+    {
       key: 'name',
       title: this.multiLanguageService.instant('product_status.name'),
       type: DATA_CELL_TYPE.TEXT,
@@ -149,31 +159,17 @@ export class ProductStatusListComponent implements OnInit {
       showed: true,
     },
     {
-      key: 'status',
-      title: this.multiLanguageService.instant('product_status.status'),
-      type: DATA_CELL_TYPE.STATUS,
-      format: DATA_STATUS_TYPE.USER_STATUS,
+      key: 'description',
+      title: this.multiLanguageService.instant('product_status.description'),
+      type: DATA_CELL_TYPE.TEXT,
+      format: null,
       showed: true,
     },
     {
       key: 'createdAt',
-      title: this.multiLanguageService.instant('product_status.created_at'),
-      type: DATA_CELL_TYPE.TEXT,
-      format: null,
-      showed: true,
-    },
-    {
-      key: 'updatedAt',
       title: this.multiLanguageService.instant('product_status.updated_at'),
-      type: DATA_CELL_TYPE.TEXT,
-      format: null,
-      showed: true,
-    },
-    {
-      key: 'updatedBy',
-      title: this.multiLanguageService.instant('product_status.updated_by'),
-      type: DATA_CELL_TYPE.TEXT,
-      format: null,
+      type: DATA_CELL_TYPE.DATETIME,
+      format: 'dd/MM/yyyy HH:mm',
       showed: true,
     },
   ];
@@ -206,7 +202,8 @@ export class ProductStatusListComponent implements OnInit {
     private dialog: MatDialog,
     private activatedRoute: ActivatedRoute,
     private userListService: UserListService,
-    private permissionsService: NgxPermissionsService
+    private permissionsService: NgxPermissionsService,
+    private loanStatusService: LoanStatusService
   ) {
     this.routeAllState$ = store.select(fromSelectors.getRouterAllState);
 
@@ -220,7 +217,14 @@ export class ProductStatusListComponent implements OnInit {
   }
 
   private _getStatusList() {
-    this.dataSource.data = this.statusList;
+    this.subManager.add(
+      this.loanStatusService
+        .loanStatusControllerGetListStatus()
+        .subscribe((data) => {
+          // @ts-ignore
+          this.dataSource.data = data?.result;
+        })
+    );
   }
 
   private async _checkActionPermissions() {
@@ -622,13 +626,21 @@ export class ProductStatusListComponent implements OnInit {
         dialogTitle: this.multiLanguageService.instant('product_status.add'),
       },
     });
+    this.subManager.add(
+      dialogRef.afterClosed().subscribe((result: any) => {
+        if (result && result.type === BUTTON_TYPE.PRIMARY) {
+          let createRequest = this._bindingDialogData(result.data);
+          this.sendAddRequest(createRequest);
+        }
+      })
+    );
   }
 
-  sendAddUserRequest(updateInfoRequest) {
+  sendAddRequest(addRequest) {
     this.subManager.add(
-      this.adminAccountControllerService
-        .create3(updateInfoRequest)
-        .subscribe((result: ApiResponseAdminAccountEntity) => {
+      this.loanStatusService
+        .loanStatusControllerCreateStatus(addRequest)
+        .subscribe((result: ApiResponse) => {
           if (!result || result.responseCode !== RESPONSE_CODE.SUCCESS) {
             return this.notifier.error(
               JSON.stringify(result?.message),
@@ -637,7 +649,9 @@ export class ProductStatusListComponent implements OnInit {
           }
           setTimeout(() => {
             this.notifier.success(
-              this.multiLanguageService.instant('common.create_success')
+              this.multiLanguageService.instant(
+                'pd_system.add_question_dialog.create_success'
+              )
             );
             this.refreshContent();
             this.notificationService.hideLoading();
@@ -652,16 +666,11 @@ export class ProductStatusListComponent implements OnInit {
     }, 2000);
   }
 
-  private _bindingDialogUserData(data) {
+  private _bindingDialogData(data) {
     return {
-      groupId: data?.accountRole,
-      username: data?.username,
-      secret: data?.accountPassword,
-      fullName: data?.accountName,
-      email: data?.accountEmail,
-      mobile: data?.accountPhone,
-      note: data?.accountNote,
-      position: data?.accountPosition,
+      code: data?.code,
+      name: data?.name,
+      description: data?.description ? data?.description : null,
     };
   }
 

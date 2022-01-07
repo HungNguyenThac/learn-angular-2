@@ -13,6 +13,7 @@ export class ProductStatusDialogComponent implements OnInit {
   dialogTitle: string;
   isAccountNameInputFocus: boolean = false;
   isLoginInputFocus: boolean = false;
+  isCodeInputFocus: boolean = false;
   info;
 
   constructor(
@@ -28,9 +29,9 @@ export class ProductStatusDialogComponent implements OnInit {
 
   buildForm() {
     this.form = this.formBuilder.group({
+      code: [''],
       name: [''],
       description: [''],
-      status: false,
     });
   }
 
@@ -40,18 +41,18 @@ export class ProductStatusDialogComponent implements OnInit {
     let status = data?.info?.status === 'ACTIVE';
 
     this.form.patchValue({
+      code: this.info?.code,
       name: this.info?.name,
       description: this.info?.description,
-      status: status,
     });
   }
 
   submitForm() {
-    if (this.form.controls.status.value) {
-      this.form.patchValue({
-        status: 'ACTIVE',
-      });
-    }
+    // if (this.form.controls.status.value) {
+    //   this.form.patchValue({
+    //     status: 'ACTIVE',
+    //   });
+    // }
     if (this.form.invalid) {
       return;
     }
