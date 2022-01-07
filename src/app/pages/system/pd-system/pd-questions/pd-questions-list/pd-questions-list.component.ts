@@ -614,9 +614,7 @@ export class PdQuestionsListComponent implements OnInit {
     this.subManager.add(
       addQuestionDialogRef.afterClosed().subscribe((result: any) => {
         if (result && result.type === BUTTON_TYPE.PRIMARY) {
-          console.log('auioshdiouashd', result.data);
           let createRequest = this._bindingDialogData(result.data);
-          console.log('createRequest', createRequest);
           this.sendAddRequest(createRequest);
         }
       })

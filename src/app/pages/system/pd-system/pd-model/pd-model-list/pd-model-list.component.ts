@@ -229,7 +229,6 @@ export class PdModelListComponent implements OnInit {
               content: item.content,
             };
           });
-          console.log('pioajsfoiaiofsoasfubaufgb', this.groupList);
         })
     );
   }

@@ -225,14 +225,12 @@ export class PdGroupListComponent implements OnInit {
     //     .getQuestions(100, 0, {})
     //     .subscribe((data: ApiResponseSearchAndPaginationResponseQuestion) => {
     //       this.questionList = data.result.data;
-    //       console.log('questionList', this.questionList);
     //       this.questionList = this.questionList.map((item) => {
     //         return {
     //           id: item.id,
     //           content: item.content,
     //         };
     //       });
-    //       console.log('pioajsfoiaiofsoasfubaufgb', this.questionList);
     //     })
     // );
     this.subManager.add(
@@ -240,14 +238,12 @@ export class PdGroupListComponent implements OnInit {
         .cdeControllerGetPdQuestion()
         .subscribe((data: CustomApiResponse<PdQuestion>) => {
           this.questionList = data.result;
-          console.log('questionList', this.questionList);
           this.questionList = this.questionList.map((item) => {
             return {
               id: item.id,
               content: item.content,
             };
           });
-          console.log('pioajsfoiaiofsoasfubaufgb', this.questionList);
         })
     );
   }
