@@ -220,11 +220,24 @@ export class PdGroupListComponent implements OnInit {
   }
 
   public _getQuestionList() {
+    this.subManager.add(
+      this.cdeControllerService
+        .getQuestions(100, 0, {})
+        .subscribe((data: ApiResponseSearchAndPaginationResponseQuestion) => {
+          this.questionList = data.result.data;
+          this.questionList = this.questionList.map((item) => {
+            return {
+              id: item.modelId,
+              content: item.content,
+            };
+          });
+        })
+    );
     // this.subManager.add(
-    //   this.cdeControllerService
-    //     .getQuestions(100, 0, {})
-    //     .subscribe((data: ApiResponseSearchAndPaginationResponseQuestion) => {
-    //       this.questionList = data.result.data;
+    //   this.cdeService
+    //     .cdeControllerGetPdQuestion()
+    //     .subscribe((data: CustomApiResponse<PdQuestion>) => {
+    //       this.questionList = data.result;
     //       this.questionList = this.questionList.map((item) => {
     //         return {
     //           id: item.id,
@@ -233,33 +246,20 @@ export class PdGroupListComponent implements OnInit {
     //       });
     //     })
     // );
-    this.subManager.add(
-      this.cdeService
-        .cdeControllerGetPdQuestion()
-        .subscribe((data: CustomApiResponse<PdQuestion>) => {
-          this.questionList = data.result;
-          this.questionList = this.questionList.map((item) => {
-            return {
-              id: item.id,
-              content: item.content,
-            };
-          });
-        })
-    );
   }
 
   public _getGroupList() {
     const params = this._buildParams();
-    // this.pdGroupListService.getData(params).subscribe((data) => {
-    //   this._parseData(data?.result);
-    //   this.dataSource.data = data?.result?.data;
-    // });
-    this.subManager.add(
-      this.cdeService.cdeControllerGetPdGroup().subscribe((data) => {
-        // @ts-ignore
-        this.dataSource.data = data?.result;
-      })
-    );
+    this.pdGroupListService.getData(params).subscribe((data) => {
+      this._parseData(data?.result);
+      this.dataSource.data = data?.result?.data;
+    });
+    // this.subManager.add(
+    //   this.cdeService.cdeControllerGetPdGroup().subscribe((data) => {
+    //     // @ts-ignore
+    //     this.dataSource.data = data?.result;
+    //   })
+    // );
   }
 
   public onSortChange(sortState: Sort) {
@@ -618,7 +618,7 @@ export class PdGroupListComponent implements OnInit {
             result.data.removeArr
           );
           this.sendUpdateRequest(
-            info.id,
+            info.modelId,
             createRequest,
             addQuestionsRequest,
             updateQuestionsRequest,

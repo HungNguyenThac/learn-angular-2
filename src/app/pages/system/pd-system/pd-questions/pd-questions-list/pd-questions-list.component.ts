@@ -227,20 +227,20 @@ export class PdQuestionsListComponent implements OnInit {
   }
 
   public _getQuestionsList() {
-    // const params = this._buildParams();
-    // this.pdQuestionsListService
-    //   .getData(params)
-    //   .subscribe((data: ApiResponseSearchAndPaginationResponseQuestion) => {
-    //     console.log('question list', data?.result);
-    //     this._parseData(data?.result);
-    //     this.dataSource.data = data?.result?.data;
-    //   });
-    this.subManager.add(
-      this.cdeService.cdeControllerGetPdQuestion().subscribe((data) => {
-        // @ts-ignore
-        this.dataSource.data = data?.result;
-      })
-    );
+    const params = this._buildParams();
+    this.pdQuestionsListService
+      .getData(params)
+      .subscribe((data: ApiResponseSearchAndPaginationResponseQuestion) => {
+        console.log('question list', data?.result);
+        this._parseData(data?.result);
+        this.dataSource.data = data?.result?.data;
+      });
+    // this.subManager.add(
+    //   this.cdeService.cdeControllerGetPdQuestion().subscribe((data) => {
+    //     // @ts-ignore
+    //     this.dataSource.data = data?.result;
+    //   })
+    // );
   }
 
   public onSortChange(sortState: Sort) {
@@ -390,7 +390,7 @@ export class PdQuestionsListComponent implements OnInit {
   public onOutputAction(event) {
     const action = event.action;
     const list = event.selectedList;
-    const idArr = list.map((question) => question.id);
+    const idArr = list.map((question) => question.modelId);
     switch (action) {
       case 'lock':
         this.lockMultiplePrompt(idArr);

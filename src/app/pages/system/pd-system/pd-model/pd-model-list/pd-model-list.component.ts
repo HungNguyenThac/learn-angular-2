@@ -225,7 +225,7 @@ export class PdModelListComponent implements OnInit {
           this.groupList = data.result;
           this.groupList = this.groupList.map((item) => {
             return {
-              id: item.id,
+              id: item.modelId,
               content: item.content,
             };
           });
@@ -235,19 +235,18 @@ export class PdModelListComponent implements OnInit {
 
   public _getModelList() {
     const params = this._buildParams();
-    // this.pdModelListService
-    //   .getData(params)
-    //   .subscribe((data: ApiResponseSearchAndPaginationResponseModel) => {
-    //     console.log('question list', data?.result);
-    //     this._parseData(data?.result);
-    //     this.dataSource.data = data?.result?.data;
-    //   });
-    this.subManager.add(
-      this.cdeService.cdeControllerGetPdModel().subscribe((data) => {
-        // @ts-ignore
-        this.dataSource.data = data?.result;
-      })
-    );
+    this.pdModelListService
+      .getData(params)
+      .subscribe((data: ApiResponseSearchAndPaginationResponseModel) => {
+        this._parseData(data?.result);
+        this.dataSource.data = data?.result?.data;
+      });
+    // this.subManager.add(
+    //   this.cdeService.cdeControllerGetPdModel().subscribe((data) => {
+    //     // @ts-ignore
+    //     this.dataSource.data = data?.result;
+    //   })
+    // );
   }
 
   public onSortChange(sortState: Sort) {
@@ -604,7 +603,7 @@ export class PdModelListComponent implements OnInit {
             result.data.removeArr
           );
           this.sendUpdateRequest(
-            info.id,
+            info.modelId,
             createRequest,
             addQuestionsRequest,
             updateQuestionsRequest,

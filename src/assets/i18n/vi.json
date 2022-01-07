@@ -865,6 +865,7 @@
     }
   },
   "product_status": {
+    "code": "Mã trạng thái",
     "name": "Tên trạng thái",
     "description": "Mô tả",
     "status": "Trạng thái",

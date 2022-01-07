@@ -48,6 +48,11 @@ import { FilterActionEventModel } from '../../../../../public/models/filter/filt
 import { BaseManagementLayoutComponent } from '../../../../../share/components';
 import * as moment from 'moment';
 import { ProductWorkflowDialogComponent } from '../../../../../share/components/operators/product-config/product-workflow-dialog/product-workflow-dialog.component';
+import {
+  ApiResponse,
+  LoanStatusService,
+} from '../../../../../../../open-api-modules/monexcore-api-docs';
+import { CustomApiResponse, PDGroup } from '../../../pd-system/pd-interface';
 
 @Component({
   selector: 'app-product-status-flow-list',
@@ -55,27 +60,6 @@ import { ProductWorkflowDialogComponent } from '../../../../../share/components/
   styleUrls: ['./product-workflow-list.component.scss'],
 })
 export class ProductWorkflowListComponent implements OnInit {
-  //Mock data
-  statusList: any[] = [
-    {
-      code: 'PW-001',
-      name: 'Luồng trạng thái 1',
-      description: 'Mô tả 1',
-      status: 'ACTIVE',
-      createdAt: '01/01/2022 13:22',
-      updatedAt: '01/01/2022 13:22',
-      updatedBy: 'user1',
-    },
-    {
-      code: 'PW-002',
-      name: 'Luồng trạng thái 2',
-      description: 'Mô tả 2',
-      status: 'LOCKED',
-      createdAt: '02/01/2022 12:21',
-      updatedAt: '03/01/2022 15:32',
-      updatedBy: 'user2',
-    },
-  ];
   roleList: Array<GroupEntity>;
   selectButtons: TableSelectActionModel[] = [
     {
@@ -216,7 +200,8 @@ export class ProductWorkflowListComponent implements OnInit {
     private dialog: MatDialog,
     private activatedRoute: ActivatedRoute,
     private userListService: UserListService,
-    private permissionsService: NgxPermissionsService
+    private permissionsService: NgxPermissionsService,
+    private loanStatusService: LoanStatusService
   ) {
     this.routeAllState$ = store.select(fromSelectors.getRouterAllState);
 
@@ -226,11 +211,18 @@ export class ProductWorkflowListComponent implements OnInit {
   ngOnInit(): void {
     this.store.dispatch(new fromActions.SetOperatorInfo(null));
     this._initSubscription();
-    this._getStatusList();
+    this._getWorkflowList();
   }
 
-  private _getStatusList() {
-    this.dataSource.data = this.statusList;
+  private _getWorkflowList() {
+    this.subManager.add(
+      this.loanStatusService
+        .loanStatusControllerGetListStatusGroup()
+        .subscribe((data) => {
+          // @ts-ignore
+          this.dataSource.data = data?.result;
+        })
+    );
   }
 
   private async _checkActionPermissions() {
@@ -635,22 +627,46 @@ export class ProductWorkflowListComponent implements OnInit {
         dialogTitle: this.multiLanguageService.instant('product_workflow.add'),
       },
     });
+    this.subManager.add(
+      dialogRef.afterClosed().subscribe((result: any) => {
+        if (result && result.type === BUTTON_TYPE.PRIMARY) {
+          let createRequest = this._bindingDialogData(result.data, 'create');
+          let addRequest = this._bindingDialogData(result.data.addArr);
+          this.sendCreateRequest(createRequest, addRequest);
+        }
+      })
+    );
   }
 
-  sendAddUserRequest(updateInfoRequest) {
+  public sendCreateRequest(createRequest, addRequest) {
     this.subManager.add(
-      this.adminAccountControllerService
-        .create3(updateInfoRequest)
-        .subscribe((result: ApiResponseAdminAccountEntity) => {
+      this.loanStatusService
+        .loanStatusControllerCreateStatusGroup(createRequest)
+        .subscribe((result: CustomApiResponse<PDGroup>) => {
           if (!result || result.responseCode !== RESPONSE_CODE.SUCCESS) {
             return this.notifier.error(
               JSON.stringify(result?.message),
               result?.errorCode
             );
+          } else {
+            if (addRequest) {
+              for (let i = 0; i < addRequest.length; i++) {
+                this.loanStatusService
+                  .loanStatusControllerUpdatePdModelGroup(
+                    result.result.id,
+                    'add',
+                    addRequest[i]
+                  )
+                  .subscribe((result) => {});
+              }
+            }
           }
+
           setTimeout(() => {
             this.notifier.success(
-              this.multiLanguageService.instant('common.create_success')
+              this.multiLanguageService.instant(
+                'pd_system.add_pd_dialog.create_group_success'
+              )
             );
             this.refreshContent();
             this.notificationService.hideLoading();
@@ -665,17 +681,22 @@ export class ProductWorkflowListComponent implements OnInit {
     }, 2000);
   }
 
-  private _bindingDialogUserData(data) {
-    return {
-      groupId: data?.accountRole,
-      username: data?.username,
-      secret: data?.accountPassword,
-      fullName: data?.accountName,
-      email: data?.accountEmail,
-      mobile: data?.accountPhone,
-      note: data?.accountNote,
-      position: data?.accountPosition,
-    };
+  private _bindingDialogData(data, type?) {
+    if (type === 'create') {
+      return {
+        code: data?.code,
+        name: data?.name,
+      };
+    } else {
+      let requestArray = [];
+      for (let i = 0; i < data.length; i++) {
+        requestArray.push({
+          questionId: data[i].id,
+          order: data[i].order,
+        });
+      }
+      return requestArray;
+    }
   }
 
   private _resetFilterForm() {
