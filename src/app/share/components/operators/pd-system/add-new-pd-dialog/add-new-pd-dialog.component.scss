@@ -216,10 +216,12 @@
     border-radius: 8px;
     height: 360px;
     transition: 0.2s;
+    overflow: auto;
 
     .item {
       padding: 5px 10px;
       transition: 0.2s;
+      cursor: pointer;
     }
 
     .item:first-child {
@@ -227,9 +229,6 @@
       border-top-right-radius: 8px;
     }
 
-    .item:hover {
-      background-color: #eee;
-    }
   }
 
   .box:hover {

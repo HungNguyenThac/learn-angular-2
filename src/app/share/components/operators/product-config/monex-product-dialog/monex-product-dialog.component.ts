@@ -85,7 +85,7 @@ export class MonexProductDialogComponent implements OnInit {
 
   buildForm() {
     this.form = this.formBuilder.group({
-      code: 'MXP-XXX',
+      code: [''],
       name: [''],
       description: [''],
       status: false,

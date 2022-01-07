@@ -231,6 +231,35 @@ paths:
                 "$ref": "#/components/schemas/ApiResponse"
       tags:
         - cde
+  "/v1/cde/groups/{id}/{action}":
+    put:
+      operationId: CdeController_updatePdGroupQuestion
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+        - name: action
+          required: true
+          in: path
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/UpdatePdGroupQuestionRequestDto"
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ApiResponse"
+      tags:
+        - cde
   "/v1/cde/models/{id}":
     get:
       operationId: CdeController_getPdModelById
@@ -346,6 +375,35 @@ paths:
                 "$ref": "#/components/schemas/ApiResponse"
       tags:
         - cde
+  "/v1/cde/models/{id}/{action}":
+    put:
+      operationId: CdeController_updatePdModelGroup
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+        - name: action
+          required: true
+          in: path
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/UpdatePdModelGroupRequestDto"
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ApiResponse"
+      tags:
+        - cde
   "/v1/loan-products":
     get:
       operationId: LoanProductController_getLoanProduct
@@ -369,6 +427,287 @@ paths:
           description: ''
       tags:
         - loan-products
+  "/v1/loan-products/cde/{id}":
+    get:
+      operationId: LoanProductController_getCdeProduct
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        '200':
+          description: ''
+      tags:
+        - loan-products
+  "/loan-status/{id}":
+    get:
+      operationId: LoanStatusController_getStatusById
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ApiResponse"
+    put:
+      operationId: LoanStatusController_updateStatus
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/UpdateLoanStatusDto"
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ApiResponse"
+    delete:
+      operationId: LoanStatusController_deleteStatus
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/DeleteLoanStatusDto"
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ApiResponse"
+  "/loan-status":
+    get:
+      operationId: LoanStatusController_getListStatus
+      parameters:
+        - name: createdAt
+          required: false
+          in: query
+          schema:
+            type: string
+        - name: createdBy
+          required: false
+          in: query
+          schema:
+            type: string
+        - name: updatedAt
+          required: false
+          in: query
+          schema:
+            type: string
+        - name: updatedBy
+          required: false
+          in: query
+          schema:
+            type: string
+        - name: code
+          required: true
+          in: query
+          schema:
+            type: string
+        - name: name
+          required: true
+          in: query
+          schema:
+            type: string
+        - name: description
+          required: true
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ApiResponse"
+    post:
+      operationId: LoanStatusController_createStatus
+      parameters: [ ]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/CreateLoanStatusDto"
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ApiResponse"
+  "/loan-status/groups/{id}":
+    get:
+      operationId: LoanStatusController_getStatusGroupById
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ApiResponse"
+    put:
+      operationId: LoanStatusController_updateStatusGroup
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/UpdateGroupLoanStatusDto"
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ApiResponse"
+    delete:
+      operationId: LoanStatusController_deleteStatusGroup
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/DeleteLoanStatusGroupDto"
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ApiResponse"
+  "/loan-status/groups":
+    get:
+      operationId: LoanStatusController_getListStatusGroup
+      parameters:
+        - name: createdAt
+          required: false
+          in: query
+          schema:
+            type: string
+        - name: createdBy
+          required: false
+          in: query
+          schema:
+            type: string
+        - name: updatedAt
+          required: false
+          in: query
+          schema:
+            type: string
+        - name: updatedBy
+          required: false
+          in: query
+          schema:
+            type: string
+        - name: code
+          required: true
+          in: query
+          schema:
+            type: string
+        - name: name
+          required: true
+          in: query
+          schema:
+            type: string
+        - name: description
+          required: true
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ApiResponse"
+    post:
+      operationId: LoanStatusController_createStatusGroup
+      parameters: [ ]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/CreateGroupLoanStatusDto"
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ApiResponse"
+  "/loan-status/models/{id}/{action}":
+    put:
+      operationId: LoanStatusController_updatePdModelGroup
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+        - name: action
+          required: true
+          in: path
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/UpdateStatusFlowDto"
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ApiResponse"
 info:
   title: MonexcoreService
   description: ''
@@ -411,10 +750,6 @@ components:
           type: string
         description:
           type: string
-        groupIds:
-          type: array
-          items:
-            type: number
         answerType:
           type: string
         placeHolder:
@@ -423,10 +758,13 @@ components:
           type: array
           items:
             type: string
+        isMandatory:
+          type: boolean
       required:
         - code
         - content
         - answerType
+        - isMandatory
     UpdatePdQuestionRequestDto:
       type: object
       properties:
@@ -446,16 +784,14 @@ components:
           type: string
         answerType:
           type: string
-        groupIds:
-          type: array
-          items:
-            type: number
         answers:
           type: array
           items:
             type: string
         placeHolder:
           type: string
+        isMandatory:
+          type: boolean
     DeletePdQuestionRequestDto:
       type: object
       properties:
@@ -484,14 +820,8 @@ components:
           type: string
         description:
           type: string
-        modelId:
-          type: number
-        questionIds:
-          type: array
-          items:
-            type: number
         status:
-          type: number
+          type: string
       required:
         - code
         - content
@@ -513,14 +843,26 @@ components:
           type: string
         description:
           type: string
-        questionIds:
-          type: array
-          items:
-            type: number
-        modelId:
-          type: number
         status:
+          type: string
+    UpdatePdGroupQuestionRequestDto:
+      type: object
+      properties:
+        createdAt:
+          type: string
+        createdBy:
+          type: string
+        updatedAt:
+          type: string
+        updatedBy:
+          type: string
+        questionId:
           type: number
+        order:
+          type: number
+      required:
+        - questionId
+        - order
     CreatePdModelRequestDto:
       type: object
       properties:
@@ -540,12 +882,8 @@ components:
           type: string
         loanProductId:
           type: number
-        groupIds:
-          type: array
-          items:
-            type: number
         status:
-          type: number
+          type: string
       required:
         - code
         - content
@@ -569,12 +907,26 @@ components:
           type: string
         loanProductId:
           type: number
-        groupIds:
-          type: array
-          items:
-            type: number
         status:
+          type: string
+    UpdatePdModelGroupRequestDto:
+      type: object
+      properties:
+        createdAt:
+          type: string
+        createdBy:
+          type: string
+        updatedAt:
+          type: string
+        updatedBy:
+          type: string
+        groupId:
           type: number
+        order:
+          type: number
+      required:
+        - groupId
+        - order
     DeletePdModelRequestDto:
       type: object
       properties:
@@ -604,3 +956,129 @@ components:
       required:
         - code
         - name
+    CreateLoanStatusDto:
+      type: object
+      properties:
+        createdAt:
+          type: string
+        createdBy:
+          type: string
+        updatedAt:
+          type: string
+        updatedBy:
+          type: string
+        code:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+      required:
+        - code
+        - name
+        - description
+    UpdateLoanStatusDto:
+      type: object
+      properties:
+        createdAt:
+          type: string
+        createdBy:
+          type: string
+        updatedAt:
+          type: string
+        updatedBy:
+          type: string
+        code:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+    DeleteLoanStatusDto:
+      type: object
+      properties:
+        createdAt:
+          type: string
+        createdBy:
+          type: string
+        updatedAt:
+          type: string
+        updatedBy:
+          type: string
+    CreateGroupLoanStatusDto:
+      type: object
+      properties:
+        createdAt:
+          type: string
+        createdBy:
+          type: string
+        updatedAt:
+          type: string
+        updatedBy:
+          type: string
+        loanProductId:
+          type: number
+        code:
+          type: string
+        name:
+          type: string
+        order:
+          type: number
+      required:
+        - loanProductId
+        - code
+        - name
+        - order
+    UpdateGroupLoanStatusDto:
+      type: object
+      properties:
+        createdAt:
+          type: string
+        createdBy:
+          type: string
+        updatedAt:
+          type: string
+        updatedBy:
+          type: string
+        id:
+          type: number
+        loanProductId:
+          type: number
+        code:
+          type: string
+        name:
+          type: string
+        order:
+          type: number
+        description:
+          type: string
+      required:
+        - id
+    DeleteLoanStatusGroupDto:
+      type: object
+      properties:
+        createdAt:
+          type: string
+        createdBy:
+          type: string
+        updatedAt:
+          type: string
+        updatedBy:
+          type: string
+    UpdateStatusFlowDto:
+      type: object
+      properties:
+        createdAt:
+          type: string
+        createdBy:
+          type: string
+        updatedAt:
+          type: string
+        updatedBy:
+          type: string
+        statusId:
+          type: number
+        order:
+          type: number
+      required:
+        - statusId

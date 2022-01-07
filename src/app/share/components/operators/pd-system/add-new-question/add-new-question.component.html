@@ -19,39 +19,22 @@
                 <div>
                   <mat-form-field autofilled="false" appearance="outline" class="w-100" floatLabel="never">
                     <mat-label>{{ 'pd_system.add_question_dialog.code' | translate }}</mat-label>
-                    <!--                    <div-->
-                    <!--                      [ngClass]="addPdForm.controls.accountName.value != '' || isAccountNameInputFocus ? 'is-focused-icon' : ''"-->
-                    <!--                      class="profile-icon icon-prefix-padding" matPrefix>-->
-                    <!--                    </div>-->
                     <input (blur)="isAccountNameInputFocus = false"
                            (focus)="isAccountNameInputFocus = true"
                            [ngClass]="
                         isAccountNameInputFocus ? 'is-focused-input' : ''
                       " [placeholder]="'pd_system.add_question_dialog.code' | translate"
-                           formControlName="code"
+                           [value]="addPdForm.controls.code.value ? addPdForm.controls.code.value : 'PDQ-XXX'"
+                           disabled
                            aria-autocomplete="none"
                            matInput
                     >
-                    <show-errors
-                      [control]="addPdForm.controls['code']"
-                      [controlLabel]="'pd_system.add_question_dialog.code' | translate"
-                      [hasIconPrefix]="false"
-                    >
-                    </show-errors>
                   </mat-form-field>
                 </div>
 
                 <div>
                   <mat-form-field appearance="outline" class="w-100" floatLabel="never">
                     <mat-label>{{'pd_system.add_question_dialog.name' | translate}}</mat-label>
-                    <!--                    <mat-icon [ngClass]="-->
-                    <!--                        addPdForm.controls.username.value != '' ||-->
-                    <!--                        isLoginInputFocus-->
-                    <!--                          ? 'is-focused-icon'-->
-                    <!--                          : ''-->
-                    <!--                      "-->
-                    <!--                              class="profile-icon" matPrefix>-->
-                    <!--                    </mat-icon>-->
                     <input
                       (blur)="isLoginInputFocus = false"
                       (focus)="isLoginInputFocus = true"
@@ -61,6 +44,7 @@
                       [placeholder]="'pd_system.add_question_dialog.name' | translate"
                       formControlName="content"
                       aria-autocomplete="none"
+                      required
                       matInput
                     />
                     <show-errors
@@ -75,14 +59,6 @@
                 <div>
                   <mat-form-field appearance="outline" class="w-100" floatLabel="never">
                     <mat-label>{{'pd_system.add_question_dialog.placeholder' | translate}}</mat-label>
-                    <!--                    <mat-icon [ngClass]="-->
-                    <!--                        addPdForm.controls.username.value != '' ||-->
-                    <!--                        isLoginInputFocus-->
-                    <!--                          ? 'is-focused-icon'-->
-                    <!--                          : ''-->
-                    <!--                      "-->
-                    <!--                              class="profile-icon" matPrefix>-->
-                    <!--                    </mat-icon>-->
                     <input
                       (blur)="isLoginInputFocus = false"
                       (focus)="isLoginInputFocus = true"
@@ -90,12 +66,12 @@
                         isLoginInputFocus ? 'is-focused-input' : ''
                       "
                       [placeholder]="'pd_system.add_question_dialog.placeholder' | translate"
-                      formControlName="placeholder"
+                      formControlName="placeHolder"
                       aria-autocomplete="none"
                       matInput
                     />
                     <show-errors
-                      [control]="addPdForm.controls['placeholder']"
+                      [control]="addPdForm.controls['placeHolder']"
                       [controlLabel]="'pd_system.add_question_dialog.name' | translate"
                       [hasIconPrefix]="false"
                     >
@@ -118,37 +94,6 @@
                       [controlLabel]="
                         'pd_system.add_question_dialog.types' | translate
                       "
-                      [hasIconPrefix]="false"
-                    >
-                    </show-errors>
-                  </mat-form-field>
-                </div>
-
-                <div>
-                  <mat-form-field appearance="outline" class="w-100" floatLabel="never">
-                    <mat-label>{{'pd_system.add_question_dialog.order' | translate}}</mat-label>
-                    <!--                    <mat-icon [ngClass]="-->
-                    <!--                        addPdForm.controls.username.value != '' ||-->
-                    <!--                        isLoginInputFocus-->
-                    <!--                          ? 'is-focused-icon'-->
-                    <!--                          : ''-->
-                    <!--                      "-->
-                    <!--                              class="profile-icon" matPrefix>-->
-                    <!--                    </mat-icon>-->
-                    <input
-                      (blur)="isPasswordInputFocus = false"
-                      (focus)="isPasswordInputFocus = true"
-                      [ngClass]="
-                        isPasswordInputFocus ? 'is-focused-input' : ''
-                      "
-                      [placeholder]="'pd_system.add_question_dialog.order' | translate"
-                      formControlName="order"
-                      aria-autocomplete="none"
-                      matInput
-                    />
-                    <show-errors
-                      [control]="addPdForm.controls['order']"
-                      [controlLabel]="'pd_system.add_question_dialog.order' | translate"
                       [hasIconPrefix]="false"
                     >
                     </show-errors>
@@ -180,9 +125,10 @@
                   </mat-form-field>
                 </div>
 
-                <!--                <div>-->
-                <!--                  <mat-checkbox class="example-margin">{{"pd_system.add_pd_dialog.active" | translate}}</mat-checkbox>-->
-                <!--                </div>-->
+                <div>
+                  <mat-checkbox formControlName="isMandatory"
+                                class="example-margin">{{"pd_system.add_question_dialog.mandetory" | translate}}</mat-checkbox>
+                </div>
               </div>
 
               <!-- Right Individual Info -->
@@ -246,17 +192,18 @@
                         </div>
                       </div>
 
-                      <div *ngIf="sliderType">
+                      <div *ngIf="sliderType" class="mt-3">
                         <div *ngFor="let sliderAnswer of sliderAnswers; let i = index"
                              class="item d-flex align-items-center gap-2">
                           <mat-form-field appearance="outline" style="width: 100%" [floatLabel]="'never'">
-                            <mat-label>{{sliderAnswer.placeholder}}</mat-label>
+                            <mat-label>{{sliderAnswer.placeHolder}}</mat-label>
                             <input
                               name="answer_{{i}}"
                               [(ngModel)]="sliderAnswer.value"
                               [ngModelOptions]="{standalone: true}"
-                              [placeholder]="sliderAnswer.placeholder"
+                              [placeholder]="sliderAnswer.placeHolder"
                               aria-autocomplete="none"
+                              [type]="i === sliderAnswers.length - 1 ? 'text':'number'"
                               matInput
                             />
                           </mat-form-field>

@@ -10,38 +10,19 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 })
 export class AddNewPdDialogComponent implements OnInit {
   //Mock data
-  leftArr = [
-    {
-      name: 'Item 1',
-      id: '1',
-    },
-    {
-      name: 'Item 2',
-      id: '2',
-    },
-    {
-      name: 'Item 3',
-      id: '3',
-    },
-    {
-      name: 'Item 4',
-      id: '4',
-    },
-    {
-      name: 'Item 5',
-      id: '5',
-    },
-    {
-      name: 'Item 6',
-      id: '6',
-    },
-  ];
+  leftArr = [];
   rightArr = [];
+  originalRightArr = [];
   leftTemp = [];
   rightTemp = [];
+  addArr = [];
+  updateArr = [];
+  removeArr = [];
 
   addPdForm: FormGroup;
   pdInfo;
+
+  isPdGroup: boolean;
   isAccountNameInputFocus: boolean = false;
   isLoginInputFocus: boolean = false;
   isPasswordInputFocus: boolean = false;
@@ -71,10 +52,14 @@ export class AddNewPdDialogComponent implements OnInit {
 
   buildAccountInfoForm() {
     this.addPdForm = this.formBuilder.group({
+      formName: [''],
       code: [''],
       content: [''],
       description: [''],
-      status: [''],
+      status: '',
+      addArr: [''],
+      updateArr: [''],
+      removeArr: [''],
     });
   }
 
@@ -84,29 +69,89 @@ export class AddNewPdDialogComponent implements OnInit {
     this.inputName = data?.inputName;
     this.inputCode = data?.inputCode;
     this.listTitle = data?.listTitle;
+    this.isPdGroup = data?.isPdGroup;
+    this.leftArr = data?.leftArr;
+    if (data?.rightArr) {
+      this.rightArr = data?.rightArr.sort((a, b) => {
+        return a.order - b.order;
+      });
+    }
+    this.originalRightArr = data?.rightArr;
+    let status: boolean = true;
+    if (data?.pdInfo?.status !== undefined) {
+      status = data?.pdInfo?.status === 'ACTIVE';
+    }
 
-    // this.addPdForm.patchValue({
-    //   accountName: this.userInfo?.fullName,
-    //   username: this.userInfo?.username,
-    //   accountPassword: '',
-    //   accountRePassword: '',
-    //   accountRole: this.userInfo?.groupId,
-    //   accountPhone: this.userInfo?.mobile,
-    //   accountEmail: this.userInfo?.email,
-    //   accountPosition: this.userInfo?.position,
-    //   accountNote: this.userInfo?.note,
-    // });
+    this.addPdForm.patchValue({
+      formName: data?.isPdGroup ? 'PDGroup' : 'PDModel',
+      code: this.pdInfo?.code,
+      content: this.pdInfo?.content,
+      description: this.pdInfo?.description,
+      status: status,
+    });
+  }
+
+  giveOrders() {
+    let orderedArr = [];
+    orderedArr.push(
+      this.rightArr.map((ele, index) => {
+        return {
+          id: ele.id,
+          content: ele.content,
+          order: index,
+        };
+      })
+    );
+    this.bindElementToArray(orderedArr[0]);
+  }
+
+  bindElementToArray(orderedArr) {
+    if (this.originalRightArr) {
+      // Get add elements
+      let addIds = this.originalRightArr.map((ele) => ele.id);
+      this.addArr = orderedArr.filter((ele) => !addIds.includes(ele.id));
+
+      // Get update elements
+      this.updateArr = orderedArr.filter((ele) => addIds.includes(ele.id));
+
+      // Get remove elements
+      let removeIds = orderedArr.map((ele) => ele.id);
+      this.removeArr = this.originalRightArr.filter(
+        (ele) => !removeIds.includes(ele.id)
+      );
+    } else {
+      this.addArr = orderedArr;
+    }
   }
 
   submitForm() {
-    console.log('asdjias', this.rightArr);
+    this.giveOrders();
+    if (this.addPdForm.invalid) {
+      return;
+    }
     if (this.addPdForm.controls.status.value) {
       this.addPdForm.patchValue({
         status: 'ACTIVE',
+        addArr: this.addArr,
+        updateArr: this.updateArr,
+        removeArr: this.removeArr,
+      });
+    } else {
+      this.addPdForm.patchValue({
+        status: 'INACTIVE',
+        addArr: this.addArr,
+        updateArr: this.updateArr,
+        removeArr: this.removeArr,
       });
     }
-    if (this.addPdForm.invalid) {
-      return;
+    if (this.addPdForm.controls.formName.value === 'PDModel') {
+      this.addPdForm.patchValue({
+        code: 'PDM',
+      });
+    } else {
+      this.addPdForm.patchValue({
+        code: 'PDG',
+      });
     }
     this.dialogRef.close({
       type: BUTTON_TYPE.PRIMARY,
@@ -114,18 +159,17 @@ export class AddNewPdDialogComponent implements OnInit {
     });
   }
 
-  onClickQuestion(event, question) {
+  onClickLeft(event, question) {
     event.target.classList.toggle('gray');
     if (this.leftTemp.includes(question)) {
       const index = this.leftTemp.indexOf(question);
       this.leftTemp.splice(index, 1);
-      console.log(this.leftTemp);
     } else {
       this.leftTemp.push(question);
     }
   }
 
-  onClickChosenQuestion(event, question) {
+  onClickRight(event, question) {
     event.target.classList.toggle('gray');
     if (this.rightTemp.includes(question)) {
       const index = this.rightTemp.indexOf(question);
@@ -135,7 +179,7 @@ export class AddNewPdDialogComponent implements OnInit {
     }
   }
 
-  moveToChosen() {
+  moveToRight() {
     this.rightArr = this.rightArr.concat(this.leftTemp);
     const tempSet = new Set(this.leftTemp);
     this.leftArr = this.leftArr.filter((question) => {
@@ -144,7 +188,7 @@ export class AddNewPdDialogComponent implements OnInit {
     this.leftTemp = [];
   }
 
-  moveBack() {
+  moveToLeft() {
     this.leftArr = this.leftArr.concat(this.rightTemp);
     const tempSet = new Set(this.rightTemp);
     this.rightArr = this.rightArr.filter((question) => {

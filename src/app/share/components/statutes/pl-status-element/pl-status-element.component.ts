@@ -2,7 +2,7 @@ import {
   CUSTOMER_STATUS,
   PAYDAY_LOAN_REPAYMENT_STATUS,
 } from './../../../../core/common/enum/payday-loan';
-import { PlStatusLabelComponent } from './../pl-status-label/pl-status-label.component';
+import {PlStatusLabelComponent} from './../pl-status-label/pl-status-label.component';
 import {
   PAYDAY_LOAN_OTHER_STATUS,
   PAYDAY_LOAN_RATING_STATUS,
@@ -18,10 +18,10 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
-import { DATA_STATUS_TYPE } from '../../../../core/common/enum/operator';
-import { PL_LABEL_STATUS } from '../../../../core/common/enum/label-status';
-import { MultiLanguageService } from '../../../translate/multiLanguageService';
-import { AdminAccountEntity } from '../../../../../../open-api-modules/dashboard-api-docs';
+import {DATA_STATUS_TYPE} from '../../../../core/common/enum/operator';
+import {PL_LABEL_STATUS} from '../../../../core/common/enum/label-status';
+import {MultiLanguageService} from '../../../translate/multiLanguageService';
+import {AdminAccountEntity} from '../../../../../../open-api-modules/dashboard-api-docs';
 import UserStatusEnum = AdminAccountEntity.UserStatusEnum;
 
 @Component({
@@ -35,7 +35,8 @@ export class PlStatusElementComponent implements OnInit, AfterViewInit {
   constructor(
     private multiLanguageService: MultiLanguageService,
     private cdr: ChangeDetectorRef
-  ) {}
+  ) {
+  }
 
   _statusValue: any;
 
@@ -100,7 +101,8 @@ export class PlStatusElementComponent implements OnInit, AfterViewInit {
     }
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+  }
 
   ngAfterViewInit() {
     this.dataStatus = this.getDataStatus();
@@ -415,8 +417,10 @@ export class PlStatusElementComponent implements OnInit, AfterViewInit {
   }
 
   userStatus(status) {
+
     switch (status) {
       case UserStatusEnum.Locked:
+      case 'INACTIVE':
         return {
           label: this.multiLanguageService.instant('common.inactive'),
           labelStatus: PL_LABEL_STATUS.WITHDRAW,

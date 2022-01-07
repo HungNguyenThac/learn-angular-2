@@ -11,6 +11,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { NgxPermissionsModule } from 'ngx-permissions';
 import { NgxViewerModule } from 'ngx-viewer';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 
 @NgModule({
   declarations: [
@@ -27,12 +28,14 @@ import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
     NgxPermissionsModule,
     NgxViewerModule,
     NgxMatSelectSearchModule,
+    InfiniteScrollModule,
   ],
   exports: [
     MaterialModule,
     NgxPermissionsModule,
     NgxViewerModule,
     NgxMatSelectSearchModule,
+    InfiniteScrollModule,
     ...fromComponents.components,
     ...fromValidators.validators,
     ...fromDirectives.directives,

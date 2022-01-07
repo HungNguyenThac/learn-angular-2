@@ -1,9 +1,8 @@
 import { ToastrService } from 'ngx-toastr';
-import { ApiResponsePaydayHmgExcelExport } from './../../../../../../open-api-modules/dashboard-api-docs/model/apiResponsePaydayHmgExcelExport';
 import {
   APPLICATION_TYPE,
   REPAYMENT_STATUS,
-} from './../../../../core/common/enum/payday-loan';
+} from '../../../../core/common/enum/payday-loan';
 import { PaydayLoanHmg } from '../../../../../../open-api-modules/dashboard-api-docs';
 import { SearchAndPaginationResponsePaydayLoanHmg } from '../../../../../../open-api-modules/dashboard-api-docs';
 import { FilterActionEventModel } from '../../../../public/models/filter/filter-action-event.model';
