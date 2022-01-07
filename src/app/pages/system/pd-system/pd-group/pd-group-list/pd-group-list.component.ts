@@ -409,7 +409,7 @@ export class PdGroupListComponent implements OnInit {
   public onOutputAction(event) {
     const action = event.action;
     const list = event.selectedList;
-    const idArr = list.map((model) => model.id);
+    const idArr = list.map((group) => group.modelId);
     switch (action) {
       case 'lock':
         this.lockMultiplePrompt(idArr);

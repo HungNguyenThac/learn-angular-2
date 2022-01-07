@@ -37,7 +37,11 @@ import {
   CdeService,
 } from '../../../../../../../open-api-modules/monexcore-api-docs';
 import { CustomApiResponse, PDGroup, PDModel } from '../../pd-interface';
-import { ApiResponseSearchAndPaginationResponseModel } from '../../../../../../../open-api-modules/dashboard-api-docs';
+import {
+  ApiResponseSearchAndPaginationResponseGroup,
+  ApiResponseSearchAndPaginationResponseModel,
+  CdeControllerService,
+} from '../../../../../../../open-api-modules/dashboard-api-docs';
 
 @Component({
   selector: 'app-pd-model-list',
@@ -207,6 +211,7 @@ export class PdModelListComponent implements OnInit {
     private titleService: Title,
     private activatedRoute: ActivatedRoute,
     private pdModelListService: PdModelListService,
+    private cdeControllerService: CdeControllerService,
     private cdeService: CdeService
   ) {
     this._initFilterForm();
@@ -219,10 +224,10 @@ export class PdModelListComponent implements OnInit {
 
   public _getGroupList() {
     this.subManager.add(
-      this.cdeService
-        .cdeControllerGetPdGroup()
-        .subscribe((data: CustomApiResponse<PDGroup>) => {
-          this.groupList = data.result;
+      this.cdeControllerService
+        .getGroups1(100, 0, {})
+        .subscribe((data: ApiResponseSearchAndPaginationResponseGroup) => {
+          this.groupList = data.result.data;
           this.groupList = this.groupList.map((item) => {
             return {
               id: item.modelId,
@@ -396,7 +401,7 @@ export class PdModelListComponent implements OnInit {
   public onOutputAction(event) {
     const action = event.action;
     const list = event.selectedList;
-    const idArr = list.map((model) => model.id);
+    const idArr = list.map((model) => model.modelId);
     switch (action) {
       case 'lock':
         this.lockMultiplePrompt(idArr);
@@ -615,6 +620,7 @@ export class PdModelListComponent implements OnInit {
   }
 
   onClickBtnAdd(event) {
+    console.log('groupList', this.groupList);
     const addPdModelDialogRef = this.dialog.open(AddNewPdDialogComponent, {
       panelClass: 'custom-info-dialog-container',
       maxWidth: '1200px',

@@ -231,7 +231,6 @@ export class PdQuestionsListComponent implements OnInit {
     this.pdQuestionsListService
       .getData(params)
       .subscribe((data: ApiResponseSearchAndPaginationResponseQuestion) => {
-        console.log('question list', data?.result);
         this._parseData(data?.result);
         this.dataSource.data = data?.result?.data;
       });
@@ -441,6 +440,7 @@ export class PdQuestionsListComponent implements OnInit {
             'pd_system.pd_questions.delete_toast'
           )
         );
+        this.refreshContent();
       }
     }, 2000);
   }
@@ -502,20 +502,16 @@ export class PdQuestionsListComponent implements OnInit {
       return;
     }
     this.subManager.add(
-      this.cdeService.cdeControllerDeletePdQuestion(parseInt(id), {}).subscribe(
-        (result: ApiResponse) => {
+      this.cdeService
+        .cdeControllerDeletePdQuestion(parseInt(id), {})
+        .subscribe((result: ApiResponse) => {
           if (!result || result.responseCode !== RESPONSE_CODE.SUCCESS) {
             return this.notifier.error(
               JSON.stringify(result?.message),
               result?.errorCode
             );
           }
-        },
-        (error) => {},
-        () => {
-          this.refreshContent();
-        }
-      )
+        })
     );
   }
 
@@ -584,21 +580,24 @@ export class PdQuestionsListComponent implements OnInit {
     this.subManager.add(
       this.cdeService
         .cdeControllerUpdatePdQuestion(this.questionInfo.id, updateRequest)
-        .subscribe((result: ApiResponse) => {
-          if (!result || result.responseCode !== RESPONSE_CODE.SUCCESS) {
-            return this.notifier.error(
-              JSON.stringify(result?.message),
-              result?.errorCode
-            );
-          }
-          setTimeout(() => {
+        .subscribe(
+          (result: ApiResponse) => {
+            if (!result || result.responseCode !== RESPONSE_CODE.SUCCESS) {
+              return this.notifier.error(
+                JSON.stringify(result?.message),
+                result?.errorCode
+              );
+            }
+          },
+          () => {},
+          () => {
             this.notifier.success(
               this.multiLanguageService.instant('common.update_success')
             );
             this.refreshContent();
             this.notificationService.hideLoading();
-          }, 3000);
-        })
+          }
+        )
     );
   }
 
@@ -623,25 +622,26 @@ export class PdQuestionsListComponent implements OnInit {
 
   sendAddRequest(addRequest) {
     this.subManager.add(
-      this.cdeService
-        .cdeControllerCreatePdQuestion(addRequest)
-        .subscribe((result: ApiResponse) => {
+      this.cdeService.cdeControllerCreatePdQuestion(addRequest).subscribe(
+        (result: ApiResponse) => {
           if (!result || result.responseCode !== RESPONSE_CODE.SUCCESS) {
             return this.notifier.error(
               JSON.stringify(result?.message),
               result?.errorCode
             );
           }
-          setTimeout(() => {
-            this.notifier.success(
-              this.multiLanguageService.instant(
-                'pd_system.add_question_dialog.create_success'
-              )
-            );
-            this.refreshContent();
-            this.notificationService.hideLoading();
-          }, 3000);
-        })
+        },
+        () => {},
+        () => {
+          this.notifier.success(
+            this.multiLanguageService.instant(
+              'pd_system.add_question_dialog.create_success'
+            )
+          );
+          this.refreshContent();
+          this.notificationService.hideLoading();
+        }
+      )
     );
   }
 
