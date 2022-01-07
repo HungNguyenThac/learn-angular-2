@@ -5,7 +5,11 @@
       color="accent"
       class="w-100"
       *ngxPermissionsOnly="
-        ['paydays:updateInfo', 'hmgPaydayLoans:updateInfo'];
+        [
+          'paydays:updateInfoTng',
+          'paydays:updateInfoVac',
+          'hmgPaydayLoans:updateInfo'
+        ];
         else elseBlock
       "
     >
@@ -60,7 +64,8 @@
           color="accent"
           mat-flat-button
           *ngxPermissionsOnly="[
-            'paydays:updateInfo',
+            'paydays:updateInfoTng',
+            'paydays:updateInfoVac',
             'hmgPaydayLoans:updateInfo'
           ]"
         >

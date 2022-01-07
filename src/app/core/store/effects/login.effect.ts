@@ -23,6 +23,7 @@ import {MultiLanguageService} from '../../../share/translate/multiLanguageServic
 import {ToastrService} from 'ngx-toastr';
 import {RESPONSE_CODE} from '../../common/enum/operator';
 import {ERROR_CODE_KEY} from '../../common/enum/payday-loan';
+import {NgxPermissionsService} from "ngx-permissions";
 
 @Injectable()
 export class LoginEffects {
@@ -50,7 +51,8 @@ export class LoginEffects {
     private ratingControllerService: RatingControllerService,
     private notificationService: NotificationService,
     private multiLanguageService: MultiLanguageService,
-    private notifier: ToastrService
+    private notifier: ToastrService,
+    private permissionsService: NgxPermissionsService
   ) {
     this.customerId$ = store$.select(fromStore.getCustomerIdState);
     this.subManager.add(
@@ -75,6 +77,7 @@ export class LoginEffects {
           this.notificationService.destroyAllDialog();
           this.store$.dispatch(new fromActions.ResetCustomerInfo());
           this.store$.dispatch(new fromActions.ResetToken());
+          this.permissionsService.flushPermissions();
           this.router.navigateByUrl('/auth/sign-in');
         })
       ),

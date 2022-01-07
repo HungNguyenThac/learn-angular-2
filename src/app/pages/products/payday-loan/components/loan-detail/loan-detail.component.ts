@@ -4,7 +4,8 @@ import {
   ApiResponsePaydayLoanHmg,
   ApiResponsePaydayLoanTng,
   ApiResponseSearchAndPaginationResponseBank,
-  ApiResponseSearchAndPaginationResponseCompanyInfo, ApplicationControllerService,
+  ApiResponseSearchAndPaginationResponseCompanyInfo,
+  ApplicationControllerService,
   Bank,
   BankControllerService,
   PaydayLoanHmg
@@ -21,7 +22,7 @@ import {
   CustomerInfo,
 } from 'open-api-modules/dashboard-api-docs';
 import { CustomerDetailService } from 'src/app/pages/customer/components/customer-detail-element/customer-detail.service';
-import { APPLICATION_TYPE } from 'src/app/core/common/enum/payday-loan';
+import {APPLICATION_TYPE, COMPANY_NAME} from 'src/app/core/common/enum/payday-loan';
 
 @Component({
   selector: 'app-loan-detail',
@@ -49,7 +50,8 @@ export class LoanDetailComponent implements OnInit, OnDestroy {
     private bankControllerService: BankControllerService,
     private companyControllerService: CompanyControllerService,
     private notificationService: NotificationService
-  ) {}
+  ) {
+  }
 
   _loanId: string;
 
@@ -91,7 +93,7 @@ export class LoanDetailComponent implements OnInit, OnDestroy {
   }
 
   triggerUpdateLoanElement() {
-    this.notificationService.showLoading({ showContent: true });
+    this.notificationService.showLoading({showContent: true});
     this.timeOut = setTimeout(() => {
       this._getLoanById(this.loanId);
       this.notificationService.hideLoading();
@@ -103,30 +105,42 @@ export class LoanDetailComponent implements OnInit, OnDestroy {
 
   private _getLoanById(loanId) {
     if (!loanId) return;
-    if (this.groupName === 'HMG') {
-      this.subManager.add(
-        this.applicationHmgControllerService
-          .getLoanById1(this.loanId)
-          .subscribe((data: ApiResponsePaydayLoanHmg) => {
-            this.loanDetail = data?.result;
-            this.loanDetailTriggerUpdateStatus.emit(this.loanDetail);
-            this.detectUpdateLoanAfterSign.emit(this.loanDetail);
-            console.log(this.loanDetail, 'loanDetail----------------------');
-          })
-      );
+    switch (this.groupName) {
+      case COMPANY_NAME.HMG:
+        this.subManager.add(
+          this.applicationHmgControllerService
+            .getLoanById(this.loanId)
+            .subscribe((data: ApiResponsePaydayLoanHmg) => {
+              this.loanDetail = data?.result;
+              this.loanDetailTriggerUpdateStatus.emit(this.loanDetail);
+              this.detectUpdateLoanAfterSign.emit(this.loanDetail);
+              console.log(this.loanDetail, 'loanDetail----------------------');
+            })
+        );
+        break
+      case COMPANY_NAME.TNG:
+        this.getLoanById(loanId, APPLICATION_TYPE.PDL_TNG)
+        break;
+      case COMPANY_NAME.VAC:
+        this.getLoanById(loanId, APPLICATION_TYPE.PDL_VAC)
+        break;
+      default:
+        break;
     }
-    if (this.groupName === 'TNG') {
-      this.subManager.add(
-        this.applicationTngControllerService
-          .getLoanById(this.loanId, APPLICATION_TYPE.PDL_TNG)
-          .subscribe((data: ApiResponsePaydayLoanTng) => {
-            this.loanDetail = data?.result;
-            this.loanDetailTriggerUpdateStatus.emit(this.loanDetail);
-            this.detectUpdateLoanAfterSign.emit(this.loanDetail);
-            console.log(this.loanDetail, 'loanDetail----------------------');
-          })
-      );
-    }
+
+  }
+
+  private getLoanById(loanId: string, applicationType: APPLICATION_TYPE) {
+    this.subManager.add(
+      this.applicationTngControllerService
+        .getLoanById1(loanId, applicationType)
+        .subscribe((data: ApiResponsePaydayLoanTng) => {
+          this.loanDetail = data?.result;
+          this.loanDetailTriggerUpdateStatus.emit(this.loanDetail);
+          this.detectUpdateLoanAfterSign.emit(this.loanDetail);
+          console.log(this.loanDetail, 'loanDetail----------------------');
+        })
+    );
   }
 
   public refreshContent() {
@@ -174,7 +188,7 @@ export class LoanDetailComponent implements OnInit, OnDestroy {
   }
 
   public updateCustomerInfo(updateInfoRequest: Object) {
-    this.notificationService.showLoading({ showContent: true });
+    this.notificationService.showLoading({showContent: true});
     this.subManager.add(
       this.customerDetailService
         .updateCustomerInfo(this.customerId, updateInfoRequest, null, true)

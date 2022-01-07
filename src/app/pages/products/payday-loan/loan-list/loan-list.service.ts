@@ -118,7 +118,7 @@ export class LoanListService {
   public getLoanDataHmg(params) {
     let requestBody = this._buildRequestBodyGetList(params);
 
-    return this.applicationHmgControllerService.findApplications1(
+    return this.applicationHmgControllerService.findApplications(
       params.pageSize,
       params.pageNumber,
       requestBody,
@@ -127,13 +127,13 @@ export class LoanListService {
     );
   }
 
-  public getLoanDataTng(params) {
+  public getLoanDataTng(params, applicationType: APPLICATION_TYPE) {
     let requestBody = this._buildRequestBodyGetList(params);
 
-    return this.applicationTngControllerService.findApplications(
+    return this.applicationTngControllerService.findApplications1(
       params.pageSize,
       params.pageNumber,
-      APPLICATION_TYPE.PDL_TNG,
+      applicationType,
       requestBody,
       params.orderBy,
       params.sortDirection === 'desc'

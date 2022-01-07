@@ -25,7 +25,8 @@
 <ng-template #detailElementTemplate>
   <app-loan-detail
     *ngxPermissionsOnly="[
-      'dashboardTngApplications:getLoanById',
+      'dashboardApplications:findTngApplications',
+      'dashboardApplications:findVacApplications',
       'dashboardHmgApplications:getLoanById'
     ]"
     (detectUpdateLoanAfterSign)="updateElementInfo($event)"

@@ -12,7 +12,6 @@ import { MultiLanguageService } from '../../../share/translate/multiLanguageServ
 import { MatDialog } from '@angular/material/dialog';
 import {
   AdminAccountControllerService,
-  ApiResponseString,
   SignOnControllerService,
 } from '../../../../../open-api-modules/identity-api-docs';
 import { AdminAccountEntity } from '../../../../../open-api-modules/dashboard-api-docs';
@@ -52,7 +51,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
       activeIconClass: 'sprite-group-5-coin-white',
       canActivate: [
         'dashboardHmgApplications:findApplications',
-        'dashboardTngApplications:findApplications',
+        'dashboardApplications:findTngApplications',
+        'dashboardApplications:findVacApplications',
       ],
       subItems: [
         {
@@ -61,7 +61,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
           ),
           iconClass: 'sprite-group-5-pl-24',
           path: '/payday-loan/list',
-          queryParams: {groupName: 'HMG'},
+          queryParams: { groupName: 'HMG' },
           canActivate: ['dashboardHmgApplications:findApplications'],
         },
         {
@@ -70,8 +70,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
           ),
           iconClass: 'sprite-group-5-pl-24',
           path: '/payday-loan/list',
-          queryParams: {groupName: 'TNG'},
-          canActivate: ['dashboardTngApplications:findApplications'],
+          queryParams: { groupName: 'TNG' },
+          canActivate: ['dashboardApplications:findTngApplications'],
         },
         {
           title: this.multiLanguageService.instant(
@@ -80,7 +80,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
           iconClass: 'sprite-group-5-pl-24',
           path: '/payday-loan/list',
           queryParams: { groupName: 'VAC' },
-          canActivate: [],
+          canActivate: ['dashboardApplications:findVacApplications'],
         },
       ],
       path: '/payday-loan/list',
@@ -132,11 +132,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.onResponsiveInverted();
-    window.addEventListener('resize', this.onResponsiveInverted);
   }
 
   ngOnDestroy(): void {
-    window.removeEventListener('resize', this.onResponsiveInverted);
     this.subManager.unsubscribe();
   }
 
@@ -178,7 +176,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
     );
     this.subManager.add(
       this.activeNavItem$.subscribe((selectedNavItem: NAV_ITEM) => {
-        console.log('selectedNavItem', selectedNavItem);
         this.selectedNavItem = selectedNavItem;
       })
     );

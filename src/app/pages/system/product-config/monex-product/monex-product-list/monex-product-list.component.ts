@@ -251,7 +251,7 @@ export class MonexProductListComponent implements OnInit {
 
   private async _checkActionPermissions() {
     const hasCredentialsCreatePermission =
-      await this.permissionsService.hasPermission('credentials:create');
+      await this. permissionsService.hasPermission('credentials:create');
     const hasDeleteAccountPermission =
       await this.permissionsService.hasPermission(
         'credentials:deleteAdminAccount'
