@@ -18,6 +18,8 @@ export class BaseBreadcrumbComponent implements OnInit {
   @Input() btnAddText: string;
   @Input() showBtnAdd: boolean = false;
   @Input() maxLengthSearchInput: number = 50;
+  @Input() btnExportText: string;
+  @Input() showBtnExport: boolean = false;
 
   _keyword: string;
   @Input()
@@ -32,6 +34,7 @@ export class BaseBreadcrumbComponent implements OnInit {
 
   @Output() submitSearchForm = new EventEmitter<string>();
   @Output() clickBtnAdd = new EventEmitter<string>();
+  @Output() clickBtnExport = new EventEmitter<string>();
 
   searchForm: FormGroup;
 
@@ -52,7 +55,11 @@ export class BaseBreadcrumbComponent implements OnInit {
     this.submitSearchForm.emit(searchData);
   }
 
-  onClickButton(event) {
+  onClickButtonAdd(event) {
     this.clickBtnAdd.emit(event);
+  }
+
+  onClickButtonExport(event) {
+    this.clickBtnExport.emit(event);
   }
 }
