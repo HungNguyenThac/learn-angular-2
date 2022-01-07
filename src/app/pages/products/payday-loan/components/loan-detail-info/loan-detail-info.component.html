@@ -55,7 +55,7 @@
                   <div class="card op-card op-drop-shadow">
                     <div class="card-title d-flex align-items-center gap-1">
                       {{
-                      "loan_app.loan_info.total_service_charge" | translate
+                        "loan_app.loan_info.total_service_charge" | translate
                       }}
                     </div>
                     <div class="card-body">
@@ -157,34 +157,45 @@
       <ng-container
         *ngxPermissionsOnly="[
           'hmgPaydayLoans:changeLoanStatus',
-          'paydays:changeLoanStatus'
+          'paydays:changeLoanStatusTng',
+          'paydays:changeLoanStatusVac'
         ]"
       >
-       <button
-          mat-flat-button
-          color="warn"
-          (click)="changeLoanStatus(prevLoanStatus, prevLoanStatusDisplay)"
-          [hidden]="!prevLoanStatus"
-        >
-          {{ prevLoanStatusDisplay }}
-        </button>
-        <button
-          mat-flat-button
-          color="accent"
-          (click)="changeLoanStatus(nextLoanStatus, nextLoanStatusDisplay)"
-          [hidden]="nextLoanStatus === 'UNKNOWN_STATUS'"
-        >
-          {{ nextLoanStatusDisplay }}
-        </button>
-        <button
-          mat-flat-button
-          color="warn"
-          (click)="changeLoanStatus(rejectLoanStatus, rejectLoanStatusDisplay)"
-          [hidden]="rejectLoanStatus === 'UNKNOWN_STATUS'"
-        >
-          <span class="sprite-group-7-dismiss"></span>
-          {{ rejectLoanStatusDisplay }}
-        </button>
+        <ng-container>
+          <button
+            mat-flat-button
+            color="warn"
+            (click)="changeLoanStatus(prevLoanStatus, prevLoanStatusDisplay)"
+            [hidden]="!prevLoanStatus"
+          >
+            {{ prevLoanStatusDisplay }}
+          </button>
+        </ng-container>
+
+        <ng-container>
+          <button
+            mat-flat-button
+            color="accent"
+            (click)="changeLoanStatus(nextLoanStatus, nextLoanStatusDisplay)"
+            [hidden]="nextLoanStatus === 'UNKNOWN_STATUS'"
+          >
+            {{ nextLoanStatusDisplay }}
+          </button>
+        </ng-container>
+
+        <ng-container>
+          <button
+            mat-flat-button
+            color="warn"
+            (click)="
+              changeLoanStatus(rejectLoanStatus, rejectLoanStatusDisplay)
+            "
+            [hidden]="rejectLoanStatus === 'UNKNOWN_STATUS'"
+          >
+            <span class="sprite-group-7-dismiss"></span>
+            {{ rejectLoanStatusDisplay }}
+          </button>
+        </ng-container>
       </ng-container>
     </div>
   </div>

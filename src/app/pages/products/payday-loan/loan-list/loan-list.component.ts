@@ -1,6 +1,7 @@
 import { ToastrService } from 'ngx-toastr';
 import {
   APPLICATION_TYPE,
+  COMPANY_NAME,
   REPAYMENT_STATUS,
 } from '../../../../core/common/enum/payday-loan';
 import { PaydayLoanHmg } from '../../../../../../open-api-modules/dashboard-api-docs';
@@ -574,29 +575,41 @@ export class LoanListComponent implements OnInit, OnDestroy {
       this.multiLanguageService.instant('breadcrumb.manage_payday_loan') +
       ' - ' +
       this.groupName;
-    if (params.groupName === 'HMG') {
-      this.filterOptions[2].options = this.statusFilterOptionsHmg.filter(
-        (ele) => ele?.value !== PAYDAY_LOAN_STATUS.DOCUMENT_AWAITING
-      );
-      this.loanListService
-        .getLoanDataHmg(params)
-        .subscribe(
-          (data: ApiResponseSearchAndPaginationResponsePaydayLoanHmg) => {
-            this._parseData(data?.result);
-          }
+    switch (params.groupName) {
+      case 'HMG':
+        this.filterOptions[2].options = this.statusFilterOptionsHmg.filter(
+          (ele) => ele?.value !== PAYDAY_LOAN_STATUS.DOCUMENT_AWAITING
         );
-    }
-
-    if (params.groupName === 'TNG') {
-      // Remove status CONTRACT_AWAITING from Filter sidebar
-      this.filterOptions[2].options = this.statusFilterOptionsTng;
-      this.loanListService
-        .getLoanDataTng(params)
-        .subscribe(
-          (data: ApiResponseSearchAndPaginationResponsePaydayLoanTng) => {
-            this._parseData(data?.result);
-          }
-        );
+        this.loanListService
+          .getLoanDataHmg(params)
+          .subscribe(
+            (data: ApiResponseSearchAndPaginationResponsePaydayLoanHmg) => {
+              this._parseData(data?.result);
+            }
+          );
+        break;
+      case 'TNG':
+        this.filterOptions[2].options = this.statusFilterOptionsTng;
+        this.loanListService
+          .getLoanDataTng(params, APPLICATION_TYPE.PDL_TNG)
+          .subscribe(
+            (data: ApiResponseSearchAndPaginationResponsePaydayLoanTng) => {
+              this._parseData(data?.result);
+            }
+          );
+        break;
+      case 'VAC':
+        this.filterOptions[2].options = this.statusFilterOptionsTng;
+        this.loanListService
+          .getLoanDataTng(params, APPLICATION_TYPE.PDL_VAC)
+          .subscribe(
+            (data: ApiResponseSearchAndPaginationResponsePaydayLoanTng) => {
+              this._parseData(data?.result);
+            }
+          );
+        break;
+      default:
+        break;
     }
   }
 
@@ -683,7 +696,7 @@ export class LoanListComponent implements OnInit, OnDestroy {
   onClickBtnExport(event) {
     let params = this._buildParams();
     switch (this.groupName) {
-      case 'HMG':
+      case COMPANY_NAME.HMG:
         this.loanListService.exportHmgLoanToExcel(params).subscribe((data) => {
           if (!data) {
             return this.notifier.error(
@@ -696,7 +709,7 @@ export class LoanListComponent implements OnInit, OnDestroy {
         });
         break;
 
-      case 'TNG':
+      case COMPANY_NAME.TNG:
         this.loanListService
           .exportLoanToExcel(params, APPLICATION_TYPE.PDL_TNG)
           .subscribe((data) => {
@@ -709,7 +722,8 @@ export class LoanListComponent implements OnInit, OnDestroy {
             }
             this.downloadExcelFile(data);
           });
-      case 'VAC':
+        break;
+      case COMPANY_NAME.VAC:
         this.loanListService
           .exportLoanToExcel(params, APPLICATION_TYPE.PDL_VAC_FACTORY)
           .subscribe((data) => {
@@ -722,6 +736,7 @@ export class LoanListComponent implements OnInit, OnDestroy {
             }
             this.downloadExcelFile(data);
           });
+        break;
       default:
         break;
     }
@@ -735,6 +750,7 @@ export class LoanListComponent implements OnInit, OnDestroy {
     const a = document.createElement('a');
     a.setAttribute('target', '_blank');
     a.setAttribute('href', convertData);
+    a.setAttribute('rel', 'noopener');
     const startTime = this.filterForm.getRawValue().startTime
       ? '-' + moment(this.filterForm.getRawValue().startTime).format('DDMMYYYY')
       : '';
@@ -742,7 +758,7 @@ export class LoanListComponent implements OnInit, OnDestroy {
       ? '-' + moment(this.filterForm.getRawValue().endTime).format('DDMMYYYY')
       : '';
     const convertFile =
-      'DanhSachKhoanứng-' + this.groupName + startTime + endTime + '.xlsx';
+      'DanhSachKhoanUng-' + this.groupName + startTime + endTime + '.xlsx';
     a.setAttribute('download', convertFile);
     document.body.appendChild(a);
     a.click();

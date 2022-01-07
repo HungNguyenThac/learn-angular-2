@@ -17,7 +17,8 @@ export const PaydayLoanRoutes: Routes = [
           permissions: {
             only: [
               'dashboardHmgApplications:findApplications',
-              'dashboardTngApplications:findApplications',
+              'dashboardApplications:findTngApplications',
+              'dashboardApplications:findVacApplications',
             ],
             redirectTo: '/',
           },

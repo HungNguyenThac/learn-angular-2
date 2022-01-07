@@ -479,6 +479,7 @@
     "status": {
       "documentation_complete": "Chờ phê duyệt",
       "document_awaiting": "Chờ hồ sơ",
+      "document_awaiting_vac": "Chờ xác minh",
       "initialized": "Đã khởi tạo",
       "funded": "Chờ ký hợp đồng",
       "auction": "Chờ đầu tư",

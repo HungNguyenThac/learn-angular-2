@@ -1,28 +1,42 @@
-import {NotificationService} from 'src/app/core/services/notification.service';
-import {ToastrService} from 'ngx-toastr';
+import { NotificationService } from 'src/app/core/services/notification.service';
+import { ToastrService } from 'ngx-toastr';
+import { UpdateLoanStatusRequest } from './../../../../../../../open-api-modules/loanapp-tng-api-docs/model/updateLoanStatusRequest';
+import { Subscription } from 'rxjs';
+import { PaydayLoanControllerService as PaydayLoanHmgControllerService } from './../../../../../../../open-api-modules/loanapp-hmg-api-docs/api/paydayLoanController.service';
+import { PaydayLoanControllerService as PaydayLoanTngControllerService } from './../../../../../../../open-api-modules/loanapp-tng-api-docs/api/paydayLoanController.service';
 import {
-  UpdateLoanStatusRequest
-} from './../../../../../../../open-api-modules/loanapp-tng-api-docs/model/updateLoanStatusRequest';
-import {Subscription} from 'rxjs';
+  APPLICATION_TYPE,
+  COMPANY_NAME,
+  PAYDAY_LOAN_STATUS,
+} from '../../../../../core/common/enum/payday-loan';
 import {
-  PaydayLoanControllerService as PaydayLoanHmgControllerService
-} from './../../../../../../../open-api-modules/loanapp-hmg-api-docs/api/paydayLoanController.service';
+  BUTTON_TYPE,
+  DATA_CELL_TYPE,
+  DATA_STATUS_TYPE,
+} from '../../../../../core/common/enum/operator';
+import { MultiLanguageService } from '../../../../../share/translate/multiLanguageService';
+import { MatDialog } from '@angular/material/dialog';
 import {
-  PaydayLoanControllerService as PaydayLoanTngControllerService
-} from './../../../../../../../open-api-modules/loanapp-tng-api-docs/api/paydayLoanController.service';
-import {APPLICATION_TYPE, PAYDAY_LOAN_STATUS,} from '../../../../../core/common/enum/payday-loan';
-import {BUTTON_TYPE, DATA_CELL_TYPE, DATA_STATUS_TYPE,} from '../../../../../core/common/enum/operator';
-import {MultiLanguageService} from '../../../../../share/translate/multiLanguageService';
-import {MatDialog} from '@angular/material/dialog';
-import {Component, EventEmitter, Input, OnDestroy, OnInit, Output,} from '@angular/core';
+  Component,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output,
+} from '@angular/core';
 import * as moment from 'moment';
-import {CustomerInfo, PaydayLoanHmg, Voucher} from 'open-api-modules/dashboard-api-docs';
-import {FormBuilder, FormGroup} from '@angular/forms';
+import {
+  CustomerInfo,
+  PaydayLoanHmg,
+  Voucher,
+} from 'open-api-modules/dashboard-api-docs';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import formatPunishStartTimeHmg from '../../../../../core/utils/format-punish-start-time-hmg';
 import formatPunishStartTimeTng from '../../../../../core/utils/format-punish-start-time-tng';
 import formatPunishCountHmg from '../../../../../core/utils/format-punish-count-hmg';
 import formatPunishCountTng from '../../../../../core/utils/format-punish-count-tng';
-import {GlobalConstants} from '../../../../../core/common/global-constants';
+import { GlobalConstants } from '../../../../../core/common/global-constants';
+import { NgxPermissionsService } from 'ngx-permissions';
 
 @Component({
   selector: 'app-loan-detail-info',
@@ -72,6 +86,43 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
     this.serviceFeeTng = this._serviceFeeTng();
     this._initLoanInfoData();
   }
+
+  @Input() groupName: string;
+
+  leftColumn: any[] = [];
+  middleColumn: any[] = [];
+  rightColumn: any[] = [];
+  serviceFeeHmg: any[] = [];
+  serviceFeeTng: any[] = [];
+  nextLoanStatus: string = PAYDAY_LOAN_STATUS.UNKNOWN_STATUS;
+  nextLoanStatusDisplay: string;
+  prevLoanStatus: string;
+  prevLoanStatusDisplay: string;
+  rejectLoanStatus: string = PAYDAY_LOAN_STATUS.UNKNOWN_STATUS;
+  rejectLoanStatusDisplay: string;
+  salaryStatus: string;
+  loanInfoForm: FormGroup;
+  totalSettlementAmount: number;
+  maxLoanAmount: number;
+
+  subManager = new Subscription();
+  @Output() loanDetailDetectChangeStatus = new EventEmitter<any>();
+
+  constructor(
+    private multiLanguageService: MultiLanguageService,
+    private dialog: MatDialog,
+    private paydayLoanHmgControllerService: PaydayLoanHmgControllerService,
+    private paydayLoanTngControllerService: PaydayLoanTngControllerService,
+    private notificationService: NotificationService,
+    private notifier: ToastrService,
+    private formBuilder: FormBuilder
+  ) {
+    this.loanInfoForm = this.formBuilder.group({
+      note: [''],
+    });
+  }
+
+  ngOnInit(): void {}
 
   private _initLeftColumn() {
     return [
@@ -348,81 +399,6 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
     ];
   }
 
-  calculateServiceFee(loanDetail) {
-    if (loanDetail?.companyInfo.name === 'TNG') {
-      if (
-        loanDetail?.expectedAmount *
-        GlobalConstants.PL_VALUE_DEFAULT.SERVICE_FEE_TNG <
-        GlobalConstants.PL_VALUE_DEFAULT.MINIMUM_SERVICE_FEE_TNG
-      ) {
-        return GlobalConstants.PL_VALUE_DEFAULT.MINIMUM_SERVICE_FEE_TNG;
-      } else {
-        return (
-          loanDetail?.expectedAmount *
-          GlobalConstants.PL_VALUE_DEFAULT.SERVICE_FEE_TNG
-        );
-      }
-    } else {
-      return (
-        loanDetail?.expectedAmount *
-        GlobalConstants.PL_VALUE_DEFAULT.SERVICE_FEE_HMG
-      );
-    }
-  }
-
-  getDiscountValue(voucher: Voucher) {
-    if (!voucher) {
-      return 0;
-    }
-    let discountAmount =
-      voucher.percentage * 0.025 * this.loanDetail?.expectedAmount;
-    // check max discount accepted
-    if (discountAmount > voucher.maxValue) {
-      return (discountAmount = voucher.maxValue);
-    }
-    return discountAmount;
-  }
-
-  leftColumn: any[] = [];
-  middleColumn: any[] = [];
-  rightColumn: any[] = [];
-  serviceFeeHmg: any[] = [];
-  serviceFeeTng: any[] = [];
-
-  currentTime = new Date();
-
-  @Input() groupName: string;
-  nextLoanStatus: string = PAYDAY_LOAN_STATUS.UNKNOWN_STATUS;
-  nextLoanStatusDisplay: string;
-  prevLoanStatus: string = null;
-  prevLoanStatusDisplay: string;
-  rejectLoanStatus: string = PAYDAY_LOAN_STATUS.UNKNOWN_STATUS;
-  rejectLoanStatusDisplay: string;
-  salaryStatus: string;
-  loanInfoForm: FormGroup;
-  totalSettlementAmount: number;
-  maxLoanAmount: number;
-
-  subManager = new Subscription();
-  @Output() loanDetailDetectChangeStatus = new EventEmitter<any>();
-
-  constructor(
-    private multiLanguageService: MultiLanguageService,
-    private dialog: MatDialog,
-    private paydayLoanHmgControllerService: PaydayLoanHmgControllerService,
-    private paydayLoanTngControllerService: PaydayLoanTngControllerService,
-    private notificationService: NotificationService,
-    private notifier: ToastrService,
-    private formBuilder: FormBuilder
-  ) {
-    this.loanInfoForm = this.formBuilder.group({
-      note: [''],
-    });
-  }
-
-  ngOnInit(): void {
-  }
-
   changeLoanStatus(newStatus, newStatusDisplay) {
     const currentLoanStatusDisplay = this.multiLanguageService.instant(
       `payday_loan.status.${this.loanDetail.status.toLowerCase()}`
@@ -445,38 +421,151 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
     this.subManager.add(
       promptDialogRef.afterClosed().subscribe((buttonType: BUTTON_TYPE) => {
         if (buttonType === BUTTON_TYPE.PRIMARY) {
-          const updateLoanStatusRequest: UpdateLoanStatusRequest = {
-            customerId: this.loanDetail.customerId,
-            status: newStatus,
-            applicationType: APPLICATION_TYPE.PDL_TNG
-          };
-          if (this.groupName === 'HMG') {
-            updateLoanStatusRequest.applicationType = APPLICATION_TYPE.PDL_HMG
-            this.paydayLoanHmgControllerService
-              .changeLoanStatus(this.loanDetail.id, updateLoanStatusRequest)
-              .subscribe((result) => {
-                if (result?.responseCode === 200) {
-                  this.loanDetailDetectChangeStatus.emit();
-                } else {
-                  this.notifier.error(JSON.stringify(result?.message));
-                }
-              });
-          }
-
-          if (this.groupName === 'TNG') {
-            updateLoanStatusRequest.applicationType = APPLICATION_TYPE.PDL_TNG
-            this.paydayLoanTngControllerService
-              .changeLoanStatus(this.loanDetail.id, updateLoanStatusRequest)
-              .subscribe((result) => {
-                if (result?.responseCode === 200) {
-                  this.loanDetailDetectChangeStatus.emit();
-                } else {
-                  this.notifier.error(JSON.stringify(result?.message));
-                }
-              });
-          }
+          this.confirmChangeStatus(newStatus);
         }
       })
+    );
+  }
+
+  hasPermissionChangeStatus(status) {
+    let canDoPermissions = [];
+    switch (this.groupName) {
+      case COMPANY_NAME.TNG:
+        canDoPermissions.push(this.hasPermissionChangeStatusTngLoan(status));
+        break;
+      case COMPANY_NAME.HMG:
+        canDoPermissions.push(this.hasPermissionChangeStatusHmgLoan(status));
+        break;
+      case COMPANY_NAME.VAC:
+        canDoPermissions.push(this.hasPermissionChangeStatusVACLoan(status));
+        break;
+      default:
+        break;
+    }
+    console.log('canDoPermissions', canDoPermissions);
+    return canDoPermissions;
+  }
+
+  private hasPermissionChangeStatusTngLoan(status) {
+    switch (status) {
+      case PAYDAY_LOAN_STATUS.INITIALIZED:
+        return 'paydays:updateStatusInitializeTngLoan';
+      case PAYDAY_LOAN_STATUS.AUCTION:
+        return 'paydays:updateStatusPendingForMatchingTngLoan';
+      case PAYDAY_LOAN_STATUS.DOCUMENT_AWAITING:
+        return 'paydays:updateStatusDocumentAwaitingTngLoan';
+      case PAYDAY_LOAN_STATUS.DOCUMENTATION_COMPLETE:
+        return 'paydays:updateStatusDocumentCompleteTngLoan';
+      case PAYDAY_LOAN_STATUS.FUNDED:
+        return 'paydays:updateStatusAwaitingContractTngLoan';
+      case PAYDAY_LOAN_STATUS.CONTRACT_ACCEPTED:
+        return 'paydays:updateStatusContractAcceptedTngLoan';
+      case PAYDAY_LOAN_STATUS.AWAITING_DISBURSEMENT:
+        return 'paydays:updateStatusAwaitingDisbursementTngLoan';
+      case PAYDAY_LOAN_STATUS.DISBURSED:
+        return 'paydays:updateStatusDisbursedTngLoan';
+      case PAYDAY_LOAN_STATUS.IN_REPAYMENT:
+        return 'paydays:updateStatusUnderRepaymentTngLoan';
+      case PAYDAY_LOAN_STATUS.COMPLETED:
+        return 'paydays:updateStatusCompletedTngLoan';
+      case PAYDAY_LOAN_STATUS.REJECTED:
+        return 'paydays:updateStatusRejectedTngLoan';
+      case PAYDAY_LOAN_STATUS.WITHDRAW:
+        return 'paydays:updateStatusWithdrawTngLoan';
+      case PAYDAY_LOAN_STATUS.CONTRACT_REJECTED:
+        return 'paydays:updateStatusContractRejectTngLoan';
+      default:
+        return 'paydays:changeLoanStatusTng';
+    }
+  }
+
+  private async hasPermissionChangeStatusHmgLoan(status) {
+    return 'hmgPaydayLoans:changeLoanStatus';
+  }
+
+  private async hasPermissionChangeStatusVACLoan(status) {
+    switch (status) {
+      case PAYDAY_LOAN_STATUS.INITIALIZED:
+        return 'paydays:updateStatusInitializeVacLoan';
+      case PAYDAY_LOAN_STATUS.AUCTION:
+        return 'paydays:updateStatusPendingForMatchingVacLoan';
+      case PAYDAY_LOAN_STATUS.DOCUMENT_AWAITING:
+        return 'paydays:updateStatusDocumentAwaitingVacLoan';
+      case PAYDAY_LOAN_STATUS.DOCUMENTATION_COMPLETE:
+        return 'paydays:updateStatusDocumentCompleteVacLoan';
+      case PAYDAY_LOAN_STATUS.FUNDED:
+        return 'paydays:updateStatusAwaitingContractVacLoan';
+      case PAYDAY_LOAN_STATUS.CONTRACT_ACCEPTED:
+        return 'paydays:updateStatusContractAcceptedVacLoan';
+      case PAYDAY_LOAN_STATUS.AWAITING_DISBURSEMENT:
+        return 'paydays:updateStatusAwaitingDisbursementVacLoan';
+      case PAYDAY_LOAN_STATUS.DISBURSED:
+        return 'paydays:updateStatusDisbursedVacLoan';
+      case PAYDAY_LOAN_STATUS.IN_REPAYMENT:
+        return 'paydays:updateStatusUnderRepaymentVacLoan';
+      case PAYDAY_LOAN_STATUS.COMPLETED:
+        return 'paydays:updateStatusCompletedVacLoan';
+      case PAYDAY_LOAN_STATUS.REJECTED:
+        return 'paydays:updateStatusRejectedVacLoan';
+      case PAYDAY_LOAN_STATUS.WITHDRAW:
+        return 'paydays:updateStatusWithdrawVacLoan';
+      case PAYDAY_LOAN_STATUS.CONTRACT_REJECTED:
+        return 'paydays:updateStatusContractRejectVacLoan';
+      default:
+        return 'paydays:changeLoanStatusVac';
+    }
+  }
+
+  confirmChangeStatus(newStatus) {
+    const updateLoanStatusRequest: UpdateLoanStatusRequest = {
+      customerId: this.loanDetail.customerId,
+      status: newStatus,
+      applicationType: APPLICATION_TYPE.PDL_TNG,
+    };
+
+    switch (this.groupName) {
+      case COMPANY_NAME.HMG:
+        updateLoanStatusRequest.applicationType = APPLICATION_TYPE.PDL_HMG;
+        this.changePaydayLoanHMGStatus(updateLoanStatusRequest);
+        break;
+      case COMPANY_NAME.TNG:
+        updateLoanStatusRequest.applicationType = APPLICATION_TYPE.PDL_TNG;
+        this.changePaydayLoanStatus(updateLoanStatusRequest);
+        break;
+      case COMPANY_NAME.VAC:
+        updateLoanStatusRequest.applicationType = APPLICATION_TYPE.PDL_VAC;
+        this.changePaydayLoanStatus(updateLoanStatusRequest);
+        break;
+      default:
+        break;
+    }
+  }
+
+  changePaydayLoanHMGStatus(updateLoanStatusRequest: UpdateLoanStatusRequest) {
+    this.subManager.add(
+      this.paydayLoanHmgControllerService
+        .changeLoanStatus(this.loanDetail.id, updateLoanStatusRequest)
+        .subscribe((result) => {
+          if (result?.responseCode === 200) {
+            this.loanDetailDetectChangeStatus.emit();
+          } else {
+            this.notifier.error(JSON.stringify(result?.message));
+          }
+        })
+    );
+  }
+
+  changePaydayLoanStatus(updateLoanStatusRequest: UpdateLoanStatusRequest) {
+    this.subManager.add(
+      this.paydayLoanTngControllerService
+        .changeLoanStatus(this.loanDetail.id, updateLoanStatusRequest)
+        .subscribe((result) => {
+          if (result?.responseCode === 200) {
+            this.loanDetailDetectChangeStatus.emit();
+          } else {
+            this.notifier.error(JSON.stringify(result?.message));
+          }
+        })
     );
   }
 
@@ -497,7 +586,7 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
 
   //Số tiền vay tối đa
   getMaxLoanAmount(companyGroupName: string) {
-    if (companyGroupName === 'HMG') {
+    if (companyGroupName === COMPANY_NAME.HMG) {
       return this.getMaxHMGValue(this.customerInfo?.annualIncome);
     } else {
       return this.getMaxTNGValue(this.customerInfo?.annualIncome);
@@ -563,7 +652,7 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
     const currentLoanStatus = this.loanDetail?.status;
     switch (currentLoanStatus) {
       case PAYDAY_LOAN_STATUS.INITIALIZED:
-        if (this.groupName === 'HMG') {
+        if (this.groupName === COMPANY_NAME.HMG) {
           this.nextLoanStatus = PAYDAY_LOAN_STATUS.DOCUMENTATION_COMPLETE;
           this.rejectLoanStatus = PAYDAY_LOAN_STATUS.WITHDRAW;
           break;
@@ -588,7 +677,10 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
         break;
 
       case PAYDAY_LOAN_STATUS.FUNDED:
-        if (this.groupName === 'TNG') {
+        if (
+          this.groupName === COMPANY_NAME.TNG ||
+          this.groupName === COMPANY_NAME.VAC
+        ) {
           this.nextLoanStatus = PAYDAY_LOAN_STATUS.CONTRACT_ACCEPTED;
           this.rejectLoanStatus = PAYDAY_LOAN_STATUS.WITHDRAW;
           break;
@@ -638,8 +730,8 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
     );
     this.prevLoanStatusDisplay = this.prevLoanStatus
       ? this.multiLanguageService.instant(
-        `payday_loan.status.${this.prevLoanStatus.toLowerCase()}`
-      )
+          `payday_loan.status.${this.prevLoanStatus.toLowerCase()}`
+        )
       : null;
 
     return;
@@ -659,7 +751,7 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
   }
 
   getOverdueDate() {
-    if (this.loanDetail?.companyInfo?.groupName === 'HMG') {
+    if (this.loanDetail?.companyInfo?.groupName === COMPANY_NAME.HMG) {
       return formatPunishStartTimeHmg(
         this.loanDetail?.createdAt,
         this.loanDetail?.expectedTenure
@@ -673,7 +765,7 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
   }
 
   getOverdueDateCount() {
-    if (this.loanDetail?.companyInfo?.groupName === 'HMG') {
+    if (this.loanDetail?.companyInfo?.groupName === COMPANY_NAME.HMG) {
       return formatPunishCountHmg(
         this.loanDetail?.createdAt,
         this.loanDetail?.expectedTenure
@@ -684,6 +776,45 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
         this.loanDetail?.expectedTenure
       );
     }
+  }
+
+  calculateServiceFee(loanDetail) {
+    switch (loanDetail?.companyInfo?.name) {
+      case COMPANY_NAME.TNG:
+      case COMPANY_NAME.VAC:
+        if (
+          loanDetail?.expectedAmount *
+            GlobalConstants.PL_VALUE_DEFAULT.SERVICE_FEE_TNG <
+          GlobalConstants.PL_VALUE_DEFAULT.MINIMUM_SERVICE_FEE_TNG
+        ) {
+          return GlobalConstants.PL_VALUE_DEFAULT.MINIMUM_SERVICE_FEE_TNG;
+        } else {
+          return (
+            loanDetail?.expectedAmount *
+            GlobalConstants.PL_VALUE_DEFAULT.SERVICE_FEE_TNG
+          );
+        }
+      case COMPANY_NAME.HMG:
+        return (
+          loanDetail?.expectedAmount *
+          GlobalConstants.PL_VALUE_DEFAULT.SERVICE_FEE_HMG
+        );
+      default:
+        return null;
+    }
+  }
+
+  getDiscountValue(voucher: Voucher) {
+    if (!voucher) {
+      return 0;
+    }
+    let discountAmount =
+      voucher.percentage * 0.025 * this.loanDetail?.expectedAmount;
+    // check max discount accepted
+    if (discountAmount > voucher.maxValue) {
+      return (discountAmount = voucher.maxValue);
+    }
+    return discountAmount;
   }
 
   ngOnDestroy() {
