@@ -66,6 +66,18 @@ h2.op-breadcrumb-title {
   border-radius: 4px;
 }
 
+.op-breadcrumb-export-btn {
+  font-family: $sfPro;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 22px;
+  padding: 9px 16px;
+  color: $white;
+  background: $monex-color-00;
+  border-radius: 4px;
+}
+
 @media (max-width: 992px) {
   #op-breadcrumb-content {
     padding: 10px 0;

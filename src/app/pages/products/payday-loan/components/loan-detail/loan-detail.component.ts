@@ -20,8 +20,8 @@ import {
   CompanyControllerService,
   CustomerInfo,
 } from 'open-api-modules/dashboard-api-docs';
-import {CustomerDetailService} from 'src/app/pages/customer/components/customer-detail-element/customer-detail.service';
-import {APPLICATION_TYPE} from "../../../../../core/common/enum/payday-loan";
+import { CustomerDetailService } from 'src/app/pages/customer/components/customer-detail-element/customer-detail.service';
+import { APPLICATION_TYPE } from 'src/app/core/common/enum/payday-loan';
 
 @Component({
   selector: 'app-loan-detail',

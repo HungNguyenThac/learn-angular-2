@@ -55,13 +55,23 @@
       </div>
       <div class="d-inline-flex gap-3">
         <button
-          (click)="onClickButton($event)"
+          (click)="onClickButtonAdd($event)"
           mat-button
           class="op-breadcrumb-add-btn"
           *ngIf="showBtnAdd"
         >
           <span class="sprite-group-5-add-white"></span>
           <span class="ps-1">{{ btnAddText }}</span>
+        </button>
+
+        <button
+          (click)="onClickButtonExport($event)"
+          mat-button
+          class="op-breadcrumb-export-btn"
+          *ngIf="showBtnExport"
+        >
+          <mat-icon>save_alt</mat-icon>
+          <span class="ps-1">{{ btnExportText }}</span>
         </button>
       </div>
     </div>

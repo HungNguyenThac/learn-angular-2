@@ -422,7 +422,8 @@
       "withdrew": "Đã hủy",
       "download": "Tải xuống",
       "no_contract": "Không có hợp đồng",
-      "downloading": "Đang tải xuống tài liệu"
+      "downloading": "Đang tải xuống tài liệu",
+      "downloading_fail": "Tải xuống thất bại"
     },
     "documents": {
       "ekyc_info": "Thông tin EKYC",

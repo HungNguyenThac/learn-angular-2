@@ -1,3 +1,4 @@
+import { query } from '@angular/animations';
 import {
   APPLICATION_TYPE,
   PAYDAY_LOAN_STATUS,
@@ -136,6 +137,19 @@ export class LoanListService {
       requestBody,
       params.orderBy,
       params.sortDirection === 'desc'
+    );
+  }
+
+  public exportHmgLoanToExcel(params) {
+    let query = this._buildRequestBodyGetList(params);
+    return this.applicationHmgControllerService.exportHmgLoanToExcel(query);
+  }
+
+  public exportLoanToExcel(params, applicationType) {
+    let query = this._buildRequestBodyGetList(params);
+    return this.applicationTngControllerService.exportTngLoanToExcel(
+      applicationType,
+      query
     );
   }
 

@@ -1,4 +1,5 @@
 <app-base-management-layout
+  (onClickBtnExport)="onClickBtnExport($event)"
   (onExpandElementChange)="onExpandElementChange($event)"
   (onFilterActionTrigger)="onFilterActionTrigger($event)"
   (onFilterChange)="onFilterFormChange($event)"
@@ -28,9 +29,7 @@
       'dashboardHmgApplications:getLoanById'
     ]"
     (detectUpdateLoanAfterSign)="updateElementInfo($event)"
-    (loanDetailTriggerUpdateStatus)="
-      updateElementInfo($event)
-    "
+    (loanDetailTriggerUpdateStatus)="updateElementInfo($event)"
     [customerId]="expandedElementCustomerId"
     [groupName]="filterForm.controls.groupName.value"
     [loanId]="expandedElementLoanId"
