@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import {
   BUTTON_TYPE,
   DATA_CELL_TYPE,
+  DATA_STATUS_TYPE,
   FILTER_TYPE,
   QUERY_CONDITION_TYPE,
   RESPONSE_CODE,
@@ -23,19 +24,23 @@ import { FilterEventModel } from '../../../../../public/models/filter/filter-eve
 import { PageEvent } from '@angular/material/paginator/public-api';
 import { FilterActionEventModel } from '../../../../../public/models/filter/filter-action-event.model';
 import {
-  AddNewQuestionComponent,
   BaseManagementLayoutComponent,
-  MerchantDetailDialogComponent,
   MerchantGroupDialogComponent,
 } from '../../../../../share/components';
-import { AddNewPdDialogComponent } from '../../../../../share/components/operators/pd-system/add-new-pd-dialog/add-new-pd-dialog.component';
-import { ApiResponseSearchAndPaginationResponseMerchant } from '../../../../../../../open-api-modules/dashboard-api-docs';
+import { AddNewPdDialogComponent } from '../../../../../share/components';
 import { PdGroupListService } from './pd-group-list.service';
 import { Subscription } from 'rxjs';
+import { CdeService } from '../../../../../../../open-api-modules/monexcore-api-docs';
 import {
-  ApiResponse,
-  CdeService,
-} from '../../../../../../../open-api-modules/monexcore-api-docs';
+  CustomApiResponse,
+  PdQuestion,
+  PdGroupQuestions,
+  PDGroup,
+} from '../../pd-interface';
+import {
+  ApiResponseSearchAndPaginationResponseQuestion,
+  CdeControllerService,
+} from '../../../../../../../open-api-modules/dashboard-api-docs';
 
 @Component({
   selector: 'app-pd-group-list',
@@ -44,38 +49,6 @@ import {
 })
 export class PdGroupListComponent implements OnInit {
   //Mock data
-  merchantList: any[] = [
-    {
-      id: 'PDG-268',
-      name: 'Nhóm câu hỏi số 1',
-      createdDate: '09/12/2021 16:20',
-      updateDate: '09/12/2021 05:21',
-    },
-    {
-      id: 'PDG-142',
-      name: 'Nhóm câu hỏi số 2',
-      createdDate: '12/21/2021 16:20',
-      updateDate: '10/12/2021 05:21',
-    },
-    {
-      id: 'PDG-521',
-      name: 'Nhóm câu hỏi số 3',
-      createdDate: '06/21/2021 16:20',
-      updateDate: '10/11/2021 05:21',
-    },
-    {
-      id: 'PDG-831',
-      name: 'Nhóm câu hỏi số 4',
-      createdDate: '09/12/2021 16:20',
-      updateDate: '09/12/2021 05:21',
-    },
-    {
-      id: 'PDG-028',
-      name: 'Nhóm câu hỏi số 5',
-      createdDate: '09/12/2021 16:20',
-      updateDate: '09/12/2021 05:21',
-    },
-  ];
   allColumns: any[] = [
     {
       key: 'code',
@@ -92,6 +65,15 @@ export class PdGroupListComponent implements OnInit {
       showed: true,
     },
     {
+      key: 'description',
+      title: this.multiLanguageService.instant(
+        'pd_system.pd_group.description'
+      ),
+      type: DATA_CELL_TYPE.TEXT,
+      format: null,
+      showed: true,
+    },
+    {
       key: 'createdAt',
       title: this.multiLanguageService.instant(
         'pd_system.pd_group.created_date'
@@ -101,12 +83,10 @@ export class PdGroupListComponent implements OnInit {
       showed: true,
     },
     {
-      key: 'updatedAt',
-      title: this.multiLanguageService.instant(
-        'pd_system.pd_group.update_date'
-      ),
-      type: DATA_CELL_TYPE.DATETIME,
-      format: 'dd/MM/yyyy HH:mm',
+      key: 'status',
+      title: this.multiLanguageService.instant('pd_system.pd_group.status'),
+      type: DATA_CELL_TYPE.STATUS,
+      format: DATA_STATUS_TYPE.USER_STATUS,
       showed: true,
     },
   ];
@@ -124,7 +104,7 @@ export class PdGroupListComponent implements OnInit {
       style: 'background-color: rgba(255, 255, 255, 0.1);',
     },
     {
-      hidden: false,
+      hidden: true,
       action: 'lock',
       color: 'accent',
       content: this.multiLanguageService.instant(
@@ -134,6 +114,7 @@ export class PdGroupListComponent implements OnInit {
       style: 'background-color: rgba(255, 255, 255, 0.1);',
     },
   ];
+  questionList;
   totalItems: number = 0;
   filterForm: FormGroup;
   dataSource: MatTableDataSource<any> = new MatTableDataSource([]);
@@ -227,6 +208,7 @@ export class PdGroupListComponent implements OnInit {
     private titleService: Title,
     private activatedRoute: ActivatedRoute,
     private pdGroupListService: PdGroupListService,
+    private cdeControllerService: CdeControllerService,
     private cdeService: CdeService
   ) {
     this._initFilterForm();
@@ -234,17 +216,54 @@ export class PdGroupListComponent implements OnInit {
 
   ngOnInit(): void {
     this._getGroupList();
+    this._getQuestionList();
+  }
+
+  public _getQuestionList() {
+    // this.subManager.add(
+    //   this.cdeControllerService
+    //     .getQuestions(100, 0, {})
+    //     .subscribe((data: ApiResponseSearchAndPaginationResponseQuestion) => {
+    //       this.questionList = data.result.data;
+    //       console.log('questionList', this.questionList);
+    //       this.questionList = this.questionList.map((item) => {
+    //         return {
+    //           id: item.id,
+    //           content: item.content,
+    //         };
+    //       });
+    //       console.log('pioajsfoiaiofsoasfubaufgb', this.questionList);
+    //     })
+    // );
+    this.subManager.add(
+      this.cdeService
+        .cdeControllerGetPdQuestion()
+        .subscribe((data: CustomApiResponse<PdQuestion>) => {
+          this.questionList = data.result;
+          console.log('questionList', this.questionList);
+          this.questionList = this.questionList.map((item) => {
+            return {
+              id: item.id,
+              content: item.content,
+            };
+          });
+          console.log('pioajsfoiaiofsoasfubaufgb', this.questionList);
+        })
+    );
   }
 
   public _getGroupList() {
     const params = this._buildParams();
-    this.pdGroupListService
-      .getData(params)
-      .subscribe((data: ApiResponseSearchAndPaginationResponseMerchant) => {
-        console.log('question list', data?.result);
-        this._parseData(data?.result);
-        this.dataSource.data = data?.result?.data;
-      });
+    // this.pdGroupListService.getData(params).subscribe((data) => {
+    //   this._parseData(data?.result);
+    //   this.dataSource.data = data?.result?.data;
+    // });
+    this.subManager.add(
+      this.cdeService.cdeControllerGetPdGroup().subscribe((data) => {
+        // @ts-ignore
+        this.dataSource.data = data?.result;
+      })
+    );
   }
 
   public onSortChange(sortState: Sort) {
@@ -418,6 +437,13 @@ export class PdGroupListComponent implements OnInit {
         this._deleteById(id);
       }
     });
+    setTimeout(() => {
+      if (action === 'delete') {
+        this.notifier.success(
+          this.multiLanguageService.instant('pd_system.pd_group.delete_toast')
+        );
+      }
+    }, 2000);
   }
 
   public lockMultiplePrompt(ids) {
@@ -477,11 +503,9 @@ export class PdGroupListComponent implements OnInit {
   public deleteMultiplePrompt(ids) {
     const confirmDeleteRef = this.notificationService.openPrompt({
       imgUrl: '../../../../../assets/img/icon/group-5/delete-dialog.svg',
-      title: this.multiLanguageService.instant(
-        'merchant.merchant_detail.delete_merchant.title'
-      ),
+      title: this.multiLanguageService.instant('pd_system.pd_group.delete'),
       content: this.multiLanguageService.instant(
-        'merchant.merchant_detail.delete_merchant.content'
+        'pd_system.pd_group.delete_content'
       ),
       primaryBtnText: this.multiLanguageService.instant('common.delete'),
       primaryBtnClass: 'btn-error',
@@ -500,26 +524,17 @@ export class PdGroupListComponent implements OnInit {
     }
     this.subManager.add(
       this.cdeService.cdeControllerDeletePdGroup(parseInt(id), {}).subscribe(
-        (result: ApiResponse) => {
+        (result: CustomApiResponse<PDGroup>) => {
           if (!result || result.responseCode !== RESPONSE_CODE.SUCCESS) {
             return this.notifier.error(
               JSON.stringify(result?.message),
               result?.errorCode
             );
           }
-
-          this.notifier.success(
-            this.multiLanguageService.instant(
-              'merchant.merchant_detail.delete_merchant.toast'
-            )
-          );
         },
         (error) => {},
         () => {
-          setTimeout(() => {
-            this.triggerDeselectUsers();
-            this.refreshContent();
-          }, 3000);
+          this.refreshContent();
         }
       )
     );
@@ -565,25 +580,54 @@ export class PdGroupListComponent implements OnInit {
     this.openUpdateDialog(element);
   }
 
-  public openUpdateDialog(info) {
+  public openUpdateDialog(info: PDGroup) {
+    let leftArr = [...this.questionList];
+    let rightArr = [];
+    if (info.pdGroupQuestions) {
+      rightArr = info.pdGroupQuestions.map((ele) => {
+        return {
+          id: ele.pdQuestionId,
+          content: ele.pdQuestion.content,
+          order: ele.order,
+        };
+      });
+      let ids = rightArr.map((ele) => ele.id);
+      leftArr = leftArr.filter((ele) => !ids.includes(ele.id));
+    }
+
     const addGroupDialogRef = this.dialog.open(AddNewPdDialogComponent, {
       panelClass: 'custom-info-dialog-container',
       maxWidth: '1200px',
       width: '90%',
       data: {
-        dialogTitle: 'Thêm nhóm câu hỏi',
+        isPdGroup: true,
+        dialogTitle: 'Chỉnh sửa nhóm câu hỏi',
         inputName: 'Tên nhóm câu hỏi',
         inputCode: 'Mã nhóm câu hỏi',
         listTitle: 'Danh sách câu hỏi',
         pdInfo: info,
+        leftArr: leftArr,
+        rightArr: rightArr,
       },
     });
     this.subManager.add(
       addGroupDialogRef.afterClosed().subscribe((result: any) => {
         if (result && result.type === BUTTON_TYPE.PRIMARY) {
-          let createRequest = this._bindingDialogData(result.data);
-          this.sendAddRequest(createRequest);
-          console.log(result.data);
+          let createRequest = this._bindingDialogData(result.data, 'create');
+          let addQuestionsRequest = this._bindingDialogData(result.data.addArr);
+          let updateQuestionsRequest = this._bindingDialogData(
+            result.data.updateArr
+          );
+          let removeQuestionsRequest = this._bindingDialogData(
+            result.data.removeArr
+          );
+          this.sendUpdateRequest(
+            info.id,
+            createRequest,
+            addQuestionsRequest,
+            updateQuestionsRequest,
+            removeQuestionsRequest
+          );
         }
       })
     );
@@ -595,6 +639,8 @@ export class PdGroupListComponent implements OnInit {
       maxWidth: '1200px',
       width: '90%',
       data: {
+        isPdGroup: true,
+        leftArr: this.questionList,
         dialogTitle: 'Thêm nhóm câu hỏi',
         inputName: 'Tên nhóm câu hỏi',
         inputCode: 'Mã nhóm câu hỏi',
@@ -604,28 +650,102 @@ export class PdGroupListComponent implements OnInit {
     this.subManager.add(
       addGroupDialogRef.afterClosed().subscribe((result: any) => {
         if (result && result.type === BUTTON_TYPE.PRIMARY) {
-          let createRequest = this._bindingDialogData(result.data);
-          this.sendAddRequest(createRequest);
-          console.log(result.data);
+          let createRequest = this._bindingDialogData(result.data, 'create');
+          let addRequest = this._bindingDialogData(result.data.addArr);
+          this.sendCreateRequest(createRequest, addRequest);
         }
       })
     );
   }
 
-  sendAddRequest(addRequest) {
+  public sendCreateRequest(createRequest, addRequest) {
     this.subManager.add(
       this.cdeService
-        .cdeControllerCreatePdGroup(addRequest)
-        .subscribe((result: ApiResponse) => {
+        .cdeControllerCreatePdGroup(createRequest)
+        .subscribe((result: CustomApiResponse<PDGroup>) => {
           if (!result || result.responseCode !== RESPONSE_CODE.SUCCESS) {
             return this.notifier.error(
               JSON.stringify(result?.message),
               result?.errorCode
             );
+          } else {
+            if (addRequest) {
+              for (let i = 0; i < addRequest.length; i++) {
+                this.cdeService
+                  .cdeControllerUpdatePdGroupQuestion(
+                    result.result.id,
+                    'add',
+                    addRequest[i]
+                  )
+                  .subscribe((result) => {});
+              }
+            }
           }
+
           setTimeout(() => {
             this.notifier.success(
-              this.multiLanguageService.instant('common.create_success')
+              this.multiLanguageService.instant(
+                'pd_system.add_pd_dialog.create_group_success'
+              )
+            );
+            this.refreshContent();
+            this.notificationService.hideLoading();
+          }, 3000);
+        })
+    );
+  }
+
+  public sendUpdateRequest(
+    id,
+    update,
+    addRequest?,
+    updateRequest?,
+    removeRequest?
+  ) {
+    this.subManager.add(
+      this.cdeService
+        .cdeControllerUpdatePdGroup(id, update)
+        .subscribe((result: CustomApiResponse<PDGroup>) => {
+          if (!result || result.responseCode !== RESPONSE_CODE.SUCCESS) {
+            return this.notifier.error(
+              JSON.stringify(result?.message),
+              result?.errorCode
+            );
+          } else {
+            if (addRequest) {
+              for (let i = 0; i < addRequest.length; i++) {
+                this.cdeService
+                  .cdeControllerUpdatePdGroupQuestion(id, 'add', addRequest[i])
+                  .subscribe((result) => {});
+              }
+            }
+            if (updateRequest) {
+              for (let i = 0; i < updateRequest.length; i++) {
+                this.cdeService
+                  .cdeControllerUpdatePdGroupQuestion(
+                    id,
+                    'update',
+                    updateRequest[i]
+                  )
+                  .subscribe((result) => {});
+              }
+            }
+            if (removeRequest) {
+              for (let i = 0; i < removeRequest.length; i++) {
+                this.cdeService
+                  .cdeControllerUpdatePdGroupQuestion(
+                    id,
+                    'remove',
+                    removeRequest[i]
+                  )
+                  .subscribe((result) => {});
+              }
+            }
+          }
+
+          setTimeout(() => {
+            this.notifier.success(
+              this.multiLanguageService.instant('common.update_success')
             );
             this.refreshContent();
             this.notificationService.hideLoading();
@@ -636,17 +756,28 @@ export class PdGroupListComponent implements OnInit {
 
   public refreshContent() {
     setTimeout(() => {
+      this.triggerDeselectUsers();
       this._getGroupList();
     }, 2000);
   }
 
-  private _bindingDialogData(data) {
-    return {
-      code: data?.code,
-      content: data?.content,
-      description: data?.description ? data?.description : null,
-      modelId: null,
-      questionIds: null,
-    };
+  private _bindingDialogData(data, type?) {
+    if (type === 'create') {
+      return {
+        code: data?.code,
+        content: data?.content,
+        description: data?.description ? data?.description : null,
+        status: data?.status,
+      };
+    } else {
+      let requestArray = [];
+      for (let i = 0; i < data.length; i++) {
+        requestArray.push({
+          questionId: data[i].id,
+          order: data[i].order,
+        });
+      }
+      return requestArray;
+    }
   }
 }

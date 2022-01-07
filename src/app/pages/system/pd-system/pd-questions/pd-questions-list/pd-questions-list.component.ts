@@ -34,6 +34,7 @@ import { AddNewQuestionComponent } from '../../../../../share/components/operato
 import {
   ApiResponseSearchAndPaginationResponseAdminAccountEntity,
   ApiResponseSearchAndPaginationResponseMerchant,
+  ApiResponseSearchAndPaginationResponseQuestion,
 } from '../../../../../../../open-api-modules/dashboard-api-docs';
 import { Subscription } from 'rxjs';
 import { PdQuestionsListService } from './pd-questions-list.service';
@@ -70,7 +71,7 @@ export class PdQuestionsListComponent implements OnInit {
       showed: true,
     },
     {
-      key: 'type',
+      key: 'answerType',
       title: this.multiLanguageService.instant('pd_system.pd_questions.type'),
       type: DATA_CELL_TYPE.TEXT,
       format: null,
@@ -111,7 +112,7 @@ export class PdQuestionsListComponent implements OnInit {
       style: 'background-color: rgba(255, 255, 255, 0.1);',
     },
     {
-      hidden: false,
+      hidden: true,
       action: 'lock',
       color: 'accent',
       content: this.multiLanguageService.instant(
@@ -226,19 +227,20 @@ export class PdQuestionsListComponent implements OnInit {
   }
 
   public _getQuestionsList() {
-    const params = this._buildParams();
-    this.pdQuestionsListService
-      .getData(params)
-      .subscribe((data: ApiResponseSearchAndPaginationResponseMerchant) => {
-        console.log('question list', data?.result);
-        this._parseData(data?.result);
-        this.dataSource.data = data?.result?.data;
-      });
-    // this.subManager.add(
-    //   this.cdeService.cdeControllerGetPdQuestion().subscribe((data) => {
-    //     console.log('ahisgduiasd', data);
-    //   })
-    // );
+    // const params = this._buildParams();
+    // this.pdQuestionsListService
+    //   .getData(params)
+    //   .subscribe((data: ApiResponseSearchAndPaginationResponseQuestion) => {
+    //     console.log('question list', data?.result);
+    //     this._parseData(data?.result);
+    //     this.dataSource.data = data?.result?.data;
+    //   });
+    this.subManager.add(
+      this.cdeService.cdeControllerGetPdQuestion().subscribe((data) => {
+        // @ts-ignore
+        this.dataSource.data = data?.result;
+      })
+    );
   }
 
   public onSortChange(sortState: Sort) {
@@ -432,6 +434,15 @@ export class PdQuestionsListComponent implements OnInit {
         this._deleteById(id);
       }
     });
+    setTimeout(() => {
+      if (action === 'delete') {
+        this.notifier.success(
+          this.multiLanguageService.instant(
+            'pd_system.pd_questions.delete_toast'
+          )
+        );
+      }
+    }, 2000);
   }
 
   private _lockById(id: string) {
@@ -471,11 +482,9 @@ export class PdQuestionsListComponent implements OnInit {
   public deleteMultiplePrompt(ids) {
     const confirmDeleteRef = this.notificationService.openPrompt({
       imgUrl: '../../../../../assets/img/icon/group-5/delete-dialog.svg',
-      title: this.multiLanguageService.instant(
-        'merchant.merchant_detail.delete_merchant.title'
-      ),
+      title: this.multiLanguageService.instant('pd_system.pd_questions.delete'),
       content: this.multiLanguageService.instant(
-        'merchant.merchant_detail.delete_merchant.content'
+        'pd_system.pd_questions.delete_content'
       ),
       primaryBtnText: this.multiLanguageService.instant('common.delete'),
       primaryBtnClass: 'btn-error',
@@ -501,19 +510,10 @@ export class PdQuestionsListComponent implements OnInit {
               result?.errorCode
             );
           }
-
-          this.notifier.success(
-            this.multiLanguageService.instant(
-              'merchant.merchant_detail.delete_merchant.toast'
-            )
-          );
         },
         (error) => {},
         () => {
-          setTimeout(() => {
-            this.triggerDeselectUsers();
-            this.refreshContent();
-          }, 3000);
+          this.refreshContent();
         }
       )
     );
@@ -614,7 +614,9 @@ export class PdQuestionsListComponent implements OnInit {
     this.subManager.add(
       addQuestionDialogRef.afterClosed().subscribe((result: any) => {
         if (result && result.type === BUTTON_TYPE.PRIMARY) {
+          console.log('auioshdiouashd', result.data);
           let createRequest = this._bindingDialogData(result.data);
+          console.log('createRequest', createRequest);
           this.sendAddRequest(createRequest);
         }
       })
@@ -634,7 +636,9 @@ export class PdQuestionsListComponent implements OnInit {
           }
           setTimeout(() => {
             this.notifier.success(
-              this.multiLanguageService.instant('common.create_success')
+              this.multiLanguageService.instant(
+                'pd_system.add_question_dialog.create_success'
+              )
             );
             this.refreshContent();
             this.notificationService.hideLoading();
@@ -645,6 +649,7 @@ export class PdQuestionsListComponent implements OnInit {
 
   public refreshContent() {
     setTimeout(() => {
+      this.triggerDeselectUsers();
       this._getQuestionsList();
     }, 2000);
   }
@@ -654,9 +659,10 @@ export class PdQuestionsListComponent implements OnInit {
       code: data?.code,
       content: data?.content,
       description: data?.description ? data?.description : null,
-      groupIds: data?.groupIds ? data?.groupIds : null,
       answerType: data?.answerType,
-      order: data?.order,
+      placeHolder: data?.placeHolder ? data?.placeHolder : null,
+      answers: data?.answers ? data?.answers : null,
+      isMandatory: data?.isMandatory,
     };
   }
 }

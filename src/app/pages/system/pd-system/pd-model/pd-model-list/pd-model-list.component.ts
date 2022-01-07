@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import {
   BUTTON_TYPE,
   DATA_CELL_TYPE,
+  DATA_STATUS_TYPE,
   FILTER_TYPE,
   QUERY_CONDITION_TYPE,
   RESPONSE_CODE,
@@ -29,14 +30,14 @@ import {
   MerchantGroupDialogComponent,
 } from '../../../../../share/components';
 import { AddNewPdDialogComponent } from '../../../../../share/components/operators/pd-system/add-new-pd-dialog/add-new-pd-dialog.component';
-import { ApiResponseSearchAndPaginationResponseMerchant } from '../../../../../../../open-api-modules/dashboard-api-docs';
 import { PdModelListService } from './pd-model-list.service';
 import { Subscription } from 'rxjs';
-import { ApiResponseAdminAccountEntity } from '../../../../../../../open-api-modules/identity-api-docs';
 import {
   ApiResponse,
   CdeService,
 } from '../../../../../../../open-api-modules/monexcore-api-docs';
+import { CustomApiResponse, PDGroup, PDModel } from '../../pd-interface';
+import { ApiResponseSearchAndPaginationResponseModel } from '../../../../../../../open-api-modules/dashboard-api-docs';
 
 @Component({
   selector: 'app-pd-model-list',
@@ -61,8 +62,10 @@ export class PdModelListComponent implements OnInit {
       showed: true,
     },
     {
-      key: 'group',
-      title: this.multiLanguageService.instant('pd_system.pd_model.group'),
+      key: 'description',
+      title: this.multiLanguageService.instant(
+        'pd_system.pd_model.description'
+      ),
       type: DATA_CELL_TYPE.TEXT,
       format: null,
       showed: true,
@@ -77,12 +80,10 @@ export class PdModelListComponent implements OnInit {
       showed: true,
     },
     {
-      key: 'updatedAt',
-      title: this.multiLanguageService.instant(
-        'pd_system.pd_model.update_date'
-      ),
-      type: DATA_CELL_TYPE.DATETIME,
-      format: 'dd/MM/yyyy HH:mm',
+      key: 'status',
+      title: this.multiLanguageService.instant('pd_system.pd_model.status'),
+      type: DATA_CELL_TYPE.STATUS,
+      format: DATA_STATUS_TYPE.USER_STATUS,
       showed: true,
     },
   ];
@@ -100,7 +101,7 @@ export class PdModelListComponent implements OnInit {
       style: 'background-color: rgba(255, 255, 255, 0.1);',
     },
     {
-      hidden: false,
+      hidden: true,
       action: 'lock',
       color: 'accent',
       content: this.multiLanguageService.instant(
@@ -110,6 +111,7 @@ export class PdModelListComponent implements OnInit {
       style: 'background-color: rgba(255, 255, 255, 0.1);',
     },
   ];
+  groupList;
   totalItems: number = 0;
   filterForm: FormGroup;
   dataSource: MatTableDataSource<any> = new MatTableDataSource([]);
@@ -212,22 +214,41 @@ export class PdModelListComponent implements OnInit {
 
   ngOnInit(): void {
     this._getModelList();
+    this._getGroupList();
+  }
+
+  public _getGroupList() {
+    this.subManager.add(
+      this.cdeService
+        .cdeControllerGetPdGroup()
+        .subscribe((data: CustomApiResponse<PDGroup>) => {
+          this.groupList = data.result;
+          this.groupList = this.groupList.map((item) => {
+            return {
+              id: item.id,
+              content: item.content,
+            };
+          });
+          console.log('pioajsfoiaiofsoasfubaufgb', this.groupList);
+        })
+    );
   }
 
   public _getModelList() {
     const params = this._buildParams();
-    this.pdModelListService
-      .getData(params)
-      .subscribe((data: ApiResponseSearchAndPaginationResponseMerchant) => {
-        console.log('question list', data?.result);
-        this._parseData(data?.result);
-        this.dataSource.data = data?.result?.data;
-      });
-    // this.subManager.add(
-    //   this.cdeService.cdeControllerGetPdQuestion().subscribe((data) => {
-    //     console.log('ahisgduiasd', data);
-    //   })
-    // );
+    // this.pdModelListService
+    //   .getData(params)
+    //   .subscribe((data: ApiResponseSearchAndPaginationResponseModel) => {
+    //     console.log('question list', data?.result);
+    //     this._parseData(data?.result);
+    //     this.dataSource.data = data?.result?.data;
+    //   });
+    this.subManager.add(
+      this.cdeService.cdeControllerGetPdModel().subscribe((data) => {
+        // @ts-ignore
+        this.dataSource.data = data?.result;
+      })
+    );
   }
 
   public onSortChange(sortState: Sort) {
@@ -401,6 +422,13 @@ export class PdModelListComponent implements OnInit {
         this._deleteById(id);
       }
     });
+    setTimeout(() => {
+      if (action === 'delete') {
+        this.notifier.success(
+          this.multiLanguageService.instant('pd_system.pd_model.delete_toast')
+        );
+      }
+    }, 2000);
   }
 
   public lockMultiplePrompt(ids) {
@@ -460,11 +488,9 @@ export class PdModelListComponent implements OnInit {
   public deleteMultiplePrompt(ids) {
     const confirmDeleteRef = this.notificationService.openPrompt({
       imgUrl: '../../../../../assets/img/icon/group-5/delete-dialog.svg',
-      title: this.multiLanguageService.instant(
-        'merchant.merchant_detail.delete_merchant.title'
-      ),
+      title: this.multiLanguageService.instant('pd_system.pd_model.delete'),
       content: this.multiLanguageService.instant(
-        'merchant.merchant_detail.delete_merchant.content'
+        'pd_system.pd_model.delete_content'
       ),
       primaryBtnText: this.multiLanguageService.instant('common.delete'),
       primaryBtnClass: 'btn-error',
@@ -490,19 +516,10 @@ export class PdModelListComponent implements OnInit {
               result?.errorCode
             );
           }
-
-          this.notifier.success(
-            this.multiLanguageService.instant(
-              'merchant.merchant_detail.delete_merchant.toast'
-            )
-          );
         },
         (error) => {},
         () => {
-          setTimeout(() => {
-            this.triggerDeselectUsers();
-            this.refreshContent();
-          }, 3000);
+          this.refreshContent();
         }
       )
     );
@@ -550,39 +567,166 @@ export class PdModelListComponent implements OnInit {
   }
 
   public openUpdateDialog(info) {
+    let rightArr = info.pdModelGroups.map((ele) => {
+      return {
+        id: ele.pdGroupId,
+        content: ele.pdGroup.content,
+        order: ele.order,
+      };
+    });
+    let leftArr = [...this.groupList];
+    let ids = rightArr.map((ele) => ele.id);
+    leftArr = leftArr.filter((ele) => !ids.includes(ele.id));
+
     const addPdModelDialogRef = this.dialog.open(AddNewPdDialogComponent, {
       panelClass: 'custom-info-dialog-container',
       maxWidth: '1200px',
       width: '90%',
       data: {
+        isPdGroup: false,
         dialogTitle: 'Thêm Pd model',
         inputName: 'Tên Pd model',
         inputCode: 'Mã Pd model',
         listTitle: 'Danh sách nhóm câu hỏi',
         pdInfo: info,
+        leftArr: leftArr,
+        rightArr: rightArr,
       },
     });
     this.subManager.add(
       addPdModelDialogRef.afterClosed().subscribe((result: any) => {
         if (result && result.type === BUTTON_TYPE.PRIMARY) {
-          let updateRequest = this._bindingDialogData(result.data);
-          this.sendUpdateRequest(updateRequest);
+          let createRequest = this._bindingDialogData(result.data, 'create');
+          let addQuestionsRequest = this._bindingDialogData(result.data.addArr);
+          let updateQuestionsRequest = this._bindingDialogData(
+            result.data.updateArr
+          );
+          let removeQuestionsRequest = this._bindingDialogData(
+            result.data.removeArr
+          );
+          this.sendUpdateRequest(
+            info.id,
+            createRequest,
+            addQuestionsRequest,
+            updateQuestionsRequest,
+            removeQuestionsRequest
+          );
         }
       })
     );
   }
 
-  sendUpdateRequest(updateRequest) {
+  onClickBtnAdd(event) {
+    const addPdModelDialogRef = this.dialog.open(AddNewPdDialogComponent, {
+      panelClass: 'custom-info-dialog-container',
+      maxWidth: '1200px',
+      width: '90%',
+      data: {
+        isPdGroup: false,
+        leftArr: this.groupList,
+        dialogTitle: 'Thêm Pd model',
+        inputName: 'Tên Pd model',
+        inputCode: 'Mã Pd model',
+        listTitle: 'Danh sách nhóm câu hỏi',
+        status: 'null',
+      },
+    });
+    this.subManager.add(
+      addPdModelDialogRef.afterClosed().subscribe((result: any) => {
+        if (result && result.type === BUTTON_TYPE.PRIMARY) {
+          let createRequest = this._bindingDialogData(result.data, 'create');
+          let addRequest = this._bindingDialogData(result.data.addArr);
+          this.sendCreateRequest(createRequest, addRequest);
+        }
+      })
+    );
+  }
+
+  public sendCreateRequest(createRequest, addRequest) {
     this.subManager.add(
       this.cdeService
-        .cdeControllerUpdatePdModel(this.pdModelInfo, updateRequest)
-        .subscribe((result: ApiResponse) => {
+        .cdeControllerCreatePdModel(createRequest)
+        .subscribe((result: CustomApiResponse<PDModel>) => {
           if (!result || result.responseCode !== RESPONSE_CODE.SUCCESS) {
             return this.notifier.error(
               JSON.stringify(result?.message),
               result?.errorCode
             );
+          } else {
+            if (addRequest) {
+              for (let i = 0; i < addRequest.length; i++) {
+                this.cdeService
+                  .cdeControllerUpdatePdModelGroup(
+                    result.result.id,
+                    'add',
+                    addRequest[i]
+                  )
+                  .subscribe((result) => {});
+              }
+            }
           }
+
+          setTimeout(() => {
+            this.notifier.success(
+              this.multiLanguageService.instant(
+                'pd_system.add_pd_dialog.create_model_success'
+              )
+            );
+            this.refreshContent();
+            this.notificationService.hideLoading();
+          }, 3000);
+        })
+    );
+  }
+
+  public sendUpdateRequest(
+    id,
+    update,
+    addRequest?,
+    updateRequest?,
+    removeRequest?
+  ) {
+    this.subManager.add(
+      this.cdeService
+        .cdeControllerUpdatePdModel(id, update)
+        .subscribe((result: CustomApiResponse<PDModel>) => {
+          if (!result || result.responseCode !== RESPONSE_CODE.SUCCESS) {
+            return this.notifier.error(
+              JSON.stringify(result?.message),
+              result?.errorCode
+            );
+          } else {
+            if (addRequest) {
+              for (let i = 0; i < addRequest.length; i++) {
+                this.cdeService
+                  .cdeControllerUpdatePdModelGroup(id, 'add', addRequest[i])
+                  .subscribe((result) => {});
+              }
+            }
+            if (updateRequest) {
+              for (let i = 0; i < updateRequest.length; i++) {
+                this.cdeService
+                  .cdeControllerUpdatePdModelGroup(
+                    id,
+                    'update',
+                    updateRequest[i]
+                  )
+                  .subscribe((result) => {});
+              }
+            }
+            if (removeRequest) {
+              for (let i = 0; i < removeRequest.length; i++) {
+                this.cdeService
+                  .cdeControllerUpdatePdModelGroup(
+                    id,
+                    'remove',
+                    removeRequest[i]
+                  )
+                  .subscribe((result) => {});
+              }
+            }
+          }
+
           setTimeout(() => {
             this.notifier.success(
               this.multiLanguageService.instant('common.update_success')
@@ -594,63 +738,30 @@ export class PdModelListComponent implements OnInit {
     );
   }
 
-  onClickBtnAdd(event) {
-    const addPdModelDialogRef = this.dialog.open(AddNewPdDialogComponent, {
-      panelClass: 'custom-info-dialog-container',
-      maxWidth: '1200px',
-      width: '90%',
-      data: {
-        dialogTitle: 'Thêm Pd model',
-        inputName: 'Tên Pd model',
-        inputCode: 'Mã Pd model',
-        listTitle: 'Danh sách nhóm câu hỏi',
-      },
-    });
-    this.subManager.add(
-      addPdModelDialogRef.afterClosed().subscribe((result: any) => {
-        if (result && result.type === BUTTON_TYPE.PRIMARY) {
-          let createRequest = this._bindingDialogData(result.data);
-          this.sendAddRequest(createRequest);
-        }
-      })
-    );
-  }
-
-  sendAddRequest(addRequest) {
-    this.subManager.add(
-      this.cdeService
-        .cdeControllerCreatePdModel(addRequest)
-        .subscribe((result: ApiResponse) => {
-          if (!result || result.responseCode !== RESPONSE_CODE.SUCCESS) {
-            return this.notifier.error(
-              JSON.stringify(result?.message),
-              result?.errorCode
-            );
-          }
-          setTimeout(() => {
-            this.notifier.success(
-              this.multiLanguageService.instant('common.create_success')
-            );
-            this.refreshContent();
-            this.notificationService.hideLoading();
-          }, 3000);
-        })
-    );
-  }
-
   public refreshContent() {
     setTimeout(() => {
+      this.triggerDeselectUsers();
       this._getModelList();
     }, 2000);
   }
 
-  private _bindingDialogData(data) {
-    return {
-      code: data?.code,
-      content: data?.content,
-      description: data?.description ? data?.description : null,
-      loanProductId: data?.loanProductId ? data?.loanProductId : null,
-      groupIds: data?.groupIds ? data?.groupIds : null,
-    };
+  private _bindingDialogData(data, type?) {
+    if (type === 'create') {
+      return {
+        code: data?.code,
+        content: data?.content,
+        description: data?.description ? data?.description : null,
+        status: data?.status,
+      };
+    } else {
+      let requestArray = [];
+      for (let i = 0; i < data.length; i++) {
+        requestArray.push({
+          groupId: data[i].id,
+          order: data[i].order,
+        });
+      }
+      return requestArray;
+    }
   }
 }

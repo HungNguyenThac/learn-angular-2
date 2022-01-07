@@ -17,6 +17,24 @@
               <!-- Left Individual Info -->
               <div class="col-4 col-sm-4 col-md-4 col-lg-4 pr-2">
                 <div>
+                  <mat-form-field appearance="outline" class="w-100" floatLabel="never">
+                    <mat-label>{{inputCode}}</mat-label>
+                    <input
+                      (blur)="isLoginInputFocus = false"
+                      (focus)="isLoginInputFocus = true"
+                      [ngClass]="
+                        isLoginInputFocus ? 'is-focused-input' : ''
+                      "
+                      [placeholder]="inputCode"
+                      [value]="addPdForm.controls.code.value ? addPdForm.controls.code.value : (isPdGroup ? 'PDG-XXX' : 'PDM-XXX')"
+                      disabled
+                      aria-autocomplete="none"
+                      matInput
+                    />
+                  </mat-form-field>
+                </div>
+
+                <div>
                   <mat-form-field autofilled="false" appearance="outline" class="w-100" floatLabel="never">
                     <mat-label>{{ inputName}}</mat-label>
                     <input (blur)="isAccountNameInputFocus = false"
@@ -31,29 +49,6 @@
                     <show-errors
                       [control]="addPdForm.controls['content']"
                       [controlLabel]="inputName"
-                      [hasIconPrefix]="false"
-                    >
-                    </show-errors>
-                  </mat-form-field>
-                </div>
-
-                <div>
-                  <mat-form-field appearance="outline" class="w-100" floatLabel="never">
-                    <mat-label>{{inputCode}}</mat-label>
-                    <input
-                      (blur)="isLoginInputFocus = false"
-                      (focus)="isLoginInputFocus = true"
-                      [ngClass]="
-                        isLoginInputFocus ? 'is-focused-input' : ''
-                      "
-                      [placeholder]="inputCode"
-                      formControlName="code"
-                      aria-autocomplete="none"
-                      matInput
-                    />
-                    <show-errors
-                      [control]="addPdForm.controls['code']"
-                      [controlLabel]="inputCode"
                       [hasIconPrefix]="false"
                     >
                     </show-errors>
@@ -98,9 +93,9 @@
                     <div class="col-5">
                       <span>{{listTitle}}</span>
                       <div class="box">
-                        <div (click)="onClickQuestion($event, question)" *ngFor="let question of leftArr"
+                        <div (click)="onClickLeft($event, item)" *ngFor="let item of leftArr"
                              class="item w-100">
-                          {{question.name}}
+                          {{item.content}}
                         </div>
                       </div>
                     </div>
@@ -108,7 +103,7 @@
                       <div class="move-button d-flex flex-column justify-content-center gap-3">
                         <button
                           type="button"
-                          (click)="moveToChosen()"
+                          (click)="moveToRight()"
                           mat-flat-button
                           color="accent">
                           <span> >> </span>
@@ -116,7 +111,7 @@
                         <button
                           color="accent"
                           type="button"
-                          (click)="moveBack()"
+                          (click)="moveToLeft()"
                           mat-flat-button>
                           <span> << </span>
                         </button>
@@ -125,9 +120,9 @@
                     <div class="col-5">
                       <span>Danh sách được chọn</span>
                       <div class="box">
-                        <div (click)="onClickChosenQuestion($event, chosenQuestion)"
-                             *ngFor="let chosenQuestion of rightArr" class="item w-100">
-                          {{chosenQuestion.name}}
+                        <div (click)="onClickRight($event, item)"
+                             *ngFor="let item of rightArr" class="item w-100">
+                          {{item.content}}
                         </div>
                       </div>
                     </div>

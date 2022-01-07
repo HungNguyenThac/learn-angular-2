@@ -807,8 +807,12 @@
       "add_group": "Thêm nhóm câu hỏi",
       "id": "Mã nhóm câu hỏi",
       "name": "Tên nhóm câu hỏi",
+      "description": "Mô tả",
       "created_date": "Ngày tạo",
-      "update_date": "Ngày cập nhật"
+      "update_date": "Ngày cập nhật",
+      "status": "Trạng thái",
+      "delete_content": "Bạn có chắc muốn xoá nhóm câu hỏi này?",
+      "delete_toast": "Xoá nhóm câu hỏi thành công"
     },
     "pd_questions": {
       "delete": "Xoá câu hỏi",
@@ -818,16 +822,9 @@
       "content": "Nội dung câu hỏi",
       "type": "Kiểu câu trả lời",
       "created_date": "Ngày tạo",
-      "update_date": "Ngày cập nhật"
-    },
-    "pd_answers": {
-      "title": "Danh sách câu trả lời",
-      "add_answer": "Thêm câu trả lời",
-      "id": "Mã câu trả lời",
-      "question": "Câu hỏi",
-      "content": "Nội dung câu trả lời",
-      "created_date": "Ngày tạo",
-      "update_date": "Ngày cập nhật"
+      "update_date": "Ngày cập nhật",
+      "delete_content": "Bạn có chắc muốn xoá câu hỏi này?",
+      "delete_toast": "Xoá câu hỏi thành công"
     },
     "pd_model": {
       "delete": "Xoá PD model",
@@ -836,14 +833,20 @@
       "id": "Mã PD model",
       "name": "Tên PD model",
       "group": "Nhóm câu hỏi",
+      "description": "Mô tả",
+      "status": "Trạng thái",
       "created_date": "Ngày tạo",
-      "update_date": "Ngày cập nhật"
+      "update_date": "Ngày cập nhật",
+      "delete_content": "Bạn có chắc muốn xoá PD Model này?",
+      "delete_toast": "Xoá PD Model thành công"
     },
     "add_pd_dialog": {
       "group_name": "Tên nhóm câu hỏi",
       "group_code": "Mã nhóm câu hỏi",
       "description": "Mô tả",
-      "active": "Active"
+      "active": "Active",
+      "create_group_success": "Tạo nhóm câu hỏi thành công",
+      "create_model_success": "Tạo PD Model thành công"
     },
     "add_question_dialog": {
       "name": "Nội dung câu hỏi",
@@ -855,7 +858,9 @@
       "answers": "Nội dung câu trả lời",
       "string_input": "Nội dung câu trả lời do người dùng nhập",
       "answer_input": "Nội dung câu trả lời",
-      "active": "Active"
+      "active": "Active",
+      "mandetory": "Bắt buộc",
+      "create_success": "Tạo nhóm câu hỏi thành công"
     }
   },
   "product_status": {

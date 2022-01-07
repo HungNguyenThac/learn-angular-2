@@ -42,19 +42,19 @@ export class AddNewQuestionComponent implements OnInit {
   sliderAnswers: any[] = [
     {
       value: '',
-      placeholder: 'MinNumber',
+      placeHolder: 'MinNumber',
     },
     {
       value: '',
-      placeholder: 'MaxNumber',
+      placeHolder: 'MaxNumber',
     },
     {
       value: '',
-      placeholder: 'StepSize',
+      placeHolder: 'StepSize',
     },
     {
       value: '',
-      placeholder: 'Đơn vị',
+      placeHolder: 'Đơn vị',
     },
   ];
 
@@ -87,10 +87,11 @@ export class AddNewQuestionComponent implements OnInit {
     this.addPdForm = this.formBuilder.group({
       code: [''],
       content: [''],
-      answerType: [''],
-      placeholder: [''],
       description: [''],
-      order: [''],
+      answerType: [''],
+      placeHolder: [''],
+      answers: [''],
+      isMandatory: false,
     });
   }
 
@@ -101,10 +102,11 @@ export class AddNewQuestionComponent implements OnInit {
     this.addPdForm.patchValue({
       code: this.questionInfo?.code,
       content: this.questionInfo?.content,
-      answerType: this.questionInfo?.answerType,
-      groupIds: this.questionInfo?.groupIds,
       description: this.questionInfo?.description,
-      order: this.questionInfo?.order,
+      answerType: this.questionInfo?.answerType,
+      placeHolder: this.questionInfo?.placeHolder,
+      answers: this.questionInfo?.answers,
+      isMandatory: this.questionInfo?.isMandatory,
     });
   }
 
@@ -134,9 +136,33 @@ export class AddNewQuestionComponent implements OnInit {
     this.numAnswers.splice(i, 1);
   }
 
+  getAnswersList() {
+    let answers = [];
+    let answerType = this.addPdForm.controls.answerType.value;
+    if (answerType === 'Slider') {
+      for (let i = 0; i < this.sliderAnswers.length; i++) {
+        answers.push(this.sliderAnswers[i].value);
+      }
+    } else if (answerType === 'String' || answerType === 'DateTime') {
+      answers = answers;
+    } else {
+      for (let i = 0; i < this.numAnswers.length; i++) {
+        answers.push(this.numAnswers[i].value);
+      }
+    }
+    this.addPdForm.patchValue({
+      code: 'PDQ',
+      answers: answers,
+    });
+  }
+
   submitForm() {
-    this.numAnswers = this.numAnswers.filter((answer) => answer.value !== '');
-    console.log('sliderAnswers', this.sliderAnswers);
+    if (this.addPdForm.controls.isMandatory.value) {
+      this.addPdForm.patchValue({
+        isMandatory: true,
+      });
+    }
+    this.getAnswersList();
     if (this.addPdForm.invalid) {
       return;
     }

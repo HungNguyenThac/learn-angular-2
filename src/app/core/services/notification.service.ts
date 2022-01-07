@@ -61,7 +61,7 @@ export class NotificationService {
     this.promptDialogRef = this.dialog.open(PlPromptComponent, {
       panelClass: 'custom-dialog-container',
       height: 'auto',
-      minHeight: '194px',
+      minHeight: '184px',
       maxWidth: '330px',
       data: {
         imgBackgroundClass: payload?.imgBackgroundClass
