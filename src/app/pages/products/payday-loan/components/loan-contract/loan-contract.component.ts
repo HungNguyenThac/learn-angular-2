@@ -3,6 +3,7 @@ import { ApiResponseContract } from './../../../../../../../open-api-modules/loa
 import {
   CustomerInfo,
   PaydayLoanHmg,
+  PaydayLoanTng,
 } from 'open-api-modules/dashboard-api-docs';
 import { MultiLanguageService } from 'src/app/share/translate/multiLanguageService';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -18,7 +19,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
 import {
   DATA_CELL_TYPE,
-  DATA_STATUS_TYPE, RESPONSE_CODE,
+  DATA_STATUS_TYPE,
+  RESPONSE_CODE,
 } from 'src/app/core/common/enum/operator';
 import { LoanListService } from '../../loan-list/loan-list.service';
 import { Subscription } from 'rxjs';
@@ -49,7 +51,7 @@ export class LoanContractComponent implements OnInit, OnDestroy {
     private dialog: MatDialog,
     private domSanitizer: DomSanitizer,
     private multiLanguageService: MultiLanguageService,
-    private LoanListService: LoanListService
+    private loanListService: LoanListService
   ) {}
 
   _loanId: string;
@@ -63,14 +65,14 @@ export class LoanContractComponent implements OnInit, OnDestroy {
     this._loanId = value;
   }
 
-  _loanDetail: PaydayLoanHmg;
+  _loanDetail: PaydayLoanHmg | PaydayLoanTng;
 
   @Input()
-  get loanDetail(): PaydayLoanHmg {
+  get loanDetail(): PaydayLoanHmg | PaydayLoanTng {
     return this._loanDetail;
   }
 
-  set loanDetail(value: PaydayLoanHmg) {
+  set loanDetail(value: PaydayLoanHmg | PaydayLoanTng) {
     this._loanDetail = value;
     this.getDisplayStatus();
     this._getLoanContractData();
@@ -126,7 +128,7 @@ export class LoanContractComponent implements OnInit, OnDestroy {
     const idDocument = this.loanContractData.idDocument;
 
     this.subManager.add(
-      this.LoanListService.signContract(
+      this.loanListService.signContract(
         customerId,
         idRequest,
         idDocument
@@ -139,13 +141,11 @@ export class LoanContractComponent implements OnInit, OnDestroy {
           );
           return;
         }
-        
+
         this.triggerUpdateLoanAfterSign.emit();
         setTimeout(() => {
           this.notifier.success(
-            this.multiLanguageService.instant(
-              'loan_app.loan_info.sign_success'
-            )
+            this.multiLanguageService.instant('loan_app.loan_info.sign_success')
           );
         }, 3000);
       })
@@ -154,7 +154,7 @@ export class LoanContractComponent implements OnInit, OnDestroy {
 
   downloadFileContract(documentPath, customerId) {
     this.subManager.add(
-      this.LoanListService.downloadSingleFileContract(
+      this.loanListService.downloadSingleFileContract(
         documentPath,
         customerId
       ).subscribe((data) => {
@@ -165,7 +165,7 @@ export class LoanContractComponent implements OnInit, OnDestroy {
   }
 
   onClickDownload() {
-    this.LoanListService.downloadBlobFile(this.loanContractFile);
+    this.loanListService.downloadBlobFile(this.loanContractFile);
     this.notifier.info(
       this.multiLanguageService.instant('loan_app.loan_contract.downloading')
     );
@@ -190,7 +190,7 @@ export class LoanContractComponent implements OnInit, OnDestroy {
 
   private _getLoanContractData() {
     this.subManager.add(
-      this.LoanListService.getContractData(
+      this.loanListService.getContractData(
         this.loanDetail?.id,
         this.loanDetail.companyInfo?.groupName
       ).subscribe((response: ApiResponseContract) => {

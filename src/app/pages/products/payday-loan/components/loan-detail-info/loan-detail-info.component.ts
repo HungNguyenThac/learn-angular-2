@@ -28,6 +28,7 @@ import * as moment from 'moment';
 import {
   CustomerInfo,
   PaydayLoanHmg,
+  PaydayLoanTng,
   Voucher,
 } from 'open-api-modules/dashboard-api-docs';
 import { FormBuilder, FormGroup } from '@angular/forms';
@@ -70,13 +71,13 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
     this._initLoanInfoData();
   }
 
-  _loanDetail: PaydayLoanHmg;
+  _loanDetail: PaydayLoanHmg | PaydayLoanTng;
   @Input()
-  get loanDetail(): PaydayLoanHmg {
+  get loanDetail(): PaydayLoanHmg | PaydayLoanTng {
     return this._loanDetail;
   }
 
-  set loanDetail(value: PaydayLoanHmg) {
+  set loanDetail(value: PaydayLoanHmg | PaydayLoanTng) {
     this._loanDetail = value;
     this.getChangeLoanStatus();
     this.leftColumn = this._initLeftColumn();
@@ -533,7 +534,7 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
         this.changePaydayLoanStatus(updateLoanStatusRequest);
         break;
       case COMPANY_NAME.VAC:
-        updateLoanStatusRequest.applicationType = APPLICATION_TYPE.PDL_VAC;
+        updateLoanStatusRequest.applicationType = this.loanDetail.applicationType;
         this.changePaydayLoanStatus(updateLoanStatusRequest);
         break;
       default:
