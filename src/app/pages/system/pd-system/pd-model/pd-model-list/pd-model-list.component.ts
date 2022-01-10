@@ -430,6 +430,7 @@ export class PdModelListComponent implements OnInit {
         this.notifier.success(
           this.multiLanguageService.instant('pd_system.pd_model.delete_toast')
         );
+        this.refreshContent();
       }
     }, 2000);
   }
@@ -511,20 +512,16 @@ export class PdModelListComponent implements OnInit {
       return;
     }
     this.subManager.add(
-      this.cdeService.cdeControllerDeletePdModel(parseInt(id), {}).subscribe(
-        (result: ApiResponse) => {
+      this.cdeService
+        .cdeControllerDeletePdModel(parseInt(id), {})
+        .subscribe((result: ApiResponse) => {
           if (!result || result.responseCode !== RESPONSE_CODE.SUCCESS) {
             return this.notifier.error(
               JSON.stringify(result?.message),
               result?.errorCode
             );
           }
-        },
-        (error) => {},
-        () => {
-          this.refreshContent();
-        }
-      )
+        })
     );
   }
 
@@ -570,16 +567,23 @@ export class PdModelListComponent implements OnInit {
   }
 
   public openUpdateDialog(info) {
-    let rightArr = info.pdModelGroups.map((ele) => {
-      return {
-        id: ele.pdGroupId,
-        content: ele.pdGroup.content,
-        order: ele.order,
-      };
-    });
     let leftArr = [...this.groupList];
-    let ids = rightArr.map((ele) => ele.id);
-    leftArr = leftArr.filter((ele) => !ids.includes(ele.id));
+    let rightArr = [];
+    let modelGroups = info.pdModelGroups;
+    if (modelGroups) {
+      modelGroups = modelGroups.filter(
+        (modelGroup) => modelGroup.pdGroup !== null
+      );
+      rightArr = modelGroups.map((ele) => {
+        return {
+          id: ele.pdGroupId,
+          content: ele.pdGroup.content,
+          order: ele.order,
+        };
+      });
+      let ids = rightArr.map((ele) => ele.id);
+      leftArr = leftArr.filter((ele) => !ids.includes(ele.id));
+    }
 
     const addPdModelDialogRef = this.dialog.open(AddNewPdDialogComponent, {
       panelClass: 'custom-info-dialog-container',

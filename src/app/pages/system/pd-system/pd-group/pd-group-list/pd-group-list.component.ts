@@ -438,6 +438,7 @@ export class PdGroupListComponent implements OnInit {
         this.notifier.success(
           this.multiLanguageService.instant('pd_system.pd_group.delete_toast')
         );
+        this.refreshContent();
       }
     }, 2000);
   }
@@ -519,20 +520,16 @@ export class PdGroupListComponent implements OnInit {
       return;
     }
     this.subManager.add(
-      this.cdeService.cdeControllerDeletePdGroup(parseInt(id), {}).subscribe(
-        (result: CustomApiResponse<PDGroup>) => {
+      this.cdeService
+        .cdeControllerDeletePdGroup(parseInt(id), {})
+        .subscribe((result: CustomApiResponse<PDGroup>) => {
           if (!result || result.responseCode !== RESPONSE_CODE.SUCCESS) {
             return this.notifier.error(
               JSON.stringify(result?.message),
               result?.errorCode
             );
           }
-        },
-        (error) => {},
-        () => {
-          this.refreshContent();
-        }
-      )
+        })
     );
   }
 
@@ -579,8 +576,12 @@ export class PdGroupListComponent implements OnInit {
   public openUpdateDialog(info: PDGroup) {
     let leftArr = [...this.questionList];
     let rightArr = [];
-    if (info.pdGroupQuestions) {
-      rightArr = info.pdGroupQuestions.map((ele) => {
+    let groupQuestions = info.pdGroupQuestions;
+    if (groupQuestions) {
+      groupQuestions = groupQuestions.filter(
+        (groupQuestion) => groupQuestion.pdQuestion !== null
+      );
+      rightArr = groupQuestions.map((ele) => {
         return {
           id: ele.pdQuestionId,
           content: ele.pdQuestion.content,
@@ -656,9 +657,8 @@ export class PdGroupListComponent implements OnInit {
 
   public sendCreateRequest(createRequest, addRequest) {
     this.subManager.add(
-      this.cdeService
-        .cdeControllerCreatePdGroup(createRequest)
-        .subscribe((result: CustomApiResponse<PDGroup>) => {
+      this.cdeService.cdeControllerCreatePdGroup(createRequest).subscribe(
+        (result: CustomApiResponse<PDGroup>) => {
           if (!result || result.responseCode !== RESPONSE_CODE.SUCCESS) {
             return this.notifier.error(
               JSON.stringify(result?.message),
@@ -677,17 +677,18 @@ export class PdGroupListComponent implements OnInit {
               }
             }
           }
-
-          setTimeout(() => {
-            this.notifier.success(
-              this.multiLanguageService.instant(
-                'pd_system.add_pd_dialog.create_group_success'
-              )
-            );
-            this.refreshContent();
-            this.notificationService.hideLoading();
-          }, 3000);
-        })
+        },
+        () => {},
+        () => {
+          this.notifier.success(
+            this.multiLanguageService.instant(
+              'pd_system.add_pd_dialog.create_group_success'
+            )
+          );
+          this.refreshContent();
+          this.notificationService.hideLoading();
+        }
+      )
     );
   }
 
