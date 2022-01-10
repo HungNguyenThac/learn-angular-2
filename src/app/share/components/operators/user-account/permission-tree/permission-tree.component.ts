@@ -1,5 +1,5 @@
-import { PermissionEntity } from './../../../../../../../open-api-modules/identity-api-docs/model/permissionEntity';
-import { PermissionTypeLevelTwoResponse } from './../../../../../../../open-api-modules/dashboard-api-docs/model/PermissionTypeLevelTwoResponse';
+import { PermissionEntity } from '../../../../../../../open-api-modules/identity-api-docs';
+import { PermissionTypeLevelTwoResponse } from '../../../../../../../open-api-modules/dashboard-api-docs';
 import { SelectionModel } from '@angular/cdk/collections';
 import { FlatTreeControl } from '@angular/cdk/tree';
 import {
