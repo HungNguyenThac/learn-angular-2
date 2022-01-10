@@ -5,6 +5,7 @@ import {
   DATA_CELL_TYPE,
   DATA_STATUS_TYPE,
 } from 'src/app/core/common/enum/operator';
+import { PaydayLoanTng } from '../../../../../../../open-api-modules/dashboard-api-docs';
 
 @Component({
   selector: 'app-loan-rating',
@@ -22,16 +23,16 @@ export class LoanRatingComponent implements OnInit {
     this._loanId = value;
   }
 
-  _loanDetail: PaydayLoanHmg;
+  _loanDetail: PaydayLoanHmg | PaydayLoanTng;
   @Input()
-  get loanDetail(): PaydayLoanHmg {
+  get loanDetail(): PaydayLoanHmg | PaydayLoanTng {
     return this._loanDetail;
   }
 
-  set loanDetail(value: PaydayLoanHmg) {
+  set loanDetail(value: PaydayLoanHmg | PaydayLoanTng) {
     this._loanDetail = value;
     this.getRating();
-    this.getCustomerOpinion()
+    this.getCustomerOpinion();
   }
 
   middleColumn: any = [
@@ -39,13 +40,13 @@ export class LoanRatingComponent implements OnInit {
       title: this.multiLanguageService.instant(
         'loan_app.rating.customer_rating'
       ),
-      value: "",
+      value: '',
       type: DATA_CELL_TYPE.STATUS,
       format: DATA_STATUS_TYPE.PL_RATING_STATUS,
     },
     {
       title: this.multiLanguageService.instant('loan_app.rating.comment'),
-      value: "",
+      value: '',
       type: DATA_CELL_TYPE.TEXT,
       format: null,
     },
@@ -69,7 +70,7 @@ export class LoanRatingComponent implements OnInit {
   ];
 
   customerOpinionsArray: string[] = [];
-  customerOtherOpinion: string = ""
+  customerOtherOpinion: string = '';
   constructor(private multiLanguageService: MultiLanguageService) {}
 
   ngOnInit(): void {}
@@ -84,15 +85,16 @@ export class LoanRatingComponent implements OnInit {
       this.customerOtherOpinion = 'N/A';
       return;
     }
-    const fastOpinions = this.loanDetail?.ratingInfo?.customerOpinion.split('.');
-    const otherOpinion = []
+    const fastOpinions =
+      this.loanDetail?.ratingInfo?.customerOpinion.split('.');
+    const otherOpinion = [];
     for (let i = 0; i < fastOpinions.length; i++) {
       const fastOpinion = fastOpinions[i];
-       if (this.fastOpinionsArray.includes(fastOpinion.trim())) {
-         this.customerOpinionsArray.push(fastOpinion);
-       } else {
-         otherOpinion.push(fastOpinion);
-       }
+      if (this.fastOpinionsArray.includes(fastOpinion.trim())) {
+        this.customerOpinionsArray.push(fastOpinion);
+      } else {
+        otherOpinion.push(fastOpinion);
+      }
     }
     this.customerOtherOpinion = otherOpinion.join('. ');
     return;

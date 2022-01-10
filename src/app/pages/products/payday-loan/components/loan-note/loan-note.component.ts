@@ -14,7 +14,10 @@ import { MatDialog } from '@angular/material/dialog';
 import { NotificationService } from '../../../../../core/services/notification.service';
 import { ToastrService } from 'ngx-toastr';
 import { Subscription } from 'rxjs';
-import { PaydayLoanHmg } from '../../../../../../../open-api-modules/dashboard-api-docs';
+import {
+  PaydayLoanHmg,
+  PaydayLoanTng,
+} from '../../../../../../../open-api-modules/dashboard-api-docs';
 import { RESPONSE_CODE } from '../../../../../core/common/enum/operator';
 import {
   APPLICATION_TYPE,
@@ -41,13 +44,13 @@ export class LoanNoteComponent implements OnInit {
     this._loanId = value;
   }
 
-  _loanDetail: PaydayLoanHmg;
+  _loanDetail: PaydayLoanHmg | PaydayLoanTng;
   @Input()
-  get loanDetail(): PaydayLoanHmg {
+  get loanDetail(): PaydayLoanHmg | PaydayLoanTng {
     return this._loanDetail;
   }
 
-  set loanDetail(value: PaydayLoanHmg) {
+  set loanDetail(value: PaydayLoanHmg | PaydayLoanTng) {
     this._loanDetail = value;
     this._initLoanInfoData();
   }

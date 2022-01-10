@@ -1,4 +1,4 @@
-import {NotificationService} from 'src/app/core/services/notification.service';
+import { NotificationService } from 'src/app/core/services/notification.service';
 import {
   ApiResponseCustomerInfo,
   ApiResponsePaydayLoanHmg,
@@ -8,21 +8,32 @@ import {
   ApplicationControllerService,
   Bank,
   BankControllerService,
-  PaydayLoanHmg
+  PaydayLoanHmg,
+  PaydayLoanTng,
 } from '../../../../../../../open-api-modules/dashboard-api-docs';
-import {CompanyInfo} from '../../../../../../../open-api-modules/customer-api-docs';
-import {MultiLanguageService} from '../../../../../share/translate/multiLanguageService';
-import {ToastrService} from 'ngx-toastr';
-import {RESPONSE_CODE} from '../../../../../core/common/enum/operator';
-import {Subscription} from 'rxjs';
-import {Component, EventEmitter, Input, OnDestroy, OnInit, Output,} from '@angular/core';
+import { CompanyInfo } from '../../../../../../../open-api-modules/customer-api-docs';
+import { MultiLanguageService } from '../../../../../share/translate/multiLanguageService';
+import { ToastrService } from 'ngx-toastr';
+import { RESPONSE_CODE } from '../../../../../core/common/enum/operator';
+import { Subscription } from 'rxjs';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output,
+} from '@angular/core';
 import {
   ApplicationHmgControllerService,
   CompanyControllerService,
   CustomerInfo,
 } from 'open-api-modules/dashboard-api-docs';
 import { CustomerDetailService } from 'src/app/pages/customer/components/customer-detail-element/customer-detail.service';
-import {APPLICATION_TYPE, COMPANY_NAME} from 'src/app/core/common/enum/payday-loan';
+import {
+  APPLICATION_TYPE,
+  COMPANY_NAME,
+} from 'src/app/core/common/enum/payday-loan';
 
 @Component({
   selector: 'app-loan-detail',
@@ -30,13 +41,14 @@ import {APPLICATION_TYPE, COMPANY_NAME} from 'src/app/core/common/enum/payday-lo
   styleUrls: ['./loan-detail.component.scss'],
 })
 export class LoanDetailComponent implements OnInit, OnDestroy {
-  loanDetail: PaydayLoanHmg;
-  userInfo: CustomerInfo;
-  bankOptions: Array<Bank>;
-  companyOptions: Array<CompanyInfo>;
   @Input() groupName: string;
   @Output() loanDetailTriggerUpdateStatus = new EventEmitter<any>();
   @Output() detectUpdateLoanAfterSign = new EventEmitter<any>();
+
+  loanDetail: PaydayLoanHmg | PaydayLoanTng;
+  userInfo: CustomerInfo;
+  bankOptions: Array<Bank>;
+  companyOptions: Array<CompanyInfo>;
   subManager = new Subscription();
   hiddenColumns: string[] = [];
   disabledColumns: string[] = ['companyId'];
@@ -50,8 +62,7 @@ export class LoanDetailComponent implements OnInit, OnDestroy {
     private bankControllerService: BankControllerService,
     private companyControllerService: CompanyControllerService,
     private notificationService: NotificationService
-  ) {
-  }
+  ) {}
 
   _loanId: string;
 
@@ -93,7 +104,7 @@ export class LoanDetailComponent implements OnInit, OnDestroy {
   }
 
   triggerUpdateLoanElement() {
-    this.notificationService.showLoading({showContent: true});
+    this.notificationService.showLoading({ showContent: true });
     this.timeOut = setTimeout(() => {
       this._getLoanById(this.loanId);
       this.notificationService.hideLoading();
@@ -114,20 +125,18 @@ export class LoanDetailComponent implements OnInit, OnDestroy {
               this.loanDetail = data?.result;
               this.loanDetailTriggerUpdateStatus.emit(this.loanDetail);
               this.detectUpdateLoanAfterSign.emit(this.loanDetail);
-              console.log(this.loanDetail, 'loanDetail----------------------');
             })
         );
-        break
+        break;
       case COMPANY_NAME.TNG:
-        this.getLoanById(loanId, APPLICATION_TYPE.PDL_TNG)
+        this.getLoanById(loanId, APPLICATION_TYPE.PDL_TNG);
         break;
       case COMPANY_NAME.VAC:
-        this.getLoanById(loanId, APPLICATION_TYPE.PDL_VAC)
+        this.getLoanById(loanId, APPLICATION_TYPE.PDL_VAC);
         break;
       default:
         break;
     }
-
   }
 
   private getLoanById(loanId: string, applicationType: APPLICATION_TYPE) {
@@ -138,7 +147,6 @@ export class LoanDetailComponent implements OnInit, OnDestroy {
           this.loanDetail = data?.result;
           this.loanDetailTriggerUpdateStatus.emit(this.loanDetail);
           this.detectUpdateLoanAfterSign.emit(this.loanDetail);
-          console.log(this.loanDetail, 'loanDetail----------------------');
         })
     );
   }
@@ -188,7 +196,7 @@ export class LoanDetailComponent implements OnInit, OnDestroy {
   }
 
   public updateCustomerInfo(updateInfoRequest: Object) {
-    this.notificationService.showLoading({showContent: true});
+    this.notificationService.showLoading({ showContent: true });
     this.subManager.add(
       this.customerDetailService
         .updateCustomerInfo(this.customerId, updateInfoRequest, null, true)

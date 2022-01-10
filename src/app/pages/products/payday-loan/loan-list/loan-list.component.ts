@@ -576,7 +576,7 @@ export class LoanListComponent implements OnInit, OnDestroy {
       ' - ' +
       this.groupName;
     switch (params.groupName) {
-      case 'HMG':
+      case COMPANY_NAME.HMG:
         this.filterOptions[2].options = this.statusFilterOptionsHmg.filter(
           (ele) => ele?.value !== PAYDAY_LOAN_STATUS.DOCUMENT_AWAITING
         );
@@ -588,7 +588,7 @@ export class LoanListComponent implements OnInit, OnDestroy {
             }
           );
         break;
-      case 'TNG':
+      case COMPANY_NAME.TNG:
         this.filterOptions[2].options = this.statusFilterOptionsTng;
         this.loanListService
           .getLoanDataTng(params, APPLICATION_TYPE.PDL_TNG)
@@ -598,7 +598,7 @@ export class LoanListComponent implements OnInit, OnDestroy {
             }
           );
         break;
-      case 'VAC':
+      case COMPANY_NAME.VAC:
         this.filterOptions[2].options = this.statusFilterOptionsTng;
         this.loanListService
           .getLoanDataTng(params, APPLICATION_TYPE.PDL_VAC)
