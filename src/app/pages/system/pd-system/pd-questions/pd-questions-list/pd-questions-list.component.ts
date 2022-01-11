@@ -389,7 +389,7 @@ export class PdQuestionsListComponent implements OnInit {
   public onOutputAction(event) {
     const action = event.action;
     const list = event.selectedList;
-    const idArr = list.map((question) => question.modelId);
+    const idArr = list.map((question) => question.objectId);
     switch (action) {
       case 'lock':
         this.lockMultiplePrompt(idArr);

@@ -32,7 +32,7 @@ export interface PDGroup {
   createdBy: string;
   description: string;
   id: number;
-  modelId: number;
+  objectId: number;
   pdGroupQuestions: Array<PdGroupQuestions>;
   status: string;
   updatedAt: string;
@@ -53,7 +53,7 @@ export interface PDModel {
   updatedAt?: string;
   updatedBy?: string;
   id: number;
-  modelId: number;
+  objectId: number;
   code: string;
   content: string;
   pdModelGroups: Array<PdModelGroups>;
