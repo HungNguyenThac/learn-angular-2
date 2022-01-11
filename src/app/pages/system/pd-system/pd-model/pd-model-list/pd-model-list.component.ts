@@ -230,7 +230,7 @@ export class PdModelListComponent implements OnInit {
           this.groupList = data.result.data;
           this.groupList = this.groupList.map((item) => {
             return {
-              id: item.modelId,
+              id: item.objectId,
               content: item.content,
             };
           });
@@ -401,7 +401,7 @@ export class PdModelListComponent implements OnInit {
   public onOutputAction(event) {
     const action = event.action;
     const list = event.selectedList;
-    const idArr = list.map((model) => model.modelId);
+    const idArr = list.map((model) => model.objectId);
     switch (action) {
       case 'lock':
         this.lockMultiplePrompt(idArr);
@@ -591,7 +591,7 @@ export class PdModelListComponent implements OnInit {
       width: '90%',
       data: {
         isPdGroup: false,
-        dialogTitle: 'Thêm Pd model',
+        dialogTitle: 'Chỉnh sửa Pd model',
         inputName: 'Tên Pd model',
         inputCode: 'Mã Pd model',
         listTitle: 'Danh sách nhóm câu hỏi',
@@ -612,7 +612,7 @@ export class PdModelListComponent implements OnInit {
             result.data.removeArr
           );
           this.sendUpdateRequest(
-            info.modelId,
+            info.objectId,
             createRequest,
             addQuestionsRequest,
             updateQuestionsRequest,

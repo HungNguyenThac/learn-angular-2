@@ -227,7 +227,7 @@ export class PdGroupListComponent implements OnInit {
           this.questionList = data.result.data;
           this.questionList = this.questionList.map((item) => {
             return {
-              id: item.modelId,
+              id: item.objectId,
               content: item.content,
             };
           });
@@ -409,7 +409,7 @@ export class PdGroupListComponent implements OnInit {
   public onOutputAction(event) {
     const action = event.action;
     const list = event.selectedList;
-    const idArr = list.map((group) => group.modelId);
+    const idArr = list.map((group) => group.objectId);
     switch (action) {
       case 'lock':
         this.lockMultiplePrompt(idArr);
@@ -619,7 +619,7 @@ export class PdGroupListComponent implements OnInit {
             result.data.removeArr
           );
           this.sendUpdateRequest(
-            info.modelId,
+            info.objectId,
             createRequest,
             addQuestionsRequest,
             updateQuestionsRequest,
