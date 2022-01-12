@@ -8,6 +8,7 @@ import {
   APPLICATION_TYPE,
   COMPANY_NAME,
   PAYDAY_LOAN_STATUS,
+  TERM_TYPE,
 } from '../../../../../core/common/enum/payday-loan';
 import {
   BUTTON_TYPE,
@@ -37,7 +38,7 @@ import formatPunishStartTimeTng from '../../../../../core/utils/format-punish-st
 import formatPunishCountHmg from '../../../../../core/utils/format-punish-count-hmg';
 import formatPunishCountTng from '../../../../../core/utils/format-punish-count-tng';
 import { GlobalConstants } from '../../../../../core/common/global-constants';
-import { NgxPermissionsService } from 'ngx-permissions';
+import { environment } from '../../../../../../environments/environment';
 
 @Component({
   selector: 'app-loan-detail-info',
@@ -71,13 +72,13 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
     this._initLoanInfoData();
   }
 
-  _loanDetail: PaydayLoanHmg | PaydayLoanTng;
+  _loanDetail: PaydayLoanTng;
   @Input()
-  get loanDetail(): PaydayLoanHmg | PaydayLoanTng {
+  get loanDetail(): PaydayLoanTng {
     return this._loanDetail;
   }
 
-  set loanDetail(value: PaydayLoanHmg | PaydayLoanTng) {
+  set loanDetail(value: PaydayLoanTng) {
     this._loanDetail = value;
     this.getChangeLoanStatus();
     this.leftColumn = this._initLeftColumn();
@@ -85,6 +86,7 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
     this.rightColumn = this._initRightColumn();
     this.serviceFeeHmg = this._serviceFeeHmg();
     this.serviceFeeTng = this._serviceFeeTng();
+    this.serviceFeeVac = this._serviceFeeVac();
     this._initLoanInfoData();
   }
 
@@ -95,6 +97,7 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
   rightColumn: any[] = [];
   serviceFeeHmg: any[] = [];
   serviceFeeTng: any[] = [];
+  serviceFeeVac: any[] = [];
   nextLoanStatus: string = PAYDAY_LOAN_STATUS.UNKNOWN_STATUS;
   nextLoanStatusDisplay: string;
   prevLoanStatus: string;
@@ -400,6 +403,85 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
     ];
   }
 
+  private _getSubtitleFeeVac() {
+    if (
+      this.loanDetail?.applicationType === APPLICATION_TYPE.PDL_VAC_OFFICE &&
+      this.loanDetail?.termType === TERM_TYPE.THREE_MONTH
+    ) {
+      return this.multiLanguageService.instant(
+        'payday_loan.service_fee.service_fee_vac_office_three_month'
+      );
+    } else if (
+      this.loanDetail?.applicationType === APPLICATION_TYPE.PDL_VAC_OFFICE &&
+      this.loanDetail?.termType === TERM_TYPE.ONE_MONTH
+    ) {
+      return this.multiLanguageService.instant(
+        'payday_loan.service_fee.service_fee_vac_office_one_month'
+      );
+    } else {
+      return this.multiLanguageService.instant(
+        'payday_loan.service_fee.service_fee_vac_factory'
+      );
+    }
+  }
+
+  private _serviceFeeVac() {
+    return [
+      {
+        title: this.multiLanguageService.instant(
+          'payday_loan.service_fee.service_fee'
+        ),
+        subTitle: this._getSubtitleFeeVac(),
+        value: this.calculateServiceFee(this.loanDetail),
+        type: DATA_CELL_TYPE.CURRENCY,
+        format: null,
+      },
+      {
+        title: this.multiLanguageService.instant(
+          'payday_loan.service_fee.transaction_fee'
+        ),
+        subTitle: this.multiLanguageService.instant(
+          'payday_loan.service_fee.transaction_fee_description'
+        ),
+        value: GlobalConstants.PL_VALUE_DEFAULT.TRANSACTION_FEE,
+        type: DATA_CELL_TYPE.CURRENCY,
+        format: null,
+      },
+      {
+        title: this.multiLanguageService.instant(
+          'payday_loan.service_fee.discount_fee'
+        ),
+        subTitle: null,
+        value: this.getDiscountValue(this.loanDetail?.voucher),
+        type: DATA_CELL_TYPE.CURRENCY,
+        format: null,
+      },
+      {
+        title: this.multiLanguageService.instant(
+          'payday_loan.service_fee.vat_fee'
+        ),
+        subTitle: this.multiLanguageService.instant(
+          'payday_loan.service_fee.vat_fee_description'
+        ),
+        value:
+          GlobalConstants.PL_VALUE_DEFAULT.TAX_FEE_TNG *
+          (this.calculateServiceFee(this.loanDetail) -
+            this.getDiscountValue(this.loanDetail?.voucher)),
+        type: DATA_CELL_TYPE.CURRENCY,
+        format: null,
+      },
+      {
+        title: this.multiLanguageService.instant(
+          'payday_loan.service_fee.total_fee'
+        ),
+        subTitle: null,
+        value: this.loanDetail?.totalServiceFees,
+        type: DATA_CELL_TYPE.CURRENCY,
+        format: null,
+      },
+    ];
+  }
+
   changeLoanStatus(newStatus, newStatusDisplay) {
     const currentLoanStatusDisplay = this.multiLanguageService.instant(
       `payday_loan.status.${this.loanDetail.status.toLowerCase()}`
@@ -534,7 +616,8 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
         this.changePaydayLoanStatus(updateLoanStatusRequest);
         break;
       case COMPANY_NAME.VAC:
-        updateLoanStatusRequest.applicationType = this.loanDetail.applicationType;
+        updateLoanStatusRequest.applicationType =
+          this.loanDetail.applicationType;
         this.changePaydayLoanStatus(updateLoanStatusRequest);
         break;
       default:
@@ -587,10 +670,15 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
 
   //Số tiền vay tối đa
   getMaxLoanAmount(companyGroupName: string) {
-    if (companyGroupName === COMPANY_NAME.HMG) {
-      return this.getMaxHMGValue(this.customerInfo?.annualIncome);
-    } else {
-      return this.getMaxTNGValue(this.customerInfo?.annualIncome);
+    switch (companyGroupName) {
+      case COMPANY_NAME.HMG:
+        return this.getMaxHMGValue(this.customerInfo?.annualIncome);
+      case COMPANY_NAME.TNG:
+        return this.getMaxTNGValue(this.customerInfo?.annualIncome);
+      case COMPANY_NAME.VAC:
+        return this.getMaxVacValue(this.customerInfo?.annualIncome);
+      default:
+        return null;
     }
   }
 
@@ -601,6 +689,22 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
       return (Math.round(millionAnnualIncome) - 0.5) * 1000000;
     }
     return Math.floor(millionAnnualIncome) * 1000000;
+  }
+
+  getMaxVacValue(annualIncome) {
+    if (
+      this.loanDetail?.applicationType === APPLICATION_TYPE.PDL_VAC_OFFICE &&
+      this.loanDetail?.termType === TERM_TYPE.THREE_MONTH
+    ) {
+      return annualIncome * environment.MAX_LOAN_VAC_OFFICE_THREE_MONTH_PERCENT;
+    } else if (
+      this.loanDetail?.applicationType === APPLICATION_TYPE.PDL_VAC_OFFICE &&
+      this.loanDetail?.termType === TERM_TYPE.ONE_MONTH
+    ) {
+      return annualIncome * environment.MAX_LOAN_VAC_OFFICE_ONE_MONTH_PERCENT;
+    } else {
+      return annualIncome * environment.MAX_LOAN_VAC_FACTORY_PERCENT;
+    }
   }
 
   getPercentOfSalaryByDay() {
@@ -780,9 +884,8 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
   }
 
   calculateServiceFee(loanDetail) {
-    switch (loanDetail?.companyInfo?.name) {
+    switch (loanDetail?.companyInfo?.groupName) {
       case COMPANY_NAME.TNG:
-      case COMPANY_NAME.VAC:
         if (
           loanDetail?.expectedAmount *
             GlobalConstants.PL_VALUE_DEFAULT.SERVICE_FEE_TNG <
@@ -800,6 +903,27 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
           loanDetail?.expectedAmount *
           GlobalConstants.PL_VALUE_DEFAULT.SERVICE_FEE_HMG
         );
+      case COMPANY_NAME.VAC:
+        console.log(
+          'adsada',
+          loanDetail?.expectedAmount,
+          environment.FEE_VAC_FACTORY_PERCENT
+        );
+        if (loanDetail?.applicationType === APPLICATION_TYPE.PDL_VAC_OFFICE) {
+          if (loanDetail?.termType === TERM_TYPE.THREE_MONTH) {
+            return (
+              loanDetail?.expectedAmount *
+              environment.FEE_VAC_OFFICE_THREE_MONTH_PERCENT
+            );
+          }
+          if (loanDetail?.termType === TERM_TYPE.ONE_MONTH) {
+            return (
+              loanDetail?.expectedAmount *
+              environment.FEE_VAC_OFFICE_ONE_MONTH_PERCENT
+            );
+          }
+        }
+        return loanDetail?.expectedAmount * environment.FEE_VAC_FACTORY_PERCENT;
       default:
         return null;
     }

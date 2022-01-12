@@ -3,6 +3,7 @@ import {
   APPLICATION_TYPE,
   COMPANY_NAME,
   REPAYMENT_STATUS,
+  TERM_TYPE,
 } from '../../../../core/common/enum/payday-loan';
 import { PaydayLoanHmg } from '../../../../../../open-api-modules/dashboard-api-docs';
 import { SearchAndPaginationResponsePaydayLoanHmg } from '../../../../../../open-api-modules/dashboard-api-docs';
@@ -187,6 +188,30 @@ export class LoanListComponent implements OnInit, OnDestroy {
       ],
     },
     {
+      title: this.multiLanguageService.instant('filter.term_type'),
+      type: FILTER_TYPE.SELECT,
+      controlName: 'termType',
+      value: null,
+      options: [
+        {
+          title: this.multiLanguageService.instant('common.all'),
+          value: null,
+        },
+        {
+          title: this.multiLanguageService.instant(
+            'payday_loan.term_type.one_month'
+          ),
+          value: TERM_TYPE.ONE_MONTH,
+        },
+        {
+          title: this.multiLanguageService.instant(
+            'payday_loan.term_type.three_month'
+          ),
+          value: TERM_TYPE.THREE_MONTH,
+        },
+      ],
+    },
+    {
       title: this.multiLanguageService.instant('filter.account_classification'),
       type: FILTER_TYPE.SELECT,
       controlName: 'accountClassification',
@@ -362,6 +387,13 @@ export class LoanListComponent implements OnInit, OnDestroy {
       format: null,
       showed: false,
     },
+    {
+      key: 'termType',
+      title: this.multiLanguageService.instant('loan_app.loan_info.term_type'),
+      type: DATA_CELL_TYPE.TEXT,
+      format: null,
+      showed: false,
+    },
   ];
   dataSource: MatTableDataSource<any> = new MatTableDataSource([]);
   expandedElementLoanId: string;
@@ -452,6 +484,10 @@ export class LoanListComponent implements OnInit, OnDestroy {
           this.filterForm.controls.status.setValue(
             event.value ? event.value : ''
           );
+        } else if (event.controlName === 'termType') {
+          this.filterForm.controls.termType.setValue(
+            event.value ? event.value : ''
+          );
         } else if (event.controlName === 'accountClassification') {
           this.filterForm.controls.accountClassification.setValue(
             event.value ? event.value : ACCOUNT_CLASSIFICATION.REAL
@@ -478,6 +514,7 @@ export class LoanListComponent implements OnInit, OnDestroy {
       'customerInfo.mobileNumber': [''],
       'customerInfo.emailAddress': [''],
       status: [''],
+      termType: [''],
       'customerInfo.organizationName': [''],
       'customerInfo.identityNumberOne': [''],
       updatedAt: [''],
@@ -491,6 +528,7 @@ export class LoanListComponent implements OnInit, OnDestroy {
       filterConditions: {
         companyId: QUERY_CONDITION_TYPE.IN,
         status: QUERY_CONDITION_TYPE.IN,
+        termType: QUERY_CONDITION_TYPE.IN,
       },
     });
   }
@@ -529,6 +567,10 @@ export class LoanListComponent implements OnInit, OnDestroy {
       } else if (filterOption.controlName === 'status') {
         filterOption.value = this.filterForm.controls.status.value
           ? this.filterForm.controls.status.value.split(',')
+          : [];
+      } else if (filterOption.controlName === 'termType') {
+        filterOption.value = this.filterForm.controls.termType.value
+          ? this.filterForm.controls.termType.value.split(',')
           : [];
       } else if (filterOption.controlName === 'accountClassification') {
         filterOption.value = this.filterForm.controls.accountClassification
@@ -666,7 +708,7 @@ export class LoanListComponent implements OnInit, OnDestroy {
     )) {
       queryParams[formControlName + queryCondition || ''] = data[
         formControlName
-      ]
+        ]
         ? data[formControlName].trim()
         : '';
     }

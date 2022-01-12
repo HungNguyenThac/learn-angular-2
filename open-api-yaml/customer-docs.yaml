@@ -2209,6 +2209,37 @@ components:
           $ref: '#/components/schemas/KalapaResponse'
         tngData:
           $ref: '#/components/schemas/TNGInformationResponse'
+        employeeData:
+          $ref: '#/components/schemas/EmployeeData'
+    EmployeeData:
+      type: object
+      properties:
+        name:
+          type: string
+        mobile:
+          type: string
+        identityNumber:
+          type: string
+        startWorkingDay:
+          type: string
+        contractType:
+          type: string
+        job:
+          type: string
+        address:
+          type: string
+        numberOfWorkDays:
+          type: string
+        bank:
+          type: string
+        accountNumber:
+          type: string
+        salaryDocument1:
+          type: string
+        salaryDocument2:
+          type: string
+        salaryDocument3:
+          type: string
     TNGInformationResponse:
       type: object
       properties:
