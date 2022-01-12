@@ -24,6 +24,12 @@ paths:
               $ref: '#/components/schemas/UpdateVoucherRequest'
         required: true
       responses:
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseString'
         "200":
           description: OK
           content:
@@ -48,6 +54,12 @@ paths:
               $ref: '#/components/schemas/UpdatePromotionEventRequest'
         required: true
       responses:
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseString'
         "200":
           description: OK
           content:
@@ -71,6 +83,12 @@ paths:
         schema:
           type: string
       responses:
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseString'
         "200":
           description: OK
           content:
@@ -94,6 +112,12 @@ paths:
               $ref: '#/components/schemas/UpdateLoanRequest'
         required: true
       responses:
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseString'
         "200":
           description: OK
           content:
@@ -118,6 +142,12 @@ paths:
               $ref: '#/components/schemas/UpdateLoanAmountRequest'
         required: true
       responses:
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseString'
         "200":
           description: OK
           content:
@@ -146,6 +176,12 @@ paths:
         schema:
           type: string
       responses:
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseString'
         "200":
           description: OK
           content:
@@ -163,6 +199,12 @@ paths:
               $ref: '#/components/schemas/CreateVoucherRequest'
         required: true
       responses:
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseString'
         "200":
           description: OK
           content:
@@ -181,6 +223,12 @@ paths:
               $ref: '#/components/schemas/CheckValidVoucherRequest'
         required: true
       responses:
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseString'
         "200":
           description: OK
           content:
@@ -199,6 +247,12 @@ paths:
               $ref: '#/components/schemas/CheckValidVoucherRequest'
         required: true
       responses:
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseString'
         "200":
           description: OK
           content:
@@ -217,6 +271,12 @@ paths:
               $ref: '#/components/schemas/CheckValidVoucherRequest'
         required: true
       responses:
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseString'
         "200":
           description: OK
           content:
@@ -235,6 +295,12 @@ paths:
               $ref: '#/components/schemas/CheckValidVoucherRequest'
         required: true
       responses:
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseString'
         "200":
           description: OK
           content:
@@ -247,6 +313,12 @@ paths:
       - promotion-controller
       operationId: getAllPromotionEvent
       responses:
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseString'
         "200":
           description: OK
           content:
@@ -264,6 +336,12 @@ paths:
               $ref: '#/components/schemas/CreatePromotionEventRequest'
         required: true
       responses:
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseString'
         "200":
           description: OK
           content:
@@ -282,6 +360,12 @@ paths:
               $ref: '#/components/schemas/CreateApplicationRequest'
         required: true
       responses:
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseString'
         "200":
           description: OK
           content:
@@ -306,18 +390,60 @@ paths:
               $ref: '#/components/schemas/UpdateLoanStatusRequest'
         required: true
       responses:
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseString'
         "200":
           description: OK
           content:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ApiResponseString'
+  '/v1/paydays/{loanId}/additionalEmployeeData ':
+    post:
+      tags:
+      - payday-loan-controller
+      operationId: additionalEmployeeData
+      parameters:
+      - name: loanId
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EmployeeDataRequest'
+        required: true
+      responses:
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseString'
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseEmployeeData'
   /v1/paydays/updateApplicationTypeOldTNGLoan:
     post:
       tags:
       - payday-loan-controller
       operationId: updateApplicationTypeOldTNGLoan
       responses:
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseString'
         "200":
           description: OK
           content:
@@ -330,6 +456,12 @@ paths:
       - payday-loan-controller
       operationId: getServiceToken
       responses:
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseString'
         "200":
           description: OK
   /v1/paydays/cronjob/withdrawLoan:
@@ -344,6 +476,12 @@ paths:
         schema:
           type: string
       responses:
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseString'
         "200":
           description: OK
           content:
@@ -362,6 +500,12 @@ paths:
         schema:
           type: string
       responses:
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseString'
         "200":
           description: OK
           content:
@@ -380,6 +524,12 @@ paths:
         schema:
           type: string
       responses:
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseString'
         "200":
           description: OK
           content:
@@ -398,6 +548,12 @@ paths:
         schema:
           type: string
       responses:
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseString'
         "200":
           description: OK
           content:
@@ -421,6 +577,12 @@ paths:
         schema:
           type: string
       responses:
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseString'
         "200":
           description: OK
           content:
@@ -444,6 +606,12 @@ paths:
         schema:
           type: string
       responses:
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseString'
         "200":
           description: OK
           content:
@@ -462,6 +630,12 @@ paths:
         schema:
           type: string
       responses:
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseString'
         "200":
           description: OK
           content:
@@ -485,6 +659,12 @@ paths:
         schema:
           type: string
       responses:
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseString'
         "200":
           description: OK
           content:
@@ -508,6 +688,12 @@ paths:
         schema:
           type: string
       responses:
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseString'
         "200":
           description: OK
           content:
@@ -531,6 +717,12 @@ paths:
         schema:
           type: string
       responses:
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseString'
         "200":
           description: OK
           content:
@@ -539,6 +731,18 @@ paths:
                 $ref: '#/components/schemas/ApiResponseContract'
 components:
   schemas:
+    ApiResponseString:
+      type: object
+      properties:
+        result:
+          type: string
+        errorCode:
+          type: string
+        message:
+          type: object
+        responseCode:
+          type: integer
+          format: int32
     UpdateVoucherRequest:
       type: object
       properties:
@@ -678,6 +882,35 @@ components:
         responseCode:
           type: integer
           format: int32
+    EmployeeData:
+      type: object
+      properties:
+        name:
+          type: string
+        mobile:
+          type: string
+        identityNumber:
+          type: string
+        startWorkingDay:
+          type: string
+        contractType:
+          type: string
+        job:
+          type: string
+        address:
+          type: string
+        numberOfWorkDays:
+          type: string
+        bank:
+          type: string
+        accountNumber:
+          type: string
+        salaryDocument1:
+          type: string
+        salaryDocument2:
+          type: string
+        salaryDocument3:
+          type: string
     PaydayLoan:
       type: object
       properties:
@@ -736,6 +969,8 @@ components:
           type: string
         approvedAt:
           type: string
+        employeeData:
+          $ref: '#/components/schemas/EmployeeData'
     UpdateLoanAmountRequest:
       required:
       - applicationType
@@ -886,11 +1121,55 @@ components:
           type: string
         applicationType:
           type: string
-    ApiResponseString:
+    EmployeeDataRequest:
+      required:
+      - accountNumber
+      - address
+      - bank
+      - contractType
+      - identityNumber
+      - job
+      - mobile
+      - name
+      - numberOfWorkDays
+      - salaryDocument1
+      - salaryDocument2
+      - salaryDocument3
+      - startWorkingDay
+      type: object
+      properties:
+        name:
+          type: string
+        mobile:
+          pattern: "^0\\d{9}$"
+          type: string
+        identityNumber:
+          type: string
+        startWorkingDay:
+          type: string
+        contractType:
+          type: string
+        job:
+          type: string
+        address:
+          type: string
+        numberOfWorkDays:
+          type: string
+        bank:
+          type: string
+        accountNumber:
+          type: string
+        salaryDocument1:
+          type: string
+        salaryDocument2:
+          type: string
+        salaryDocument3:
+          type: string
+    ApiResponseEmployeeData:
       type: object
       properties:
         result:
-          type: string
+          $ref: '#/components/schemas/EmployeeData'
         errorCode:
           type: string
         message:

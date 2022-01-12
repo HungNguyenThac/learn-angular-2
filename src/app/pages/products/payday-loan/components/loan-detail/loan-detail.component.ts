@@ -45,7 +45,7 @@ export class LoanDetailComponent implements OnInit, OnDestroy {
   @Output() loanDetailTriggerUpdateStatus = new EventEmitter<any>();
   @Output() detectUpdateLoanAfterSign = new EventEmitter<any>();
 
-  loanDetail: PaydayLoanHmg | PaydayLoanTng;
+  loanDetail: PaydayLoanTng | PaydayLoanHmg;
   userInfo: CustomerInfo;
   bankOptions: Array<Bank>;
   companyOptions: Array<CompanyInfo>;

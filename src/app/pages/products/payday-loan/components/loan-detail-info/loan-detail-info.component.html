@@ -113,6 +113,34 @@
                           </div>
                         </div>
                       </div>
+
+                      <div
+                        *ngIf="loanDetail?.companyInfo?.groupName === 'VAC'"
+                        class="service-fee-container d-flex gap-3 flex-column"
+                      >
+                        <div
+                          *ngFor="let fee of serviceFeeVac"
+                          class="
+                            item
+                            d-flex
+                            justify-content-between
+                            align-items-center
+                          "
+                        >
+                          <div class="left">
+                            <p>{{ fee.title }}</p>
+                            <span>{{ fee.subTitle }}</span>
+                          </div>
+                          <div class="right">
+                            <app-format-data
+                              [type]="fee?.type"
+                              [format]="fee?.format"
+                              [value]="fee?.value"
+                            ></app-format-data>
+                            ₫
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
