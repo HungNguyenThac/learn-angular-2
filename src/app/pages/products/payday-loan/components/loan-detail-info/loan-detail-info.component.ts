@@ -904,11 +904,6 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
           GlobalConstants.PL_VALUE_DEFAULT.SERVICE_FEE_HMG
         );
       case COMPANY_NAME.VAC:
-        console.log(
-          'adsada',
-          loanDetail?.expectedAmount,
-          environment.FEE_VAC_FACTORY_PERCENT
-        );
         if (loanDetail?.applicationType === APPLICATION_TYPE.PDL_VAC_OFFICE) {
           if (loanDetail?.termType === TERM_TYPE.THREE_MONTH) {
             return (
