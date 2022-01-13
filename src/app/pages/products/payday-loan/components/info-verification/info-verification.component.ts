@@ -85,6 +85,8 @@ export class InfoVerificationComponent implements OnInit, AfterViewInit {
   @Input() loanId: string;
   @Output() loanDetailDetectChangeStatus = new EventEmitter<any>();
 
+  banksFilterCtrl: FormControl = new FormControl();
+  filteredBanks: any[];
   infoVerificationForm: FormGroup;
 
   leftInfos = [
@@ -173,6 +175,7 @@ export class InfoVerificationComponent implements OnInit, AfterViewInit {
   hiddenDownloadBtn: boolean = true;
 
   subManager = new Subscription();
+  _onDestroy = new Subject<void>();
 
   @ViewChild('inputEle') inputEleRef: ElementRef<HTMLInputElement>;
 
@@ -206,7 +209,14 @@ export class InfoVerificationComponent implements OnInit, AfterViewInit {
     });
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.filteredBanks = this.bankOptions;
+    this.banksFilterCtrl.valueChanges
+      .pipe(takeUntil(this._onDestroy))
+      .subscribe(() => {
+        this.filterBanks();
+      });
+  }
 
   ngAfterViewInit(): void {
     // this.inputEleRef.nativeElement.focus();
@@ -224,30 +234,31 @@ export class InfoVerificationComponent implements OnInit, AfterViewInit {
   }
 
   private initInfoVerificationFormData() {
-    console.log(this.loanDetail.status, 'aaaa');
-
     if (
       this.loanDetail.status !==
       (PAYDAY_LOAN_STATUS.DOCUMENT_AWAITING &&
         PAYDAY_LOAN_STATUS.INITIALIZED &&
         PAYDAY_LOAN_STATUS.UNKNOWN_STATUS)
     ) {
-      // this.infoVerificationForm.patchValue(this.loanDetail.employeeData);
-      // this._getSingleFileDocumentByPath(
-      //   this.loanDetail.customerId,
-      //   this.loanDetail.employeeData.salaryDocument1,
-      //   DOCUMENT_TYPE.SALARY_INFORMATION_ONE
-      // );
-      // this._getSingleFileDocumentByPath(
-      //   this.loanDetail.customerId,
-      //   this.loanDetail.employeeData.salaryDocument2,
-      //   DOCUMENT_TYPE.SALARY_INFORMATION_TWO
-      // );
-      // this._getSingleFileDocumentByPath(
-      //   this.loanDetail.customerId,
-      //   this.loanDetail.employeeData.salaryDocument3,
-      //   DOCUMENT_TYPE.SALARY_INFORMATION_THREE
-      // );
+      this.infoVerificationForm.patchValue(this.loanDetail.employeeData);
+      this.infoVerificationForm.controls.bank.setValue(
+        this.loanDetail.employeeData.bankCode
+      );
+      this._getSingleFileDocumentByPath(
+        this.loanDetail.customerId,
+        this.loanDetail.employeeData.salaryDocument1,
+        DOCUMENT_TYPE.SALARY_INFORMATION_ONE
+      );
+      this._getSingleFileDocumentByPath(
+        this.loanDetail.customerId,
+        this.loanDetail.employeeData.salaryDocument2,
+        DOCUMENT_TYPE.SALARY_INFORMATION_TWO
+      );
+      this._getSingleFileDocumentByPath(
+        this.loanDetail.customerId,
+        this.loanDetail.employeeData.salaryDocument3,
+        DOCUMENT_TYPE.SALARY_INFORMATION_THREE
+      );
     }
   }
 
@@ -631,7 +642,10 @@ export class InfoVerificationComponent implements OnInit, AfterViewInit {
       address: this.infoVerificationForm.controls.address.value,
       numberOfWorkDays:
         this.infoVerificationForm.controls.numberOfWorkDays.value,
-      bank: this.infoVerificationForm.controls.bank.value,
+      bankCode: this.infoVerificationForm.controls.bank.value,
+      bankName: this.bankOptions.find(
+        (ele) => ele.bankCode === this.infoVerificationForm.controls.bank.value
+      ).bankName,
       accountNumber: this.infoVerificationForm.controls.accountNumber.value,
       salaryDocument1: this.salaryPathArray[0],
       salaryDocument2: this.salaryPathArray[1],
@@ -649,6 +663,23 @@ export class InfoVerificationComponent implements OnInit, AfterViewInit {
           this.multiLanguageService.instant('common.update_success')
         );
       });
+  }
+
+  filterBanks() {
+    let search = this.banksFilterCtrl.value;
+    if (!search) {
+      this.filteredBanks = this.bankOptions;
+      return;
+    } else {
+      search = search.toLowerCase();
+    }
+    let filteredBanksByCode = this.bankOptions.filter(
+      (bank) => bank.bankCode.toLowerCase().indexOf(search) > -1
+    );
+    let filteredBanksByName = this.bankOptions.filter(
+      (bank) => bank.bankName.toLowerCase().indexOf(search) > -1
+    );
+    this.filteredBanks = filteredBanksByName.concat(filteredBanksByCode);
   }
 
   handleResponseError(errorCode: string) {

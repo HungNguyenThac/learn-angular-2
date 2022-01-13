@@ -17,7 +17,10 @@
                   {{ leftInfo.title }}
                 </p>
                 <input
-                  *ngIf="loanDetail?.status === 'DOCUMENT_AWAITING'; else leftView"
+                  *ngIf="
+                    loanDetail?.status === 'DOCUMENT_AWAITING';
+                    else leftView
+                  "
                   #inputEle
                   matInput
                   [formControlName]="leftInfo.value"
@@ -60,15 +63,30 @@
                 <p class="pl-list-item-label">
                   {{ "loan_app.info_verification.salary_bank" | translate }}
                 </p>
-                <mat-form-field appearance="none" class="pl-choose-bank">
+                <mat-form-field appearance="none" class="pl-choose-bank"  *ngIf="
+                    loanDetail?.status === 'DOCUMENT_AWAITING';
+                    else bankChoosen
+                  ">
                   <mat-select formControlName="bank">
+                    <mat-option>
+                      <ngx-mat-select-search
+                        [formControl]="banksFilterCtrl"
+                        placeholderLabel="Tìm Ngân Hàng"
+                        noEntriesFoundLabel="Ngân Hàng không tồn tại"
+                      ></ngx-mat-select-search>
+                    </mat-option>
                     <mat-option
-                      *ngFor="let bankOption of bankOptions"
+                      *ngFor="let bankOption of filteredBanks"
                       [value]="bankOption.bankCode"
-                      >{{ bankOption.bankName }}</mat-option
+                      >{{ bankOption.bankName + ' - ' + bankOption.bankCode  }}</mat-option
                     >
                   </mat-select>
                 </mat-form-field>
+                  <ng-template #bankChoosen>
+                  <p class="pl-list-item-content">
+                    {{  loanDetail.employeeData.bankName + ' - ' + loanDetail.employeeData.bankCode }}
+                  </p>
+                </ng-template>
               </li>
               <li class="pl-list-item flex-column align-items-start border-0">
                 <p class="pl-list-item-label">

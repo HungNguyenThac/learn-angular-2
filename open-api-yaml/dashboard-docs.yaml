@@ -2839,37 +2839,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/CompleteApplication'
-        employeeData:
-          $ref: '#/components/schemas/EmployeeData'
-    EmployeeData:
-      type: object
-      properties:
-        name:
-          type: string
-        mobile:
-          type: string
-        identityNumber:
-          type: string
-        startWorkingDay:
-          type: string
-        contractType:
-          type: string
-        job:
-          type: string
-        address:
-          type: string
-        numberOfWorkDays:
-          type: string
-        bank:
-          type: string
-        accountNumber:
-          type: string
-        salaryDocument1:
-          type: string
-        salaryDocument2:
-          type: string
-        salaryDocument3:
-          type: string
     FraudCheck:
       type: object
       properties:
@@ -3602,6 +3571,37 @@ components:
         responseCode:
           type: integer
           format: int32
+    EmployeeData:
+      type: object
+      properties:
+        name:
+          type: string
+        mobile:
+          type: string
+        identityNumber:
+          type: string
+        startWorkingDay:
+          type: string
+        contractType:
+          type: string
+        job:
+          type: string
+        address:
+          type: string
+        numberOfWorkDays:
+          type: string
+        bankName:
+          type: string
+        bankCode:
+          type: string
+        accountNumber:
+          type: string
+        salaryDocument1:
+          type: string
+        salaryDocument2:
+          type: string
+        salaryDocument3:
+          type: string
     PaydayLoanTng:
       type: object
       properties:
@@ -3676,6 +3676,8 @@ components:
           type: string
         settlementDate:
           type: string
+        employeeData:
+          $ref: '#/components/schemas/EmployeeData'
     SearchAndPaginationResponsePaydayLoanTng:
       type: object
       properties:
