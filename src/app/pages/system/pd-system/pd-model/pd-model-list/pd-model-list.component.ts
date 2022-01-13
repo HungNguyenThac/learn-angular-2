@@ -29,7 +29,7 @@ import {
   MerchantDetailDialogComponent,
   MerchantGroupDialogComponent,
 } from '../../../../../share/components';
-import { AddNewPdDialogComponent } from '../../../../../share/components/operators/pd-system/add-new-pd-dialog/add-new-pd-dialog.component';
+import { AddNewPdDialogComponent } from '../../../../../share/components';
 import { PdModelListService } from './pd-model-list.service';
 import { Subscription } from 'rxjs';
 import {
@@ -125,7 +125,6 @@ export class PdModelListComponent implements OnInit {
   pageLength: number = 0;
   pageSizeOptions: number[] = [10, 20, 50];
   expandedElementId: number;
-  pdModelInfo;
 
   subManager = new Subscription();
   breadcrumbOptions: BreadcrumbOptionsModel = {
@@ -240,18 +239,18 @@ export class PdModelListComponent implements OnInit {
 
   public _getModelList() {
     const params = this._buildParams();
-    this.pdModelListService
-      .getData(params)
-      .subscribe((data: ApiResponseSearchAndPaginationResponseModel) => {
-        this._parseData(data?.result);
-        this.dataSource.data = data?.result?.data;
-      });
-    // this.subManager.add(
-    //   this.cdeService.cdeControllerGetPdModel().subscribe((data) => {
-    //     // @ts-ignore
-    //     this.dataSource.data = data?.result;
-    //   })
-    // );
+    // this.pdModelListService
+    //   .getData(params)
+    //   .subscribe((data: ApiResponseSearchAndPaginationResponseModel) => {
+    //     this._parseData(data?.result);
+    //     this.dataSource.data = data?.result?.data;
+    //   });
+    this.subManager.add(
+      this.cdeService.cdeControllerGetPdModel().subscribe((data) => {
+        // @ts-ignore
+        this.dataSource.data = data?.result;
+      })
+    );
   }
 
   public onSortChange(sortState: Sort) {
@@ -401,7 +400,8 @@ export class PdModelListComponent implements OnInit {
   public onOutputAction(event) {
     const action = event.action;
     const list = event.selectedList;
-    const idArr = list.map((model) => model.objectId);
+    // const idArr = list.map((model) => model.objectId);
+    const idArr = list.map((model) => model.id);
     switch (action) {
       case 'lock':
         this.lockMultiplePrompt(idArr);
@@ -415,6 +415,7 @@ export class PdModelListComponent implements OnInit {
   }
 
   public _doMultipleAction(ids, action) {
+    console.log('idsssss', ids);
     if (!ids) {
       return;
     }
@@ -563,7 +564,6 @@ export class PdModelListComponent implements OnInit {
 
   public onExpandElementChange(element: any) {
     this.openUpdateDialog(element);
-    this.pdModelInfo = element;
   }
 
   public openUpdateDialog(info) {

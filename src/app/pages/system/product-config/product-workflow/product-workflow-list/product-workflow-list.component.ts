@@ -42,12 +42,11 @@ import * as fromSelectors from '../../../../../core/store';
 import * as fromActions from '../../../../../core/store';
 import { PageEvent } from '@angular/material/paginator/public-api';
 import { Sort } from '@angular/material/sort';
-import { ProductStatusDialogComponent } from '../../../../../share/components/operators/product-config/product-status-dialog/product-status-dialog.component';
 import { FilterEventModel } from '../../../../../public/models/filter/filter-event.model';
 import { FilterActionEventModel } from '../../../../../public/models/filter/filter-action-event.model';
 import { BaseManagementLayoutComponent } from '../../../../../share/components';
 import * as moment from 'moment';
-import { ProductWorkflowDialogComponent } from '../../../../../share/components/operators/product-config/product-workflow-dialog/product-workflow-dialog.component';
+import { ProductWorkflowDialogComponent } from '../../../../../share/components';
 import {
   ApiResponse,
   LoanStatusService,
@@ -61,6 +60,7 @@ import { CustomApiResponse, PDGroup } from '../../../pd-system/pd-interface';
 })
 export class ProductWorkflowListComponent implements OnInit {
   roleList: Array<GroupEntity>;
+  statusList: any;
   selectButtons: TableSelectActionModel[] = [
     {
       hidden: false,
@@ -71,7 +71,7 @@ export class ProductWorkflowListComponent implements OnInit {
       style: 'background-color: rgba(255, 255, 255, 0.1);',
     },
     {
-      hidden: false,
+      hidden: true,
       action: 'lock',
       color: 'accent',
       content: this.multiLanguageService.instant(
@@ -93,11 +93,10 @@ export class ProductWorkflowListComponent implements OnInit {
       'breadcrumb.search_field_user_list'
     ),
     searchable: true,
-    showBtnAdd: false,
+    showBtnAdd: true,
     btnAddText: this.multiLanguageService.instant('product_workflow.add'),
     keyword: '',
   };
-
   filterOptions: FilterOptionModel[] = [
     {
       title: this.multiLanguageService.instant('filter.time'),
@@ -171,6 +170,7 @@ export class ProductWorkflowListComponent implements OnInit {
       showed: true,
     },
   ];
+  info;
   dataSource: MatTableDataSource<any> = new MatTableDataSource([]);
   pages: Array<number>;
   pageSize: number = 10;
@@ -210,8 +210,25 @@ export class ProductWorkflowListComponent implements OnInit {
 
   ngOnInit(): void {
     this.store.dispatch(new fromActions.SetOperatorInfo(null));
-    this._initSubscription();
+    // this._initSubscription();
     this._getWorkflowList();
+    this._getStatusList();
+  }
+
+  private _getStatusList() {
+    this.subManager.add(
+      this.loanStatusService
+        .statusGroupControllerGetListStatus()
+        .subscribe((data) => {
+          this.statusList = data.result;
+          this.statusList = this.statusList.map((item) => {
+            return {
+              id: item.id,
+              name: item.name,
+            };
+          });
+        })
+    );
   }
 
   private _getWorkflowList() {
@@ -225,51 +242,36 @@ export class ProductWorkflowListComponent implements OnInit {
     );
   }
 
-  private async _checkActionPermissions() {
-    const hasCredentialsCreatePermission =
-      await this.permissionsService.hasPermission('credentials:create');
-    const hasDeleteAccountPermission =
-      await this.permissionsService.hasPermission(
-        'credentials:deleteAdminAccount'
-      );
-    const hasLockMultipleAccountPermission =
-      await this.permissionsService.hasPermission(
-        'credentials:lockMultiAccount'
-      );
-
-    if (hasCredentialsCreatePermission) {
-      this.breadcrumbOptions.showBtnAdd = true;
-    }
-    this.breadcrumbOptions.showBtnAdd = true;
-
-    let selectedButtons = JSON.parse(JSON.stringify(this.selectButtons));
-    selectedButtons.forEach((button) => {
-      if (button.action === 'delete') {
-        button.hidden = !hasDeleteAccountPermission;
-        return;
-      }
-      if (button.action === 'lock') {
-        button.hidden = !hasLockMultipleAccountPermission;
-      }
-    });
-
-    this.selectButtons = selectedButtons;
-  }
-
-  private _getUserList() {
-    const params = this._buildParams();
-    this.userListService
-      .getData(params)
-      .subscribe(
-        (data: ApiResponseSearchAndPaginationResponseAdminAccountEntity) => {
-          this._parseData(data?.result);
-          this.dataSource.data = data?.result?.data;
-          if (this.filterForm.controls.id.value) {
-            this.expandElementFromLoan = data?.result?.data[0];
-          }
-        }
-      );
-  }
+  // private async _checkActionPermissions() {
+  //   const hasCredentialsCreatePermission =
+  //     await this.permissionsService.hasPermission('credentials:create');
+  //   const hasDeleteAccountPermission =
+  //     await this.permissionsService.hasPermission(
+  //       'credentials:deleteAdminAccount'
+  //     );
+  //   const hasLockMultipleAccountPermission =
+  //     await this.permissionsService.hasPermission(
+  //       'credentials:lockMultiAccount'
+  //     );
+  //
+  //   if (hasCredentialsCreatePermission) {
+  //     this.breadcrumbOptions.showBtnAdd = true;
+  //   }
+  //   this.breadcrumbOptions.showBtnAdd = true;
+  //
+  //   let selectedButtons = JSON.parse(JSON.stringify(this.selectButtons));
+  //   selectedButtons.forEach((button) => {
+  //     if (button.action === 'delete') {
+  //       button.hidden = !hasDeleteAccountPermission;
+  //       return;
+  //     }
+  //     if (button.action === 'lock') {
+  //       button.hidden = !hasLockMultipleAccountPermission;
+  //     }
+  //   });
+  //
+  //   this.selectButtons = selectedButtons;
+  // }
 
   public onPageChange(event: PageEvent) {
     this.pageSize = event.pageSize;
@@ -285,20 +287,6 @@ export class ProductWorkflowListComponent implements OnInit {
 
   public onExpandElementChange(element: any) {
     this.openUpdateDialog(element);
-  }
-
-  public openUpdateDialog(info) {
-    const dialogRef = this.dialog.open(ProductWorkflowDialogComponent, {
-      panelClass: 'custom-info-dialog-container',
-      maxWidth: '1200px',
-      width: '90%',
-      data: {
-        info: info,
-        dialogTitle: this.multiLanguageService.instant(
-          'product_workflow.update'
-        ),
-      },
-    });
   }
 
   public onSubmitSearchForm(event) {
@@ -443,6 +431,14 @@ export class ProductWorkflowListComponent implements OnInit {
         this._deleteById(id);
       }
     });
+    setTimeout(() => {
+      if (action === 'delete') {
+        this.notifier.success(
+          this.multiLanguageService.instant('pd_system.pd_group.delete_toast')
+        );
+        this.refreshContent();
+      }
+    }, 2000);
   }
 
   private _lockById(id: string) {
@@ -475,6 +471,18 @@ export class ProductWorkflowListComponent implements OnInit {
     if (!id) {
       return;
     }
+    this.subManager.add(
+      this.loanStatusService
+        .loanStatusControllerDeleteStatusGroup(parseInt(id), {})
+        .subscribe((result: CustomApiResponse<PDGroup>) => {
+          if (!result || result.responseCode !== RESPONSE_CODE.SUCCESS) {
+            return this.notifier.error(
+              JSON.stringify(result?.message),
+              result?.errorCode
+            );
+          }
+        })
+    );
   }
 
   formatTimeSecond(timeInput) {
@@ -503,21 +511,21 @@ export class ProductWorkflowListComponent implements OnInit {
     });
   }
 
-  private _initSubscription() {
-    this.subManager.add(
-      this.routeAllState$.subscribe((params) => {
-        this._parseQueryParams(params?.queryParams);
-      })
-    );
-
-    this.subManager.add(
-      this.permissionsService.permissions$.subscribe((permissions) => {
-        if (permissions) {
-          this._checkActionPermissions();
-        }
-      })
-    );
-  }
+  // private _initSubscription() {
+  //   this.subManager.add(
+  //     this.routeAllState$.subscribe((params) => {
+  //       this._parseQueryParams(params?.queryParams);
+  //     })
+  //   );
+  //
+  //   this.subManager.add(
+  //     this.permissionsService.permissions$.subscribe((permissions) => {
+  //       if (permissions) {
+  //         this._checkActionPermissions();
+  //       }
+  //     })
+  //   );
+  // }
 
   private _parseQueryParams(params) {
     this._initFilterFormFromQueryParams(params);
@@ -624,12 +632,14 @@ export class ProductWorkflowListComponent implements OnInit {
       maxWidth: '1200px',
       width: '90%',
       data: {
+        leftArr: this.statusList,
         dialogTitle: this.multiLanguageService.instant('product_workflow.add'),
       },
     });
     this.subManager.add(
       dialogRef.afterClosed().subscribe((result: any) => {
         if (result && result.type === BUTTON_TYPE.PRIMARY) {
+          console.log(result.data);
           let createRequest = this._bindingDialogData(result.data, 'create');
           let addRequest = this._bindingDialogData(result.data.addArr);
           this.sendCreateRequest(createRequest, addRequest);
@@ -642,7 +652,7 @@ export class ProductWorkflowListComponent implements OnInit {
     this.subManager.add(
       this.loanStatusService
         .loanStatusControllerCreateStatusGroup(createRequest)
-        .subscribe((result: CustomApiResponse<PDGroup>) => {
+        .subscribe((result: CustomApiResponse<any>) => {
           if (!result || result.responseCode !== RESPONSE_CODE.SUCCESS) {
             return this.notifier.error(
               JSON.stringify(result?.message),
@@ -652,7 +662,7 @@ export class ProductWorkflowListComponent implements OnInit {
             if (addRequest) {
               for (let i = 0; i < addRequest.length; i++) {
                 this.loanStatusService
-                  .loanStatusControllerUpdatePdModelGroup(
+                  .loanStatusControllerUpdateStatusFlow(
                     result.result.id,
                     'add',
                     addRequest[i]
@@ -675,9 +685,128 @@ export class ProductWorkflowListComponent implements OnInit {
     );
   }
 
+  public openUpdateDialog(info) {
+    let leftArr = [...this.statusList];
+    let rightArr = [];
+    let statusFlows = info.statusFlows;
+    if (statusFlows) {
+      // statusFlows = statusFlows.filter(
+      //   (statusFlow) => statusFlow.pdQuestion !== null
+      // );
+      rightArr = statusFlows.map((ele) => {
+        return {
+          id: ele.loanStatus.id,
+          name: ele.loanStatus.name,
+          order: ele.order,
+        };
+      });
+      let ids = rightArr.map((ele) => ele.id);
+      leftArr = leftArr.filter((ele) => !ids.includes(ele.id));
+    }
+
+    const dialogRef = this.dialog.open(ProductWorkflowDialogComponent, {
+      panelClass: 'custom-info-dialog-container',
+      maxWidth: '1200px',
+      width: '90%',
+      data: {
+        info: info,
+        leftArr: leftArr,
+        rightArr: rightArr,
+        dialogTitle: this.multiLanguageService.instant(
+          'product_workflow.update'
+        ),
+      },
+    });
+    this.subManager.add(
+      dialogRef.afterClosed().subscribe((result: any) => {
+        if (result && result.type === BUTTON_TYPE.PRIMARY) {
+          console.log('áondouansdoansdoin', result.data);
+          let updateRequest = this._bindingDialogData(result.data, 'create');
+          let addQuestionsRequest = this._bindingDialogData(result.data.addArr);
+          let updateQuestionsRequest = this._bindingDialogData(
+            result.data.updateArr
+          );
+          let removeQuestionsRequest = this._bindingDialogData(
+            result.data.removeArr
+          );
+          this.sendUpdateRequest(
+            info.id,
+            updateRequest,
+            addQuestionsRequest,
+            updateQuestionsRequest,
+            removeQuestionsRequest
+          );
+        }
+      })
+    );
+  }
+
+  public sendUpdateRequest(
+    id,
+    update,
+    addRequest?,
+    updateRequest?,
+    removeRequest?
+  ) {
+    this.subManager.add(
+      this.loanStatusService
+        .loanStatusControllerUpdateStatusGroup(id, update)
+        .subscribe((result: CustomApiResponse<PDGroup>) => {
+          if (!result || result.responseCode !== RESPONSE_CODE.SUCCESS) {
+            return this.notifier.error(
+              JSON.stringify(result?.message),
+              result?.errorCode
+            );
+          } else {
+            if (addRequest) {
+              for (let i = 0; i < addRequest.length; i++) {
+                this.loanStatusService
+                  .loanStatusControllerUpdateStatusFlow(
+                    id,
+                    'add',
+                    addRequest[i]
+                  )
+                  .subscribe((result) => {});
+              }
+            }
+            if (updateRequest) {
+              for (let i = 0; i < updateRequest.length; i++) {
+                this.loanStatusService
+                  .loanStatusControllerUpdateStatusFlow(
+                    id,
+                    'update',
+                    updateRequest[i]
+                  )
+                  .subscribe((result) => {});
+              }
+            }
+            if (removeRequest) {
+              for (let i = 0; i < removeRequest.length; i++) {
+                this.loanStatusService
+                  .loanStatusControllerUpdateStatusFlow(
+                    id,
+                    'remove',
+                    removeRequest[i]
+                  )
+                  .subscribe((result) => {});
+              }
+            }
+          }
+
+          setTimeout(() => {
+            this.notifier.success(
+              this.multiLanguageService.instant('common.update_success')
+            );
+            this.refreshContent();
+            this.notificationService.hideLoading();
+          }, 3000);
+        })
+    );
+  }
+
   public refreshContent() {
     setTimeout(() => {
-      this._getUserList();
+      this._getWorkflowList();
     }, 2000);
   }
 
@@ -686,12 +815,14 @@ export class ProductWorkflowListComponent implements OnInit {
       return {
         code: data?.code,
         name: data?.name,
+        description: data?.description ? data?.description : null,
+        status: data?.status,
       };
     } else {
       let requestArray = [];
       for (let i = 0; i < data.length; i++) {
         requestArray.push({
-          questionId: data[i].id,
+          statusId: data[i].id,
           order: data[i].order,
         });
       }
@@ -724,38 +855,6 @@ export class ProductWorkflowListComponent implements OnInit {
       filterOption.value = null;
     });
     this.filterOptions = newFilterOptions;
-  }
-
-  private _initRoleOptions() {
-    this.filterOptions.forEach((filterOption: FilterOptionModel) => {
-      if (filterOption.controlName !== 'groupId' || !this.roleList) {
-        return;
-      }
-      filterOption.options = this.roleList.map((role) => {
-        return {
-          title: role.name,
-          value: role.id,
-        };
-      });
-    });
-  }
-
-  public updateElementInfo(updatedUserInfo) {
-    if (!updatedUserInfo) {
-      setTimeout(() => {
-        this.triggerDeselectUsers();
-        this._getUserList();
-      }, 2000);
-    }
-    this.dataSource.data.map((item) => {
-      if (item.id === updatedUserInfo.id) {
-        this.allColumns.forEach((column) => {
-          item[column.key] = updatedUserInfo[column.key];
-        });
-      }
-      return item;
-    });
-    // this.refreshContent();
   }
 
   ngOnDestroy(): void {
