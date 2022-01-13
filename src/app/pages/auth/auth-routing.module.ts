@@ -14,14 +14,6 @@ export const AuthRoutes: Routes = [
           animation: true,
         },
       },
-      // {
-      //   path: 'forgot-password',
-      //   component: ForgotPasswordComponent,
-      // },
-      // {
-      //   path: 'reset-password-success',
-      //   component: ResetPasswordSuccessComponent,
-      // },
     ],
   },
 ];
