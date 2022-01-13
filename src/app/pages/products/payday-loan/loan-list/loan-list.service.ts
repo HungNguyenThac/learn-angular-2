@@ -1,6 +1,6 @@
 import { query } from '@angular/animations';
 import {
-  APPLICATION_TYPE,
+  APPLICATION_TYPE, COMPANY_NAME,
   PAYDAY_LOAN_STATUS,
   REPAYMENT_STATUS,
 } from './../../../../core/common/enum/payday-loan';
@@ -28,6 +28,7 @@ import {SignDocumentControllerService} from '../../../../../../open-api-modules/
 import {ACCOUNT_CLASSIFICATION} from 'src/app/core/common/enum/payday-loan';
 import {GlobalConstants} from '../../../../core/common/global-constants';
 import {environment} from "../../../../../environments/environment";
+import {Observable} from "rxjs/Observable";
 
 @Injectable({
   providedIn: 'root',
@@ -155,32 +156,34 @@ export class LoanListService {
   }
 
   public getContractData(loanId: string, groupName: string) {
-    if (groupName === 'TNG') {
-      return this.paydayLoanTngControllerService
-        .getLoanContractByLoanId(loanId)
-        .pipe(
-          map((results: ApiResponseContract) => {
-            return results;
-          }),
+    switch (groupName) {
+      case COMPANY_NAME.TNG:
+      case COMPANY_NAME.VAC:
+        return this.paydayLoanTngControllerService
+          .getLoanContractByLoanId(loanId)
+          .pipe(
+            map((results: ApiResponseContract) => {
+              return results;
+            }),
 
-          catchError((err) => {
-            throw err;
-          })
-        );
-    }
+            catchError((err) => {
+              throw err;
+            })
+          );
+      case COMPANY_NAME.HMG:
+        return this.paydayLoanControllerService
+          .getLoanContractByLoanId(loanId)
+          .pipe(
+            map((results: ApiResponseContract) => {
+              return results;
+            }),
 
-    if (groupName === 'HMG') {
-      return this.paydayLoanControllerService
-        .getLoanContractByLoanId(loanId)
-        .pipe(
-          map((results: ApiResponseContract) => {
-            return results;
-          }),
-
-          catchError((err) => {
-            throw err;
-          })
-        );
+            catchError((err) => {
+              throw err;
+            })
+          );
+      default:
+        return Observable.of(null);
     }
   }
 
