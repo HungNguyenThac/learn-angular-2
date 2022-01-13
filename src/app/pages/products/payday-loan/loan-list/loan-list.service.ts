@@ -27,6 +27,7 @@ import {FileControllerService} from '../../../../../../open-api-modules/com-api-
 import {SignDocumentControllerService} from '../../../../../../open-api-modules/contract-api-docs';
 import {ACCOUNT_CLASSIFICATION} from 'src/app/core/common/enum/payday-loan';
 import {GlobalConstants} from '../../../../core/common/global-constants';
+import {environment} from "../../../../../environments/environment";
 
 @Injectable({
   providedIn: 'root',
@@ -102,13 +103,13 @@ export class LoanListService {
       case ACCOUNT_CLASSIFICATION.TEST:
         requestBody[
         'customerInfo.mobileNumber' + QUERY_CONDITION_TYPE.START_WITH
-          ] = GlobalConstants.PL_VALUE_DEFAULT.PREFIX_MOBILE_NUMBER_TEST;
+          ] = environment.PREFIX_MOBILE_NUMBER_TEST;
         break;
       case ACCOUNT_CLASSIFICATION.REAL:
       default:
         requestBody[
         'customerInfo.mobileNumber' + QUERY_CONDITION_TYPE.NOT_START_WITH
-          ] = GlobalConstants.PL_VALUE_DEFAULT.PREFIX_MOBILE_NUMBER_TEST;
+          ] = environment.PREFIX_MOBILE_NUMBER_TEST;
         break;
     }
     console.log('requestBody--------------------------------', requestBody);

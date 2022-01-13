@@ -20,6 +20,7 @@ import {
   ERROR_CODE_KEY,
 } from '../../../core/common/enum/payday-loan';
 import { RESPONSE_CODE } from '../../../core/common/enum/operator';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-forgot-password',
@@ -66,10 +67,6 @@ export class ForgotPasswordComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.titleService.setTitle(
-      'Quên mật khẩu' + ' - ' + GlobalConstants.PL_VALUE_DEFAULT.PROJECT_NAME
-    );
-
     this.resetSession();
   }
 

@@ -11,6 +11,7 @@ import {
 import { GlobalConstants } from '../../../../../core/common/global-constants';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import * as moment from 'moment';
+import { environment } from '../../../../../../environments/environment';
 
 @Component({
   selector: 'app-verify-otp-form',
@@ -33,8 +34,7 @@ export class VerifyOtpFormComponent
 
   otp: string;
   disableBtnNext: boolean = true;
-  countdownTime: number =
-    GlobalConstants.PL_VALUE_DEFAULT.RESEND_OTP_COUNTDOWN_TIME;
+  countdownTime: number = environment.RESEND_OTP_COUNTDOWN_TIME;
   intervalTime: any;
   hiddenCountdown: boolean = false;
 

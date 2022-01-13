@@ -25,6 +25,7 @@ import {
   MerchantDetailDialogComponent,
   MerchantGroupDialogComponent,
 } from '../../../../../share/components';
+import {environment} from "../../../../../../environments/environment";
 
 @Component({
   selector: 'app-pd-answers-list',
@@ -213,11 +214,11 @@ export class PdAnswersListComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.titleService.setTitle(
-      this.multiLanguageService.instant('page_title.merchant_list') +
-        ' - ' +
-        GlobalConstants.PL_VALUE_DEFAULT.PROJECT_NAME
-    );
+    // this.titleService.setTitle(
+    //   this.multiLanguageService.instant('page_title.merchant_list') +
+    //     ' - ' +
+    //     environment.PROJECT_NAME
+    // );
     this.dataSource.data = this.merchantList;
   }
 

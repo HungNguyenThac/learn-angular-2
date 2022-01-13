@@ -7,6 +7,7 @@ import { CustomerControllerService } from 'open-api-modules/dashboard-api-docs';
 import * as _ from 'lodash';
 import { QUERY_CONDITION_TYPE } from '../../../core/common/enum/operator';
 import { GlobalConstants } from '../../../core/common/global-constants';
+import {environment} from "../../../../environments/environment";
 
 @Injectable({
   providedIn: 'root',
@@ -64,12 +65,12 @@ export class CustomerListService {
 
       case ACCOUNT_CLASSIFICATION.TEST:
         requestBody['mobileNumber' + QUERY_CONDITION_TYPE.START_WITH] =
-          GlobalConstants.PL_VALUE_DEFAULT.PREFIX_MOBILE_NUMBER_TEST;
+          environment.PREFIX_MOBILE_NUMBER_TEST;
         break;
       case ACCOUNT_CLASSIFICATION.REAL:
       default:
         requestBody['mobileNumber' + QUERY_CONDITION_TYPE.NOT_START_WITH] =
-          GlobalConstants.PL_VALUE_DEFAULT.PREFIX_MOBILE_NUMBER_TEST;
+          environment.PREFIX_MOBILE_NUMBER_TEST;
         break;
     }
 

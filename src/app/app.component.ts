@@ -14,6 +14,7 @@ import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { filter, map, mergeMap } from 'rxjs/operators';
 import { GlobalConstants } from './core/common/global-constants';
+import { environment } from '../environments/environment';
 
 @Component({
   selector: 'app-root',
@@ -98,11 +99,11 @@ export class AppComponent implements OnInit {
 
   private buildTitle(pageTitle: string): string {
     if (pageTitle) {
-      return [pageTitle, GlobalConstants.PL_VALUE_DEFAULT.PROJECT_NAME].join(
-        GlobalConstants.PL_VALUE_DEFAULT.BROWSER_TAB_TITLE_DELIMITER
+      return [pageTitle, environment.PROJECT_NAME].join(
+        environment.BROWSER_TAB_TITLE_DELIMITER
       );
     }
 
-    return GlobalConstants.PL_VALUE_DEFAULT.PROJECT_NAME;
+    return environment.PROJECT_NAME;
   }
 }

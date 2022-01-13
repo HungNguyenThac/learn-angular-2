@@ -37,7 +37,7 @@ export class SignInComponent implements OnInit {
     // this.titleService.setTitle(
     //   this.multiLanguageService.instant('page_title.sign_in') +
     //     ' - ' +
-    //     GlobalConstants.PL_VALUE_DEFAULT.PROJECT_NAME
+    //     environment.PROJECT_NAME
     // );
     this.resetSession();
   }

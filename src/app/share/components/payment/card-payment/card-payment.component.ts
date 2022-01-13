@@ -3,6 +3,7 @@ import { PaymentProductInfo } from '../../../../public/models/payment/payment-pr
 import { GlobalConstants } from '../../../../core/common/global-constants';
 import { PaymentUserInfo } from '../../../../public/models/payment/payment-user-info.model';
 import * as moment from 'moment';
+import {environment} from "../../../../../environments/environment";
 
 @Component({
   selector: 'app-card-payment',
@@ -19,16 +20,16 @@ export class CardPaymentComponent implements OnInit {
     return (
       this.productInfo.expectedAmount +
       (this.productInfo.expectedAmount *
-        GlobalConstants.PL_VALUE_DEFAULT.FIXED_REPAYMENT_GPAY_DYNAMIC) /
+        environment.FIXED_REPAYMENT_GPAY_DYNAMIC) /
         100 +
-      GlobalConstants.PL_VALUE_DEFAULT.FIXED_REPAYMENT_GPAY_FEE
+      environment.FIXED_REPAYMENT_GPAY_FEE
     );
   }
 
   intervalTime: any;
   disabledBtn: boolean = false;
   countdownTime: number =
-    GlobalConstants.PL_VALUE_DEFAULT.DEFAULT_DISABLED_BTN_TIME;
+    environment.DEFAULT_DISABLED_BTN_TIME;
 
   constructor() {}
 

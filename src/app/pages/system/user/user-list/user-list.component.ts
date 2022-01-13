@@ -210,7 +210,7 @@ export class UserListComponent implements OnInit, OnDestroy {
     // this.titleService.setTitle(
     //   this.multiLanguageService.instant('page_title.user_list') +
     //     ' - ' +
-    //     GlobalConstants.PL_VALUE_DEFAULT.PROJECT_NAME
+    //     environment.PROJECT_NAME
     // );
     this.store.dispatch(new fromActions.SetOperatorInfo(null));
     this._initSubscription();
