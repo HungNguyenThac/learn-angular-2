@@ -251,7 +251,6 @@ export class MonexProductListComponent implements OnInit {
       this.loanProductsService
         .loanProductControllerGetListLoanProduct()
         .subscribe((data) => {
-          console.log('asjodnaisndoasdoasoidoasd', data);
           // @ts-ignore
           this.dataSource.data = data?.result;
         })

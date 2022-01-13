@@ -415,7 +415,6 @@ export class PdModelListComponent implements OnInit {
   }
 
   public _doMultipleAction(ids, action) {
-    console.log('idsssss', ids);
     if (!ids) {
       return;
     }

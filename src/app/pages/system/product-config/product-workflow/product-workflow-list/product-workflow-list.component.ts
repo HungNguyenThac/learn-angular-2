@@ -639,7 +639,6 @@ export class ProductWorkflowListComponent implements OnInit {
     this.subManager.add(
       dialogRef.afterClosed().subscribe((result: any) => {
         if (result && result.type === BUTTON_TYPE.PRIMARY) {
-          console.log(result.data);
           let createRequest = this._bindingDialogData(result.data, 'create');
           let addRequest = this._bindingDialogData(result.data.addArr);
           this.sendCreateRequest(createRequest, addRequest);
@@ -720,7 +719,6 @@ export class ProductWorkflowListComponent implements OnInit {
     this.subManager.add(
       dialogRef.afterClosed().subscribe((result: any) => {
         if (result && result.type === BUTTON_TYPE.PRIMARY) {
-          console.log('áondouansdoansdoin', result.data);
           let updateRequest = this._bindingDialogData(result.data, 'create');
           let addQuestionsRequest = this._bindingDialogData(result.data.addArr);
           let updateQuestionsRequest = this._bindingDialogData(
