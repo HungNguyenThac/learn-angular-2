@@ -1627,6 +1627,8 @@ components:
           type: string
         note:
           type: string
+        signLetterDoneAt:
+          type: string
         idDocumentType:
           type: string
         identityNumberOne:
@@ -2230,7 +2232,9 @@ components:
           type: string
         numberOfWorkDays:
           type: string
-        bank:
+        bankName:
+          type: string
+        bankCode:
           type: string
         accountNumber:
           type: string

@@ -402,7 +402,7 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ApiResponseString'
-  '/v1/paydays/{loanId}/additionalEmployeeData ':
+  /v1/paydays/{loanId}/additionalEmployeeData:
     post:
       tags:
       - payday-loan-controller
@@ -901,7 +901,9 @@ components:
           type: string
         numberOfWorkDays:
           type: string
-        bank:
+        bankName:
+          type: string
+        bankCode:
           type: string
         accountNumber:
           type: string
@@ -1125,7 +1127,8 @@ components:
       required:
       - accountNumber
       - address
-      - bank
+      - bankCode
+      - bankName
       - contractType
       - identityNumber
       - job
@@ -1155,7 +1158,9 @@ components:
           type: string
         numberOfWorkDays:
           type: string
-        bank:
+        bankName:
+          type: string
+        bankCode:
           type: string
         accountNumber:
           type: string
