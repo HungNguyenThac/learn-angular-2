@@ -3,9 +3,7 @@
   <mat-tab [label]="'loan_app.tabs.loan_info' | translate">
     <ng-template matTabContent>
       <app-loan-detail-info
-        (loanDetailDetectChangeStatus)="
-          loanDetailDetectChangeStatusTrigger()
-        "
+        (loanDetailDetectChangeStatus)="loanDetailDetectChangeStatusTrigger()"
         [customerInfo]="userInfo"
         [groupName]="groupName"
         [loanDetail]="loanDetail"
@@ -70,13 +68,27 @@
   <mat-tab [label]="'loan_app.tabs.note' | translate">
     <ng-template matTabContent>
       <app-loan-note
-        (loanDetailDetectChangeStatus)="
-          loanDetailDetectChangeStatusTrigger()
-        "
+        (loanDetailDetectChangeStatus)="loanDetailDetectChangeStatusTrigger()"
         [groupName]="groupName"
         [loanDetail]="loanDetail"
         [loanId]="loanId"
       ></app-loan-note>
+    </ng-template>
+  </mat-tab>
+
+  <!--  Info Verification-->
+  <mat-tab
+    *ngIf="groupName === 'VAC'"
+    [label]="'loan_app.tabs.info-verification' | translate"
+  >
+    <ng-template matTabContent>
+      <app-info-verification
+        [loanId]="loanId"
+        [loanDetail]="loanDetail"
+        [bankOptions]="bankOptions"
+        [customerInfo]="userInfo"
+        (loanDetailDetectChangeStatus)="loanDetailDetectChangeStatusTrigger()"
+      ></app-info-verification>
     </ng-template>
   </mat-tab>
 </mat-tab-group>
