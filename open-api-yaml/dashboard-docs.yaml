@@ -1569,46 +1569,6 @@ paths:
                 $ref: '#/components/schemas/ApiResponseInsuranceOrder'
       security:
       - bearerAuth: []
-  /v1/hmgApplications:
-    get:
-      tags:
-      - application-hmg-controller
-      operationId: findApplication
-      parameters:
-      - name: query
-        in: query
-        required: true
-        schema:
-          $ref: '#/components/schemas/SearchPaydayLoanRequest'
-      - name: pageSize
-        in: query
-        required: true
-        schema:
-          type: integer
-          format: int32
-      - name: pageNumber
-        in: query
-        required: true
-        schema:
-          type: integer
-          format: int32
-      - name: orderBy
-        in: query
-        required: true
-        schema:
-          type: string
-      - name: desc
-        in: query
-        required: false
-        schema:
-          type: boolean
-      responses:
-        "200":
-          description: OK
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/ApiResponseSearchPaydayLoanResponse'
   /v1/hmgApplications/{loanId}:
     get:
       tags:
@@ -1982,46 +1942,6 @@ paths:
                 $ref: '#/components/schemas/ApiResponseApprovalLetter'
       security:
       - bearerAuth: []
-  /v1/applications:
-    get:
-      tags:
-      - application-controller
-      operationId: findApplication_1
-      parameters:
-      - name: query
-        in: query
-        required: true
-        schema:
-          $ref: '#/components/schemas/SearchPaydayLoanRequest'
-      - name: pageSize
-        in: query
-        required: true
-        schema:
-          type: integer
-          format: int32
-      - name: pageNumber
-        in: query
-        required: true
-        schema:
-          type: integer
-          format: int32
-      - name: orderBy
-        in: query
-        required: true
-        schema:
-          type: string
-      - name: desc
-        in: query
-        required: false
-        schema:
-          type: boolean
-      responses:
-        "200":
-          description: OK
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/ApiResponseSearchPaydayLoanResponse'
   /v1/applications/{loanId}:
     get:
       tags:
@@ -2806,6 +2726,8 @@ components:
           type: string
         note:
           type: string
+        signLetterDoneAt:
+          type: string
         idDocumentType:
           type: string
         identityNumberOne:
@@ -2917,6 +2839,37 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/CompleteApplication'
+        employeeData:
+          $ref: '#/components/schemas/EmployeeData'
+    EmployeeData:
+      type: object
+      properties:
+        name:
+          type: string
+        mobile:
+          type: string
+        identityNumber:
+          type: string
+        startWorkingDay:
+          type: string
+        contractType:
+          type: string
+        job:
+          type: string
+        address:
+          type: string
+        numberOfWorkDays:
+          type: string
+        bank:
+          type: string
+        accountNumber:
+          type: string
+        salaryDocument1:
+          type: string
+        salaryDocument2:
+          type: string
+        salaryDocument3:
+          type: string
     FraudCheck:
       type: object
       properties:
@@ -3375,12 +3328,8 @@ components:
       properties:
         id:
           type: string
-        modelId:
+        objectId:
           type: string
-        pdModelGroups:
-          type: array
-          items:
-            $ref: '#/components/schemas/ModelGroup'
         code:
           type: string
         content:
@@ -3402,7 +3351,7 @@ components:
       properties:
         id:
           type: string
-        modelId:
+        objectId:
           type: string
         order:
           type: string
@@ -3414,77 +3363,12 @@ components:
           $ref: '#/components/schemas/Group'
         pdQuestion:
           $ref: '#/components/schemas/Question'
-    LoanProduct:
-      type: object
-      properties:
-        id:
-          type: string
-        modelId:
-          type: string
-        code:
-          type: string
-        name:
-          type: string
-        createdAt:
-          type: string
-        createdBy:
-          type: string
-        updatedAt:
-          type: string
-        updatedBy:
-          type: string
-        pdModels:
-          type: array
-          items:
-            $ref: '#/components/schemas/Model'
-    Model:
-      type: object
-      properties:
-        id:
-          type: string
-        modelId:
-          type: string
-        loanProduct:
-          $ref: '#/components/schemas/LoanProduct'
-        code:
-          type: string
-        content:
-          type: string
-        description:
-          type: string
-        status:
-          type: string
-        createdAt:
-          type: string
-        createdBy:
-          type: string
-        updatedAt:
-          type: string
-        updatedBy:
-          type: string
-    ModelGroup:
-      type: object
-      properties:
-        id:
-          type: string
-        modelId:
-          type: string
-        order:
-          type: string
-        pdModelId:
-          type: string
-        pdGroupId:
-          type: string
-        pdModel:
-          $ref: '#/components/schemas/Model'
-        pdGroup:
-          $ref: '#/components/schemas/Group'
     Question:
       type: object
       properties:
         id:
           type: string
-        modelId:
+        objectId:
           type: string
         code:
           type: string
@@ -3535,6 +3419,71 @@ components:
         responseCode:
           type: integer
           format: int32
+    LoanProduct:
+      type: object
+      properties:
+        id:
+          type: string
+        objectId:
+          type: string
+        code:
+          type: string
+        name:
+          type: string
+        createdAt:
+          type: string
+        createdBy:
+          type: string
+        updatedAt:
+          type: string
+        updatedBy:
+          type: string
+    Model:
+      type: object
+      properties:
+        id:
+          type: string
+        objectId:
+          type: string
+        pdModelGroups:
+          type: array
+          items:
+            $ref: '#/components/schemas/ModelGroup'
+        loanProduct:
+          $ref: '#/components/schemas/LoanProduct'
+        code:
+          type: string
+        content:
+          type: string
+        description:
+          type: string
+        status:
+          type: string
+        createdAt:
+          type: string
+        createdBy:
+          type: string
+        updatedAt:
+          type: string
+        updatedBy:
+          type: string
+    ModelGroup:
+      type: object
+      properties:
+        id:
+          type: string
+        objectId:
+          type: string
+        order:
+          type: string
+        pdModelId:
+          type: string
+        pdGroupId:
+          type: string
+        pdModel:
+          $ref: '#/components/schemas/Model'
+        pdGroup:
+          $ref: '#/components/schemas/Group'
     SearchAndPaginationResponseModel:
       type: object
       properties:
@@ -3716,6 +3665,8 @@ components:
         voucher:
           $ref: '#/components/schemas/Voucher'
         applicationType:
+          type: string
+        termType:
           type: string
         completedAt:
           type: string
@@ -3974,63 +3925,6 @@ components:
         responseCode:
           type: integer
           format: int32
-    SearchPaydayLoanRequest:
-      type: object
-      properties:
-        loanCode:
-          type: string
-        mobileNumber:
-          type: string
-        status:
-          type: string
-    ApiResponseSearchPaydayLoanResponse:
-      type: object
-      properties:
-        result:
-          $ref: '#/components/schemas/SearchPaydayLoanResponse'
-        errorCode:
-          type: string
-        message:
-          type: object
-        responseCode:
-          type: integer
-          format: int32
-    SearchPaydayLoanResponse:
-      type: object
-      properties:
-        pagination:
-          $ref: '#/components/schemas/Pagination'
-        searchPaydayLoanResult:
-          type: array
-          items:
-            $ref: '#/components/schemas/SearchPaydayLoanResult'
-    SearchPaydayLoanResult:
-      type: object
-      properties:
-        customerId:
-          type: string
-        loanId:
-          type: string
-        loanCode:
-          type: string
-        tenure:
-          type: integer
-          format: int32
-        status:
-          type: string
-        repaymentStatus:
-          type: string
-        amount:
-          type: integer
-          format: int32
-        createdAt:
-          type: string
-        customerName:
-          type: string
-        mobileNumber:
-          type: string
-        emailAddress:
-          type: string
     ApiResponsePaydayLoanHmg:
       type: object
       properties:

@@ -346,7 +346,8 @@
       "documents": "Tài liệu yêu cầu",
       "rating": "Đánh giá dịch vụ",
       "company_info": "Thông tin công ty",
-      "note": "Ghi chú"
+      "note": "Ghi chú",
+      "info-verification": "Xác minh thông tin"
     },
     "loan_info": {
       "loan_code": "Mã khoản ứng",
@@ -473,6 +474,21 @@
       "received_date": "Ngày lấy thông tin",
       "is_payday": "Người lao động đã được trả lương",
       "is_not_payday": "Người lao động chưa được trả lương"
+    },
+    "info_verification":{
+      "customer_name":"Tên khách hàng",
+      "mobile_number":"Số điện thoại khách hàng trong hồ sơ công ty",
+      "identity_number":"CMND/CCCD khách hàng trong hồ sơ công ty",
+      "start_working_day":"Ngày bắt đầu làm việc tại công ty",
+      "contract_type":"Loại hợp đồng lao động",
+      "current_job":"Công việc/ Vị trí công tác",
+      "address":"Địa chỉ nơi ở đăng ký với công ty",
+      "current_month_working_days_number":"Số ngày công đã làm của tháng hiện tại",
+      "salary_bank":"Ngân hàng nhận lương",
+      "salary_bank_number":"Số tài khoản ngân hàng nhận lương",
+      "salary_average":"Thu nhập trung bình 3 tháng gần nhất",
+      "are_you_sure":"Bạn có chắc chắn các thông tin này là chính xác?",
+      "input_please":"Nhập thông tin"
     }
   },
   "payday_loan": {
