@@ -12,5 +12,6 @@ export interface FilterOptionModel {
   actionIconClass?: string;
   showAction?: boolean;
   showIconAction?: boolean;
+  hidden?: boolean;
   options?: FilterItemModel[];
 }

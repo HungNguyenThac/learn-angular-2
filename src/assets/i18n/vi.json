@@ -376,6 +376,7 @@
       "overdue_date_count": "Số ngày quá hạn ",
       "staff_in_charge": "Nhân viên phụ trách",
       "note": "Ghi chú",
+      "term_type": "Kỳ hạn thanh toán",
       "type_note": "Viết ghi chú...",
       "enough_info": "Đầy đủ thông tin",
       "not_received_salary": "Chưa được trả lương",
@@ -514,6 +515,10 @@
       "callback_payment_result": "Khoản ứng hiện tại",
       "overdue": "Quá hạn"
     },
+    "term_type": {
+      "one_month": "1 tháng",
+      "three_month": "3 tháng"
+    },
     "repayment_status": {
       "overdue": "Quá hạn"
     },
@@ -521,6 +526,9 @@
       "service_fee": "Phí dịch vụ",
       "service_fee_hmg": "2 % giá trị khoản vay",
       "service_fee_tng": "2.5 % giá trị khoản vay tối thiểu là 100,000 VND",
+      "service_fee_vac_factory": "2.5 % giá trị khoản vay tối thiểu là 100,000 VND",
+      "service_fee_vac_office_one_month": "2.5 % giá trị khoản vay tối thiểu là 100,000 VND",
+      "service_fee_vac_office_three_month": "2% giá trị khoản ứng/tháng, tối thiểu 100.000 ₫",
       "transaction_fee": "Phí xử lý giao dịch",
       "transaction_fee_description": "Phí chuyển khoản 7k7 + phí cổng thanh toán 3.5k",
       "vat_fee": "Phí VAT",
@@ -552,6 +560,7 @@
     "pl_ui_status": "Trạng thái tài khoản",
     "account_status": "Trạng thái hoạt động",
     "loan_status": "Trạng thái khoản ứng",
+    "term_type": "Kỳ hạn vay",
     "merchant_group": "Nhóm merchant",
     "role_group": "Vai trò",
     "select_all": "Chọn tất cả",

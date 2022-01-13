@@ -44,13 +44,13 @@ export class LoanNoteComponent implements OnInit {
     this._loanId = value;
   }
 
-  _loanDetail: PaydayLoanHmg | PaydayLoanTng;
+  _loanDetail: PaydayLoanTng | PaydayLoanHmg;
   @Input()
-  get loanDetail(): PaydayLoanHmg | PaydayLoanTng {
+  get loanDetail(): PaydayLoanTng | PaydayLoanHmg {
     return this._loanDetail;
   }
 
-  set loanDetail(value: PaydayLoanHmg | PaydayLoanTng) {
+  set loanDetail(value: PaydayLoanTng | PaydayLoanHmg) {
     this._loanDetail = value;
     this._initLoanInfoData();
   }
