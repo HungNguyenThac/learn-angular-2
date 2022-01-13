@@ -759,7 +759,7 @@
     "merchant_detail": {
       "delete_merchant": {
         "title": "Xoá Merchant",
-        "content": "Hệ thống sẽ xóa Merchant được chọn nhưng vẫn giữ nhưng giao dịch lịch sử nếu có. Bạn có chắc chắn muốn xóa?",
+        "content": "Hệ thống sẽ xóa Merchant được chọn nhưng vẫn giữ những giao dịch lịch sử nếu có. Bạn có chắc chắn muốn xóa?",
         "toast": "Xoá Merchant thành công"
       },
       "lock_merchant": {
@@ -801,7 +801,8 @@
       "admin_name": "Tên người dùng",
       "position": "Chức vụ",
       "show": "Cho phép hiển thị",
-      "delete": "Xóa merchant"
+      "delete": "Xóa merchant",
+      "create": "Tạo merchant thành công"
     },
     "merchant_image": {
       "title": "Logo hình ảnh, giới thiệu",
