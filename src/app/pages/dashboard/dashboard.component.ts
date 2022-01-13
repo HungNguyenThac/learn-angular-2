@@ -14,6 +14,7 @@ import * as fromActions from '../../core/store';
 import { MultiLanguageService } from '../../share/translate/multiLanguageService';
 import { NAV_ITEM } from '../../core/common/enum/operator';
 import {DisplayedFieldsModel} from "../../public/models/filter/displayed-fields.model";
+import {environment} from "../../../environments/environment";
 
 export interface PeriodicElement {
   name: string;
@@ -96,11 +97,11 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
-    this.titleService.setTitle(
-      this.multiLanguageService.instant('page_title.dashboard') +
-        ' - ' +
-        GlobalConstants.PL_VALUE_DEFAULT.PROJECT_NAME
-    );
+    // this.titleService.setTitle(
+    //   this.multiLanguageService.instant('page_title.dashboard') +
+    //     ' - ' +
+    //     environment.PROJECT_NAME
+    // );
     this.store.dispatch(new fromActions.SetOperatorInfo(NAV_ITEM.DASHBOARD));
     this.totalItems = ELEMENT_DATA.length;
   }

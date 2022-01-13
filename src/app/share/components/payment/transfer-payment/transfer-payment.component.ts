@@ -42,14 +42,14 @@ export class TransferPaymentComponent implements OnInit, OnDestroy {
       this.productInfo.expectedAmount +
       this.productInfo.latePenaltyPayment -
       this.vaInfo.paidAmount +
-      GlobalConstants.PL_VALUE_DEFAULT.FIXED_REPAYMENT_VA_FEE
+      environment.FIXED_REPAYMENT_VA_FEE
     );
   }
 
   intervalTime: any;
   disabledBtn: boolean = false;
   countdownTime: number =
-    GlobalConstants.PL_VALUE_DEFAULT.DEFAULT_DISABLED_BTN_TIME;
+    environment.DEFAULT_DISABLED_BTN_TIME;
 
   subManager = new Subscription();
 

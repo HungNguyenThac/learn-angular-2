@@ -1,5 +1,7 @@
 export class TitleConstants {
   public static TITLE_VALUE: any = {
+    DASHBOARD: 'Tổng quan',
+    NOT_FOUND: 'Not found',
     SIGN_IN: 'Đăng nhập',
     CUSTOMER: 'Danh sách khách hàng',
     PAYDAY_LOAN: 'Danh sách khoản ứng',
@@ -11,5 +13,6 @@ export class TitleConstants {
     PD_MODEL: 'Danh sách PD Model',
     PRODUCT_STATUS: 'Danh sách trạng thái',
     PRODUCT_WORKFLOW: 'Danh sách luồng trạng thái',
+    MERCHANT_LIST: 'Danh sách merchant',
   };
 }

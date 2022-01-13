@@ -319,7 +319,7 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
         subTitle: this.multiLanguageService.instant(
           'payday_loan.service_fee.transaction_fee_description'
         ),
-        value: GlobalConstants.PL_VALUE_DEFAULT.TRANSACTION_FEE,
+        value: environment.TRANSACTION_FEE,
         type: DATA_CELL_TYPE.CURRENCY,
         format: null,
       },
@@ -364,7 +364,7 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
         subTitle: this.multiLanguageService.instant(
           'payday_loan.service_fee.transaction_fee_description'
         ),
-        value: GlobalConstants.PL_VALUE_DEFAULT.TRANSACTION_FEE,
+        value: environment.TRANSACTION_FEE,
         type: DATA_CELL_TYPE.CURRENCY,
         format: null,
       },
@@ -385,7 +385,7 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
           'payday_loan.service_fee.vat_fee_description'
         ),
         value:
-          GlobalConstants.PL_VALUE_DEFAULT.TAX_FEE_TNG *
+          environment.TAX_FEE_TNG *
           (this.calculateServiceFee(this.loanDetail) -
             this.getDiscountValue(this.loanDetail?.voucher)),
         type: DATA_CELL_TYPE.CURRENCY,
@@ -443,7 +443,7 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
         subTitle: this.multiLanguageService.instant(
           'payday_loan.service_fee.transaction_fee_description'
         ),
-        value: GlobalConstants.PL_VALUE_DEFAULT.TRANSACTION_FEE,
+        value: environment.TRANSACTION_FEE,
         type: DATA_CELL_TYPE.CURRENCY,
         format: null,
       },
@@ -464,7 +464,7 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
           'payday_loan.service_fee.vat_fee_description'
         ),
         value:
-          GlobalConstants.PL_VALUE_DEFAULT.TAX_FEE_TNG *
+          environment.TAX_FEE_TNG *
           (this.calculateServiceFee(this.loanDetail) -
             this.getDiscountValue(this.loanDetail?.voucher)),
         type: DATA_CELL_TYPE.CURRENCY,
@@ -734,8 +734,7 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
 
   getMaxHMGValue(annualIncome) {
     let millionAnnualIncome =
-      (GlobalConstants.PL_VALUE_DEFAULT.MAX_PERCENT_AMOUNT * annualIncome) /
-      1000000;
+      (environment.MAX_PERCENT_AMOUNT * annualIncome) / 1000000;
 
     if (millionAnnualIncome % 1 >= 0.5) {
       return (Math.round(millionAnnualIncome) - 0.5) * 1000000;
@@ -886,42 +885,58 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
   calculateServiceFee(loanDetail) {
     switch (loanDetail?.companyInfo?.groupName) {
       case COMPANY_NAME.TNG:
-        if (
-          loanDetail?.expectedAmount *
-            GlobalConstants.PL_VALUE_DEFAULT.SERVICE_FEE_TNG <
-          GlobalConstants.PL_VALUE_DEFAULT.MINIMUM_SERVICE_FEE_TNG
-        ) {
-          return GlobalConstants.PL_VALUE_DEFAULT.MINIMUM_SERVICE_FEE_TNG;
-        } else {
-          return (
-            loanDetail?.expectedAmount *
-            GlobalConstants.PL_VALUE_DEFAULT.SERVICE_FEE_TNG
-          );
-        }
+        return this.calculateServiceFeeTNG(loanDetail);
       case COMPANY_NAME.HMG:
-        return (
-          loanDetail?.expectedAmount *
-          GlobalConstants.PL_VALUE_DEFAULT.SERVICE_FEE_HMG
-        );
+        return loanDetail?.expectedAmount * environment.FEE_HMG_PERCENT;
       case COMPANY_NAME.VAC:
-        if (loanDetail?.applicationType === APPLICATION_TYPE.PDL_VAC_OFFICE) {
-          if (loanDetail?.termType === TERM_TYPE.THREE_MONTH) {
-            return (
-              loanDetail?.expectedAmount *
-              environment.FEE_VAC_OFFICE_THREE_MONTH_PERCENT
-            );
-          }
-          if (loanDetail?.termType === TERM_TYPE.ONE_MONTH) {
-            return (
-              loanDetail?.expectedAmount *
-              environment.FEE_VAC_OFFICE_ONE_MONTH_PERCENT
-            );
-          }
-        }
-        return loanDetail?.expectedAmount * environment.FEE_VAC_FACTORY_PERCENT;
+        return this.calculateServiceFeeVAC(loanDetail);
       default:
         return null;
     }
+  }
+
+  calculateServiceFeeTNG(loanDetail) {
+    if (
+      loanDetail?.expectedAmount * environment.FEE_TNG_PERCENT <
+      environment.MINIMUM_SERVICE_FEE_TNG
+    ) {
+      return environment.MINIMUM_SERVICE_FEE_TNG;
+    } else {
+      return loanDetail?.expectedAmount * environment.FEE_TNG_PERCENT;
+    }
+  }
+
+  calculateServiceFeeVAC(loanDetail) {
+    let serviceFee = 0;
+    if (loanDetail?.applicationType === APPLICATION_TYPE.PDL_VAC_OFFICE) {
+      if (loanDetail?.termType === TERM_TYPE.THREE_MONTH) {
+        serviceFee =
+          loanDetail?.expectedAmount *
+          environment.FEE_VAC_OFFICE_THREE_MONTH_PERCENT;
+
+        return serviceFee <
+          environment.MINIMUM_SERVICE_FEE_VAC_OFFICE_THREE_MONTH
+          ? environment.MINIMUM_SERVICE_FEE_VAC_OFFICE_THREE_MONTH
+          : serviceFee;
+      }
+      if (loanDetail?.termType === TERM_TYPE.ONE_MONTH) {
+        serviceFee =
+          loanDetail?.expectedAmount *
+          environment.FEE_VAC_OFFICE_ONE_MONTH_PERCENT;
+
+        return serviceFee < environment.MINIMUM_SERVICE_FEE_VAC_OFFICE_ONE_MONTH
+          ? environment.MINIMUM_SERVICE_FEE_VAC_OFFICE_ONE_MONTH
+          : serviceFee;
+      }
+    } else {
+      serviceFee =
+        loanDetail?.expectedAmount * environment.FEE_VAC_FACTORY_PERCENT;
+
+      return serviceFee < environment.MINIMUM_SERVICE_FEE_VAC_FACTORY
+        ? environment.MINIMUM_SERVICE_FEE_VAC_FACTORY
+        : serviceFee;
+    }
+    return serviceFee;
   }
 
   getDiscountValue(voucher: Voucher) {
@@ -932,7 +947,7 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
       voucher.percentage * 0.025 * this.loanDetail?.expectedAmount;
     // check max discount accepted
     if (discountAmount > voucher.maxValue) {
-      return (discountAmount = voucher.maxValue);
+      discountAmount = voucher.maxValue;
     }
     return discountAmount;
   }

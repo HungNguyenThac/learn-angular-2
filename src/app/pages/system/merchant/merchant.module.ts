@@ -10,6 +10,7 @@ import { MerchantElementComponent } from './components/merchant-element/merchant
 import { MerchantDetailComponent } from './components/merchant-detail/merchant-detail.component';
 import { MerchantLogoComponent } from './components/merchant-logo/merchant-logo.component';
 import { MerchantQrComponent } from './components/merchant-qr/merchant-qr.component';
+import { TitleConstants } from '../../../core/common/providers/title-constants';
 
 export const MerchantRoutes: Routes = [
   {
@@ -18,7 +19,10 @@ export const MerchantRoutes: Routes = [
       {
         path: 'list',
         component: MerchantListComponent,
-        data: { animation: true },
+        data: {
+          title: TitleConstants.TITLE_VALUE.MERCHANT_LIST,
+          animation: true,
+        },
       },
     ],
   },

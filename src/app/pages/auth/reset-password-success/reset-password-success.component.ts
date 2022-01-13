@@ -6,6 +6,7 @@ import { Title } from '@angular/platform-browser';
 import { Store } from '@ngrx/store';
 import * as fromActions from '../../../core/store';
 import * as fromStore from '../../../core/store';
+import {environment} from "../../../../environments/environment";
 
 @Component({
   selector: 'app-reset-password-success',
@@ -16,7 +17,7 @@ export class ResetPasswordSuccessComponent
   implements OnInit, AfterViewInit, OnDestroy
 {
   countdownTime: number =
-    GlobalConstants.PL_VALUE_DEFAULT.REDIRECT_TO_SIGN_IN_COUNTDOWN_TIME;
+    environment.REDIRECT_TO_SIGN_IN_COUNTDOWN_TIME;
   intervalTime: any;
 
   constructor(
@@ -26,11 +27,6 @@ export class ResetPasswordSuccessComponent
   ) {}
 
   ngOnInit(): void {
-    this.titleService.setTitle(
-      'Quên mật khẩu thành công' +
-        ' - ' +
-        GlobalConstants.PL_VALUE_DEFAULT.PROJECT_NAME
-    );
     this.resetSession();
     this.countdownTimer(this.countdownTime);
   }

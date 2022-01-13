@@ -5,6 +5,7 @@ import { MainLayoutComponent } from './layout/main-layout/main-layout.component'
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { AuthGuardService as AuthGuard } from './core/services/auth-guard.service';
 import { CustomPreloadingStrategy } from './core/common/providers/custom-preloading-strategy';
+import { TitleConstants } from './core/common/providers/title-constants';
 
 const routes: Routes = [
   {
@@ -14,7 +15,10 @@ const routes: Routes = [
       {
         path: '',
         component: DashboardComponent,
-        data: { animation: true },
+        data: {
+          title: TitleConstants.TITLE_VALUE.DASHBOARD,
+          animation: true,
+        },
         canActivate: [AuthGuard],
       },
       {
@@ -48,7 +52,10 @@ const routes: Routes = [
       {
         path: '**',
         component: NotFoundComponent,
-        data: { animation: true },
+        data: {
+          title: TitleConstants.TITLE_VALUE.NOT_FOUND,
+          animation: true,
+        },
       },
     ],
   },
