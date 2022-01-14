@@ -146,7 +146,7 @@ export class LoanContractComponent implements OnInit, OnDestroy {
   }
 
   onClickSign() {
-    const customerId = this.loanDetail.customerId;
+    const customerId = this.loanDetail?.customerId;
     const idRequest = this.loanContractData.idRequest;
     const idDocument = this.loanContractData.idDocument;
 
@@ -215,7 +215,7 @@ export class LoanContractComponent implements OnInit, OnDestroy {
       this.loanListService
         .getContractData(
           this.loanDetail?.id,
-          this.loanDetail.companyInfo?.groupName
+          this.loanDetail?.companyInfo?.groupName
         )
         .subscribe((response: ApiResponseContract) => {
           if (response.result === null) {
@@ -225,7 +225,7 @@ export class LoanContractComponent implements OnInit, OnDestroy {
           this.loanContractData = response.result;
           this.downloadFileContract(
             this.loanContractData.path,
-            this.loanDetail.customerId
+            this.loanDetail?.customerId
           );
           this.checkSignable();
         })

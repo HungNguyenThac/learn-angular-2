@@ -543,7 +543,7 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
 
   changeLoanStatus(newStatus, newStatusDisplay) {
     const currentLoanStatusDisplay = this.multiLanguageService.instant(
-      `payday_loan.status.${this.loanDetail.status.toLowerCase()}`
+      `payday_loan.status.${this.loanDetail?.status.toLowerCase()}`
     );
 
     let promptDialogRef = this.notificationService.openPrompt({
@@ -552,7 +552,7 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
       content: this.multiLanguageService.instant(
         'loan_app.loan_info.confirm_change_status_description',
         {
-          loan_code: this.loanDetail.loanCode,
+          loan_code: this.loanDetail?.loanCode,
           current_loan_status: currentLoanStatusDisplay,
           new_loan_status: newStatusDisplay,
         }
@@ -660,7 +660,7 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
 
   confirmChangeStatus(newStatus) {
     const updateLoanStatusRequest: UpdateLoanStatusRequest = {
-      customerId: this.loanDetail.customerId,
+      customerId: this.loanDetail?.customerId,
       status: newStatus,
       applicationType: APPLICATION_TYPE.PDL_TNG,
     };
@@ -676,7 +676,7 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
         break;
       case COMPANY_NAME.VAC:
         updateLoanStatusRequest.applicationType =
-          this.loanDetail.applicationType;
+          this.loanDetail?.applicationType;
         this.changePaydayLoanStatus(updateLoanStatusRequest);
         break;
       default:
@@ -687,7 +687,7 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
   changePaydayLoanHMGStatus(updateLoanStatusRequest: UpdateLoanStatusRequest) {
     this.subManager.add(
       this.paydayLoanHmgControllerService
-        .changeLoanStatus(this.loanDetail.id, updateLoanStatusRequest)
+        .changeLoanStatus(this.loanDetail?.id, updateLoanStatusRequest)
         .subscribe((result) => {
           if (result?.responseCode === 200) {
             this.loanDetailDetectChangeStatus.emit();
@@ -701,7 +701,7 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
   changePaydayLoanStatus(updateLoanStatusRequest: UpdateLoanStatusRequest) {
     this.subManager.add(
       this.paydayLoanTngControllerService
-        .changeLoanStatus(this.loanDetail.id, updateLoanStatusRequest)
+        .changeLoanStatus(this.loanDetail?.id, updateLoanStatusRequest)
         .subscribe((result) => {
           if (result?.responseCode === 200) {
             this.loanDetailDetectChangeStatus.emit();
