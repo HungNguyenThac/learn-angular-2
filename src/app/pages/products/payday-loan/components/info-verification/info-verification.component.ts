@@ -245,30 +245,30 @@ export class InfoVerificationComponent implements OnInit, AfterViewInit {
 
   private initInfoVerificationFormData() {
     if (
-      this.loanDetail.status !== PAYDAY_LOAN_STATUS.DOCUMENT_AWAITING &&
+      this.loanDetail?.status !== PAYDAY_LOAN_STATUS.DOCUMENT_AWAITING &&
       PAYDAY_LOAN_STATUS.INITIALIZED &&
       PAYDAY_LOAN_STATUS.UNKNOWN_STATUS
     ) {
       this.hiddenUploadBtn = true;
       this.hiddenDeleteBtn = true;
       this.hiddenUpdateBtn = true;
-      this.infoVerificationForm.patchValue(this.loanDetail.employeeData);
+      this.infoVerificationForm.patchValue(this.loanDetail?.employeeData);
       this.infoVerificationForm.controls.bank.setValue(
-        this.loanDetail.employeeData.bankCode
+        this.loanDetail?.employeeData?.bankCode
       );
       this._getSingleFileDocumentByPath(
-        this.loanDetail.customerId,
-        this.loanDetail.employeeData.salaryDocument1,
+        this.loanDetail?.customerId,
+        this.loanDetail?.employeeData?.salaryDocument1,
         DOCUMENT_TYPE.SALARY_INFORMATION_ONE
       );
       this._getSingleFileDocumentByPath(
-        this.loanDetail.customerId,
-        this.loanDetail.employeeData.salaryDocument2,
+        this.loanDetail?.customerId,
+        this.loanDetail?.employeeData?.salaryDocument2,
         DOCUMENT_TYPE.SALARY_INFORMATION_TWO
       );
       this._getSingleFileDocumentByPath(
-        this.loanDetail.customerId,
-        this.loanDetail.employeeData.salaryDocument3,
+        this.loanDetail?.customerId,
+        this.loanDetail?.employeeData?.salaryDocument3,
         DOCUMENT_TYPE.SALARY_INFORMATION_THREE
       );
     }
