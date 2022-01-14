@@ -1,9 +1,14 @@
-import {EventEmitter, HostListener, Input, Output} from '@angular/core';
-import { Component, OnInit } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  HostListener,
+  Input,
+  OnInit,
+  Output,
+} from '@angular/core';
 import { FilterOptionModel } from '../../../../public/models/filter/filter-option.model';
 import { FilterEventModel } from '../../../../public/models/filter/filter-event.model';
 import { FilterItemModel } from '../../../../public/models/filter/filter-item.model';
-import { FILTER_DATETIME_TYPE } from '../../../../core/common/enum/operator';
 
 @Component({
   selector: 'app-select-filter',
