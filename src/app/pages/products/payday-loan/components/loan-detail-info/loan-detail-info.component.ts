@@ -28,7 +28,6 @@ import {
 import * as moment from 'moment';
 import {
   CustomerInfo,
-  PaydayLoanHmg,
   PaydayLoanTng,
   Voucher,
 } from 'open-api-modules/dashboard-api-docs';
@@ -37,7 +36,6 @@ import formatPunishStartTimeHmg from '../../../../../core/utils/format-punish-st
 import formatPunishStartTimeTng from '../../../../../core/utils/format-punish-start-time-tng';
 import formatPunishCountHmg from '../../../../../core/utils/format-punish-count-hmg';
 import formatPunishCountTng from '../../../../../core/utils/format-punish-count-tng';
-import { GlobalConstants } from '../../../../../core/common/global-constants';
 import { environment } from '../../../../../../environments/environment';
 
 @Component({
@@ -263,6 +261,20 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
   }
 
   private _initRightColumn() {
+    let newDataStatusType: DATA_STATUS_TYPE;
+    switch (this.groupName) {
+      case COMPANY_NAME.HMG:
+        newDataStatusType = DATA_STATUS_TYPE.PL_HMG_STATUS;
+        break;
+      case COMPANY_NAME.VAC:
+        newDataStatusType = DATA_STATUS_TYPE.PL_VAC_STATUS;
+        break;
+      case COMPANY_NAME.TNG:
+      default:
+        newDataStatusType = DATA_STATUS_TYPE.PL_TNG_STATUS;
+        break;
+    }
+
     return [
       {
         title: this.multiLanguageService.instant(
@@ -278,7 +290,7 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
         ),
         value: this.loanDetail?.status,
         type: DATA_CELL_TYPE.STATUS,
-        format: DATA_STATUS_TYPE.PL_HMG_STATUS,
+        format: newDataStatusType,
       },
       {
         title: this.multiLanguageService.instant(

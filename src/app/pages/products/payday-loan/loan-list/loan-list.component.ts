@@ -1,29 +1,27 @@
 import { ToastrService } from 'ngx-toastr';
 import {
+  ACCOUNT_CLASSIFICATION,
   APPLICATION_TYPE,
   COMPANY_NAME,
+  PAYDAY_LOAN_STATUS,
   REPAYMENT_STATUS,
   TERM_TYPE,
 } from '../../../../core/common/enum/payday-loan';
-import { PaydayLoanHmg } from '../../../../../../open-api-modules/dashboard-api-docs';
-import { SearchAndPaginationResponsePaydayLoanHmg } from '../../../../../../open-api-modules/dashboard-api-docs';
-import { FilterActionEventModel } from '../../../../public/models/filter/filter-action-event.model';
-import { FilterEventModel } from '../../../../public/models/filter/filter-event.model';
-import { CompanyInfo } from '../../../../../../open-api-modules/customer-api-docs';
-import {
-  ACCOUNT_CLASSIFICATION,
-  PAYDAY_LOAN_STATUS,
-} from '../../../../core/common/enum/payday-loan';
-import { FILTER_TYPE } from 'src/app/core/common/enum/operator';
-import { LoanListService } from './loan-list.service';
-import { PageEvent } from '@angular/material/paginator/public-api';
-import { Sort } from '@angular/material/sort';
 import {
   ApiResponseSearchAndPaginationResponseCompanyInfo,
   ApiResponseSearchAndPaginationResponsePaydayLoanHmg,
   ApiResponseSearchAndPaginationResponsePaydayLoanTng,
   CompanyControllerService,
+  PaydayLoanHmg,
+  SearchAndPaginationResponsePaydayLoanHmg,
 } from '../../../../../../open-api-modules/dashboard-api-docs';
+import { FilterActionEventModel } from '../../../../public/models/filter/filter-action-event.model';
+import { FilterEventModel } from '../../../../public/models/filter/filter-event.model';
+import { CompanyInfo } from '../../../../../../open-api-modules/customer-api-docs';
+import { FILTER_TYPE } from 'src/app/core/common/enum/operator';
+import { LoanListService } from './loan-list.service';
+import { PageEvent } from '@angular/material/paginator/public-api';
+import { Sort } from '@angular/material/sort';
 import { CustomerListService } from '../../../customer/customer-list/customer-list.service';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { BreadcrumbOptionsModel } from '../../../../public/models/external/breadcrumb-options.model';
@@ -36,7 +34,6 @@ import {
 } from '../../../../core/common/enum/operator';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
-import { GlobalConstants } from 'src/app/core/common/global-constants';
 import { Store } from '@ngrx/store';
 import * as fromActions from '../../../../core/store';
 import * as fromStore from '../../../../core/store';
@@ -71,7 +68,7 @@ export class LoanListComponent implements OnInit, OnDestroy {
     ),
     searchable: true,
     showBtnExport: true,
-    btnExportText: 'Xuất file',
+    btnExportText: this.multiLanguageService.instant('common.export_excel'),
     keyword: '',
   };
 
@@ -273,6 +270,73 @@ export class LoanListComponent implements OnInit, OnDestroy {
         'payday_loan.status.contract_awaiting'
       ),
       value: PAYDAY_LOAN_STATUS.CONTRACT_AWAITING,
+    },
+    {
+      title: this.multiLanguageService.instant(
+        'loan_app.loan_info.disbursement_awaiting'
+      ),
+      value: PAYDAY_LOAN_STATUS.AWAITING_DISBURSEMENT,
+    },
+    {
+      title: this.multiLanguageService.instant('loan_app.loan_info.disbursed'),
+      value: PAYDAY_LOAN_STATUS.DISBURSED,
+    },
+    {
+      title: this.multiLanguageService.instant(
+        'loan_app.loan_info.ỉn_repayment'
+      ),
+      value: PAYDAY_LOAN_STATUS.IN_REPAYMENT,
+    },
+    {
+      title: this.multiLanguageService.instant(
+        'payday_loan.repayment_status.overdue'
+      ),
+      value: REPAYMENT_STATUS.OVERDUE,
+    },
+    {
+      title: this.multiLanguageService.instant('loan_app.loan_info.completed'),
+      value: PAYDAY_LOAN_STATUS.COMPLETED,
+    },
+    {
+      title: this.multiLanguageService.instant('loan_app.loan_info.rejected'),
+      value: PAYDAY_LOAN_STATUS.REJECTED,
+    },
+    {
+      title: this.multiLanguageService.instant('loan_app.loan_info.withdrew'),
+      value: PAYDAY_LOAN_STATUS.WITHDRAW,
+    },
+  ];
+
+  statusFilterOptionsVac = [
+    {
+      title: this.multiLanguageService.instant('common.all'),
+      value: null,
+    },
+    {
+      title: this.multiLanguageService.instant(
+        'loan_app.loan_info.initialized'
+      ),
+      value: PAYDAY_LOAN_STATUS.INITIALIZED,
+    },
+    {
+      title: this.multiLanguageService.instant(
+        'loan_app.loan_info.document_awaiting_vac'
+      ),
+      value: PAYDAY_LOAN_STATUS.DOCUMENT_AWAITING,
+    },
+    {
+      title: this.multiLanguageService.instant(
+        'payday_loan.status.documentation_complete'
+      ),
+      value: PAYDAY_LOAN_STATUS.DOCUMENTATION_COMPLETE,
+    },
+    {
+      title: this.multiLanguageService.instant('loan_app.loan_info.auction'),
+      value: PAYDAY_LOAN_STATUS.AUCTION,
+    },
+    {
+      title: this.multiLanguageService.instant('payday_loan.status.funded'),
+      value: PAYDAY_LOAN_STATUS.FUNDED,
     },
     {
       title: this.multiLanguageService.instant(
@@ -596,6 +660,27 @@ export class LoanListComponent implements OnInit, OnDestroy {
           this._resetFilterOptions();
           this._initFilterForm();
           this.filterForm.controls['groupName'].setValue(this.groupName);
+          this._getCompanyList();
+
+          let newDataStatusType = DATA_STATUS_TYPE.PL_TNG_STATUS;
+          switch (this.groupName) {
+            case COMPANY_NAME.HMG:
+              newDataStatusType = DATA_STATUS_TYPE.PL_HMG_STATUS;
+              break;
+            case COMPANY_NAME.VAC:
+              newDataStatusType = DATA_STATUS_TYPE.PL_VAC_STATUS;
+              break;
+            case COMPANY_NAME.TNG:
+            default:
+              newDataStatusType = DATA_STATUS_TYPE.PL_TNG_STATUS;
+              break;
+          }
+
+          this.allColumns.forEach((column) => {
+            if (column.key === 'status') {
+              column.format = newDataStatusType;
+            }
+          });
         }
         this._parseQueryParams(params?.queryParams);
         this._getLoanList();
@@ -641,7 +726,7 @@ export class LoanListComponent implements OnInit, OnDestroy {
           );
         break;
       case COMPANY_NAME.VAC:
-        this.filterOptions[2].options = this.statusFilterOptionsTng;
+        this.filterOptions[2].options = this.statusFilterOptionsVac;
         this.loanListService
           .getLoanDataTng(params, APPLICATION_TYPE.PDL_VAC)
           .subscribe(
@@ -708,7 +793,7 @@ export class LoanListComponent implements OnInit, OnDestroy {
     )) {
       queryParams[formControlName + queryCondition || ''] = data[
         formControlName
-        ]
+      ]
         ? data[formControlName].trim()
         : '';
     }

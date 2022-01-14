@@ -81,6 +81,8 @@ export class PlStatusElementComponent implements OnInit, AfterViewInit {
       case DATA_STATUS_TYPE.PL_HMG_STATUS:
       case DATA_STATUS_TYPE.PL_TNG_STATUS:
         return this.loanStatusContent(this.statusValue, this.externalValue);
+      case DATA_STATUS_TYPE.PL_VAC_STATUS:
+        return this.loanStatusVACContent(this.statusValue, this.externalValue);
       case DATA_STATUS_TYPE.CUSTOMER_STATUS:
         return this.customerStatusContent(this.statusValue, this.externalValue);
       case DATA_STATUS_TYPE.PL_UI_STATUS:
@@ -327,6 +329,126 @@ export class PlStatusElementComponent implements OnInit, AfterViewInit {
         return {
           label: this.multiLanguageService.instant(
             `payday_loan.status.${status.toLowerCase()}`
+          ),
+          labelStatus: PL_LABEL_STATUS.DOCUMENT_AWAITING,
+        };
+      case PAYDAY_LOAN_STATUS.DOCUMENTATION_COMPLETE:
+        return {
+          label: this.multiLanguageService.instant(
+            `payday_loan.status.${status.toLowerCase()}`
+          ),
+          labelStatus: PL_LABEL_STATUS.DOCUMENTATION_COMPLETE,
+        };
+      case PAYDAY_LOAN_STATUS.AUCTION:
+        return {
+          label: this.multiLanguageService.instant(
+            `payday_loan.status.${status.toLowerCase()}`
+          ),
+          labelStatus: PL_LABEL_STATUS.AUCTION,
+        };
+      case PAYDAY_LOAN_STATUS.FUNDED:
+        return {
+          label: this.multiLanguageService.instant(
+            `payday_loan.status.${status.toLowerCase()}`
+          ),
+          labelStatus: PL_LABEL_STATUS.FUNDED,
+        };
+      case PAYDAY_LOAN_STATUS.CONTRACT_AWAITING:
+        return {
+          label: this.multiLanguageService.instant(
+            `payday_loan.status.${status.toLowerCase()}`
+          ),
+          labelStatus: PL_LABEL_STATUS.CONTRACT_AWAITING,
+        };
+      case PAYDAY_LOAN_STATUS.CONTRACT_ACCEPTED:
+        return {
+          label: this.multiLanguageService.instant(
+            `payday_loan.status.${status.toLowerCase()}`
+          ),
+          labelStatus: PL_LABEL_STATUS.CONTRACT_AWAITING,
+        };
+      case PAYDAY_LOAN_STATUS.AWAITING_DISBURSEMENT:
+        return {
+          label: this.multiLanguageService.instant(
+            `payday_loan.status.${status.toLowerCase()}`
+          ),
+          labelStatus: PL_LABEL_STATUS.AWAITING_DISBURSEMENT,
+        };
+      case PAYDAY_LOAN_STATUS.DISBURSED:
+        return {
+          label: this.multiLanguageService.instant(
+            `payday_loan.status.${status.toLowerCase()}`
+          ),
+          labelStatus: PL_LABEL_STATUS.DISBURSED,
+        };
+      case PAYDAY_LOAN_STATUS.IN_REPAYMENT:
+        return {
+          label: this.multiLanguageService.instant(
+            `payday_loan.status.${status.toLowerCase()}`
+          ),
+          labelStatus: PL_LABEL_STATUS.IN_REPAYMENT,
+        };
+      case PAYDAY_LOAN_STATUS.COMPLETED:
+        return {
+          label: this.multiLanguageService.instant(
+            `payday_loan.status.${status.toLowerCase()}`
+          ),
+          labelStatus: PL_LABEL_STATUS.COMPLETED,
+        };
+      case PAYDAY_LOAN_STATUS.REJECTED:
+        return {
+          label: this.multiLanguageService.instant(
+            `payday_loan.status.${status.toLowerCase()}`
+          ),
+          labelStatus: PL_LABEL_STATUS.REJECTED,
+        };
+      case PAYDAY_LOAN_STATUS.CONTRACT_REJECTED:
+      case PAYDAY_LOAN_STATUS.WITHDRAW:
+        return {
+          label: this.multiLanguageService.instant(
+            `payday_loan.status.${status.toLowerCase()}`
+          ),
+          labelStatus: PL_LABEL_STATUS.WITHDRAW,
+        };
+      default:
+        return {
+          label: status,
+          labelStatus: PL_LABEL_STATUS.REJECT,
+        };
+    }
+  }
+
+  loanStatusVACContent(status: string, repaymentStatus?: string) {
+    if (
+      status &&
+      status === PAYDAY_LOAN_STATUS.IN_REPAYMENT &&
+      repaymentStatus
+    ) {
+      switch (repaymentStatus) {
+        case REPAYMENT_STATUS.OVERDUE:
+          return {
+            label: this.multiLanguageService.instant(
+              `payday_loan.repayment_status.${repaymentStatus.toLowerCase()}`
+            ),
+            labelStatus: PL_LABEL_STATUS.CANCEL,
+          };
+        default:
+          break;
+      }
+    }
+
+    switch (status) {
+      case PAYDAY_LOAN_STATUS.INITIALIZED:
+        return {
+          label: this.multiLanguageService.instant(
+            `payday_loan.status.${status.toLowerCase()}`
+          ),
+          labelStatus: PL_LABEL_STATUS.INITIALIZED,
+        };
+      case PAYDAY_LOAN_STATUS.DOCUMENT_AWAITING:
+        return {
+          label: this.multiLanguageService.instant(
+            `payday_loan.status.document_awaiting_vac`
           ),
           labelStatus: PL_LABEL_STATUS.DOCUMENT_AWAITING,
         };
