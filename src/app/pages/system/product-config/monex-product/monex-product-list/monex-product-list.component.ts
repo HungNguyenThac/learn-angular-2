@@ -49,6 +49,7 @@ import {
   MonexProductDialogComponent,
 } from '../../../../../share/components';
 import * as moment from 'moment';
+import { LoanProductsService } from '../../../../../../../open-api-modules/monexcore-api-docs';
 
 @Component({
   selector: 'app-monex-product-list',
@@ -57,7 +58,7 @@ import * as moment from 'moment';
 })
 export class MonexProductListComponent implements OnInit {
   //Mock data
-  statusList: any[] = [
+  monexProductList: any[] = [
     {
       code: 'MXP-001',
       name: 'Sản phẩm 1',
@@ -98,7 +99,7 @@ export class MonexProductListComponent implements OnInit {
       style: 'background-color: rgba(255, 255, 255, 0.1);',
     },
     {
-      hidden: false,
+      hidden: true,
       action: 'lock',
       color: 'accent',
       content: this.multiLanguageService.instant(
@@ -118,7 +119,7 @@ export class MonexProductListComponent implements OnInit {
       'breadcrumb.search_field_user_list'
     ),
     searchable: true,
-    showBtnAdd: false,
+    showBtnAdd: true,
     btnAddText: this.multiLanguageService.instant('monex_product.add'),
     keyword: '',
   };
@@ -214,7 +215,6 @@ export class MonexProductListComponent implements OnInit {
   expandedElementId: string;
   expandElementFromLoan;
   hasSelect: boolean = true;
-  userInfo: any;
   private readonly routeAllState$: Observable<Params>;
 
   constructor(
@@ -232,7 +232,8 @@ export class MonexProductListComponent implements OnInit {
     private dialog: MatDialog,
     private activatedRoute: ActivatedRoute,
     private userListService: UserListService,
-    private permissionsService: NgxPermissionsService
+    private permissionsService: NgxPermissionsService,
+    private loanProductsService: LoanProductsService
   ) {
     this.routeAllState$ = store.select(fromSelectors.getRouterAllState);
 
@@ -242,58 +243,50 @@ export class MonexProductListComponent implements OnInit {
   ngOnInit(): void {
     this.store.dispatch(new fromActions.SetOperatorInfo(null));
     this._initSubscription();
-    this._getStatusList();
+    this._getMonexProductList();
   }
 
-  private _getStatusList() {
-    this.dataSource.data = this.statusList;
+  private _getMonexProductList() {
+    this.subManager.add(
+      this.loanProductsService
+        .loanProductControllerGetListLoanProduct()
+        .subscribe((data) => {
+          // @ts-ignore
+          this.dataSource.data = data?.result;
+        })
+    );
   }
 
-  private async _checkActionPermissions() {
-    const hasCredentialsCreatePermission =
-      await this. permissionsService.hasPermission('credentials:create');
-    const hasDeleteAccountPermission =
-      await this.permissionsService.hasPermission(
-        'credentials:deleteAdminAccount'
-      );
-    const hasLockMultipleAccountPermission =
-      await this.permissionsService.hasPermission(
-        'credentials:lockMultiAccount'
-      );
-
-    if (hasCredentialsCreatePermission) {
-      this.breadcrumbOptions.showBtnAdd = true;
-    }
-    this.breadcrumbOptions.showBtnAdd = true;
-
-    let selectedButtons = JSON.parse(JSON.stringify(this.selectButtons));
-    selectedButtons.forEach((button) => {
-      if (button.action === 'delete') {
-        button.hidden = !hasDeleteAccountPermission;
-        return;
-      }
-      if (button.action === 'lock') {
-        button.hidden = !hasLockMultipleAccountPermission;
-      }
-    });
-
-    this.selectButtons = selectedButtons;
-  }
-
-  private _getUserList() {
-    const params = this._buildParams();
-    this.userListService
-      .getData(params)
-      .subscribe(
-        (data: ApiResponseSearchAndPaginationResponseAdminAccountEntity) => {
-          this._parseData(data?.result);
-          this.dataSource.data = data?.result?.data;
-          if (this.filterForm.controls.id.value) {
-            this.expandElementFromLoan = data?.result?.data[0];
-          }
-        }
-      );
-  }
+  // private async _checkActionPermissions() {
+  //   const hasCredentialsCreatePermission =
+  //     await this. permissionsService.hasPermission('credentials:create');
+  //   const hasDeleteAccountPermission =
+  //     await this.permissionsService.hasPermission(
+  //       'credentials:deleteAdminAccount'
+  //     );
+  //   const hasLockMultipleAccountPermission =
+  //     await this.permissionsService.hasPermission(
+  //       'credentials:lockMultiAccount'
+  //     );
+  //
+  //   if (hasCredentialsCreatePermission) {
+  //     this.breadcrumbOptions.showBtnAdd = true;
+  //   }
+  //   this.breadcrumbOptions.showBtnAdd = true;
+  //
+  //   let selectedButtons = JSON.parse(JSON.stringify(this.selectButtons));
+  //   selectedButtons.forEach((button) => {
+  //     if (button.action === 'delete') {
+  //       button.hidden = !hasDeleteAccountPermission;
+  //       return;
+  //     }
+  //     if (button.action === 'lock') {
+  //       button.hidden = !hasLockMultipleAccountPermission;
+  //     }
+  //   });
+  //
+  //   this.selectButtons = selectedButtons;
+  // }
 
   public onPageChange(event: PageEvent) {
     this.pageSize = event.pageSize;
@@ -535,7 +528,7 @@ export class MonexProductListComponent implements OnInit {
     this.subManager.add(
       this.permissionsService.permissions$.subscribe((permissions) => {
         if (permissions) {
-          this._checkActionPermissions();
+          // this._checkActionPermissions();
         }
       })
     );
@@ -675,7 +668,7 @@ export class MonexProductListComponent implements OnInit {
 
   public refreshContent() {
     setTimeout(() => {
-      this._getUserList();
+      this._getMonexProductList();
     }, 2000);
   }
 
@@ -717,38 +710,6 @@ export class MonexProductListComponent implements OnInit {
       filterOption.value = null;
     });
     this.filterOptions = newFilterOptions;
-  }
-
-  private _initRoleOptions() {
-    this.filterOptions.forEach((filterOption: FilterOptionModel) => {
-      if (filterOption.controlName !== 'groupId' || !this.roleList) {
-        return;
-      }
-      filterOption.options = this.roleList.map((role) => {
-        return {
-          title: role.name,
-          value: role.id,
-        };
-      });
-    });
-  }
-
-  public updateElementInfo(updatedUserInfo) {
-    if (!updatedUserInfo) {
-      setTimeout(() => {
-        this.triggerDeselectUsers();
-        this._getUserList();
-      }, 2000);
-    }
-    this.dataSource.data.map((item) => {
-      if (item.id === updatedUserInfo.id) {
-        this.allColumns.forEach((column) => {
-          item[column.key] = updatedUserInfo[column.key];
-        });
-      }
-      return item;
-    });
-    // this.refreshContent();
   }
 
   ngOnDestroy(): void {
