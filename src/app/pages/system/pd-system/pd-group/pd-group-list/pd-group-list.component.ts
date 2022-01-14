@@ -610,7 +610,7 @@ export class PdGroupListComponent implements OnInit {
     this.subManager.add(
       addGroupDialogRef.afterClosed().subscribe((result: any) => {
         if (result && result.type === BUTTON_TYPE.PRIMARY) {
-          let createRequest = this._bindingDialogData(result.data, 'create');
+          let updateRequest = this._bindingDialogData(result.data, 'create');
           let addQuestionsRequest = this._bindingDialogData(result.data.addArr);
           let updateQuestionsRequest = this._bindingDialogData(
             result.data.updateArr
@@ -620,7 +620,7 @@ export class PdGroupListComponent implements OnInit {
           );
           this.sendUpdateRequest(
             info.objectId,
-            createRequest,
+            updateRequest,
             addQuestionsRequest,
             updateQuestionsRequest,
             removeQuestionsRequest

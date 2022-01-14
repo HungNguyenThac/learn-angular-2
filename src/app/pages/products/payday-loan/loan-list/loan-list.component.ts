@@ -1,29 +1,27 @@
 import { ToastrService } from 'ngx-toastr';
 import {
+  ACCOUNT_CLASSIFICATION,
   APPLICATION_TYPE,
   COMPANY_NAME,
+  PAYDAY_LOAN_STATUS,
   REPAYMENT_STATUS,
   TERM_TYPE,
 } from '../../../../core/common/enum/payday-loan';
-import { PaydayLoanHmg } from '../../../../../../open-api-modules/dashboard-api-docs';
-import { SearchAndPaginationResponsePaydayLoanHmg } from '../../../../../../open-api-modules/dashboard-api-docs';
-import { FilterActionEventModel } from '../../../../public/models/filter/filter-action-event.model';
-import { FilterEventModel } from '../../../../public/models/filter/filter-event.model';
-import { CompanyInfo } from '../../../../../../open-api-modules/customer-api-docs';
-import {
-  ACCOUNT_CLASSIFICATION,
-  PAYDAY_LOAN_STATUS,
-} from '../../../../core/common/enum/payday-loan';
-import { FILTER_TYPE } from 'src/app/core/common/enum/operator';
-import { LoanListService } from './loan-list.service';
-import { PageEvent } from '@angular/material/paginator/public-api';
-import { Sort } from '@angular/material/sort';
 import {
   ApiResponseSearchAndPaginationResponseCompanyInfo,
   ApiResponseSearchAndPaginationResponsePaydayLoanHmg,
   ApiResponseSearchAndPaginationResponsePaydayLoanTng,
   CompanyControllerService,
+  PaydayLoanHmg,
+  SearchAndPaginationResponsePaydayLoanHmg,
 } from '../../../../../../open-api-modules/dashboard-api-docs';
+import { FilterActionEventModel } from '../../../../public/models/filter/filter-action-event.model';
+import { FilterEventModel } from '../../../../public/models/filter/filter-event.model';
+import { CompanyInfo } from '../../../../../../open-api-modules/customer-api-docs';
+import { FILTER_TYPE } from 'src/app/core/common/enum/operator';
+import { LoanListService } from './loan-list.service';
+import { PageEvent } from '@angular/material/paginator/public-api';
+import { Sort } from '@angular/material/sort';
 import { CustomerListService } from '../../../customer/customer-list/customer-list.service';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { BreadcrumbOptionsModel } from '../../../../public/models/external/breadcrumb-options.model';
@@ -36,7 +34,6 @@ import {
 } from '../../../../core/common/enum/operator';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
-import { GlobalConstants } from 'src/app/core/common/global-constants';
 import { Store } from '@ngrx/store';
 import * as fromActions from '../../../../core/store';
 import * as fromStore from '../../../../core/store';
@@ -47,6 +44,9 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { FilterOptionModel } from 'src/app/public/models/filter/filter-option.model';
 import { DisplayedFieldsModel } from '../../../../public/models/filter/displayed-fields.model';
 import * as moment from 'moment';
+import { NgxPermissionsService } from 'ngx-permissions';
+import { GlobalConstants } from '../../../../core/common/global-constants';
+import { FilterItemModel } from '../../../../public/models/filter/filter-item.model';
 
 @Component({
   selector: 'app-loan-list',
@@ -71,7 +71,7 @@ export class LoanListComponent implements OnInit, OnDestroy {
     ),
     searchable: true,
     showBtnExport: true,
-    btnExportText: 'Xuất file',
+    btnExportText: this.multiLanguageService.instant('common.export_excel'),
     keyword: '',
   };
 
@@ -237,7 +237,7 @@ export class LoanListComponent implements OnInit, OnDestroy {
     },
   ];
 
-  statusFilterOptionsHmg = [
+  statusFilterOptionsTng: FilterItemModel[] = [
     {
       title: this.multiLanguageService.instant('common.all'),
       value: null,
@@ -253,6 +253,67 @@ export class LoanListComponent implements OnInit, OnDestroy {
         'loan_app.loan_info.document_awaiting'
       ),
       value: PAYDAY_LOAN_STATUS.DOCUMENT_AWAITING,
+    },
+    {
+      title: this.multiLanguageService.instant(
+        'payday_loan.status.documentation_complete'
+      ),
+      value: PAYDAY_LOAN_STATUS.DOCUMENTATION_COMPLETE,
+    },
+    {
+      title: this.multiLanguageService.instant('loan_app.loan_info.auction'),
+      value: PAYDAY_LOAN_STATUS.AUCTION,
+    },
+    {
+      title: this.multiLanguageService.instant('payday_loan.status.funded'),
+      value: PAYDAY_LOAN_STATUS.FUNDED,
+    },
+    {
+      title: this.multiLanguageService.instant(
+        'loan_app.loan_info.disbursement_awaiting'
+      ),
+      value: PAYDAY_LOAN_STATUS.AWAITING_DISBURSEMENT,
+    },
+    {
+      title: this.multiLanguageService.instant('loan_app.loan_info.disbursed'),
+      value: PAYDAY_LOAN_STATUS.DISBURSED,
+    },
+    {
+      title: this.multiLanguageService.instant(
+        'loan_app.loan_info.ỉn_repayment'
+      ),
+      value: PAYDAY_LOAN_STATUS.IN_REPAYMENT,
+    },
+    {
+      title: this.multiLanguageService.instant(
+        'payday_loan.repayment_status.overdue'
+      ),
+      value: REPAYMENT_STATUS.OVERDUE,
+    },
+    {
+      title: this.multiLanguageService.instant('loan_app.loan_info.completed'),
+      value: PAYDAY_LOAN_STATUS.COMPLETED,
+    },
+    {
+      title: this.multiLanguageService.instant('loan_app.loan_info.rejected'),
+      value: PAYDAY_LOAN_STATUS.REJECTED,
+    },
+    {
+      title: this.multiLanguageService.instant('loan_app.loan_info.withdrew'),
+      value: PAYDAY_LOAN_STATUS.WITHDRAW,
+    },
+  ];
+
+  statusFilterOptionsHmg: FilterItemModel[] = [
+    {
+      title: this.multiLanguageService.instant('common.all'),
+      value: null,
+    },
+    {
+      title: this.multiLanguageService.instant(
+        'loan_app.loan_info.initialized'
+      ),
+      value: PAYDAY_LOAN_STATUS.INITIALIZED,
     },
     {
       title: this.multiLanguageService.instant(
@@ -310,9 +371,72 @@ export class LoanListComponent implements OnInit, OnDestroy {
     },
   ];
 
-  statusFilterOptionsTng = this.statusFilterOptionsHmg
-    .slice(0, 6)
-    .concat(this.statusFilterOptionsHmg.slice(7));
+  statusFilterOptionsVac: FilterItemModel[] = [
+    {
+      title: this.multiLanguageService.instant('common.all'),
+      value: null,
+    },
+    {
+      title: this.multiLanguageService.instant(
+        'loan_app.loan_info.initialized'
+      ),
+      value: PAYDAY_LOAN_STATUS.INITIALIZED,
+    },
+    {
+      title: this.multiLanguageService.instant(
+        'loan_app.loan_info.document_awaiting_vac'
+      ),
+      value: PAYDAY_LOAN_STATUS.DOCUMENT_AWAITING,
+    },
+    {
+      title: this.multiLanguageService.instant(
+        'payday_loan.status.documentation_complete'
+      ),
+      value: PAYDAY_LOAN_STATUS.DOCUMENTATION_COMPLETE,
+    },
+    {
+      title: this.multiLanguageService.instant('loan_app.loan_info.auction'),
+      value: PAYDAY_LOAN_STATUS.AUCTION,
+    },
+    {
+      title: this.multiLanguageService.instant('payday_loan.status.funded'),
+      value: PAYDAY_LOAN_STATUS.FUNDED,
+    },
+    {
+      title: this.multiLanguageService.instant(
+        'loan_app.loan_info.disbursement_awaiting'
+      ),
+      value: PAYDAY_LOAN_STATUS.AWAITING_DISBURSEMENT,
+    },
+    {
+      title: this.multiLanguageService.instant('loan_app.loan_info.disbursed'),
+      value: PAYDAY_LOAN_STATUS.DISBURSED,
+    },
+    {
+      title: this.multiLanguageService.instant(
+        'loan_app.loan_info.ỉn_repayment'
+      ),
+      value: PAYDAY_LOAN_STATUS.IN_REPAYMENT,
+    },
+    {
+      title: this.multiLanguageService.instant(
+        'payday_loan.repayment_status.overdue'
+      ),
+      value: REPAYMENT_STATUS.OVERDUE,
+    },
+    {
+      title: this.multiLanguageService.instant('loan_app.loan_info.completed'),
+      value: PAYDAY_LOAN_STATUS.COMPLETED,
+    },
+    {
+      title: this.multiLanguageService.instant('loan_app.loan_info.rejected'),
+      value: PAYDAY_LOAN_STATUS.REJECTED,
+    },
+    {
+      title: this.multiLanguageService.instant('loan_app.loan_info.withdrew'),
+      value: PAYDAY_LOAN_STATUS.WITHDRAW,
+    },
+  ];
 
   allColumns: DisplayedFieldsModel[] = [
     {
@@ -407,6 +531,39 @@ export class LoanListComponent implements OnInit, OnDestroy {
   filterForm: FormGroup;
   private readonly routeAllState$: Observable<Params>;
 
+  userHasPermissions = {
+    loanTngViewStatus: {
+      initialized: false,
+      auction: false,
+      document_awaiting: false,
+      documentation_complete: false,
+      funded: false,
+      contract_accepted: false,
+      awaiting_disbursement: false,
+      disbursed: false,
+      in_repayment: false,
+      completed: false,
+      rejected: false,
+      withdraw: false,
+      contract_rejected: false,
+    },
+    loanVacViewStatus: {
+      initialized: false,
+      auction: false,
+      document_awaiting: false,
+      documentation_complete: false,
+      funded: false,
+      contract_accepted: false,
+      awaiting_disbursement: false,
+      disbursed: false,
+      in_repayment: false,
+      completed: false,
+      rejected: false,
+      withdraw: false,
+      contract_rejected: false,
+    },
+  };
+
   constructor(
     private titleService: Title,
     private store: Store<fromStore.State>,
@@ -417,7 +574,8 @@ export class LoanListComponent implements OnInit, OnDestroy {
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private loanListService: LoanListService,
-    private notifier: ToastrService
+    private notifier: ToastrService,
+    private permissionsService: NgxPermissionsService
   ) {
     this.routeAllState$ = store.select(fromSelectors.getRouterAllState);
     this._initFilterForm();
@@ -592,15 +750,48 @@ export class LoanListComponent implements OnInit, OnDestroy {
           this.groupName !== params?.queryParams.groupName &&
           params?.queryParams
         ) {
-          this.groupName = params?.queryParams.groupName;
-          this._resetFilterOptions();
-          this._initFilterForm();
-          this.filterForm.controls['groupName'].setValue(this.groupName);
+          this.changeCompanyGroupName(params?.queryParams.groupName);
         }
         this._parseQueryParams(params?.queryParams);
         this._getLoanList();
       })
     );
+
+    this.subManager.add(
+      this.permissionsService.permissions$.subscribe((permissions) => {
+        if (permissions) {
+          this._checkUserPermissions();
+        }
+      })
+    );
+  }
+
+  private changeCompanyGroupName(groupName) {
+    this.groupName = groupName;
+    this._resetFilterOptions();
+    this._initFilterForm();
+    this.filterForm.controls['groupName'].setValue(this.groupName);
+    this._getCompanyList();
+
+    let newDataStatusType = DATA_STATUS_TYPE.PL_TNG_STATUS;
+    switch (this.groupName) {
+      case COMPANY_NAME.HMG:
+        newDataStatusType = DATA_STATUS_TYPE.PL_HMG_STATUS;
+        break;
+      case COMPANY_NAME.VAC:
+        newDataStatusType = DATA_STATUS_TYPE.PL_VAC_STATUS;
+        break;
+      case COMPANY_NAME.TNG:
+      default:
+        newDataStatusType = DATA_STATUS_TYPE.PL_TNG_STATUS;
+        break;
+    }
+
+    this.allColumns.forEach((column) => {
+      if (column.key === 'status') {
+        column.format = newDataStatusType;
+      }
+    });
   }
 
   private _resetFilterOptions() {
@@ -619,9 +810,7 @@ export class LoanListComponent implements OnInit, OnDestroy {
       this.groupName;
     switch (params.groupName) {
       case COMPANY_NAME.HMG:
-        this.filterOptions[2].options = this.statusFilterOptionsHmg.filter(
-          (ele) => ele?.value !== PAYDAY_LOAN_STATUS.DOCUMENT_AWAITING
-        );
+        this.filterOptions[2].options = this.statusFilterOptionsHmg;
         this.loanListService
           .getLoanDataHmg(params)
           .subscribe(
@@ -641,7 +830,7 @@ export class LoanListComponent implements OnInit, OnDestroy {
           );
         break;
       case COMPANY_NAME.VAC:
-        this.filterOptions[2].options = this.statusFilterOptionsTng;
+        this.filterOptions[2].options = this.statusFilterOptionsVac;
         this.loanListService
           .getLoanDataTng(params, APPLICATION_TYPE.PDL_VAC)
           .subscribe(
@@ -708,7 +897,7 @@ export class LoanListComponent implements OnInit, OnDestroy {
     )) {
       queryParams[formControlName + queryCondition || ''] = data[
         formControlName
-        ]
+      ]
         ? data[formControlName].trim()
         : '';
     }
@@ -808,6 +997,247 @@ export class LoanListComponent implements OnInit, OnDestroy {
     this.notifier.info(
       this.multiLanguageService.instant('loan_app.loan_contract.downloading')
     );
+  }
+
+  private async _checkUserPermissions() {
+    switch (this.groupName) {
+      case COMPANY_NAME.TNG:
+        await this._checkPermissionTng();
+        this._displayStatusFilterOptionsTng();
+        break;
+      case COMPANY_NAME.VAC:
+        await this._checkPermissionVac();
+        this._displayStatusFilterOptionsVac();
+        break;
+      default:
+        break;
+    }
+  }
+
+  private async _checkPermissionTng() {
+    this.userHasPermissions.loanTngViewStatus.initialized =
+      await this.permissionsService.hasPermission(
+        GlobalConstants.VIEW_LOAN_TNG_STATUS_PERMISSION.INITIALIZED
+      );
+    this.userHasPermissions.loanTngViewStatus.auction =
+      await this.permissionsService.hasPermission(
+        GlobalConstants.VIEW_LOAN_TNG_STATUS_PERMISSION.AUCTION
+      );
+    this.userHasPermissions.loanTngViewStatus.document_awaiting =
+      await this.permissionsService.hasPermission(
+        GlobalConstants.VIEW_LOAN_TNG_STATUS_PERMISSION.DOCUMENT_AWAITING
+      );
+    this.userHasPermissions.loanTngViewStatus.documentation_complete =
+      await this.permissionsService.hasPermission(
+        GlobalConstants.VIEW_LOAN_TNG_STATUS_PERMISSION.DOCUMENTATION_COMPLETE
+      );
+    this.userHasPermissions.loanTngViewStatus.funded =
+      await this.permissionsService.hasPermission(
+        GlobalConstants.VIEW_LOAN_TNG_STATUS_PERMISSION.FUNDED
+      );
+    this.userHasPermissions.loanTngViewStatus.contract_accepted =
+      await this.permissionsService.hasPermission(
+        GlobalConstants.VIEW_LOAN_TNG_STATUS_PERMISSION.CONTRACT_ACCEPTED
+      );
+    this.userHasPermissions.loanTngViewStatus.awaiting_disbursement =
+      await this.permissionsService.hasPermission(
+        GlobalConstants.VIEW_LOAN_TNG_STATUS_PERMISSION.AWAITING_DISBURSEMENT
+      );
+    this.userHasPermissions.loanTngViewStatus.disbursed =
+      await this.permissionsService.hasPermission(
+        GlobalConstants.VIEW_LOAN_TNG_STATUS_PERMISSION.DISBURSED
+      );
+    this.userHasPermissions.loanTngViewStatus.in_repayment =
+      await this.permissionsService.hasPermission(
+        GlobalConstants.VIEW_LOAN_TNG_STATUS_PERMISSION.IN_REPAYMENT
+      );
+    this.userHasPermissions.loanTngViewStatus.completed =
+      await this.permissionsService.hasPermission(
+        GlobalConstants.VIEW_LOAN_TNG_STATUS_PERMISSION.COMPLETED
+      );
+    this.userHasPermissions.loanTngViewStatus.rejected =
+      await this.permissionsService.hasPermission(
+        GlobalConstants.VIEW_LOAN_TNG_STATUS_PERMISSION.REJECTED
+      );
+    this.userHasPermissions.loanTngViewStatus.withdraw =
+      await this.permissionsService.hasPermission(
+        GlobalConstants.VIEW_LOAN_TNG_STATUS_PERMISSION.WITHDRAW
+      );
+    this.userHasPermissions.loanTngViewStatus.contract_rejected =
+      await this.permissionsService.hasPermission(
+        GlobalConstants.VIEW_LOAN_TNG_STATUS_PERMISSION.CONTRACT_REJECTED
+      );
+  }
+
+  private async _checkPermissionVac() {
+    this.userHasPermissions.loanVacViewStatus.initialized =
+      await this.permissionsService.hasPermission(
+        GlobalConstants.VIEW_LOAN_VAC_STATUS_PERMISSION.INITIALIZED
+      );
+    this.userHasPermissions.loanVacViewStatus.auction =
+      await this.permissionsService.hasPermission(
+        GlobalConstants.VIEW_LOAN_VAC_STATUS_PERMISSION.AUCTION
+      );
+    this.userHasPermissions.loanVacViewStatus.document_awaiting =
+      await this.permissionsService.hasPermission(
+        GlobalConstants.VIEW_LOAN_VAC_STATUS_PERMISSION.DOCUMENT_AWAITING
+      );
+    this.userHasPermissions.loanVacViewStatus.documentation_complete =
+      await this.permissionsService.hasPermission(
+        GlobalConstants.VIEW_LOAN_VAC_STATUS_PERMISSION.DOCUMENTATION_COMPLETE
+      );
+    this.userHasPermissions.loanVacViewStatus.funded =
+      await this.permissionsService.hasPermission(
+        GlobalConstants.VIEW_LOAN_VAC_STATUS_PERMISSION.FUNDED
+      );
+    this.userHasPermissions.loanVacViewStatus.contract_accepted =
+      await this.permissionsService.hasPermission(
+        GlobalConstants.VIEW_LOAN_VAC_STATUS_PERMISSION.CONTRACT_ACCEPTED
+      );
+    this.userHasPermissions.loanVacViewStatus.awaiting_disbursement =
+      await this.permissionsService.hasPermission(
+        GlobalConstants.VIEW_LOAN_VAC_STATUS_PERMISSION.AWAITING_DISBURSEMENT
+      );
+    this.userHasPermissions.loanVacViewStatus.disbursed =
+      await this.permissionsService.hasPermission(
+        GlobalConstants.VIEW_LOAN_VAC_STATUS_PERMISSION.DISBURSED
+      );
+    this.userHasPermissions.loanVacViewStatus.in_repayment =
+      await this.permissionsService.hasPermission(
+        GlobalConstants.VIEW_LOAN_VAC_STATUS_PERMISSION.IN_REPAYMENT
+      );
+    this.userHasPermissions.loanVacViewStatus.completed =
+      await this.permissionsService.hasPermission(
+        GlobalConstants.VIEW_LOAN_VAC_STATUS_PERMISSION.COMPLETED
+      );
+    this.userHasPermissions.loanVacViewStatus.rejected =
+      await this.permissionsService.hasPermission(
+        GlobalConstants.VIEW_LOAN_VAC_STATUS_PERMISSION.REJECTED
+      );
+    this.userHasPermissions.loanVacViewStatus.withdraw =
+      await this.permissionsService.hasPermission(
+        GlobalConstants.VIEW_LOAN_VAC_STATUS_PERMISSION.WITHDRAW
+      );
+    this.userHasPermissions.loanVacViewStatus.contract_rejected =
+      await this.permissionsService.hasPermission(
+        GlobalConstants.VIEW_LOAN_VAC_STATUS_PERMISSION.CONTRACT_REJECTED
+      );
+  }
+
+  private _displayStatusFilterOptionsTng() {
+    this.statusFilterOptionsTng.forEach((option) => {
+      switch (option.value) {
+        case PAYDAY_LOAN_STATUS.INITIALIZED:
+          option.hidden =
+            !this.userHasPermissions.loanTngViewStatus.initialized;
+          break;
+        case PAYDAY_LOAN_STATUS.AUCTION:
+          option.hidden = !this.userHasPermissions.loanTngViewStatus.auction;
+          break;
+        case PAYDAY_LOAN_STATUS.DOCUMENT_AWAITING:
+          option.hidden =
+            !this.userHasPermissions.loanTngViewStatus.document_awaiting;
+          break;
+        case PAYDAY_LOAN_STATUS.DOCUMENTATION_COMPLETE:
+          option.hidden =
+            !this.userHasPermissions.loanTngViewStatus.documentation_complete;
+          break;
+        case PAYDAY_LOAN_STATUS.FUNDED:
+          option.hidden = !this.userHasPermissions.loanTngViewStatus.funded;
+          break;
+        case PAYDAY_LOAN_STATUS.CONTRACT_ACCEPTED:
+          option.hidden =
+            !this.userHasPermissions.loanTngViewStatus.contract_accepted;
+          break;
+        case PAYDAY_LOAN_STATUS.AWAITING_DISBURSEMENT:
+          option.hidden =
+            !this.userHasPermissions.loanTngViewStatus.awaiting_disbursement;
+          break;
+        case PAYDAY_LOAN_STATUS.DISBURSED:
+          option.hidden = !this.userHasPermissions.loanTngViewStatus.disbursed;
+          break;
+        case PAYDAY_LOAN_STATUS.IN_REPAYMENT:
+        case REPAYMENT_STATUS.OVERDUE:
+          option.hidden =
+            !this.userHasPermissions.loanTngViewStatus.in_repayment;
+          break;
+        case PAYDAY_LOAN_STATUS.COMPLETED:
+          option.hidden = !this.userHasPermissions.loanTngViewStatus.completed;
+          break;
+        case PAYDAY_LOAN_STATUS.WITHDRAW:
+          option.hidden = !this.userHasPermissions.loanTngViewStatus.withdraw;
+          break;
+        case PAYDAY_LOAN_STATUS.CONTRACT_REJECTED:
+          option.hidden =
+            !this.userHasPermissions.loanTngViewStatus.contract_rejected;
+          break;
+        case PAYDAY_LOAN_STATUS.REJECTED:
+          option.hidden = !this.userHasPermissions.loanTngViewStatus.rejected;
+          break;
+        default:
+          break;
+      }
+    });
+    this.filterOptions[2].options = this.statusFilterOptionsTng;
+    this.changeCompanyGroupName(this.groupName);
+  }
+
+  private _displayStatusFilterOptionsVac() {
+    this.statusFilterOptionsVac.forEach((option) => {
+      switch (option.value) {
+        case PAYDAY_LOAN_STATUS.INITIALIZED:
+          option.hidden =
+            !this.userHasPermissions.loanVacViewStatus.initialized;
+          break;
+        case PAYDAY_LOAN_STATUS.AUCTION:
+          option.hidden = !this.userHasPermissions.loanVacViewStatus.auction;
+          break;
+        case PAYDAY_LOAN_STATUS.DOCUMENT_AWAITING:
+          option.hidden =
+            !this.userHasPermissions.loanVacViewStatus.document_awaiting;
+          break;
+        case PAYDAY_LOAN_STATUS.DOCUMENTATION_COMPLETE:
+          option.hidden =
+            !this.userHasPermissions.loanVacViewStatus.documentation_complete;
+          break;
+        case PAYDAY_LOAN_STATUS.FUNDED:
+          option.hidden = !this.userHasPermissions.loanVacViewStatus.funded;
+          break;
+        case PAYDAY_LOAN_STATUS.CONTRACT_ACCEPTED:
+          option.hidden =
+            !this.userHasPermissions.loanVacViewStatus.contract_accepted;
+          break;
+        case PAYDAY_LOAN_STATUS.AWAITING_DISBURSEMENT:
+          option.hidden =
+            !this.userHasPermissions.loanVacViewStatus.awaiting_disbursement;
+          break;
+        case PAYDAY_LOAN_STATUS.DISBURSED:
+          option.hidden = !this.userHasPermissions.loanVacViewStatus.disbursed;
+          break;
+        case PAYDAY_LOAN_STATUS.IN_REPAYMENT:
+        case REPAYMENT_STATUS.OVERDUE:
+          option.hidden =
+            !this.userHasPermissions.loanVacViewStatus.in_repayment;
+          break;
+        case PAYDAY_LOAN_STATUS.COMPLETED:
+          option.hidden = !this.userHasPermissions.loanVacViewStatus.completed;
+          break;
+        case PAYDAY_LOAN_STATUS.WITHDRAW:
+          option.hidden = !this.userHasPermissions.loanVacViewStatus.withdraw;
+          break;
+        case PAYDAY_LOAN_STATUS.CONTRACT_REJECTED:
+          option.hidden =
+            !this.userHasPermissions.loanVacViewStatus.contract_rejected;
+          break;
+        case PAYDAY_LOAN_STATUS.REJECTED:
+          option.hidden = !this.userHasPermissions.loanVacViewStatus.rejected;
+          break;
+        default:
+          break;
+      }
+    });
+    this.filterOptions[2].options = this.statusFilterOptionsVac;
+    this.changeCompanyGroupName(this.groupName);
   }
 
   ngOnDestroy(): void {

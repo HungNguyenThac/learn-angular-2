@@ -1,14 +1,14 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
-import {Store} from '@ngrx/store';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { Store } from '@ngrx/store';
 import * as fromActions from '../../../../core/store';
 import * as fromStore from '../../../../core/store';
-import {TableSelectActionModel} from '../../../../public/models/external/table-select-action.model';
-import {MultiLanguageService} from '../../../../share/translate/multiLanguageService';
-import {NotificationService} from '../../../../core/services/notification.service';
-import {ToastrService} from 'ngx-toastr';
-import {FormBuilder, FormGroup} from '@angular/forms';
-import {Sort} from '@angular/material/sort';
-import {FilterEventModel} from '../../../../public/models/filter/filter-event.model';
+import { TableSelectActionModel } from '../../../../public/models/external/table-select-action.model';
+import { MultiLanguageService } from '../../../../share/translate/multiLanguageService';
+import { NotificationService } from '../../../../core/services/notification.service';
+import { ToastrService } from 'ngx-toastr';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { Sort } from '@angular/material/sort';
+import { FilterEventModel } from '../../../../public/models/filter/filter-event.model';
 import * as _ from 'lodash';
 import {
   BUTTON_TYPE,
@@ -19,26 +19,26 @@ import {
   QUERY_CONDITION_TYPE,
   RESPONSE_CODE,
 } from '../../../../core/common/enum/operator';
-import {ActivatedRoute, Params, Router} from '@angular/router';
-import {FilterOptionModel} from '../../../../public/models/filter/filter-option.model';
+import { ActivatedRoute, Params, Router } from '@angular/router';
+import { FilterOptionModel } from '../../../../public/models/filter/filter-option.model';
 import {
   PAYDAY_LOAN_UI_STATUS,
   PAYDAY_LOAN_UI_STATUS_TEXT,
 } from '../../../../core/common/enum/payday-loan';
-import {BreadcrumbOptionsModel} from '../../../../public/models/external/breadcrumb-options.model';
-import {MatTableDataSource} from '@angular/material/table';
-import {PageEvent} from '@angular/material/paginator/public-api';
-import {FilterActionEventModel} from '../../../../public/models/filter/filter-action-event.model';
+import { BreadcrumbOptionsModel } from '../../../../public/models/external/breadcrumb-options.model';
+import { MatTableDataSource } from '@angular/material/table';
+import { PageEvent } from '@angular/material/paginator/public-api';
+import { FilterActionEventModel } from '../../../../public/models/filter/filter-action-event.model';
 import {
   AddNewUserDialogComponent,
   BaseManagementLayoutComponent,
 } from '../../../../share/components';
-import {MatDialog} from '@angular/material/dialog';
-import {MerchantDetailDialogComponent} from '../../../../share/components';
-import {MerchantGroupDialogComponent} from '../../../../share/components';
-import {GlobalConstants} from '../../../../core/common/global-constants';
-import {Title} from '@angular/platform-browser';
-import {DisplayedFieldsModel} from '../../../../public/models/filter/displayed-fields.model';
+import { MatDialog } from '@angular/material/dialog';
+import { MerchantDetailDialogComponent } from '../../../../share/components';
+import { MerchantGroupDialogComponent } from '../../../../share/components';
+import { GlobalConstants } from '../../../../core/common/global-constants';
+import { Title } from '@angular/platform-browser';
+import { DisplayedFieldsModel } from '../../../../public/models/filter/displayed-fields.model';
 import {
   ApiResponseSearchAndPaginationResponseAdminAccountEntity,
   ApiResponseSearchAndPaginationResponseCompanyInfo,
@@ -53,10 +53,10 @@ import {
   CreateMerchantRequestDto,
   MerchantControllerService,
 } from '../../../../../../open-api-modules/merchant-api-docs';
-import {Observable, Subscription} from 'rxjs';
-import {MerchantListService} from './merchant-list.service';
-import {ApiResponse} from '../../../../../../open-api-modules/monexcore-api-docs';
-import {ApiResponseAdminAccountEntity} from '../../../../../../open-api-modules/identity-api-docs';
+import { Observable, Subscription } from 'rxjs';
+import { MerchantListService } from './merchant-list.service';
+import { ApiResponse } from '../../../../../../open-api-modules/monexcore-api-docs';
+import { ApiResponseAdminAccountEntity } from '../../../../../../open-api-modules/identity-api-docs';
 import * as fromSelectors from '../../../../core/store/selectors';
 
 @Component({
@@ -579,7 +579,7 @@ export class MerchantListComponent implements OnInit {
     )) {
       queryParams[formControlName + queryCondition || ''] = data[
         formControlName
-        ]
+      ]
         ? data[formControlName].trim()
         : '';
     }
@@ -597,8 +597,7 @@ export class MerchantListComponent implements OnInit {
         relativeTo: this.activatedRoute,
         queryParams,
       })
-      .then((r) => {
-      });
+      .then((r) => {});
   }
 
   @ViewChild(BaseManagementLayoutComponent)
@@ -692,7 +691,7 @@ export class MerchantListComponent implements OnInit {
     }
     this.subManager.add(
       this.adminControllerService
-        .v1AdminMerchantsIdPut(id, {status: 'LOCKED'})
+        .v1AdminMerchantsIdPut(id, { status: 'LOCKED' })
         .subscribe(
           (result: ApiResponseMerchant) => {
             if (!result || result.responseCode !== RESPONSE_CODE.SUCCESS) {
@@ -708,8 +707,7 @@ export class MerchantListComponent implements OnInit {
               )
             );
           },
-          (error) => {
-          },
+          (error) => {},
           () => {
             setTimeout(() => {
               this.triggerDeselectUsers();
@@ -760,8 +758,7 @@ export class MerchantListComponent implements OnInit {
             )
           );
         },
-        (error) => {
-        },
+        (error) => {},
         () => {
           setTimeout(() => {
             this.triggerDeselectUsers();
@@ -844,7 +841,7 @@ export class MerchantListComponent implements OnInit {
           }
           setTimeout(() => {
             this.notifier.success(
-              this.multiLanguageService.instant('common.create_success')
+              this.multiLanguageService.instant('merchant.create')
             );
             this.refreshContent();
             this.notificationService.hideLoading();

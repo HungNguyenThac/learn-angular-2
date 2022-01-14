@@ -73,7 +73,8 @@
     "create_success": "Tạo người dùng thành công",
     "lock_success": "Khóa tài khoản thành công",
     "unlock_success": "Mở khóa tài khoản thành công",
-    "process_downloading": "Đang tải xuống tài liệu"
+    "process_downloading": "Đang tải xuống tài liệu",
+    "export_excel":  "Xuất file"
   },
   "auth": {
     "phone_number": "Số điện thoại",
@@ -383,6 +384,7 @@
       "received_salary": "Đã được trả lương",
       "initialized": "Đã khởi tạo",
       "document_awaiting": "Chờ tài liệu",
+      "document_awaiting_vac": "Chờ xác minh",
       "document_completed": "Hoàn thành tài liệu",
       "auction": "Chờ đầu tư",
       "contract_signing": "Ký hợp đồng",

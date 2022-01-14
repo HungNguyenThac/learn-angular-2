@@ -576,7 +576,7 @@ export class PdQuestionsListComponent implements OnInit {
     );
   }
 
-  sendUpdateRequest(updateRequest) {
+  public sendUpdateRequest(updateRequest) {
     this.subManager.add(
       this.cdeService
         .cdeControllerUpdatePdQuestion(this.questionInfo.id, updateRequest)

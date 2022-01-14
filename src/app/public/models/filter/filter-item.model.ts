@@ -12,5 +12,6 @@ export interface FilterItemModel {
   subTitle?: string;
   subOptions?: FilterSubItemsModel[];
   disabled?: boolean;
+  hidden?: boolean;
   count?: number;
 }

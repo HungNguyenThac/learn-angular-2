@@ -46,10 +46,9 @@ import { FilterEventModel } from '../../../../../public/models/filter/filter-eve
 import { FilterActionEventModel } from '../../../../../public/models/filter/filter-action-event.model';
 import { BaseManagementLayoutComponent } from '../../../../../share/components';
 import * as moment from 'moment';
-import { ProductStatusDialogComponent } from '../../../../../share/components/operators/product-config/product-status-dialog/product-status-dialog.component';
+import { ProductStatusDialogComponent } from '../../../../../share/components';
 import {
   ApiResponse,
-  CdeService,
   LoanStatusService,
 } from '../../../../../../../open-api-modules/monexcore-api-docs';
 
@@ -60,25 +59,8 @@ import {
 })
 export class ProductStatusListComponent implements OnInit {
   //Mock data
-  statusList: any[] = [
-    {
-      name: 'Trạng thái 1',
-      description: 'Mô tả 1',
-      status: 'ACTIVE',
-      createdAt: '01/01/2022 13:22',
-      updatedAt: '01/01/2022 13:22',
-      updatedBy: 'user1',
-    },
-    {
-      name: 'Trạng thái 2',
-      description: 'Mô tả 2',
-      status: 'LOCKED',
-      createdAt: '02/01/2022 12:21',
-      updatedAt: '03/01/2022 15:32',
-      updatedBy: 'user2',
-    },
-  ];
   roleList: Array<GroupEntity>;
+
   selectButtons: TableSelectActionModel[] = [
     {
       hidden: false,
@@ -89,7 +71,7 @@ export class ProductStatusListComponent implements OnInit {
       style: 'background-color: rgba(255, 255, 255, 0.1);',
     },
     {
-      hidden: false,
+      hidden: true,
       action: 'lock',
       color: 'accent',
       content: this.multiLanguageService.instant(
@@ -109,7 +91,7 @@ export class ProductStatusListComponent implements OnInit {
       'breadcrumb.search_field_user_list'
     ),
     searchable: true,
-    showBtnAdd: false,
+    showBtnAdd: true,
     btnAddText: this.multiLanguageService.instant('product_status.add'),
     keyword: '',
   };
@@ -173,6 +155,8 @@ export class ProductStatusListComponent implements OnInit {
       showed: true,
     },
   ];
+
+  info;
   dataSource: MatTableDataSource<any> = new MatTableDataSource([]);
   pages: Array<number>;
   pageSize: number = 10;
@@ -182,7 +166,6 @@ export class ProductStatusListComponent implements OnInit {
   totalItems: number = 0;
   filterForm: FormGroup;
   expandedElementId: string;
-  expandElementFromLoan;
   hasSelect: boolean = true;
   userInfo: any;
   private readonly routeAllState$: Observable<Params>;
@@ -212,14 +195,14 @@ export class ProductStatusListComponent implements OnInit {
 
   ngOnInit(): void {
     this.store.dispatch(new fromActions.SetOperatorInfo(null));
-    this._initSubscription();
+    // this._initSubscription();
     this._getStatusList();
   }
 
   private _getStatusList() {
     this.subManager.add(
       this.loanStatusService
-        .loanStatusControllerGetListStatus()
+        .statusGroupControllerGetListStatus()
         .subscribe((data) => {
           // @ts-ignore
           this.dataSource.data = data?.result;
@@ -227,50 +210,35 @@ export class ProductStatusListComponent implements OnInit {
     );
   }
 
-  private async _checkActionPermissions() {
-    const hasCredentialsCreatePermission =
-      await this.permissionsService.hasPermission('credentials:create');
-    const hasDeleteAccountPermission =
-      await this.permissionsService.hasPermission(
-        'credentials:deleteAdminAccount'
-      );
-    const hasLockMultipleAccountPermission =
-      await this.permissionsService.hasPermission(
-        'credentials:lockMultiAccount'
-      );
-
-    if (hasCredentialsCreatePermission) {
-      this.breadcrumbOptions.showBtnAdd = true;
-    }
-
-    let selectedButtons = JSON.parse(JSON.stringify(this.selectButtons));
-    selectedButtons.forEach((button) => {
-      if (button.action === 'delete') {
-        button.hidden = !hasDeleteAccountPermission;
-        return;
-      }
-      if (button.action === 'lock') {
-        button.hidden = !hasLockMultipleAccountPermission;
-      }
-    });
-
-    this.selectButtons = selectedButtons;
-  }
-
-  private _getUserList() {
-    const params = this._buildParams();
-    this.userListService
-      .getData(params)
-      .subscribe(
-        (data: ApiResponseSearchAndPaginationResponseAdminAccountEntity) => {
-          this._parseData(data?.result);
-          this.dataSource.data = data?.result?.data;
-          if (this.filterForm.controls.id.value) {
-            this.expandElementFromLoan = data?.result?.data[0];
-          }
-        }
-      );
-  }
+  // private async _checkActionPermissions() {
+  //   const hasCredentialsCreatePermission =
+  //     await this.permissionsService.hasPermission('credentials:create');
+  //   const hasDeleteAccountPermission =
+  //     await this.permissionsService.hasPermission(
+  //       'credentials:deleteAdminAccount'
+  //     );
+  //   const hasLockMultipleAccountPermission =
+  //     await this.permissionsService.hasPermission(
+  //       'credentials:lockMultiAccount'
+  //     );
+  //
+  //   if (hasCredentialsCreatePermission) {
+  //     this.breadcrumbOptions.showBtnAdd = true;
+  //   }
+  //
+  //   let selectedButtons = JSON.parse(JSON.stringify(this.selectButtons));
+  //   selectedButtons.forEach((button) => {
+  //     if (button.action === 'delete') {
+  //       button.hidden = !hasDeleteAccountPermission;
+  //       return;
+  //     }
+  //     if (button.action === 'lock') {
+  //       button.hidden = !hasLockMultipleAccountPermission;
+  //     }
+  //   });
+  //
+  //   this.selectButtons = selectedButtons;
+  // }
 
   public onPageChange(event: PageEvent) {
     this.pageSize = event.pageSize;
@@ -285,6 +253,7 @@ export class ProductStatusListComponent implements OnInit {
   }
 
   public onExpandElementChange(element: any) {
+    this.info = element;
     this.openUpdateDialog(element);
   }
 
@@ -298,6 +267,39 @@ export class ProductStatusListComponent implements OnInit {
         dialogTitle: this.multiLanguageService.instant('product_status.update'),
       },
     });
+    this.subManager.add(
+      dialogRef.afterClosed().subscribe((result: any) => {
+        if (result && result.type === BUTTON_TYPE.PRIMARY) {
+          let updateRequest = this._bindingDialogData(result.data);
+          this.sendUpdateRequest(updateRequest);
+        }
+      })
+    );
+  }
+
+  public sendUpdateRequest(updateRequest) {
+    this.subManager.add(
+      this.loanStatusService
+        .statusGroupControllerUpdateStatus(this.info.id, updateRequest)
+        .subscribe(
+          (result: ApiResponse) => {
+            if (!result || result.responseCode !== RESPONSE_CODE.SUCCESS) {
+              return this.notifier.error(
+                JSON.stringify(result?.message),
+                result?.errorCode
+              );
+            }
+          },
+          () => {},
+          () => {
+            this.notifier.success(
+              this.multiLanguageService.instant('common.update_success')
+            );
+            this.refreshContent();
+            this.notificationService.hideLoading();
+          }
+        )
+    );
   }
 
   public onSubmitSearchForm(event) {
@@ -442,6 +444,16 @@ export class ProductStatusListComponent implements OnInit {
         this._deleteById(id);
       }
     });
+    setTimeout(() => {
+      if (action === 'delete') {
+        this.notifier.success(
+          this.multiLanguageService.instant(
+            'pd_system.pd_questions.delete_toast'
+          )
+        );
+        this.refreshContent();
+      }
+    }, 2000);
   }
 
   private _lockById(id: string) {
@@ -474,12 +486,17 @@ export class ProductStatusListComponent implements OnInit {
     if (!id) {
       return;
     }
-  }
-
-  formatTimeSecond(timeInput) {
-    if (!timeInput) return;
-    return moment(new Date(timeInput), 'YYYY-MM-DD HH:mm:ss').format(
-      'DD/MM/YYYY HH:mm:ss'
+    this.subManager.add(
+      this.loanStatusService
+        .statusGroupControllerDeleteStatus(parseInt(id), {})
+        .subscribe((result: ApiResponse) => {
+          if (!result || result.responseCode !== RESPONSE_CODE.SUCCESS) {
+            return this.notifier.error(
+              JSON.stringify(result?.message),
+              result?.errorCode
+            );
+          }
+        })
     );
   }
 
@@ -502,21 +519,21 @@ export class ProductStatusListComponent implements OnInit {
     });
   }
 
-  private _initSubscription() {
-    this.subManager.add(
-      this.routeAllState$.subscribe((params) => {
-        this._parseQueryParams(params?.queryParams);
-      })
-    );
-
-    this.subManager.add(
-      this.permissionsService.permissions$.subscribe((permissions) => {
-        if (permissions) {
-          this._checkActionPermissions();
-        }
-      })
-    );
-  }
+  // private _initSubscription() {
+  //   this.subManager.add(
+  //     this.routeAllState$.subscribe((params) => {
+  //       this._parseQueryParams(params?.queryParams);
+  //     })
+  //   );
+  //
+  //   this.subManager.add(
+  //     this.permissionsService.permissions$.subscribe((permissions) => {
+  //       if (permissions) {
+  //         this._checkActionPermissions();
+  //       }
+  //     })
+  //   );
+  // }
 
   private _parseQueryParams(params) {
     this._initFilterFormFromQueryParams(params);
@@ -639,7 +656,7 @@ export class ProductStatusListComponent implements OnInit {
   sendAddRequest(addRequest) {
     this.subManager.add(
       this.loanStatusService
-        .loanStatusControllerCreateStatus(addRequest)
+        .statusGroupControllerCreateStatus(addRequest)
         .subscribe((result: ApiResponse) => {
           if (!result || result.responseCode !== RESPONSE_CODE.SUCCESS) {
             return this.notifier.error(
@@ -662,7 +679,8 @@ export class ProductStatusListComponent implements OnInit {
 
   public refreshContent() {
     setTimeout(() => {
-      this._getUserList();
+      this.triggerDeselectUsers();
+      this._getStatusList();
     }, 2000);
   }
 
@@ -699,38 +717,6 @@ export class ProductStatusListComponent implements OnInit {
       filterOption.value = null;
     });
     this.filterOptions = newFilterOptions;
-  }
-
-  private _initRoleOptions() {
-    this.filterOptions.forEach((filterOption: FilterOptionModel) => {
-      if (filterOption.controlName !== 'groupId' || !this.roleList) {
-        return;
-      }
-      filterOption.options = this.roleList.map((role) => {
-        return {
-          title: role.name,
-          value: role.id,
-        };
-      });
-    });
-  }
-
-  public updateElementInfo(updatedUserInfo) {
-    if (!updatedUserInfo) {
-      setTimeout(() => {
-        this.triggerDeselectUsers();
-        this._getUserList();
-      }, 2000);
-    }
-    this.dataSource.data.map((item) => {
-      if (item.id === updatedUserInfo.id) {
-        this.allColumns.forEach((column) => {
-          item[column.key] = updatedUserInfo[column.key];
-        });
-      }
-      return item;
-    });
-    // this.refreshContent();
   }
 
   ngOnDestroy(): void {

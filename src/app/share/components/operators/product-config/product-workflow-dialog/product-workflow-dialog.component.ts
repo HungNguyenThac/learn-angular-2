@@ -9,46 +9,22 @@ import { BUTTON_TYPE } from '../../../../../core/common/enum/operator';
   styleUrls: ['./product-workflow-dialog.component.scss'],
 })
 export class ProductWorkflowDialogComponent implements OnInit {
-  leftArr = [
-    {
-      id: '1',
-      name: 'Chờ duyệt',
-    },
-    {
-      id: '2',
-      name: 'Đã duyệt',
-    },
-    {
-      id: '3',
-      name: 'Đã huỷ',
-    },
-    {
-      id: '4',
-      name: 'Từ chối',
-    },
-    {
-      id: '5',
-      name: 'Hoàn thành',
-    },
-    {
-      id: '6',
-      name: 'Đã giải ngân',
-    },
-    {
-      id: '7',
-      name: 'Trong hạn',
-    },
-  ];
+  leftArr = [];
   rightArr = [];
+  originalRightArr = [];
   leftTemp = [];
   rightTemp = [];
+  addArr = [];
+  updateArr = [];
+  removeArr = [];
 
   form: FormGroup;
+  info;
+
   dialogTitle: string;
   isAccountNameInputFocus: boolean = false;
   isCodeInputFocus: boolean = false;
   isLoginInputFocus: boolean = false;
-  info;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) private data: any,
@@ -65,16 +41,26 @@ export class ProductWorkflowDialogComponent implements OnInit {
 
   buildForm() {
     this.form = this.formBuilder.group({
-      code: 'PW-XXX',
+      code: [''],
       name: [''],
       description: [''],
       status: false,
+      addArr: [''],
+      updateArr: [''],
+      removeArr: [''],
     });
   }
 
   initDialogData(data) {
-    this.dialogTitle = data?.dialogTitle;
     this.info = data?.info;
+    this.dialogTitle = data?.dialogTitle;
+    this.leftArr = data?.leftArr;
+    if (data?.rightArr) {
+      this.rightArr = data?.rightArr.sort((a, b) => {
+        return a.order - b.order;
+      });
+    }
+    this.originalRightArr = data?.rightArr;
     let status = data?.info?.status === 'ACTIVE';
 
     this.form.patchValue({
@@ -85,15 +71,64 @@ export class ProductWorkflowDialogComponent implements OnInit {
     });
   }
 
-  submitForm() {
-    if (this.form.controls.status.value) {
-      this.form.patchValue({
-        status: 'ACTIVE',
-      });
+  giveOrders() {
+    let orderedArr = [];
+    orderedArr.push(
+      this.rightArr.map((ele, index) => {
+        return {
+          id: ele.id,
+          name: ele.name,
+          order: index,
+        };
+      })
+    );
+    this.bindElementToArray(orderedArr[0]);
+  }
+
+  bindElementToArray(orderedArr) {
+    if (this.originalRightArr) {
+      // Get add elements
+      let addIds = this.originalRightArr.map((ele) => ele.id);
+      this.addArr = orderedArr.filter((ele) => !addIds.includes(ele.id));
+
+      // Get update elements
+      this.updateArr = orderedArr.filter((ele) => addIds.includes(ele.id));
+
+      // Get remove elements
+      let removeIds = orderedArr.map((ele) => ele.id);
+      this.removeArr = this.originalRightArr.filter(
+        (ele) => !removeIds.includes(ele.id)
+      );
+    } else {
+      this.addArr = orderedArr;
     }
+  }
+
+  submitForm() {
     if (this.form.invalid) {
       return;
     }
+
+    this.giveOrders();
+
+    if (this.form.controls.status.value) {
+      this.form.patchValue({
+        code: 'PW',
+        status: 'ACTIVE',
+        addArr: this.addArr,
+        updateArr: this.updateArr,
+        removeArr: this.removeArr,
+      });
+    } else {
+      this.form.patchValue({
+        code: 'PW',
+        status: 'INACTIVE',
+        addArr: this.addArr,
+        updateArr: this.updateArr,
+        removeArr: this.removeArr,
+      });
+    }
+
     this.dialogRef.close({
       type: BUTTON_TYPE.PRIMARY,
       data: this.form.getRawValue(),
@@ -105,7 +140,6 @@ export class ProductWorkflowDialogComponent implements OnInit {
     if (this.leftTemp.includes(question)) {
       const index = this.leftTemp.indexOf(question);
       this.leftTemp.splice(index, 1);
-      console.log(this.leftTemp);
     } else {
       this.leftTemp.push(question);
     }
@@ -121,7 +155,7 @@ export class ProductWorkflowDialogComponent implements OnInit {
     }
   }
 
-  moveToChosen() {
+  moveToRight() {
     this.rightArr = this.rightArr.concat(this.leftTemp);
     const tempSet = new Set(this.leftTemp);
     this.leftArr = this.leftArr.filter((question) => {
@@ -130,7 +164,7 @@ export class ProductWorkflowDialogComponent implements OnInit {
     this.leftTemp = [];
   }
 
-  moveBack() {
+  moveToLeft() {
     this.leftArr = this.leftArr.concat(this.rightTemp);
     const tempSet = new Set(this.rightTemp);
     this.rightArr = this.rightArr.filter((question) => {
