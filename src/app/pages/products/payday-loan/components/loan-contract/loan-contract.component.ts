@@ -93,13 +93,27 @@ export class LoanContractComponent implements OnInit, OnDestroy {
   }
 
   getDisplayStatus() {
+    let newDataStatusType: DATA_STATUS_TYPE;
+    switch (this.loanDetail?.companyInfo?.groupName) {
+      case COMPANY_NAME.HMG:
+        newDataStatusType = DATA_STATUS_TYPE.PL_HMG_STATUS;
+        break;
+      case COMPANY_NAME.VAC:
+        newDataStatusType = DATA_STATUS_TYPE.PL_VAC_STATUS;
+        break;
+      case COMPANY_NAME.TNG:
+      default:
+        newDataStatusType = DATA_STATUS_TYPE.PL_TNG_STATUS;
+        break;
+    }
+
     this.displayStatus = {
       title: this.multiLanguageService.instant(
         'loan_app.loan_info.loan_status'
       ),
       value: this.loanDetail?.status,
       type: DATA_CELL_TYPE.STATUS,
-      format: DATA_STATUS_TYPE.PL_HMG_STATUS,
+      format: newDataStatusType,
     };
     return this.displayStatus;
   }
@@ -137,39 +151,38 @@ export class LoanContractComponent implements OnInit, OnDestroy {
     const idDocument = this.loanContractData.idDocument;
 
     this.subManager.add(
-      this.loanListService.signContract(
-        customerId,
-        idRequest,
-        idDocument
-      ).subscribe((result) => {
-        if (!result || result.responseCode !== RESPONSE_CODE.SUCCESS) {
-          this.notifier.error(
-            this.multiLanguageService.instant(
-              'loan_app.loan_contract.sign_fail'
-            )
-          );
-          return;
-        }
+      this.loanListService
+        .signContract(customerId, idRequest, idDocument)
+        .subscribe((result) => {
+          if (!result || result.responseCode !== RESPONSE_CODE.SUCCESS) {
+            this.notifier.error(
+              this.multiLanguageService.instant(
+                'loan_app.loan_contract.sign_fail'
+              )
+            );
+            return;
+          }
 
-        this.triggerUpdateLoanAfterSign.emit();
-        setTimeout(() => {
-          this.notifier.success(
-            this.multiLanguageService.instant('loan_app.loan_info.sign_success')
-          );
-        }, 3000);
-      })
+          this.triggerUpdateLoanAfterSign.emit();
+          setTimeout(() => {
+            this.notifier.success(
+              this.multiLanguageService.instant(
+                'loan_app.loan_info.sign_success'
+              )
+            );
+          }, 3000);
+        })
     );
   }
 
   downloadFileContract(documentPath, customerId) {
     this.subManager.add(
-      this.loanListService.downloadSingleFileContract(
-        documentPath,
-        customerId
-      ).subscribe((data) => {
-        this.loanContractFile = data;
-        this.pdfView(this.loanContractFile);
-      })
+      this.loanListService
+        .downloadSingleFileContract(documentPath, customerId)
+        .subscribe((data) => {
+          this.loanContractFile = data;
+          this.pdfView(this.loanContractFile);
+        })
     );
   }
 
@@ -199,21 +212,23 @@ export class LoanContractComponent implements OnInit, OnDestroy {
 
   private _getLoanContractData() {
     this.subManager.add(
-      this.loanListService.getContractData(
-        this.loanDetail?.id,
-        this.loanDetail.companyInfo?.groupName
-      ).subscribe((response: ApiResponseContract) => {
-        if (response.result === null) {
-          return (this.loanContractData = null);
-        }
-        this.downloadable = true;
-        this.loanContractData = response.result;
-        this.downloadFileContract(
-          this.loanContractData.path,
-          this.loanDetail.customerId
-        );
-        this.checkSignable();
-      })
+      this.loanListService
+        .getContractData(
+          this.loanDetail?.id,
+          this.loanDetail.companyInfo?.groupName
+        )
+        .subscribe((response: ApiResponseContract) => {
+          if (response.result === null) {
+            return (this.loanContractData = null);
+          }
+          this.downloadable = true;
+          this.loanContractData = response.result;
+          this.downloadFileContract(
+            this.loanContractData.path,
+            this.loanDetail.customerId
+          );
+          this.checkSignable();
+        })
     );
   }
 }
