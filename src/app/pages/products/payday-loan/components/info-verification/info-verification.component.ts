@@ -224,6 +224,8 @@ export class InfoVerificationComponent implements OnInit, AfterViewInit {
       .subscribe(() => {
         this.filterBanks();
       });
+
+    this._initSubscription();
   }
 
   ngAfterViewInit(): void {
