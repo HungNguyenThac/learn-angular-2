@@ -406,8 +406,38 @@ paths:
         - cde
   "/v1/loan-products":
     get:
-      operationId: LoanProductController_getLoanProduct
-      parameters: [ ]
+      operationId: LoanProductController_getListLoanProduct
+      parameters:
+        - name: createdAt
+          required: false
+          in: query
+          schema:
+            type: string
+        - name: createdBy
+          required: false
+          in: query
+          schema:
+            type: string
+        - name: updatedAt
+          required: false
+          in: query
+          schema:
+            type: string
+        - name: updatedBy
+          required: false
+          in: query
+          schema:
+            type: string
+        - name: code
+          required: false
+          in: query
+          schema:
+            type: string
+        - name: name
+          required: false
+          in: query
+          schema:
+            type: string
       responses:
         '200':
           description: ''
@@ -423,6 +453,12 @@ paths:
             schema:
               "$ref": "#/components/schemas/CreateLoanProductDto"
       responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ApiResponse"
         '201':
           description: ''
       tags:
@@ -480,137 +516,7 @@ paths:
           description: ''
       tags:
         - loan-products
-  "/loan-status/{id}":
-    get:
-      operationId: LoanStatusController_getStatusById
-      parameters:
-        - name: id
-          required: true
-          in: path
-          schema:
-            type: number
-      responses:
-        '200':
-          description: ''
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/ApiResponse"
-      tags:
-        - loan-status
-    put:
-      operationId: LoanStatusController_updateStatus
-      parameters:
-        - name: id
-          required: true
-          in: path
-          schema:
-            type: number
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/UpdateLoanStatusDto"
-      responses:
-        '200':
-          description: ''
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/ApiResponse"
-      tags:
-        - loan-status
-    delete:
-      operationId: LoanStatusController_deleteStatus
-      parameters:
-        - name: id
-          required: true
-          in: path
-          schema:
-            type: number
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/DeleteLoanStatusDto"
-      responses:
-        '200':
-          description: ''
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/ApiResponse"
-      tags:
-        - loan-status
-  "/loan-status":
-    get:
-      operationId: LoanStatusController_getListStatus
-      parameters:
-        - name: createdAt
-          required: false
-          in: query
-          schema:
-            type: string
-        - name: createdBy
-          required: false
-          in: query
-          schema:
-            type: string
-        - name: updatedAt
-          required: false
-          in: query
-          schema:
-            type: string
-        - name: updatedBy
-          required: false
-          in: query
-          schema:
-            type: string
-        - name: code
-          required: false
-          in: query
-          schema:
-            type: string
-        - name: name
-          required: false
-          in: query
-          schema:
-            type: string
-        - name: description
-          required: false
-          in: query
-          schema:
-            type: string
-      responses:
-        '200':
-          description: ''
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/ApiResponse"
-      tags:
-        - loan-status
-    post:
-      operationId: LoanStatusController_createStatus
-      parameters: [ ]
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/CreateLoanStatusDto"
-      responses:
-        '200':
-          description: ''
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/ApiResponse"
-      tags:
-        - loan-status
-  "/loan-status/groups/{id}":
+  "/v1/loan-status/groups/{id}":
     get:
       operationId: LoanStatusController_getStatusGroupById
       parameters:
@@ -674,7 +580,7 @@ paths:
                 "$ref": "#/components/schemas/ApiResponse"
       tags:
         - loan-status
-  "/loan-status/groups":
+  "/v1/loan-status/groups":
     get:
       operationId: LoanStatusController_getListStatusGroup
       parameters:
@@ -740,9 +646,9 @@ paths:
                 "$ref": "#/components/schemas/ApiResponse"
       tags:
         - loan-status
-  "/loan-status/groups/{id}/{action}":
+  "/v1/loan-status/groups/{id}/{action}":
     put:
-      operationId: LoanStatusController_updatePdModelGroup
+      operationId: LoanStatusController_updateStatusFlow
       parameters:
         - name: id
           required: true
@@ -760,6 +666,136 @@ paths:
           application/json:
             schema:
               "$ref": "#/components/schemas/UpdateStatusFlowDto"
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ApiResponse"
+      tags:
+        - loan-status
+  "/v1/loan-status/{id}":
+    get:
+      operationId: StatusGroupController_getStatusById
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ApiResponse"
+      tags:
+        - loan-status
+    put:
+      operationId: StatusGroupController_updateStatus
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/UpdateLoanStatusDto"
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ApiResponse"
+      tags:
+        - loan-status
+    delete:
+      operationId: StatusGroupController_deleteStatus
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/DeleteLoanStatusDto"
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ApiResponse"
+      tags:
+        - loan-status
+  "/v1/loan-status":
+    get:
+      operationId: StatusGroupController_getListStatus
+      parameters:
+        - name: createdAt
+          required: false
+          in: query
+          schema:
+            type: string
+        - name: createdBy
+          required: false
+          in: query
+          schema:
+            type: string
+        - name: updatedAt
+          required: false
+          in: query
+          schema:
+            type: string
+        - name: updatedBy
+          required: false
+          in: query
+          schema:
+            type: string
+        - name: code
+          required: false
+          in: query
+          schema:
+            type: string
+        - name: name
+          required: false
+          in: query
+          schema:
+            type: string
+        - name: description
+          required: false
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ApiResponse"
+      tags:
+        - loan-status
+    post:
+      operationId: StatusGroupController_createStatus
+      parameters: [ ]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/CreateLoanStatusDto"
       responses:
         '200':
           description: ''
@@ -1048,6 +1084,74 @@ components:
           type: string
         updatedBy:
           type: string
+    CreateGroupLoanStatusDto:
+      type: object
+      properties:
+        createdAt:
+          type: string
+        createdBy:
+          type: string
+        updatedAt:
+          type: string
+        updatedBy:
+          type: string
+        code:
+          type: string
+        name:
+          type: string
+        status:
+          type: string
+      required:
+        - code
+        - name
+        - status
+    UpdateGroupLoanStatusDto:
+      type: object
+      properties:
+        createdAt:
+          type: string
+        createdBy:
+          type: string
+        updatedAt:
+          type: string
+        updatedBy:
+          type: string
+        code:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        status:
+          type: string
+    DeleteLoanStatusGroupDto:
+      type: object
+      properties:
+        createdAt:
+          type: string
+        createdBy:
+          type: string
+        updatedAt:
+          type: string
+        updatedBy:
+          type: string
+    UpdateStatusFlowDto:
+      type: object
+      properties:
+        createdAt:
+          type: string
+        createdBy:
+          type: string
+        updatedAt:
+          type: string
+        updatedBy:
+          type: string
+        statusId:
+          type: number
+        order:
+          type: number
+      required:
+        - statusId
     CreateLoanStatusDto:
       type: object
       properties:
@@ -1097,70 +1201,3 @@ components:
           type: string
         updatedBy:
           type: string
-    CreateGroupLoanStatusDto:
-      type: object
-      properties:
-        createdAt:
-          type: string
-        createdBy:
-          type: string
-        updatedAt:
-          type: string
-        updatedBy:
-          type: string
-        code:
-          type: string
-        name:
-          type: string
-      required:
-        - code
-        - name
-    UpdateGroupLoanStatusDto:
-      type: object
-      properties:
-        createdAt:
-          type: string
-        createdBy:
-          type: string
-        updatedAt:
-          type: string
-        updatedBy:
-          type: string
-        id:
-          type: number
-        code:
-          type: string
-        name:
-          type: string
-        description:
-          type: string
-      required:
-        - id
-    DeleteLoanStatusGroupDto:
-      type: object
-      properties:
-        createdAt:
-          type: string
-        createdBy:
-          type: string
-        updatedAt:
-          type: string
-        updatedBy:
-          type: string
-    UpdateStatusFlowDto:
-      type: object
-      properties:
-        createdAt:
-          type: string
-        createdBy:
-          type: string
-        updatedAt:
-          type: string
-        updatedBy:
-          type: string
-        statusId:
-          type: number
-        order:
-          type: number
-      required:
-        - statusId

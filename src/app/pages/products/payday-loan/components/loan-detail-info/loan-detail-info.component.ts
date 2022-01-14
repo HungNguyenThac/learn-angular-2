@@ -327,7 +327,7 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
         title: this.multiLanguageService.instant(
           'loan_app.loan_info.voucher_code'
         ),
-        value: this.loanDetail?.voucherTransactionId,
+        value: this.loanDetail?.voucher?.code,
         type: DATA_CELL_TYPE.TEXT,
         format: null,
       },
