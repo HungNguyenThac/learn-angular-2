@@ -13,22 +13,24 @@
   </mat-tab>
 
   <!--  Contract-->
-  <mat-tab
-    [label]="'loan_app.tabs.loan_contract' | translate"
+  <ng-container
     *ngxPermissionsOnly="[
       'paydays:getLoanTNGContractByLoanId',
-      'paydays:getLoanVACContractByLoanId'
+      'paydays:getLoanVACContractByLoanId',
+      'hmgPaydayLoans:getLoanContractByLoanId'
     ]"
   >
-    <ng-template matTabContent>
-      <app-loan-contract
-        (triggerUpdateLoanAfterSign)="triggerUpdateLoanAfterSign()"
-        [loanDetail]="loanDetail"
-        [loanId]="loanId"
-        [customerInfo]="userInfo"
-      ></app-loan-contract>
-    </ng-template>
-  </mat-tab>
+    <mat-tab [label]="'loan_app.tabs.loan_contract' | translate">
+      <ng-template matTabContent>
+        <app-loan-contract
+          (triggerUpdateLoanAfterSign)="triggerUpdateLoanAfterSign()"
+          [loanDetail]="loanDetail"
+          [loanId]="loanId"
+          [customerInfo]="userInfo"
+        ></app-loan-contract>
+      </ng-template>
+    </mat-tab>
+  </ng-container>
 
   <!--  Document Info-->
   <mat-tab [label]="'loan_app.tabs.documents' | translate">
