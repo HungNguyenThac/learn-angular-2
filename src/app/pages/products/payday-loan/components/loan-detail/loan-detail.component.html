@@ -13,7 +13,13 @@
   </mat-tab>
 
   <!--  Contract-->
-  <mat-tab [label]="'loan_app.tabs.loan_contract' | translate">
+  <mat-tab
+    [label]="'loan_app.tabs.loan_contract' | translate"
+    *ngxPermissionsOnly="[
+      'paydays:getLoanTNGContractByLoanId',
+      'paydays:getLoanVACContractByLoanId'
+    ]"
+  >
     <ng-template matTabContent>
       <app-loan-contract
         (triggerUpdateLoanAfterSign)="triggerUpdateLoanAfterSign()"
