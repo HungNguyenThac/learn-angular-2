@@ -248,7 +248,13 @@ export class PdModelListComponent implements OnInit {
     this.subManager.add(
       this.cdeService.cdeControllerGetPdModel().subscribe((data) => {
         // @ts-ignore
-        this.dataSource.data = data?.result;
+        let list = data?.result.map((item) => {
+          return {
+            ...item,
+            code: item.code + '-' + item.id,
+          };
+        });
+        this.dataSource.data = list;
       })
     );
   }
@@ -567,6 +573,12 @@ export class PdModelListComponent implements OnInit {
 
   public openUpdateDialog(info) {
     let leftArr = [...this.groupList];
+    leftArr = leftArr.map((item) => {
+      return {
+        id: parseInt(item.id),
+        content: item.content,
+      };
+    });
     let rightArr = [];
     let modelGroups = info.pdModelGroups;
     if (modelGroups) {
@@ -611,7 +623,7 @@ export class PdModelListComponent implements OnInit {
             result.data.removeArr
           );
           this.sendUpdateRequest(
-            info.objectId,
+            info.id,
             createRequest,
             addQuestionsRequest,
             updateQuestionsRequest,

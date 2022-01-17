@@ -54,32 +54,6 @@
                 </div>
 
                 <div>
-                  <mat-form-field appearance="outline" class="w-100" floatLabel="never">
-                    <mat-label>{{ "monex_product.name" | translate}}</mat-label>
-                    <input (blur)="input2Focus = false"
-                           (focus)="input2Focus = true"
-                           [ngClass]="
-                        input2Focus ? 'is-focused-input' : ''
-                      " [placeholder]="'monex_product.name' | translate"
-                           formControlName="name"
-                           autocomplete="chrome-off"
-                           aria-autocomplete="none"
-                           required
-                           matInput
-                           type="text"
-                    >
-                    <show-errors
-                      [control]="form.controls['name']"
-                      [controlLabel]="
-                        'monex_product.name' | translate
-                      "
-                      [hasIconPrefix]="false"
-                    >
-                    </show-errors>
-                  </mat-form-field>
-                </div>
-
-                <div>
                   <mat-form-field appearance="outline" class="w-100">
                     <mat-label>{{
                       "monex_product.workflow" | translate
@@ -87,7 +61,7 @@
                     <mat-select required formControlName="workflow">
                       <mat-option
                         *ngFor="let workflow of workflows"
-                        [value]="workflow.name"
+                        [value]="workflow.id"
                       >{{ workflow.name }}
                       </mat-option>
                     </mat-select>
@@ -102,6 +76,82 @@
                   </mat-form-field>
                 </div>
 
+                <!--                <div>-->
+                <!--                  <mat-form-field appearance="outline" class="w-100">-->
+                <!--                    <mat-label>{{-->
+                <!--                      "monex_product.matrix" | translate-->
+                <!--                      }}</mat-label>-->
+                <!--                    <mat-select-->
+                <!--                      disableOptionCentering="true"-->
+                <!--                      formControlName="matrix"-->
+                <!--                      multiple-->
+                <!--                    >-->
+                <!--                      <mat-select-trigger>-->
+                <!--                              <span-->
+                <!--                                *ngIf="-->
+                <!--                                  form.controls.matrix.value-->
+                <!--                                    .length <= 1;-->
+                <!--                                  else matrixMultipleOptions-->
+                <!--                                "-->
+                <!--                              >{{-->
+                <!--                                form.controls.matrix.value-->
+                <!--                                  ? form.controls.matrix-->
+                <!--                                    .value[0]-->
+                <!--                                  : ""-->
+                <!--                                }}</span-->
+                <!--                              >-->
+                <!--                        <ng-template #matrixMultipleOptions>-->
+                <!--                          Đã chọn-->
+                <!--                          {{-->
+                <!--                          form.controls.matrix.value-->
+                <!--                            .length-->
+                <!--                          }}-->
+                <!--                          Limit Control Matrix-->
+                <!--                        </ng-template>-->
+                <!--                      </mat-select-trigger>-->
+                <!--                      <mat-option-->
+                <!--                        *ngFor="let matrix of matrices"-->
+                <!--                        [value]="matrix.name"-->
+                <!--                      >{{ matrix.name }}</mat-option-->
+                <!--                      >-->
+                <!--                    </mat-select>-->
+                <!--                    <show-errors-->
+                <!--                      [control]="form.controls['matrix']"-->
+                <!--                      [controlLabel]="-->
+                <!--                              'monex_product.matrix' | translate-->
+                <!--                            "-->
+                <!--                      [hasIconPrefix]="false"-->
+                <!--                    >-->
+                <!--                    </show-errors>-->
+                <!--                  </mat-form-field>-->
+                <!--                </div>-->
+
+                <div>
+                  <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>{{
+                      "monex_product.mifos" | translate
+                      }}</mat-label>
+                    <mat-select required formControlName="mifos">
+                      <mat-option
+                        *ngFor="let mifo of mifos"
+                        [value]="mifo.id"
+                      >{{ mifo.name }}
+                      </mat-option>
+                    </mat-select>
+                    <show-errors
+                      [control]="form.controls['mifos']"
+                      [controlLabel]="
+                                              'monex_product.mifos' | translate
+                                            "
+                      [hasIconPrefix]="false"
+                    >
+                    </show-errors>
+                  </mat-form-field>
+                </div>
+              </div>
+
+              <!-- Right Individual Info -->
+              <div class="col-12 col-sm-12 col-md-6 col-lg-6 pr-2">
                 <div>
                   <mat-form-field appearance="outline" class="w-100">
                     <mat-label>{{
@@ -137,7 +187,7 @@
                       </mat-select-trigger>
                       <mat-option
                         *ngFor="let pdModel of pdModels"
-                        [value]="pdModel.name"
+                        [value]="pdModel.id"
                       >{{ pdModel.name }}</mat-option
                       >
                     </mat-select>
@@ -151,105 +201,28 @@
                     </show-errors>
                   </mat-form-field>
                 </div>
-
-                <div>
-                  <mat-form-field appearance="outline" class="w-100">
-                    <mat-label>{{
-                      "monex_product.matrix" | translate
-                      }}</mat-label>
-                    <mat-select
-                      disableOptionCentering="true"
-                      formControlName="matrix"
-                      multiple
-                    >
-                      <mat-select-trigger>
-                              <span
-                                *ngIf="
-                                  form.controls.matrix.value
-                                    .length <= 1;
-                                  else matrixMultipleOptions
-                                "
-                              >{{
-                                form.controls.matrix.value
-                                  ? form.controls.matrix
-                                    .value[0]
-                                  : ""
-                                }}</span
-                              >
-                        <ng-template #matrixMultipleOptions>
-                          Đã chọn
-                          {{
-                          form.controls.matrix.value
-                            .length
-                          }}
-                          Limit Control Matrix
-                        </ng-template>
-                      </mat-select-trigger>
-                      <mat-option
-                        *ngFor="let matrix of matrices"
-                        [value]="matrix.name"
-                      >{{ matrix.name }}</mat-option
-                      >
-                    </mat-select>
-                    <show-errors
-                      [control]="form.controls['matrix']"
-                      [controlLabel]="
-                              'monex_product.matrix' | translate
-                            "
-                      [hasIconPrefix]="false"
-                    >
-                    </show-errors>
-                  </mat-form-field>
-                </div>
-              </div>
-
-              <!-- Right Individual Info -->
-              <div class="col-12 col-sm-12 col-md-6 col-lg-6 pr-2">
-                <div>
-                  <mat-form-field appearance="outline" class="w-100">
-                    <mat-label>{{
-                      "monex_product.contract" | translate
-                      }}</mat-label>
-                    <mat-select required formControlName="contract">
-                      <mat-option
-                        *ngFor="let contract of contracts"
-                        [value]="contract.name"
-                      >{{ contract.name }}
-                      </mat-option>
-                    </mat-select>
-                    <show-errors
-                      [control]="form.controls['contract']"
-                      [controlLabel]="
-                              'monex_product.contract' | translate
-                            "
-                      [hasIconPrefix]="false"
-                    >
-                    </show-errors>
-                  </mat-form-field>
-                </div>
-
-                <div>
-                  <mat-form-field appearance="outline" class="w-100">
-                    <mat-label>{{
-                      "monex_product.mifos" | translate
-                      }}</mat-label>
-                    <mat-select required formControlName="mifos">
-                      <mat-option
-                        *ngFor="let mifo of mifos"
-                        [value]="mifo.name"
-                      >{{ mifo.name }}
-                      </mat-option>
-                    </mat-select>
-                    <show-errors
-                      [control]="form.controls['mifos']"
-                      [controlLabel]="
-                              'monex_product.mifos' | translate
-                            "
-                      [hasIconPrefix]="false"
-                    >
-                    </show-errors>
-                  </mat-form-field>
-                </div>
+                <!--                <div>-->
+                <!--                  <mat-form-field appearance="outline" class="w-100">-->
+                <!--                    <mat-label>{{-->
+                <!--                      "monex_product.contract" | translate-->
+                <!--                      }}</mat-label>-->
+                <!--                    <mat-select required formControlName="contract">-->
+                <!--                      <mat-option-->
+                <!--                        *ngFor="let contract of contracts"-->
+                <!--                        [value]="contract.name"-->
+                <!--                      >{{ contract.name }}-->
+                <!--                      </mat-option>-->
+                <!--                    </mat-select>-->
+                <!--                    <show-errors-->
+                <!--                      [control]="form.controls['contract']"-->
+                <!--                      [controlLabel]="-->
+                <!--                              'monex_product.contract' | translate-->
+                <!--                            "-->
+                <!--                      [hasIconPrefix]="false"-->
+                <!--                    >-->
+                <!--                    </show-errors>-->
+                <!--                  </mat-form-field>-->
+                <!--                </div>-->
 
                 <div>
                   <mat-form-field appearance="outline" class="w-100">
@@ -257,7 +230,7 @@
                       "monex_product.description" | translate
                       }}</mat-label>
                     <textarea
-                      style="height: 195px"
+                      style="height: 168px"
                       matInput
                       class="text-area"
                       id="review"

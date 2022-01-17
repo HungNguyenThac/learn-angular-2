@@ -232,7 +232,13 @@ export class PdQuestionsListComponent implements OnInit {
       .getData(params)
       .subscribe((data: ApiResponseSearchAndPaginationResponseQuestion) => {
         this._parseData(data?.result);
-        this.dataSource.data = data?.result?.data;
+        let list = data?.result?.data.map((item) => {
+          return {
+            ...item,
+            code: item.code + '-' + item.objectId,
+          };
+        });
+        this.dataSource.data = list;
       });
     // this.subManager.add(
     //   this.cdeService.cdeControllerGetPdQuestion().subscribe((data) => {

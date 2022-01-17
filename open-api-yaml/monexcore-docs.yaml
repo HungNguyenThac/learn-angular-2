@@ -404,6 +404,58 @@ paths:
                 "$ref": "#/components/schemas/ApiResponse"
       tags:
         - cde
+  "/v1/loan-products/{id}":
+    get:
+      operationId: LoanProductController_getLoanProduct
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        '200':
+          description: ''
+      tags:
+        - loan-products
+    put:
+      operationId: LoanProductController_updateLoanProduct
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/UpdateLoanProductDto"
+      responses:
+        '200':
+          description: ''
+      tags:
+        - loan-products
+    delete:
+      operationId: LoanProductController_deleteLoanProduct
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/DeleteLoanProductDto"
+      responses:
+        '200':
+          description: ''
+      tags:
+        - loan-products
   "/v1/loan-products":
     get:
       operationId: LoanProductController_getListLoanProduct
@@ -438,6 +490,11 @@ paths:
           in: query
           schema:
             type: string
+        - name: mifosProductId
+          required: false
+          in: query
+          schema:
+            type: number
       responses:
         '200':
           description: ''
@@ -472,45 +529,6 @@ paths:
           in: path
           schema:
             type: number
-      responses:
-        '200':
-          description: ''
-      tags:
-        - loan-products
-  "/v1/loan-products/{id}":
-    put:
-      operationId: LoanProductController_updateLoanProduct
-      parameters:
-        - name: id
-          required: true
-          in: path
-          schema:
-            type: number
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/UpdateLoanProductDto"
-      responses:
-        '200':
-          description: ''
-      tags:
-        - loan-products
-    delete:
-      operationId: LoanProductController_deleteLoanProduct
-      parameters:
-        - name: id
-          required: true
-          in: path
-          schema:
-            type: number
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/DeleteLoanProductDto"
       responses:
         '200':
           description: ''
@@ -1052,10 +1070,17 @@ components:
           type: string
         statusGroupId:
           type: number
+        pdModelIds:
+          type: array
+          items:
+            type: number
+        mifosProductId:
+          type: number
+        description:
+          type: string
       required:
         - code
         - name
-        - statusGroupId
     UpdateLoanProductDto:
       type: object
       properties:
@@ -1071,7 +1096,15 @@ components:
           type: string
         name:
           type: string
+        description:
+          type: string
         statusGroupId:
+          type: number
+        pdModelIds:
+          type: array
+          items:
+            type: number
+        mifosProductId:
           type: number
     DeleteLoanProductDto:
       type: object

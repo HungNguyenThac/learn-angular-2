@@ -10,59 +10,41 @@ import { BUTTON_TYPE } from '../../../../../core/common/enum/operator';
 })
 export class MonexProductDialogComponent implements OnInit {
   // Fixed Data
-  workflows = [
-    {
-      name: 'Luồng trạng thái 1',
-    },
-    {
-      name: 'Luồng trạng thái 2',
-    },
-    {
-      name: 'Luồng trạng thái 3',
-    },
-  ];
-  pdModels = [
-    {
-      name: 'PD Model 1',
-    },
-    {
-      name: 'PD Model 2',
-    },
-    {
-      name: 'PD Model 3',
-    },
-  ];
-  matrices = [
-    {
-      name: 'Limit Control Matrix 1',
-    },
-    {
-      name: 'Limit Control Matrix 2',
-    },
-    {
-      name: 'Limit Control Matrix 3',
-    },
-  ];
-  contracts = [
-    {
-      name: 'Hợp đồng 1',
-    },
-    {
-      name: 'Hợp đồng 2',
-    },
-    {
-      name: 'Hợp đồng 3',
-    },
-  ];
+  workflows = [];
+  pdModels = [];
+
+  // matrices = [
+  //   {
+  //     name: 'Limit Control Matrix 1',
+  //   },
+  //   {
+  //     name: 'Limit Control Matrix 2',
+  //   },
+  //   {
+  //     name: 'Limit Control Matrix 3',
+  //   },
+  // ];
+
+  // contracts = [
+  //   {
+  //     name: 'Hợp đồng 1',
+  //   },
+  //   {
+  //     name: 'Hợp đồng 2',
+  //   },
+  //   {
+  //     name: 'Hợp đồng 3',
+  //   },
+  // ];
+
   mifos = [
     {
+      id: 1,
       name: 'Mifos Product ID 1',
     },
     {
+      id: 2,
       name: 'Mifos Product ID 2',
-    },
-    {
-      name: 'Mifos Product ID 3',
     },
   ];
   form: FormGroup;
@@ -88,17 +70,19 @@ export class MonexProductDialogComponent implements OnInit {
       code: [''],
       name: [''],
       description: [''],
-      status: false,
+      status: true,
       workflow: [''],
       pdModel: [''],
-      matrix: [''],
-      contract: [''],
+      // matrix: [''],
+      // contract: [''],
       mifos: [''],
     });
   }
 
   initDialogData(data) {
     this.dialogTitle = data?.dialogTitle;
+    this.workflows = data?.workflows;
+    this.pdModels = data?.pdModels;
     this.info = data?.info;
     let status = data?.info?.status === 'ACTIVE';
     if (data.info) {
@@ -106,12 +90,12 @@ export class MonexProductDialogComponent implements OnInit {
         code: this.info?.code,
         name: this.info?.name,
         description: this.info?.description,
-        status: status,
-        workflow: this.info?.workflow,
-        pdModel: this.info?.pdModel,
-        matrix: this.info?.matrix,
-        contract: this.info?.contract,
-        mifos: this.info?.mifos,
+        status: true,
+        workflow: this.info?.statusGroup.id,
+        pdModel: this.info?.pdModels,
+        // matrix: this.info?.matrix,
+        // contract: this.info?.contract,
+        // mifos: this.info?.mifos,
       });
     }
   }
@@ -119,7 +103,13 @@ export class MonexProductDialogComponent implements OnInit {
   submitForm() {
     if (this.form.controls.status.value) {
       this.form.patchValue({
+        code: 'MXP',
         status: 'ACTIVE',
+      });
+    } else {
+      this.form.patchValue({
+        code: 'MXP',
+        status: 'INACTIVE',
       });
     }
     if (this.form.invalid) {
