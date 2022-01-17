@@ -102,14 +102,18 @@ export class InfoVerificationComponent implements OnInit, AfterViewInit {
         'loan_app.info_verification.mobile_number'
       ),
       value: 'mobile',
-      type: 'number',
+      type: 'tel',
+      minLength: 10,
+      maxLength: 12,
     },
     {
       title: this.multiLanguageService.instant(
         'loan_app.info_verification.identity_number'
       ),
       value: 'identityNumber',
-      type: 'number',
+      type: 'text',
+      minLength: 9,
+      maxLength: 12,
     },
     {
       title: this.multiLanguageService.instant(
@@ -117,6 +121,7 @@ export class InfoVerificationComponent implements OnInit, AfterViewInit {
       ),
       value: 'startWorkingDay',
       type: 'date',
+      max: moment().format('yyyy-MM-DD'),
     },
     {
       title: this.multiLanguageService.instant(
@@ -148,6 +153,8 @@ export class InfoVerificationComponent implements OnInit, AfterViewInit {
       ),
       value: 'numberOfWorkDays',
       type: 'number',
+      min: 0,
+      max: 31,
     },
     // {
     //   title: this.multiLanguageService.instant(
@@ -172,6 +179,7 @@ export class InfoVerificationComponent implements OnInit, AfterViewInit {
   documentTypes = DOCUMENT_TYPE;
   hiddenUploadBtn: boolean = false;
   hiddenDeleteBtn: boolean = false;
+  hiddenUpdateBtn: boolean = false;
   hiddenDownloadBtn: boolean = true;
 
   subManager = new Subscription();
@@ -216,6 +224,8 @@ export class InfoVerificationComponent implements OnInit, AfterViewInit {
       .subscribe(() => {
         this.filterBanks();
       });
+
+    this._initSubscription();
   }
 
   ngAfterViewInit(): void {
@@ -235,28 +245,30 @@ export class InfoVerificationComponent implements OnInit, AfterViewInit {
 
   private initInfoVerificationFormData() {
     if (
-      this.loanDetail.status !==
-      (PAYDAY_LOAN_STATUS.DOCUMENT_AWAITING &&
-        PAYDAY_LOAN_STATUS.INITIALIZED &&
-        PAYDAY_LOAN_STATUS.UNKNOWN_STATUS)
+      this.loanDetail?.status !== PAYDAY_LOAN_STATUS.DOCUMENT_AWAITING &&
+      PAYDAY_LOAN_STATUS.INITIALIZED &&
+      PAYDAY_LOAN_STATUS.UNKNOWN_STATUS
     ) {
-      this.infoVerificationForm.patchValue(this.loanDetail.employeeData);
+      this.hiddenUploadBtn = true;
+      this.hiddenDeleteBtn = true;
+      this.hiddenUpdateBtn = true;
+      this.infoVerificationForm.patchValue(this.loanDetail?.employeeData);
       this.infoVerificationForm.controls.bank.setValue(
-        this.loanDetail.employeeData.bankCode
+        this.loanDetail?.employeeData?.bankCode
       );
       this._getSingleFileDocumentByPath(
-        this.loanDetail.customerId,
-        this.loanDetail.employeeData.salaryDocument1,
+        this.loanDetail?.customerId,
+        this.loanDetail?.employeeData?.salaryDocument1,
         DOCUMENT_TYPE.SALARY_INFORMATION_ONE
       );
       this._getSingleFileDocumentByPath(
-        this.loanDetail.customerId,
-        this.loanDetail.employeeData.salaryDocument2,
+        this.loanDetail?.customerId,
+        this.loanDetail?.employeeData?.salaryDocument2,
         DOCUMENT_TYPE.SALARY_INFORMATION_TWO
       );
       this._getSingleFileDocumentByPath(
-        this.loanDetail.customerId,
-        this.loanDetail.employeeData.salaryDocument3,
+        this.loanDetail?.customerId,
+        this.loanDetail?.employeeData?.salaryDocument3,
         DOCUMENT_TYPE.SALARY_INFORMATION_THREE
       );
     }
@@ -619,6 +631,13 @@ export class InfoVerificationComponent implements OnInit, AfterViewInit {
         }
       })
     );
+  }
+
+  onClear() {
+    this.infoVerificationForm.reset();
+    this.salary1Src = '';
+    this.salary2Src = '';
+    this.salary3Src = '';
   }
 
   documentFileUpload(documentType, file) {

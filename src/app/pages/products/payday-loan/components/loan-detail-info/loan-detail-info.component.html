@@ -55,7 +55,7 @@
                   <div class="card op-card op-drop-shadow">
                     <div class="card-title d-flex align-items-center gap-1">
                       {{
-                        "loan_app.loan_info.total_service_charge" | translate
+                      "loan_app.loan_info.total_service_charge" | translate
                       }}
                     </div>
                     <div class="card-body">
@@ -194,7 +194,7 @@
             mat-flat-button
             color="warn"
             (click)="changeLoanStatus(prevLoanStatus, prevLoanStatusDisplay)"
-            [hidden]="!prevLoanStatus"
+            [hidden]="!prevLoanStatus || prevLoanStatus === 'UNKNOWN_STATUS'"
           >
             {{ prevLoanStatusDisplay }}
           </button>

@@ -50,7 +50,7 @@
       <app-document-button
         [documentType]="documentBtnTypes.UPDATE"
         [classes]="'mt-1'"
-        [hidden]="!hiddenUploadBtn && hiddenUpdateBtn"
+        [hidden]="(!hiddenUploadBtn && hiddenUpdateBtn) || hiddenUpdateBtn"
         (clickBtn)="changeDocument($event)"
       ></app-document-button>
 

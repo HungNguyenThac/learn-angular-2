@@ -6,8 +6,9 @@
   </div>
   <div>
     <ul class="filter-boxes-ul">
-      <li
-        class="
+      <ng-container *ngFor="let filterItem of filterOption.options">
+        <li
+          class="
           px-3
           py-2
           d-flex
@@ -15,7 +16,7 @@
           align-items-center
           filter-child-item
         "
-        [ngClass]="{
+          [ngClass]="{
           'filter-child-item-active':
             selectedItems.includes(filterItem.value) ||
             filterItem.value === filterOption.value,
@@ -24,60 +25,154 @@
             filterItem.subOptions.length > 0 &&
             responsive
         }"
-        *ngFor="let filterItem of filterOption.options"
-      >
-        <ng-container
-          *ngIf="
+          *ngIf="!filterItem.hidden"
+        >
+          <ng-container
+            *ngIf="
             filterItem.subOptions && filterItem.subOptions.length > 0;
             else hasNotSubOptions
           "
-        >
-          <!-- Mobile view -->
-          <mat-accordion
-            *ngIf="responsive; else desktopView"
-            class="filter-form-expand-panel-container"
           >
-            <mat-expansion-panel>
-              <mat-expansion-panel-header
-                id="expand-panel-filter"
-                class="pb-2 pt-2 ps-3 pe-3"
-              >
-                <mat-panel-title>
-                  <div
-                    class="
+            <!-- Mobile view -->
+            <mat-accordion
+              *ngIf="responsive; else desktopView"
+              class="filter-form-expand-panel-container"
+            >
+              <mat-expansion-panel>
+                <mat-expansion-panel-header
+                  id="expand-panel-filter"
+                  class="pb-2 pt-2 ps-3 pe-3"
+                >
+                  <mat-panel-title>
+                    <div
+                      class="
                       w-100
                       d-flex
                       justify-content-between
                       align-items-center
                     "
-                  >
-                    <p
-                      class="w-100 filter-child-item-title"
-                      [matTooltip]="
+                    >
+                      <p
+                        class="w-100 filter-child-item-title"
+                        [matTooltip]="
                         displayTitle ? displayTitle : filterItem.title
                       "
-                    >
-                      {{ displayTitle ? displayTitle : filterItem.title }}
-                    </p>
-                    <div
-                      class="
+                      >
+                        {{ displayTitle ? displayTitle : filterItem.title }}
+                      </p>
+                      <div
+                        class="
                         d-inline-flex
                         justify-content-between
                         align-items-center
                         gap-1
                         cursor-pointer
                       "
-                    >
+                      >
                       <span
                         class="filter-status-count"
                         *ngIf="filterItem.count"
-                        >{{ filterItem.count }}</span
+                      >{{ filterItem.count }}</span
                       >
+                      </div>
                     </div>
-                  </div></mat-panel-title
+                  </mat-panel-title
+                  >
+                </mat-expansion-panel-header>
+                <div class="expansion-panel-content">
+                  <div class="card op-card op-drop-shadow">
+                    <div class="card-title d-flex align-items-center gap-1 mb-0">
+                      {{ filterItem.subTitle }}
+                      <button
+                        mat-button
+                        class="reset-btn"
+                        (click)="resetSelectedItem()"
+                      >
+                        {{ "common.reset" | translate }}
+                      </button>
+                    </div>
+                    <div class="card-body p-0">
+                      <div class="d-flex flex-column w-100">
+                        <div
+                          class="d-flex align-items-center select-field-option"
+                          *ngFor="let subItem of filterItem.subOptions"
+                          (click)="mobileSelectSubItem(subItem.value)"
+                        >
+                          <div
+                            class="select-field-option-img"
+                            *ngIf="subItem.imgSrc"
+                          >
+                            <img
+                              [src]="subItem.imgSrc"
+                              class="h-100 w-auto"
+                              alt=""
+                            />
+                          </div>
+                          <div class="select-field-option-name w-100">
+                            {{ subItem.title }}
+                          </div>
+                          <div
+                            [ngClass]="
+                            selectedItems.includes(subItem.value)
+                              ? 'visible'
+                              : 'invisible'
+                          "
+                          >
+                            <span class="sprite-group-7-tick-blue"></span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </mat-expansion-panel>
+            </mat-accordion>
+            <!-- End: Mobile view -->
+
+            <!-- Desktop view -->
+            <ng-template #desktopView>
+              <div
+                class="w-100 d-flex justify-content-between align-items-center"
+                (click)="displayDetailOption(selectFieldListEle)"
+              >
+                <p
+                  class="w-100 filter-child-item-title"
+                  [matTooltip]="displayTitle ? displayTitle : filterItem.title"
                 >
-              </mat-expansion-panel-header>
-              <div class="expansion-panel-content">
+                  {{ displayTitle ? displayTitle : filterItem.title }}
+                </p>
+                <div
+                  class="
+                  d-inline-flex
+                  justify-content-between
+                  align-items-center
+                  gap-1
+                  cursor-pointer
+                "
+                >
+                <span class="filter-status-count" *ngIf="filterItem.count">{{
+                  filterItem.count
+                  }}</span>
+                  <span
+                    [ngClass]="
+                    filterItem.value === filterOption.value
+                      ? 'sprite-group-5-chevron-right-blue'
+                      : 'sprite-group-5-chevron-right-grey'
+                  "
+                  ></span>
+                </div>
+              </div>
+
+              <div
+                class="filter-form-container-expand col-lg-4 col-12 col-sm-12"
+                id="selectFieldListEle"
+                (mouseleave)="completeSelectSubOptionsFilter(selectFieldListEle)"
+                #selectFieldListEle
+              >
+                <div class="arrow">
+                  <span class="sprite-group-7-popup-arrow-left"></span>
+                </div>
+
                 <div class="card op-card op-drop-shadow">
                   <div class="card-title d-flex align-items-center gap-1 mb-0">
                     {{ filterItem.subTitle }}
@@ -94,7 +189,7 @@
                       <div
                         class="d-flex align-items-center select-field-option"
                         *ngFor="let subItem of filterItem.subOptions"
-                        (click)="mobileSelectSubItem(subItem.value)"
+                        (click)="selectSubItem(subItem.value)"
                       >
                         <div
                           class="select-field-option-img"
@@ -111,10 +206,10 @@
                         </div>
                         <div
                           [ngClass]="
-                            selectedItems.includes(subItem.value)
-                              ? 'visible'
-                              : 'invisible'
-                          "
+                          selectedItems.includes(subItem.value)
+                            ? 'visible'
+                            : 'invisible'
+                        "
                         >
                           <span class="sprite-group-7-tick-blue"></span>
                         </div>
@@ -123,139 +218,48 @@
                   </div>
                 </div>
               </div>
-            </mat-expansion-panel>
-          </mat-accordion>
-          <!-- End: Mobile view -->
+            </ng-template>
 
-          <!-- Desktop view -->
-          <ng-template #desktopView>
+            <!-- END: Desktop view -->
+          </ng-container>
+
+          <ng-template #hasNotSubOptions>
             <div
+              (click)="selectSingleItem(filterItem)"
               class="w-100 d-flex justify-content-between align-items-center"
-              (click)="displayDetailOption(selectFieldListEle)"
             >
               <p
                 class="w-100 filter-child-item-title"
-                [matTooltip]="displayTitle ? displayTitle : filterItem.title"
+                [matTooltip]="filterItem.title"
               >
-                {{ displayTitle ? displayTitle : filterItem.title }}
+                {{ filterItem.title }}
               </p>
               <div
                 class="
-                  d-inline-flex
-                  justify-content-between
-                  align-items-center
-                  gap-1
-                  cursor-pointer
-                "
-              >
-                <span class="filter-status-count" *ngIf="filterItem.count">{{
-                  filterItem.count
-                }}</span>
-                <span
-                  [ngClass]="
-                    filterItem.value === filterOption.value
-                      ? 'sprite-group-5-chevron-right-blue'
-                      : 'sprite-group-5-chevron-right-grey'
-                  "
-                ></span>
-              </div>
-            </div>
-
-            <div
-              class="filter-form-container-expand col-lg-4 col-12 col-sm-12"
-              id="selectFieldListEle"
-              (mouseleave)="completeSelectSubOptionsFilter(selectFieldListEle)"
-              #selectFieldListEle
-            >
-              <div class="arrow">
-                <span class="sprite-group-7-popup-arrow-left"></span>
-              </div>
-
-              <div class="card op-card op-drop-shadow">
-                <div class="card-title d-flex align-items-center gap-1 mb-0">
-                  {{ filterItem.subTitle }}
-                  <button
-                    mat-button
-                    class="reset-btn"
-                    (click)="resetSelectedItem()"
-                  >
-                    {{ "common.reset" | translate }}
-                  </button>
-                </div>
-                <div class="card-body p-0">
-                  <div class="d-flex flex-column w-100">
-                    <div
-                      class="d-flex align-items-center select-field-option"
-                      *ngFor="let subItem of filterItem.subOptions"
-                      (click)="selectSubItem(subItem.value)"
-                    >
-                      <div
-                        class="select-field-option-img"
-                        *ngIf="subItem.imgSrc"
-                      >
-                        <img
-                          [src]="subItem.imgSrc"
-                          class="h-100 w-auto"
-                          alt=""
-                        />
-                      </div>
-                      <div class="select-field-option-name w-100">
-                        {{ subItem.title }}
-                      </div>
-                      <div
-                        [ngClass]="
-                          selectedItems.includes(subItem.value)
-                            ? 'visible'
-                            : 'invisible'
-                        "
-                      >
-                        <span class="sprite-group-7-tick-blue"></span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </ng-template>
-
-          <!-- END: Desktop view -->
-        </ng-container>
-
-        <ng-template #hasNotSubOptions>
-          <div
-            (click)="selectSingleItem(filterItem)"
-            class="w-100 d-flex justify-content-between align-items-center"
-          >
-            <p
-              class="w-100 filter-child-item-title"
-              [matTooltip]="filterItem.title"
-            >
-              {{ filterItem.title }}
-            </p>
-            <div
-              class="
                 d-inline-flex
                 justify-content-between
                 align-items-center
                 gap-1
                 cursor-pointer
               "
-            >
+              >
               <span class="filter-status-count" *ngIf="filterItem.count">{{
                 filterItem.count
-              }}</span>
-              <span
-                [ngClass]="
+                }}</span>
+                <span
+                  [ngClass]="
                   selectedItems.includes(filterItem.value) ||
                   filterItem.value === filterOption.value
                     ? 'sprite-group-5-chevron-right-blue'
                     : 'sprite-group-5-chevron-right-grey'
                 "
-              ></span>
+                ></span>
+              </div>
             </div>
-          </div>
-        </ng-template>
-      </li>
+          </ng-template>
+        </li>
+      </ng-container>
+
     </ul>
   </div>
 </div>
