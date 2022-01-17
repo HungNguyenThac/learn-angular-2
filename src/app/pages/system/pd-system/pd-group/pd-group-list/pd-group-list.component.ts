@@ -252,7 +252,13 @@ export class PdGroupListComponent implements OnInit {
     const params = this._buildParams();
     this.pdGroupListService.getData(params).subscribe((data) => {
       this._parseData(data?.result);
-      this.dataSource.data = data?.result?.data;
+      let list = data?.result?.data.map((item) => {
+        return {
+          ...item,
+          code: item.code + '-' + item.objectId,
+        };
+      });
+      this.dataSource.data = list;
     });
     // this.subManager.add(
     //   this.cdeService.cdeControllerGetPdGroup().subscribe((data) => {

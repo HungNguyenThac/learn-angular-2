@@ -805,6 +805,7 @@ export class ProductWorkflowListComponent implements OnInit {
   public refreshContent() {
     setTimeout(() => {
       this._getWorkflowList();
+      this.triggerDeselectUsers();
     }, 2000);
   }
 

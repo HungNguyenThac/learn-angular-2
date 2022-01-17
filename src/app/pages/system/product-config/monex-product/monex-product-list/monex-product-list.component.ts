@@ -49,7 +49,13 @@ import {
   MonexProductDialogComponent,
 } from '../../../../../share/components';
 import * as moment from 'moment';
-import { LoanProductsService } from '../../../../../../../open-api-modules/monexcore-api-docs';
+import {
+  ApiResponse,
+  CdeService,
+  LoanProductsService,
+  LoanStatusService,
+} from '../../../../../../../open-api-modules/monexcore-api-docs';
+import { CustomApiResponse, PDModel } from '../../../pd-system/pd-interface';
 
 @Component({
   selector: 'app-monex-product-list',
@@ -57,37 +63,6 @@ import { LoanProductsService } from '../../../../../../../open-api-modules/monex
   styleUrls: ['./monex-product-list.component.scss'],
 })
 export class MonexProductListComponent implements OnInit {
-  //Mock data
-  monexProductList: any[] = [
-    {
-      code: 'MXP-001',
-      name: 'Sản phẩm 1',
-      description: 'Mô tả 1',
-      status: 'ACTIVE',
-      workflow: 'Luồng trạng thái 1',
-      pdModel: ['PD Model 1', 'PD Model 2'],
-      matrix: ['Limit Control Matrix 1'],
-      contract: 'Hợp đồng 1',
-      mifos: 'Mifos Product ID 1',
-      createdAt: '01/01/2022 13:22',
-      updatedAt: '01/01/2022 13:22',
-      updatedBy: 'user1',
-    },
-    {
-      code: 'MXP-002',
-      name: 'Sản phẩm 2',
-      description: 'Mô tả 2',
-      status: 'LOCKED',
-      workflow: 'Luồng trạng thái 2',
-      pdModel: ['PD Model 2'],
-      matrix: ['Limit Control Matrix 1', 'Limit Control Matrix 2'],
-      contract: 'Hợp đồng 2',
-      mifos: 'Mifos Product ID 2',
-      createdAt: '01/01/2022 13:22',
-      updatedAt: '01/01/2022 13:22',
-      updatedBy: 'user2',
-    },
-  ];
   roleList: Array<GroupEntity>;
   selectButtons: TableSelectActionModel[] = [
     {
@@ -169,14 +144,7 @@ export class MonexProductListComponent implements OnInit {
       showed: true,
     },
     {
-      key: 'status',
-      title: this.multiLanguageService.instant('monex_product.status'),
-      type: DATA_CELL_TYPE.STATUS,
-      format: DATA_STATUS_TYPE.USER_STATUS,
-      showed: true,
-    },
-    {
-      key: 'workflow',
+      key: 'statusGroup.name',
       title: this.multiLanguageService.instant('monex_product.workflow'),
       type: DATA_CELL_TYPE.TEXT,
       format: null,
@@ -187,20 +155,27 @@ export class MonexProductListComponent implements OnInit {
       title: this.multiLanguageService.instant('monex_product.matrix'),
       type: DATA_CELL_TYPE.TEXT,
       format: null,
-      showed: true,
+      showed: false,
     },
     {
       key: 'contract',
       title: this.multiLanguageService.instant('monex_product.contract'),
       type: DATA_CELL_TYPE.TEXT,
       format: null,
-      showed: true,
+      showed: false,
     },
     {
       key: 'mifos',
       title: this.multiLanguageService.instant('monex_product.mifos'),
       type: DATA_CELL_TYPE.TEXT,
       format: null,
+      showed: false,
+    },
+    {
+      key: 'status',
+      title: this.multiLanguageService.instant('monex_product.status'),
+      type: DATA_CELL_TYPE.STATUS,
+      format: DATA_STATUS_TYPE.USER_STATUS,
       showed: true,
     },
   ];
@@ -213,7 +188,8 @@ export class MonexProductListComponent implements OnInit {
   totalItems: number = 0;
   filterForm: FormGroup;
   expandedElementId: string;
-  expandElementFromLoan;
+  workflows;
+  pdModels;
   hasSelect: boolean = true;
   private readonly routeAllState$: Observable<Params>;
 
@@ -233,7 +209,9 @@ export class MonexProductListComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private userListService: UserListService,
     private permissionsService: NgxPermissionsService,
-    private loanProductsService: LoanProductsService
+    private loanProductsService: LoanProductsService,
+    private loanStatusService: LoanStatusService,
+    private cdeService: CdeService
   ) {
     this.routeAllState$ = store.select(fromSelectors.getRouterAllState);
 
@@ -244,6 +222,8 @@ export class MonexProductListComponent implements OnInit {
     this.store.dispatch(new fromActions.SetOperatorInfo(null));
     this._initSubscription();
     this._getMonexProductList();
+    this._getWorkflowList();
+    this._getModelList();
   }
 
   private _getMonexProductList() {
@@ -254,6 +234,38 @@ export class MonexProductListComponent implements OnInit {
           // @ts-ignore
           this.dataSource.data = data?.result;
         })
+    );
+  }
+
+  private _getWorkflowList() {
+    this.subManager.add(
+      this.loanStatusService
+        .loanStatusControllerGetListStatusGroup()
+        .subscribe((data) => {
+          // @ts-ignore
+          this.workflows = data?.result;
+          this.workflows = this.workflows.map((item) => {
+            return {
+              id: item.id,
+              name: item.name,
+            };
+          });
+        })
+    );
+  }
+
+  private _getModelList() {
+    this.subManager.add(
+      this.cdeService.cdeControllerGetPdModel().subscribe((data) => {
+        // @ts-ignore
+        this.pdModels = data?.result;
+        this.pdModels = this.pdModels.map((item) => {
+          return {
+            id: item.id,
+            name: item.content,
+          };
+        });
+      })
     );
   }
 
@@ -302,18 +314,6 @@ export class MonexProductListComponent implements OnInit {
 
   public onExpandElementChange(element: any) {
     this.openUpdateDialog(element);
-  }
-
-  public openUpdateDialog(info) {
-    const dialogRef = this.dialog.open(MonexProductDialogComponent, {
-      panelClass: 'custom-info-dialog-container',
-      maxWidth: '1200px',
-      width: '90%',
-      data: {
-        info: info,
-        dialogTitle: this.multiLanguageService.instant('monex_product.update'),
-      },
-    });
   }
 
   public onSubmitSearchForm(event) {
@@ -458,6 +458,16 @@ export class MonexProductListComponent implements OnInit {
         this._deleteById(id);
       }
     });
+    setTimeout(() => {
+      if (action === 'delete') {
+        this.notifier.success(
+          this.multiLanguageService.instant(
+            'pd_system.pd_questions.delete_toast'
+          )
+        );
+        this.refreshContent();
+      }
+    }, 2000);
   }
 
   private _lockById(id: string) {
@@ -490,6 +500,18 @@ export class MonexProductListComponent implements OnInit {
     if (!id) {
       return;
     }
+    this.subManager.add(
+      this.loanProductsService
+        .loanProductControllerDeleteLoanProduct(parseInt(id), {})
+        .subscribe((result: ApiResponse) => {
+          if (!result || result.responseCode !== RESPONSE_CODE.SUCCESS) {
+            return this.notifier.error(
+              JSON.stringify(result?.message),
+              result?.errorCode
+            );
+          }
+        })
+    );
   }
 
   formatTimeSecond(timeInput) {
@@ -633,55 +655,110 @@ export class MonexProductListComponent implements OnInit {
       .then((r) => {});
   }
 
+  public openUpdateDialog(info) {
+    const dialogRef = this.dialog.open(MonexProductDialogComponent, {
+      panelClass: 'custom-info-dialog-container',
+      maxWidth: '1200px',
+      width: '90%',
+      data: {
+        info: info,
+        workflows: this.workflows,
+        pdModels: this.pdModels,
+        dialogTitle: this.multiLanguageService.instant('monex_product.update'),
+      },
+    });
+    this.subManager.add(
+      dialogRef.afterClosed().subscribe((result: any) => {
+        if (result && result.type === BUTTON_TYPE.PRIMARY) {
+          let updateRequest = this._bindingDialogData(result.data);
+          this.sendApiRequest(updateRequest, 'update', info.id);
+        }
+      })
+    );
+  }
+
   onClickBtnAdd(event) {
     const dialogRef = this.dialog.open(MonexProductDialogComponent, {
       panelClass: 'custom-info-dialog-container',
       maxWidth: '1200px',
       width: '90%',
       data: {
+        workflows: this.workflows,
+        pdModels: this.pdModels,
         dialogTitle: this.multiLanguageService.instant('monex_product.add'),
       },
     });
+    this.subManager.add(
+      dialogRef.afterClosed().subscribe((result: any) => {
+        if (result && result.type === BUTTON_TYPE.PRIMARY) {
+          let createRequest = this._bindingDialogData(result.data);
+          this.sendApiRequest(createRequest, 'create');
+        }
+      })
+    );
   }
 
-  sendAddUserRequest(updateInfoRequest) {
-    this.subManager.add(
-      this.adminAccountControllerService
-        .create3(updateInfoRequest)
-        .subscribe((result: ApiResponseAdminAccountEntity) => {
-          if (!result || result.responseCode !== RESPONSE_CODE.SUCCESS) {
-            return this.notifier.error(
-              JSON.stringify(result?.message),
-              result?.errorCode
-            );
-          }
-          setTimeout(() => {
-            this.notifier.success(
-              this.multiLanguageService.instant('common.create_success')
-            );
-            this.refreshContent();
-            this.notificationService.hideLoading();
-          }, 3000);
-        })
-    );
+  public sendApiRequest(request, type, id?) {
+    if (type === 'create') {
+      this.subManager.add(
+        this.loanProductsService
+          .loanProductControllerCreateLoanProduct(request)
+          .subscribe((result) => {
+            if (!result || result.responseCode !== RESPONSE_CODE.SUCCESS) {
+              return this.notifier.error(
+                JSON.stringify(result?.message),
+                result?.errorCode
+              );
+            }
+            setTimeout(() => {
+              this.notifier.success(
+                this.multiLanguageService.instant(
+                  'pd_system.add_pd_dialog.create_model_success'
+                )
+              );
+              this.refreshContent();
+              this.notificationService.hideLoading();
+            }, 3000);
+          })
+      );
+    } else {
+      this.subManager.add(
+        this.loanProductsService
+          .loanProductControllerUpdateLoanProduct(id, request)
+          .subscribe((result) => {
+            if (!result || result.responseCode !== RESPONSE_CODE.SUCCESS) {
+              return this.notifier.error(
+                JSON.stringify(result?.message),
+                result?.errorCode
+              );
+            }
+            setTimeout(() => {
+              this.notifier.success(
+                this.multiLanguageService.instant('common.update_success')
+              );
+              this.refreshContent();
+              this.notificationService.hideLoading();
+            }, 3000);
+          })
+      );
+    }
   }
 
   public refreshContent() {
     setTimeout(() => {
       this._getMonexProductList();
+      this.triggerDeselectUsers();
     }, 2000);
   }
 
-  private _bindingDialogUserData(data) {
+  private _bindingDialogData(data) {
     return {
-      groupId: data?.accountRole,
-      username: data?.username,
-      secret: data?.accountPassword,
-      fullName: data?.accountName,
-      email: data?.accountEmail,
-      mobile: data?.accountPhone,
-      note: data?.accountNote,
-      position: data?.accountPosition,
+      code: data?.code,
+      name: data?.name,
+      statusGroupId: data?.workflow ? data?.workflow : null,
+      pdModelIds: data?.pdModel ? data?.pdModel : null,
+      mifosProductId: 99997,
+      description: data?.description ? data?.description : null,
     };
   }
 
