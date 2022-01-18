@@ -404,6 +404,50 @@ paths:
                 "$ref": "#/components/schemas/ApiResponse"
       tags:
         - cde
+  "/v1/loan-products/mifos":
+    get:
+      operationId: LoanProductController_getListMifosProduct
+      parameters:
+        - name: createdAt
+          required: false
+          in: query
+          schema:
+            type: string
+        - name: createdBy
+          required: false
+          in: query
+          schema:
+            type: string
+        - name: updatedAt
+          required: false
+          in: query
+          schema:
+            type: string
+        - name: updatedBy
+          required: false
+          in: query
+          schema:
+            type: string
+        - name: code
+          required: false
+          in: query
+          schema:
+            type: string
+        - name: name
+          required: false
+          in: query
+          schema:
+            type: string
+        - name: mifosProductId
+          required: false
+          in: query
+          schema:
+            type: number
+      responses:
+        '200':
+          description: ''
+      tags:
+        - loan-products
   "/v1/loan-products/{id}":
     get:
       operationId: LoanProductController_getLoanProduct

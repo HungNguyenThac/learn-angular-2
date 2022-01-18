@@ -44,7 +44,7 @@ export class ProductWorkflowDialogComponent implements OnInit {
       code: [''],
       name: [''],
       description: [''],
-      status: false,
+      status: '',
       addArr: [''],
       updateArr: [''],
       removeArr: [''],
@@ -61,7 +61,10 @@ export class ProductWorkflowDialogComponent implements OnInit {
       });
     }
     this.originalRightArr = data?.rightArr;
-    let status = data?.info?.status === 'ACTIVE';
+    let status: boolean = true;
+    if (data?.info?.status !== undefined) {
+      status = data?.info?.status === 'ACTIVE';
+    }
 
     this.form.patchValue({
       code: this.info?.code,

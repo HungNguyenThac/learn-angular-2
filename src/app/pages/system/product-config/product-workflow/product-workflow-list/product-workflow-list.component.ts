@@ -151,15 +151,15 @@ export class ProductWorkflowListComponent implements OnInit {
     {
       key: 'createdAt',
       title: this.multiLanguageService.instant('product_workflow.created_at'),
-      type: DATA_CELL_TYPE.TEXT,
-      format: null,
+      type: DATA_CELL_TYPE.DATETIME,
+      format: 'dd/mm/yyyy hh:mm',
       showed: true,
     },
     {
       key: 'updatedAt',
       title: this.multiLanguageService.instant('product_workflow.updated_at'),
-      type: DATA_CELL_TYPE.TEXT,
-      format: null,
+      type: DATA_CELL_TYPE.DATETIME,
+      format: 'dd/mm/yyyy hh:mm',
       showed: true,
     },
     {
@@ -434,7 +434,7 @@ export class ProductWorkflowListComponent implements OnInit {
     setTimeout(() => {
       if (action === 'delete') {
         this.notifier.success(
-          this.multiLanguageService.instant('pd_system.pd_group.delete_toast')
+          this.multiLanguageService.instant('product_workflow.delete_success')
         );
         this.refreshContent();
       }
@@ -450,11 +450,9 @@ export class ProductWorkflowListComponent implements OnInit {
   public deleteMultiplePrompt(ids) {
     const confirmDeleteRef = this.notificationService.openPrompt({
       imgUrl: '../../../../../assets/img/icon/group-5/delete-dialog.svg',
-      title: this.multiLanguageService.instant(
-        'merchant.merchant_detail.delete_merchant.title'
-      ),
+      title: this.multiLanguageService.instant('product_workflow.delete'),
       content: this.multiLanguageService.instant(
-        'merchant.merchant_detail.delete_merchant.content'
+        'product_workflow.delete_content'
       ),
       primaryBtnText: this.multiLanguageService.instant('common.delete'),
       primaryBtnClass: 'btn-error',
@@ -674,7 +672,7 @@ export class ProductWorkflowListComponent implements OnInit {
           setTimeout(() => {
             this.notifier.success(
               this.multiLanguageService.instant(
-                'pd_system.add_pd_dialog.create_group_success'
+                'product_workflow.create_success'
               )
             );
             this.refreshContent();

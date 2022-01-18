@@ -447,9 +447,7 @@ export class ProductStatusListComponent implements OnInit {
     setTimeout(() => {
       if (action === 'delete') {
         this.notifier.success(
-          this.multiLanguageService.instant(
-            'pd_system.pd_questions.delete_toast'
-          )
+          this.multiLanguageService.instant('product_status.delete_success')
         );
         this.refreshContent();
       }
@@ -465,11 +463,9 @@ export class ProductStatusListComponent implements OnInit {
   public deleteMultiplePrompt(ids) {
     const confirmDeleteRef = this.notificationService.openPrompt({
       imgUrl: '../../../../../assets/img/icon/group-5/delete-dialog.svg',
-      title: this.multiLanguageService.instant(
-        'merchant.merchant_detail.delete_merchant.title'
-      ),
+      title: this.multiLanguageService.instant('product_status.delete'),
       content: this.multiLanguageService.instant(
-        'merchant.merchant_detail.delete_merchant.content'
+        'product_status.delete_content'
       ),
       primaryBtnText: this.multiLanguageService.instant('common.delete'),
       primaryBtnClass: 'btn-error',
@@ -666,9 +662,7 @@ export class ProductStatusListComponent implements OnInit {
           }
           setTimeout(() => {
             this.notifier.success(
-              this.multiLanguageService.instant(
-                'pd_system.add_question_dialog.create_success'
-              )
+              this.multiLanguageService.instant('product_status.create_success')
             );
             this.refreshContent();
             this.notificationService.hideLoading();
