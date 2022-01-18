@@ -354,7 +354,7 @@ export class InfoVerificationComponent implements OnInit, AfterViewInit {
 
   private async _checkActionPermissions() {
     const hasUpdateInfoPermission = await this.permissionsService.hasPermission(
-      'infos:updateInfo'
+      'paydays:additionalEmployeeData'
     );
 
     if (!hasUpdateInfoPermission) {
