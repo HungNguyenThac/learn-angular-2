@@ -832,31 +832,37 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
     const currentLoanStatus = this.loanDetail?.status;
     switch (currentLoanStatus) {
       case PAYDAY_LOAN_STATUS.INITIALIZED:
+        this.prevLoanStatus = null;
         this.nextLoanStatus = PAYDAY_LOAN_STATUS.DOCUMENTATION_COMPLETE;
         this.rejectLoanStatus = PAYDAY_LOAN_STATUS.WITHDRAW;
         break;
 
       case PAYDAY_LOAN_STATUS.DOCUMENT_AWAITING:
+        this.prevLoanStatus = null;
         this.nextLoanStatus = PAYDAY_LOAN_STATUS.DOCUMENTATION_COMPLETE;
         this.rejectLoanStatus = PAYDAY_LOAN_STATUS.WITHDRAW;
         break;
 
       case PAYDAY_LOAN_STATUS.DOCUMENTATION_COMPLETE:
+        this.prevLoanStatus = PAYDAY_LOAN_STATUS.DOCUMENT_AWAITING;
         this.nextLoanStatus = PAYDAY_LOAN_STATUS.AUCTION;
         this.rejectLoanStatus = PAYDAY_LOAN_STATUS.REJECTED;
         break;
 
       case PAYDAY_LOAN_STATUS.AUCTION:
+        this.prevLoanStatus = null;
         this.nextLoanStatus = PAYDAY_LOAN_STATUS.FUNDED;
         this.rejectLoanStatus = PAYDAY_LOAN_STATUS.WITHDRAW;
         break;
 
       case PAYDAY_LOAN_STATUS.FUNDED:
+        this.prevLoanStatus = null;
         this.nextLoanStatus = PAYDAY_LOAN_STATUS.UNKNOWN_STATUS;
         this.rejectLoanStatus = PAYDAY_LOAN_STATUS.WITHDRAW;
         break;
 
       case PAYDAY_LOAN_STATUS.CONTRACT_AWAITING:
+        this.prevLoanStatus = null;
         this.nextLoanStatus = PAYDAY_LOAN_STATUS.UNKNOWN_STATUS;
         this.rejectLoanStatus = PAYDAY_LOAN_STATUS.WITHDRAW;
         break;
@@ -874,16 +880,19 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
         break;
 
       case PAYDAY_LOAN_STATUS.DISBURSED:
+        this.prevLoanStatus = null;
         this.nextLoanStatus = PAYDAY_LOAN_STATUS.IN_REPAYMENT;
         this.rejectLoanStatus = PAYDAY_LOAN_STATUS.WITHDRAW;
         break;
 
       case PAYDAY_LOAN_STATUS.IN_REPAYMENT:
+        this.prevLoanStatus = null;
         this.nextLoanStatus = PAYDAY_LOAN_STATUS.COMPLETED;
         this.rejectLoanStatus = PAYDAY_LOAN_STATUS.UNKNOWN_STATUS;
         break;
 
       default:
+        this.prevLoanStatus = null;
         this.nextLoanStatus = PAYDAY_LOAN_STATUS.UNKNOWN_STATUS;
         this.rejectLoanStatus = PAYDAY_LOAN_STATUS.UNKNOWN_STATUS;
         break;
@@ -919,6 +928,7 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
         break;
 
       case PAYDAY_LOAN_STATUS.DOCUMENT_AWAITING:
+        this.prevLoanStatus = null;
         this.nextLoanStatus = this.getValidStatusLoanTng(
           PAYDAY_LOAN_STATUS.DOCUMENTATION_COMPLETE
         );
@@ -928,6 +938,9 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
         break;
 
       case PAYDAY_LOAN_STATUS.DOCUMENTATION_COMPLETE:
+        this.prevLoanStatus = this.getValidStatusLoanTng(
+          PAYDAY_LOAN_STATUS.DOCUMENT_AWAITING
+        );
         this.nextLoanStatus = this.getValidStatusLoanTng(
           PAYDAY_LOAN_STATUS.AUCTION
         );
@@ -937,6 +950,7 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
         break;
 
       case PAYDAY_LOAN_STATUS.AUCTION:
+        this.prevLoanStatus = null;
         this.nextLoanStatus = this.getValidStatusLoanTng(
           PAYDAY_LOAN_STATUS.FUNDED
         );
@@ -946,6 +960,7 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
         break;
 
       case PAYDAY_LOAN_STATUS.FUNDED:
+        this.prevLoanStatus = null;
         this.nextLoanStatus = this.getValidStatusLoanTng(
           PAYDAY_LOAN_STATUS.CONTRACT_ACCEPTED
         );
@@ -955,6 +970,7 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
         break;
 
       case PAYDAY_LOAN_STATUS.CONTRACT_AWAITING:
+        this.prevLoanStatus = null;
         this.nextLoanStatus = PAYDAY_LOAN_STATUS.UNKNOWN_STATUS;
         this.rejectLoanStatus = this.getValidStatusLoanTng(
           PAYDAY_LOAN_STATUS.WITHDRAW
@@ -986,6 +1002,7 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
         break;
 
       case PAYDAY_LOAN_STATUS.DISBURSED:
+        this.prevLoanStatus = null;
         this.nextLoanStatus = this.getValidStatusLoanTng(
           PAYDAY_LOAN_STATUS.IN_REPAYMENT
         );
@@ -995,6 +1012,7 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
         break;
 
       case PAYDAY_LOAN_STATUS.IN_REPAYMENT:
+        this.prevLoanStatus = null;
         this.nextLoanStatus = this.getValidStatusLoanTng(
           PAYDAY_LOAN_STATUS.COMPLETED
         );
@@ -1002,6 +1020,7 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
         break;
 
       default:
+        this.prevLoanStatus = null;
         this.nextLoanStatus = PAYDAY_LOAN_STATUS.UNKNOWN_STATUS;
         this.rejectLoanStatus = PAYDAY_LOAN_STATUS.UNKNOWN_STATUS;
         break;
@@ -1043,6 +1062,7 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
         break;
 
       case PAYDAY_LOAN_STATUS.DOCUMENT_AWAITING:
+        this.prevLoanStatus = null;
         this.nextLoanStatus = this.getValidStatusLoanVac(
           PAYDAY_LOAN_STATUS.DOCUMENTATION_COMPLETE
         );
@@ -1052,6 +1072,9 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
         break;
 
       case PAYDAY_LOAN_STATUS.DOCUMENTATION_COMPLETE:
+        this.prevLoanStatus = this.getValidStatusLoanVac(
+          PAYDAY_LOAN_STATUS.DOCUMENT_AWAITING
+        );
         this.nextLoanStatus = this.getValidStatusLoanVac(
           PAYDAY_LOAN_STATUS.AUCTION
         );
@@ -1061,6 +1084,7 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
         break;
 
       case PAYDAY_LOAN_STATUS.AUCTION:
+        this.prevLoanStatus = null;
         this.nextLoanStatus = this.getValidStatusLoanVac(
           PAYDAY_LOAN_STATUS.FUNDED
         );
@@ -1070,6 +1094,7 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
         break;
 
       case PAYDAY_LOAN_STATUS.FUNDED:
+        this.prevLoanStatus = null;
         this.nextLoanStatus = this.getValidStatusLoanVac(
           PAYDAY_LOAN_STATUS.CONTRACT_ACCEPTED
         );
@@ -1079,6 +1104,7 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
         break;
 
       case PAYDAY_LOAN_STATUS.CONTRACT_AWAITING:
+        this.prevLoanStatus = null;
         this.nextLoanStatus = PAYDAY_LOAN_STATUS.UNKNOWN_STATUS;
         this.rejectLoanStatus = this.getValidStatusLoanVac(
           PAYDAY_LOAN_STATUS.WITHDRAW
@@ -1110,6 +1136,7 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
         break;
 
       case PAYDAY_LOAN_STATUS.DISBURSED:
+        this.prevLoanStatus = null;
         this.nextLoanStatus = this.getValidStatusLoanVac(
           PAYDAY_LOAN_STATUS.IN_REPAYMENT
         );
@@ -1119,6 +1146,7 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
         break;
 
       case PAYDAY_LOAN_STATUS.IN_REPAYMENT:
+        this.prevLoanStatus = null;
         this.nextLoanStatus = this.getValidStatusLoanVac(
           PAYDAY_LOAN_STATUS.COMPLETED
         );
@@ -1126,6 +1154,7 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
         break;
 
       default:
+        this.prevLoanStatus = null;
         this.nextLoanStatus = PAYDAY_LOAN_STATUS.UNKNOWN_STATUS;
         this.rejectLoanStatus = PAYDAY_LOAN_STATUS.UNKNOWN_STATUS;
         break;
