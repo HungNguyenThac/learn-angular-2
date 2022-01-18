@@ -190,6 +190,8 @@ export class MonexProductListComponent implements OnInit {
   expandedElementId: string;
   workflows;
   pdModels;
+  mifos;
+  openElementInfo;
   hasSelect: boolean = true;
   private readonly routeAllState$: Observable<Params>;
 
@@ -224,6 +226,7 @@ export class MonexProductListComponent implements OnInit {
     this._getMonexProductList();
     this._getWorkflowList();
     this._getModelList();
+    this._getMifosList();
   }
 
   private _getMonexProductList() {
@@ -245,6 +248,24 @@ export class MonexProductListComponent implements OnInit {
           // @ts-ignore
           this.workflows = data?.result;
           this.workflows = this.workflows.map((item) => {
+            return {
+              id: item.id,
+              name: item.name,
+            };
+          });
+        })
+    );
+  }
+
+  private _getMifosList() {
+    this.subManager.add(
+      this.loanProductsService
+        .loanProductControllerGetListMifosProduct()
+        .subscribe((data) => {
+          // @ts-ignore
+          this.mifos = data?.result;
+          console.log('this.mifos', this.mifos);
+          this.mifos = this.mifos.map((item) => {
             return {
               id: item.id,
               name: item.name,
@@ -310,10 +331,6 @@ export class MonexProductListComponent implements OnInit {
     this.filterForm.controls.orderBy.setValue(sortState.active);
     this.filterForm.controls.sortDirection.setValue(sortState.direction);
     this._onFilterChange();
-  }
-
-  public onExpandElementChange(element: any) {
-    this.openUpdateDialog(element);
   }
 
   public onSubmitSearchForm(event) {
@@ -479,11 +496,9 @@ export class MonexProductListComponent implements OnInit {
   public deleteMultiplePrompt(ids) {
     const confirmDeleteRef = this.notificationService.openPrompt({
       imgUrl: '../../../../../assets/img/icon/group-5/delete-dialog.svg',
-      title: this.multiLanguageService.instant(
-        'merchant.merchant_detail.delete_merchant.title'
-      ),
+      title: this.multiLanguageService.instant('monex_product.delete'),
       content: this.multiLanguageService.instant(
-        'merchant.merchant_detail.delete_merchant.content'
+        'monex_product.delete_content'
       ),
       primaryBtnText: this.multiLanguageService.instant('common.delete'),
       primaryBtnClass: 'btn-error',
@@ -655,7 +670,40 @@ export class MonexProductListComponent implements OnInit {
       .then((r) => {});
   }
 
+  public onExpandElementChange(element: any) {
+    this.getElementInfoById(element.id);
+  }
+
+  public getElementInfoById(id) {
+    this.subManager.add(
+      this.loanProductsService
+        .loanProductControllerGetLoanProduct(id)
+        .subscribe(
+          (data) => {
+            this.openElementInfo = data.result;
+          },
+          () => {},
+          () => {
+            this.openUpdateDialog(this.openElementInfo);
+          }
+        )
+    );
+  }
+
   public openUpdateDialog(info) {
+    let mifos = [...this.mifos];
+    let mifosProduct = this.openElementInfo.mifosProduct.map((product) => {
+      return {
+        id: product.id,
+        name: product.name,
+      };
+    });
+    mifos.unshift(
+      mifosProduct.filter(
+        (product) => product.id === this.openElementInfo.mifosProductId
+      )[0]
+    );
+
     const dialogRef = this.dialog.open(MonexProductDialogComponent, {
       panelClass: 'custom-info-dialog-container',
       maxWidth: '1200px',
@@ -664,6 +712,7 @@ export class MonexProductListComponent implements OnInit {
         info: info,
         workflows: this.workflows,
         pdModels: this.pdModels,
+        mifos: mifos,
         dialogTitle: this.multiLanguageService.instant('monex_product.update'),
       },
     });
@@ -684,6 +733,7 @@ export class MonexProductListComponent implements OnInit {
       width: '90%',
       data: {
         workflows: this.workflows,
+        mifos: this.mifos,
         pdModels: this.pdModels,
         dialogTitle: this.multiLanguageService.instant('monex_product.add'),
       },
@@ -713,7 +763,7 @@ export class MonexProductListComponent implements OnInit {
             setTimeout(() => {
               this.notifier.success(
                 this.multiLanguageService.instant(
-                  'pd_system.add_pd_dialog.create_model_success'
+                  'monex_product.create_success'
                 )
               );
               this.refreshContent();
@@ -755,9 +805,9 @@ export class MonexProductListComponent implements OnInit {
     return {
       code: data?.code,
       name: data?.name,
-      statusGroupId: data?.workflow ? data?.workflow : null,
       pdModelIds: data?.pdModel ? data?.pdModel : null,
-      mifosProductId: 99997,
+      statusGroupId: data?.workflow,
+      mifosProductId: data?.mifos,
       description: data?.description ? data?.description : null,
     };
   }

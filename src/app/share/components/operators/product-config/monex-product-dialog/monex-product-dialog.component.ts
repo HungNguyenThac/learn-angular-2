@@ -37,16 +37,7 @@ export class MonexProductDialogComponent implements OnInit {
   //   },
   // ];
 
-  mifos = [
-    {
-      id: 1,
-      name: 'Mifos Product ID 1',
-    },
-    {
-      id: 2,
-      name: 'Mifos Product ID 2',
-    },
-  ];
+  mifos = [];
   form: FormGroup;
   dialogTitle: string;
   input1Focus: boolean = false;
@@ -83,20 +74,31 @@ export class MonexProductDialogComponent implements OnInit {
     this.dialogTitle = data?.dialogTitle;
     this.workflows = data?.workflows;
     this.pdModels = data?.pdModels;
+    this.mifos = data?.mifos;
     this.info = data?.info;
     let status = data?.info?.status === 'ACTIVE';
+
     if (data.info) {
       this.form.patchValue({
         code: this.info?.code,
         name: this.info?.name,
         description: this.info?.description,
         status: true,
-        workflow: this.info?.statusGroup.id,
-        pdModel: this.info?.pdModels,
+        workflow: this.info?.statusGroup?.id,
+        pdModel: this.info.pdModels.map((pdModel) => pdModel.id),
+        mifos: this.info?.mifosProductId,
         // matrix: this.info?.matrix,
         // contract: this.info?.contract,
         // mifos: this.info?.mifos,
       });
+    }
+  }
+
+  getModelName(id) {
+    if (id[0]) {
+      return this.pdModels.filter((pdmodel) => pdmodel.id === id[0])[0].name;
+    } else {
+      return '';
     }
   }
 

@@ -171,8 +171,7 @@
                                 "
                               >{{
                                 form.controls.pdModel.value
-                                  ? form.controls.pdModel
-                                    .value[0]
+                                  ? getModelName(form.controls.pdModel.value)
                                   : ""
                                 }}</span
                               >
@@ -249,12 +248,12 @@
                   </mat-form-field>
                 </div>
 
-                <div>
-                  <mat-checkbox formControlName="status"
-                                class="example-margin">{{"monex_product.active" | translate}}</mat-checkbox>
-                </div>
-              </div>
+                <!--                <div>-->
+                <!--                  <mat-checkbox formControlName="status"-->
+                <!--                                class="example-margin">{{"monex_product.active" | translate}}</mat-checkbox>-->
+                <!--                </div>-->
 
+              </div>
             </div>
           </section>
         </div>
