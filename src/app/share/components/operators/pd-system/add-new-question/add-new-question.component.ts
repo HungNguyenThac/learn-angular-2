@@ -98,6 +98,26 @@ export class AddNewQuestionComponent implements OnInit {
   initDialogData(data) {
     this.questionInfo = data?.questionInfo;
     this.dialogTitle = data?.dialogTitle;
+    if (data?.questionInfo) {
+      if (data?.questionInfo.answerType === 'Slider') {
+        for (let i = 0; i < this.questionInfo.answers.length; i++) {
+          this.sliderAnswers[i].value = this.questionInfo.answers[i];
+        }
+        this.sliderType = true;
+      } else if (
+        data?.questionInfo.answerType === 'String' ||
+        data?.questionInfo.answerType === 'DateTime'
+      ) {
+        this.oneAnswer = true;
+      } else {
+        this.manyAnswers = true;
+        this.numAnswers = this.questionInfo.answers.map((answer) => {
+          return {
+            value: answer,
+          };
+        });
+      }
+    }
 
     this.addPdForm.patchValue({
       code: this.questionInfo?.code,
