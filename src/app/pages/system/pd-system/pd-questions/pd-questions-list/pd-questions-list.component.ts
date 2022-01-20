@@ -585,7 +585,10 @@ export class PdQuestionsListComponent implements OnInit {
   public sendUpdateRequest(updateRequest) {
     this.subManager.add(
       this.cdeService
-        .cdeControllerUpdatePdQuestion(this.questionInfo.id, updateRequest)
+        .cdeControllerUpdatePdQuestion(
+          this.questionInfo.objectId,
+          updateRequest
+        )
         .subscribe(
           (result: ApiResponse) => {
             if (!result || result.responseCode !== RESPONSE_CODE.SUCCESS) {
