@@ -813,7 +813,6 @@ export class ProductWorkflowListComponent implements OnInit {
         code: data?.code,
         name: data?.name,
         description: data?.description ? data?.description : null,
-        status: data?.status,
       };
     } else {
       let requestArray = [];
