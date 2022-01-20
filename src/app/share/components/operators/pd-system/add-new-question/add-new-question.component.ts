@@ -14,7 +14,7 @@ export class AddNewQuestionComponent implements OnInit {
       name: 'String',
     },
     {
-      name: 'ListString',
+      name: 'Dropdown',
     },
     {
       name: 'DateTime',
