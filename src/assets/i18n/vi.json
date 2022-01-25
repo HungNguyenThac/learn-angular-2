@@ -491,7 +491,10 @@
       "salary_bank_number": "Số tài khoản ngân hàng nhận lương",
       "salary_average": "Thu nhập trung bình 3 tháng gần nhất",
       "are_you_sure": "Bạn có chắc chắn các thông tin này là chính xác?",
-      "input_please": "Nhập thông tin"
+      "input_please": "Nhập thông tin",
+      "salary_infomation_one": "Tháng lương thứ nhất",
+      "salary_infomation_two": "Tháng lương thứ hai",
+      "salary_infomation_three": "Tháng lương thứ ba"
     }
   },
   "payday_loan": {

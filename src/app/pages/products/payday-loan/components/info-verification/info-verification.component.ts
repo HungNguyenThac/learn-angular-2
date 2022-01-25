@@ -31,6 +31,7 @@ import {
   FormControl,
   FormGroup,
   Validators,
+  ValidationErrors,
 } from '@angular/forms';
 import {
   Bank,
@@ -51,6 +52,8 @@ import {
 } from 'open-api-modules/loanapp-tng-api-docs';
 import { ApiResponseObject } from 'open-api-modules/com-api-docs';
 import * as moment from 'moment';
+import { PhoneNumberValidatorDirective } from 'src/app/share/validators';
+import { E } from '@angular/cdk/keycodes';
 
 @Component({
   selector: 'app-info-verification',
@@ -88,6 +91,87 @@ export class InfoVerificationComponent implements OnInit, AfterViewInit {
   banksFilterCtrl: FormControl = new FormControl();
   filteredBanks: any[];
   infoVerificationForm: FormGroup;
+
+  infoFields = [
+    {
+      title: this.multiLanguageService.instant(
+        'loan_app.info_verification.customer_name'
+      ),
+      value: 'name',
+    },
+    {
+      title: this.multiLanguageService.instant(
+        'loan_app.info_verification.mobile_number'
+      ),
+      value: 'mobile',
+    },
+    {
+      title: this.multiLanguageService.instant(
+        'loan_app.info_verification.identity_number'
+      ),
+      value: 'identityNumber',
+    },
+    {
+      title: this.multiLanguageService.instant(
+        'loan_app.info_verification.start_working_day'
+      ),
+      value: 'startWorkingDay',
+    },
+    {
+      title: this.multiLanguageService.instant(
+        'loan_app.info_verification.contract_type'
+      ),
+      value: 'contractType',
+    },
+    {
+      title: this.multiLanguageService.instant(
+        'loan_app.info_verification.current_job'
+      ),
+      value: 'job',
+    },
+    {
+      title: this.multiLanguageService.instant(
+        'loan_app.info_verification.address'
+      ),
+      value: 'address',
+    },
+    {
+      title: this.multiLanguageService.instant(
+        'loan_app.info_verification.current_month_working_days_number'
+      ),
+      value: 'numberOfWorkDays',
+    },
+    {
+      title: this.multiLanguageService.instant(
+        'loan_app.info_verification.salary_bank'
+      ),
+      value: 'bankCode',
+    },
+    {
+      title: this.multiLanguageService.instant(
+        'loan_app.info_verification.salary_bank_number'
+      ),
+      value: 'accountNumber',
+    },
+    {
+      title: this.multiLanguageService.instant(
+        'loan_app.info_verification.salary_infomation_one'
+      ),
+      value: 'salaryInfomationOne',
+    },
+    {
+      title: this.multiLanguageService.instant(
+        'loan_app.info_verification.salary_infomation_two'
+      ),
+      value: 'salaryInfomationTwo',
+    },
+    {
+      title: this.multiLanguageService.instant(
+        'loan_app.info_verification.salary_infomation_three'
+      ),
+      value: 'salaryInfomationThree',
+    },
+  ];
 
   leftInfos = [
     {
@@ -202,18 +286,35 @@ export class InfoVerificationComponent implements OnInit, AfterViewInit {
   ) {
     this.infoVerificationForm = this.formBuilder.group({
       name: ['', Validators.required],
-      mobile: ['', Validators.required],
-      identityNumber: ['', Validators.required],
+      mobile: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(10),
+          Validators.maxLength(12),
+        ],
+      ],
+      identityNumber: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(9),
+          Validators.maxLength(12),
+        ],
+      ],
       startWorkingDay: ['', Validators.required],
       contractType: ['', Validators.required],
       job: ['', Validators.required],
       address: ['', Validators.required],
-      numberOfWorkDays: ['', Validators.required],
-      bank: ['', Validators.required],
+      numberOfWorkDays: [
+        '',
+        [Validators.required, Validators.min(0), Validators.max(31)],
+      ],
+      bankCode: ['', Validators.required],
       accountNumber: ['', Validators.required],
-      salaryInfomationOne: [Blob, Validators.required],
-      salaryInfomationTwo: [Blob, Validators.required],
-      salaryInfomationThree: [Blob, Validators.required],
+      salaryInfomationOne: ['', Validators.required],
+      salaryInfomationTwo: ['', Validators.required],
+      salaryInfomationThree: ['', Validators.required],
     });
   }
 
@@ -253,7 +354,7 @@ export class InfoVerificationComponent implements OnInit, AfterViewInit {
       this.hiddenDeleteBtn = true;
       this.hiddenUpdateBtn = true;
       this.infoVerificationForm.patchValue(this.loanDetail?.employeeData);
-      this.infoVerificationForm.controls.bank.setValue(
+      this.infoVerificationForm.controls.bankCode.setValue(
         this.loanDetail?.employeeData?.bankCode
       );
       this._getSingleFileDocumentByPath(
@@ -566,6 +667,8 @@ export class InfoVerificationComponent implements OnInit, AfterViewInit {
 
   onSubmit() {
     if (this.infoVerificationForm.invalid) {
+      const formData = this.infoVerificationForm.getRawValue();
+      this.getFormValidationErrors();
       return;
     }
     let promptDialogRef = this.notificationService.openPrompt({
@@ -633,6 +736,23 @@ export class InfoVerificationComponent implements OnInit, AfterViewInit {
     );
   }
 
+  getFormValidationErrors() {
+    Object.keys(this.infoVerificationForm.controls).forEach((key) => {
+      const controlErrors: ValidationErrors =
+        this.infoVerificationForm.get(key).errors;
+      console.log('key', key, controlErrors);
+      const errorField = this.infoFields.find((ele) => ele.value === key);
+      if (controlErrors != null) {
+        Object.keys(controlErrors).forEach((keyError) => {
+          if (keyError === 'required') {
+            this.notifier.error(errorField.title + ' không được để trống');
+          } else
+            this.notifier.error(errorField.title + ' không đúng định dạng');
+        });
+      }
+    });
+  }
+
   onClear() {
     this.infoVerificationForm.reset();
     this.salary1Src = '';
@@ -661,9 +781,10 @@ export class InfoVerificationComponent implements OnInit, AfterViewInit {
       address: this.infoVerificationForm.controls.address.value,
       numberOfWorkDays:
         this.infoVerificationForm.controls.numberOfWorkDays.value,
-      bankCode: this.infoVerificationForm.controls.bank.value,
+      bankCode: this.infoVerificationForm.controls.bankCode.value,
       bankName: this.bankOptions.find(
-        (ele) => ele.bankCode === this.infoVerificationForm.controls.bank.value
+        (ele) =>
+          ele.bankCode === this.infoVerificationForm.controls.bankCode.value
       ).bankName,
       accountNumber: this.infoVerificationForm.controls.accountNumber.value,
       salaryDocument1: this.salaryPathArray[0],

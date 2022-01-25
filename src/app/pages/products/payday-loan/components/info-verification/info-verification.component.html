@@ -79,7 +79,7 @@
                     else bankChoosen
                   "
                 >
-                  <mat-select formControlName="bank">
+                  <mat-select formControlName="bankCode">
                     <mat-option>
                       <ngx-mat-select-search
                         [formControl]="banksFilterCtrl"
@@ -189,7 +189,6 @@
           <button
             mat-flat-button
             color="accent"
-            [disabled]="infoVerificationForm.invalid"
             type="submit"
           >
             <svg
