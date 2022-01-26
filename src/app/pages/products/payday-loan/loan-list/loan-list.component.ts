@@ -771,7 +771,8 @@ export class LoanListComponent implements OnInit, OnDestroy {
     this._resetFilterOptions();
     this._initFilterForm();
     this.filterForm.controls['groupName'].setValue(this.groupName);
-    this._getCompanyList();
+    const params = this._buildParams();
+    this._initCompanyOptions(this.groupName);
 
     let newDataStatusType = DATA_STATUS_TYPE.PL_TNG_STATUS;
     switch (this.groupName) {
@@ -846,31 +847,29 @@ export class LoanListComponent implements OnInit, OnDestroy {
 
   private _getCompanyList() {
     const params = this._buildParams();
-    const requestBody = {};
-    requestBody['groupName'] = params.groupName;
     this.companyControllerService
-      .getCompanies(10, 0, requestBody)
+      .getCompanies(10, 0, {})
       .subscribe((data: ApiResponseSearchAndPaginationResponseCompanyInfo) => {
         this.companyList = data?.result?.data;
-        this._initCompanyOptions();
+        this._initCompanyOptions(params.groupName);
       });
   }
 
-  private _initCompanyOptions() {
+  private _initCompanyOptions(groupName) {
     this.filterOptions.forEach((filterOption: FilterOptionModel) => {
       if (filterOption.controlName !== 'companyId') {
         return;
       }
-      filterOption.options[0].subOptions = this.companyList?.map(
-        (company: CompanyInfo) => {
+      filterOption.options[0].subOptions = this.companyList
+        ?.filter((company: CompanyInfo) => company.groupName === groupName)
+        .map((company: CompanyInfo) => {
           return {
             title: company.name + ' (' + company.code + ')',
             value: company.id,
             imgSrc: company.avatar,
             code: company.code,
           };
-        }
-      );
+        });
     });
   }
 
