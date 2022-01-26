@@ -111,6 +111,15 @@ export class LoanListService {
         requestBody[
         'customerInfo.mobileNumber' + QUERY_CONDITION_TYPE.NOT_START_WITH
           ] = environment.PREFIX_MOBILE_NUMBER_TEST;
+        requestBody[
+        'customerInfo.identityNumberOne' + QUERY_CONDITION_TYPE.NOT_EQUAL
+          ] = environment.IDENTITY_NUMBER_ONE_TEST;
+        requestBody[
+        'customerInfo.organizationName' + QUERY_CONDITION_TYPE.NOT_IN
+          ] = environment.ORGANIZATION_NAME_TEST;
+        requestBody[
+        'status' + QUERY_CONDITION_TYPE.NOT_EQUAL
+          ] = environment.PAYDAY_LOAN_STATUS_TEST;
         break;
     }
     console.log('requestBody--------------------------------', requestBody);

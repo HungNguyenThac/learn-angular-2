@@ -7,7 +7,7 @@ import { CustomerControllerService } from 'open-api-modules/dashboard-api-docs';
 import * as _ from 'lodash';
 import { QUERY_CONDITION_TYPE } from '../../../core/common/enum/operator';
 import { GlobalConstants } from '../../../core/common/global-constants';
-import {environment} from "../../../../environments/environment";
+import { environment } from '../../../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -71,13 +71,18 @@ export class CustomerListService {
       default:
         requestBody['mobileNumber' + QUERY_CONDITION_TYPE.NOT_START_WITH] =
           environment.PREFIX_MOBILE_NUMBER_TEST;
+        requestBody['identityNumberOne' + QUERY_CONDITION_TYPE.NOT_EQUAL] =
+          environment.IDENTITY_NUMBER_ONE_TEST;
+        requestBody['organizationName' + QUERY_CONDITION_TYPE.NOT_IN] =
+          environment.ORGANIZATION_NAME_TEST;
         break;
     }
 
     switch (params.customerStatus) {
       case CUSTOMER_STATUS.NOT_VERIFIED:
         requestBody['isVerified' + QUERY_CONDITION_TYPE.NOT_EQUAL] = true;
-        requestBody['kalapaData.createdAt' + QUERY_CONDITION_TYPE.NOT_EXIST] = true;
+        requestBody['kalapaData.createdAt' + QUERY_CONDITION_TYPE.NOT_EXIST] =
+          true;
         break;
       case CUSTOMER_STATUS.ALREADY_EKYC:
         requestBody['isVerified' + QUERY_CONDITION_TYPE.NOT_EQUAL] = true;
