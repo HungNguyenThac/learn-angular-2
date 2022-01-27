@@ -387,7 +387,7 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
           'payday_loan.service_fee.discount_fee'
         ),
         subTitle: null,
-        value: this.getDiscountValue(this.loanDetail?.voucher),
+        value: this.loanDetail?.voucherTransaction?.discountValue,
         type: DATA_CELL_TYPE.CURRENCY,
         format: null,
       },
@@ -432,7 +432,7 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
           'payday_loan.service_fee.discount_fee'
         ),
         subTitle: null,
-        value: this.getDiscountValue(this.loanDetail?.voucher),
+        value: this.loanDetail?.voucherTransaction?.discountValue,
         type: DATA_CELL_TYPE.CURRENCY,
         format: null,
       },
@@ -446,7 +446,7 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
         value:
           environment.TAX_FEE_TNG *
           (this.calculateServiceFee(this.loanDetail) -
-            this.getDiscountValue(this.loanDetail?.voucher)),
+            this.loanDetail?.voucherTransaction?.discountValue),
         type: DATA_CELL_TYPE.CURRENCY,
         format: null,
       },
@@ -511,7 +511,7 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
           'payday_loan.service_fee.discount_fee'
         ),
         subTitle: null,
-        value: this.getDiscountValue(this.loanDetail?.voucher),
+        value: this.loanDetail?.voucherTransaction?.discountValue,
         type: DATA_CELL_TYPE.CURRENCY,
         format: null,
       },
@@ -525,7 +525,7 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
         value:
           environment.TAX_FEE_TNG *
           (this.calculateServiceFee(this.loanDetail) -
-            this.getDiscountValue(this.loanDetail?.voucher)),
+            this.loanDetail?.voucherTransaction?.discountValue),
         type: DATA_CELL_TYPE.CURRENCY,
         format: null,
       },
@@ -811,7 +811,7 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
 
   getChangeLoanStatus() {
     if (!this.loanDetail?.status) return;
-    switch (this.groupName) {
+    switch (this.loanDetail.companyInfo.groupName) {
       case COMPANY_NAME.HMG:
         this.getChangeLoanHmgStatus();
         break;
@@ -1044,7 +1044,7 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
         )
       : null;
 
-    return;
+      return;
   }
 
   getChangeLoanVacStatus() {
@@ -1289,19 +1289,6 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
         : serviceFee;
     }
     return serviceFee;
-  }
-
-  getDiscountValue(voucher: Voucher) {
-    if (!voucher) {
-      return 0;
-    }
-    let discountAmount =
-      voucher.percentage * 0.025 * this.loanDetail?.expectedAmount;
-    // check max discount accepted
-    if (discountAmount > voucher.maxValue) {
-      discountAmount = voucher.maxValue;
-    }
-    return discountAmount;
   }
 
   private async _checkUserPermissions() {

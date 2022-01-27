@@ -6,6 +6,7 @@ import { RESPONSE_CODE } from './../../../../../core/common/enum/operator';
 import { UpdatedDocumentModel } from './../../../../../public/models/external/updated-document.model';
 import { CustomerDetailService } from 'src/app/pages/customer/components/customer-detail-element/customer-detail.service';
 import {
+  APPLICATION_TYPE,
   DOCUMENT_TYPE,
   DOCUMENT_TYPE_MAPPING_FIELD,
   ERROR_CODE_KEY,
@@ -867,7 +868,11 @@ export class InfoVerificationComponent implements OnInit, AfterViewInit {
       salaryDocument3: this.salaryPathArray[2],
     };
     this.paydayLoanControllerService
-      .additionalEmployeeData(this.loanId, employeeDataRequest)
+      .additionalEmployeeData(
+        this.loanId,
+        APPLICATION_TYPE.PDL_VAC,
+        employeeDataRequest
+      )
       .subscribe((result) => {
         if (!result || result.responseCode !== 200) {
           console.log(result.errorCode, result.message);
