@@ -1,10 +1,11 @@
 <div class="container-fluid">
   <form
     [formGroup]="infoVerificationForm"
+    #ngForm="ngForm"
     autocomplete="off"
     (submit)="onSubmit()"
   >
-    <input autocomplete="false" hidden/>
+    <input autocomplete="false" hidden />
     <!--  Info  -->
     <div class="row p-3">
       <section class="col-12">
@@ -16,21 +17,39 @@
                 <p class="pl-list-item-label">
                   {{ leftInfo.title }}
                 </p>
-                <input
-                  *ngIf="
-                    loanDetail?.status === 'DOCUMENT_AWAITING';
-                    else leftView
-                  "
-                  #inputEle
-                  matInput
-                  [formControlName]="leftInfo.value"
-                  class="pl-list-item-content"
-                  [type]="leftInfo.type"
-                  [minlength]="leftInfo?.minLength"
-                  [maxlength]="leftInfo?.maxLength"
-                  [min]="leftInfo?.min"
-                  [max]="leftInfo?.max"
-                />
+                <div class="w-100">
+                  <input
+                    *ngIf="
+                      loanDetail?.status === 'DOCUMENT_AWAITING';
+                      else leftView
+                    "
+                    #inputEle
+                    matInput
+                    [formControlName]="leftInfo.value"
+                    class="pl-list-item-content"
+                    [type]="leftInfo.type"
+                    [minlength]="leftInfo?.minLength"
+                    [maxlength]="leftInfo?.maxLength"
+                    [min]="leftInfo?.min"
+                    [max]="leftInfo?.max"
+                  />
+                  <mat-error
+                    class="pl-list-item-error"
+                    *ngIf="
+                      infoVerificationForm.controls[leftInfo.value].errors &&
+                        (infoVerificationForm.controls[leftInfo.value]
+                          .touched ||
+                      ngForm.submitted)
+                    "
+                    >{{ leftInfo.title
+                    }}{{
+                      infoVerificationForm.controls[leftInfo.value].errors
+                        ?.required
+                        ? " không được để trống"
+                        : " không đúng định dạng"
+                    }}</mat-error
+                  >
+                </div>
                 <ng-template #leftView>
                   <p class="pl-list-item-content">
                     {{ infoVerificationForm.controls[leftInfo.value].value }}
@@ -47,20 +66,38 @@
                 <p class="pl-list-item-label">
                   {{ rightInfo.title }}
                 </p>
-                <input
-                  *ngIf="
-                    loanDetail?.status === 'DOCUMENT_AWAITING';
-                    else rightView
-                  "
-                  matInput
-                  [formControlName]="rightInfo.value"
-                  class="pl-list-item-content"
-                  [type]="rightInfo.type"
-                  [minlength]="rightInfo?.minLength"
-                  [maxlength]="rightInfo?.maxLength"
-                  [min]="rightInfo?.min"
-                  [max]="rightInfo?.max"
-                />
+                <div class="w-100">
+                  <input
+                    *ngIf="
+                      loanDetail?.status === 'DOCUMENT_AWAITING';
+                      else rightView
+                    "
+                    matInput
+                    [formControlName]="rightInfo.value"
+                    class="pl-list-item-content"
+                    [type]="rightInfo.type"
+                    [minlength]="rightInfo?.minLength"
+                    [maxlength]="rightInfo?.maxLength"
+                    [min]="rightInfo?.min"
+                    [max]="rightInfo?.max"
+                  />
+                  <mat-error
+                    class="pl-list-item-error"
+                    *ngIf="
+                      infoVerificationForm.controls[rightInfo.value].errors &&
+                        (infoVerificationForm.controls[rightInfo.value]
+                          .touched ||
+                      ngForm.submitted)
+                    "
+                    >{{ rightInfo.title
+                    }}{{
+                      infoVerificationForm.controls[rightInfo.value].errors
+                        ?.required
+                        ? " không được để trống"
+                        : " không đúng định dạng"
+                    }}</mat-error
+                  >
+                </div>
                 <ng-template #rightView>
                   <p class="pl-list-item-content">
                     {{ infoVerificationForm.controls[rightInfo.value].value }}
@@ -71,37 +108,51 @@
                 <p class="pl-list-item-label">
                   {{ "loan_app.info_verification.salary_bank" | translate }}
                 </p>
-                <mat-form-field
-                  appearance="none"
-                  class="pl-choose-bank"
-                  *ngIf="
-                    loanDetail?.status === 'DOCUMENT_AWAITING';
-                    else bankChoosen
-                  "
-                >
-                  <mat-select formControlName="bankCode">
-                    <mat-option>
-                      <ngx-mat-select-search
-                        [formControl]="banksFilterCtrl"
-                        placeholderLabel="Tìm Ngân Hàng"
-                        noEntriesFoundLabel="Ngân Hàng không tồn tại"
-                      ></ngx-mat-select-search>
-                    </mat-option>
-                    <mat-option
-                      *ngFor="let bankOption of filteredBanks"
-                      [value]="bankOption.bankCode"
+                <div class="w-100">
+                  <mat-form-field
+                    appearance="none"
+                    class="pl-choose-bank"
+                    *ngIf="
+                      loanDetail?.status === 'DOCUMENT_AWAITING';
+                      else bankChoosen
+                    "
+                  >
+                    <mat-select formControlName="bankCode">
+                      <mat-option>
+                        <ngx-mat-select-search
+                          [formControl]="banksFilterCtrl"
+                          placeholderLabel="Tìm Ngân Hàng"
+                          noEntriesFoundLabel="Ngân Hàng không tồn tại"
+                        ></ngx-mat-select-search>
+                      </mat-option>
+                      <mat-option
+                        *ngFor="let bankOption of filteredBanks"
+                        [value]="bankOption.bankCode"
+                        >{{
+                          bankOption.bankName + " - " + bankOption.bankCode
+                        }}</mat-option
+                      >
+                    </mat-select>
+                  </mat-form-field>
+                  <mat-error
+                    class="pl-list-item-error"
+                    *ngIf="
+                      infoVerificationForm.controls['bankCode'].errors &&
+                        (infoVerificationForm.controls['bankCode'].touched ||
+                      ngForm.submitted)
+                    "
                     >{{
-                      bankOption.bankName + " - " + bankOption.bankCode
-                      }}</mat-option
-                    >
-                  </mat-select>
-                </mat-form-field>
+                      "loan_app.info_verification.salary_bank" | translate
+                    }}
+                    không được để trống</mat-error
+                  >
+                </div>
                 <ng-template #bankChoosen>
                   <p class="pl-list-item-content">
                     {{
-                    loanDetail.employeeData.bankName +
-                    " - " +
-                    loanDetail.employeeData.bankCode
+                      loanDetail.employeeData.bankName +
+                        " - " +
+                        loanDetail.employeeData.bankCode
                     }}
                   </p>
                 </ng-template>
@@ -110,6 +161,18 @@
                 <p class="pl-list-item-label">
                   {{ "loan_app.info_verification.salary_average" | translate }}
                 </p>
+                <div class="w-100">
+                  <mat-error
+                    class="pl-list-item-error"
+                    *ngIf="
+                      ngForm.submitted && (infoVerificationForm.controls['salaryInfomationOne'].errors || infoVerificationForm.controls['salaryInfomationTwo'].errors || infoVerificationForm.controls['salaryInfomationThree'].errors)
+                    "
+                    >{{
+                      "loan_app.info_verification.salary_average" | translate
+                    }}
+                    không được để trống</mat-error
+                  >
+                </div>
                 <div class="pl-list-item-upload row">
                   <article class="d-flex flex-wrap align-items-center">
                     <!-- Salary 1 -->
@@ -186,11 +249,7 @@
       >
         <div class="col-12 d-flex gap-2 justify-content-end">
           <!-- Save Button -->
-          <button
-            mat-flat-button
-            color="accent"
-            type="submit"
-          >
+          <button mat-flat-button color="accent" type="submit">
             <svg
               width="16"
               height="16"
@@ -205,12 +264,17 @@
             </svg>
 
             <span class="ms-1">
-            {{ "common.save" | translate }}
-          </span>
+              {{ "common.save" | translate }}
+            </span>
           </button>
 
           <!-- Cancel Button -->
-          <button type="button" mat-flat-button color="warn" (click)="onClear()">
+          <button
+            type="button"
+            mat-flat-button
+            color="warn"
+            (click)="onClear()"
+          >
             {{ "common.cancel" | translate }}
           </button>
         </div>

@@ -32,6 +32,7 @@ import {
   FormGroup,
   Validators,
   ValidationErrors,
+  NgForm,
 } from '@angular/forms';
 import {
   Bank,
@@ -53,7 +54,6 @@ import {
 import { ApiResponseObject } from 'open-api-modules/com-api-docs';
 import * as moment from 'moment';
 import { PhoneNumberValidatorDirective } from 'src/app/share/validators';
-import { E } from '@angular/cdk/keycodes';
 
 @Component({
   selector: 'app-info-verification',
@@ -269,6 +269,7 @@ export class InfoVerificationComponent implements OnInit, AfterViewInit {
   subManager = new Subscription();
   _onDestroy = new Subject<void>();
 
+  @ViewChild('ngForm') ngForm: NgForm;
   @ViewChild('inputEle') inputEleRef: ElementRef<HTMLInputElement>;
 
   constructor(
@@ -285,36 +286,109 @@ export class InfoVerificationComponent implements OnInit, AfterViewInit {
     private fileControllerService: FileControllerService
   ) {
     this.infoVerificationForm = this.formBuilder.group({
-      name: ['', Validators.required],
+      name: [
+        '',
+        {
+          validators: Validators.required,
+          updateOn: 'change',
+        },
+      ],
       mobile: [
         '',
-        [
-          Validators.required,
-          Validators.minLength(10),
-          Validators.maxLength(12),
-        ],
+        {
+          validators: [
+            Validators.required,
+            Validators.minLength(10),
+            Validators.maxLength(12),
+          ],
+          updateOn: 'change',
+        },
       ],
       identityNumber: [
         '',
-        [
-          Validators.required,
-          Validators.minLength(9),
-          Validators.maxLength(12),
-        ],
+        {
+          validators: [
+            Validators.required,
+            Validators.minLength(9),
+            Validators.maxLength(12),
+          ],
+          updateOn: 'change',
+        },
       ],
-      startWorkingDay: ['', Validators.required],
-      contractType: ['', Validators.required],
-      job: ['', Validators.required],
-      address: ['', Validators.required],
+      startWorkingDay: [
+        '',
+        {
+          validators: Validators.required,
+          updateOn: 'change',
+        },
+      ],
+      contractType: [
+        '',
+        {
+          validators: Validators.required,
+          updateOn: 'change',
+        },
+      ],
+      job: [
+        '',
+        {
+          validators: Validators.required,
+          updateOn: 'change',
+        },
+      ],
+      address: [
+        '',
+        {
+          validators: Validators.required,
+          updateOn: 'change',
+        },
+      ],
       numberOfWorkDays: [
         '',
-        [Validators.required, Validators.min(0), Validators.max(31)],
+        {
+          validators: [
+            Validators.required,
+            Validators.min(0),
+            Validators.max(31),
+          ],
+          updateOn: 'change',
+        },
       ],
-      bankCode: ['', Validators.required],
-      accountNumber: ['', Validators.required],
-      salaryInfomationOne: ['', Validators.required],
-      salaryInfomationTwo: ['', Validators.required],
-      salaryInfomationThree: ['', Validators.required],
+      bankCode: [
+        '',
+        {
+          validators: Validators.required,
+          updateOn: 'change',
+        },
+      ],
+      accountNumber: [
+        '',
+        {
+          validators: Validators.required,
+          updateOn: 'change',
+        },
+      ],
+      salaryInfomationOne: [
+        '',
+        {
+          validators: Validators.required,
+          updateOn: 'change',
+        },
+      ],
+      salaryInfomationTwo: [
+        '',
+        {
+          validators: Validators.required,
+          updateOn: 'change',
+        },
+      ],
+      salaryInfomationThree: [
+        '',
+        {
+          validators: Validators.required,
+          updateOn: 'change',
+        },
+      ],
     });
   }
 
@@ -667,8 +741,8 @@ export class InfoVerificationComponent implements OnInit, AfterViewInit {
 
   onSubmit() {
     if (this.infoVerificationForm.invalid) {
-      const formData = this.infoVerificationForm.getRawValue();
-      this.getFormValidationErrors();
+      // const formData = this.infoVerificationForm.getRawValue();
+      // this.getFormValidationErrors();
       return;
     }
     let promptDialogRef = this.notificationService.openPrompt({
@@ -755,6 +829,7 @@ export class InfoVerificationComponent implements OnInit, AfterViewInit {
 
   onClear() {
     this.infoVerificationForm.reset();
+    this.ngForm.resetForm();
     this.salary1Src = '';
     this.salary2Src = '';
     this.salary3Src = '';
