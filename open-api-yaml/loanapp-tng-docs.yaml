@@ -159,22 +159,6 @@ paths:
       tags:
       - promotion-controller
       operationId: getVoucherByScopeEvent
-      parameters:
-      - name: customerId
-        in: query
-        required: true
-        schema:
-          type: string
-      - name: eventScope
-        in: query
-        required: true
-        schema:
-          type: string
-      - name: voucherType
-        in: query
-        required: true
-        schema:
-          type: string
       responses:
         "403":
           description: Forbidden
@@ -187,7 +171,7 @@ paths:
           content:
             '*/*':
               schema:
-                $ref: '#/components/schemas/ApiResponseListVoucherDTO'
+                $ref: '#/components/schemas/ApiResponseListVoucher'
     post:
       tags:
       - promotion-controller
@@ -264,30 +248,6 @@ paths:
       tags:
       - promotion-controller
       operationId: validatePromotionVoucher
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/CheckValidVoucherRequest'
-        required: true
-      responses:
-        "403":
-          description: Forbidden
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/ApiResponseString'
-        "200":
-          description: OK
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/ApiResponseVoucherTransaction'
-  /v1/promotions/vouchers/transactions:
-    post:
-      tags:
-      - promotion-controller
-      operationId: createTransaction
       requestBody:
         content:
           application/json:
@@ -413,6 +373,11 @@ paths:
         required: true
         schema:
           type: string
+      - name: applicationType
+        in: query
+        required: true
+        schema:
+          type: string
       requestBody:
         content:
           application/json:
@@ -469,6 +434,30 @@ paths:
       tags:
       - payday-loan-controller
       operationId: withdraw
+      parameters:
+      - name: applicationType
+        in: query
+        required: true
+        schema:
+          type: string
+      responses:
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseString'
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseString'
+  /v1/paydays/cronjob/voucherVuiTet:
+    post:
+      tags:
+      - payday-loan-controller
+      operationId: voucherVuiTet
       parameters:
       - name: applicationType
         in: query
@@ -589,35 +578,6 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ApiResponsePaydayLoan'
-  /v1/promotions/vouchers/detail:
-    get:
-      tags:
-      - promotion-controller
-      operationId: voucherDetail
-      parameters:
-      - name: voucherCode
-        in: query
-        required: true
-        schema:
-          type: string
-      - name: customerId
-        in: query
-        required: true
-        schema:
-          type: string
-      responses:
-        "403":
-          description: Forbidden
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/ApiResponseString'
-        "200":
-          description: OK
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/ApiResponseVoucherDTO'
   /v1/paydays/{loanId}/contracts:
     get:
       tags:
@@ -769,6 +729,9 @@ components:
         remainAmount:
           type: integer
           format: int32
+        limitTransaction:
+          type: integer
+          format: int32
     ApiResponseVoucher:
       type: object
       properties:
@@ -819,6 +782,9 @@ components:
           format: int32
         createdAt:
           type: string
+        limitTransaction:
+          type: integer
+          format: int32
     UpdatePromotionEventRequest:
       type: object
       properties:
@@ -976,13 +942,10 @@ components:
     UpdateLoanAmountRequest:
       required:
       - applicationType
-      - coreToken
       - customerId
       - expectedAmount
       type: object
       properties:
-        coreToken:
-          type: string
         customerId:
           type: string
         expectedAmount:
@@ -997,6 +960,8 @@ components:
         voucherTransactionId:
           type: string
     CreateVoucherRequest:
+      required:
+      - limitTransaction
       type: object
       properties:
         adminId:
@@ -1029,21 +994,18 @@ components:
         limitPerDay:
           type: integer
           format: int32
+        limitTransaction:
+          type: integer
+          format: int32
     CheckValidVoucherRequest:
       required:
       - customerId
-      - voucherCode
+      - voucherId
       type: object
       properties:
         customerId:
           type: string
-        voucherCode:
-          type: string
-        isEvent:
-          type: boolean
-        mobileNumber:
-          type: string
-        mobileProvider:
+        voucherId:
           type: string
     ApiResponseVoucherTransaction:
       type: object
@@ -1074,10 +1036,6 @@ components:
           type: integer
           format: int32
         status:
-          type: string
-        mobileNumber:
-          type: string
-        mobileProvider:
           type: string
         createdAt:
           type: string
@@ -1196,65 +1154,13 @@ components:
         responseCode:
           type: integer
           format: int32
-    ApiResponseListVoucherDTO:
+    ApiResponseListVoucher:
       type: object
       properties:
         result:
           type: array
           items:
-            $ref: '#/components/schemas/VoucherDTO'
-        errorCode:
-          type: string
-        message:
-          type: object
-        responseCode:
-          type: integer
-          format: int32
-    VoucherDTO:
-      type: object
-      properties:
-        id:
-          type: string
-        code:
-          type: string
-        maxValue:
-          type: integer
-          format: int32
-        percentage:
-          type: number
-          format: double
-        maxAmount:
-          type: integer
-          format: int32
-        remainAmount:
-          type: integer
-          format: int32
-        activedTime:
-          type: array
-          items:
-            type: string
-        description:
-          type: string
-        type:
-          type: string
-        scope:
-          type: string
-        expiredAt:
-          type: string
-        limitPerDay:
-          type: integer
-          format: int32
-        createdAt:
-          type: string
-        voucherTransactionList:
-          type: array
-          items:
-            $ref: '#/components/schemas/VoucherTransaction'
-    ApiResponseVoucherDTO:
-      type: object
-      properties:
-        result:
-          $ref: '#/components/schemas/VoucherDTO'
+            $ref: '#/components/schemas/Voucher'
         errorCode:
           type: string
         message:

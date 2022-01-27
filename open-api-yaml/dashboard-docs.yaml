@@ -2839,6 +2839,15 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/CompleteApplication'
+    FinancialData:
+      type: object
+      properties:
+        bankName:
+          type: string
+        bankCode:
+          type: string
+        accountNumber:
+          type: string
     FraudCheck:
       type: object
       properties:
@@ -2983,6 +2992,126 @@ components:
           type: string
         settlementDate:
           type: string
+        transactionHistory:
+          $ref: '#/components/schemas/TransactionHistory'
+    PersonalData:
+      type: object
+      properties:
+        firstName:
+          type: string
+        gender:
+          type: string
+        dateOfBirth:
+          type: string
+        identityNumberSix:
+          type: string
+        emailAddress:
+          type: string
+        mobileNumber:
+          type: string
+        addressTwoLine1:
+          type: string
+        addressOneLine1:
+          type: string
+        apartmentNumber:
+          type: string
+        city:
+          type: string
+        district:
+          type: string
+        commune:
+          type: string
+        borrowerDetailTextVariable1:
+          type: string
+        maritalStatus:
+          type: string
+        educationType:
+          type: string
+        coreUserId:
+          type: string
+        note:
+          type: string
+        signLetterDoneAt:
+          type: string
+        idDocumentType:
+          type: string
+        identityNumberOne:
+          type: string
+        idIssuePlace:
+          type: string
+        idIssueDate:
+          type: string
+        idFeatures:
+          type: string
+        idExpiredDate:
+          type: string
+        idOrigin:
+          type: string
+        companyId:
+          type: string
+        officeCode:
+          type: string
+        organizationName:
+          type: string
+        officeName:
+          type: string
+        annualIncome:
+          type: number
+          format: float
+        workingDay:
+          type: number
+          format: float
+        borrowerEmploymentHistoryTextVariable1:
+          type: string
+        employeeType:
+          type: string
+          enum:
+          - OFFICE
+          - FACTORY
+        stepOne:
+          type: string
+        stepTwoIndividual:
+          type: string
+        stepThreeEmployment:
+          type: string
+        paydayLoanStatus:
+          type: string
+        errorGetTngInfo:
+          type: boolean
+        isSignedApprovalLetter:
+          type: boolean
+        isVerified:
+          type: boolean
+        userStatus:
+          type: string
+          enum:
+          - ACTIVE
+          - LOCKED
+        unLockTime:
+          type: string
+          format: date-time
+        isDelete:
+          type: boolean
+        collateralDocument:
+          type: string
+        salaryDocument1:
+          type: string
+        salaryDocument2:
+          type: string
+        salaryDocument3:
+          type: string
+        approvalLetterId:
+          type: string
+        frontId:
+          type: string
+        backId:
+          type: string
+        selfie:
+          type: string
+        frontIdTwo:
+          type: string
+        backIdTwo:
+          type: string
     SearchAndPaginationResponsePaydayLoanHmg:
       type: object
       properties:
@@ -3000,6 +3129,25 @@ components:
         matchingScore:
           type: integer
           format: int32
+    TransactionHistory:
+      type: object
+      properties:
+        customerId:
+          type: string
+        loanId:
+          type: string
+        applicationType:
+          type: string
+        personalData:
+          $ref: '#/components/schemas/PersonalData'
+        financialData:
+          $ref: '#/components/schemas/FinancialData'
+        kalapaData:
+          $ref: '#/components/schemas/KalapaResponse'
+        tngData:
+          $ref: '#/components/schemas/TNGInformationResponse'
+        createdAt:
+          type: string
     Voucher:
       type: object
       properties:
@@ -3014,7 +3162,7 @@ components:
           format: int32
         percentage:
           type: number
-          format: float
+          format: double
         maxAmount:
           type: integer
           format: int32
@@ -3027,6 +3175,15 @@ components:
             type: string
         description:
           type: string
+        type:
+          type: string
+        scope:
+          type: string
+        expiredAt:
+          type: string
+        limitPerDay:
+          type: integer
+          format: int32
         createdAt:
           type: string
     VoucherTransaction:
@@ -3038,11 +3195,19 @@ components:
           type: string
         customerId:
           type: string
-        loanId:
+        applicationId:
+          type: string
+        applicationType:
           type: string
         discountValue:
           type: integer
           format: int32
+        status:
+          type: string
+        mobileNumber:
+          type: string
+        mobileProvider:
+          type: string
         createdAt:
           type: string
     ApiResponseString:
@@ -3678,6 +3843,8 @@ components:
           type: string
         employeeData:
           $ref: '#/components/schemas/EmployeeData'
+        transactionHistory:
+          $ref: '#/components/schemas/TransactionHistory'
     SearchAndPaginationResponsePaydayLoanTng:
       type: object
       properties:
@@ -3958,7 +4125,7 @@ components:
           type: string
         purpose:
           type: string
-        createdBy:
+        scope:
           type: string
         createdAt:
           type: string

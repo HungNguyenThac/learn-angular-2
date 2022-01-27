@@ -47,20 +47,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiResponseGpayVAResponse'
-  /v1/test-va-webhook:
-    post:
-      tags:
-      - check-connect-controller
-      operationId: testVaWebhook
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/GpayChangeBalanceEvent'
-        required: true
-      responses:
-        "200":
-          description: OK
   /v1/repayments/gpay/webhook:
     post:
       tags:
@@ -133,6 +119,24 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ApiResponseGpayDeleteTokenResponse'
+  /v1/repayments/gpay/bnpl:
+    post:
+      tags:
+      - repayment-controller
+      operationId: gpayRepaymentBnplOrder
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RepaymentRequest'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseGpayNapasOrderRepaymentResponse'
   /v1/gpayVirtualAccounts/paymentOrders:
     post:
       tags:
@@ -150,7 +154,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ApiResponseString'
+                $ref: '#/components/schemas/ApiResponseRepaymentTransaction'
   /v1/gpayVirtualAccounts/gpayWebhook:
     post:
       tags:
@@ -192,6 +196,19 @@ paths:
       tags:
       - disburse-controller
       operationId: disburse
+      parameters:
+      - name: applicationType
+        in: query
+        required: true
+        schema:
+          type: string
+          enum:
+          - PaydayLoan-TNG PDL_TNG
+          - PaydayLoan-HMG PDL_HMG
+          - PDL_VAC_OFFICE PDL_VAC_OFFICE
+          - PDL_VAC_FACTORY PDL_VAC_FACTORY
+          - INSURANCE INSURANCE
+          - BNPL BNPL
       requestBody:
         content:
           application/json:
@@ -327,41 +344,6 @@ components:
           format: int32
         signature:
           type: string
-    GpayChangeBalanceEvent:
-      type: object
-      properties:
-        source:
-          type: string
-        version:
-          type: integer
-          format: int32
-        id:
-          type: string
-        request:
-          $ref: '#/components/schemas/GpayChangeBalanceWebhook'
-        provider:
-          type: string
-        api_source:
-          type: string
-        actions:
-          type: string
-    GpayChangeBalanceWebhook:
-      type: object
-      properties:
-        gpay_trans_id:
-          type: string
-        bank_trace_id:
-          type: string
-        bank_transaction_id:
-          type: string
-        account_number:
-          type: string
-        amount:
-          type: string
-        message:
-          type: string
-        action:
-          type: string
     GpayRepaymentWebhook:
       type: object
       properties:
@@ -467,6 +449,62 @@ components:
           type: string
         applicationType:
           type: string
+    ApiResponseRepaymentTransaction:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/RepaymentTransaction'
+        errorCode:
+          type: string
+        message:
+          type: object
+        responseCode:
+          type: integer
+          format: int32
+    RepaymentTransaction:
+      type: object
+      properties:
+        id:
+          type: string
+        applicationId:
+          type: string
+        customerId:
+          type: string
+        applicationType:
+          type: string
+        providerTransactionId:
+          type: string
+        amount:
+          type: integer
+          format: int32
+        paymentFee:
+          type: integer
+          format: int32
+        status:
+          type: string
+        provider:
+          type: string
+        createdAt:
+          type: string
+        updatedAt:
+          type: string
+    GpayChangeBalanceWebhook:
+      type: object
+      properties:
+        gpay_trans_id:
+          type: string
+        bank_trace_id:
+          type: string
+        bank_transaction_id:
+          type: string
+        account_number:
+          type: string
+        amount:
+          type: string
+        message:
+          type: string
+        action:
+          type: string
     CreateVARequest:
       required:
       - accountName
@@ -557,33 +595,6 @@ components:
         responseCode:
           type: integer
           format: int32
-    RepaymentTransaction:
-      type: object
-      properties:
-        id:
-          type: string
-        applicationId:
-          type: string
-        customerId:
-          type: string
-        applicationType:
-          type: string
-        providerTransactionId:
-          type: string
-        amount:
-          type: integer
-          format: int32
-        paymentFee:
-          type: integer
-          format: int32
-        status:
-          type: string
-        provider:
-          type: string
-        createdAt:
-          type: string
-        updatedAt:
-          type: string
   securitySchemes:
     Bearer:
       type: apiKey
