@@ -1,3 +1,7 @@
+import { TransactionHistory } from './../../../../../../../open-api-modules/dashboard-api-docs/model/transactionHistory';
+import { PAYDAY_LOAN_STATUS } from './../../../../../core/common/enum/payday-loan';
+import { PaydayLoanHmg } from './../../../../../../../open-api-modules/dashboard-api-docs/model/paydayLoanHmg';
+import { PaydayLoanTng } from './../../../../../../../open-api-modules/dashboard-api-docs/model/paydayLoanTng';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { CustomerInfo } from '../../../../../../../open-api-modules/dashboard-api-docs';
 import { Subscription } from 'rxjs';
@@ -30,8 +34,8 @@ export class CustomerDocumentInfoComponent implements OnInit {
   }
 
   set customerInfo(value: CustomerInfo) {
-    this._getDocumentByPath(this.customerId, value);
     this._customerInfo = value;
+    this._getDocument();
   }
 
   _customerId: string;
@@ -42,6 +46,18 @@ export class CustomerDocumentInfoComponent implements OnInit {
 
   set customerId(value: string) {
     this._customerId = value;
+  }
+
+  _loanDetail: PaydayLoanTng | PaydayLoanHmg;
+
+  @Input()
+  get loanDetail(): PaydayLoanTng | PaydayLoanHmg {
+    return this._loanDetail;
+  }
+
+  set loanDetail(value: PaydayLoanTng | PaydayLoanHmg) {
+    this._loanDetail = value;
+    this._getDocument();
   }
 
   @Output() refreshContent = new EventEmitter<any>();
@@ -59,6 +75,7 @@ export class CustomerDocumentInfoComponent implements OnInit {
   documentTypes = DOCUMENT_TYPE;
   hiddenUploadBtn: boolean = false;
   hiddenDeleteBtn: boolean = false;
+  hiddenUpdateBtn: boolean = false;
 
   constructor(
     private customerDetailService: CustomerDetailService,
@@ -80,6 +97,25 @@ export class CustomerDocumentInfoComponent implements OnInit {
         }
       })
     );
+  }
+
+  private _getDocument() {
+    if (
+      this.loanDetail.status ===
+      (PAYDAY_LOAN_STATUS.REJECTED ||
+        PAYDAY_LOAN_STATUS.COMPLETED ||
+        PAYDAY_LOAN_STATUS.WITHDRAW)
+    ) {
+      this.hiddenUploadBtn = true;
+      this.hiddenDeleteBtn = true;
+      this.hiddenUpdateBtn = true;
+      return this._getDocumentTransitionHistoryByPath(
+        this.customerId,
+        this.loanDetail?.transactionHistory
+      );
+    }
+
+    return this._getDocumentByPath(this.customerId, this.customerInfo);
   }
 
   private _getDocumentByPath(customerId: string, customerInfo: CustomerInfo) {
@@ -155,6 +191,89 @@ export class CustomerDocumentInfoComponent implements OnInit {
       this._getSingleFileDocumentByPath(
         customerId,
         customerInfo?.collateralDocument,
+        DOCUMENT_TYPE.VEHICLE_REGISTRATION
+      );
+    }
+  }
+
+  private _getDocumentTransitionHistoryByPath(
+    customerId: string,
+    transactionHistory: TransactionHistory
+  ) {
+    if (!customerId || !transactionHistory) {
+      return;
+    }
+
+    const transactionHistoryPersonalData = transactionHistory.personalData;
+
+    if (transactionHistoryPersonalData?.frontId) {
+      this._getSingleFileDocumentByPath(
+        customerId,
+        transactionHistoryPersonalData?.frontId,
+        DOCUMENT_TYPE.FRONT_ID_CARD
+      );
+    }
+
+    if (transactionHistoryPersonalData?.backId) {
+      this._getSingleFileDocumentByPath(
+        customerId,
+        transactionHistoryPersonalData?.backId,
+        DOCUMENT_TYPE.BACK_ID_CARD
+      );
+    }
+
+    if (transactionHistoryPersonalData?.frontIdTwo) {
+      this._getSingleFileDocumentByPath(
+        customerId,
+        transactionHistoryPersonalData?.frontIdTwo,
+        DOCUMENT_TYPE.FRONT_ID_CARD_TWO
+      );
+    }
+
+    if (transactionHistoryPersonalData?.backId) {
+      this._getSingleFileDocumentByPath(
+        customerId,
+        transactionHistoryPersonalData?.backIdTwo,
+        DOCUMENT_TYPE.BACK_ID_CARD_TWO
+      );
+    }
+
+    if (transactionHistoryPersonalData?.selfie) {
+      this._getSingleFileDocumentByPath(
+        customerId,
+        transactionHistoryPersonalData?.selfie,
+        DOCUMENT_TYPE.SELFIE
+      );
+    }
+
+    if (transactionHistoryPersonalData?.salaryDocument1) {
+      this._getSingleFileDocumentByPath(
+        customerId,
+        transactionHistoryPersonalData?.salaryDocument1,
+        DOCUMENT_TYPE.SALARY_INFORMATION_ONE
+      );
+    }
+
+    if (transactionHistoryPersonalData?.salaryDocument2) {
+      this._getSingleFileDocumentByPath(
+        customerId,
+        transactionHistoryPersonalData?.salaryDocument2,
+        DOCUMENT_TYPE.SALARY_INFORMATION_TWO
+      );
+    }
+
+    if (transactionHistoryPersonalData?.salaryDocument3) {
+      this._getSingleFileDocumentByPath(
+        customerId,
+        transactionHistoryPersonalData?.salaryDocument3,
+        DOCUMENT_TYPE.SALARY_INFORMATION_THREE
+      );
+    }
+
+    if (transactionHistoryPersonalData?.collateralDocument) {
+      this._getSingleFileDocumentByPath(
+        customerId,
+        transactionHistoryPersonalData?.collateralDocument,
         DOCUMENT_TYPE.VEHICLE_REGISTRATION
       );
     }
