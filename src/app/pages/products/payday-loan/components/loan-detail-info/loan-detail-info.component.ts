@@ -913,58 +913,58 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
     return;
   }
 
-  getChangeLoanTngStatus() {
+  async getChangeLoanTngStatus() {
     if (!this.loanDetail?.status) return;
     const currentLoanStatus = this.loanDetail?.status;
     switch (currentLoanStatus) {
       case PAYDAY_LOAN_STATUS.INITIALIZED:
         this.prevLoanStatus = null;
-        this.nextLoanStatus = this.getValidStatusLoanTng(
+        this.nextLoanStatus = await this.getValidStatusLoanTng(
           PAYDAY_LOAN_STATUS.DOCUMENT_AWAITING
         );
-        this.rejectLoanStatus = this.getValidStatusLoanTng(
+        this.rejectLoanStatus = await this.getValidStatusLoanTng(
           PAYDAY_LOAN_STATUS.WITHDRAW
         );
         break;
 
       case PAYDAY_LOAN_STATUS.DOCUMENT_AWAITING:
         this.prevLoanStatus = null;
-        this.nextLoanStatus = this.getValidStatusLoanTng(
+        this.nextLoanStatus = await this.getValidStatusLoanTng(
           PAYDAY_LOAN_STATUS.DOCUMENTATION_COMPLETE
         );
-        this.rejectLoanStatus = this.getValidStatusLoanTng(
+        this.rejectLoanStatus = await this.getValidStatusLoanTng(
           PAYDAY_LOAN_STATUS.WITHDRAW
         );
         break;
 
       case PAYDAY_LOAN_STATUS.DOCUMENTATION_COMPLETE:
-        this.prevLoanStatus = this.getValidStatusLoanTng(
+        this.prevLoanStatus = await this.getValidStatusLoanTng(
           PAYDAY_LOAN_STATUS.DOCUMENT_AWAITING
         );
-        this.nextLoanStatus = this.getValidStatusLoanTng(
+        this.nextLoanStatus = await this.getValidStatusLoanTng(
           PAYDAY_LOAN_STATUS.AUCTION
         );
-        this.rejectLoanStatus = this.getValidStatusLoanTng(
+        this.rejectLoanStatus = await this.getValidStatusLoanTng(
           PAYDAY_LOAN_STATUS.REJECTED
         );
         break;
 
       case PAYDAY_LOAN_STATUS.AUCTION:
         this.prevLoanStatus = null;
-        this.nextLoanStatus = this.getValidStatusLoanTng(
+        this.nextLoanStatus = await this.getValidStatusLoanTng(
           PAYDAY_LOAN_STATUS.FUNDED
         );
-        this.rejectLoanStatus = this.getValidStatusLoanTng(
+        this.rejectLoanStatus = await this.getValidStatusLoanTng(
           PAYDAY_LOAN_STATUS.WITHDRAW
         );
         break;
 
       case PAYDAY_LOAN_STATUS.FUNDED:
         this.prevLoanStatus = null;
-        this.nextLoanStatus = this.getValidStatusLoanTng(
+        this.nextLoanStatus = await this.getValidStatusLoanTng(
           PAYDAY_LOAN_STATUS.CONTRACT_ACCEPTED
         );
-        this.rejectLoanStatus = this.getValidStatusLoanTng(
+        this.rejectLoanStatus = await this.getValidStatusLoanTng(
           PAYDAY_LOAN_STATUS.WITHDRAW
         );
         break;
@@ -972,182 +972,48 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
       case PAYDAY_LOAN_STATUS.CONTRACT_AWAITING:
         this.prevLoanStatus = null;
         this.nextLoanStatus = PAYDAY_LOAN_STATUS.UNKNOWN_STATUS;
-        this.rejectLoanStatus = this.getValidStatusLoanTng(
+        this.rejectLoanStatus = await this.getValidStatusLoanTng(
           PAYDAY_LOAN_STATUS.WITHDRAW
         );
         break;
 
       case PAYDAY_LOAN_STATUS.CONTRACT_ACCEPTED:
-        this.prevLoanStatus = this.getValidStatusLoanTng(
+        this.prevLoanStatus = await this.getValidStatusLoanTng(
           PAYDAY_LOAN_STATUS.FUNDED
         );
-        this.nextLoanStatus = this.getValidStatusLoanTng(
+        this.nextLoanStatus = await this.getValidStatusLoanTng(
           PAYDAY_LOAN_STATUS.AWAITING_DISBURSEMENT
         );
-        this.rejectLoanStatus = this.getValidStatusLoanTng(
+        this.rejectLoanStatus = await this.getValidStatusLoanTng(
           PAYDAY_LOAN_STATUS.WITHDRAW
         );
         break;
 
       case PAYDAY_LOAN_STATUS.AWAITING_DISBURSEMENT:
-        this.prevLoanStatus = this.getValidStatusLoanTng(
+        this.prevLoanStatus = await this.getValidStatusLoanTng(
           PAYDAY_LOAN_STATUS.CONTRACT_ACCEPTED
         );
-        this.nextLoanStatus = this.getValidStatusLoanTng(
+        this.nextLoanStatus = await this.getValidStatusLoanTng(
           PAYDAY_LOAN_STATUS.DISBURSED
         );
-        this.rejectLoanStatus = this.getValidStatusLoanTng(
+        this.rejectLoanStatus = await this.getValidStatusLoanTng(
           PAYDAY_LOAN_STATUS.WITHDRAW
         );
         break;
 
       case PAYDAY_LOAN_STATUS.DISBURSED:
         this.prevLoanStatus = null;
-        this.nextLoanStatus = this.getValidStatusLoanTng(
+        this.nextLoanStatus = await this.getValidStatusLoanTng(
           PAYDAY_LOAN_STATUS.IN_REPAYMENT
         );
-        this.rejectLoanStatus = this.getValidStatusLoanTng(
+        this.rejectLoanStatus = await this.getValidStatusLoanTng(
           PAYDAY_LOAN_STATUS.WITHDRAW
         );
         break;
 
       case PAYDAY_LOAN_STATUS.IN_REPAYMENT:
         this.prevLoanStatus = null;
-        this.nextLoanStatus = this.getValidStatusLoanTng(
-          PAYDAY_LOAN_STATUS.COMPLETED
-        );
-        this.rejectLoanStatus = PAYDAY_LOAN_STATUS.UNKNOWN_STATUS;
-        break;
-
-      default:
-        this.prevLoanStatus = null;
-        this.nextLoanStatus = PAYDAY_LOAN_STATUS.UNKNOWN_STATUS;
-        this.rejectLoanStatus = PAYDAY_LOAN_STATUS.UNKNOWN_STATUS;
-        break;
-    }
-
-    this.nextLoanStatusDisplay = this.nextLoanStatus
-      ? this.multiLanguageService.instant(
-          `payday_loan.status.${this.nextLoanStatus.toLowerCase()}`
-        )
-      : null;
-
-    this.rejectLoanStatusDisplay = this.rejectLoanStatus
-      ? this.multiLanguageService.instant(
-          `payday_loan.status.${this.rejectLoanStatus.toLowerCase()}_action`
-        )
-      : null;
-
-    this.prevLoanStatusDisplay = this.prevLoanStatus
-      ? this.multiLanguageService.instant(
-          `payday_loan.status.${this.prevLoanStatus.toLowerCase()}`
-        )
-      : null;
-
-      return;
-  }
-
-  getChangeLoanVacStatus() {
-    if (!this.loanDetail?.status) return;
-    const currentLoanStatus = this.loanDetail?.status;
-    switch (currentLoanStatus) {
-      case PAYDAY_LOAN_STATUS.INITIALIZED:
-        this.prevLoanStatus = null;
-        this.nextLoanStatus = this.getValidStatusLoanVac(
-          PAYDAY_LOAN_STATUS.DOCUMENT_AWAITING
-        );
-        this.rejectLoanStatus = this.getValidStatusLoanVac(
-          PAYDAY_LOAN_STATUS.WITHDRAW
-        );
-        break;
-
-      case PAYDAY_LOAN_STATUS.DOCUMENT_AWAITING:
-        this.prevLoanStatus = null;
-        this.nextLoanStatus = this.getValidStatusLoanVac(
-          PAYDAY_LOAN_STATUS.DOCUMENTATION_COMPLETE
-        );
-        this.rejectLoanStatus = this.getValidStatusLoanVac(
-          PAYDAY_LOAN_STATUS.WITHDRAW
-        );
-        break;
-
-      case PAYDAY_LOAN_STATUS.DOCUMENTATION_COMPLETE:
-        this.prevLoanStatus = this.getValidStatusLoanVac(
-          PAYDAY_LOAN_STATUS.DOCUMENT_AWAITING
-        );
-        this.nextLoanStatus = this.getValidStatusLoanVac(
-          PAYDAY_LOAN_STATUS.AUCTION
-        );
-        this.rejectLoanStatus = this.getValidStatusLoanVac(
-          PAYDAY_LOAN_STATUS.REJECTED
-        );
-        break;
-
-      case PAYDAY_LOAN_STATUS.AUCTION:
-        this.prevLoanStatus = null;
-        this.nextLoanStatus = this.getValidStatusLoanVac(
-          PAYDAY_LOAN_STATUS.FUNDED
-        );
-        this.rejectLoanStatus = this.getValidStatusLoanVac(
-          PAYDAY_LOAN_STATUS.WITHDRAW
-        );
-        break;
-
-      case PAYDAY_LOAN_STATUS.FUNDED:
-        this.prevLoanStatus = null;
-        this.nextLoanStatus = this.getValidStatusLoanVac(
-          PAYDAY_LOAN_STATUS.CONTRACT_ACCEPTED
-        );
-        this.rejectLoanStatus = this.getValidStatusLoanVac(
-          PAYDAY_LOAN_STATUS.WITHDRAW
-        );
-        break;
-
-      case PAYDAY_LOAN_STATUS.CONTRACT_AWAITING:
-        this.prevLoanStatus = null;
-        this.nextLoanStatus = PAYDAY_LOAN_STATUS.UNKNOWN_STATUS;
-        this.rejectLoanStatus = this.getValidStatusLoanVac(
-          PAYDAY_LOAN_STATUS.WITHDRAW
-        );
-        break;
-
-      case PAYDAY_LOAN_STATUS.CONTRACT_ACCEPTED:
-        this.prevLoanStatus = this.getValidStatusLoanVac(
-          PAYDAY_LOAN_STATUS.FUNDED
-        );
-        this.nextLoanStatus = this.getValidStatusLoanVac(
-          PAYDAY_LOAN_STATUS.AWAITING_DISBURSEMENT
-        );
-        this.rejectLoanStatus = this.getValidStatusLoanVac(
-          PAYDAY_LOAN_STATUS.WITHDRAW
-        );
-        break;
-
-      case PAYDAY_LOAN_STATUS.AWAITING_DISBURSEMENT:
-        this.prevLoanStatus = this.getValidStatusLoanVac(
-          PAYDAY_LOAN_STATUS.CONTRACT_ACCEPTED
-        );
-        this.nextLoanStatus = this.getValidStatusLoanVac(
-          PAYDAY_LOAN_STATUS.DISBURSED
-        );
-        this.rejectLoanStatus = this.getValidStatusLoanVac(
-          PAYDAY_LOAN_STATUS.WITHDRAW
-        );
-        break;
-
-      case PAYDAY_LOAN_STATUS.DISBURSED:
-        this.prevLoanStatus = null;
-        this.nextLoanStatus = this.getValidStatusLoanVac(
-          PAYDAY_LOAN_STATUS.IN_REPAYMENT
-        );
-        this.rejectLoanStatus = this.getValidStatusLoanVac(
-          PAYDAY_LOAN_STATUS.WITHDRAW
-        );
-        break;
-
-      case PAYDAY_LOAN_STATUS.IN_REPAYMENT:
-        this.prevLoanStatus = null;
-        this.nextLoanStatus = this.getValidStatusLoanVac(
+        this.nextLoanStatus = await this.getValidStatusLoanTng(
           PAYDAY_LOAN_STATUS.COMPLETED
         );
         this.rejectLoanStatus = PAYDAY_LOAN_STATUS.UNKNOWN_STATUS;
@@ -1181,14 +1047,148 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
     return;
   }
 
-  getValidStatusLoanVac(status) {
-    return this._getPermissionChangeStatusLoanVac(status)
+  async getChangeLoanVacStatus() {
+    if (!this.loanDetail?.status) return;
+    const currentLoanStatus = this.loanDetail?.status;
+    switch (currentLoanStatus) {
+      case PAYDAY_LOAN_STATUS.INITIALIZED:
+        this.prevLoanStatus = null;
+        this.nextLoanStatus = await this.getValidStatusLoanVac(
+          PAYDAY_LOAN_STATUS.DOCUMENT_AWAITING
+        );
+        this.rejectLoanStatus = await this.getValidStatusLoanVac(
+          PAYDAY_LOAN_STATUS.WITHDRAW
+        );
+        break;
+
+      case PAYDAY_LOAN_STATUS.DOCUMENT_AWAITING:
+        this.prevLoanStatus = null;
+        this.nextLoanStatus = await this.getValidStatusLoanVac(
+          PAYDAY_LOAN_STATUS.DOCUMENTATION_COMPLETE
+        );
+        this.rejectLoanStatus = await this.getValidStatusLoanVac(
+          PAYDAY_LOAN_STATUS.WITHDRAW
+        );
+        break;
+
+      case PAYDAY_LOAN_STATUS.DOCUMENTATION_COMPLETE:
+        this.prevLoanStatus = await this.getValidStatusLoanVac(
+          PAYDAY_LOAN_STATUS.DOCUMENT_AWAITING
+        );
+        this.nextLoanStatus = await this.getValidStatusLoanVac(
+          PAYDAY_LOAN_STATUS.AUCTION
+        );
+        this.rejectLoanStatus = await this.getValidStatusLoanVac(
+          PAYDAY_LOAN_STATUS.REJECTED
+        );
+        break;
+
+      case PAYDAY_LOAN_STATUS.AUCTION:
+        this.prevLoanStatus = null;
+        this.nextLoanStatus = await this.getValidStatusLoanVac(
+          PAYDAY_LOAN_STATUS.FUNDED
+        );
+        this.rejectLoanStatus = await this.getValidStatusLoanVac(
+          PAYDAY_LOAN_STATUS.WITHDRAW
+        );
+        break;
+
+      case PAYDAY_LOAN_STATUS.FUNDED:
+        this.prevLoanStatus = null;
+        this.nextLoanStatus = await this.getValidStatusLoanVac(
+          PAYDAY_LOAN_STATUS.CONTRACT_ACCEPTED
+        );
+        this.rejectLoanStatus = await this.getValidStatusLoanVac(
+          PAYDAY_LOAN_STATUS.WITHDRAW
+        );
+        break;
+
+      case PAYDAY_LOAN_STATUS.CONTRACT_AWAITING:
+        this.prevLoanStatus = null;
+        this.nextLoanStatus = PAYDAY_LOAN_STATUS.UNKNOWN_STATUS;
+        this.rejectLoanStatus = await this.getValidStatusLoanVac(
+          PAYDAY_LOAN_STATUS.WITHDRAW
+        );
+        break;
+
+      case PAYDAY_LOAN_STATUS.CONTRACT_ACCEPTED:
+        this.prevLoanStatus = await this.getValidStatusLoanVac(
+          PAYDAY_LOAN_STATUS.FUNDED
+        );
+        this.nextLoanStatus = await this.getValidStatusLoanVac(
+          PAYDAY_LOAN_STATUS.AWAITING_DISBURSEMENT
+        );
+        this.rejectLoanStatus = await this.getValidStatusLoanVac(
+          PAYDAY_LOAN_STATUS.WITHDRAW
+        );
+        break;
+
+      case PAYDAY_LOAN_STATUS.AWAITING_DISBURSEMENT:
+        this.prevLoanStatus = await this.getValidStatusLoanVac(
+          PAYDAY_LOAN_STATUS.CONTRACT_ACCEPTED
+        );
+        this.nextLoanStatus = await this.getValidStatusLoanVac(
+          PAYDAY_LOAN_STATUS.DISBURSED
+        );
+        this.rejectLoanStatus = await this.getValidStatusLoanVac(
+          PAYDAY_LOAN_STATUS.WITHDRAW
+        );
+        break;
+
+      case PAYDAY_LOAN_STATUS.DISBURSED:
+        this.prevLoanStatus = null;
+        this.nextLoanStatus = await this.getValidStatusLoanVac(
+          PAYDAY_LOAN_STATUS.IN_REPAYMENT
+        );
+        this.rejectLoanStatus = await this.getValidStatusLoanVac(
+          PAYDAY_LOAN_STATUS.WITHDRAW
+        );
+        break;
+
+      case PAYDAY_LOAN_STATUS.IN_REPAYMENT:
+        this.prevLoanStatus = null;
+        this.nextLoanStatus = await this.getValidStatusLoanVac(
+          PAYDAY_LOAN_STATUS.COMPLETED
+        );
+        this.rejectLoanStatus = PAYDAY_LOAN_STATUS.UNKNOWN_STATUS;
+        break;
+
+      default:
+        this.prevLoanStatus = null;
+        this.nextLoanStatus = PAYDAY_LOAN_STATUS.UNKNOWN_STATUS;
+        this.rejectLoanStatus = PAYDAY_LOAN_STATUS.UNKNOWN_STATUS;
+        break;
+    }
+
+    this.nextLoanStatusDisplay = this.nextLoanStatus
+      ? this.multiLanguageService.instant(
+          `payday_loan.status.${this.nextLoanStatus.toLowerCase()}`
+        )
+      : null;
+
+    this.rejectLoanStatusDisplay = this.rejectLoanStatus
+      ? this.multiLanguageService.instant(
+          `payday_loan.status.${this.rejectLoanStatus.toLowerCase()}_action`
+        )
+      : null;
+
+    this.prevLoanStatusDisplay = this.prevLoanStatus
+      ? this.multiLanguageService.instant(
+          `payday_loan.status.${this.prevLoanStatus.toLowerCase()}`
+        )
+      : null;
+
+    return;
+  }
+
+  async getValidStatusLoanVac(status) {
+    return (await this._getPermissionChangeStatusLoanVac(status))
       ? status
       : PAYDAY_LOAN_STATUS.UNKNOWN_STATUS;
   }
 
-  getValidStatusLoanTng(status) {
-    return this._getPermissionChangeStatusLoanTng(status)
+  async getValidStatusLoanTng(status) {
+    return (await this._getPermissionChangeStatusLoanTng(status))
       ? status
       : PAYDAY_LOAN_STATUS.UNKNOWN_STATUS;
   }
@@ -1304,7 +1304,8 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
     }
   }
 
-  private _getPermissionChangeStatusLoanTng(loanStatus) {
+  private async _getPermissionChangeStatusLoanTng(loanStatus) {
+    await this._checkPermissionTng();
     switch (loanStatus) {
       case PAYDAY_LOAN_STATUS.INITIALIZED:
         return this.userHasPermissions.loanTngChangeStatus.initialized;
@@ -1339,7 +1340,8 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
     }
   }
 
-  private _getPermissionChangeStatusLoanVac(loanStatus) {
+  private async _getPermissionChangeStatusLoanVac(loanStatus) {
+    await this._checkPermissionVac();
     switch (loanStatus) {
       case PAYDAY_LOAN_STATUS.INITIALIZED:
         return this.userHasPermissions.loanVacChangeStatus.initialized;
