@@ -811,7 +811,7 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
 
   getChangeLoanStatus() {
     if (!this.loanDetail?.status) return;
-    switch (this.loanDetail.companyInfo.groupName) {
+    switch (this.groupName) {
       case COMPANY_NAME.HMG:
         this.getChangeLoanHmgStatus();
         break;
