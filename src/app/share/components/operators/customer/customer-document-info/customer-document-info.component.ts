@@ -101,9 +101,9 @@ export class CustomerDocumentInfoComponent implements OnInit {
 
   private _getDocument() {
     if (
-      this.loanDetail.status === PAYDAY_LOAN_STATUS.REJECTED ||
-      this.loanDetail.status === PAYDAY_LOAN_STATUS.COMPLETED ||
-      this.loanDetail.status === PAYDAY_LOAN_STATUS.WITHDRAW
+      this.loanDetail?.status === PAYDAY_LOAN_STATUS.REJECTED ||
+      this.loanDetail?.status === PAYDAY_LOAN_STATUS.COMPLETED ||
+      this.loanDetail?.status === PAYDAY_LOAN_STATUS.WITHDRAW
     ) {
       this.hiddenUploadBtn = true;
       this.hiddenDeleteBtn = true;
