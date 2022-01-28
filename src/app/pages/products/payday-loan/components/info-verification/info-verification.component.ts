@@ -870,7 +870,7 @@ export class InfoVerificationComponent implements OnInit, AfterViewInit {
     this.paydayLoanControllerService
       .additionalEmployeeData(
         this.loanId,
-        APPLICATION_TYPE.PDL_VAC,
+        this.loanDetail.applicationType,
         employeeDataRequest
       )
       .subscribe((result) => {
