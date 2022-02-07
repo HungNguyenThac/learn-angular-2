@@ -142,6 +142,13 @@ export class LoanContractComponent implements OnInit, OnDestroy {
       return (this.enableSign = true);
     }
 
+    if (
+      this.loanDetail?.status === PAYDAY_LOAN_STATUS.FUNDED &&
+      this.loanContractData?.status === SIGN_STATUS.AWAITING_EPAY_SIGNATURE
+    ) {
+      return (this.enableSign = true);
+    }
+
     return (this.enableSign = false);
   }
 
