@@ -192,7 +192,17 @@ export class LoanListService {
             })
           );
       default:
-        return Observable.of(null);
+        return this.paydayLoanTngControllerService
+          .getLoanContractByLoanId(loanId)
+          .pipe(
+            map((results: ApiResponseContract) => {
+              return results;
+            }),
+
+            catchError((err) => {
+              throw err;
+            })
+          );
     }
   }
 
