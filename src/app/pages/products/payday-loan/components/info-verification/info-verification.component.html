@@ -127,9 +127,9 @@
                       </mat-option>
                       <mat-option
                         *ngFor="let bankOption of filteredBanks"
-                        [value]="bankOption.bankCode"
+                        [value]="bankOption?.bankCode"
                         >{{
-                          bankOption.bankName + " - " + bankOption.bankCode
+                          bankOption?.bankName + " - " + bankOption?.bankCode
                         }}</mat-option
                       >
                     </mat-select>
@@ -150,9 +150,9 @@
                 <ng-template #bankChoosen>
                   <p class="pl-list-item-content">
                     {{
-                      loanDetail.employeeData.bankName +
+                      loanDetail.employeeData?.bankName +
                         " - " +
-                        loanDetail.employeeData.bankCode
+                        loanDetail.employeeData?.bankCode
                     }}
                   </p>
                 </ng-template>
