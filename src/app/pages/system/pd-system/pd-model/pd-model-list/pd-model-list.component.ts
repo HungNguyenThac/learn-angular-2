@@ -239,24 +239,26 @@ export class PdModelListComponent implements OnInit {
 
   public _getModelList() {
     const params = this._buildParams();
-    // this.pdModelListService
-    //   .getData(params)
-    //   .subscribe((data: ApiResponseSearchAndPaginationResponseModel) => {
-    //     this._parseData(data?.result);
-    //     this.dataSource.data = data?.result?.data;
-    //   });
-    this.subManager.add(
-      this.cdeService.cdeControllerGetPdModel().subscribe((data) => {
-        // @ts-ignore
-        let list = data?.result.map((item) => {
-          return {
-            ...item,
-            code: item.code + '-' + item.id,
-          };
-        });
-        this.dataSource.data = list;
-      })
-    );
+    this.pdModelListService
+      .getData(params)
+      .subscribe((data: ApiResponseSearchAndPaginationResponseModel) => {
+        this._parseData(data?.result);
+        this.dataSource.data = data?.result?.data;
+      });
+    // this.subManager.add(
+    //   this.cdeService
+    //     .cdeControllerGetPdModel()
+    //     .subscribe((data: ApiResponse) => {
+    //       // @ts-ignore
+    //       let list = data?.result.map((item) => {
+    //         return {
+    //           ...item,
+    //           code: item.code + '-' + item.id,
+    //         };
+    //       });
+    //       this.dataSource.data = list;
+    //     })
+    // );
   }
 
   public onSortChange(sortState: Sort) {
