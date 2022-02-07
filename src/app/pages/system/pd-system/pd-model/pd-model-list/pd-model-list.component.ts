@@ -1,3 +1,4 @@
+import { Model } from './../../../../../../../open-api-modules/dashboard-api-docs/model/model';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import {
   BUTTON_TYPE,
@@ -569,18 +570,12 @@ export class PdModelListComponent implements OnInit {
     }
   }
 
-  public onExpandElementChange(element: any) {
+  public onExpandElementChange(element: Model) {
     this.openUpdateDialog(element);
   }
 
-  public openUpdateDialog(info) {
+  public openUpdateDialog(info: Model) {
     let leftArr = [...this.groupList];
-    leftArr = leftArr.map((item) => {
-      return {
-        id: parseInt(item.id),
-        content: item.content,
-      };
-    });
     let rightArr = [];
     let modelGroups = info.pdModelGroups;
     if (modelGroups) {
@@ -625,7 +620,7 @@ export class PdModelListComponent implements OnInit {
             result.data.removeArr
           );
           this.sendUpdateRequest(
-            info.id,
+            info.objectId,
             createRequest,
             addQuestionsRequest,
             updateQuestionsRequest,
