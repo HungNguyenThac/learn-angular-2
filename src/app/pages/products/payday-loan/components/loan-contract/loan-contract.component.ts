@@ -28,6 +28,7 @@ import {
   COMPANY_NAME,
   PAYDAY_LOAN_STATUS,
   SIGN_STATUS,
+  TERM_TYPE,
 } from '../../../../../core/common/enum/payday-loan';
 
 @Component({
@@ -65,14 +66,14 @@ export class LoanContractComponent implements OnInit, OnDestroy {
     this._loanId = value;
   }
 
-  _loanDetail: PaydayLoanTng | PaydayLoanHmg;
+  _loanDetail: PaydayLoanTng;
 
   @Input()
-  get loanDetail(): PaydayLoanTng | PaydayLoanHmg {
+  get loanDetail(): PaydayLoanTng {
     return this._loanDetail;
   }
 
-  set loanDetail(value: PaydayLoanTng | PaydayLoanHmg) {
+  set loanDetail(value: PaydayLoanTng ) {
     this._loanDetail = value;
     this.getDisplayStatus();
     this._getLoanContractData();
@@ -136,8 +137,17 @@ export class LoanContractComponent implements OnInit, OnDestroy {
 
     if (
       this.loanDetail?.companyInfo?.groupName === COMPANY_NAME.VAC &&
+      this.loanDetail?.termType === TERM_TYPE.ONE_MONTH &&
       this.loanDetail?.status === PAYDAY_LOAN_STATUS.FUNDED &&
       this.loanContractData?.status === SIGN_STATUS.AWAITING_EPAY_SIGNATURE
+    ) {
+      return (this.enableSign = true);
+    }
+
+    if (
+      this.loanDetail?.companyInfo?.groupName === COMPANY_NAME.VAC &&
+      this.loanDetail?.termType === TERM_TYPE.THREE_MONTH &&
+      this.loanDetail?.status === PAYDAY_LOAN_STATUS.CONTRACT_AWAITING
     ) {
       return (this.enableSign = true);
     }
