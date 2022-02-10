@@ -770,8 +770,8 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
   }
 
   getPercentOfSalaryByDay() {
-    let today = moment(new Date(), 'DD/MM/YYYY').format('DD');
-    switch (today) {
+    let createdAtDay = moment(new Date(this.loanDetail.createdAt)).format('DD');
+    switch (createdAtDay) {
       case '10':
       case '11':
       case '12':
