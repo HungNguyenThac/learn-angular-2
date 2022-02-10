@@ -404,6 +404,12 @@ export class LoanListComponent implements OnInit, OnDestroy {
     },
     {
       title: this.multiLanguageService.instant(
+        'payday_loan.status.contract_awaiting'
+      ),
+      value: PAYDAY_LOAN_STATUS.CONTRACT_AWAITING,
+    },
+    {
+      title: this.multiLanguageService.instant(
         'loan_app.loan_info.disbursement_awaiting'
       ),
       value: PAYDAY_LOAN_STATUS.AWAITING_DISBURSEMENT,

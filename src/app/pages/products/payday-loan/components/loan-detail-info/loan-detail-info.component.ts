@@ -130,6 +130,7 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
       document_awaiting: false,
       documentation_complete: false,
       funded: false,
+      contract_awaiting: false,
       contract_accepted: false,
       awaiting_disbursement: false,
       disbursed: false,
@@ -637,6 +638,8 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
         return 'paydays:updateStatusDocumentCompleteVacLoan';
       case PAYDAY_LOAN_STATUS.FUNDED:
         return 'paydays:updateStatusAwaitingContractVacLoan';
+      case PAYDAY_LOAN_STATUS.CONTRACT_AWAITING:
+        return 'paydays:updateStatusAwaitingContractVacLoan';
       case PAYDAY_LOAN_STATUS.CONTRACT_ACCEPTED:
         return 'paydays:updateStatusContractAcceptedVacLoan';
       case PAYDAY_LOAN_STATUS.AWAITING_DISBURSEMENT:
@@ -1095,6 +1098,24 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
 
       case PAYDAY_LOAN_STATUS.FUNDED:
         this.prevLoanStatus = null;
+        if (this.loanDetail?.termType === TERM_TYPE.ONE_MONTH) {
+          this.nextLoanStatus = await this.getValidStatusLoanVac(
+            PAYDAY_LOAN_STATUS.CONTRACT_ACCEPTED
+          );
+        } else {
+          this.nextLoanStatus = await this.getValidStatusLoanVac(
+            PAYDAY_LOAN_STATUS.CONTRACT_AWAITING
+          );
+        }
+        this.rejectLoanStatus = await this.getValidStatusLoanVac(
+          PAYDAY_LOAN_STATUS.WITHDRAW
+        );
+        break;
+
+      case PAYDAY_LOAN_STATUS.CONTRACT_AWAITING:
+        this.prevLoanStatus = await this.getValidStatusLoanVac(
+          PAYDAY_LOAN_STATUS.FUNDED
+        );
         this.nextLoanStatus = await this.getValidStatusLoanVac(
           PAYDAY_LOAN_STATUS.CONTRACT_ACCEPTED
         );
@@ -1103,18 +1124,16 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
         );
         break;
 
-      case PAYDAY_LOAN_STATUS.CONTRACT_AWAITING:
-        this.prevLoanStatus = null;
-        this.nextLoanStatus = PAYDAY_LOAN_STATUS.UNKNOWN_STATUS;
-        this.rejectLoanStatus = await this.getValidStatusLoanVac(
-          PAYDAY_LOAN_STATUS.WITHDRAW
-        );
-        break;
-
       case PAYDAY_LOAN_STATUS.CONTRACT_ACCEPTED:
-        this.prevLoanStatus = await this.getValidStatusLoanVac(
-          PAYDAY_LOAN_STATUS.FUNDED
-        );
+        if (this.loanDetail?.termType === TERM_TYPE.ONE_MONTH) {
+          this.prevLoanStatus = await this.getValidStatusLoanVac(
+            PAYDAY_LOAN_STATUS.FUNDED
+          );
+        } else {
+          this.prevLoanStatus = await this.getValidStatusLoanVac(
+            PAYDAY_LOAN_STATUS.CONTRACT_AWAITING
+          );
+        }
         this.nextLoanStatus = await this.getValidStatusLoanVac(
           PAYDAY_LOAN_STATUS.AWAITING_DISBURSEMENT
         );
@@ -1354,6 +1373,8 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
           .documentation_complete;
       case PAYDAY_LOAN_STATUS.FUNDED:
         return this.userHasPermissions.loanVacChangeStatus.funded;
+      case PAYDAY_LOAN_STATUS.CONTRACT_AWAITING:
+        return this.userHasPermissions.loanVacChangeStatus.contract_awaiting;
       case PAYDAY_LOAN_STATUS.CONTRACT_ACCEPTED:
         return this.userHasPermissions.loanVacChangeStatus.contract_accepted;
       case PAYDAY_LOAN_STATUS.AWAITING_DISBURSEMENT:
@@ -1452,6 +1473,10 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
       await this.permissionsService.hasPermission(
         GlobalConstants.CHANGE_LOAN_VAC_STATUS_PERMISSION.FUNDED
       );
+      this.userHasPermissions.loanVacChangeStatus.contract_awaiting =
+        await this.permissionsService.hasPermission(
+          GlobalConstants.CHANGE_LOAN_VAC_STATUS_PERMISSION.CONTRACT_ACCEPTED
+        );
     this.userHasPermissions.loanVacChangeStatus.contract_accepted =
       await this.permissionsService.hasPermission(
         GlobalConstants.CHANGE_LOAN_VAC_STATUS_PERMISSION.CONTRACT_ACCEPTED
