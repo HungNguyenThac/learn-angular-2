@@ -52,7 +52,7 @@
                     }}</mat-label>
                     <input
                       matInput
-                      required
+
                       [placeholder]="
                         'customer.individual_info.fullname' | translate
                       "
@@ -76,7 +76,7 @@
                     }}</mat-label>
                     <input
                       matInput
-                      required
+
                       appPhoneNumberOnly
                       phone-number-validate
                       [placeholder]="
@@ -104,7 +104,7 @@
                     }}</mat-label>
                     <input
                       matInput
-                      required
+
                       [placeholder]="
                         'customer.individual_info.email' | translate
                       "
@@ -128,7 +128,7 @@
                     }}</mat-label>
                     <input
                       matInput
-                      required
+
                       [matDatepicker]="picker"
                       [placeholder]="
                         'customer.individual_info.date_of_birth' | translate
@@ -156,13 +156,13 @@
                     <mat-label>{{
                       "customer.individual_info.gender" | translate
                     }}</mat-label>
-                    <mat-select formControlName="gender" required>
+                    <mat-select formControlName="gender" >
                       <mat-option
                         *ngFor="let gender of genderOptions"
-                        [value]="gender"
-                        [matTooltip]="gender"
+                        [value]="gender.value"
+                        [matTooltip]="gender.name"
                       >
-                        {{ gender }}
+                        {{ gender.name }}
                       </mat-option>
                     </mat-select>
                     <show-errors
@@ -183,7 +183,7 @@
                     }}</mat-label>
                     <input
                       matInput
-                      required
+
                       appNumberOnly
                       [placeholder]="
                         'customer.individual_info.cmnd' | translate
@@ -478,15 +478,15 @@
                       "customer.individual_info.number_of_dependents"
                         | translate
                     }}</mat-label>
-                    <mat-select formControlName="numberOfDependents" required>
+                    <mat-select formControlName="numberOfDependents" >
                       <mat-option
                         *ngFor="
                           let numberOfDependentsOption of numberOfDependentsOptions.options
                         "
-                        [value]="numberOfDependentsOption"
-                        [matTooltip]="numberOfDependentsOption"
+                        [value]="numberOfDependentsOption.value"
+                        [matTooltip]="numberOfDependentsOption.name"
                       >
-                        {{ numberOfDependentsOption }}
+                        {{ numberOfDependentsOption.name }}
                       </mat-option>
                     </mat-select>
                     <show-errors
@@ -508,15 +508,15 @@
                     <mat-label>{{
                       "customer.individual_info.marital_status" | translate
                     }}</mat-label>
-                    <mat-select formControlName="maritalStatus" required>
+                    <mat-select formControlName="maritalStatus" >
                       <mat-option
                         *ngFor="
                           let maritalStatusOption of maritalStatusOptions.options
                         "
-                        [value]="maritalStatusOption"
-                        [matTooltip]="maritalStatusOption"
+                        [value]="maritalStatusOption.value"
+                        [matTooltip]="maritalStatusOption.name"
                       >
-                        {{ maritalStatusOption }}
+                        {{ maritalStatusOption.name }}
                       </mat-option>
                     </mat-select>
                     <show-errors
@@ -575,6 +575,9 @@
                           placeholderLabel="Tìm Ngân Hàng"
                           noEntriesFoundLabel="Ngân Hàng không tồn tại"
                         ></ngx-mat-select-search>
+                      </mat-option>
+                      <mat-option [value]="bankNA.bankCode"  [matTooltip]="bankNA.bankName" >
+                        N/A
                       </mat-option>
                       <mat-option
                         *ngFor="let bankNameOption of filteredBanks"
