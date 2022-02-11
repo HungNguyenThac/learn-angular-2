@@ -169,6 +169,7 @@ table.expanded-table {
     border: 1px solid $system-color-blue;
     border-top: none;
     border-radius: 0 0 4px 4px;
+    max-width: calc(100vw - 40px);
   }
 
   tr.selected-user {
@@ -262,6 +263,14 @@ table.expanded-table {
 
   &::before {
     content: url(../../assets/img/icon/group-6-op/svg/Sort/Inactive.svg);
+  }
+}
+
+@media (min-width: 768px) {
+  table.expanded-table {
+    .expanded-active {
+      max-width: calc(100vw - 40px - 256px);
+    }
   }
 }
 

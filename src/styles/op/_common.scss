@@ -1,5 +1,5 @@
 @import "../variables";
-@import '~viewerjs/dist/viewer.css';
+@import "~viewerjs/dist/viewer.css";
 
 $spaceBetweenBox: 40px;
 $spaceBetweenContent: 24px;
@@ -7,9 +7,10 @@ $spaceWithFooter: 56px;
 
 router-outlet ~ * {
   position: absolute;
-  height: auto;
+  height: 100vh;
   width: 100%;
   min-height: calc(100% - 94px);
+  overflow: hidden;
 }
 
 .container-fluid {
@@ -24,7 +25,6 @@ router-outlet ~ * {
   align-self: center;
   width: 100%;
 }
-
 
 #main-layout-content {
   font-family: $sfPro;
@@ -43,7 +43,6 @@ router-outlet ~ * {
 }
 
 ::ng-deep .custom-dialog-container {
-
   .mat-dialog-container {
     padding: 0;
     border-radius: 12px;
@@ -62,14 +61,18 @@ router-outlet ~ * {
 }
 
 .custom-info-dialog-container {
-  overflow: auto;
+  .card {
+    max-height: 100vh;
+    .card-body {
+      overflow: auto;
+    }
+  }
 }
 
 .mat-dialog-container {
   border-radius: 4px !important;
   box-shadow: none;
   padding: 0 !important;
-
 }
 
 .pl-sign-contract-prompt-image {
@@ -326,11 +329,14 @@ input.pl-text-otp {
 
 .op-background-container {
   background: $grey-03;
-  min-height: calc(100vh - 96px);
+  height: calc(100vh - 96px);
+  overflow: auto;
+  position: relative;
 }
 
 .op-drop-shadow {
-  filter: drop-shadow(0px 8px 16px rgba(0, 0, 0, 0.05)) drop-shadow(0px 16px 32px rgba(0, 0, 0, 0.05));
+  filter: drop-shadow(0px 8px 16px rgba(0, 0, 0, 0.05))
+    drop-shadow(0px 16px 32px rgba(0, 0, 0, 0.05));
 }
 
 .op-card.card {
@@ -381,12 +387,11 @@ input.pl-text-otp {
 }
 
 .test {
-  background-color: #F7FBFF !important;
-  border: 1px solid #007AFF;
+  background-color: #f7fbff !important;
+  border: 1px solid #007aff;
   border-radius: 4px;
 }
 
 .gray {
   background-color: #36b5ff21;
 }
-
