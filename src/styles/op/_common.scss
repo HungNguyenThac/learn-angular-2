@@ -43,11 +43,6 @@ router-outlet ~ * {
 }
 
 ::ng-deep .custom-dialog-container {
-  .mat-dialog-container {
-    padding: 0;
-    border-radius: 12px;
-    overflow: inherit;
-  }
 
   .mat-dialog-container {
     padding: 0;
@@ -64,6 +59,10 @@ router-outlet ~ * {
     min-width: 300px;
     height: 100%;
   }
+}
+
+.custom-info-dialog-container {
+  overflow: auto;
 }
 
 .mat-dialog-container {
