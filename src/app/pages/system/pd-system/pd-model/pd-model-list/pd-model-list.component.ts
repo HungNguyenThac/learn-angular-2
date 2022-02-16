@@ -1,4 +1,3 @@
-import { Model } from './../../../../../../../open-api-modules/dashboard-api-docs/model/model';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import {
   BUTTON_TYPE,
@@ -240,26 +239,24 @@ export class PdModelListComponent implements OnInit {
 
   public _getModelList() {
     const params = this._buildParams();
-    this.pdModelListService
-      .getData(params)
-      .subscribe((data: ApiResponseSearchAndPaginationResponseModel) => {
-        this._parseData(data?.result);
-        this.dataSource.data = data?.result?.data;
-      });
-    // this.subManager.add(
-    //   this.cdeService
-    //     .cdeControllerGetPdModel()
-    //     .subscribe((data: ApiResponse) => {
-    //       // @ts-ignore
-    //       let list = data?.result.map((item) => {
-    //         return {
-    //           ...item,
-    //           code: item.code + '-' + item.id,
-    //         };
-    //       });
-    //       this.dataSource.data = list;
-    //     })
-    // );
+    // this.pdModelListService
+    //   .getData(params)
+    //   .subscribe((data: ApiResponseSearchAndPaginationResponseModel) => {
+    //     this._parseData(data?.result);
+    //     this.dataSource.data = data?.result?.data;
+    //   });
+    this.subManager.add(
+      this.cdeService.cdeControllerGetPdModel().subscribe((data) => {
+        // @ts-ignore
+        let list = data?.result.map((item) => {
+          return {
+            ...item,
+            code: item.code + '-' + item.id,
+          };
+        });
+        this.dataSource.data = list;
+      })
+    );
   }
 
   public onSortChange(sortState: Sort) {
@@ -570,12 +567,18 @@ export class PdModelListComponent implements OnInit {
     }
   }
 
-  public onExpandElementChange(element: Model) {
+  public onExpandElementChange(element: any) {
     this.openUpdateDialog(element);
   }
 
-  public openUpdateDialog(info: Model) {
+  public openUpdateDialog(info) {
     let leftArr = [...this.groupList];
+    leftArr = leftArr.map((item) => {
+      return {
+        id: parseInt(item.id),
+        content: item.content,
+      };
+    });
     let rightArr = [];
     let modelGroups = info.pdModelGroups;
     if (modelGroups) {
@@ -620,7 +623,7 @@ export class PdModelListComponent implements OnInit {
             result.data.removeArr
           );
           this.sendUpdateRequest(
-            info.objectId,
+            info.id,
             createRequest,
             addQuestionsRequest,
             updateQuestionsRequest,

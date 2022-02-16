@@ -21,7 +21,7 @@
     <div class="col-12 col-sm-12 col-md-12 col-lg-3">
       <div class="d-flex justify-content-end">
         <ng-container *ngxPermissionsOnly="['contracts:adminSignContract']">
-          <button (click)="onClickSign()" *ngIf="enableSign" color="primary" mat-flat-button>
+          <button (click)="onClickSign()" stype="margin-right: 8px" *ngIf="enableSign" color="primary" mat-flat-button>
             <span class="sprite-group-7-sign-contract"></span>
             {{ "loan_app.loan_contract.contract_signing" | translate }}
           </button>
