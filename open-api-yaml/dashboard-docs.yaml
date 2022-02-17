@@ -1154,6 +1154,47 @@ paths:
                 $ref: '#/components/schemas/ApiResponseSearchAndPaginationResponseApprovalLetter'
       security:
       - bearerAuth: []
+  /v1/applications/totalLoans:
+    post:
+      tags:
+      - application-controller
+      operationId: getTotalLoans
+      parameters:
+      - name: orderBy
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: descending
+        in: query
+        required: false
+        schema:
+          type: boolean
+      - name: applicationType
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: loanPortfolioType
+        in: query
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties:
+                type: object
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseLoanPortfolio'
   /v1/applications/list:
     post:
       tags:
@@ -2666,6 +2707,9 @@ components:
           format: int32
         avatar:
           type: string
+        order:
+          type: integer
+          format: int32
         createdBy:
           type: string
         updatedBy:
@@ -2815,8 +2859,26 @@ components:
           type: string
         accountNumber:
           type: string
+        contractType:
+          type: string
+        companyType:
+          type: string
+        secondaryJobType:
+          type: string
+        salaryPaymentForm:
+          type: string
+        previousWorkTime:
+          type: string
         tngData:
           $ref: '#/components/schemas/TNGInformationResponse'
+        jobPosition:
+          type: string
+        workAddress:
+          type: string
+        jobType:
+          type: string
+        contractExpiration:
+          type: string
         kalapaData:
           $ref: '#/components/schemas/KalapaResponse'
         virtualAccount:
@@ -2847,6 +2909,16 @@ components:
         bankCode:
           type: string
         accountNumber:
+          type: string
+        contractType:
+          type: string
+        companyType:
+          type: string
+        secondaryJobType:
+          type: string
+        salaryPaymentForm:
+          type: string
+        previousWorkTime:
           type: string
     FraudCheck:
       type: object
@@ -3724,6 +3796,27 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ApprovalLetter'
+    ApiResponseLoanPortfolio:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/LoanPortfolio'
+        errorCode:
+          type: string
+        message:
+          type: object
+        responseCode:
+          type: integer
+          format: int32
+    LoanPortfolio:
+      type: object
+      properties:
+        totalLoans:
+          type: integer
+          format: int32
+        totalValue:
+          type: integer
+          format: int32
     ApiResponseSearchAndPaginationResponsePaydayLoanTng:
       type: object
       properties:
@@ -3747,8 +3840,6 @@ components:
           type: string
         startWorkingDay:
           type: string
-        contractType:
-          type: string
         job:
           type: string
         address:
@@ -3766,6 +3857,14 @@ components:
         salaryDocument2:
           type: string
         salaryDocument3:
+          type: string
+        jobPosition:
+          type: string
+        workAddress:
+          type: string
+        jobType:
+          type: string
+        contractExpiration:
           type: string
     PaydayLoanTng:
       type: object
