@@ -447,7 +447,9 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
         value:
           environment.TAX_FEE_TNG *
           (this.calculateServiceFee(this.loanDetail) -
-            this.loanDetail?.voucherTransaction?.discountValue),
+            (this.loanDetail?.voucherTransaction?.discountValue
+              ? this.loanDetail?.voucherTransaction?.discountValue
+              : 0)),
         type: DATA_CELL_TYPE.CURRENCY,
         format: null,
       },
@@ -503,7 +505,12 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
         subTitle: this.multiLanguageService.instant(
           'payday_loan.service_fee.transaction_fee_description'
         ),
-        value: environment.TRANSACTION_FEE,
+        // value: environment.TRANSACTION_FEE,
+        value:
+          this.loanDetail?.termType === TERM_TYPE.THREE_MONTH
+            ? environment.FIXED_REPAYMENT_VA_FEE * 3 +
+              environment.FIXED_DISBURSEMENT_FEE
+            : environment.TRANSACTION_FEE,
         type: DATA_CELL_TYPE.CURRENCY,
         format: null,
       },
@@ -526,7 +533,9 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
         value:
           environment.TAX_FEE_TNG *
           (this.calculateServiceFee(this.loanDetail) -
-            this.loanDetail?.voucherTransaction?.discountValue),
+            (this.loanDetail?.voucherTransaction?.discountValue
+              ? this.loanDetail?.voucherTransaction?.discountValue
+              : 0)),
         type: DATA_CELL_TYPE.CURRENCY,
         format: null,
       },
@@ -1473,10 +1482,10 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
       await this.permissionsService.hasPermission(
         GlobalConstants.CHANGE_LOAN_VAC_STATUS_PERMISSION.FUNDED
       );
-      this.userHasPermissions.loanVacChangeStatus.contract_awaiting =
-        await this.permissionsService.hasPermission(
-          GlobalConstants.CHANGE_LOAN_VAC_STATUS_PERMISSION.CONTRACT_ACCEPTED
-        );
+    this.userHasPermissions.loanVacChangeStatus.contract_awaiting =
+      await this.permissionsService.hasPermission(
+        GlobalConstants.CHANGE_LOAN_VAC_STATUS_PERMISSION.CONTRACT_ACCEPTED
+      );
     this.userHasPermissions.loanVacChangeStatus.contract_accepted =
       await this.permissionsService.hasPermission(
         GlobalConstants.CHANGE_LOAN_VAC_STATUS_PERMISSION.CONTRACT_ACCEPTED
