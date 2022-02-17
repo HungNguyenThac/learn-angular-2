@@ -683,7 +683,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/FinancialData'
+              $ref: '#/components/schemas/UpdateFinanceDataRequest'
         required: true
       responses:
         "200":
@@ -1328,6 +1328,9 @@ components:
           type: string
         code:
           type: string
+        order:
+          type: integer
+          format: int32
         avatar:
           type: string
           format: binary
@@ -1380,6 +1383,9 @@ components:
           format: int32
         avatar:
           type: string
+        order:
+          type: integer
+          format: int32
         createdBy:
           type: string
         updatedBy:
@@ -1571,6 +1577,16 @@ components:
           enum:
           - OFFICE
           - FACTORY
+        jobPosition:
+          type: string
+        contractType:
+          type: string
+        workAddress:
+          type: string
+        jobType:
+          type: string
+        contractExpiration:
+          type: string
     ApiResponseCheckIsPaydayByCustomerIdResponse:
       type: object
       properties:
@@ -1765,6 +1781,7 @@ components:
     CreateRatingRequest:
       required:
       - applicationId
+      - applicationType
       - customerId
       type: object
       properties:
@@ -1774,10 +1791,6 @@ components:
           type: string
         applicationType:
           type: string
-          enum:
-          - PDL_TNG
-          - PDL_HMG
-          - INSURANCE
     ApiResponseBoolean:
       type: object
       properties:
@@ -2007,15 +2020,33 @@ components:
         salaryInformationThree:
           type: string
           format: binary
-    FinancialData:
+    UpdateFinanceDataRequest:
+      required:
+      - companyType
+      - contractType
+      - monthlyIncome
+      - presentWorkTime
+      - salaryPaymentForm
+      - secondaryJobType
       type: object
       properties:
-        bankName:
+        contractType:
           type: string
-        bankCode:
+        companyType:
           type: string
-        accountNumber:
+        secondaryJobType:
           type: string
+        salaryPaymentForm:
+          type: string
+        presentWorkTime:
+          type: string
+        previousWorkTime:
+          type: string
+        educationType:
+          type: string
+        monthlyIncome:
+          type: number
+          format: float
     GetTngDataRequest:
       required:
       - documentPath
@@ -2060,6 +2091,16 @@ components:
         borrowerDetailTextVariable1:
           type: string
         borrowerEmploymentHistoryTextVariable1:
+          type: string
+        jobPosition:
+          type: string
+        contractType:
+          type: string
+        workAddress:
+          type: string
+        jobType:
+          type: string
+        contractExpiration:
           type: string
     AdditionalEmployeeDataRequest:
       type: object
@@ -2114,6 +2155,9 @@ components:
         address:
           type: string
         payday:
+          type: integer
+          format: int32
+        order:
           type: integer
           format: int32
         createdBy:
@@ -2224,8 +2268,6 @@ components:
           type: string
         startWorkingDay:
           type: string
-        contractType:
-          type: string
         job:
           type: string
         address:
@@ -2243,6 +2285,33 @@ components:
         salaryDocument2:
           type: string
         salaryDocument3:
+          type: string
+        jobPosition:
+          type: string
+        workAddress:
+          type: string
+        jobType:
+          type: string
+        contractExpiration:
+          type: string
+    FinancialData:
+      type: object
+      properties:
+        bankName:
+          type: string
+        bankCode:
+          type: string
+        accountNumber:
+          type: string
+        contractType:
+          type: string
+        companyType:
+          type: string
+        secondaryJobType:
+          type: string
+        salaryPaymentForm:
+          type: string
+        previousWorkTime:
           type: string
     TNGInformationResponse:
       type: object
