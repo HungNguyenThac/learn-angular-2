@@ -692,17 +692,8 @@ export class MonexProductListComponent implements OnInit {
 
   public openUpdateDialog(info) {
     let mifos = [...this.mifos];
-    let mifosProduct = this.openElementInfo.mifosProduct.map((product) => {
-      return {
-        id: product.id,
-        name: product.name,
-      };
-    });
-    mifos.unshift(
-      mifosProduct.filter(
-        (product) => product.id === this.openElementInfo.mifosProductId
-      )[0]
-    );
+    let mifosProduct = this.openElementInfo.mifosProduct;
+    mifos.unshift(mifosProduct);
 
     const dialogRef = this.dialog.open(MonexProductDialogComponent, {
       panelClass: 'custom-info-dialog-container',
