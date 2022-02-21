@@ -38,6 +38,7 @@ import {
 } from '../../../core/common/enum/payday-loan';
 import * as _ from 'lodash';
 import { DisplayedFieldsModel } from '../../../public/models/filter/displayed-fields.model';
+import { overviewItemModel } from 'src/app/public/models/external/overview-item.model';
 
 @Component({
   selector: 'app-customer-list',
@@ -323,6 +324,14 @@ export class CustomerListComponent implements OnInit, OnDestroy {
   filterForm: FormGroup;
   expandedElementId: string;
   expandElementFromLoan: any;
+  overviewItems: overviewItemModel[] = [
+    {
+      field: this.multiLanguageService.instant(
+        'customer.total_customer_number'
+      ),
+      value: 0,
+    },
+  ];
   private readonly routeAllState$: Observable<Params>;
 
   constructor(
@@ -476,6 +485,7 @@ export class CustomerListComponent implements OnInit, OnDestroy {
       .getData(params)
       .subscribe((data: ApiResponseSearchAndPaginationResponseCustomerInfo) => {
         this._parseData(data?.result);
+        this.getOverviewData(data?.result);
         if (this.filterForm.controls.id.value) {
           this.expandElementFromLoan = data?.result.data[0];
         }
@@ -527,6 +537,14 @@ export class CustomerListComponent implements OnInit, OnDestroy {
     this.pageLength = rawData?.pagination?.maxPage || 0;
     this.totalItems = rawData?.pagination?.total || 0;
     this.dataSource.data = rawData?.data || [];
+  }
+
+  getOverviewData(rawData) {
+    this.overviewItems.find(
+      (ele) =>
+        ele.field ===
+        this.multiLanguageService.instant('customer.total_customer_number')
+    ).value = rawData?.pagination?.total;
   }
 
   public onPageChange(event: PageEvent) {

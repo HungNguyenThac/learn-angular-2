@@ -197,6 +197,7 @@
     }
   },
   "customer": {
+    "total_customer_number":"Tổng số khách hàng",
     "tabs": {
       "individual_info": "Thông tin cá nhân",
       "ekyc_info": "Thông tin CMND/CCCD",
@@ -406,7 +407,10 @@
       "lock": "Ngừng hoạt động",
       "cancel_update": "Hủy cập nhật",
       "save_update": "Lưu hoạt động",
-      "confirm_change_status_description": "Bạn có chắc chuyển trạng thái khoản ứng {{loan_code}} từ {{current_loan_status}} → {{new_loan_status}}"
+      "confirm_change_status_description": "Bạn có chắc chuyển trạng thái khoản ứng {{loan_code}} từ {{current_loan_status}} → {{new_loan_status}}",
+      "total_loan_number": "Tổng số khoản ứng",
+      "total_loan_amount_number": "Tổng số tiền ứng",
+      "total_late_penalty_number": "Tổng số tiền trả chậm"
     },
     "loan_contract": {
       "loan_status": "Trạng thái khoản ứng",

@@ -47,6 +47,7 @@ import * as moment from 'moment';
 import { NgxPermissionsService } from 'ngx-permissions';
 import { GlobalConstants } from '../../../../core/common/global-constants';
 import { FilterItemModel } from '../../../../public/models/filter/filter-item.model';
+import { overviewItemModel } from 'src/app/public/models/external/overview-item.model';
 
 @Component({
   selector: 'app-loan-list',
@@ -537,6 +538,27 @@ export class LoanListComponent implements OnInit, OnDestroy {
   filterForm: FormGroup;
   private readonly routeAllState$: Observable<Params>;
 
+  overviewItems: overviewItemModel[] = [
+    {
+      field: this.multiLanguageService.instant(
+        'loan_app.loan_info.total_loan_number'
+      ),
+      value: 0,
+    },
+    {
+      field: this.multiLanguageService.instant(
+        'loan_app.loan_info.total_loan_amount_number'
+      ),
+      value: 0,
+    },
+    {
+      field: this.multiLanguageService.instant(
+        'loan_app.loan_info.total_late_penalty_number'
+      ),
+      value: 0,
+    },
+  ];
+
   userHasPermissions = {
     loanTngViewStatus: {
       initialized: false,
@@ -823,6 +845,7 @@ export class LoanListComponent implements OnInit, OnDestroy {
           .subscribe(
             (data: ApiResponseSearchAndPaginationResponsePaydayLoanHmg) => {
               this._parseData(data?.result);
+              this.getOverviewData(data?.result);
             }
           );
         break;
@@ -833,6 +856,7 @@ export class LoanListComponent implements OnInit, OnDestroy {
           .subscribe(
             (data: ApiResponseSearchAndPaginationResponsePaydayLoanTng) => {
               this._parseData(data?.result);
+              this.getOverviewData(data?.result);
             }
           );
         break;
@@ -843,6 +867,7 @@ export class LoanListComponent implements OnInit, OnDestroy {
           .subscribe(
             (data: ApiResponseSearchAndPaginationResponsePaydayLoanTng) => {
               this._parseData(data?.result);
+              this.getOverviewData(data?.result);
             }
           );
         break;
@@ -891,6 +916,32 @@ export class LoanListComponent implements OnInit, OnDestroy {
     this.pageLength = rawData?.pagination?.maxPage || 0;
     this.totalItems = rawData?.pagination?.total || 0;
     this.dataSource.data = rawData?.data || [];
+  }
+
+  getOverviewData(rawData: SearchAndPaginationResponsePaydayLoanHmg) {
+    this.overviewItems.find(
+      (ele) =>
+        ele.field ===
+        this.multiLanguageService.instant(
+          'loan_app.loan_info.total_loan_number'
+        )
+    ).value = rawData?.pagination?.total;
+
+    this.overviewItems.find(
+      (ele) =>
+        ele.field ===
+        this.multiLanguageService.instant(
+          'loan_app.loan_info.total_loan_amount_number'
+        )
+    ).value = rawData?.meta?.totalAmounts;
+
+    this.overviewItems.find(
+      (ele) =>
+        ele.field ===
+        this.multiLanguageService.instant(
+          'loan_app.loan_info.total_ldate_penalty_number'
+        )
+    ).value = rawData?.meta?.totalLatePenaltyPayment;
   }
 
   private _onFilterChange() {
