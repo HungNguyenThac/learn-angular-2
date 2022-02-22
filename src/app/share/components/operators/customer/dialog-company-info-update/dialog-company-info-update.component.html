@@ -85,8 +85,13 @@
                         'customer.company_info.working_time' | translate
                       "
                       formControlName="borrowerEmploymentHistoryTextVariable1"
-                      required
+
                     >
+                      <div>
+                        <mat-option [value]="bankNA.bankCode" [matTooltip]="bankNA.bankName">
+                          N/A
+                        </mat-option>
+                      </div>
                       <div *ngFor="let option of workingTimeOptions">
                         <mat-option [matTooltip]="option" [value]="option">
                           {{ option }}
@@ -121,7 +126,7 @@
                       "
                       formControlName="firstName"
                       matInput
-                      required
+
                     />
                     <show-errors
                       [controlLabel]="
@@ -326,6 +331,11 @@
                                                placeholderLabel="Tìm Ngân Hàng"
                                                noEntriesFoundLabel="Ngân Hàng không tồn tại"
                         ></ngx-mat-select-search>
+
+
+                      </mat-option>
+                      <mat-option [value]="bankNA.bankCode" [matTooltip]="bankNA.bankName">
+                        N/A
                       </mat-option>
                       <mat-option
                         *ngFor="let bankNameOption of filteredBanks"

@@ -223,6 +223,9 @@ export class CustomerCompanyInfoComponent implements OnInit, OnDestroy {
   }
 
   private _bindingDialogCompanyInfoData(data) {
+    if (data.bankCode == "") {
+      data.bankName = "";
+    }
     return {
       'personalData.companyId': data?.companyId,
       'personalData.organizationName': data?.employeeCode,
