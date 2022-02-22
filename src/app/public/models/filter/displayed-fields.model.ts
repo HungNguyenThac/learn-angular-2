@@ -4,11 +4,12 @@ import {
 } from '../../../core/common/enum/operator';
 
 export interface DisplayedFieldsModel {
-  key: string;  // Key of main field
-  externalKey?: string;  // Key of external field
-  title: string;  // Title of column
+  key: string; // Key of main field
+  externalKey?: string; // Key of external field
+  isBadLoan?: string; // Check if it is bad loan: true or false
+  title: string; // Title of column
   width?: number; // Width of column
-  type?: DATA_CELL_TYPE;  // Type of display column data
+  type?: DATA_CELL_TYPE; // Type of display column data
   format?: DATA_STATUS_TYPE | string; // Format data
   showed?: boolean; //Show column: true or false
 }

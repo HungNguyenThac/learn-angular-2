@@ -42,10 +42,9 @@ export class CustomerDetailElementComponent implements OnInit, OnDestroy {
 
   @Output() updateElementInfo = new EventEmitter<CompanyInfo>();
 
-  customerStatus;
-  userInfo: CustomerInfo;
-  bankOptions: Array<Bank>;
-  companyOptions: Array<CompanyInfo>;
+  @Input() userInfo: CustomerInfo;
+  @Input() bankOptions: Array<Bank>;
+  @Input() companyOptions: Array<CompanyInfo>;
   hiddenColumns: string[] = [];
   disabledColumns: string[] = [];
   cityData: any[];
@@ -66,9 +65,6 @@ export class CustomerDetailElementComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this._getCustomerInfoById(this.customerId);
-    this._getBankOptions();
-    this._getCompanyList();
   }
 
   public refreshContent() {
@@ -84,7 +80,6 @@ export class CustomerDetailElementComponent implements OnInit, OnDestroy {
         .getById(customerId)
         .subscribe((data: ApiResponseCustomerInfo) => {
           this.userInfo = data?.result;
-          this.customerStatus = data?.result.userStatus;
           this.updateElementInfo.emit(this.userInfo);
         })
     );

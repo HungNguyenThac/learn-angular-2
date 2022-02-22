@@ -4,17 +4,16 @@ import {DATA_CELL_TYPE, DATA_STATUS_TYPE} from "../../../../core/common/enum/ope
 @Component({
   selector: 'app-table-cell-format-data',
   templateUrl: './table-cell-format-data.component.html',
-  styleUrls: ['./table-cell-format-data.component.scss']
+  styleUrls: ['./table-cell-format-data.component.scss'],
 })
 export class TableCellFormatDataComponent implements OnInit {
   @Input() type: DATA_CELL_TYPE;
   @Input() value: string;
   @Input() externalValue: string;
+  @Input() isBadLoan: boolean;
   @Input() format: string | DATA_STATUS_TYPE;
 
-  constructor() { }
+  constructor() {}
 
-  ngOnInit(): void {
-  }
-
+  ngOnInit(): void {}
 }

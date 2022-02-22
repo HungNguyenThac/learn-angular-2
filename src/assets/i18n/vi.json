@@ -369,6 +369,7 @@
       "loan_status": "Trạng thái khoản ứng",
       "status": "Trạng thái",
       "payment_status": "Trạng thái thanh toán",
+      "debt_status": "Trạng thái nợ",
       "created_at": "Ngày tạo khoản ứng",
       "register_at": "Ngày đăng ký",
       "updated_at_short": "Ngày cập nhật",
@@ -529,7 +530,8 @@
       "three_month": "3 tháng"
     },
     "repayment_status": {
-      "overdue": "Quá hạn"
+      "overdue": "Quá hạn",
+      "bad_debt": "Nợ xấu"
     },
     "service_fee": {
       "service_fee": "Phí dịch vụ",

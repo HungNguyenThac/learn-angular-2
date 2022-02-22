@@ -45,10 +45,10 @@ export class LoanDetailComponent implements OnInit, OnDestroy {
   @Output() loanDetailTriggerUpdateStatus = new EventEmitter<any>();
   @Output() detectUpdateLoanAfterSign = new EventEmitter<any>();
 
-  loanDetail: PaydayLoanTng | PaydayLoanHmg;
-  userInfo: CustomerInfo;
-  bankOptions: Array<Bank>;
-  companyOptions: Array<CompanyInfo>;
+  @Input() loanDetail: PaydayLoanTng | PaydayLoanHmg;
+  @Input() userInfo: CustomerInfo;
+  @Input() bankOptions: Array<Bank>;
+  @Input() companyOptions: Array<CompanyInfo>;
   subManager = new Subscription();
   hiddenColumns: string[] = [];
   disabledColumns: string[] = ['companyId'];
@@ -89,10 +89,10 @@ export class LoanDetailComponent implements OnInit, OnDestroy {
   timeOut;
 
   ngOnInit(): void {
-    this._getLoanById(this.loanId);
-    this._getCustomerInfoById(this.customerId);
-    this._getBankOptions();
-    this._getCompanyList();
+    // this._getLoanById(this.loanId);
+    // this._getCustomerInfoById(this.customerId);
+    // this._getBankOptions();
+    // this._getCompanyList();
   }
 
   loanDetailDetectChangeStatusTrigger() {

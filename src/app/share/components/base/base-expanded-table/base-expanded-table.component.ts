@@ -191,6 +191,7 @@ export class BaseExpandedTableComponent implements OnInit, AfterViewInit {
         format: item.format,
         showed: item.showed,
         externalKey: item.externalKey,
+        isBadLoan: item.isBadLoan
       };
     });
   }

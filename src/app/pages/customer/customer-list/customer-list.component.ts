@@ -1,3 +1,4 @@
+import { Bank } from './../../../../../open-api-modules/dashboard-api-docs/model/bank';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { GlobalConstants } from 'src/app/core/common/global-constants';
@@ -39,6 +40,7 @@ import {
 import * as _ from 'lodash';
 import { DisplayedFieldsModel } from '../../../public/models/filter/displayed-fields.model';
 import { overviewItemModel } from 'src/app/public/models/external/overview-item.model';
+import { CommonState } from 'src/app/core/store/reducers/common.reducer';
 
 @Component({
   selector: 'app-customer-list',
@@ -48,6 +50,9 @@ import { overviewItemModel } from 'src/app/public/models/external/overview-item.
 export class CustomerListComponent implements OnInit, OnDestroy {
   companyList: Array<CompanyInfo>;
   subManager = new Subscription();
+  public commonInfo$: Observable<any>;
+  commonInfo: CommonState;
+  bankOptions: Array<Bank>;
 
   tableTitle: string = this.multiLanguageService.instant(
     'page_title.customer_list'
@@ -324,6 +329,7 @@ export class CustomerListComponent implements OnInit, OnDestroy {
   filterForm: FormGroup;
   expandedElementId: string;
   expandElementFromLoan: any;
+  expandedElementCustomer: CustomerInfo;
   overviewItems: overviewItemModel[] = [
     {
       field: this.multiLanguageService.instant(
@@ -345,13 +351,20 @@ export class CustomerListComponent implements OnInit, OnDestroy {
     private activatedRoute: ActivatedRoute
   ) {
     this.routeAllState$ = store.select(fromSelectors.getRouterAllState);
+    this.commonInfo$ = store.select(fromStore.getCommonInfoState);
+    this.subManager.add(
+      this.commonInfo$.subscribe((commonInfo) => {
+        this.commonInfo = commonInfo.commonInfo;
+        this.bankOptions = this.commonInfo.BankOptions;
+        this.companyList = this.commonInfo.CompanyOptions;
+      })
+    );
     this._initFilterForm();
   }
 
   ngOnInit(): void {
     this.store.dispatch(new fromActions.SetOperatorInfo(NAV_ITEM.CUSTOMER));
     this._initSubscription();
-    this._getCompanyList();
   }
 
   private _initFilterForm() {
@@ -561,6 +574,7 @@ export class CustomerListComponent implements OnInit, OnDestroy {
 
   public onExpandElementChange(element: any) {
     this.expandedElementId = element.id;
+    this.expandedElementCustomer = element;
   }
 
   public onSubmitSearchForm(event) {

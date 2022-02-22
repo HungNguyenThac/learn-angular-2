@@ -1,6 +1,8 @@
 import { query } from '@angular/animations';
 import {
-  APPLICATION_TYPE, COMPANY_NAME,
+  APPLICATION_TYPE,
+  COMPANY_NAME,
+  DEBT_STATUS,
   PAYDAY_LOAN_STATUS,
   REPAYMENT_STATUS,
 } from './../../../../core/common/enum/payday-loan';
@@ -12,23 +14,23 @@ import {
   ContractControllerService as ContractHmgControllerService,
   PaydayLoanControllerService,
 } from '../../../../../../open-api-modules/loanapp-hmg-api-docs';
-import {ContractControllerService as ComSignContractAutomation} from 'open-api-modules/com-api-docs';
-import {Injectable} from '@angular/core';
-import {catchError, map} from 'rxjs/operators';
-import {CustomerControllerService} from 'open-api-modules/dashboard-api-docs';
+import { ContractControllerService as ComSignContractAutomation } from 'open-api-modules/com-api-docs';
+import { Injectable } from '@angular/core';
+import { catchError, map } from 'rxjs/operators';
+import { CustomerControllerService } from 'open-api-modules/dashboard-api-docs';
 import * as _ from 'lodash';
-import {QUERY_CONDITION_TYPE} from '../../../../core/common/enum/operator';
+import { QUERY_CONDITION_TYPE } from '../../../../core/common/enum/operator';
 import {
   ApiResponseContract,
   ContractControllerService,
   PaydayLoanControllerService as PaydayLoanTngControllerService,
 } from '../../../../../../open-api-modules/loanapp-tng-api-docs';
-import {FileControllerService} from '../../../../../../open-api-modules/com-api-docs';
-import {SignDocumentControllerService} from '../../../../../../open-api-modules/contract-api-docs';
-import {ACCOUNT_CLASSIFICATION} from 'src/app/core/common/enum/payday-loan';
-import {GlobalConstants} from '../../../../core/common/global-constants';
-import {environment} from "../../../../../environments/environment";
-import {Observable} from "rxjs/Observable";
+import { FileControllerService } from '../../../../../../open-api-modules/com-api-docs';
+import { SignDocumentControllerService } from '../../../../../../open-api-modules/contract-api-docs';
+import { ACCOUNT_CLASSIFICATION } from 'src/app/core/common/enum/payday-loan';
+import { GlobalConstants } from '../../../../core/common/global-constants';
+import { environment } from '../../../../../environments/environment';
+import { Observable } from 'rxjs/Observable';
 
 @Injectable({
   providedIn: 'root',
@@ -45,18 +47,35 @@ export class LoanListService {
     private contractHmgControllerService: ContractHmgControllerService,
     private signContractAutomation: SignDocumentControllerService,
     private fileControllerService: FileControllerService
-  ) {
-  }
+  ) {}
 
   private _buildRequestBodyGetList(params) {
     let requestBody = {};
     if (!params.status) delete requestBody['status'];
-    if (params.status === REPAYMENT_STATUS.OVERDUE) {
-      params.status = PAYDAY_LOAN_STATUS.IN_REPAYMENT;
-      requestBody['repaymentStatus__e'] = REPAYMENT_STATUS.OVERDUE;
-    } else if (params.status === PAYDAY_LOAN_STATUS.IN_REPAYMENT) {
-      requestBody['repaymentStatus__ne'] = REPAYMENT_STATUS.OVERDUE;
+    console.log('params.status', params.status);
+    switch (params.status) {
+      case REPAYMENT_STATUS.OVERDUE:
+        params.status = PAYDAY_LOAN_STATUS.IN_REPAYMENT;
+        requestBody['defaultStatus__ne'] = true;
+        requestBody['repaymentStatus__e'] = REPAYMENT_STATUS.OVERDUE;
+        break;
+      case DEBT_STATUS.BADDEBT:
+        requestBody['defaultStatus'] = true;
+        requestBody['repaymentStatus__e'] = REPAYMENT_STATUS.OVERDUE;
+        params.status = PAYDAY_LOAN_STATUS.IN_REPAYMENT;
+        break;
+      case PAYDAY_LOAN_STATUS.IN_REPAYMENT:
+        requestBody['repaymentStatus__ne'] = REPAYMENT_STATUS.OVERDUE;
+        break;
+      default:
+        break;
     }
+    // if (params.status === REPAYMENT_STATUS.OVERDUE) {
+    //   params.status = PAYDAY_LOAN_STATUS.IN_REPAYMENT;
+    //   requestBody['repaymentStatus__e'] = REPAYMENT_STATUS.OVERDUE;
+    // } else if (params.status === PAYDAY_LOAN_STATUS.IN_REPAYMENT) {
+    //   requestBody['repaymentStatus__ne'] = REPAYMENT_STATUS.OVERDUE;
+    // }
 
     if (params.filterConditions) {
       for (const [paramName, paramValue] of Object.entries(
@@ -80,20 +99,20 @@ export class LoanListService {
       requestBody['loanCode' + QUERY_CONDITION_TYPE.LIKE_KEYWORD] =
         params.keyword;
       requestBody[
-      'customerInfo.firstName' + QUERY_CONDITION_TYPE.LIKE_KEYWORD
-        ] = params.keyword;
+        'customerInfo.firstName' + QUERY_CONDITION_TYPE.LIKE_KEYWORD
+      ] = params.keyword;
       requestBody[
-      'customerInfo.mobileNumber' + QUERY_CONDITION_TYPE.LIKE_KEYWORD
-        ] = params.keyword;
+        'customerInfo.mobileNumber' + QUERY_CONDITION_TYPE.LIKE_KEYWORD
+      ] = params.keyword;
       requestBody[
-      'customerInfo.emailAddress' + QUERY_CONDITION_TYPE.LIKE_KEYWORD
-        ] = params.keyword;
+        'customerInfo.emailAddress' + QUERY_CONDITION_TYPE.LIKE_KEYWORD
+      ] = params.keyword;
       requestBody[
-      'customerInfo.organizationName' + QUERY_CONDITION_TYPE.LIKE_KEYWORD
-        ] = params.keyword;
+        'customerInfo.organizationName' + QUERY_CONDITION_TYPE.LIKE_KEYWORD
+      ] = params.keyword;
       requestBody[
-      'customerInfo.identityNumberOne' + QUERY_CONDITION_TYPE.LIKE_KEYWORD
-        ] = params.keyword;
+        'customerInfo.identityNumberOne' + QUERY_CONDITION_TYPE.LIKE_KEYWORD
+      ] = params.keyword;
     }
 
     switch (params.accountClassification) {
@@ -103,23 +122,22 @@ export class LoanListService {
 
       case ACCOUNT_CLASSIFICATION.TEST:
         requestBody[
-        'customerInfo.mobileNumber' + QUERY_CONDITION_TYPE.START_WITH
-          ] = environment.PREFIX_MOBILE_NUMBER_TEST;
+          'customerInfo.mobileNumber' + QUERY_CONDITION_TYPE.START_WITH
+        ] = environment.PREFIX_MOBILE_NUMBER_TEST;
         break;
       case ACCOUNT_CLASSIFICATION.REAL:
       default:
         requestBody[
-        'customerInfo.mobileNumber' + QUERY_CONDITION_TYPE.NOT_START_WITH
-          ] = environment.PREFIX_MOBILE_NUMBER_TEST;
+          'customerInfo.mobileNumber' + QUERY_CONDITION_TYPE.NOT_START_WITH
+        ] = environment.PREFIX_MOBILE_NUMBER_TEST;
         requestBody[
-        'customerInfo.identityNumberOne' + QUERY_CONDITION_TYPE.NOT_EQUAL
-          ] = environment.IDENTITY_NUMBER_ONE_TEST;
+          'customerInfo.identityNumberOne' + QUERY_CONDITION_TYPE.NOT_EQUAL
+        ] = environment.IDENTITY_NUMBER_ONE_TEST;
         requestBody[
-        'customerInfo.organizationName' + QUERY_CONDITION_TYPE.NOT_IN
-          ] = environment.ORGANIZATION_NAME_TEST;
-        requestBody[
-        'status' + QUERY_CONDITION_TYPE.NOT_EQUAL
-          ] = environment.PAYDAY_LOAN_STATUS_TEST;
+          'customerInfo.organizationName' + QUERY_CONDITION_TYPE.NOT_IN
+        ] = environment.ORGANIZATION_NAME_TEST;
+        requestBody['status' + QUERY_CONDITION_TYPE.NOT_EQUAL] =
+          environment.PAYDAY_LOAN_STATUS_TEST;
         break;
     }
     console.log('requestBody--------------------------------', requestBody);
@@ -226,7 +244,7 @@ export class LoanListService {
 
     // com svc
     return this.comSignContractAutomation
-      .adminSignContract({customerId, idRequest, idDocument})
+      .adminSignContract({ customerId, idRequest, idDocument })
       .pipe(
         map((results) => {
           return results;
@@ -240,7 +258,7 @@ export class LoanListService {
 
   public downloadSingleFileContract(documentPath: string, customerId: string) {
     return this.fileControllerService
-      .downloadFile({documentPath, customerId})
+      .downloadFile({ documentPath, customerId })
       .pipe(
         map((results) => {
           return this.convertBlobType(results, 'application/pdf');
@@ -264,7 +282,7 @@ export class LoanListService {
   }
 
   public convertBlobType(data: any, type: string) {
-    let blob = new Blob([data], {type: type});
+    let blob = new Blob([data], { type: type });
     let url = window.URL.createObjectURL(blob);
     return url;
   }

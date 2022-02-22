@@ -28,6 +28,9 @@
     *ngxPermissionsOnly="['dashboardCustomers:getCustomerById']"
     class="w-100"
     [customerId]="expandedElementId"
+    [userInfo]="expandedElementCustomer"
+    [bankOptions]="bankOptions"
+    [companyOptions]="companyList"
     (updateElementInfo)="updateElementInfo($event)"
   ></app-customer-detail-element>
 </ng-template>
