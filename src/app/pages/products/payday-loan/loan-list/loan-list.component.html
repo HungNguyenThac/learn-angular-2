@@ -19,6 +19,8 @@
   [sortDirection]="filterForm.controls.sortDirection?.value"
   [tableTitle]="tableTitle"
   [totalItems]="totalItems"
+  [overviewItems]="overviewItems"
+
 >
 </app-base-management-layout>
 
@@ -34,6 +36,9 @@
     [customerId]="expandedElementCustomerId"
     [groupName]="filterForm.controls.groupName.value"
     [loanId]="expandedElementLoanId"
+    [loanDetail]="expandedElementLoanDetail"
+    [userInfo]="expandedElementLoanDetail.customerInfo"
+    [companyOptions]="companyList"
     class="w-100"
   ></app-loan-detail>
 </ng-template>

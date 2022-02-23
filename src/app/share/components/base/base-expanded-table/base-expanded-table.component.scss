@@ -8,3 +8,14 @@
 .clickable {
   cursor: pointer;
 }
+
+.overview-data {
+  font-weight: normal;
+  display: flex;
+  gap: 12px;
+  margin-left: 20px;
+  line-height: 24px;
+  .value {
+    font-style: italic;
+  }
+}

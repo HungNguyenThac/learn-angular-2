@@ -25,6 +25,7 @@ import { NotificationService } from '../../../../core/services/notification.serv
 import { ToastrService } from 'ngx-toastr';
 import { TableSelectActionModel } from '../../../../public/models/external/table-select-action.model';
 import * as _ from 'lodash';
+import { overviewItemModel } from 'src/app/public/models/external/overview-item.model';
 
 @Component({
   selector: 'app-base-expanded-table',
@@ -51,6 +52,7 @@ export class BaseExpandedTableComponent implements OnInit, AfterViewInit {
   @Input() allColumns: DisplayedFieldsModel[];
   @Input() hasSelect: boolean;
   @Input() selectButtons: TableSelectActionModel[];
+  @Input() overviewItems: overviewItemModel[];
   _expandElementByDefault;
   @Input() get expandElementByDefault() {
     return this._expandElementByDefault;
@@ -189,6 +191,7 @@ export class BaseExpandedTableComponent implements OnInit, AfterViewInit {
         format: item.format,
         showed: item.showed,
         externalKey: item.externalKey,
+        isBadLoan: item.isBadLoan
       };
     });
   }

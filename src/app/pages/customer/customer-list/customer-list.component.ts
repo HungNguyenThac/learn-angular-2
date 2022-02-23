@@ -1,3 +1,4 @@
+import { Bank } from './../../../../../open-api-modules/dashboard-api-docs/model/bank';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { GlobalConstants } from 'src/app/core/common/global-constants';
@@ -38,6 +39,8 @@ import {
 } from '../../../core/common/enum/payday-loan';
 import * as _ from 'lodash';
 import { DisplayedFieldsModel } from '../../../public/models/filter/displayed-fields.model';
+import { overviewItemModel } from 'src/app/public/models/external/overview-item.model';
+import { CommonState } from 'src/app/core/store/reducers/common.reducer';
 
 @Component({
   selector: 'app-customer-list',
@@ -47,6 +50,9 @@ import { DisplayedFieldsModel } from '../../../public/models/filter/displayed-fi
 export class CustomerListComponent implements OnInit, OnDestroy {
   companyList: Array<CompanyInfo>;
   subManager = new Subscription();
+  public commonInfo$: Observable<any>;
+  commonInfo: CommonState;
+  bankOptions: Array<Bank>;
 
   tableTitle: string = this.multiLanguageService.instant(
     'page_title.customer_list'
@@ -323,6 +329,15 @@ export class CustomerListComponent implements OnInit, OnDestroy {
   filterForm: FormGroup;
   expandedElementId: string;
   expandElementFromLoan: any;
+  expandedElementCustomer: CustomerInfo;
+  overviewItems: overviewItemModel[] = [
+    {
+      field: this.multiLanguageService.instant(
+        'customer.total_customer_number'
+      ),
+      value: 0,
+    },
+  ];
   private readonly routeAllState$: Observable<Params>;
 
   constructor(
@@ -336,13 +351,20 @@ export class CustomerListComponent implements OnInit, OnDestroy {
     private activatedRoute: ActivatedRoute
   ) {
     this.routeAllState$ = store.select(fromSelectors.getRouterAllState);
+    this.commonInfo$ = store.select(fromStore.getCommonInfoState);
+    this.subManager.add(
+      this.commonInfo$.subscribe((commonInfo) => {
+        this.commonInfo = commonInfo.commonInfo;
+        this.bankOptions = this.commonInfo.BankOptions;
+        this.companyList = this.commonInfo.CompanyOptions;
+      })
+    );
     this._initFilterForm();
   }
 
   ngOnInit(): void {
     this.store.dispatch(new fromActions.SetOperatorInfo(NAV_ITEM.CUSTOMER));
     this._initSubscription();
-    this._getCompanyList();
   }
 
   private _initFilterForm() {
@@ -476,6 +498,7 @@ export class CustomerListComponent implements OnInit, OnDestroy {
       .getData(params)
       .subscribe((data: ApiResponseSearchAndPaginationResponseCustomerInfo) => {
         this._parseData(data?.result);
+        this.getOverviewData(data?.result);
         if (this.filterForm.controls.id.value) {
           this.expandElementFromLoan = data?.result.data[0];
         }
@@ -529,6 +552,14 @@ export class CustomerListComponent implements OnInit, OnDestroy {
     this.dataSource.data = rawData?.data || [];
   }
 
+  getOverviewData(rawData) {
+    this.overviewItems.find(
+      (ele) =>
+        ele.field ===
+        this.multiLanguageService.instant('customer.total_customer_number')
+    ).value = rawData?.pagination?.total;
+  }
+
   public onPageChange(event: PageEvent) {
     this.pageSize = event.pageSize;
     this.pageIndex = event.pageIndex;
@@ -543,6 +574,7 @@ export class CustomerListComponent implements OnInit, OnDestroy {
 
   public onExpandElementChange(element: any) {
     this.expandedElementId = element.id;
+    this.expandedElementCustomer = element;
   }
 
   public onSubmitSearchForm(event) {

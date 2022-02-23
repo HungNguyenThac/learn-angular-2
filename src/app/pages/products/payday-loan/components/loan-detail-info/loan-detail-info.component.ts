@@ -350,6 +350,14 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
       },
       {
         title: this.multiLanguageService.instant(
+          'loan_app.loan_info.debt_status'
+        ),
+        value: this.loanDetail?.defaultStatus,
+        type: DATA_CELL_TYPE.STATUS,
+        format: DATA_STATUS_TYPE.PL_DEBT_STATUS,
+      },
+      {
+        title: this.multiLanguageService.instant(
           'loan_app.loan_info.staff_in_charge'
         ),
         value: this.loanDetail?.personInChargeId,
@@ -1249,16 +1257,27 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
   }
 
   getOverdueDateCount() {
-    if (this.loanDetail?.companyInfo?.groupName === COMPANY_NAME.HMG) {
-      return formatPunishCountHmg(
-        this.loanDetail?.createdAt,
-        this.loanDetail?.expectedTenure
-      );
-    } else {
-      return formatPunishCountTng(
-        this.loanDetail?.createdAt,
-        this.loanDetail?.expectedTenure
-      );
+    switch (this.loanDetail?.status) {
+      case PAYDAY_LOAN_STATUS.COMPLETED:
+        return moment(this.loanDetail?.completedAt).diff(
+          this.loanDetail?.settlementDate,
+          'days'
+        ) < 0
+          ? 'N/A'
+          : moment(this.loanDetail?.completedAt).diff(
+              this.loanDetail?.settlementDate,
+              'days'
+            );
+      case PAYDAY_LOAN_STATUS.IN_REPAYMENT:
+        return moment().diff(this.loanDetail?.settlementDate, 'days') < 0
+          ? 'N/A'
+          : moment().diff(
+              this.loanDetail?.settlementDate,
+              'days'
+            );
+
+      default:
+        return 'N/A';
     }
   }
 

@@ -13,6 +13,7 @@
   [sortDirection]="filterForm.controls.sortDirection?.value"
   [breadcrumbOptions]="breadcrumbOptions"
   [forceExpandElement]="expandElementFromLoan"
+  [overviewItems]="overviewItems"
   (onPageChange)="onPageChange($event)"
   (onSortChange)="onSortChange($event)"
   (onExpandElementChange)="onExpandElementChange($event)"
@@ -27,6 +28,9 @@
     *ngxPermissionsOnly="['dashboardCustomers:getCustomerById']"
     class="w-100"
     [customerId]="expandedElementId"
+    [userInfo]="expandedElementCustomer"
+    [bankOptions]="bankOptions"
+    [companyOptions]="companyList"
     (updateElementInfo)="updateElementInfo($event)"
   ></app-customer-detail-element>
 </ng-template>

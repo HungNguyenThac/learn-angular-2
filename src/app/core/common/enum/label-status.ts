@@ -18,6 +18,7 @@ export enum PL_LABEL_STATUS {
   REJECT = 'REJECT',
   CANCEL = 'CANCEL',
   INFO = 'INFO',
+  WORSE = 'WORSE',
 }
 
 export enum PL_MESSAGE_TYPE {

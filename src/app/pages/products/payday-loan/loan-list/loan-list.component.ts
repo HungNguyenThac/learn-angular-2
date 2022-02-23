@@ -1,8 +1,14 @@
+import { CommonState } from 'src/app/core/store/reducers/common.reducer';
+import { Bank } from './../../../../../../open-api-modules/dashboard-api-docs/model/bank';
+import { BankControllerService } from './../../../../../../open-api-modules/dashboard-api-docs/api/bankController.service';
+import { ApiResponseSearchAndPaginationResponseBank } from './../../../../../../open-api-modules/dashboard-api-docs/model/apiResponseSearchAndPaginationResponseBank';
+import { PaydayLoanTng } from './../../../../../../open-api-modules/dashboard-api-docs/model/paydayLoanTng';
 import { ToastrService } from 'ngx-toastr';
 import {
   ACCOUNT_CLASSIFICATION,
   APPLICATION_TYPE,
   COMPANY_NAME,
+  DEBT_STATUS,
   PAYDAY_LOAN_STATUS,
   REPAYMENT_STATUS,
   TERM_TYPE,
@@ -18,7 +24,7 @@ import {
 import { FilterActionEventModel } from '../../../../public/models/filter/filter-action-event.model';
 import { FilterEventModel } from '../../../../public/models/filter/filter-event.model';
 import { CompanyInfo } from '../../../../../../open-api-modules/customer-api-docs';
-import { FILTER_TYPE } from 'src/app/core/common/enum/operator';
+import { FILTER_TYPE, RESPONSE_CODE } from 'src/app/core/common/enum/operator';
 import { LoanListService } from './loan-list.service';
 import { PageEvent } from '@angular/material/paginator/public-api';
 import { Sort } from '@angular/material/sort';
@@ -47,6 +53,7 @@ import * as moment from 'moment';
 import { NgxPermissionsService } from 'ngx-permissions';
 import { GlobalConstants } from '../../../../core/common/global-constants';
 import { FilterItemModel } from '../../../../public/models/filter/filter-item.model';
+import { overviewItemModel } from 'src/app/public/models/external/overview-item.model';
 
 @Component({
   selector: 'app-loan-list',
@@ -55,6 +62,9 @@ import { FilterItemModel } from '../../../../public/models/filter/filter-item.mo
 })
 export class LoanListComponent implements OnInit, OnDestroy {
   companyList: Array<CompanyInfo>;
+  bankList: Array<Bank>;
+  public commonInfo$: Observable<any>;
+  commonInfo: CommonState;
   subManager = new Subscription();
   tableTitle: string = this.multiLanguageService.instant(
     'page_title.loan_list'
@@ -166,6 +176,12 @@ export class LoanListComponent implements OnInit, OnDestroy {
             'payday_loan.repayment_status.overdue'
           ),
           value: REPAYMENT_STATUS.OVERDUE,
+        },
+        {
+          title: this.multiLanguageService.instant(
+            'payday_loan.repayment_status.bad_debt'
+          ),
+          value: DEBT_STATUS.BADDEBT,
         },
         {
           title: this.multiLanguageService.instant(
@@ -291,6 +307,12 @@ export class LoanListComponent implements OnInit, OnDestroy {
       value: REPAYMENT_STATUS.OVERDUE,
     },
     {
+      title: this.multiLanguageService.instant(
+        'payday_loan.repayment_status.bad_debt'
+      ),
+      value: DEBT_STATUS.BADDEBT,
+    },
+    {
       title: this.multiLanguageService.instant('loan_app.loan_info.completed'),
       value: PAYDAY_LOAN_STATUS.COMPLETED,
     },
@@ -356,6 +378,12 @@ export class LoanListComponent implements OnInit, OnDestroy {
         'payday_loan.repayment_status.overdue'
       ),
       value: REPAYMENT_STATUS.OVERDUE,
+    },
+    {
+      title: this.multiLanguageService.instant(
+        'payday_loan.repayment_status.bad_debt'
+      ),
+      value: DEBT_STATUS.BADDEBT,
     },
     {
       title: this.multiLanguageService.instant('loan_app.loan_info.completed'),
@@ -431,6 +459,12 @@ export class LoanListComponent implements OnInit, OnDestroy {
       value: REPAYMENT_STATUS.OVERDUE,
     },
     {
+      title: this.multiLanguageService.instant(
+        'payday_loan.repayment_status.bad_debt'
+      ),
+      value: DEBT_STATUS.BADDEBT,
+    },
+    {
       title: this.multiLanguageService.instant('loan_app.loan_info.completed'),
       value: PAYDAY_LOAN_STATUS.COMPLETED,
     },
@@ -455,6 +489,7 @@ export class LoanListComponent implements OnInit, OnDestroy {
     {
       key: 'status',
       externalKey: 'repaymentStatus',
+      isBadLoan: 'defaultStatus',
       title: this.multiLanguageService.instant('loan_app.loan_info.status'),
       type: DATA_CELL_TYPE.STATUS,
       format: DATA_STATUS_TYPE.PL_HMG_STATUS,
@@ -527,6 +562,7 @@ export class LoanListComponent implements OnInit, OnDestroy {
   ];
   dataSource: MatTableDataSource<any> = new MatTableDataSource([]);
   expandedElementLoanId: string;
+  expandedElementLoanDetail: PaydayLoanTng | PaydayLoanHmg;
   expandedElementCustomerId: string;
   pages: Array<number>;
   pageSize: number = 10;
@@ -536,6 +572,27 @@ export class LoanListComponent implements OnInit, OnDestroy {
   totalItems: number = 0;
   filterForm: FormGroup;
   private readonly routeAllState$: Observable<Params>;
+
+  overviewItems: overviewItemModel[] = [
+    {
+      field: this.multiLanguageService.instant(
+        'loan_app.loan_info.total_loan_number'
+      ),
+      value: 0,
+    },
+    {
+      field: this.multiLanguageService.instant(
+        'loan_app.loan_info.total_loan_amount_number'
+      ),
+      value: 0,
+    },
+    {
+      field: this.multiLanguageService.instant(
+        'loan_app.loan_info.total_late_penalty_number'
+      ),
+      value: 0,
+    },
+  ];
 
   userHasPermissions = {
     loanTngViewStatus: {
@@ -576,6 +633,7 @@ export class LoanListComponent implements OnInit, OnDestroy {
     private multiLanguageService: MultiLanguageService,
     private customerListService: CustomerListService,
     private companyControllerService: CompanyControllerService,
+    private bankControllerService: BankControllerService,
     private formBuilder: FormBuilder,
     private router: Router,
     private activatedRoute: ActivatedRoute,
@@ -584,13 +642,20 @@ export class LoanListComponent implements OnInit, OnDestroy {
     private permissionsService: NgxPermissionsService
   ) {
     this.routeAllState$ = store.select(fromSelectors.getRouterAllState);
+    this.commonInfo$ = store.select(fromStore.getCommonInfoState);
+    this.subManager.add(
+      this.commonInfo$.subscribe((commonInfo) => {
+        this.commonInfo = commonInfo.commonInfo;
+        this.bankList = this.commonInfo.BankOptions;
+        this.companyList = this.commonInfo.CompanyOptions;
+      })
+    );
     this._initFilterForm();
   }
 
   ngOnInit(): void {
     this.store.dispatch(new fromActions.SetOperatorInfo(NAV_ITEM.LOANAPP));
     this._initSubscription();
-    this._getCompanyList();
   }
 
   onPageChange(event: PageEvent) {
@@ -606,8 +671,7 @@ export class LoanListComponent implements OnInit, OnDestroy {
   }
 
   public onExpandElementChange(element: any) {
-    console.log('---------------------------element', element);
-
+    this.expandedElementLoanDetail = element;
     this.expandedElementLoanId = element.id;
     this.expandedElementCustomerId = element.customerId;
   }
@@ -823,6 +887,7 @@ export class LoanListComponent implements OnInit, OnDestroy {
           .subscribe(
             (data: ApiResponseSearchAndPaginationResponsePaydayLoanHmg) => {
               this._parseData(data?.result);
+              this.getOverviewData(data?.result);
             }
           );
         break;
@@ -833,6 +898,7 @@ export class LoanListComponent implements OnInit, OnDestroy {
           .subscribe(
             (data: ApiResponseSearchAndPaginationResponsePaydayLoanTng) => {
               this._parseData(data?.result);
+              this.getOverviewData(data?.result);
             }
           );
         break;
@@ -843,6 +909,7 @@ export class LoanListComponent implements OnInit, OnDestroy {
           .subscribe(
             (data: ApiResponseSearchAndPaginationResponsePaydayLoanTng) => {
               this._parseData(data?.result);
+              this.getOverviewData(data?.result);
             }
           );
         break;
@@ -859,6 +926,23 @@ export class LoanListComponent implements OnInit, OnDestroy {
         this.companyList = data?.result?.data;
         this._initCompanyOptions(params.groupName);
       });
+  }
+
+  private _getBankOptions() {
+    this.subManager.add(
+      this.bankControllerService
+        .getBanks(200, 0, {})
+        .subscribe((response: ApiResponseSearchAndPaginationResponseBank) => {
+          if (response.responseCode !== RESPONSE_CODE.SUCCESS) {
+            this.notifier.error(
+              JSON.stringify(response?.message),
+              response?.errorCode
+            );
+            return;
+          }
+          this.bankList = response?.result?.data;
+        })
+    );
   }
 
   private _initCompanyOptions(groupName) {
@@ -891,6 +975,32 @@ export class LoanListComponent implements OnInit, OnDestroy {
     this.pageLength = rawData?.pagination?.maxPage || 0;
     this.totalItems = rawData?.pagination?.total || 0;
     this.dataSource.data = rawData?.data || [];
+  }
+
+  getOverviewData(rawData: SearchAndPaginationResponsePaydayLoanHmg) {
+    this.overviewItems.find(
+      (ele) =>
+        ele.field ===
+        this.multiLanguageService.instant(
+          'loan_app.loan_info.total_loan_number'
+        )
+    ).value = rawData?.pagination?.total;
+
+    this.overviewItems.find(
+      (ele) =>
+        ele.field ===
+        this.multiLanguageService.instant(
+          'loan_app.loan_info.total_loan_amount_number'
+        )
+    ).value = rawData?.meta?.totalAmounts;
+
+    this.overviewItems.find(
+      (ele) =>
+        ele.field ===
+        this.multiLanguageService.instant(
+          'loan_app.loan_info.total_late_penalty_number'
+        )
+    ).value = rawData?.meta?.totalLatePenaltyPayment;
   }
 
   private _onFilterChange() {
@@ -1163,6 +1273,7 @@ export class LoanListComponent implements OnInit, OnDestroy {
           break;
         case PAYDAY_LOAN_STATUS.IN_REPAYMENT:
         case REPAYMENT_STATUS.OVERDUE:
+        case DEBT_STATUS.BADDEBT:
           option.hidden =
             !this.userHasPermissions.loanTngViewStatus.in_repayment;
           break;
@@ -1221,6 +1332,7 @@ export class LoanListComponent implements OnInit, OnDestroy {
           break;
         case PAYDAY_LOAN_STATUS.IN_REPAYMENT:
         case REPAYMENT_STATUS.OVERDUE:
+        case DEBT_STATUS.BADDEBT:
           option.hidden =
             !this.userHasPermissions.loanVacViewStatus.in_repayment;
           break;

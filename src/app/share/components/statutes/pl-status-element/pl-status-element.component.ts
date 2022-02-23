@@ -1,8 +1,9 @@
 import {
   CUSTOMER_STATUS,
+  DEBT_STATUS,
   PAYDAY_LOAN_REPAYMENT_STATUS,
 } from './../../../../core/common/enum/payday-loan';
-import {PlStatusLabelComponent} from './../pl-status-label/pl-status-label.component';
+import { PlStatusLabelComponent } from './../pl-status-label/pl-status-label.component';
 import {
   PAYDAY_LOAN_OTHER_STATUS,
   PAYDAY_LOAN_RATING_STATUS,
@@ -18,10 +19,10 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
-import {DATA_STATUS_TYPE} from '../../../../core/common/enum/operator';
-import {PL_LABEL_STATUS} from '../../../../core/common/enum/label-status';
-import {MultiLanguageService} from '../../../translate/multiLanguageService';
-import {AdminAccountEntity} from '../../../../../../open-api-modules/dashboard-api-docs';
+import { DATA_STATUS_TYPE } from '../../../../core/common/enum/operator';
+import { PL_LABEL_STATUS } from '../../../../core/common/enum/label-status';
+import { MultiLanguageService } from '../../../translate/multiLanguageService';
+import { AdminAccountEntity } from '../../../../../../open-api-modules/dashboard-api-docs';
 import UserStatusEnum = AdminAccountEntity.UserStatusEnum;
 
 @Component({
@@ -35,12 +36,13 @@ export class PlStatusElementComponent implements OnInit, AfterViewInit {
   constructor(
     private multiLanguageService: MultiLanguageService,
     private cdr: ChangeDetectorRef
-  ) {
-  }
+  ) {}
 
   _statusValue: any;
 
   _externalValue: any;
+
+  @Input() isBadLoan: boolean;
 
   _statusType: DATA_STATUS_TYPE;
 
@@ -80,7 +82,11 @@ export class PlStatusElementComponent implements OnInit, AfterViewInit {
     switch (this.statusType) {
       case DATA_STATUS_TYPE.PL_HMG_STATUS:
       case DATA_STATUS_TYPE.PL_TNG_STATUS:
-        return this.loanStatusContent(this.statusValue, this.externalValue);
+        return this.loanStatusContent(
+          this.statusValue,
+          this.externalValue,
+          this.isBadLoan
+        );
       case DATA_STATUS_TYPE.PL_VAC_STATUS:
         return this.loanStatusVACContent(this.statusValue, this.externalValue);
       case DATA_STATUS_TYPE.CUSTOMER_STATUS:
@@ -91,6 +97,8 @@ export class PlStatusElementComponent implements OnInit, AfterViewInit {
         return this.loanOtherStatusContent(this.statusValue);
       case DATA_STATUS_TYPE.PL_REPAYMENT_STATUS:
         return this.loanRepaymentStatusContent(this.statusValue);
+      case DATA_STATUS_TYPE.PL_DEBT_STATUS:
+        return this.loanDebtStatusContent(this.statusValue);
       case DATA_STATUS_TYPE.PL_RATING_STATUS:
         return this.loanRatingStatusContent(this.statusValue);
       case DATA_STATUS_TYPE.USER_STATUS:
@@ -103,8 +111,7 @@ export class PlStatusElementComponent implements OnInit, AfterViewInit {
     }
   }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   ngAfterViewInit() {
     this.dataStatus = this.getDataStatus();
@@ -298,23 +305,44 @@ export class PlStatusElementComponent implements OnInit, AfterViewInit {
     }
   }
 
-  loanStatusContent(status: string, repaymentStatus?: string) {
+  loanDebtStatusContent(status) {
+    switch (status) {
+      case true:
+        return {
+          label: this.multiLanguageService.instant(
+            'payday_loan.repayment_status.bad_debt'
+          ),
+          labelStatus: PL_LABEL_STATUS.WORSE,
+        };
+      default:
+        return 'N/A';
+    }
+  }
+
+  loanStatusContent(
+    status: string,
+    repaymentStatus?: string,
+    isBadLoan?: boolean
+  ) {
     if (
       status &&
       status === PAYDAY_LOAN_STATUS.IN_REPAYMENT &&
       repaymentStatus
     ) {
-      switch (repaymentStatus) {
-        case REPAYMENT_STATUS.OVERDUE:
-          return {
-            label: this.multiLanguageService.instant(
-              `payday_loan.repayment_status.${repaymentStatus.toLowerCase()}`
-            ),
-            labelStatus: PL_LABEL_STATUS.CANCEL,
-          };
-        default:
-          break;
+      if (repaymentStatus === REPAYMENT_STATUS.OVERDUE && isBadLoan) {
+        return {
+          label: this.multiLanguageService.instant(
+            'payday_loan.repayment_status.bad_debt'
+          ),
+          labelStatus: PL_LABEL_STATUS.WORSE,
+        };
       }
+      return {
+        label: this.multiLanguageService.instant(
+          `payday_loan.repayment_status.${repaymentStatus.toLowerCase()}`
+        ),
+        labelStatus: PL_LABEL_STATUS.CANCEL,
+      };
     }
 
     switch (status) {
@@ -432,6 +460,13 @@ export class PlStatusElementComponent implements OnInit, AfterViewInit {
             ),
             labelStatus: PL_LABEL_STATUS.CANCEL,
           };
+        case DEBT_STATUS.BADDEBT:
+          return {
+            label: this.multiLanguageService.instant(
+              `payday_loan.repayment_status.bad_debt`
+            ),
+            labelStatus: PL_LABEL_STATUS.WORSE,
+          };
         default:
           break;
       }
@@ -539,7 +574,6 @@ export class PlStatusElementComponent implements OnInit, AfterViewInit {
   }
 
   userStatus(status) {
-
     switch (status) {
       case UserStatusEnum.Locked:
       case 'INACTIVE':

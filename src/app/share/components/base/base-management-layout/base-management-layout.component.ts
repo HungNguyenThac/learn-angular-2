@@ -18,6 +18,7 @@ import { PageEvent } from '@angular/material/paginator/public-api';
 import { TableSelectActionModel } from '../../../../public/models/external/table-select-action.model';
 import { BaseExpandedTableComponent } from '../base-expanded-table/base-expanded-table.component';
 import {DisplayedFieldsModel} from "../../../../public/models/filter/displayed-fields.model";
+import { overviewItemModel } from 'src/app/public/models/external/overview-item.model';
 
 @Component({
   selector: 'app-base-management-layout',
@@ -39,6 +40,7 @@ export class BaseManagementLayoutComponent implements OnInit {
   @Input() selectButtons: TableSelectActionModel[] = [];
   @Input() sortDirection: SortDirection = 'desc';
   @Input() forceExpandElement: any;
+  @Input() overviewItems: overviewItemModel[];
   @Output() onPageChange = new EventEmitter<PageEvent>();
   @Output() onSortChange = new EventEmitter<Sort>();
   @Output() onExpandElementChange = new EventEmitter<any>();

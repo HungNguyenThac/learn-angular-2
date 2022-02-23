@@ -2125,6 +2125,10 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/TNGInformationResponse'
+        meta:
+          type: object
+          additionalProperties:
+            type: object
     TNGInformationResponse:
       type: object
       properties:
@@ -2196,6 +2200,10 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Rating'
+        meta:
+          type: object
+          additionalProperties:
+            type: object
     ApiResponseSearchAndPaginationResponsePermissionEntity:
       type: object
       properties:
@@ -2238,6 +2246,10 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/PermissionEntity'
+        meta:
+          type: object
+          additionalProperties:
+            type: object
     ApiResponseSearchAndPaginationResponsePermissionTypeEntity:
       type: object
       properties:
@@ -2287,6 +2299,10 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/PermissionTypeEntity'
+        meta:
+          type: object
+          additionalProperties:
+            type: object
     ApiResponseSearchAndPaginationResponseVirtualAccount:
       type: object
       properties:
@@ -2308,6 +2324,10 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/VirtualAccount'
+        meta:
+          type: object
+          additionalProperties:
+            type: object
     VirtualAccount:
       type: object
       properties:
@@ -2390,6 +2410,10 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/RepaymentTransaction'
+        meta:
+          type: object
+          additionalProperties:
+            type: object
     ApiResponseSearchAndPaginationResponseMerchant:
       type: object
       properties:
@@ -2472,6 +2496,10 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Merchant'
+        meta:
+          type: object
+          additionalProperties:
+            type: object
     ApiResponseSearchAndPaginationResponseInsuranceType:
       type: object
       properties:
@@ -2510,6 +2538,10 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/InsuranceType'
+        meta:
+          type: object
+          additionalProperties:
+            type: object
     ApiResponseSearchAndPaginationResponseProvider:
       type: object
       properties:
@@ -2546,6 +2578,10 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Provider'
+        meta:
+          type: object
+          additionalProperties:
+            type: object
     ApiResponseSearchAndPaginationResponseInsurancePackage:
       type: object
       properties:
@@ -2589,6 +2625,10 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/InsurancePackage'
+        meta:
+          type: object
+          additionalProperties:
+            type: object
     ApiResponseSearchAndPaginationResponseInsuranceOrder:
       type: object
       properties:
@@ -2654,6 +2694,10 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/InsuranceOrder'
+        meta:
+          type: object
+          additionalProperties:
+            type: object
     VehicleInfoDTO:
       type: object
       properties:
@@ -3193,6 +3237,10 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/PaydayLoanHmg'
+        meta:
+          type: object
+          additionalProperties:
+            type: object
     SelfieCheck:
       type: object
       properties:
@@ -3334,6 +3382,10 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/GroupEntity'
+        meta:
+          type: object
+          additionalProperties:
+            type: object
     ApiResponseSearchAndPaginationResponseKalapaResponse:
       type: object
       properties:
@@ -3355,6 +3407,10 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/KalapaResponse'
+        meta:
+          type: object
+          additionalProperties:
+            type: object
     ApiResponseSearchAndPaginationResponseDistrict:
       type: object
       properties:
@@ -3397,6 +3453,10 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/District'
+        meta:
+          type: object
+          additionalProperties:
+            type: object
     ApiResponseSearchAndPaginationResponseCustomerInfo:
       type: object
       properties:
@@ -3418,6 +3478,10 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/CustomerInfo'
+        meta:
+          type: object
+          additionalProperties:
+            type: object
     ApiResponseSearchAndPaginationResponseCompanyInfo:
       type: object
       properties:
@@ -3439,6 +3503,10 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/CompanyInfo'
+        meta:
+          type: object
+          additionalProperties:
+            type: object
     ApiResponseSearchAndPaginationResponseCommune:
       type: object
       properties:
@@ -3481,6 +3549,10 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Commune'
+        meta:
+          type: object
+          additionalProperties:
+            type: object
     ApiResponseSearchAndPaginationResponseCity:
       type: object
       properties:
@@ -3517,6 +3589,10 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/City'
+        meta:
+          type: object
+          additionalProperties:
+            type: object
     ApiResponseSearchAndPaginationResponseQuestion:
       type: object
       properties:
@@ -3613,6 +3689,10 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Question'
+        meta:
+          type: object
+          additionalProperties:
+            type: object
     ApiResponseSearchAndPaginationResponseModel:
       type: object
       properties:
@@ -3699,6 +3779,10 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Model'
+        meta:
+          type: object
+          additionalProperties:
+            type: object
     ApiResponseSearchAndPaginationResponseGroup:
       type: object
       properties:
@@ -3720,6 +3804,10 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Group'
+        meta:
+          type: object
+          additionalProperties:
+            type: object
     ApiResponseSearchAndPaginationResponseBank:
       type: object
       properties:
@@ -3750,6 +3838,10 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Bank'
+        meta:
+          type: object
+          additionalProperties:
+            type: object
     ApiResponseSearchAndPaginationResponseApprovalLetter:
       type: object
       properties:
@@ -3796,6 +3888,10 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ApprovalLetter'
+        meta:
+          type: object
+          additionalProperties:
+            type: object
     ApiResponseLoanPortfolio:
       type: object
       properties:
@@ -3944,6 +4040,8 @@ components:
           $ref: '#/components/schemas/EmployeeData'
         transactionHistory:
           $ref: '#/components/schemas/TransactionHistory'
+        defaultStatus:
+          type: boolean
     SearchAndPaginationResponsePaydayLoanTng:
       type: object
       properties:
@@ -3953,6 +4051,10 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/PaydayLoanTng'
+        meta:
+          type: object
+          additionalProperties:
+            type: object
     AdminAccountEntity:
       type: object
       properties:
@@ -4015,6 +4117,10 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/AdminAccountEntity'
+        meta:
+          type: object
+          additionalProperties:
+            type: object
     ApiResponseTNGInformationResponse:
       type: object
       properties:

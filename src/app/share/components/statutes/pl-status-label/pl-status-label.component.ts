@@ -62,6 +62,8 @@ export class PlStatusLabelComponent implements OnInit {
         return 'pl-status-label-rejected2';
       case PL_LABEL_STATUS.CANCEL:
         return 'pl-status-label-cancel';
+      case PL_LABEL_STATUS.WORSE:
+        return 'pl-status-label-worse';
       case PL_LABEL_STATUS.INFO:
         return 'pl-status-label-info';
       default:

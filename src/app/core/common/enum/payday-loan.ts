@@ -123,6 +123,10 @@ export enum REPAYMENT_STATUS {
   OVERDUE = 'OVERDUE',
 }
 
+export enum DEBT_STATUS {
+  BADDEBT = 'BADDEBT',
+}
+
 export enum APPLICATION_TYPE {
   INSURANCE = 'Insurance',
   PDL_TNG = 'PDL_TNG',

@@ -1,11 +1,19 @@
 <div class="card op-card h-100">
   <div
     *ngIf="!showSelectedPanel"
-    class="card-title d-flex align-items-center justify-content-between gap-1"
+    class="card-title d-flex align-items-center gap-1"
   >
     <h2 [innerHTML]="tableTitle" class="card-name"></h2>
+    <ng-container *ngIf="overviewItems">
+      <div class="overview-data">
+        <div *ngFor="let item of overviewItems">
+          <span class="field">{{ item.field }}</span>: <span class="value">{{ item.value ? (item.value | formatPrice: null) : 0}}</span>
+        </div>
+      </div>
+    </ng-container>
     <!-- Display Column -->
     <button
+      style="margin-left: auto"
       (click)="panelOpenState = !panelOpenState"
       mat-flat-button
       type="button"
@@ -36,7 +44,7 @@
                 [checked]="ele.showed"
                 class="checkbox"
                 color="primary"
-              >{{ ele?.title }}</mat-checkbox
+                >{{ ele?.title }}</mat-checkbox
               >
             </div>
           </div>
@@ -74,7 +82,7 @@
           [style]="button?.style"
           mat-flat-button
         >
-          <img *ngIf="button?.imageSrc" [src]="button?.imageSrc" alt=""/>
+          <img *ngIf="button?.imageSrc" [src]="button?.imageSrc" alt="" />
           <span
             *ngIf="button?.classImgSrc"
             [ngClass]="button?.classImgSrc"
@@ -83,7 +91,10 @@
         </button>
       </ng-container>
 
-      <span (click)="deselectAll()" class="sprite-group-7-close-white clickable"></span>
+      <span
+        (click)="deselectAll()"
+        class="sprite-group-7-close-white clickable"
+      ></span>
     </div>
   </div>
 
@@ -149,6 +160,7 @@
               [type]="column?.type"
               [value]="getPropByString(element, column?.key)"
               [externalValue]="getPropByString(element, column?.externalKey)"
+              [isBadLoan]="getPropByString(element, column?.isBadLoan)"
               class="table-cell-format-data"
             ></app-table-cell-format-data>
           </td>
