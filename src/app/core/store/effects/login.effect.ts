@@ -80,7 +80,7 @@ export class LoginEffects {
     this.commonInfo$ = store$.select(fromStore.getCommonInfoState);
     this.subManager.add(
       this.commonInfo$.subscribe((commonInfo) => {
-        this.commonInfo = commonInfo;
+        this.commonInfo = commonInfo?.commonInfo;
       })
     );
   }

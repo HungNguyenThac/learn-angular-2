@@ -645,9 +645,9 @@ export class LoanListComponent implements OnInit, OnDestroy {
     this.commonInfo$ = store.select(fromStore.getCommonInfoState);
     this.subManager.add(
       this.commonInfo$.subscribe((commonInfo) => {
-        this.commonInfo = commonInfo.commonInfo;
-        this.bankList = this.commonInfo.BankOptions;
-        this.companyList = this.commonInfo.CompanyOptions;
+        this.commonInfo = commonInfo?.commonInfo;
+        this.bankList = this.commonInfo?.BankOptions;
+        this.companyList = this.commonInfo?.CompanyOptions;
       })
     );
     this._initFilterForm();
