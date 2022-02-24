@@ -383,7 +383,7 @@ export class CompareInfoVerificationComponent implements OnInit {
           field.value =
             this.loanDetail?.transactionHistory?.employeeData
               ?.numberOfWorkDays ||
-            this.customerInfo?.employeeData.numberOfWorkDays;
+            this.customerInfo?.employeeData?.numberOfWorkDays;
           break;
         case 'bankCode':
           field.value =
