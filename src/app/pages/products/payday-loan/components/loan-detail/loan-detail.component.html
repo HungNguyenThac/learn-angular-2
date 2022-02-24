@@ -91,13 +91,23 @@
     [label]="'loan_app.tabs.info-verification' | translate"
   >
     <ng-template matTabContent>
-      <app-info-verification
-        [loanId]="loanId"
-        [loanDetail]="loanDetail"
-        [bankOptions]="bankOptions"
-        [customerInfo]="userInfo"
-        (loanDetailDetectChangeStatus)="loanDetailDetectChangeStatusTrigger()"
-      ></app-info-verification>
+      <ng-container *ngIf="loanDetail?.status === 'DOCUMENT_AWAITING'; else compareContent">
+        <app-info-verification
+          [loanId]="loanId"
+          [loanDetail]="loanDetail"
+          [bankOptions]="bankOptions"
+          [customerInfo]="userInfo"
+          (loanDetailDetectChangeStatus)="loanDetailDetectChangeStatusTrigger()"
+        ></app-info-verification>
+      </ng-container>
+      <ng-template #compareContent>
+        <app-compare-info-verification
+          [loanId]="loanId"
+          [loanDetail]="loanDetail"
+          [customerId]="customerId"
+        >
+        </app-compare-info-verification>
+      </ng-template>
     </ng-template>
   </mat-tab>
 </mat-tab-group>

@@ -90,7 +90,7 @@ export class LoanContractComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this._getLoanContractData();
+    // this._getLoanContractData();
   }
 
   getDisplayStatus() {

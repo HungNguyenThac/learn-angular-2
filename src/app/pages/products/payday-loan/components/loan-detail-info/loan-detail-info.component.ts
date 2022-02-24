@@ -1,6 +1,6 @@
 import { NotificationService } from 'src/app/core/services/notification.service';
 import { ToastrService } from 'ngx-toastr';
-import { UpdateLoanStatusRequest } from './../../../../../../../open-api-modules/loanapp-tng-api-docs/model/updateLoanStatusRequest';
+import { UpdateLoanStatusRequest } from '../../../../../../../open-api-modules/loanapp-tng-api-docs';
 import { Subscription } from 'rxjs';
 import { PaydayLoanControllerService as PaydayLoanHmgControllerService } from './../../../../../../../open-api-modules/loanapp-hmg-api-docs/api/paydayLoanController.service';
 import { PaydayLoanControllerService as PaydayLoanTngControllerService } from './../../../../../../../open-api-modules/loanapp-tng-api-docs/api/paydayLoanController.service';
@@ -29,13 +29,10 @@ import * as moment from 'moment';
 import {
   CustomerInfo,
   PaydayLoanTng,
-  Voucher,
 } from 'open-api-modules/dashboard-api-docs';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import formatPunishStartTimeHmg from '../../../../../core/utils/format-punish-start-time-hmg';
 import formatPunishStartTimeTng from '../../../../../core/utils/format-punish-start-time-tng';
-import formatPunishCountHmg from '../../../../../core/utils/format-punish-count-hmg';
-import formatPunishCountTng from '../../../../../core/utils/format-punish-count-tng';
 import { environment } from '../../../../../../environments/environment';
 import { NgxPermissionsService } from 'ngx-permissions';
 import { GlobalConstants } from '../../../../../core/common/global-constants';
@@ -108,6 +105,7 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
   loanInfoForm: FormGroup;
   totalSettlementAmount: number;
   maxLoanAmount: number;
+  warningText: string = '';
   userHasPermissions = {
     loanTngChangeStatus: {
       initialized: false,
@@ -200,19 +198,43 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
         type: DATA_CELL_TYPE.HYPERLINK,
         format: `/customer/list?id__e=${this.loanDetail?.customerId}&accountClassification=ALL`,
       },
-      {
-        title: this.multiLanguageService.instant(
-          'loan_app.loan_info.salary_status'
-        ),
-        value: this.getSalaryStatus(this.loanDetail?.expectedTenure),
-        type: DATA_CELL_TYPE.STATUS,
-        format: DATA_STATUS_TYPE.PL_OTHER_STATUS,
-      },
+      // {
+      //   title: this.multiLanguageService.instant(
+      //     'loan_app.loan_info.salary_status'
+      //   ),
+      //   value: this.getSalaryStatus(this.loanDetail?.expectedTenure),
+      //   type: DATA_CELL_TYPE.STATUS,
+      //   format: DATA_STATUS_TYPE.PL_OTHER_STATUS,
+      // },
       {
         title: this.multiLanguageService.instant(
           'loan_app.loan_info.created_at'
         ),
         value: this.loanDetail?.createdAt,
+        type: DATA_CELL_TYPE.DATETIME,
+        format: 'dd/MM/yyyy HH:mm',
+      },
+      {
+        title: this.multiLanguageService.instant(
+          'loan_app.loan_info.approved_at'
+        ),
+        value: this.loanDetail?.approvedAt,
+        type: DATA_CELL_TYPE.DATETIME,
+        format: 'dd/MM/yyyy HH:mm',
+      },
+      {
+        title: this.multiLanguageService.instant(
+          'loan_app.loan_info.disbursed_at'
+        ),
+        value: this.loanDetail?.disbursedAt,
+        type: DATA_CELL_TYPE.DATETIME,
+        format: 'dd/MM/yyyy HH:mm',
+      },
+      {
+        title: this.multiLanguageService.instant(
+          'loan_app.loan_info.completed_at'
+        ),
+        value: this.loanDetail?.completedAt,
         type: DATA_CELL_TYPE.DATETIME,
         format: 'dd/MM/yyyy HH:mm',
       },
@@ -305,6 +327,14 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
         type: DATA_CELL_TYPE.CURRENCY,
         format: null,
       },
+      // {
+      //   title: this.multiLanguageService.instant(
+      //     'loan_app.loan_info.total_paid_amount'
+      //   ),
+      //   value: this.loanDetail?.totalPaidAmount,
+      //   type: DATA_CELL_TYPE.CURRENCY,
+      //   format: null,
+      // },
     ];
   }
 
@@ -358,9 +388,17 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
       },
       {
         title: this.multiLanguageService.instant(
-          'loan_app.loan_info.staff_in_charge'
+          'loan_app.loan_info.term_type'
         ),
-        value: this.loanDetail?.personInChargeId,
+        value: this.loanDetail?.termType,
+        type: DATA_CELL_TYPE.STATUS,
+        format: DATA_STATUS_TYPE.PL_TERM_TYPE,
+      },
+      {
+        title: this.multiLanguageService.instant(
+          'loan_app.loan_info.loan_purpose'
+        ),
+        value: this.loanDetail?.purpose,
         type: DATA_CELL_TYPE.TEXT,
         format: null,
       },
@@ -564,17 +602,31 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
       `payday_loan.status.${this.loanDetail?.status.toLowerCase()}`
     );
 
+    if (
+      this.isNotMatchedCustomerInfo() &&
+      newStatus === PAYDAY_LOAN_STATUS.AUCTION
+    ) {
+      this.warningText =
+        '</br>' +
+        this.multiLanguageService.instant(
+          'loan_app.loan_info.not_matched_info'
+        );
+    } else {
+      this.warningText = '';
+    }
+
     let promptDialogRef = this.notificationService.openPrompt({
       title: this.multiLanguageService.instant('common.are_you_sure'),
       imgUrl: 'assets/img/payday-loan/warning-prompt-icon.png',
-      content: this.multiLanguageService.instant(
-        'loan_app.loan_info.confirm_change_status_description',
-        {
-          loan_code: this.loanDetail?.loanCode,
-          current_loan_status: currentLoanStatusDisplay,
-          new_loan_status: newStatusDisplay,
-        }
-      ),
+      content:
+        this.multiLanguageService.instant(
+          'loan_app.loan_info.confirm_change_status_description',
+          {
+            loan_code: this.loanDetail?.loanCode,
+            current_loan_status: currentLoanStatusDisplay,
+            new_loan_status: newStatusDisplay,
+          }
+        ) + this.warningText,
       primaryBtnText: this.multiLanguageService.instant('common.confirm'),
       secondaryBtnText: this.multiLanguageService.instant('common.skip'),
     });
@@ -749,13 +801,26 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
 
   //Số tiền vay tối đa
   getMaxLoanAmount(companyGroupName: string) {
+    let annualIncome = this.customerInfo?.annualIncome;
+
+    if (
+      this.loanDetail?.status === PAYDAY_LOAN_STATUS.COMPLETED ||
+      this.loanDetail?.status === PAYDAY_LOAN_STATUS.REJECTED ||
+      this.loanDetail?.status === PAYDAY_LOAN_STATUS.WITHDRAW ||
+      this.loanDetail?.status === PAYDAY_LOAN_STATUS.CONTRACT_REJECTED
+    ) {
+      annualIncome =
+        this.loanDetail?.transactionHistory?.personalData?.annualIncome ||
+        this.customerInfo?.annualIncome;
+    }
+
     switch (companyGroupName) {
       case COMPANY_NAME.HMG:
-        return this.getMaxHMGValue(this.customerInfo?.annualIncome);
+        return this.getMaxHMGValue(annualIncome);
       case COMPANY_NAME.TNG:
-        return this.getMaxTNGValue(this.customerInfo?.annualIncome);
+        return this.getMaxTNGValue(annualIncome);
       case COMPANY_NAME.VAC:
-        return this.getMaxVacValue(this.customerInfo?.annualIncome);
+        return this.getMaxVacValue(annualIncome);
       default:
         return null;
     }
@@ -1067,6 +1132,50 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
     return;
   }
 
+  isNotMatchedCustomerInfo() {
+    if (this.loanDetail?.status != PAYDAY_LOAN_STATUS.DOCUMENTATION_COMPLETE) {
+      return false;
+    }
+
+    if (this.loanDetail?.employeeData?.name !== this.customerInfo?.firstName) {
+      return true;
+    }
+
+    if (
+      this.loanDetail?.employeeData?.mobile !== this.customerInfo?.mobileNumber
+    ) {
+      return true;
+    }
+
+    if (
+      this.loanDetail?.employeeData?.identityNumber !==
+      this.customerInfo?.identityNumberOne
+    ) {
+      return true;
+    }
+
+    if (
+      this.loanDetail?.employeeData?.bankCode !== this.customerInfo?.bankCode
+    ) {
+      return true;
+    }
+
+    if (
+      this.loanDetail?.employeeData?.bankName !== this.customerInfo?.bankName
+    ) {
+      return true;
+    }
+
+    if (
+      this.loanDetail?.employeeData?.accountNumber !==
+      this.customerInfo?.accountNumber
+    ) {
+      return true;
+    }
+
+    return false;
+  }
+
   async getChangeLoanVacStatus() {
     if (!this.loanDetail?.status) return;
     const currentLoanStatus = this.loanDetail?.status;
@@ -1271,10 +1380,7 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
       case PAYDAY_LOAN_STATUS.IN_REPAYMENT:
         return moment().diff(this.loanDetail?.settlementDate, 'days') < 0
           ? 'N/A'
-          : moment().diff(
-              this.loanDetail?.settlementDate,
-              'days'
-            );
+          : moment().diff(this.loanDetail?.settlementDate, 'days');
 
       default:
         return 'N/A';

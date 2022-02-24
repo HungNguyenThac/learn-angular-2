@@ -537,6 +537,33 @@ export class LoanListComponent implements OnInit, OnDestroy {
       showed: false,
     },
     {
+      key: 'approvedAt',
+      title: this.multiLanguageService.instant(
+        'loan_app.loan_info.approved_at'
+      ),
+      type: DATA_CELL_TYPE.DATETIME,
+      format: 'dd/MM/yyyy HH:mm',
+      showed: false,
+    },
+    {
+      key: 'disbursedAt',
+      title: this.multiLanguageService.instant(
+        'loan_app.loan_info.disbursed_at'
+      ),
+      type: DATA_CELL_TYPE.DATETIME,
+      format: 'dd/MM/yyyy HH:mm',
+      showed: false,
+    },
+    {
+      key: 'completedAt',
+      title: this.multiLanguageService.instant(
+        'loan_app.loan_info.completed_at'
+      ),
+      type: DATA_CELL_TYPE.DATETIME,
+      format: 'dd/MM/yyyy HH:mm',
+      showed: false,
+    },
+    {
       key: 'customerInfo.emailAddress',
       title: this.multiLanguageService.instant(
         'customer.individual_info.email'
@@ -555,8 +582,8 @@ export class LoanListComponent implements OnInit, OnDestroy {
     {
       key: 'termType',
       title: this.multiLanguageService.instant('loan_app.loan_info.term_type'),
-      type: DATA_CELL_TYPE.TEXT,
-      format: null,
+      type: DATA_CELL_TYPE.STATUS,
+      format: DATA_STATUS_TYPE.PL_TERM_TYPE,
       showed: false,
     },
   ];
@@ -1071,7 +1098,7 @@ export class LoanListComponent implements OnInit, OnDestroy {
         break;
       case COMPANY_NAME.VAC:
         this.loanListService
-          .exportLoanToExcel(params, APPLICATION_TYPE.PDL_VAC_FACTORY)
+          .exportLoanToExcel(params, APPLICATION_TYPE.PDL_VAC)
           .subscribe((data) => {
             if (!data) {
               return this.notifier.error(

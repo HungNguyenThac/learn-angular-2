@@ -6,13 +6,11 @@ import { RESPONSE_CODE } from './../../../../../core/common/enum/operator';
 import { UpdatedDocumentModel } from './../../../../../public/models/external/updated-document.model';
 import { CustomerDetailService } from 'src/app/pages/customer/components/customer-detail-element/customer-detail.service';
 import {
-  APPLICATION_TYPE,
   DOCUMENT_TYPE,
   DOCUMENT_TYPE_MAPPING_FIELD,
   ERROR_CODE_KEY,
   PAYDAY_LOAN_STATUS,
 } from './../../../../../core/common/enum/payday-loan';
-import { ConfirmationDialog } from './../../../../../share/components/dialogs/confirmation-dialog/confirmation-dialog.component';
 import { ToastrService } from 'ngx-toastr';
 import { MatDialog } from '@angular/material/dialog';
 import { NotificationService } from 'src/app/core/services/notification.service';
@@ -21,7 +19,6 @@ import {
   Component,
   ElementRef,
   EventEmitter,
-  Inject,
   Input,
   OnInit,
   Output,
@@ -31,13 +28,12 @@ import {
   FormBuilder,
   FormControl,
   FormGroup,
-  Validators,
-  ValidationErrors,
   NgForm,
+  ValidationErrors,
+  Validators,
 } from '@angular/forms';
 import {
   Bank,
-  CompanyInfo,
   CustomerInfo,
 } from '../../../../../../../open-api-modules/dashboard-api-docs';
 import { BUTTON_TYPE } from '../../../../../core/common/enum/operator';
@@ -47,14 +43,9 @@ import { MultiLanguageService } from 'src/app/share/translate/multiLanguageServi
 import { NgxPermissionsService } from 'ngx-permissions';
 import { DomSanitizer } from '@angular/platform-browser';
 import { InfoControllerService } from 'open-api-modules/customer-api-docs';
-import {
-  EmployeeData,
-  EmployeeDataRequest,
-  PaydayLoan,
-} from 'open-api-modules/loanapp-tng-api-docs';
+import { EmployeeDataRequest } from 'open-api-modules/loanapp-tng-api-docs';
 import { ApiResponseObject } from 'open-api-modules/com-api-docs';
 import * as moment from 'moment';
-import { PhoneNumberValidatorDirective } from 'src/app/share/validators';
 
 @Component({
   selector: 'app-info-verification',
@@ -92,87 +83,6 @@ export class InfoVerificationComponent implements OnInit, AfterViewInit {
   banksFilterCtrl: FormControl = new FormControl();
   filteredBanks: any[];
   infoVerificationForm: FormGroup;
-
-  infoFields = [
-    {
-      title: this.multiLanguageService.instant(
-        'loan_app.info_verification.customer_name'
-      ),
-      value: 'name',
-    },
-    {
-      title: this.multiLanguageService.instant(
-        'loan_app.info_verification.mobile_number'
-      ),
-      value: 'mobile',
-    },
-    {
-      title: this.multiLanguageService.instant(
-        'loan_app.info_verification.identity_number'
-      ),
-      value: 'identityNumber',
-    },
-    {
-      title: this.multiLanguageService.instant(
-        'loan_app.info_verification.start_working_day'
-      ),
-      value: 'startWorkingDay',
-    },
-    {
-      title: this.multiLanguageService.instant(
-        'loan_app.info_verification.contract_type'
-      ),
-      value: 'contractType',
-    },
-    {
-      title: this.multiLanguageService.instant(
-        'loan_app.info_verification.current_job'
-      ),
-      value: 'job',
-    },
-    {
-      title: this.multiLanguageService.instant(
-        'loan_app.info_verification.address'
-      ),
-      value: 'address',
-    },
-    {
-      title: this.multiLanguageService.instant(
-        'loan_app.info_verification.current_month_working_days_number'
-      ),
-      value: 'numberOfWorkDays',
-    },
-    {
-      title: this.multiLanguageService.instant(
-        'loan_app.info_verification.salary_bank'
-      ),
-      value: 'bankCode',
-    },
-    {
-      title: this.multiLanguageService.instant(
-        'loan_app.info_verification.salary_bank_number'
-      ),
-      value: 'accountNumber',
-    },
-    {
-      title: this.multiLanguageService.instant(
-        'loan_app.info_verification.salary_infomation_one'
-      ),
-      value: 'salaryInfomationOne',
-    },
-    {
-      title: this.multiLanguageService.instant(
-        'loan_app.info_verification.salary_infomation_two'
-      ),
-      value: 'salaryInfomationTwo',
-    },
-    {
-      title: this.multiLanguageService.instant(
-        'loan_app.info_verification.salary_infomation_three'
-      ),
-      value: 'salaryInfomationThree',
-    },
-  ];
 
   leftInfos = [
     {
@@ -422,8 +332,8 @@ export class InfoVerificationComponent implements OnInit, AfterViewInit {
   private initInfoVerificationFormData() {
     if (
       this.loanDetail?.status !== PAYDAY_LOAN_STATUS.DOCUMENT_AWAITING &&
-      PAYDAY_LOAN_STATUS.INITIALIZED &&
-      PAYDAY_LOAN_STATUS.UNKNOWN_STATUS
+      this.loanDetail?.status !== PAYDAY_LOAN_STATUS.INITIALIZED &&
+      this.loanDetail?.status !== PAYDAY_LOAN_STATUS.UNKNOWN_STATUS
     ) {
       this.hiddenUploadBtn = true;
       this.hiddenDeleteBtn = true;
@@ -816,7 +726,8 @@ export class InfoVerificationComponent implements OnInit, AfterViewInit {
       const controlErrors: ValidationErrors =
         this.infoVerificationForm.get(key).errors;
       console.log('key', key, controlErrors);
-      const errorField = this.infoFields.find((ele) => ele.value === key);
+      let infoFields = [...this.leftInfos, ...this.rightInfos];
+      const errorField = infoFields.find((ele) => ele.value === key);
       if (controlErrors != null) {
         Object.keys(controlErrors).forEach((keyError) => {
           if (keyError === 'required') {

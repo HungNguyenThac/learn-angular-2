@@ -2,6 +2,7 @@ import {
   CUSTOMER_STATUS,
   DEBT_STATUS,
   PAYDAY_LOAN_REPAYMENT_STATUS,
+  TERM_TYPE,
 } from './../../../../core/common/enum/payday-loan';
 import { PlStatusLabelComponent } from './../pl-status-label/pl-status-label.component';
 import {
@@ -99,6 +100,8 @@ export class PlStatusElementComponent implements OnInit, AfterViewInit {
         return this.loanRepaymentStatusContent(this.statusValue);
       case DATA_STATUS_TYPE.PL_DEBT_STATUS:
         return this.loanDebtStatusContent(this.statusValue);
+      case DATA_STATUS_TYPE.PL_TERM_TYPE:
+        return this.loanTermType(this.statusValue);
       case DATA_STATUS_TYPE.PL_RATING_STATUS:
         return this.loanRatingStatusContent(this.statusValue);
       case DATA_STATUS_TYPE.USER_STATUS:
@@ -316,6 +319,26 @@ export class PlStatusElementComponent implements OnInit, AfterViewInit {
         };
       default:
         return 'N/A';
+    }
+  }
+
+  loanTermType(status) {
+    switch (status) {
+      case TERM_TYPE.THREE_MONTH:
+        return {
+          label: this.multiLanguageService.instant(
+            'payday_loan.term_type.three_month'
+          ),
+          labelStatus: PL_LABEL_STATUS.SUCCESS,
+        };
+      case TERM_TYPE.ONE_MONTH:
+      default:
+        return {
+          label: this.multiLanguageService.instant(
+            'payday_loan.term_type.one_month'
+          ),
+          labelStatus: PL_LABEL_STATUS.INFO,
+        };
     }
   }
 
