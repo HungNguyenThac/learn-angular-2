@@ -95,8 +95,8 @@ export class LoanNoteComponent implements OnInit {
         updateLoanRequest.applicationType = APPLICATION_TYPE.PDL_TNG;
         this.updateLoanInfo(updateLoanRequest);
         break;
-      case 'VAC':
-        updateLoanRequest.applicationType = APPLICATION_TYPE.PDL_VAC;
+      case COMPANY_NAME.VAC:
+        updateLoanRequest.applicationType = this.loanDetail?.applicationType;
         this.updateLoanInfo(updateLoanRequest);
         break;
     }

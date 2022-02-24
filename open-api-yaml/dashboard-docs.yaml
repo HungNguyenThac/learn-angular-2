@@ -1280,6 +1280,37 @@ paths:
               schema:
                 type: string
                 format: binary
+  /v1/applications/comparisonLoans:
+    post:
+      tags:
+      - application-controller
+      operationId: getLoanComparison
+      parameters:
+      - name: orderBy
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: descending
+        in: query
+        required: false
+        schema:
+          type: boolean
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties:
+                type: object
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseLoanPortfolioComparison'
   /v1/applications/appendCustomerInfo:
     post:
       tags:
@@ -2915,14 +2946,8 @@ components:
           type: string
         tngData:
           $ref: '#/components/schemas/TNGInformationResponse'
-        jobPosition:
-          type: string
-        workAddress:
-          type: string
-        jobType:
-          type: string
-        contractExpiration:
-          type: string
+        employeeData:
+          $ref: '#/components/schemas/EmployeeData'
         kalapaData:
           $ref: '#/components/schemas/KalapaResponse'
         virtualAccount:
@@ -2945,6 +2970,57 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/CompleteApplication'
+    EmployeeData:
+      type: object
+      properties:
+        name:
+          type: string
+        mobile:
+          type: string
+        identityNumber:
+          type: string
+        startWorkingDay:
+          type: string
+        contractType:
+          type: string
+        job:
+          type: string
+        address:
+          type: string
+        numberOfWorkDays:
+          type: string
+        bankName:
+          type: string
+        bankCode:
+          type: string
+        accountNumber:
+          type: string
+        salaryDocument1:
+          type: string
+        salaryDocument2:
+          type: string
+        salaryDocument3:
+          type: string
+        jobPosition:
+          type: string
+        workAddress:
+          type: string
+        jobType:
+          type: string
+        contractExpiration:
+          type: string
+        hasCreditCard:
+          type: string
+        creditCardDuration:
+          type: string
+        employmentDuration:
+          type: string
+        numberOfDependent:
+          type: string
+        livingArrangement:
+          type: string
+        ownershipOfTransport:
+          type: string
     FinancialData:
       type: object
       properties:
@@ -3110,6 +3186,13 @@ components:
           type: string
         transactionHistory:
           $ref: '#/components/schemas/TransactionHistory'
+        repaymentTransactionList:
+          type: array
+          items:
+            $ref: '#/components/schemas/RepaymentTransaction'
+        totalPaidAmount:
+          type: integer
+          format: int32
     PersonalData:
       type: object
       properties:
@@ -3266,6 +3349,8 @@ components:
           $ref: '#/components/schemas/KalapaResponse'
         tngData:
           $ref: '#/components/schemas/TNGInformationResponse'
+        employeeData:
+          $ref: '#/components/schemas/EmployeeData'
         createdAt:
           type: string
     Voucher:
@@ -3925,43 +4010,6 @@ components:
         responseCode:
           type: integer
           format: int32
-    EmployeeData:
-      type: object
-      properties:
-        name:
-          type: string
-        mobile:
-          type: string
-        identityNumber:
-          type: string
-        startWorkingDay:
-          type: string
-        job:
-          type: string
-        address:
-          type: string
-        numberOfWorkDays:
-          type: string
-        bankName:
-          type: string
-        bankCode:
-          type: string
-        accountNumber:
-          type: string
-        salaryDocument1:
-          type: string
-        salaryDocument2:
-          type: string
-        salaryDocument3:
-          type: string
-        jobPosition:
-          type: string
-        workAddress:
-          type: string
-        jobType:
-          type: string
-        contractExpiration:
-          type: string
     PaydayLoanTng:
       type: object
       properties:
@@ -4042,6 +4090,13 @@ components:
           $ref: '#/components/schemas/TransactionHistory'
         defaultStatus:
           type: boolean
+        repaymentTransactionList:
+          type: array
+          items:
+            $ref: '#/components/schemas/RepaymentTransaction'
+        totalPaidAmount:
+          type: integer
+          format: int32
     SearchAndPaginationResponsePaydayLoanTng:
       type: object
       properties:
@@ -4055,6 +4110,33 @@ components:
           type: object
           additionalProperties:
             type: object
+    ApiResponseLoanPortfolioComparison:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/LoanPortfolioComparison'
+        errorCode:
+          type: string
+        message:
+          type: object
+        responseCode:
+          type: integer
+          format: int32
+    LoanPortfolioComparison:
+      type: object
+      properties:
+        totalGoodLoans:
+          type: integer
+          format: int32
+        totalBadLoans:
+          type: integer
+          format: int32
+        totalLoans:
+          type: integer
+          format: int32
+        defaultOdds:
+          type: number
+          format: float
     AdminAccountEntity:
       type: object
       properties:

@@ -6,6 +6,7 @@ import { Store } from '@ngrx/store';
 import * as fromStore from 'src/app/core/store/index';
 import { MatDialog } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
+import * as fromActions from "../../core/store/actions";
 
 @Component({
   selector: 'app-main-layout',
@@ -44,6 +45,7 @@ export class MainLayoutComponent implements OnInit {
   initCustomerState() {
     if (this.accessToken) {
       this.store.dispatch(new fromStore.GetCustomerInfo(this.customerId));
+      this.store.dispatch(new fromActions.GetCommonInfo(null));
     }
   }
 
