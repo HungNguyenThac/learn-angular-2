@@ -604,7 +604,8 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
 
     if (
       this.isNotMatchedCustomerInfo() &&
-      newStatus === PAYDAY_LOAN_STATUS.AUCTION
+      newStatus === PAYDAY_LOAN_STATUS.AUCTION &&
+      this.groupName === COMPANY_NAME.VAC
     ) {
       this.warningText =
         '</br>' +
