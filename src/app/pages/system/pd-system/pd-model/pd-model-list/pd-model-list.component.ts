@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import {
   BUTTON_TYPE,
   DATA_CELL_TYPE,
@@ -15,7 +15,7 @@ import { FilterOptionModel } from '../../../../../public/models/filter/filter-op
 import { MultiLanguageService } from '../../../../../share/translate/multiLanguageService';
 import { NotificationService } from '../../../../../core/services/notification.service';
 import { ToastrService } from 'ngx-toastr';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { Title } from '@angular/platform-browser';
 import { GlobalConstants } from '../../../../../core/common/global-constants';
@@ -31,7 +31,7 @@ import {
 } from '../../../../../share/components';
 import { AddNewPdDialogComponent } from '../../../../../share/components';
 import { PdModelListService } from './pd-model-list.service';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import {
   ApiResponse,
   CdeService,
@@ -42,13 +42,16 @@ import {
   ApiResponseSearchAndPaginationResponseModel,
   CdeControllerService,
 } from '../../../../../../../open-api-modules/dashboard-api-docs';
+import * as fromStore from '../../../../../core/store';
+import * as fromSelectors from '../../../../../core/store/selectors';
+import { Store } from '@ngrx/store';
 
 @Component({
   selector: 'app-pd-model-list',
   templateUrl: './pd-model-list.component.html',
   styleUrls: ['./pd-model-list.component.scss'],
 })
-export class PdModelListComponent implements OnInit {
+export class PdModelListComponent implements OnInit, OnDestroy {
   //Mock data
   allColumns: any[] = [
     {
@@ -200,6 +203,8 @@ export class PdModelListComponent implements OnInit {
     // },
   ];
 
+  private readonly routeAllState$: Observable<Params>;
+
   constructor(
     private multiLanguageService: MultiLanguageService,
     private notificationService: NotificationService,
@@ -211,14 +216,25 @@ export class PdModelListComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private pdModelListService: PdModelListService,
     private cdeControllerService: CdeControllerService,
-    private cdeService: CdeService
+    private cdeService: CdeService,
+    private store: Store<fromStore.State>
   ) {
+    this.routeAllState$ = store.select(fromSelectors.getRouterAllState);
     this._initFilterForm();
   }
 
   ngOnInit(): void {
-    this._getModelList();
-    this._getGroupList();
+    this._initSubscription();
+  }
+
+  private _initSubscription() {
+    this.subManager.add(
+      this.routeAllState$.subscribe((params) => {
+        this._parseQueryParams(params?.queryParams);
+        this._getGroupList();
+        this._getModelList();
+      })
+    );
   }
 
   public _getGroupList() {
@@ -782,5 +798,9 @@ export class PdModelListComponent implements OnInit {
       }
       return requestArray;
     }
+  }
+
+  ngOnDestroy() {
+    this.subManager.unsubscribe();
   }
 }
