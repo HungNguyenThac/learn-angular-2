@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import {
   BUTTON_TYPE,
   DATA_CELL_TYPE,
@@ -13,7 +13,7 @@ import { FilterOptionModel } from '../../../../../public/models/filter/filter-op
 import { MultiLanguageService } from '../../../../../share/translate/multiLanguageService';
 import { NotificationService } from '../../../../../core/services/notification.service';
 import { ToastrService } from 'ngx-toastr';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { Title } from '@angular/platform-browser';
 import { GlobalConstants } from '../../../../../core/common/global-constants';
@@ -26,13 +26,17 @@ import {
   MerchantGroupDialogComponent,
 } from '../../../../../share/components';
 import {environment} from "../../../../../../environments/environment";
+import { Observable, Subscription } from 'rxjs';
+import * as fromStore from '../../../../../core/store';
+import * as fromSelectors from '../../../../../core/store/selectors';
+import { Store } from '@ngrx/store';
 
 @Component({
   selector: 'app-pd-answers-list',
   templateUrl: './pd-answers-list.component.html',
   styleUrls: ['./pd-answers-list.component.scss'],
 })
-export class PdAnswersListComponent implements OnInit {
+export class PdAnswersListComponent implements OnInit, OnDestroy {
   //Mock data
   merchantList: any[] = [
     {
@@ -200,6 +204,10 @@ export class PdAnswersListComponent implements OnInit {
     // },
   ];
 
+  subManager = new Subscription();
+
+  private readonly routeAllState$: Observable<Params>;
+
   constructor(
     private multiLanguageService: MultiLanguageService,
     private notificationService: NotificationService,
@@ -208,8 +216,10 @@ export class PdAnswersListComponent implements OnInit {
     private router: Router,
     private dialog: MatDialog,
     private titleService: Title,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private store: Store<fromStore.State>
   ) {
+    this.routeAllState$ = store.select(fromSelectors.getRouterAllState);
     this._initFilterForm();
   }
 
@@ -220,6 +230,15 @@ export class PdAnswersListComponent implements OnInit {
     //     environment.PROJECT_NAME
     // );
     this.dataSource.data = this.merchantList;
+    // this._initSubscription();
+  }
+
+  private _initSubscription() {
+    this.subManager.add(
+      this.routeAllState$.subscribe((params) => {
+        this._parseQueryParams(params?.queryParams);
+      })
+    );
   }
 
   public onSortChange(sortState: Sort) {
@@ -467,5 +486,9 @@ export class PdAnswersListComponent implements OnInit {
         width: '90%',
       }
     );
+  }
+
+  ngOnDestroy() {
+    this.subManager.unsubscribe();
   }
 }

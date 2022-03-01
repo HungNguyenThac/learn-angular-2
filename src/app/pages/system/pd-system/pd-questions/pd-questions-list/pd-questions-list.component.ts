@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import {
   BUTTON_TYPE,
   DATA_CELL_TYPE,
@@ -15,7 +15,7 @@ import { PAYDAY_LOAN_UI_STATUS } from '../../../../../core/common/enum/payday-lo
 import { MultiLanguageService } from '../../../../../share/translate/multiLanguageService';
 import { NotificationService } from '../../../../../core/services/notification.service';
 import { ToastrService } from 'ngx-toastr';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { Title } from '@angular/platform-browser';
 import { GlobalConstants } from '../../../../../core/common/global-constants';
@@ -36,7 +36,7 @@ import {
   ApiResponseSearchAndPaginationResponseMerchant,
   ApiResponseSearchAndPaginationResponseQuestion,
 } from '../../../../../../../open-api-modules/dashboard-api-docs';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { PdQuestionsListService } from './pd-questions-list.service';
 import {
   ApiResponse,
@@ -46,13 +46,16 @@ import {
   ApiResponseMerchant,
   ApiResponseString,
 } from '../../../../../../../open-api-modules/merchant-api-docs';
+import * as fromStore from '../../../../../core/store';
+import * as fromSelectors from '../../../../../core/store/selectors';
+import { Store } from '@ngrx/store';
 
 @Component({
   selector: 'app-pd-questions-list',
   templateUrl: './pd-questions-list.component.html',
   styleUrls: ['./pd-questions-list.component.scss'],
 })
-export class PdQuestionsListComponent implements OnInit {
+export class PdQuestionsListComponent implements OnInit, OnDestroy {
   allColumns: any[] = [
     {
       key: 'code',
@@ -207,6 +210,8 @@ export class PdQuestionsListComponent implements OnInit {
     // },
   ];
 
+  private readonly routeAllState$: Observable<Params>;
+
   constructor(
     private multiLanguageService: MultiLanguageService,
     private notificationService: NotificationService,
@@ -217,13 +222,15 @@ export class PdQuestionsListComponent implements OnInit {
     private titleService: Title,
     private activatedRoute: ActivatedRoute,
     private pdQuestionsListService: PdQuestionsListService,
-    private cdeService: CdeService
+    private cdeService: CdeService,
+    private store: Store<fromStore.State>
   ) {
+    this.routeAllState$ = store.select(fromSelectors.getRouterAllState);
     this._initFilterForm();
   }
 
   ngOnInit(): void {
-    this._getQuestionsList();
+    this._initSubscription();
   }
 
   public _getQuestionsList() {
@@ -246,6 +253,15 @@ export class PdQuestionsListComponent implements OnInit {
     //     this.dataSource.data = data?.result;
     //   })
     // );
+  }
+
+  private _initSubscription() {
+    this.subManager.add(
+      this.routeAllState$.subscribe((params) => {
+        this._parseQueryParams(params?.queryParams);
+        this._getQuestionsList();
+      })
+    );
   }
 
   public onSortChange(sortState: Sort) {
@@ -671,5 +687,9 @@ export class PdQuestionsListComponent implements OnInit {
       answers: data?.answers ? data?.answers : null,
       isMandatory: data?.isMandatory,
     };
+  }
+
+  ngOnDestroy() {
+    this.subManager.unsubscribe();
   }
 }
