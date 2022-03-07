@@ -423,7 +423,7 @@ export class PdModelListComponent implements OnInit, OnDestroy {
     const action = event.action;
     const list = event.selectedList;
     // const idArr = list.map((model) => model.objectId);
-    const idArr = list.map((model) => model.id);
+    const idArr = list.map((model) => model.objectId);
     switch (action) {
       case 'lock':
         this.lockMultiplePrompt(idArr);
