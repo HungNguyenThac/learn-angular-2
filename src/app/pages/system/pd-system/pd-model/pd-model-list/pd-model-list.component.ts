@@ -255,24 +255,24 @@ export class PdModelListComponent implements OnInit, OnDestroy {
 
   public _getModelList() {
     const params = this._buildParams();
-    // this.pdModelListService
-    //   .getData(params)
-    //   .subscribe((data: ApiResponseSearchAndPaginationResponseModel) => {
-    //     this._parseData(data?.result);
-    //     this.dataSource.data = data?.result?.data;
-    //   });
-    this.subManager.add(
-      this.cdeService.cdeControllerGetPdModel().subscribe((data) => {
-        // @ts-ignore
-        let list = data?.result.map((item) => {
-          return {
-            ...item,
-            code: item.code + '-' + item.id,
-          };
-        });
-        this.dataSource.data = list;
-      })
-    );
+    this.pdModelListService
+      .getData(params)
+      .subscribe((data: ApiResponseSearchAndPaginationResponseModel) => {
+        this._parseData(data?.result);
+        this.dataSource.data = data?.result?.data;
+      });
+    // this.subManager.add(
+    //   this.cdeService.cdeControllerGetPdModel().subscribe((data) => {
+    //     // @ts-ignore
+    //     let list = data?.result.map((item) => {
+    //       return {
+    //         ...item,
+    //         code: item.code + '-' + item.id,
+    //       };
+    //     });
+    //     this.dataSource.data = list;
+    //   })
+    // );
   }
 
   public onSortChange(sortState: Sort) {
@@ -423,7 +423,7 @@ export class PdModelListComponent implements OnInit, OnDestroy {
     const action = event.action;
     const list = event.selectedList;
     // const idArr = list.map((model) => model.objectId);
-    const idArr = list.map((model) => model.id);
+    const idArr = list.map((model) => model.objectId);
     switch (action) {
       case 'lock':
         this.lockMultiplePrompt(idArr);
@@ -591,7 +591,7 @@ export class PdModelListComponent implements OnInit, OnDestroy {
     let leftArr = [...this.groupList];
     leftArr = leftArr.map((item) => {
       return {
-        id: parseInt(item.id),
+        id: item.id,
         content: item.content,
       };
     });
@@ -639,7 +639,7 @@ export class PdModelListComponent implements OnInit, OnDestroy {
             result.data.removeArr
           );
           this.sendUpdateRequest(
-            info.id,
+            info.objectId,
             createRequest,
             addQuestionsRequest,
             updateQuestionsRequest,
