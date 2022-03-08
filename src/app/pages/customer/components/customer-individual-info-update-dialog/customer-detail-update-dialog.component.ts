@@ -2,39 +2,39 @@ import {
   FormBuilder,
   FormControl,
   FormGroup,
-  Validators
-} from "@angular/forms";
-import { CustomerInfo } from "../../../../../../open-api-modules/dashboard-api-docs";
-import { MultiLanguageService } from "../../../../share/translate/multiLanguageService";
-import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
-import { Component, Inject, OnInit } from "@angular/core";
-import * as moment from "moment";
-import { VirtualAccount } from "../../../../../../open-api-modules/payment-api-docs";
-import { Bank } from "open-api-modules/dashboard-api-docs";
+  Validators,
+} from '@angular/forms';
+import { CustomerInfo } from '../../../../../../open-api-modules/dashboard-api-docs';
+import { MultiLanguageService } from '../../../../share/translate/multiLanguageService';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { Component, Inject, OnInit } from '@angular/core';
+import * as moment from 'moment';
+import { VirtualAccount } from '../../../../../../open-api-modules/payment-api-docs';
+import { Bank } from 'open-api-modules/dashboard-api-docs';
 import {
   BUTTON_TYPE,
-  RESPONSE_CODE
-} from "../../../../core/common/enum/operator";
-import { Subject, Subscription } from "rxjs";
+  RESPONSE_CODE,
+} from '../../../../core/common/enum/operator';
+import { Subject, Subscription } from 'rxjs';
 import {
   ApiResponseListCity,
   ApiResponseListDistrict,
   CityControllerService,
-  DistrictControllerService
-} from "../../../../../../open-api-modules/customer-api-docs";
-import { takeUntil } from "rxjs/operators";
-import { ToastrService } from "ngx-toastr";
+  DistrictControllerService,
+} from '../../../../../../open-api-modules/customer-api-docs';
+import { takeUntil } from 'rxjs/operators';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
-  selector: "app-customer-detail-update-dialog",
-  templateUrl: "./customer-detail-update-dialog.component.html",
-  styleUrls: ["./customer-detail-update-dialog.component.scss"]
+  selector: 'app-customer-detail-update-dialog',
+  templateUrl: './customer-detail-update-dialog.component.html',
+  styleUrls: ['./customer-detail-update-dialog.component.scss'],
 })
 export class CustomerDetailUpdateDialogComponent implements OnInit {
   customerInfo: CustomerInfo = {};
   virtualAccount: VirtualAccount = {};
   bankOptions: Array<Bank>;
-  customerId: string = "";
+  customerId: string = '';
   selfieSrc: string;
   // cityData: any[];
   // districtData: any[];
@@ -52,47 +52,85 @@ export class CustomerDetailUpdateDialogComponent implements OnInit {
 
   customerIndividualForm: FormGroup;
 
-  maxDateTime = moment(new Date(), "YYYY-MM-DD")
-    .subtract(18, "years")
+  maxDateTime = moment(new Date(), 'YYYY-MM-DD')
+    .subtract(18, 'years')
     .toISOString();
 
-  minDateTime = moment(new Date(), "YYYY-MM-DD")
-    .subtract(70, "years")
+  minDateTime = moment(new Date(), 'YYYY-MM-DD')
+    .subtract(70, 'years')
     .toISOString();
 
   genderOptions: any[] = [
-    { name: "N/A", value: "" },
+    { name: 'N/A', value: '' },
     {
-      name: this.multiLanguageService.instant("customer.individual_info.gender_male"),
-      value: this.multiLanguageService.instant("customer.individual_info.gender_male")
+      name: this.multiLanguageService.instant(
+        'customer.individual_info.gender_male'
+      ),
+      value: this.multiLanguageService.instant(
+        'customer.individual_info.gender_male'
+      ),
     },
     {
-      name: this.multiLanguageService.instant("customer.individual_info.gender_female"),
-      value: this.multiLanguageService.instant("customer.individual_info.gender_female")
+      name: this.multiLanguageService.instant(
+        'customer.individual_info.gender_female'
+      ),
+      value: this.multiLanguageService.instant(
+        'customer.individual_info.gender_female'
+      ),
     },
     {
-      name: this.multiLanguageService.instant("customer.individual_info.gender_other"),
-      value: this.multiLanguageService.instant("customer.individual_info.gender_other")
-    }
+      name: this.multiLanguageService.instant(
+        'customer.individual_info.gender_other'
+      ),
+      value: this.multiLanguageService.instant(
+        'customer.individual_info.gender_other'
+      ),
+    },
   ];
 
   numberOfDependentsOptions: any = {
-    fieldName: "Số người PTTC",
-    options: [{ name: "N/A", value: "" }, { name: "0", value: "0" }, { name: "1", value: "1" }, {
-      name: "2",
-      value: "2"
-    }, { name: "3", value: "3" }, { name: "Nhiều hơn 3", value: "Nhiều hơn 3" }]
+    fieldName: this.multiLanguageService.instant(
+      'customer.individual_info.number_of_dependents'
+    ),
+    options: [
+      {
+        value: '0',
+        title: '0',
+      },
+      {
+        value: '1',
+        title: '1',
+      },
+      {
+        value: '2',
+        title: '2',
+      },
+      {
+        value: '3',
+        title: '3',
+      },
+      {
+        value: '4',
+        title: '4',
+      },
+    ],
   };
 
   maritalStatusOptions = {
-    fieldName: "Tình trạng độc thân",
-    options: [{ name: "N/A", value: "" }, { name: "Độc thân", value: "Độc thân" }, {
-      name: "Đã kết hôn",
-      value: "Đã kết hôn"
-    }, { name: "Ly hôn", value: "Ly hôn" }, { name: "Góa vợ/ chồng", value: "Góa vợ/ chồng" }]
+    fieldName: 'Tình trạng độc thân',
+    options: [
+      { name: 'N/A', value: '' },
+      { name: 'Độc thân', value: 'Độc thân' },
+      {
+        name: 'Đã kết hôn',
+        value: 'Đã kết hôn',
+      },
+      { name: 'Ly hôn', value: 'Ly hôn' },
+      { name: 'Góa vợ/ chồng', value: 'Góa vợ/ chồng' },
+    ],
   };
 
-  bankNA = { bankCode: "", bankName: "N/A" };
+  bankNA = { bankCode: '', bankName: 'N/A' };
 
   constructor(
     private dialogRef: MatDialogRef<CustomerDetailUpdateDialogComponent>,
@@ -138,31 +176,31 @@ export class CustomerDetailUpdateDialogComponent implements OnInit {
 
   buildIndividualForm() {
     this.customerIndividualForm = this.formBuilder.group({
-      id: [""],
-      firstName: ["", [Validators.maxLength(250)]],
-      mobileNumber: ["", [Validators.minLength(10), Validators.maxLength(12)]],
-      email: ["", [Validators.email]],
-      dateOfBirth: [""],
-      gender: [""],
+      id: [''],
+      firstName: ['', [Validators.maxLength(250)]],
+      mobileNumber: ['', [Validators.minLength(10), Validators.maxLength(12)]],
+      email: ['', [Validators.email]],
+      dateOfBirth: [''],
+      gender: [''],
       identityNumberOne: [
-        "",
-        [Validators.minLength(9), Validators.maxLength(12)]
+        '',
+        [Validators.minLength(9), Validators.maxLength(12)],
       ],
-      addressTwoLine1: ["", [Validators.maxLength(250)]],
+      addressTwoLine1: ['', [Validators.maxLength(250)]],
       // city: [''],
       // district: [''],
       // commune: [''],
       // apartmentNumber: ['', [Validators.maxLength(250)]],
-      addressOneLine1: ["", [Validators.maxLength(250)]],
-      idOrigin: ["", Validators.maxLength(250)],
-      numberOfDependents: [""],
-      maritalStatus: [""],
-      accountNumber: [""],
-      bankCode: [""],
-      bankName: [""],
-      vaAccountNumber: [""],
-      createdAt: [""],
-      updatedAt: [""]
+      addressOneLine1: ['', [Validators.maxLength(250)]],
+      idOrigin: ['', Validators.maxLength(250)],
+      numberOfDependents: [''],
+      maritalStatus: [''],
+      accountNumber: [''],
+      bankCode: [''],
+      bankName: [''],
+      vaAccountNumber: [''],
+      createdAt: [''],
+      updatedAt: [''],
     });
   }
 
@@ -180,7 +218,7 @@ export class CustomerDetailUpdateDialogComponent implements OnInit {
       mobileNumber: this.customerInfo?.mobileNumber,
       email: this.customerInfo?.emailAddress,
       dateOfBirth: this.formatDateToDisplay(this.customerInfo?.dateOfBirth),
-      gender: this.customerInfo?.gender || "",
+      gender: this.customerInfo?.gender || '',
       identityNumberOne: this.customerInfo?.identityNumberOne,
       addressTwoLine1: this.customerInfo?.addressTwoLine1,
       // city: this.customerInfo?.city,
@@ -189,18 +227,18 @@ export class CustomerDetailUpdateDialogComponent implements OnInit {
       // apartmentNumber: this.customerInfo?.apartmentNumber,
       addressOneLine1: this.customerInfo?.addressOneLine1,
       idOrigin: this.customerInfo?.idOrigin,
-      numberOfDependents: this.customerInfo?.borrowerDetailTextVariable1 || "",
-      maritalStatus: this.customerInfo?.maritalStatus || "",
+      numberOfDependents: this.customerInfo?.borrowerDetailTextVariable1 || '',
+      maritalStatus: this.customerInfo?.maritalStatus || '',
       accountNumber: this.customerInfo?.accountNumber || null,
-      bankCode: this.customerInfo?.bankCode || "",
-      bankName: this.customerInfo?.bankName || "",
+      bankCode: this.customerInfo?.bankCode || '',
+      bankName: this.customerInfo?.bankName || '',
       vaAccountNumber: this.virtualAccount?.accountNumber || null,
       createdAt: this.customerInfo?.createdAt
         ? this.formatTime(this.customerInfo?.createdAt)
         : null,
       updatedAt: this.customerInfo?.updatedAt
         ? this.formatTime(this.customerInfo?.updatedAt)
-        : null
+        : null,
     });
   }
 
@@ -210,22 +248,22 @@ export class CustomerDetailUpdateDialogComponent implements OnInit {
     }
     this.dialogRef.close({
       type: BUTTON_TYPE.PRIMARY,
-      data: this.customerIndividualForm.getRawValue()
+      data: this.customerIndividualForm.getRawValue(),
     });
   }
 
   formatTime(time) {
     if (!time) return;
-    return moment(new Date(time), "YYYY-MM-DD HH:mm:ss").format(
-      "DD/MM/YYYY HH:mm"
+    return moment(new Date(time), 'YYYY-MM-DD HH:mm:ss').format(
+      'DD/MM/YYYY HH:mm'
     );
   }
 
   formatDateToDisplay(date) {
-    let formatDate = moment(date, ["DD-MM-YYYY", "DD/MM/YYYY"]).format(
-      "YYYY-DD-MM HH:mm:ss"
+    let formatDate = moment(date, ['DD-MM-YYYY', 'DD/MM/YYYY']).format(
+      'YYYY-DD-MM HH:mm:ss'
     );
-    return moment(formatDate, "YYYY-DD-MM").toISOString();
+    return moment(formatDate, 'YYYY-DD-MM').toISOString();
   }
 
   changeBank(event) {
