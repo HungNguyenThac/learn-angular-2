@@ -52,7 +52,6 @@
                     }}</mat-label>
                     <input
                       matInput
-
                       [placeholder]="
                         'customer.individual_info.fullname' | translate
                       "
@@ -76,7 +75,6 @@
                     }}</mat-label>
                     <input
                       matInput
-
                       appPhoneNumberOnly
                       phone-number-validate
                       [placeholder]="
@@ -104,7 +102,6 @@
                     }}</mat-label>
                     <input
                       matInput
-
                       [placeholder]="
                         'customer.individual_info.email' | translate
                       "
@@ -128,7 +125,6 @@
                     }}</mat-label>
                     <input
                       matInput
-
                       [matDatepicker]="picker"
                       [placeholder]="
                         'customer.individual_info.date_of_birth' | translate
@@ -156,7 +152,7 @@
                     <mat-label>{{
                       "customer.individual_info.gender" | translate
                     }}</mat-label>
-                    <mat-select formControlName="gender" >
+                    <mat-select formControlName="gender">
                       <mat-option
                         *ngFor="let gender of genderOptions"
                         [value]="gender.value"
@@ -183,7 +179,6 @@
                     }}</mat-label>
                     <input
                       matInput
-
                       appNumberOnly
                       [placeholder]="
                         'customer.individual_info.cmnd' | translate
@@ -216,7 +211,9 @@
                       formControlName="addressTwoLine1"
                     />
                     <show-errors
-                      [control]="customerIndividualForm.controls['addressTwoLine1']"
+                      [control]="
+                        customerIndividualForm.controls['addressTwoLine1']
+                      "
                       [controlLabel]="
                         'customer.individual_info.permanent_address' | translate
                       "
@@ -239,7 +236,9 @@
                       formControlName="addressOneLine1"
                     />
                     <show-errors
-                      [control]="customerIndividualForm.controls['addressOneLine1']"
+                      [control]="
+                        customerIndividualForm.controls['addressOneLine1']
+                      "
                       [controlLabel]="
                         'customer.individual_info.current_residence' | translate
                       "
@@ -478,17 +477,33 @@
                       "customer.individual_info.number_of_dependents"
                         | translate
                     }}</mat-label>
-                    <mat-select formControlName="numberOfDependents" >
+                    <input
+                      name="numberOfDependents"
+                      matInput
+                      formControlName="numberOfDependents"
+                      [placeholder]="
+                        'customer.individual_info.number_of_dependents'
+                          | translate
+                      "
+                      required
+                      type="number"
+                      maxlength="255"
+                      min="0"
+                      [matAutocomplete]="auto"
+                    />
+                    <mat-autocomplete
+                      autoActiveFirstOption
+                      #auto="matAutocomplete"
+                    >
                       <mat-option
                         *ngFor="
-                          let numberOfDependentsOption of numberOfDependentsOptions.options
+                          let option of numberOfDependentsOptions?.options
                         "
-                        [value]="numberOfDependentsOption.value"
-                        [matTooltip]="numberOfDependentsOption.name"
+                        [value]="option.value"
                       >
-                        {{ numberOfDependentsOption.name }}
+                        {{ option.title }}
                       </mat-option>
-                    </mat-select>
+                    </mat-autocomplete>
                     <show-errors
                       [control]="
                         customerIndividualForm.controls['numberOfDependents']
@@ -508,7 +523,7 @@
                     <mat-label>{{
                       "customer.individual_info.marital_status" | translate
                     }}</mat-label>
-                    <mat-select formControlName="maritalStatus" >
+                    <mat-select formControlName="maritalStatus">
                       <mat-option
                         *ngFor="
                           let maritalStatusOption of maritalStatusOptions.options
@@ -576,7 +591,10 @@
                           noEntriesFoundLabel="Ngân Hàng không tồn tại"
                         ></ngx-mat-select-search>
                       </mat-option>
-                      <mat-option [value]="bankNA.bankCode"  [matTooltip]="bankNA.bankName" >
+                      <mat-option
+                        [value]="bankNA.bankCode"
+                        [matTooltip]="bankNA.bankName"
+                      >
                         N/A
                       </mat-option>
                       <mat-option
