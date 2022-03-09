@@ -6,6 +6,12 @@
   {{ value | formatPrice: null }}
 </span>
 
+<span *ngIf="type === 'PERCENT'">
+  <ng-container *ngIf="value">
+    {{ value | percent }}
+  </ng-container>
+</span>
+
 <div *ngIf="type === 'STATUS'">
   <app-pl-status-element
     [statusType]="format"

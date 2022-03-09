@@ -28,6 +28,7 @@
 <ng-template #detailElementTemplate>
   <app-merchant-element
     [merchantId]="expandedElementId"
+    [merchantInfo]="expandedElementMerchant"
     (triggerUpdateElementInfo)="updateElementInfo($event)"
     class="w-100"
   ></app-merchant-element>

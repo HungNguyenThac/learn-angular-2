@@ -179,6 +179,7 @@ export class UserListComponent implements OnInit, OnDestroy {
   totalItems: number = 0;
   filterForm: FormGroup;
   expandedElementId: string;
+  expandedElementUser: any;
   expandElementFromLoan;
   hasSelect: boolean = true;
   userInfo: any;
@@ -276,6 +277,7 @@ export class UserListComponent implements OnInit, OnDestroy {
 
   public onExpandElementChange(element: any) {
     this.expandedElementId = element.id;
+    this.expandedElementUser = element;
   }
 
   public onSubmitSearchForm(event) {

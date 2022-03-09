@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import {
   AdminAccountControllerService,
   AdminAccountEntity,
-  ApiResponseAdminAccountEntity,
+  ApiResponseAdminAccountEntity, CustomerInfo,
   GroupEntity,
   PermissionTypeLevelOneResponse,
 } from '../../../../../../../open-api-modules/dashboard-api-docs';
@@ -25,6 +25,7 @@ export class UserElementComponent implements OnInit {
   @Output() triggerUpdateElementInfo = new EventEmitter();
   @Output() triggerUpdateRoleInfo = new EventEmitter();
 
+  @Input() userInfo: AdminAccountEntity;
   private _userId;
   @Input()
   get userId(): string {
@@ -35,7 +36,6 @@ export class UserElementComponent implements OnInit {
     this._userId = value;
   }
 
-  userInfo: AdminAccountEntity;
   subManager = new Subscription();
 
   constructor(
@@ -48,7 +48,7 @@ export class UserElementComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this._getUserInfoById(this.userId);
+    // this._getUserInfoById(this.userId);
   }
 
   public reloadRoleInfo() {

@@ -21,42 +21,30 @@ import {
 } from '../../../../core/common/enum/operator';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { FilterOptionModel } from '../../../../public/models/filter/filter-option.model';
-import {
-  PAYDAY_LOAN_UI_STATUS,
-  PAYDAY_LOAN_UI_STATUS_TEXT,
-} from '../../../../core/common/enum/payday-loan';
+import { PAYDAY_LOAN_UI_STATUS } from '../../../../core/common/enum/payday-loan';
 import { BreadcrumbOptionsModel } from '../../../../public/models/external/breadcrumb-options.model';
 import { MatTableDataSource } from '@angular/material/table';
 import { PageEvent } from '@angular/material/paginator/public-api';
 import { FilterActionEventModel } from '../../../../public/models/filter/filter-action-event.model';
 import {
-  AddNewUserDialogComponent,
   BaseManagementLayoutComponent,
+  MerchantDetailDialogComponent,
+  MerchantGroupDialogComponent,
 } from '../../../../share/components';
 import { MatDialog } from '@angular/material/dialog';
-import { MerchantDetailDialogComponent } from '../../../../share/components';
-import { MerchantGroupDialogComponent } from '../../../../share/components';
-import { GlobalConstants } from '../../../../core/common/global-constants';
 import { Title } from '@angular/platform-browser';
 import { DisplayedFieldsModel } from '../../../../public/models/filter/displayed-fields.model';
 import {
-  ApiResponseSearchAndPaginationResponseAdminAccountEntity,
-  ApiResponseSearchAndPaginationResponseCompanyInfo,
   ApiResponseSearchAndPaginationResponseMerchant,
-  CompanyInfo,
+  Merchant,
 } from '../../../../../../open-api-modules/dashboard-api-docs';
 import {
   AdminControllerService,
-  ApiResponseListMerchant,
   ApiResponseMerchant,
   ApiResponseString,
-  CreateMerchantRequestDto,
-  MerchantControllerService,
 } from '../../../../../../open-api-modules/merchant-api-docs';
 import { Observable, Subscription } from 'rxjs';
 import { MerchantListService } from './merchant-list.service';
-import { ApiResponse } from '../../../../../../open-api-modules/monexcore-api-docs';
-import { ApiResponseAdminAccountEntity } from '../../../../../../open-api-modules/identity-api-docs';
 import * as fromSelectors from '../../../../core/store/selectors';
 
 @Component({
@@ -186,20 +174,11 @@ export class MerchantListComponent implements OnInit {
       showed: false,
     },
     {
-      key: 'district',
-      title: this.multiLanguageService.instant(
-        'merchant.merchant_list.district'
-      ),
-      type: DATA_CELL_TYPE.TEXT,
-      format: null,
-      showed: false,
-    },
-    {
       key: 'merchantServiceFee',
       title: this.multiLanguageService.instant(
         'merchant.merchant_list.merchant_fee'
       ),
-      type: DATA_CELL_TYPE.TEXT,
+      type: DATA_CELL_TYPE.PERCENT,
       format: null,
       showed: false,
     },
@@ -208,7 +187,7 @@ export class MerchantListComponent implements OnInit {
       title: this.multiLanguageService.instant(
         'merchant.merchant_list.customer_fee'
       ),
-      type: DATA_CELL_TYPE.TEXT,
+      type: DATA_CELL_TYPE.PERCENT,
       format: null,
       showed: false,
     },
@@ -248,8 +227,8 @@ export class MerchantListComponent implements OnInit {
   pageIndex: number = 0;
   pageLength: number = 0;
   pageSizeOptions: number[] = [10, 20, 50];
-  expandedElementId: number;
-  expandElementFromLoan;
+  expandedElementId: string;
+  expandedElementMerchant: Merchant;
   merchantInfo: any;
   subManager = new Subscription();
   breadcrumbOptions: BreadcrumbOptionsModel = {
@@ -288,23 +267,23 @@ export class MerchantListComponent implements OnInit {
         },
       ],
     },
-    {
-      title: this.multiLanguageService.instant('filter.product_type'),
-      type: FILTER_TYPE.SELECT,
-      controlName: 'productTypes',
-      value: null,
-      options: [
-        {
-          title: this.multiLanguageService.instant('filter.choose_product'),
-          value: null,
-          showAction: false,
-          subTitle: this.multiLanguageService.instant('filter.choose_product'),
-          subOptions: [],
-          disabled: false,
-          count: 0,
-        },
-      ],
-    },
+    // {
+    //   title: this.multiLanguageService.instant('filter.product_type'),
+    //   type: FILTER_TYPE.SELECT,
+    //   controlName: 'productTypes',
+    //   value: null,
+    //   options: [
+    //     {
+    //       title: this.multiLanguageService.instant('filter.choose_product'),
+    //       value: null,
+    //       showAction: false,
+    //       subTitle: this.multiLanguageService.instant('filter.choose_product'),
+    //       subOptions: [],
+    //       disabled: false,
+    //       count: 0,
+    //     },
+    //   ],
+    // },
     // {
     //   title: this.multiLanguageService.instant('filter.merchant_group'),
     //   type: FILTER_TYPE.MULTIPLE_CHOICE,
@@ -392,7 +371,9 @@ export class MerchantListComponent implements OnInit {
         this._parseData(data?.result);
         this.dataSource.data = data?.result?.data;
         if (this.filterForm.controls.id.value) {
-          this.expandElementFromLoan = data?.result?.data;
+          this.expandedElementMerchant = data?.result?.data.find((value) => {
+            return value.id === this.filterForm.controls.id.value;
+          });
         }
       });
     // this.subManager.add(
@@ -807,6 +788,7 @@ export class MerchantListComponent implements OnInit {
 
   public onExpandElementChange(element: any) {
     this.expandedElementId = element.id;
+    this.expandedElementMerchant = element;
   }
 
   onClickBtnAdd(event) {
@@ -821,8 +803,9 @@ export class MerchantListComponent implements OnInit {
     this.subManager.add(
       addMerchantDialogRef.afterClosed().subscribe((result: any) => {
         if (result && result.type === BUTTON_TYPE.PRIMARY) {
-          let createRequest = this._bindingDialogData(result.data);
-          this.sendAddRequest(createRequest);
+          console.log('result.data', result.data)
+          // let createRequest = this._bindingDialogData(result.data);
+          // this.sendAddRequest(createRequest);
         }
       })
     );
@@ -841,7 +824,9 @@ export class MerchantListComponent implements OnInit {
           }
           setTimeout(() => {
             this.notifier.success(
-              this.multiLanguageService.instant('merchant.create')
+              this.multiLanguageService.instant(
+                'merchant.merchant_list.created'
+              )
             );
             this.refreshContent();
             this.notificationService.hideLoading();
@@ -858,27 +843,25 @@ export class MerchantListComponent implements OnInit {
 
   private _bindingDialogData(data) {
     return {
-      code: data?.code ? data?.code : null,
-      name: data?.name ? data?.name : null,
-      address: data?.address ? data?.address : null,
-      ward: data?.ward ? data?.ward : null,
-      district: data?.district ? data?.district : null,
-      province: data?.province ? data?.province : null,
-      bdStaffId: data?.bdStaffId ? data?.bdStaffId : null,
-      sellTypes: data?.sellTypes ? data?.sellTypes : null,
-      mobile: data?.mobile ? data?.mobile : null,
-      email: data?.email ? data?.email : null,
-      website: data?.website ? data?.website : null,
-      identificationNumber: data?.identificationNumber
-        ? data?.identificationNumber
-        : null,
-      establishTime: data?.establishTime ? data?.establishTime : null,
-      productTypes: data?.productTypes ? data?.productTypes : null,
+      code: data?.code || null,
+      name: data?.name || null,
+      address: data?.address || null,
+      ward: data?.ward || null,
+      district: data?.district || null,
+      province: data?.province || null,
+      bdStaffId: data?.bdStaffId || null,
+      sellTypes: data?.sellTypes || null,
+      mobile: data?.mobile || null,
+      email: data?.email || null,
+      website: data?.website || null,
+      identificationNumber: data?.identificationNumber || null,
+      establishTime: data?.establishTime || null,
+      productTypes: data?.productTypes || null,
       merchantServiceFee: data?.merchantServiceFee
-        ? parseInt(data?.merchantServiceFee)
+        ? data?.merchantServiceFee / 100
         : 0.0,
-      customerServiceFee: parseInt(data?.customerServiceFee)
-        ? data?.customerServiceFee
+      customerServiceFee: data?.customerServiceFee
+        ? data?.customerServiceFee / 100
         : 0.0,
       status: data?.status ? data?.status : 'ACTIVE',
       logo: data?.logo ? data?.logo : null,
