@@ -7,6 +7,7 @@
   (onSubmitSearchForm)="onSubmitSearchForm($event)"
   (onOutputAction)="onOutputAction($event)"
   (onClickBtnAdd)="onClickBtnAdd($event)"
+  (onRefreshTrigger)="onRefreshTrigger($event)"
   [allColumns]="allColumns"
   [breadcrumbOptions]="breadcrumbOptions"
   [dataSource]="dataSource"
@@ -22,12 +23,14 @@
   [totalItems]="totalItems"
   [hasSelect]="hasSelect"
   [selectButtons]="selectButtons"
+  [showRefreshBtn]="true"
 >
 </app-base-management-layout>
 
 <ng-template #detailElementTemplate>
   <app-merchant-element
     [merchantId]="expandedElementId"
+    [merchantInfo]="expandedElementMerchant"
     (triggerUpdateElementInfo)="updateElementInfo($event)"
     class="w-100"
   ></app-merchant-element>

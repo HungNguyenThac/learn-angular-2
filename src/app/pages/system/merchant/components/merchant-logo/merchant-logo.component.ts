@@ -140,7 +140,7 @@ export class MerchantLogoComponent implements OnInit {
 
   public lockPrompt() {
     const confirmLockRef = this.notificationService.openPrompt({
-      imgUrl: '../../../../../assets/img/icon/group-5/Alert.svg',
+      imgUrl: '../../../../../assets/img/icon/group-5/svg/Alert.svg',
       title: this.multiLanguageService.instant(
         'merchant.merchant_detail.lock_merchant.title'
       ),
@@ -179,7 +179,7 @@ export class MerchantLogoComponent implements OnInit {
 
   public unlockPrompt() {
     const confirmUnlockRef = this.notificationService.openPrompt({
-      imgUrl: '../../../../../assets/img/icon/group-5/unlock-dialog.svg',
+      imgUrl: '../../../../../assets/img/icon/group-5/svg/unlock-dialog.svg',
       title: this.multiLanguageService.instant(
         'merchant.merchant_detail.unlock_merchant.title'
       ),
@@ -216,7 +216,7 @@ export class MerchantLogoComponent implements OnInit {
 
   public deletePrompt() {
     const confirmDeleteRef = this.notificationService.openPrompt({
-      imgUrl: '../../../../../assets/img/icon/group-5/delete-dialog.svg',
+      imgUrl: '../../../../../assets/img/icon/group-5/svg/delete-dialog.svg',
       title: this.multiLanguageService.instant(
         'system.user_detail.delete_user.title'
       ),

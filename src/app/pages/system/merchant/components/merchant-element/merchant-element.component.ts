@@ -1,8 +1,8 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Subscription } from 'rxjs';
 import {
-  ApiResponseAdminAccountEntity,
   ApiResponseMerchant,
+  Merchant,
   MerchantControllerService,
 } from '../../../../../../../open-api-modules/dashboard-api-docs';
 import { MultiLanguageService } from '../../../../../share/translate/multiLanguageService';
@@ -13,6 +13,7 @@ import { RESPONSE_CODE } from '../../../../../core/common/enum/operator';
 import {
   AdminControllerService,
   ApiResponseString,
+  UpdateMerchantRequestDto,
 } from '../../../../../../../open-api-modules/merchant-api-docs';
 import { DomSanitizer } from '@angular/platform-browser';
 
@@ -22,10 +23,9 @@ import { DomSanitizer } from '@angular/platform-browser';
   styleUrls: ['./merchant-element.component.scss'],
 })
 export class MerchantElementComponent implements OnInit {
-  private _merchantId;
-  merchantInfo;
-  merchantQr;
-  subManager = new Subscription();
+  @Input() merchantInfo: Merchant;
+
+  private _merchantId: string;
 
   @Input()
   get merchantId(): string {
@@ -38,6 +38,9 @@ export class MerchantElementComponent implements OnInit {
 
   @Output() triggerUpdateElementInfo = new EventEmitter();
 
+  merchantQr: any;
+  subManager = new Subscription();
+
   constructor(
     private multiLanguageService: MultiLanguageService,
     private notificationService: NotificationService,
@@ -49,7 +52,6 @@ export class MerchantElementComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this._getMerchantInfoById(this.merchantId);
     this.generateQrCode(this.merchantId);
   }
 
@@ -63,9 +65,7 @@ export class MerchantElementComponent implements OnInit {
             this.notifier.error(JSON.stringify(data?.message), data?.errorCode);
             return;
           }
-          if (data.responseCode === 200) {
-            this.merchantQr = data.result;
-          }
+          this.merchantQr = data.result;
         })
     );
   }
@@ -83,37 +83,35 @@ export class MerchantElementComponent implements OnInit {
       this.merchantControllerService
         .getMerchantById(this.merchantId)
         .subscribe((data: ApiResponseMerchant) => {
-          if (!data || data.responseCode !== RESPONSE_CODE.SUCCESS) {
+          if (!data || data?.responseCode !== RESPONSE_CODE.SUCCESS) {
             this.notifier.error(JSON.stringify(data?.message), data?.errorCode);
             return;
           }
-          if (data.responseCode === 200) {
-            this.merchantInfo = data?.result;
-            this.triggerUpdateElementInfo.emit(this.merchantInfo);
-          }
+          this.merchantInfo = data?.result;
+          this.triggerUpdateElementInfo.emit(this.merchantInfo);
         })
     );
   }
 
-  private updateMerchantInfo(updateInfoRequest) {
+  private updateMerchantInfo(updateInfoRequest: UpdateMerchantRequestDto) {
     this.subManager.add(
       this.adminControllerService
         .v1AdminMerchantsIdPut(this.merchantId, updateInfoRequest)
         .subscribe((data) => {
-          if (!data || data.responseCode !== RESPONSE_CODE.SUCCESS) {
+          if (!data || data?.responseCode !== RESPONSE_CODE.SUCCESS) {
             return this.notifier.error(
               JSON.stringify(data?.message),
               data?.errorCode
             );
           }
-          if (data.responseCode === 200) {
-            this.refreshContent();
-            setTimeout(() => {
-              this.notifier.success(
-                this.multiLanguageService.instant('common.update_success')
-              );
-            }, 500);
-          }
+          setTimeout(() => {
+            this.notifier.success(
+              this.multiLanguageService.instant('common.update_success')
+            );
+            this.generateQrCode(this.merchantId);
+            this.merchantInfo = data?.result;
+            this.triggerUpdateElementInfo.emit(this.merchantInfo);
+          }, 500);
         })
     );
   }

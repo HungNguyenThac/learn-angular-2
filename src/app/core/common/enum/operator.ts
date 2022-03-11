@@ -43,6 +43,7 @@ export enum DATA_CELL_TYPE {
   STATUS = 'STATUS',
   CURRENCY = 'CURRENCY',
   CHECK = 'CHECK',
+  PERCENT = 'PERCENT',
 }
 
 export enum DATA_STATUS_TYPE {

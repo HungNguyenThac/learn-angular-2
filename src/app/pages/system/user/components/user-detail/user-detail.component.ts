@@ -104,7 +104,7 @@ export class UserDetailComponent implements OnInit, OnDestroy {
 
   public lockPrompt() {
     const confirmLockRef = this.notificationService.openPrompt({
-      imgUrl: '../../../../../assets/img/icon/group-5/Alert.svg',
+      imgUrl: '../../../../../assets/img/icon/group-5/svg/Alert.svg',
       title: this.multiLanguageService.instant(
         'system.user_detail.lock_user.title'
       ),
@@ -146,7 +146,7 @@ export class UserDetailComponent implements OnInit, OnDestroy {
 
   public unlockPrompt() {
     const confirmUnlockRef = this.notificationService.openPrompt({
-      imgUrl: '../../../../../assets/img/icon/group-5/unlock-dialog.svg',
+      imgUrl: '../../../../../assets/img/icon/group-5/svg/unlock-dialog.svg',
       title: this.multiLanguageService.instant(
         'customer.individual_info.enable_customer.dialog_title'
       ),
@@ -183,7 +183,7 @@ export class UserDetailComponent implements OnInit, OnDestroy {
 
   public deletePrompt() {
     const confirmDeleteRef = this.notificationService.openPrompt({
-      imgUrl: '../../../../../assets/img/icon/group-5/delete-dialog.svg',
+      imgUrl: '../../../../../assets/img/icon/group-5/svg/delete-dialog.svg',
       title: this.multiLanguageService.instant(
         'system.user_detail.delete_user.title'
       ),

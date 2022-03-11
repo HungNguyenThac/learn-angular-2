@@ -37,10 +37,12 @@ export class BaseManagementLayoutComponent implements OnInit {
   @Input() pageLength: number = 0;
   @Input() orderBy: string;
   @Input() hasSelect: boolean;
+  @Input() showRefreshBtn: boolean;
   @Input() selectButtons: TableSelectActionModel[] = [];
   @Input() sortDirection: SortDirection = 'desc';
   @Input() forceExpandElement: any;
   @Input() overviewItems: overviewItemModel[];
+  @Output() onRefreshTrigger = new EventEmitter<any>();
   @Output() onPageChange = new EventEmitter<PageEvent>();
   @Output() onSortChange = new EventEmitter<Sort>();
   @Output() onExpandElementChange = new EventEmitter<any>();
@@ -90,6 +92,10 @@ export class BaseManagementLayoutComponent implements OnInit {
 
   submitSearchForm(event) {
     this.onSubmitSearchForm.emit(event);
+  }
+
+  triggerRefresh(event) {
+    this.onRefreshTrigger.emit(event);
   }
 
   triggerPageChange(event: PageEvent) {

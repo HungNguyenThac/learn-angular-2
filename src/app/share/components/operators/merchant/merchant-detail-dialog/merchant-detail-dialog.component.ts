@@ -6,10 +6,10 @@ import {
   Input,
   OnInit,
 } from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {MultiLanguageService} from '../../../../translate/multiLanguageService';
-import {BUTTON_TYPE} from '../../../../../core/common/enum/operator';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MultiLanguageService } from '../../../../translate/multiLanguageService';
+import { BUTTON_TYPE } from '../../../../../core/common/enum/operator';
 
 @Component({
   selector: 'app-merchant-detail-dialog',
@@ -47,38 +47,8 @@ export class MerchantDetailDialogComponent implements OnInit, AfterViewChecked {
       name: 'Promotion',
     },
   ];
-  products: any[] = [
-    {
-      id: 1,
-      name: 'Thực phẩm',
-    },
-    {
-      id: 2,
-      name: 'Thời trang',
-    },
-    {
-      id: 3,
-      name: 'Điện tử',
-    },
-    {
-      id: 4,
-      name: 'Bảo hiểm',
-    },
-  ];
-  managers: any[] = [
-    {
-      id: 1,
-      name: 'user1',
-    },
-    {
-      id: 2,
-      name: 'user2',
-    },
-    {
-      id: 3,
-      name: 'user3',
-    },
-  ];
+
+  managers: any[] = [];
 
   constructor(
     @Inject(MAT_DIALOG_DATA) private data: any,
@@ -93,8 +63,7 @@ export class MerchantDetailDialogComponent implements OnInit, AfterViewChecked {
     }
   }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   ngAfterViewChecked(): void {
     this.changeDetectorRef.detectChanges();
@@ -111,19 +80,15 @@ export class MerchantDetailDialogComponent implements OnInit, AfterViewChecked {
   }
 
   initDialogData(data: any) {
-    console.log('iashodhasodoas', data.merchantInfo);
     this.merchantInfo = data?.merchantInfo;
     this.tabIndex = data?.tabIndex;
     this.dialogTitle = data?.dialogTitle;
 
     this.merchantInfoForm.patchValue({
       id: this.merchantInfo?.id,
-      code: this.merchantInfo?.code,
+      // code: this.merchantInfo?.code,
       name: this.merchantInfo?.name,
       address: this.merchantInfo?.address,
-      ward: this.merchantInfo?.ward,
-      district: this.merchantInfo?.district,
-      province: this.merchantInfo?.province,
       bdStaffId: this.merchantInfo?.bdStaffId,
       sellTypes: this.merchantInfo?.sellTypes
         ? this.merchantInfo?.sellTypes
@@ -136,8 +101,12 @@ export class MerchantDetailDialogComponent implements OnInit, AfterViewChecked {
       productTypes: this.merchantInfo?.productTypes
         ? this.merchantInfo?.productTypes
         : '',
-      merchantServiceFee: this.merchantInfo?.merchantServiceFee,
-      customerServiceFee: this.merchantInfo?.customerServiceFee,
+      merchantServiceFee: this.merchantInfo?.merchantServiceFee
+        ? this.merchantInfo?.merchantServiceFee * 100
+        : 0,
+      customerServiceFee: this.merchantInfo?.customerServiceFee
+        ? this.merchantInfo?.customerServiceFee * 100
+        : 0,
       status: this.merchantInfo?.status,
       logo: this.merchantInfo?.logo,
       descriptionImg: this.merchantInfo?.descriptionImg,
@@ -148,26 +117,41 @@ export class MerchantDetailDialogComponent implements OnInit, AfterViewChecked {
   buildIndividualForm() {
     this.merchantInfoForm = this.formBuilder.group({
       id: [''],
-      code: [''],
+      // code: [''],
       name: [''],
       address: [''],
-      ward: [''],
-      district: [''],
-      province: [''],
-      bdStaffId: [''],
+      bdStaffId: ['', [Validators.required]],
       sellTypes: [''],
-      mobile: [''],
-      email: [''],
-      website: [''],
+      mobile: ['', [Validators.required]],
+      email: ['', [Validators.email, Validators.required]],
+      website: [
+        '',
+        [
+          Validators.required,
+          Validators.pattern(
+            '(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?'
+          ),
+        ],
+      ],
       identificationNumber: [''],
-      establishTime: [''],
-      productTypes: [''],
-      merchantServiceFee: [''],
-      customerServiceFee: [''],
+      establishTime: ['', Validators.required],
+      productTypes: ['', Validators.required],
+      merchantServiceFee: [
+        '',
+        [Validators.required, Validators.min(0), Validators.max(100)],
+      ],
+      customerServiceFee: [
+        '',
+        [Validators.required, Validators.min(0), Validators.max(100)],
+      ],
       status: [''],
       logo: [''],
       descriptionImg: [''],
       description: [''],
+      managerName: ['', Validators.required],
+      managerEmail: ['', [Validators.required, Validators.email]],
+      managerMobile: ['', Validators.required],
+      managerPosition: ['', Validators.required],
     });
   }
 }

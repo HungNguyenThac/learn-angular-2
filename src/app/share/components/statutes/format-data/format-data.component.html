@@ -26,10 +26,17 @@
   {{ value }}
 </span>
 
-<span *ngIf="!type || type === 'TEXT'">
-  {{ value || "N/A" }}
+<span *ngIf="type === 'PERCENT'">
+  <ng-container *ngIf="value">
+      {{ value | percent }}
+  </ng-container>
 </span>
 
 <span *ngIf="type === 'HYPERLINK'">
   <a [href]="format" target="_blank" class="router">{{ value || "N/A" }}</a>
+</span>
+
+<!-- EOF -->
+<span *ngIf="!type || type === 'TEXT'">
+  {{ value || "N/A" }}
 </span>

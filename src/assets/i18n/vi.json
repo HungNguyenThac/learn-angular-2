@@ -74,7 +74,8 @@
     "lock_success": "Khóa tài khoản thành công",
     "unlock_success": "Mở khóa tài khoản thành công",
     "process_downloading": "Đang tải xuống tài liệu",
-    "export_excel": "Xuất file"
+    "export_excel": "Xuất file",
+    "refresh": "Tải lại"
   },
   "auth": {
     "phone_number": "Số điện thoại",
@@ -780,7 +781,8 @@
       "add_merchant": "Thêm Merchant",
       "delete_merchant": "Xoá Merchant",
       "merchant_fee": "Chiết khấu",
-      "customer_fee": "Phí người mua"
+      "customer_fee": "Phí người mua",
+      "created": "Đã tạo merchant thành công"
     },
     "merchant_detail": {
       "delete_merchant": {
@@ -812,12 +814,16 @@
       "phone_number": "Số điện thoại",
       "establish": "Năm thành lập",
       "email": "Email",
+      "email_hint": "VD: example@gmail.com",
       "date": "Ngày tất toán",
       "group": "Nhóm merchant",
-      "merchant_fee": "Chiết khấu",
-      "customer_fee": "Phí người mua",
+      "merchant_fee": "Chiết khấu (%)",
+      "merchant_fee_hint": "Chiết khấu (%)",
+      "customer_fee": "Phí người mua (%)",
+      "customer_fee_hint": "Phí người mua (%)",
       "regis_no": "Mã số DKKD",
       "website": "Website",
+      "website_hint": "VD: https://example.com/",
       "address": "Địa chỉ",
       "create_date": "Ngày tạo",
       "note": "Ghi chú",

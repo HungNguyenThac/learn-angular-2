@@ -96,10 +96,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
     {
       navItem: NAV_ITEM.MERCHANT,
       title: this.multiLanguageService.instant('header.navigation.merchant'),
-      defaultIconClass: 'sprite-group-5-customer',
-      activeIconClass: 'sprite-group-5-customer-white',
+      defaultIconClass: 'sprite-group-8-hand-shake',
+      activeIconClass: 'sprite-group-8-hand-shake-white',
       path: '/system/merchant/list',
-      canActivate: [],
+      canActivate: ['dashboardMerchants:getMerchants'],
     },
     // {
     //   navItem: NAV_ITEM.INSURANCE,

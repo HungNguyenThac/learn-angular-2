@@ -628,6 +628,10 @@ export class CustomerListComponent implements OnInit, OnDestroy {
     console.log('FilterActionEventModel', event);
   }
 
+  public onRefreshTrigger(event) {
+    this._getCustomerList();
+  }
+
   private _onFilterChange() {
     const data = this.filterForm.getRawValue();
     console.log('_onFilterChange', data);

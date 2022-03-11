@@ -118,7 +118,7 @@ export class EditRoleDialogComponent implements OnInit, OnDestroy {
 
   deleteGroup() {
     const confirmDeleteRef = this.notificationService.openPrompt({
-      imgUrl: '../../../../../assets/img/icon/group-5/delete-dialog.svg',
+      imgUrl: '../../../../../assets/img/icon/group-5/svg/delete-dialog.svg',
       title: this.multiLanguageService.instant(
         'system.user_role.delete_role.title'
       ),

@@ -7,650 +7,468 @@
     <div class="card-title title">
       {{ dialogTitle }}
     </div>
-    <form [formGroup]="merchantInfoForm" (ngSubmit)="submitForm()" autocomplete="off">
+    <form
+      [formGroup]="merchantInfoForm"
+      (ngSubmit)="submitForm()"
+      autocomplete="off"
+    >
       <mat-tab-group [selectedIndex]="tabIndex" class="op-tab-dialog">
         <mat-tab [label]="'merchant.merchant_detail.info' | translate">
           <ng-template matTabContent>
             <div class="card-body no-padding-bot limit-height">
               <div class="row">
                 <section class="col-12">
-                  <div class="row">
+                  <!--  Merchant Info  -->
+                  <article class="row">
                     <div class="col-12">
-                      <p class="heading">
+                      <h2 class="heading pb-2">
                         {{
-                        "merchant.merchant_dialog.merchant_heading"
-                          | translate
+                          "merchant.merchant_dialog.merchant_heading"
+                            | translate
                         }}
-                      </p>
+                      </h2>
                     </div>
-                  </div>
-                  <div class="row">
                     <!-- Left Individual Info -->
                     <div class="col-12 col-sm-12 col-md-6 col-lg-6 pr-2">
-                      <div>
-                        <mat-form-field appearance="outline" class="w-100">
-                          <mat-label>{{
-                            "merchant.merchant_detail.name" | translate
-                            }}</mat-label>
-                          <input
-                            required
-                            matInput
-                            [placeholder]="
-                              'merchant.merchant_detail.name' | translate
-                            "
-                            formControlName="name"
-                          />
-                          <show-errors
-                            [control]="merchantInfoForm.controls['name']"
-                            [controlLabel]="
-                              'merchant.merchant_detail.name' | translate
-                            "
-                            [hasIconPrefix]="false"
-                          >
-                          </show-errors>
-                        </mat-form-field>
-                      </div>
+                      <mat-form-field appearance="outline" class="w-100">
+                        <mat-label>{{
+                          "merchant.merchant_detail.name" | translate
+                        }}</mat-label>
+                        <input
+                          required
+                          matInput
+                          appTypeMaxLength
+                          maxlength="256"
+                          [placeholder]="
+                            'merchant.merchant_detail.name' | translate
+                          "
+                          formControlName="name"
+                        />
+                        <show-errors
+                          [control]="merchantInfoForm.controls['name']"
+                          [controlLabel]="
+                            'merchant.merchant_detail.name' | translate
+                          "
+                          [hasIconPrefix]="false"
+                        >
+                        </show-errors>
+                      </mat-form-field>
 
-                      <div>
-                        <mat-form-field appearance="outline" class="w-100">
-                          <mat-label>{{
-                            "merchant.merchant_detail.id" | translate
-                            }}</mat-label>
-                          <input
-                            matInput
-                            [placeholder]="
-                              'merchant.merchant_detail.id' | translate
-                            "
-                            formControlName="code"
-                          />
-                          <show-errors
-                            [control]="merchantInfoForm.controls['code']"
-                            [controlLabel]="
-                              'merchant.merchant_detail.id' | translate
-                            "
-                            [hasIconPrefix]="false"
-                          >
-                          </show-errors>
-                        </mat-form-field>
-                      </div>
+                      <mat-form-field appearance="outline" class="w-100">
+                        <mat-label>{{
+                          "merchant.merchant_detail.location" | translate
+                        }}</mat-label>
+                        <input
+                          matInput
+                          appTypeMaxLength
+                          maxlength="256"
+                          required
+                          [placeholder]="
+                            'merchant.merchant_detail.location' | translate
+                          "
+                          formControlName="address"
+                        />
+                        <show-errors
+                          [control]="merchantInfoForm.controls['address']"
+                          [controlLabel]="
+                            'merchant.merchant_detail.location' | translate
+                          "
+                          [hasIconPrefix]="false"
+                        >
+                        </show-errors>
+                      </mat-form-field>
 
-                      <div>
-                        <mat-form-field appearance="outline" class="w-100">
-                          <mat-label>{{
-                            "merchant.merchant_detail.location" | translate
-                            }}</mat-label>
-                          <input
-                            matInput
-                            required
-                            [placeholder]="
-                              'merchant.merchant_detail.location' | translate
-                            "
-                            formControlName="address"
-                          />
-                          <show-errors
-                            [control]="merchantInfoForm.controls['address']"
-                            [controlLabel]="
-                              'merchant.merchant_detail.location' | translate
-                            "
-                            [hasIconPrefix]="false"
-                          >
-                          </show-errors>
-                        </mat-form-field>
-                      </div>
+                      <mat-form-field appearance="outline" class="w-100">
+                        <mat-label>{{
+                          "merchant.merchant_detail.merchant_fee" | translate
+                        }}</mat-label>
+                        <input
+                          matInput
+                          required
+                          appPercentageDirective
+                          [placeholder]="
+                            'merchant.merchant_detail.merchant_fee_hint'
+                              | translate
+                          "
+                          formControlName="merchantServiceFee"
+                        />
+                        <show-errors
+                          [control]="
+                            merchantInfoForm.controls['merchantServiceFee']
+                          "
+                          [controlLabel]="
+                            'merchant.merchant_detail.merchant_fee' | translate
+                          "
+                          [hasIconPrefix]="false"
+                        >
+                        </show-errors>
+                      </mat-form-field>
 
-                      <div>
-                        <mat-form-field appearance="outline" class="w-100">
-                          <mat-label>{{
-                            "merchant.merchant_detail.area" | translate
-                            }}</mat-label>
-                          <input
-                            matInput
-                            required
-                            [placeholder]="
-                              'merchant.merchant_detail.area' | translate
-                            "
-                            formControlName="ward"
-                          />
-                          <show-errors
-                            [control]="merchantInfoForm.controls['ward']"
-                            [controlLabel]="
-                              'merchant.merchant_detail.area' | translate
-                            "
-                            [hasIconPrefix]="false"
-                          >
-                          </show-errors>
-                        </mat-form-field>
-                      </div>
+                      <mat-form-field appearance="outline" class="w-100">
+                        <mat-label>{{
+                          "merchant.merchant_detail.customer_fee" | translate
+                        }}</mat-label>
+                        <input
+                          matInput
+                          required
+                          appPercentageDirective
+                          [placeholder]="
+                            'merchant.merchant_detail.customer_fee_hint'
+                              | translate
+                          "
+                          formControlName="customerServiceFee"
+                        />
+                        <show-errors
+                          [control]="
+                            merchantInfoForm.controls['customerServiceFee']
+                          "
+                          [controlLabel]="
+                            'merchant.merchant_detail.customer_fee' | translate
+                          "
+                          [hasIconPrefix]="false"
+                        >
+                        </show-errors>
+                      </mat-form-field>
 
-                      <div>
-                        <mat-form-field appearance="outline" class="w-100">
-                          <mat-label>{{
-                            "merchant.merchant_detail.commune" | translate
-                            }}</mat-label>
-                          <input
-                            matInput
-                            required
-                            [placeholder]="
-                              'merchant.merchant_detail.commune' | translate
-                            "
-                            formControlName="ward"
-                          />
-                          <show-errors
-                            [control]="merchantInfoForm.controls['ward']"
-                            [controlLabel]="
-                              'merchant.merchant_detail.commune' | translate
-                            "
-                            [hasIconPrefix]="false"
-                          >
-                          </show-errors>
-                        </mat-form-field>
-                      </div>
-
-                      <div>
-                        <mat-form-field appearance="outline" class="w-100">
-                          <mat-label>{{
-                            "merchant.merchant_detail.manager" | translate
-                            }}</mat-label>
-                          <mat-select required formControlName="bdStaffId">
-                            <mat-option
-                              *ngFor="let manager of managers"
-                              [value]="manager.name"
+                      <mat-form-field appearance="outline" class="w-100">
+                        <mat-label>{{
+                          "merchant.merchant_detail.manager" | translate
+                        }}</mat-label>
+                        <mat-select required formControlName="bdStaffId">
+                          <mat-option
+                            *ngFor="let manager of managers"
+                            [value]="manager.name"
                             >{{ manager.name }}
-                            </mat-option>
-                          </mat-select>
-                          <show-errors
-                            [control]="merchantInfoForm.controls['bdStaffId']"
-                            [controlLabel]="
-                              'merchant.merchant_detail.manager' | translate
-                            "
-                            [hasIconPrefix]="false"
-                          >
-                          </show-errors>
-                        </mat-form-field>
-                      </div>
+                          </mat-option>
+                        </mat-select>
+                        <show-errors
+                          [control]="merchantInfoForm.controls['bdStaffId']"
+                          [controlLabel]="
+                            'merchant.merchant_detail.manager' | translate
+                          "
+                          [hasIconPrefix]="false"
+                        >
+                        </show-errors>
+                      </mat-form-field>
 
-                      <div>
-                        <mat-form-field appearance="outline" class="w-100">
-                          <mat-label>{{
-                            "merchant.merchant_detail.type" | translate
-                            }}</mat-label>
-                          <mat-select
-                            disableOptionCentering="true"
-                            formControlName="sellTypes"
-                            multiple
-                          >
-                            <mat-select-trigger>
-                              <span
-                                *ngIf="
-                                  merchantInfoForm.controls.sellTypes.value
-                                    .length <= 1;
-                                  else typeMultipleOptions
-                                "
+                      <mat-form-field appearance="outline" class="w-100">
+                        <mat-label>{{
+                          "merchant.merchant_detail.type" | translate
+                        }}</mat-label>
+                        <mat-select
+                          disableOptionCentering="true"
+                          formControlName="sellTypes"
+                          multiple
+                        >
+                          <mat-select-trigger>
+                            <span
+                              *ngIf="
+                                merchantInfoForm.controls.sellTypes.value
+                                  .length <= 1;
+                                else typeMultipleOptions
+                              "
                               >{{
                                 merchantInfoForm.controls.sellTypes.value
-                                  ? merchantInfoForm.controls.sellTypes
-                                    .value[0]
+                                  ? merchantInfoForm.controls.sellTypes.value[0]
                                   : ""
-                                }}</span
-                              >
-                              <ng-template #typeMultipleOptions>
-                                Đã chọn
-                                {{
-                                merchantInfoForm.controls.sellTypes.value
-                                  .length
-                                }}
-                                nhóm
-                              </ng-template>
-                            </mat-select-trigger>
-                            <mat-option
-                              *ngFor="let option of typeOptions"
-                              [value]="option.name"
-                            >{{ option.name }}</mat-option
+                              }}</span
                             >
-                          </mat-select>
-                          <show-errors
-                            [control]="merchantInfoForm.controls['sellTypes']"
-                            [controlLabel]="
-                              'merchant.merchant_detail.type' | translate
-                            "
-                            [hasIconPrefix]="false"
+                            <ng-template #typeMultipleOptions>
+                              Đã chọn
+                              {{
+                                merchantInfoForm.controls.sellTypes.value.length
+                              }}
+                              nhóm
+                            </ng-template>
+                          </mat-select-trigger>
+                          <mat-option
+                            *ngFor="let option of typeOptions"
+                            [value]="option.name"
+                            >{{ option.name }}</mat-option
                           >
-                          </show-errors>
-                        </mat-form-field>
-                      </div>
+                        </mat-select>
+                        <show-errors
+                          [control]="merchantInfoForm.controls['sellTypes']"
+                          [controlLabel]="
+                            'merchant.merchant_detail.type' | translate
+                          "
+                          [hasIconPrefix]="false"
+                        >
+                        </show-errors>
+                      </mat-form-field>
                     </div>
                     <!-- Right Individual Info -->
                     <div class="col-12 col-sm-12 col-md-6 col-lg-6 pl-2">
-                      <div>
-                        <mat-form-field appearance="outline" class="w-100">
-                          <mat-label>{{
-                            "merchant.merchant_detail.merchant_fee" | translate
-                            }}</mat-label>
-                          <input
+                      <mat-form-field appearance="outline" class="w-100">
+                        <mat-label>{{
+                          "merchant.merchant_detail.phone_number" | translate
+                        }}</mat-label>
+                        <input
+                          required
+                          matInput
+                          appPhoneNumberOnly
+                          phone-number-validate
+                          appTypeMaxLength
+                          maxlength="12"
+                          [placeholder]="
+                            'merchant.merchant_detail.phone_number' | translate
+                          "
+                          formControlName="mobile"
+                        />
+                        <show-errors
+                          [control]="merchantInfoForm.controls['mobile']"
+                          [controlLabel]="
+                            'merchant.merchant_detail.phone_number' | translate
+                          "
+                          [hasIconPrefix]="false"
+                        >
+                        </show-errors>
+                      </mat-form-field>
 
-                            matInput
-                            appNumberOnly
-                            [placeholder]="
-                              'merchant.merchant_detail.merchant_fee' | translate
-                            "
-                            formControlName="merchantServiceFee"
-                          />
-                          <show-errors
-                            [control]="
-                              merchantInfoForm.controls['merchantServiceFee']
-                            "
-                            [controlLabel]="
-                              'merchant.merchant_detail.merchant_fee' | translate
-                            "
-                            [hasIconPrefix]="false"
-                          >
-                          </show-errors>
-                        </mat-form-field>
-                      </div>
+                      <mat-form-field appearance="outline" class="w-100">
+                        <mat-label>{{
+                          "merchant.merchant_detail.email" | translate
+                        }}</mat-label>
+                        <input
+                          required
+                          matInput
+                          appTypeMaxLength
+                          maxlength="256"
+                          [placeholder]="
+                            'merchant.merchant_detail.email_hint' | translate
+                          "
+                          formControlName="email"
+                        />
+                        <show-errors
+                          [control]="merchantInfoForm.controls['email']"
+                          [controlLabel]="
+                            'merchant.merchant_detail.email' | translate
+                          "
+                          [hasIconPrefix]="false"
+                        >
+                        </show-errors>
+                      </mat-form-field>
 
-                      <div>
-                        <mat-form-field appearance="outline" class="w-100">
-                          <mat-label>{{
-                            "merchant.merchant_detail.customer_fee" | translate
-                            }}</mat-label>
-                          <input
+                      <mat-form-field appearance="outline" class="w-100">
+                        <mat-label>{{
+                          "merchant.merchant_detail.website" | translate
+                        }}</mat-label>
+                        <input
+                          matInput
+                          required
+                          appTypeMaxLength
+                          maxlength="256"
+                          [placeholder]="
+                            'merchant.merchant_detail.website_hint' | translate
+                          "
+                          formControlName="website"
+                        />
+                        <show-errors
+                          [control]="merchantInfoForm.controls['website']"
+                          [controlLabel]="
+                            'merchant.merchant_detail.website' | translate
+                          "
+                          [hasIconPrefix]="false"
+                        >
+                        </show-errors>
+                      </mat-form-field>
 
-                            matInput
-                            appNumberOnly
-                            [placeholder]="
-                              'merchant.merchant_detail.customer_fee' | translate
-                            "
-                            formControlName="customerServiceFee"
-                          />
-                          <show-errors
-                            [control]="
-                              merchantInfoForm.controls['customerServiceFee']
-                            "
-                            [controlLabel]="
-                              'merchant.merchant_detail.customer_fee' | translate
-                            "
-                            [hasIconPrefix]="false"
-                          >
-                          </show-errors>
-                        </mat-form-field>
-                      </div>
+                      <mat-form-field appearance="outline" class="w-100">
+                        <mat-label>{{
+                          "merchant.merchant_detail.regis_no" | translate
+                        }}</mat-label>
+                        <input
+                          matInput
+                          required
+                          [placeholder]="
+                            'merchant.merchant_detail.regis_no' | translate
+                          "
+                          formControlName="identificationNumber"
+                        />
+                        <show-errors
+                          [control]="
+                            merchantInfoForm.controls['identificationNumber']
+                          "
+                          [controlLabel]="
+                            'merchant.merchant_detail.regis_no' | translate
+                          "
+                          [hasIconPrefix]="false"
+                        >
+                        </show-errors>
+                      </mat-form-field>
 
-                      <div>
-                        <mat-form-field appearance="outline" class="w-100">
-                          <mat-label>{{
-                            "merchant.merchant_detail.phone_number" | translate
-                            }}</mat-label>
-                          <input
-                            required
-                            matInput
-                            appNumberOnly
-                            [placeholder]="
-                              'merchant.merchant_detail.phone_number'
-                                | translate
-                            "
-                            formControlName="mobile"
-                          />
-                          <show-errors
-                            [control]="merchantInfoForm.controls['mobile']"
-                            [controlLabel]="
-                              'merchant.merchant_detail.phone_number'
-                                | translate
-                            "
-                            [hasIconPrefix]="false"
-                          >
-                          </show-errors>
-                        </mat-form-field>
-                      </div>
+                      <mat-form-field appearance="outline" class="w-100">
+                        <mat-label>{{
+                          "merchant.merchant_detail.establish" | translate
+                        }}</mat-label>
+                        <input
+                          matInput
+                          required
+                          [matDatepicker]="picker"
+                          [placeholder]="
+                            'merchant.merchant_detail.establish' | translate
+                          "
+                          formControlName="establishTime"
+                        />
+                        <show-errors
+                          [control]="merchantInfoForm.controls['establishTime']"
+                          [controlLabel]="
+                            'merchant.merchant_detail.establish' | translate
+                          "
+                          [hasIconPrefix]="false"
+                        >
+                        </show-errors>
+                        <mat-datepicker-toggle
+                          matSuffix
+                          [for]="picker"
+                        ></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                      </mat-form-field>
 
-                      <div>
-                        <mat-form-field appearance="outline" class="w-100">
-                          <mat-label>{{
-                            "merchant.merchant_detail.email" | translate
-                            }}</mat-label>
-                          <input
-                            required
-                            matInput
-                            [placeholder]="
-                              'merchant.merchant_detail.email' | translate
-                            "
-                            formControlName="email"
-                          />
-                          <show-errors
-                            [control]="merchantInfoForm.controls['email']"
-                            [controlLabel]="
-                              'merchant.merchant_detail.email' | translate
-                            "
-                            [hasIconPrefix]="false"
-                          >
-                          </show-errors>
-                        </mat-form-field>
-                      </div>
+                      <mat-form-field appearance="outline" class="w-100">
+                        <mat-label>{{
+                          "merchant.merchant_detail.product" | translate
+                        }}</mat-label>
 
-                      <div>
-                        <mat-form-field appearance="outline" class="w-100">
-                          <mat-label>{{
-                            "merchant.merchant_detail.website" | translate
-                            }}</mat-label>
-                          <input
-                            matInput
-                            required
-                            [placeholder]="
-                              'merchant.merchant_detail.website' | translate
-                            "
-                            formControlName="website"
-                          />
-                          <show-errors
-                            [control]="merchantInfoForm.controls['website']"
-                            [controlLabel]="
-                              'merchant.merchant_detail.website' | translate
-                            "
-                            [hasIconPrefix]="false"
-                          >
-                          </show-errors>
-                        </mat-form-field>
-                      </div>
+                        <input
+                          matInput
+                          required
+                          [placeholder]="
+                            'merchant.merchant_detail.product' | translate
+                          "
+                          formControlName="productTypes"
+                        />
 
-                      <div>
-                        <mat-form-field appearance="outline" class="w-100">
-                          <mat-label>{{
-                            "merchant.merchant_detail.regis_no" | translate
-                            }}</mat-label>
-                          <input
-                            matInput
-                            required
-                            [placeholder]="
-                              'merchant.merchant_detail.regis_no' | translate
-                            "
-                            formControlName="identificationNumber"
-                          />
-                          <show-errors
-                            [control]="
-                              merchantInfoForm.controls['identificationNumber']
-                            "
-                            [controlLabel]="
-                              'merchant.merchant_detail.regis_no' | translate
-                            "
-                            [hasIconPrefix]="false"
-                          >
-                          </show-errors>
-                        </mat-form-field>
-                      </div>
-
-                      <div>
-                        <mat-form-field appearance="outline" class="w-100">
-                          <mat-label>{{
-                            "merchant.merchant_detail.establish" | translate
-                            }}</mat-label>
-                          <input
-                            matInput
-                            [matDatepicker]="picker"
-                            [placeholder]="
-                              'merchant.merchant_detail.establish' | translate
-                            "
-                            formControlName="establishTime"
-                          />
-                          <show-errors
-                            [control]="
-                              merchantInfoForm.controls['establishTime']
-                            "
-                            [controlLabel]="
-                              'merchant.merchant_detail.establish' | translate
-                            "
-                            [hasIconPrefix]="false"
-                          >
-                          </show-errors>
-                          <mat-datepicker-toggle
-                            matSuffix
-                            [for]="picker"
-                          ></mat-datepicker-toggle>
-                          <mat-datepicker #picker></mat-datepicker>
-                        </mat-form-field>
-                      </div>
-
-                      <div>
-                        <mat-form-field appearance="outline" class="w-100">
-                          <mat-label>{{
-                            "merchant.merchant_detail.product" | translate
-                            }}</mat-label>
-                          <mat-select
-                            disableOptionCentering="true"
-                            formControlName="productTypes"
-                            multiple
-                          >
-                            <mat-select-trigger>
-                              <span
-                                *ngIf="
-                                  merchantInfoForm.controls.productTypes.value
-                                    .length <= 1;
-                                  else productMultipleOptions
-                                "
-                              >{{
-                                merchantInfoForm.controls.productTypes.value
-                                  ? merchantInfoForm.controls.productTypes
-                                    .value[0]
-                                  : ""
-                                }}</span
-                              >
-                              <ng-template #productMultipleOptions>
-                                Đã chọn
-                                {{
-                                merchantInfoForm.controls.productTypes.value
-                                  .length
-                                }}
-                                nhóm
-                              </ng-template>
-                            </mat-select-trigger>
-                            <mat-option
-                              *ngFor="let product of products"
-                              [value]="product.name"
-                            >{{ product.name }}
-                            </mat-option>
-                          </mat-select>
-
-                          <show-errors
-                            [control]="
-                              merchantInfoForm.controls['productTypes']
-                            "
-                            [controlLabel]="
-                              'merchant.merchant_detail.product' | translate
-                            "
-                            [hasIconPrefix]="false"
-                          >
-                          </show-errors>
-                        </mat-form-field>
-                      </div>
+                        <show-errors
+                          [control]="merchantInfoForm.controls['productTypes']"
+                          [controlLabel]="
+                            'merchant.merchant_detail.product' | translate
+                          "
+                          [hasIconPrefix]="false"
+                        >
+                        </show-errors>
+                      </mat-form-field>
                     </div>
-                  </div>
+                  </article>
+                  <!--  End: Merchant Info  -->
 
-                  <!--                  <div class="row">-->
-                  <!--                    <p class="heading">{{-->
-                  <!--                      "merchant.merchant_dialog.admin_heading" | translate-->
-                  <!--                      }}</p>-->
-                  <!--                  </div>-->
+                  <!-- Manager Merchant   -->
+                  <article class="row">
+                    <div class="col-12">
+                      <p class="heading pb-2">
+                        {{
+                          "merchant.merchant_dialog.admin_heading" | translate
+                        }}
+                      </p>
+                    </div>
+                    <!-- Left info  -->
+                    <div class="col-12 col-sm-12 col-md-6 col-lg-6 pr-2">
+                      <mat-form-field appearance="outline" class="w-100">
+                        <mat-label>{{
+                          "merchant.merchant_detail.admin_name" | translate
+                        }}</mat-label>
+                        <input
+                          matInput
+                          required
+                          appTypeMaxLength
+                          maxlength="256"
+                          [placeholder]="
+                            'merchant.merchant_detail.admin_name' | translate
+                          "
+                          formControlName="name"
+                        />
+                        <show-errors
+                          [control]="merchantInfoForm.controls['name']"
+                          [controlLabel]="
+                            'merchant.merchant_detail.admin_name' | translate
+                          "
+                          [hasIconPrefix]="false"
+                        >
+                        </show-errors>
+                      </mat-form-field>
 
-                  <!--                  <div class="row">-->
-                  <!--                    &lt;!&ndash; Left Individual Info &ndash;&gt;-->
-                  <!--                    <div class="col-12 col-sm-12 col-md-6 col-lg-6 pr-2">-->
-                  <!--                      <div>-->
-                  <!--                        <mat-form-field appearance="outline" class="w-100">-->
-                  <!--                          <mat-label>{{-->
-                  <!--                            "merchant.merchant_detail.username" | translate-->
-                  <!--                            }}</mat-label>-->
-                  <!--                          <input-->
-                  <!--                            required-->
-                  <!--                            matInput-->
-                  <!--                            [placeholder]="-->
-                  <!--                              'merchant.merchant_detail.username' | translate-->
-                  <!--                            "-->
-                  <!--                            formControlName="username"-->
-                  <!--                          />-->
-                  <!--                          <show-errors-->
-                  <!--                            [control]="merchantInfoForm.controls['username']"-->
-                  <!--                            [controlLabel]="-->
-                  <!--                              'merchant.merchant_detail.username' | translate-->
-                  <!--                            "-->
-                  <!--                            [hasIconPrefix]="false"-->
-                  <!--                          >-->
-                  <!--                          </show-errors>-->
-                  <!--                        </mat-form-field>-->
-                  <!--                      </div>-->
+                      <mat-form-field appearance="outline" class="w-100">
+                        <mat-label>{{
+                          "merchant.merchant_detail.position" | translate
+                        }}</mat-label>
+                        <input
+                          matInput
+                          required
+                          appTypeMaxLength
+                          maxlength="256"
+                          [placeholder]="
+                            'merchant.merchant_detail.position' | translate
+                          "
+                          formControlName="position"
+                        />
+                        <show-errors
+                          [control]="merchantInfoForm.controls['position']"
+                          [controlLabel]="
+                            'merchant.merchant_detail.position' | translate
+                          "
+                          [hasIconPrefix]="false"
+                        >
+                        </show-errors>
+                      </mat-form-field>
+                    </div>
+                    <!-- End: Left info   -->
 
-                  <!--                      <div>-->
-                  <!--                        <mat-form-field appearance="outline" class="w-100">-->
-                  <!--                          <mat-label>{{-->
-                  <!--                            "merchant.merchant_detail.password" | translate-->
-                  <!--                            }}</mat-label>-->
-                  <!--                          <input-->
-                  <!--                            matInput-->
-                  <!--                            required-->
-                  <!--                            [placeholder]="-->
-                  <!--                              'merchant.merchant_detail.password' | translate-->
-                  <!--                            "-->
-                  <!--                            formControlName="password"-->
-                  <!--                          />-->
-                  <!--                          <show-errors-->
-                  <!--                            [control]="merchantInfoForm.controls['password']"-->
-                  <!--                            [controlLabel]="-->
-                  <!--                              'merchant.merchant_detail.password' | translate-->
-                  <!--                            "-->
-                  <!--                            [hasIconPrefix]="false"-->
-                  <!--                          >-->
-                  <!--                          </show-errors>-->
-                  <!--                        </mat-form-field>-->
-                  <!--                      </div>-->
+                    <!-- Right  -->
+                    <div class="col-12 col-sm-12 col-md-6 col-lg-6 pr-2">
+                      <mat-form-field appearance="outline" class="w-100">
+                        <mat-label>{{
+                          "merchant.merchant_detail.phone_number" | translate
+                        }}</mat-label>
+                        <input
+                          required
+                          matInput
+                          appPhoneNumberOnly
+                          phone-number-validate
+                          appTypeMaxLength
+                          maxlength="12"
+                          [placeholder]="
+                            'merchant.merchant_detail.phone_number' | translate
+                          "
+                          formControlName="phone"
+                        />
+                        <show-errors
+                          [control]="merchantInfoForm.controls['phone']"
+                          [controlLabel]="
+                            'merchant.merchant_detail.phone_number' | translate
+                          "
+                          [hasIconPrefix]="false"
+                        >
+                        </show-errors>
+                      </mat-form-field>
 
-                  <!--                      <div>-->
-                  <!--                        <mat-form-field appearance="outline" class="w-100">-->
-                  <!--                          <mat-label>{{-->
-                  <!--                            "merchant.merchant_detail.re_password" | translate-->
-                  <!--                            }}</mat-label>-->
-                  <!--                          <input-->
-                  <!--                            matInput-->
-                  <!--                            required-->
-                  <!--                            appPhoneNumberOnly-->
-                  <!--                            phone-number-validate-->
-                  <!--                            [placeholder]="-->
-                  <!--                              'merchant.merchant_detail.re_password'-->
-                  <!--                                | translate-->
-                  <!--                            "-->
-                  <!--                            formControlName="rePassword"-->
-                  <!--                          />-->
-                  <!--                          <show-errors-->
-                  <!--                            [control]="merchantInfoForm.controls['rePassword']"-->
-                  <!--                            [controlLabel]="-->
-                  <!--                              'merchant.merchant_detail.re_password'-->
-                  <!--                                | translate-->
-                  <!--                            "-->
-                  <!--                            [hasIconPrefix]="false"-->
-                  <!--                          >-->
-                  <!--                          </show-errors>-->
-                  <!--                        </mat-form-field>-->
-                  <!--                      </div>-->
-                  <!--                    </div>-->
-
-                  <!--                    &lt;!&ndash; Right Individual Info &ndash;&gt;-->
-                  <!--                    <div class="col-12 col-sm-12 col-md-6 col-lg-6 pl-2">-->
-                  <!--                      <div>-->
-                  <!--                        <mat-form-field appearance="outline" class="w-100">-->
-                  <!--                          <mat-label>{{-->
-                  <!--                            "merchant.merchant_detail.admin_name" | translate-->
-                  <!--                            }}</mat-label>-->
-                  <!--                          <input-->
-                  <!--                            matInput-->
-                  <!--                            required-->
-                  <!--                            [placeholder]="-->
-                  <!--                              'merchant.merchant_detail.admin_name' | translate-->
-                  <!--                            "-->
-                  <!--                            formControlName="name"-->
-                  <!--                          />-->
-                  <!--                          <show-errors-->
-                  <!--                            [control]="merchantInfoForm.controls['name']"-->
-                  <!--                            [controlLabel]="-->
-                  <!--                              'merchant.merchant_detail.admin_name' | translate-->
-                  <!--                            "-->
-                  <!--                            [hasIconPrefix]="false"-->
-                  <!--                          >-->
-                  <!--                          </show-errors>-->
-                  <!--                        </mat-form-field>-->
-                  <!--                      </div>-->
-
-                  <!--                      <div>-->
-                  <!--                        <mat-form-field appearance="outline" class="w-100">-->
-                  <!--                          <mat-label>{{-->
-                  <!--                            "merchant.merchant_detail.position" | translate-->
-                  <!--                            }}</mat-label>-->
-                  <!--                          <input-->
-                  <!--                            matInput-->
-                  <!--                            required-->
-                  <!--                            appNumberOnly-->
-                  <!--                            [placeholder]="-->
-                  <!--                              'merchant.merchant_detail.position' | translate-->
-                  <!--                            "-->
-                  <!--                            formControlName="position"-->
-                  <!--                          />-->
-                  <!--                          <show-errors-->
-                  <!--                            [control]="merchantInfoForm.controls['position']"-->
-                  <!--                            [controlLabel]="-->
-                  <!--                              'merchant.merchant_detail.position' | translate-->
-                  <!--                            "-->
-                  <!--                            [hasIconPrefix]="false"-->
-                  <!--                          >-->
-                  <!--                          </show-errors>-->
-                  <!--                        </mat-form-field>-->
-                  <!--                      </div>-->
-
-                  <!--                      <div>-->
-                  <!--                        <mat-form-field appearance="outline" class="w-100">-->
-                  <!--                          <mat-label>{{-->
-                  <!--                            "merchant.merchant_detail.phone_number" | translate-->
-                  <!--                            }}</mat-label>-->
-                  <!--                          <input-->
-                  <!--                            required-->
-                  <!--                            matInput-->
-                  <!--                            [placeholder]="-->
-                  <!--                              'merchant.merchant_detail.phone_number' | translate-->
-                  <!--                            "-->
-                  <!--                            formControlName="phone"-->
-                  <!--                          />-->
-                  <!--                          <show-errors-->
-                  <!--                            [control]="merchantInfoForm.controls['phone']"-->
-                  <!--                            [controlLabel]="-->
-                  <!--                              'merchant.merchant_detail.phone_number' | translate-->
-                  <!--                            "-->
-                  <!--                            [hasIconPrefix]="false"-->
-                  <!--                          >-->
-                  <!--                          </show-errors>-->
-                  <!--                        </mat-form-field>-->
-                  <!--                      </div>-->
-
-                  <!--                      <div>-->
-                  <!--                        <mat-form-field appearance="outline" class="w-100">-->
-                  <!--                          <mat-label>{{-->
-                  <!--                            "merchant.merchant_detail.email"-->
-                  <!--                              | translate-->
-                  <!--                            }}</mat-label>-->
-                  <!--                          <input-->
-                  <!--                            matInput-->
-                  <!--                            required-->
-                  <!--                            [placeholder]="-->
-                  <!--                              'merchant.merchant_detail.email'-->
-                  <!--                                | translate-->
-                  <!--                            "-->
-                  <!--                            formControlName="email"-->
-                  <!--                          />-->
-                  <!--                          <show-errors-->
-                  <!--                            [control]="merchantInfoForm.controls['email']"-->
-                  <!--                            [controlLabel]="-->
-                  <!--                              'merchant.merchant_detail.email'-->
-                  <!--                                | translate-->
-                  <!--                            "-->
-                  <!--                            [hasIconPrefix]="false"-->
-                  <!--                          >-->
-                  <!--                          </show-errors>-->
-                  <!--                        </mat-form-field>-->
-                  <!--                      </div>-->
-                  <!--                    </div>-->
-                  <!--                  </div>-->
+                      <mat-form-field appearance="outline" class="w-100">
+                        <mat-label>{{
+                          "merchant.merchant_detail.email" | translate
+                        }}</mat-label>
+                        <input
+                          matInput
+                          required
+                          appTypeMaxLength
+                          maxlength="256"
+                          email
+                          [placeholder]="
+                            'merchant.merchant_detail.email' | translate
+                          "
+                          formControlName="email"
+                        />
+                        <show-errors
+                          [control]="merchantInfoForm.controls['email']"
+                          [controlLabel]="
+                            'merchant.merchant_detail.email' | translate
+                          "
+                          [hasIconPrefix]="false"
+                        >
+                        </show-errors>
+                      </mat-form-field>
+                    </div>
+                    <!-- End: Right info  -->
+                  </article>
+                  <!--  END: Manager Merchant  -->
 
                   <!--                  <div class="row">-->
                   <!--                    <p class="heading">{{-->
@@ -668,15 +486,15 @@
                   <!--                          <input-->
                   <!--                            matInput-->
                   <!--                            [placeholder]="-->
-                  <!--                              'merchant.merchant_detail.discount' | translate-->
-                  <!--                            "-->
+                  <!--                                                'merchant.merchant_detail.discount' | translate-->
+                  <!--                                              "-->
                   <!--                            formControlName="discount"-->
                   <!--                          />-->
                   <!--                          <show-errors-->
                   <!--                            [control]="merchantInfoForm.controls['discount']"-->
                   <!--                            [controlLabel]="-->
-                  <!--                              'merchant.merchant_detail.discount' | translate-->
-                  <!--                            "-->
+                  <!--                                                'merchant.merchant_detail.discount' | translate-->
+                  <!--                                              "-->
                   <!--                            [hasIconPrefix]="false"-->
                   <!--                          >-->
                   <!--                          </show-errors>-->
@@ -690,17 +508,17 @@
                   <!--                            }}</mat-label>-->
                   <!--                          <mat-select disableOptionCentering="true" formControlName="show" multiple>-->
                   <!--                            <mat-select-trigger>-->
-                  <!--                                                    <span-->
-                  <!--                                                      *ngIf="-->
-                  <!--                                                        merchantInfoForm.controls.show.value-->
-                  <!--                                                          .length <= 1; else showMultipleOptions-->
-                  <!--                                                     "-->
-                  <!--                                                    >{{-->
-                  <!--                                                      merchantInfoForm.controls.show.value-->
-                  <!--                                                        ? merchantInfoForm.controls.show-->
-                  <!--                                                          .value[0]-->
-                  <!--                                                        : ""-->
-                  <!--                                                      }}</span>-->
+                  <!--                                                                      <span-->
+                  <!--                                                                        *ngIf="-->
+                  <!--                                                                          merchantInfoForm.controls.show.value-->
+                  <!--                                                                            .length <= 1; else showMultipleOptions-->
+                  <!--                                                                       "-->
+                  <!--                                                                      >{{-->
+                  <!--                                                                        merchantInfoForm.controls.show.value-->
+                  <!--                                                                          ? merchantInfoForm.controls.show-->
+                  <!--                                                                            .value[0]-->
+                  <!--                                                                          : ""-->
+                  <!--                                                                        }}</span>-->
                   <!--                              <ng-template #showMultipleOptions>-->
                   <!--                                {{merchantInfoForm.controls.show.value}}-->
                   <!--                              </ng-template>-->
@@ -714,8 +532,8 @@
                   <!--                          <show-errors-->
                   <!--                            [control]="merchantInfoForm.controls['show']"-->
                   <!--                            [controlLabel]="-->
-                  <!--                              'merchant.merchant_detail.show' | translate-->
-                  <!--                            "-->
+                  <!--                                                'merchant.merchant_detail.show' | translate-->
+                  <!--                                              "-->
                   <!--                            [hasIconPrefix]="false"-->
                   <!--                          >-->
                   <!--                          </show-errors>-->
@@ -780,11 +598,11 @@
           <button class="bg-grey" mat-button mat-dialog-close>
             {{ "merchant.merchant_dialog.cancel" | translate }}
           </button>
-          <button color="accent" mat-flat-button>
+          <button color="accent" mat-flat-button type="submit">
             <span class="sprite-group-5-save-white"></span>
             <span class="ms-1">{{
               "merchant.merchant_dialog.save" | translate
-              }}</span>
+            }}</span>
           </button>
         </div>
       </div>

@@ -359,13 +359,14 @@ export class PlStatusElementComponent implements OnInit, AfterViewInit {
           ),
           labelStatus: PL_LABEL_STATUS.WORSE,
         };
+      } else if (repaymentStatus === REPAYMENT_STATUS.OVERDUE && !isBadLoan) {
+        return {
+          label: this.multiLanguageService.instant(
+            `payday_loan.repayment_status.${repaymentStatus.toLowerCase()}`
+          ),
+          labelStatus: PL_LABEL_STATUS.CANCEL,
+        };
       }
-      return {
-        label: this.multiLanguageService.instant(
-          `payday_loan.repayment_status.${repaymentStatus.toLowerCase()}`
-        ),
-        labelStatus: PL_LABEL_STATUS.CANCEL,
-      };
     }
 
     switch (status) {
