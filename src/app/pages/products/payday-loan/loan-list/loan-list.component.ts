@@ -75,7 +75,7 @@ export class LoanListComponent implements OnInit, OnDestroy {
       this.multiLanguageService.instant('breadcrumb.manage_payday_loan') +
       ' - ' +
       this.groupName,
-    iconImgSrc: 'assets/img/icon/group-5/pl-24-available.png',
+    iconImgSrc: 'assets/img/icon/group-5/svg/pl-24-available.png',
     searchPlaceholder: this.multiLanguageService.instant(
       'breadcrumb.search_field_payday_loan'
     ),
@@ -706,6 +706,10 @@ export class LoanListComponent implements OnInit, OnDestroy {
   public onSubmitSearchForm(event) {
     this.filterForm.controls.keyword.setValue(event.keyword);
     this._onFilterChange();
+  }
+
+  public onRefreshTrigger(event) {
+    this._getLoanList();
   }
 
   public updateElementInfo(updatedLoan: PaydayLoanHmg) {

@@ -128,7 +128,9 @@ export class MerchantDetailDialogComponent implements OnInit, AfterViewChecked {
         '',
         [
           Validators.required,
-          Validators.pattern('(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?'),
+          Validators.pattern(
+            '(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?'
+          ),
         ],
       ],
       identificationNumber: [''],
@@ -146,6 +148,10 @@ export class MerchantDetailDialogComponent implements OnInit, AfterViewChecked {
       logo: [''],
       descriptionImg: [''],
       description: [''],
+      managerName: ['', Validators.required],
+      managerEmail: ['', [Validators.required, Validators.email]],
+      managerMobile: ['', Validators.required],
+      managerPosition: ['', Validators.required],
     });
   }
 }

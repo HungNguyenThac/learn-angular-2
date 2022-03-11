@@ -197,7 +197,7 @@ export class CustomerIndividualInfoComponent implements OnInit, OnDestroy {
 
   verifyInfo() {
     const confirmVerifyRef = this.notificationService.openPrompt({
-      imgUrl: "../../../../../assets/img/icon/group-5/unlock-dialog.svg",
+      imgUrl: "../../../../../assets/img/icon/group-5/svg/unlock-dialog.svg",
       title: this.multiLanguageService.instant(
         "customer.individual_info.verify_customer.dialog_title"
       ),
@@ -264,7 +264,7 @@ export class CustomerIndividualInfoComponent implements OnInit, OnDestroy {
   public chooseDisableTime(title, value, element) {
     element.style.display = "none";
     const confirmDisableRef = this.notificationService.openPrompt({
-      imgUrl: "../../../../../assets/img/icon/group-5/Alert.svg",
+      imgUrl: "../../../../../assets/img/icon/group-5/svg/Alert.svg",
       title:
         value === LOCK_TIME_OPTIONS.PERMANENT
           ? this.multiLanguageService.instant(
@@ -315,7 +315,7 @@ export class CustomerIndividualInfoComponent implements OnInit, OnDestroy {
 
   public displayEnableOption() {
     const confirmEnableRef = this.notificationService.openPrompt({
-      imgUrl: "../../../../../assets/img/icon/group-5/unlock-dialog.svg",
+      imgUrl: "../../../../../assets/img/icon/group-5/svg/unlock-dialog.svg",
       title: this.multiLanguageService.instant(
         "customer.individual_info.enable_customer.dialog_title"
       ),

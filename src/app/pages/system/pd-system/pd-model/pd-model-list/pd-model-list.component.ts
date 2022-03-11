@@ -104,7 +104,7 @@ export class PdModelListComponent implements OnInit, OnDestroy {
       action: 'delete',
       color: 'accent',
       content: this.multiLanguageService.instant('pd_system.pd_model.delete'),
-      imageSrc: 'assets/img/icon/group-5/trash.svg',
+      imageSrc: 'assets/img/icon/group-5/svg/trash.svg',
       style: 'background-color: rgba(255, 255, 255, 0.1);',
     },
     {
@@ -114,7 +114,7 @@ export class PdModelListComponent implements OnInit, OnDestroy {
       content: this.multiLanguageService.instant(
         'customer.individual_info.lock'
       ),
-      imageSrc: 'assets/img/icon/group-5/lock-white.svg',
+      imageSrc: 'assets/img/icon/group-5/svg/lock-white.svg',
       style: 'background-color: rgba(255, 255, 255, 0.1);',
     },
   ];
@@ -459,7 +459,7 @@ export class PdModelListComponent implements OnInit, OnDestroy {
 
   public lockMultiplePrompt(ids) {
     const confirmLockRef = this.notificationService.openPrompt({
-      imgUrl: '../../../../../assets/img/icon/group-5/Alert.svg',
+      imgUrl: '../../../../../assets/img/icon/group-5/svg/Alert.svg',
       title: this.multiLanguageService.instant(
         'system.user_detail.lock_user.title'
       ),
@@ -513,7 +513,7 @@ export class PdModelListComponent implements OnInit, OnDestroy {
 
   public deleteMultiplePrompt(ids) {
     const confirmDeleteRef = this.notificationService.openPrompt({
-      imgUrl: '../../../../../assets/img/icon/group-5/delete-dialog.svg',
+      imgUrl: '../../../../../assets/img/icon/group-5/svg/delete-dialog.svg',
       title: this.multiLanguageService.instant('pd_system.pd_model.delete'),
       content: this.multiLanguageService.instant(
         'pd_system.pd_model.delete_content'

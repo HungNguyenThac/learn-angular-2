@@ -53,6 +53,7 @@ export class BaseExpandedTableComponent implements OnInit, AfterViewInit {
   @Input() hasSelect: boolean;
   @Input() selectButtons: TableSelectActionModel[];
   @Input() overviewItems: overviewItemModel[];
+  @Input() showRefreshBtn: boolean;
   _expandElementByDefault;
   @Input() get expandElementByDefault() {
     return this._expandElementByDefault;
@@ -69,6 +70,7 @@ export class BaseExpandedTableComponent implements OnInit, AfterViewInit {
   @Output() triggerSortChange = new EventEmitter<any>();
   @Output() triggerExpandedElementChange = new EventEmitter<any>();
   @Output() outputAction = new EventEmitter<any>();
+  @Output() triggerRefresh = new EventEmitter<any>();
 
   pressed: boolean = false;
   resizeTimeout: any;
@@ -165,6 +167,10 @@ export class BaseExpandedTableComponent implements OnInit, AfterViewInit {
 
   public onPageChange(event: PageEvent) {
     this.triggerPageChange.emit(event);
+  }
+
+  public onClickRefreshBtn(event) {
+    this.triggerRefresh.emit(event)
   }
 
   public expandElement(element) {

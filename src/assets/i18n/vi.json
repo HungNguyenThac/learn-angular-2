@@ -74,7 +74,8 @@
     "lock_success": "Khóa tài khoản thành công",
     "unlock_success": "Mở khóa tài khoản thành công",
     "process_downloading": "Đang tải xuống tài liệu",
-    "export_excel": "Xuất file"
+    "export_excel": "Xuất file",
+    "refresh": "Tải lại"
   },
   "auth": {
     "phone_number": "Số điện thoại",

@@ -4,53 +4,77 @@
     class="card-title d-flex align-items-center gap-1"
   >
     <h2 [innerHTML]="tableTitle" class="card-name"></h2>
-    <ng-container *ngIf="overviewItems">
-      <div class="overview-data">
-        <div *ngFor="let item of overviewItems">
-          <span class="field">{{ item.field }}</span>: <span class="value">{{ item.value ? (item.value | formatPrice: null) : 0}}</span>
-        </div>
-      </div>
-    </ng-container>
-    <!-- Display Column -->
-    <button
-      style="margin-left: auto"
-      (click)="panelOpenState = !panelOpenState"
-      mat-flat-button
-      type="button"
-    >
-      <span class="sprite-group-7-filter"></span>
-    </button>
-    <mat-accordion (mouseleave)="panelOpenState = false" class="filter-panel">
-      <mat-expansion-panel [expanded]="panelOpenState" hideToggle>
-        <div class="card op-card">
-          <div
-            class="
-              card-title
-              filter-description
-              d-flex
-              align-items-center
-              gap-1
-            "
-          >
-            {{ "common.field" | translate }}
-            <button (click)="resetDisplayFields()" class="reset-btn" mat-button>
-              {{ "common.reset" | translate }}
-            </button>
+
+    <div class="me-3" style="margin-left: auto">
+      <ng-container *ngIf="overviewItems">
+        <div class="overview-data">
+          <div *ngFor="let item of overviewItems">
+            <span class="field">{{ item.field }}</span
+            >:
+            <span class="value">{{
+              item.value ? (item.value | formatPrice: null) : 0
+            }}</span>
           </div>
-          <div class="card-body filter-fields">
-            <div *ngFor="let ele of selectedFields" class="field">
-              <mat-checkbox
-                (change)="changeFilter(ele)"
-                [checked]="ele.showed"
-                class="checkbox"
-                color="primary"
-                >{{ ele?.title }}</mat-checkbox
+        </div>
+      </ng-container>
+    </div>
+
+    <div>
+      <!--   Reload  -->
+      <button
+        *ngIf="showRefreshBtn"
+        (click)="onClickRefreshBtn($event)"
+        mat-flat-button
+        type="button"
+        [title]="'common.refresh' | translate"
+      >
+        <span class="sprite-group-1-arrow-counterclockwise"></span>
+      </button>
+
+      <!-- Display Column -->
+      <button
+        (click)="panelOpenState = !panelOpenState"
+        mat-flat-button
+        type="button"
+      >
+        <span class="sprite-group-7-filter"></span>
+      </button>
+      <mat-accordion (mouseleave)="panelOpenState = false" class="filter-panel">
+        <mat-expansion-panel [expanded]="panelOpenState" hideToggle>
+          <div class="card op-card">
+            <div
+              class="
+                card-title
+                filter-description
+                d-flex
+                align-items-center
+                gap-1
+              "
+            >
+              {{ "common.field" | translate }}
+              <button
+                (click)="resetDisplayFields()"
+                class="reset-btn"
+                mat-button
               >
+                {{ "common.reset" | translate }}
+              </button>
+            </div>
+            <div class="card-body filter-fields">
+              <div *ngFor="let ele of selectedFields" class="field">
+                <mat-checkbox
+                  (change)="changeFilter(ele)"
+                  [checked]="ele.showed"
+                  class="checkbox"
+                  color="primary"
+                  >{{ ele?.title }}</mat-checkbox
+                >
+              </div>
             </div>
           </div>
-        </div>
-      </mat-expansion-panel>
-    </mat-accordion>
+        </mat-expansion-panel>
+      </mat-accordion>
+    </div>
   </div>
   <div
     *ngIf="showSelectedPanel"

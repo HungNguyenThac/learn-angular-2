@@ -13,6 +13,7 @@ import { RESPONSE_CODE } from '../../../../../core/common/enum/operator';
 import {
   AdminControllerService,
   ApiResponseString,
+  UpdateMerchantRequestDto,
 } from '../../../../../../../open-api-modules/merchant-api-docs';
 import { DomSanitizer } from '@angular/platform-browser';
 
@@ -92,7 +93,7 @@ export class MerchantElementComponent implements OnInit {
     );
   }
 
-  private updateMerchantInfo(updateInfoRequest) {
+  private updateMerchantInfo(updateInfoRequest: UpdateMerchantRequestDto) {
     this.subManager.add(
       this.adminControllerService
         .v1AdminMerchantsIdPut(this.merchantId, updateInfoRequest)
@@ -103,13 +104,13 @@ export class MerchantElementComponent implements OnInit {
               data?.errorCode
             );
           }
-          this.generateQrCode(this.merchantId);
-          this.merchantInfo = data?.result;
-          this.triggerUpdateElementInfo.emit(this.merchantInfo);
           setTimeout(() => {
             this.notifier.success(
               this.multiLanguageService.instant('common.update_success')
             );
+            this.generateQrCode(this.merchantId);
+            this.merchantInfo = data?.result;
+            this.triggerUpdateElementInfo.emit(this.merchantInfo);
           }, 500);
         })
     );

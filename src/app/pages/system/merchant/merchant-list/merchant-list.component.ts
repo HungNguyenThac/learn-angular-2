@@ -41,7 +41,7 @@ import {
 import {
   AdminControllerService,
   ApiResponseMerchant,
-  ApiResponseString,
+  ApiResponseString, CreateMerchantRequestDto,
 } from '../../../../../../open-api-modules/merchant-api-docs';
 import { Observable, Subscription } from 'rxjs';
 import { MerchantListService } from './merchant-list.service';
@@ -204,7 +204,7 @@ export class MerchantListComponent implements OnInit {
       content: this.multiLanguageService.instant(
         'merchant.merchant_list.delete_merchant'
       ),
-      imageSrc: 'assets/img/icon/group-5/trash.svg',
+      imageSrc: 'assets/img/icon/group-5/svg/trash.svg',
       style: 'background-color: rgba(255, 255, 255, 0.1);',
     },
     {
@@ -214,7 +214,7 @@ export class MerchantListComponent implements OnInit {
       content: this.multiLanguageService.instant(
         'customer.individual_info.lock'
       ),
-      imageSrc: 'assets/img/icon/group-5/lock-white.svg',
+      imageSrc: 'assets/img/icon/group-5/svg/lock-white.svg',
       style: 'background-color: rgba(255, 255, 255, 0.1);',
     },
   ];
@@ -635,7 +635,7 @@ export class MerchantListComponent implements OnInit {
 
   public lockMultiplePrompt(ids) {
     const confirmLockRef = this.notificationService.openPrompt({
-      imgUrl: '../../../../../assets/img/icon/group-5/Alert.svg',
+      imgUrl: '../../../../../assets/img/icon/group-5/svg/Alert.svg',
       title: this.multiLanguageService.instant(
         'system.user_detail.lock_user.title'
       ),
@@ -701,7 +701,7 @@ export class MerchantListComponent implements OnInit {
 
   public deleteMultiplePrompt(ids) {
     const confirmDeleteRef = this.notificationService.openPrompt({
-      imgUrl: '../../../../../assets/img/icon/group-5/delete-dialog.svg',
+      imgUrl: '../../../../../assets/img/icon/group-5/svg/delete-dialog.svg',
       title: this.multiLanguageService.instant(
         'merchant.merchant_detail.delete_merchant.title'
       ),
@@ -791,6 +791,10 @@ export class MerchantListComponent implements OnInit {
     this.expandedElementMerchant = element;
   }
 
+  public onRefreshTrigger(event) {
+    this._getMerchantList();
+  }
+
   onClickBtnAdd(event) {
     const addMerchantDialogRef = this.dialog.open(
       MerchantDetailDialogComponent,
@@ -803,15 +807,15 @@ export class MerchantListComponent implements OnInit {
     this.subManager.add(
       addMerchantDialogRef.afterClosed().subscribe((result: any) => {
         if (result && result.type === BUTTON_TYPE.PRIMARY) {
-          console.log('result.data', result.data)
-          // let createRequest = this._bindingDialogData(result.data);
+          let createRequest = this._bindingDialogData(result.data);
+          console.log('createRequest', createRequest)
           // this.sendAddRequest(createRequest);
         }
       })
     );
   }
 
-  sendAddRequest(addRequest) {
+  sendAddRequest(addRequest: CreateMerchantRequestDto) {
     this.subManager.add(
       this.adminControllerService
         .v1AdminMerchantsPost(addRequest)
@@ -841,7 +845,7 @@ export class MerchantListComponent implements OnInit {
     }, 2000);
   }
 
-  private _bindingDialogData(data) {
+  private _bindingDialogData(data): CreateMerchantRequestDto {
     return {
       code: data?.code || null,
       name: data?.name || null,

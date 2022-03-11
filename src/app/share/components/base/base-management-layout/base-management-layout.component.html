@@ -35,6 +35,7 @@
           "
         >
           <app-base-expanded-table
+            (triggerRefresh)="triggerRefresh($event)"
             (triggerExpandedElementChange)="triggerExpandElementChange($event)"
             (triggerPageChange)="triggerPageChange($event)"
             (triggerSortChange)="triggerSortChange($event)"
@@ -54,6 +55,7 @@
             [selectButtons]="selectButtons"
             [expandElementByDefault]="forceExpandElement"
             [overviewItems]="overviewItems"
+            [showRefreshBtn]="showRefreshBtn"
           >
           </app-base-expanded-table>
         </div>

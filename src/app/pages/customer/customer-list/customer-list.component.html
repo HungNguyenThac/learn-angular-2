@@ -9,6 +9,7 @@
   [tableTitle]="tableTitle"
   [pageLength]="pageLength"
   [dataSource]="dataSource"
+  [showRefreshBtn]="true"
   [orderBy]="filterForm.controls.orderBy?.value"
   [sortDirection]="filterForm.controls.sortDirection?.value"
   [breadcrumbOptions]="breadcrumbOptions"
@@ -20,6 +21,7 @@
   (onSubmitSearchForm)="onSubmitSearchForm($event)"
   (onFilterChange)="onFilterFormChange($event)"
   (onFilterActionTrigger)="onFilterActionTrigger($event)"
+  (onRefreshTrigger)="onRefreshTrigger($event)"
 >
 </app-base-management-layout>
 

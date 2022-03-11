@@ -16,6 +16,7 @@ import {
   AdminControllerService,
   ApiResponseMerchant,
   ApiResponseString,
+  UpdateMerchantRequestDto,
 } from '../../../../../../../open-api-modules/merchant-api-docs';
 
 @Component({
@@ -99,7 +100,7 @@ export class MerchantDetailComponent implements OnInit {
 
   public lockPrompt() {
     const confirmLockRef = this.notificationService.openPrompt({
-      imgUrl: '../../../../../assets/img/icon/group-5/Alert.svg',
+      imgUrl: '../../../../../assets/img/icon/group-5/svg/Alert.svg',
       title: this.multiLanguageService.instant(
         'merchant.merchant_detail.lock_merchant.title'
       ),
@@ -138,7 +139,7 @@ export class MerchantDetailComponent implements OnInit {
 
   public unlockPrompt() {
     const confirmUnlockRef = this.notificationService.openPrompt({
-      imgUrl: '../../../../../assets/img/icon/group-5/unlock-dialog.svg',
+      imgUrl: '../../../../../assets/img/icon/group-5/svg/unlock-dialog.svg',
       title: this.multiLanguageService.instant(
         'merchant.merchant_detail.unlock_merchant.title'
       ),
@@ -175,7 +176,7 @@ export class MerchantDetailComponent implements OnInit {
 
   public deletePrompt() {
     const confirmDeleteRef = this.notificationService.openPrompt({
-      imgUrl: '../../../../../assets/img/icon/group-5/delete-dialog.svg',
+      imgUrl: '../../../../../assets/img/icon/group-5/svg/delete-dialog.svg',
       title: this.multiLanguageService.instant(
         'merchant.merchant_detail.delete_merchant.title'
       ),
@@ -214,7 +215,7 @@ export class MerchantDetailComponent implements OnInit {
     });
   }
 
-  private _bindingDialogData(data) {
+  private _bindingDialogData(data): UpdateMerchantRequestDto {
     return {
       code: data?.code || null,
       name: data?.name || null,
@@ -229,10 +230,13 @@ export class MerchantDetailComponent implements OnInit {
       productTypes: data?.productTypes || null,
       logo: data?.logo || null,
       description: data?.description || null,
-      descriptionImg: data?.descriptionImg || null,
       status: data?.status ? data?.status : 'ACTIVE',
-      merchantServiceFee: data?.merchantServiceFee || null,
-      customerServiceFee: data?.customerServiceFee || null,
+      merchantServiceFee: data?.merchantServiceFee
+        ? data?.merchantServiceFee / 100
+        : null,
+      customerServiceFee: data?.customerServiceFee
+        ? data?.customerServiceFee / 100
+        : null,
     };
   }
 
