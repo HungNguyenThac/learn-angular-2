@@ -48,9 +48,9 @@
             }}</mat-panel-title>
           </mat-expansion-panel-header>
           <div class="expansion-panel-content">
-            <div class="image-grid">
+            <div class="row">
               <!-- Salary 1  -->
-              <article *ngFor="let imageSrc of imagesSrc; let i = index">
+              <article *ngFor="let imageSrc of imagesSrc; let i = index" class="col-12 col-xs-12 col-sm-6 col-md-4 col-lg-3">
                 <app-upload-document-area
                   [id]="'image' + i"
                   name="image{{ i }}"
@@ -67,15 +67,13 @@
                   "
                 ></app-upload-document-area>
               </article>
-              <article *ngIf="imagesSrc.length < 5">
-                <div class="text-center">
-                  <button
-                    type="button"
-                    (click)="triggerClickInsertImageInput()"
-                    color="primary"
-                    mat-icon-button
-                  >
-                    <div class="sprite-group-1-add"></div>
+              <article *ngIf="imagesSrc.length < 5" class="col-12 col-xs-12 col-sm-6 col-md-4 col-lg-3 my-auto">
+                <div class="text-center m-3 d-flex">
+                  <button (click)="triggerClickInsertImageInput()" color="primary" mat-flat-button type="submit">
+                    <span class="sprite-group-5-add-white"></span>
+                    <span class="ms-1">{{
+                      "common.upload" | translate
+                      }}</span>
                   </button>
                   <input
                     hidden
@@ -87,12 +85,17 @@
                     appMaxFileSize
                     appMaxFileCount
                     appImageFileOnly
-                    [maxSizeOfFile]="2"
-                    [maxNumberOfFile]="5"
+                    [maxSizeOfFile]="maxSizeOfFile"
+                    [maxNumberOfFile]="maxCountFile"
                     [(ngModel)]="inputFiles"
                     (change)="onChangeInputFiles($event)"
                   />
-                  <input type="reset" name="resetMerchantFile" [id]="'reset-merchant-files'" hidden />
+                  <input
+                    type="reset"
+                    name="resetMerchantFile"
+                    [id]="'reset-merchant-files'"
+                    hidden
+                  />
                 </div>
               </article>
             </div>

@@ -18,6 +18,7 @@ import {
 } from '../../../../../core/common/enum/operator';
 import { AdminControllerService } from '../../../../../../../open-api-modules/merchant-api-docs';
 import fileToBase64 from '../../../../../core/utils/file-to-base64';
+import filesToFileListItem from "../../../../../core/utils/files-to-file-list-item";
 
 @Component({
   selector: 'app-merchant-image-upload',
@@ -48,6 +49,8 @@ export class MerchantImageUploadComponent implements OnInit {
 
   @Output() refreshContent = new EventEmitter<any>();
 
+  maxCountFile: number = 5;
+  maxSizeOfFile: number = 2; //MB
   subManager = new Subscription();
   selfieSrc: string;
   backIdSrc: string;
@@ -269,14 +272,19 @@ export class MerchantImageUploadComponent implements OnInit {
 
   async onChangeInputFiles($event) {
     let files = $event.target.files;
-    let srcFiles = await this.convertFilesToBase64(files);
+    let validFiles: any[] = Array.from(files);
+
+    if (files.length > this.maxCountFile - this.imagesSrc.length) {
+      validFiles = Array.from(files).slice(0, this.maxCountFile - this.imagesSrc.length);
+    }
+    let srcFiles = await this.convertFilesToBase64(validFiles);
     this.imagesSrc.push(...srcFiles);
-    // this.triggerClickResetInput();
+    this.triggerClickResetInput();
   }
 
-  async convertFilesToBase64(files) {
+  async convertFilesToBase64(files: any[]) {
     let result: any[] = [];
-    for (const file of Array.from(files)) {
+    for (const file of files) {
       result.push(await fileToBase64(file));
     }
     return result;
