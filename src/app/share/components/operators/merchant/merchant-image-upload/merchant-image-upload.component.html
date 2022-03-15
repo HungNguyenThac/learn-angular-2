@@ -7,7 +7,7 @@
           <mat-expansion-panel-header class="pb-2 pt-2 ps-3 pe-3">
             <mat-panel-title>{{
               "merchant.merchant_image.logo" | translate
-              }}</mat-panel-title>
+            }}</mat-panel-title>
           </mat-expansion-panel-header>
           <div class="expansion-panel-content">
             <div class="row">
@@ -39,47 +39,50 @@
 
   <div class="row">
     <!-- Salary Document -->
-    <article class="w-90">
+    <article    >
       <mat-accordion>
         <mat-expansion-panel>
           <mat-expansion-panel-header class="pb-2 pt-2 ps-3 pe-3">
             <mat-panel-title>{{
               "merchant.merchant_image.images" | translate
-              }}</mat-panel-title>
+            }}</mat-panel-title>
           </mat-expansion-panel-header>
           <div class="expansion-panel-content">
             <div class="image-grid">
               <!-- Salary 1  -->
               <article *ngFor="let imageSrc of imagesSrc; let i = index">
                 <app-upload-document-area
-                  [id]="'image'+i"
-                  name="image{{i}}"
+                  [id]="'image' + i"
+                  name="image{{ i }}"
                   [classes]="'m-3'"
-                  [title]="'merchant.merchant_image.image' | translate: { i: i+1 }"
+                  [title]="
+                    'merchant.merchant_image.image' | translate: { i: i + 1 }
+                  "
                   [imgSrc]="imageSrc"
                   [hiddenDeleteBtn]="hiddenDeleteBtn"
                   [hiddenUpdateBtn]="true"
                   [hiddenUploadBtn]="hiddenUploadBtn"
                   (onChangeDocument)="
-                    onChangeDocument(
-                      $event,
-                      imageSrc,
-                      documentTypes.IMAGES,
-                      i
-                    )
+                    onChangeDocument($event, imageSrc, documentTypes.IMAGES, i)
                   "
                 ></app-upload-document-area>
+              </article>
+              <article *ngIf="imagesSrc.length < 5">
+                <div class="text-center">
+                  <button
+                    type="button"
+                    (click)="addAnswer()"
+                    color="primary"
+                    mat-icon-button
+                  >
+                    <div class="sprite-group-1-add"></div>
+                  </button>
+                </div>
               </article>
             </div>
           </div>
         </mat-expansion-panel>
       </mat-accordion>
     </article>
-    <div class="col">
-      <button type="button" (click)="addAnswer()" color="accent" class="addBtn"
-              mat-flat-button
-      >Thêm ảnh
-      </button>
-    </div>
   </div>
 </div>

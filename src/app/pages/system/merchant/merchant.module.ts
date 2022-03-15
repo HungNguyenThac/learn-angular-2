@@ -11,6 +11,7 @@ import { MerchantDetailComponent } from './components/merchant-detail/merchant-d
 import { MerchantLogoComponent } from './components/merchant-logo/merchant-logo.component';
 import { MerchantQrComponent } from './components/merchant-qr/merchant-qr.component';
 import { TitleConstants } from '../../../core/common/providers/title-constants';
+import {CKEditorModule} from "@ckeditor/ckeditor5-angular";
 
 export const MerchantRoutes: Routes = [
   {
@@ -43,6 +44,7 @@ export const MerchantRoutes: Routes = [
     TranslateModule,
     FormsModule,
     PdfViewerModule,
+    CKEditorModule
   ],
 })
 export class MerchantModule {}

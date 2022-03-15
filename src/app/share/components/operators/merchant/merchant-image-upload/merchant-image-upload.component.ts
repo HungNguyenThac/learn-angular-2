@@ -285,7 +285,6 @@ export class MerchantImageUploadComponent implements OnInit {
         this._downloadDocumentByPath(documentPath);
         break;
       case DOCUMENT_BTN_TYPE.DELETE:
-        console.log('asjhdfiuoashdoahsdo', this.imagesSrc[index]);
         this._deleteDocumentPath(documentType, this.imagesSrc[index]);
         break;
       default:
@@ -294,6 +293,9 @@ export class MerchantImageUploadComponent implements OnInit {
   }
 
   addAnswer() {
+    if (this.imagesSrc.length >= 5) {
+      return;
+    }
     this.imagesSrc.push('');
   }
 }

@@ -4,6 +4,7 @@ import { PhoneNumberOnlyDirective } from './phone-number-only.directive';
 import { ResizeColumnDirective } from './resize-column.directive';
 import { PercentageDirective } from './percent.directive';
 import { TypeMaxLengthDirective } from './type-max-length.directive';
+import { CkEditorValidatorDirective } from './ck-editor-validator.directive';
 
 export const directives: any[] = [
   HiddenDirective,
@@ -12,6 +13,7 @@ export const directives: any[] = [
   ResizeColumnDirective,
   PercentageDirective,
   TypeMaxLengthDirective,
+  CkEditorValidatorDirective,
 ];
 
 export * from './hidden.directive';
@@ -20,3 +22,4 @@ export * from './phone-number-only.directive';
 export * from './resize-column.directive';
 export * from './percent.directive';
 export * from './type-max-length.directive';
+export * from './ck-editor-validator.directive';

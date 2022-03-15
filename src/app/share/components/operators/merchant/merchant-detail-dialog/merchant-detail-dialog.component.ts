@@ -10,6 +10,10 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MultiLanguageService } from '../../../../translate/multiLanguageService';
 import { BUTTON_TYPE } from '../../../../../core/common/enum/operator';
+import { Merchant } from '../../../../../../../open-api-modules/merchant-api-docs';
+import * as DecoupledEditor from '@ckeditor/ckeditor5-build-decoupled-document';
+import CkEditorAdapters from '../../../../../core/utils/ck-editor-adapters';
+// import * as SourceEditing from '@ckeditor/ckeditor5-source-editing';
 
 @Component({
   selector: 'app-merchant-detail-dialog',
@@ -17,9 +21,11 @@ import { BUTTON_TYPE } from '../../../../../core/common/enum/operator';
   styleUrls: ['./merchant-detail-dialog.component.scss'],
 })
 export class MerchantDetailDialogComponent implements OnInit, AfterViewChecked {
+  public Editor = DecoupledEditor;
   tabIndex: number = 0;
   merchantInfoForm: FormGroup;
-  merchantInfo;
+  merchantInfo: Merchant;
+  merchantInfoDescription: any;
   dialogTitle = this.multiLanguageService.instant(
     'merchant.merchant_dialog.add_merchant_title'
   );
@@ -67,6 +73,62 @@ export class MerchantDetailDialogComponent implements OnInit, AfterViewChecked {
 
   ngAfterViewChecked(): void {
     this.changeDetectorRef.detectChanges();
+  }
+
+  ckeditorConfig: any = {
+    toolbar: [
+      'heading',
+      '|',
+      'fontfamily',
+      'fontsize',
+      '|',
+      'alignment',
+      '|',
+      'fontColor',
+      'fontBackgroundColor',
+      '|',
+      'bold',
+      'italic',
+      'strikethrough',
+      'underline',
+      'subscript',
+      'superscript',
+      '|',
+      'link',
+      '|',
+      'outdent',
+      'indent',
+      '|',
+      'bulletedList',
+      'numberedList',
+      'todoList',
+      '|',
+      'sourceEditing',
+      '|',
+      'insertTable',
+      '|',
+      'mediaEmbed',
+      'uploadImage',
+      'blockQuote',
+      'watchDog',
+      'widget',
+      '|',
+      'undo',
+      'redo',
+    ],
+  };
+
+  public onReadyCkEditor(editor) {
+    editor.plugins.get('FileRepository').createUploadAdapter = (loader) => {
+      return new CkEditorAdapters(loader, editor.config);
+    };
+
+    editor.ui
+      .getEditableElement()
+      .parentElement.insertBefore(
+        editor.ui.view.toolbar.element,
+        editor.ui.getEditableElement()
+      );
   }
 
   submitForm() {
@@ -152,6 +214,7 @@ export class MerchantDetailDialogComponent implements OnInit, AfterViewChecked {
       managerEmail: ['', [Validators.required, Validators.email]],
       managerMobile: ['', Validators.required],
       managerPosition: ['', Validators.required],
+      displayFormats: [''],
     });
   }
 }

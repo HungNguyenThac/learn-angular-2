@@ -22,6 +22,7 @@ import { JwtModule } from '@auth0/angular-jwt';
 //Toastr
 import { ToastrModule } from 'ngx-toastr';
 import { GlobalConfig } from 'ngx-toastr/toastr/toastr-config';
+import {CKEditorModule} from "@ckeditor/ckeditor5-angular";
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(
