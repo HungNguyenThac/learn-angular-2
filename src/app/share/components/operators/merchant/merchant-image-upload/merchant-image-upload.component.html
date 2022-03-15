@@ -39,7 +39,7 @@
 
   <div class="row">
     <!-- Salary Document -->
-    <article    >
+    <article>
       <mat-accordion>
         <mat-expansion-panel>
           <mat-expansion-panel-header class="pb-2 pt-2 ps-3 pe-3">
@@ -71,12 +71,28 @@
                 <div class="text-center">
                   <button
                     type="button"
-                    (click)="addAnswer()"
+                    (click)="triggerClickInsertImageInput()"
                     color="primary"
                     mat-icon-button
                   >
                     <div class="sprite-group-1-add"></div>
                   </button>
+                  <input
+                    hidden
+                    id="import-merchant-files"
+                    name="importMerchantFile"
+                    type="file"
+                    accept="image/*"
+                    multiple
+                    appMaxFileSize
+                    appMaxFileCount
+                    appImageFileOnly
+                    [maxSizeOfFile]="2"
+                    [maxNumberOfFile]="5"
+                    [(ngModel)]="inputFiles"
+                    (change)="onChangeInputFiles($event)"
+                  />
+                  <input type="reset" name="resetMerchantFile" [id]="'reset-merchant-files'" hidden />
                 </div>
               </article>
             </div>

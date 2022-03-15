@@ -163,8 +163,7 @@
                           <mat-select-trigger>
                             <span
                               *ngIf="
-                                merchantInfoForm.controls.sellTypes.value
-                                  .length <= 1;
+                                merchantInfoForm.controls.sellTypes.value?.length <= 1;
                                 else typeMultipleOptions
                               "
                               >{{
@@ -176,7 +175,7 @@
                             <ng-template #typeMultipleOptions>
                               Đã chọn
                               {{
-                                merchantInfoForm.controls.sellTypes.value.length
+                                merchantInfoForm.controls.sellTypes.value?.length
                               }}
                               nhóm
                             </ng-template>
@@ -495,8 +494,7 @@
                           <mat-select-trigger>
                             <span
                               *ngIf="
-                                merchantInfoForm.controls.displayFormats.value
-                                  .length <= 1;
+                                merchantInfoForm.controls.displayFormats.value?.length <= 1;
                                 else displayFormatOptions
                               "
                               >{{
@@ -509,8 +507,7 @@
                             <ng-template #displayFormatOptions>
                               Đã chọn
                               {{
-                                merchantInfoForm.controls.displayFormats.value
-                                  .length
+                                merchantInfoForm.controls.displayFormats.value?.length
                               }}
                             </ng-template>
                           </mat-select-trigger>

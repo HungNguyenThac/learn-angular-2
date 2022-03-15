@@ -56,9 +56,9 @@ export class CustomerDetailService {
       .downloadFile({ customerId, documentPath })
       .pipe(
         map((results) => {
-          const imageUrl = this.convertBlobType(results, 'application/image');
-          sessionStorage.setItem(documentPath, imageUrl);
-          return this.domSanitizer.bypassSecurityTrustUrl(imageUrl);
+            const imageUrl = this.convertBlobType(results, 'application/image');
+            sessionStorage.setItem(documentPath, imageUrl);
+            return this.domSanitizer.bypassSecurityTrustUrl(imageUrl);
         }),
         // catch errors
         catchError((err) => {
