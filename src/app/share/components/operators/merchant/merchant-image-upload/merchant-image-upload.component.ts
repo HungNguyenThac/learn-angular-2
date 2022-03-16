@@ -18,7 +18,6 @@ import {
 } from '../../../../../core/common/enum/operator';
 import { AdminControllerService } from '../../../../../../../open-api-modules/merchant-api-docs';
 import fileToBase64 from '../../../../../core/utils/file-to-base64';
-import filesToFileListItem from "../../../../../core/utils/files-to-file-list-item";
 
 @Component({
   selector: 'app-merchant-image-upload',
@@ -182,6 +181,9 @@ export class MerchantImageUploadComponent implements OnInit {
           (error) => {
             this.notifier.error(JSON.stringify(error));
             this.notificationService.hideLoading();
+          },
+          () => {
+            this.notificationService.hideLoading();
           }
         )
     );
@@ -238,11 +240,14 @@ export class MerchantImageUploadComponent implements OnInit {
     switch (updatedDocumentModel.type) {
       case DOCUMENT_BTN_TYPE.UPLOAD:
       case DOCUMENT_BTN_TYPE.UPDATE:
-        this._updateDocument(
-          documentType,
-          updatedDocumentModel.imgSrc,
-          updatedDocumentModel.type
-        );
+        if (documentType === DOCUMENT_TYPE.LOGO) {
+          this.logoSrc = updatedDocumentModel.imgSrc;
+        }
+        // this._updateDocument(
+        //   documentType,
+        //   updatedDocumentModel.imgSrc,
+        //   updatedDocumentModel.type
+        // );
         break;
       case DOCUMENT_BTN_TYPE.DOWNLOAD:
         this._downloadDocumentByPath(documentPath);
@@ -275,7 +280,10 @@ export class MerchantImageUploadComponent implements OnInit {
     let validFiles: any[] = Array.from(files);
 
     if (files.length > this.maxCountFile - this.imagesSrc.length) {
-      validFiles = Array.from(files).slice(0, this.maxCountFile - this.imagesSrc.length);
+      validFiles = Array.from(files).slice(
+        0,
+        this.maxCountFile - this.imagesSrc.length
+      );
     }
     let srcFiles = await this.convertFilesToBase64(validFiles);
     this.imagesSrc.push(...srcFiles);

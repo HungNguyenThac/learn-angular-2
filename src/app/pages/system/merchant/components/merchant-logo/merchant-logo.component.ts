@@ -6,7 +6,6 @@ import { NotificationService } from '../../../../../core/services/notification.s
 import { ToastrService } from 'ngx-toastr';
 import {
   BUTTON_TYPE,
-  DATA_CELL_TYPE,
   RESPONSE_CODE,
 } from '../../../../../core/common/enum/operator';
 import { MerchantDetailDialogComponent } from '../../../../../share/components';
@@ -20,6 +19,8 @@ import {
   ApiResponseCustomerInfo,
   MerchantControllerService,
 } from '../../../../../../../open-api-modules/dashboard-api-docs';
+import CkEditorAdapters from "../../../../../core/utils/ck-editor-adapters";
+import * as DecoupledEditor from '@ckeditor/ckeditor5-build-decoupled-document';
 
 @Component({
   selector: 'app-merchant-logo',
@@ -42,6 +43,50 @@ export class MerchantLogoComponent implements OnInit {
   @Output() updateElementInfo = new EventEmitter();
   merchantInfoForm: FormGroup;
   subManager = new Subscription();
+  public Editor = DecoupledEditor;
+
+  ckeditorConfig: any = {
+    toolbar: [
+      'heading',
+      '|',
+      'fontfamily',
+      'fontsize',
+      '|',
+      'alignment',
+      '|',
+      'fontColor',
+      'fontBackgroundColor',
+      '|',
+      'bold',
+      'italic',
+      'strikethrough',
+      'underline',
+      'subscript',
+      'superscript',
+      '|',
+      'link',
+      '|',
+      'outdent',
+      'indent',
+      '|',
+      'bulletedList',
+      'numberedList',
+      'todoList',
+      '|',
+      'sourceEditing',
+      '|',
+      'insertTable',
+      '|',
+      'mediaEmbed',
+      'uploadImage',
+      'blockQuote',
+      'watchDog',
+      'widget',
+      '|',
+      'undo',
+      'redo',
+    ],
+  };
 
   constructor(
     private multiLanguageService: MultiLanguageService,
@@ -285,4 +330,18 @@ export class MerchantLogoComponent implements OnInit {
       descriptionImg: data?.descriptionImg ? data?.descriptionImg : null,
     };
   }
+
+  public onReadyCkEditor(editor) {
+    editor.plugins.get('FileRepository').createUploadAdapter = (loader) => {
+      return new CkEditorAdapters(loader, editor.config);
+    };
+
+    editor.ui
+      .getEditableElement()
+      .parentElement.insertBefore(
+      editor.ui.view.toolbar.element,
+      editor.ui.getEditableElement()
+    );
+  }
+
 }

@@ -354,8 +354,8 @@ export class MerchantDetailComponent implements OnInit {
           'merchant.merchant_detail.establish'
         ),
         value: this.merchantInfo?.establishTime,
-        type: DATA_CELL_TYPE.DATETIME,
-        format: 'dd/MM/yyyy',
+        type: DATA_CELL_TYPE.TEXT,
+        format: null,
       },
       {
         title: this.multiLanguageService.instant(
