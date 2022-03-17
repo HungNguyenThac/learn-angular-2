@@ -12,6 +12,10 @@ import { NgxPermissionsModule } from 'ngx-permissions';
 import { NgxViewerModule } from 'ngx-viewer';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
+import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
+import { MaxFileSizeDirective } from './directives/max-file-size.directive';
+import { MaxFileCountDirective } from './directives/max-file-count.directive';
+import { ImageFileOnlyDirective } from './directives/image-file-only.directive';
 
 @NgModule({
   declarations: [
@@ -19,6 +23,9 @@ import { InfiniteScrollModule } from 'ngx-infinite-scroll';
     ...fromValidators.validators,
     ...fromDirectives.directives,
     ...fromPipes.pipes,
+    MaxFileSizeDirective,
+    MaxFileCountDirective,
+    ImageFileOnlyDirective,
   ],
   imports: [
     CommonModule,
@@ -29,6 +36,7 @@ import { InfiniteScrollModule } from 'ngx-infinite-scroll';
     NgxViewerModule,
     NgxMatSelectSearchModule,
     InfiniteScrollModule,
+    CKEditorModule,
   ],
   exports: [
     MaterialModule,

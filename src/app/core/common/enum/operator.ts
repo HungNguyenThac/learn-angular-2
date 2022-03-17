@@ -94,6 +94,16 @@ export enum LOCK_TITLES {
   PERMANENT = 'lock_title.permanent',
 }
 
+export enum MULTIPLE_ELEMENT_ACTION_TYPE {
+  DELETE = 'DELETE',
+  LOCK = 'LOCK',
+}
+
+export enum TABLE_ACTION_TYPE {
+  DELETE = 'DELETE',
+  EDIT = 'EDIT',
+}
+
 export enum LOCK_TIME_OPTIONS {
   ONE_HOUR = 3600,
   TWO_HOUR = 7200,

@@ -17,8 +17,11 @@ import { Sort } from '@angular/material/sort';
 import { PageEvent } from '@angular/material/paginator/public-api';
 import { TableSelectActionModel } from '../../../../public/models/external/table-select-action.model';
 import { BaseExpandedTableComponent } from '../base-expanded-table/base-expanded-table.component';
-import {DisplayedFieldsModel} from "../../../../public/models/filter/displayed-fields.model";
-import { overviewItemModel } from 'src/app/public/models/external/overview-item.model';
+import { DisplayedFieldsModel } from '../../../../public/models/filter/displayed-fields.model';
+import { OverviewItemModel } from 'src/app/public/models/external/overview-item.model';
+import { TableActionButtonModel } from '../../../../public/models/external/table-action-button.model';
+import { TableActionEventModel } from '../../../../public/models/filter/table-action-event.model';
+import {MultipleElementActionEventModel} from "../../../../public/models/filter/multiple-element-action-event.model";
 
 @Component({
   selector: 'app-base-management-layout',
@@ -37,11 +40,13 @@ export class BaseManagementLayoutComponent implements OnInit {
   @Input() pageLength: number = 0;
   @Input() orderBy: string;
   @Input() hasSelect: boolean;
+  @Input() hasActions: boolean;
   @Input() showRefreshBtn: boolean;
-  @Input() selectButtons: TableSelectActionModel[] = [];
-  @Input() sortDirection: SortDirection = 'desc';
   @Input() forceExpandElement: any;
-  @Input() overviewItems: overviewItemModel[];
+  @Input() sortDirection: SortDirection = 'desc';
+  @Input() selectButtons: TableSelectActionModel[] = [];
+  @Input() actionButtons: TableActionButtonModel[] = [];
+  @Input() overviewItems: OverviewItemModel[];
   @Output() onRefreshTrigger = new EventEmitter<any>();
   @Output() onPageChange = new EventEmitter<PageEvent>();
   @Output() onSortChange = new EventEmitter<Sort>();
@@ -52,6 +57,7 @@ export class BaseManagementLayoutComponent implements OnInit {
   @Output() onFilterChange = new EventEmitter<FilterEventModel>();
   @Output() onFilterActionTrigger = new EventEmitter<FilterActionEventModel>();
   @Output() onOutputAction = new EventEmitter<any>();
+  @Output() onTableActionClick = new EventEmitter<any>();
 
   @ViewChild(BaseExpandedTableComponent) child: BaseExpandedTableComponent;
 
@@ -118,7 +124,11 @@ export class BaseManagementLayoutComponent implements OnInit {
     this.onFilterActionTrigger.emit(event);
   }
 
-  outputAction(event: Sort) {
+  triggerMultipleElementAction(event: MultipleElementActionEventModel) {
     this.onOutputAction.emit(event);
+  }
+
+  triggerTableActionClick(event: TableActionEventModel) {
+    this.onTableActionClick.emit(event);
   }
 }

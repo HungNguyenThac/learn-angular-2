@@ -7,7 +7,7 @@
           <mat-expansion-panel-header class="pb-2 pt-2 ps-3 pe-3">
             <mat-panel-title>{{
               "merchant.merchant_image.logo" | translate
-              }}</mat-panel-title>
+            }}</mat-panel-title>
           </mat-expansion-panel-header>
           <div class="expansion-panel-content">
             <div class="row">
@@ -21,6 +21,7 @@
                   [imgSrc]="logoSrc"
                   [hiddenDeleteBtn]="hiddenDeleteBtn"
                   [hiddenUploadBtn]="hiddenUploadBtn"
+                  [maxSizeOfFile]="maxSizeOfFile"
                   (onChangeDocument)="
                     onChangeDocument(
                       $event,
@@ -39,47 +40,70 @@
 
   <div class="row">
     <!-- Salary Document -->
-    <article class="w-90">
+    <article>
       <mat-accordion>
         <mat-expansion-panel>
           <mat-expansion-panel-header class="pb-2 pt-2 ps-3 pe-3">
             <mat-panel-title>{{
               "merchant.merchant_image.images" | translate
-              }}</mat-panel-title>
+            }}</mat-panel-title>
           </mat-expansion-panel-header>
           <div class="expansion-panel-content">
-            <div class="image-grid">
+            <div class="row">
               <!-- Salary 1  -->
-              <article *ngFor="let imageSrc of imagesSrc; let i = index">
+              <article *ngFor="let imageSrc of imagesSrc; let i = index" class="col-12 col-xs-12 col-sm-6 col-md-4 col-lg-3">
                 <app-upload-document-area
-                  [id]="'image'+i"
-                  name="image{{i}}"
+                  [id]="'image' + i"
+                  name="image{{ i }}"
                   [classes]="'m-3'"
-                  [title]="'merchant.merchant_image.image' | translate: { i: i+1 }"
+                  [title]="
+                    'merchant.merchant_image.image' | translate: { i: i + 1 }
+                  "
                   [imgSrc]="imageSrc"
                   [hiddenDeleteBtn]="hiddenDeleteBtn"
                   [hiddenUpdateBtn]="true"
                   [hiddenUploadBtn]="hiddenUploadBtn"
+                  [maxSizeOfFile]="maxSizeOfFile"
                   (onChangeDocument)="
-                    onChangeDocument(
-                      $event,
-                      imageSrc,
-                      documentTypes.IMAGES,
-                      i
-                    )
+                    onChangeDocument($event, imageSrc, documentTypes.IMAGES, i)
                   "
                 ></app-upload-document-area>
+              </article>
+              <article *ngIf="imagesSrc.length < 5" class="col-12 col-xs-12 col-sm-6 col-md-4 col-lg-3 my-auto">
+                <div class="text-center m-3 d-flex">
+                  <button (click)="triggerClickInsertImageInput()" color="primary" mat-flat-button type="submit">
+                    <span class="sprite-group-5-add-white"></span>
+                    <span class="ms-1">{{
+                      "common.upload" | translate
+                      }}</span>
+                  </button>
+                  <input
+                    hidden
+                    id="import-merchant-files"
+                    name="importMerchantFile"
+                    type="file"
+                    accept="image/*"
+                    multiple
+                    appMaxFileSize
+                    appMaxFileCount
+                    appImageFileOnly
+                    [maxSizeOfFile]="maxSizeOfFile"
+                    [maxNumberOfFile]="maxCountFile"
+                    [(ngModel)]="inputFiles"
+                    (change)="onChangeInputFiles($event)"
+                  />
+                  <input
+                    type="reset"
+                    name="resetMerchantFile"
+                    [id]="'reset-merchant-files'"
+                    hidden
+                  />
+                </div>
               </article>
             </div>
           </div>
         </mat-expansion-panel>
       </mat-accordion>
     </article>
-    <div class="col">
-      <button type="button" (click)="addAnswer()" color="accent" class="addBtn"
-              mat-flat-button
-      >Thêm ảnh
-      </button>
-    </div>
   </div>
 </div>

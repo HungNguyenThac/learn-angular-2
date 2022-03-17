@@ -121,4 +121,4 @@ export * from './operators/merchant/merchant-image-upload/merchant-image-upload.
 export * from './loading/monex-loading/monex-loading.component';
 export * from './operators/product-config/product-status-dialog/product-status-dialog.component';
 export * from './operators/product-config/product-workflow-dialog/product-workflow-dialog.component';
-export * from "./operators/product-config/monex-product-dialog/monex-product-dialog.component";
+export * from './operators/product-config/monex-product-dialog/monex-product-dialog.component';

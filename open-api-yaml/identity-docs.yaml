@@ -10,7 +10,7 @@ paths:
     put:
       tags:
       - permission-controller
-      operationId: update
+      operationId: updatePermission
       parameters:
       - name: id
         in: path
@@ -33,7 +33,7 @@ paths:
     delete:
       tags:
       - permission-controller
-      operationId: delete
+      operationId: deletePermission
       parameters:
       - name: id
         in: path
@@ -51,7 +51,7 @@ paths:
     put:
       tags:
       - permission-type-controller
-      operationId: update_1
+      operationId: updatePermissionType
       parameters:
       - name: id
         in: path
@@ -71,11 +71,28 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ApiResponsePermissionTypeEntity'
+    delete:
+      tags:
+      - permission-type-controller
+      operationId: deletePermissionType
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseString'
   /v1/groups/{id}:
     put:
       tags:
       - group-controller
-      operationId: update_2
+      operationId: updateGroup
       parameters:
       - name: id
         in: path
@@ -98,7 +115,7 @@ paths:
     delete:
       tags:
       - group-controller
-      operationId: delete_1
+      operationId: deleteGroup
       parameters:
       - name: id
         in: path
@@ -116,7 +133,7 @@ paths:
     get:
       tags:
       - admin-account-controller
-      operationId: getInFo
+      operationId: getInFoAdminAccount
       responses:
         "200":
           description: OK
@@ -127,7 +144,7 @@ paths:
     put:
       tags:
       - admin-account-controller
-      operationId: updateInfo
+      operationId: updateInfoAdminAccount
       requestBody:
         content:
           application/json:
@@ -144,7 +161,7 @@ paths:
     post:
       tags:
       - admin-account-controller
-      operationId: create_3
+      operationId: createAdminAccount
       requestBody:
         content:
           application/json:
@@ -162,7 +179,7 @@ paths:
     put:
       tags:
       - admin-account-controller
-      operationId: updateFullInfo
+      operationId: updateFullInfoAdminAccount
       parameters:
       - name: id
         in: path
@@ -203,7 +220,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CreateCustomerAccountRequest'
+              $ref: '#/components/schemas/ResetPasswordRequest'
         required: true
       responses:
         "200":
@@ -317,7 +334,7 @@ paths:
     post:
       tags:
       - permission-controller
-      operationId: create
+      operationId: createPermission
       requestBody:
         content:
           application/json:
@@ -346,7 +363,7 @@ paths:
     post:
       tags:
       - permission-type-controller
-      operationId: create_1
+      operationId: createPermissionType
       requestBody:
         content:
           application/json:
@@ -375,7 +392,7 @@ paths:
     post:
       tags:
       - group-controller
-      operationId: create_2
+      operationId: createGroup
       requestBody:
         content:
           application/json:
@@ -429,7 +446,7 @@ paths:
     post:
       tags:
       - group-controller
-      operationId: removeAssign
+      operationId: removeAssignGroup
       requestBody:
         content:
           application/json:
@@ -447,7 +464,7 @@ paths:
     post:
       tags:
       - group-controller
-      operationId: assign
+      operationId: assignGroup
       requestBody:
         content:
           application/json:
@@ -479,11 +496,29 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ApiResponseString'
+  /v1/customersPassword/changePassword:
+    post:
+      tags:
+      - customer-password-controller
+      operationId: changePasswordCustomer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomerChangePasswordRequest'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseString'
   /v1/customers/unLockCustomer/{accountId}:
     post:
       tags:
       - customer-controller
-      operationId: unLockAccount
+      operationId: unLockAccountCustomer
       parameters:
       - name: accountId
         in: path
@@ -501,7 +536,7 @@ paths:
     post:
       tags:
       - customer-controller
-      operationId: lockAccount
+      operationId: lockAccountCustomer
       requestBody:
         content:
           application/json:
@@ -519,7 +554,7 @@ paths:
     post:
       tags:
       - admin-account-controller
-      operationId: unLockAccount_1
+      operationId: unLockAccountAdmin
       parameters:
       - name: accountId
         in: path
@@ -537,7 +572,7 @@ paths:
     post:
       tags:
       - admin-account-controller
-      operationId: lockMultiAccount
+      operationId: lockMultiAccountAdmin
       requestBody:
         content:
           application/json:
@@ -555,7 +590,7 @@ paths:
     post:
       tags:
       - admin-account-controller
-      operationId: lockAccount_1
+      operationId: lockAccountAdmin
       requestBody:
         content:
           application/json:
@@ -591,7 +626,7 @@ paths:
     post:
       tags:
       - admin-account-controller
-      operationId: changePass
+      operationId: changePassAdminAccount
       requestBody:
         content:
           application/json:
@@ -609,7 +644,7 @@ paths:
     post:
       tags:
       - admin-account-controller
-      operationId: accountChangePassword
+      operationId: accountAdminChangePassword
       requestBody:
         content:
           application/json:
@@ -653,24 +688,6 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ApiResponseGroupEntity'
-  /v1/customers/{accountId}:
-    delete:
-      tags:
-      - customer-controller
-      operationId: delete_2
-      parameters:
-      - name: accountId
-        in: path
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          description: OK
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/ApiResponseCustomerAccountEntity'
   /v1/credentials/{accountId}:
     delete:
       tags:
@@ -740,9 +757,6 @@ components:
         permissionTypeId:
           type: string
     UpdatePermissionTypeRequest:
-      required:
-      - level
-      - name
       type: object
       properties:
         name:
@@ -941,7 +955,7 @@ components:
         responseCode:
           type: integer
           format: int32
-    CreateCustomerAccountRequest:
+    ResetPasswordRequest:
       required:
       - mobile
       type: object
@@ -1009,8 +1023,12 @@ components:
           pattern: "^0\\d{9}$"
           type: string
         password:
+          maxLength: 2147483647
+          minLength: 6
           type: string
         password_again:
+          maxLength: 2147483647
+          minLength: 6
           type: string
         signature:
           type: string
@@ -1056,7 +1074,6 @@ components:
       required:
       - mobile
       - otp
-      - password
       - requestId
       - signature
       type: object
@@ -1064,14 +1081,35 @@ components:
         mobile:
           pattern: "^0\\d{9}$"
           type: string
-        password:
-          type: string
         signature:
           type: string
         requestId:
           type: string
         otp:
           type: string
+    CreateCustomerAccountRequest:
+      required:
+      - confirmPassword
+      - mobile
+      - password
+      type: object
+      properties:
+        mobile:
+          pattern: "^0\\d{9}$"
+          type: string
+        password:
+          maxLength: 2147483647
+          minLength: 6
+          type: string
+        confirmPassword:
+          maxLength: 2147483647
+          minLength: 6
+          type: string
+        provider:
+          type: string
+          enum:
+          - Zalo
+          - CMC
     ApiResponseCreateCustomerAccountResponse:
       type: object
       properties:
@@ -1190,6 +1228,25 @@ components:
             type: string
         groupId:
           type: string
+    CustomerChangePasswordRequest:
+      required:
+      - confirmPassword
+      - currentPassword
+      - newPassword
+      type: object
+      properties:
+        newPassword:
+          maxLength: 2147483647
+          minLength: 6
+          type: string
+        confirmPassword:
+          maxLength: 2147483647
+          minLength: 6
+          type: string
+        currentPassword:
+          maxLength: 2147483647
+          minLength: 6
+          type: string
     ApiResponseCustomerAccountEntity:
       type: object
       properties:
@@ -1227,8 +1284,6 @@ components:
         unLockTime:
           type: string
           format: date-time
-        isDelete:
-          type: boolean
     LockAccountRequest:
       required:
       - accountId

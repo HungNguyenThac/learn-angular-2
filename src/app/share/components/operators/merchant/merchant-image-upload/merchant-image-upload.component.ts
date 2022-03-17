@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { CustomerInfo } from '../../../../../../../open-api-modules/dashboard-api-docs';
+import { Merchant } from '../../../../../../../open-api-modules/dashboard-api-docs';
 import { Subscription } from 'rxjs';
 import {
   DOCUMENT_TYPE,
@@ -17,6 +17,7 @@ import {
   RESPONSE_CODE,
 } from '../../../../../core/common/enum/operator';
 import { AdminControllerService } from '../../../../../../../open-api-modules/merchant-api-docs';
+import fileToBase64 from '../../../../../core/utils/file-to-base64';
 
 @Component({
   selector: 'app-merchant-image-upload',
@@ -26,11 +27,11 @@ import { AdminControllerService } from '../../../../../../../open-api-modules/me
 export class MerchantImageUploadComponent implements OnInit {
   _merchantInfo;
   @Input()
-  get merchantInfo() {
+  get merchantInfo(): Merchant {
     return this._merchantInfo;
   }
 
-  set merchantInfo(value) {
+  set merchantInfo(value: Merchant) {
     this._getDocumentByPath(value);
     this._merchantInfo = value;
   }
@@ -47,23 +48,16 @@ export class MerchantImageUploadComponent implements OnInit {
 
   @Output() refreshContent = new EventEmitter<any>();
 
+  maxCountFile: number = 5;
+  maxSizeOfFile: number = 2; //MB
   subManager = new Subscription();
   selfieSrc: string;
   backIdSrc: string;
-  numImages: any[] = [
-    {
-      value: '',
-    },
-  ];
   logoSrc: string;
-  imagesSrc: any[] = [''];
-  frontId2Src: string;
-  salary1Src: string;
-  salary2Src: string;
-  salary3Src: string;
-  collateralSrc: string;
+  imagesSrc: any[] = [];
   documentTypes = DOCUMENT_TYPE;
   hiddenUploadBtn: boolean = false;
+  inputFiles: any;
   hiddenDeleteBtn: boolean = false;
 
   constructor(
@@ -80,13 +74,13 @@ export class MerchantImageUploadComponent implements OnInit {
   }
 
   private _initSubscription() {
-    this.subManager.add(
-      this.permissionsService.permissions$.subscribe((permissions) => {
-        if (permissions) {
-          this._checkActionPermissions();
-        }
-      })
-    );
+    // this.subManager.add(
+    //   this.permissionsService.permissions$.subscribe((permissions) => {
+    //     if (permissions) {
+    //       this._checkActionPermissions();
+    //     }
+    //   })
+    // );
   }
 
   private _getDocumentByPath(merchantInfo) {
@@ -115,58 +109,56 @@ export class MerchantImageUploadComponent implements OnInit {
     }
   }
 
-  private async _checkActionPermissions() {
-    const hasUpdateInfoPermission = await this.permissionsService.hasPermission(
-      'infos:updateInfo'
-    );
-
-    if (!hasUpdateInfoPermission) {
-      this.hiddenUploadBtn = true;
-      this.hiddenDeleteBtn = true;
+  private _deleteDocument(documentType: DOCUMENT_TYPE, imgSrc) {
+    if (documentType === DOCUMENT_TYPE.LOGO) {
+      this.sendUpdateRequest({ logo: '' }, documentType);
+    } else if (documentType === DOCUMENT_TYPE.IMAGES) {
+      this.sendUpdateRequest(
+        {
+          updateDescriptionImgRequest: {
+            action: 'remove',
+            files: [imgSrc],
+          },
+        },
+        documentType
+      );
     }
   }
 
-  private _updateDocument(documentType: DOCUMENT_TYPE, imgSrc, type) {
-    let request;
-    if (type === 'upload' && documentType === 'LOGO') {
-      this.sendUpdateRequest(
-        {
-          logo: imgSrc,
-        },
-        documentType
-      );
-    } else if (type === 'delete' && documentType === 'LOGO') {
-      this.sendUpdateRequest({ logo: '' }, documentType);
-    } else if (type === 'upload' && documentType === 'IMAGES') {
-      this.sendUpdateRequest(
-        {
-          updateDescriptionImgRequest: {
-            action: 'add',
-            files: [imgSrc],
+  private _updateDocument(
+    documentType: DOCUMENT_TYPE,
+    imgSrc,
+    documentBtnType: DOCUMENT_BTN_TYPE
+  ) {
+    switch (documentType) {
+      case DOCUMENT_TYPE.LOGO:
+        this.sendUpdateRequest(
+          {
+            logo: imgSrc,
           },
-        },
-        documentType
-      );
-    } else if (type === 'update' && documentType === 'IMAGES') {
-      this.sendUpdateRequest(
-        {
-          updateDescriptionImgRequest: {
-            action: 'remove',
-            files: [imgSrc],
+          documentType
+        );
+        break;
+      case DOCUMENT_TYPE.IMAGES:
+        let action = null;
+        if (documentBtnType === DOCUMENT_BTN_TYPE.UPDATE) {
+          action = 'remove';
+        } else if (documentBtnType === DOCUMENT_BTN_TYPE.UPLOAD) {
+          action = 'add';
+        }
+
+        this.sendUpdateRequest(
+          {
+            updateDescriptionImgRequest: {
+              action: action,
+              files: [imgSrc],
+            },
           },
-        },
-        documentType
-      );
-    } else if (type === 'delete' && documentType === 'IMAGES') {
-      this.sendUpdateRequest(
-        {
-          updateDescriptionImgRequest: {
-            action: 'remove',
-            files: [imgSrc],
-          },
-        },
-        documentType
-      );
+          documentType
+        );
+        break;
+      default:
+        break;
     }
   }
 
@@ -188,6 +180,9 @@ export class MerchantImageUploadComponent implements OnInit {
           },
           (error) => {
             this.notifier.error(JSON.stringify(error));
+            this.notificationService.hideLoading();
+          },
+          () => {
             this.notificationService.hideLoading();
           }
         )
@@ -220,39 +215,9 @@ export class MerchantImageUploadComponent implements OnInit {
     this.subManager.add(
       promptDialogRef.afterClosed().subscribe((buttonType: BUTTON_TYPE) => {
         if (buttonType === BUTTON_TYPE.PRIMARY) {
-          // this._updateDocumentCustomerInfo(updateInfoRequest, documentType);
-          this._updateDocument(documentType, imgSrc, 'delete');
+          this._deleteDocument(documentType, imgSrc);
         }
       })
-    );
-  }
-
-  private _updateDocumentCustomerInfo(
-    updateInfoRequest: Object,
-    documentType: DOCUMENT_TYPE
-  ) {
-    this.notificationService.showLoading({ showContent: true });
-    this.subManager.add(
-      this.customerDetailService
-        .updateCustomerInfo(this.merchantId, updateInfoRequest, null, true)
-        .subscribe(
-          (result) => {
-            if (result?.responseCode !== RESPONSE_CODE.SUCCESS) {
-              this.notifier.error(
-                JSON.stringify(result?.message),
-                result?.errorCode
-              );
-              return;
-            }
-
-            this._mapDocumentSrc(null, documentType);
-            this.refreshDocumentInfo();
-          },
-          (error) => {
-            this.notifier.error(JSON.stringify(error));
-            this.notificationService.hideLoading();
-          }
-        )
     );
   }
 
@@ -275,17 +240,19 @@ export class MerchantImageUploadComponent implements OnInit {
     switch (updatedDocumentModel.type) {
       case DOCUMENT_BTN_TYPE.UPLOAD:
       case DOCUMENT_BTN_TYPE.UPDATE:
-        this._updateDocument(
-          documentType,
-          updatedDocumentModel.imgSrc,
-          'upload'
-        );
+        if (documentType === DOCUMENT_TYPE.LOGO) {
+          this.logoSrc = updatedDocumentModel.imgSrc;
+        }
+        // this._updateDocument(
+        //   documentType,
+        //   updatedDocumentModel.imgSrc,
+        //   updatedDocumentModel.type
+        // );
         break;
       case DOCUMENT_BTN_TYPE.DOWNLOAD:
         this._downloadDocumentByPath(documentPath);
         break;
       case DOCUMENT_BTN_TYPE.DELETE:
-        console.log('asjhdfiuoashdoahsdo', this.imagesSrc[index]);
         this._deleteDocumentPath(documentType, this.imagesSrc[index]);
         break;
       default:
@@ -293,7 +260,41 @@ export class MerchantImageUploadComponent implements OnInit {
     }
   }
 
-  addAnswer() {
-    this.imagesSrc.push('');
+  triggerClickInsertImageInput() {
+    if (this.imagesSrc.length >= 5) {
+      return;
+    }
+    document.getElementById('import-merchant-files').click();
+  }
+
+  triggerClickResetInput(): void {
+    let resetInput: HTMLElement = document.getElementById(
+      `reset-merchant-files`
+    ) as HTMLElement;
+    if (!resetInput) return;
+    resetInput.click();
+  }
+
+  async onChangeInputFiles($event) {
+    let files = $event.target.files;
+    let validFiles: any[] = Array.from(files);
+
+    if (files.length > this.maxCountFile - this.imagesSrc.length) {
+      validFiles = Array.from(files).slice(
+        0,
+        this.maxCountFile - this.imagesSrc.length
+      );
+    }
+    let srcFiles = await this.convertFilesToBase64(validFiles);
+    this.imagesSrc.push(...srcFiles);
+    this.triggerClickResetInput();
+  }
+
+  async convertFilesToBase64(files: any[]) {
+    let result: any[] = [];
+    for (const file of files) {
+      result.push(await fileToBase64(file));
+    }
+    return result;
   }
 }

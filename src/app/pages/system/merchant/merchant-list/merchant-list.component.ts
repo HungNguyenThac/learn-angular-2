@@ -13,8 +13,8 @@ import * as _ from 'lodash';
 import {
   BUTTON_TYPE,
   DATA_CELL_TYPE,
-  DATA_STATUS_TYPE,
-  FILTER_TYPE,
+  DATA_STATUS_TYPE, FILTER_ACTION_TYPE,
+  FILTER_TYPE, MULTIPLE_ELEMENT_ACTION_TYPE,
   NAV_ITEM,
   QUERY_CONDITION_TYPE,
   RESPONSE_CODE,
@@ -199,7 +199,7 @@ export class MerchantListComponent implements OnInit {
   selectButtons: TableSelectActionModel[] = [
     {
       hidden: false,
-      action: 'delete',
+      action: MULTIPLE_ELEMENT_ACTION_TYPE.DELETE,
       color: 'accent',
       content: this.multiLanguageService.instant(
         'merchant.merchant_list.delete_merchant'
@@ -209,7 +209,7 @@ export class MerchantListComponent implements OnInit {
     },
     {
       hidden: false,
-      action: 'lock',
+      action: MULTIPLE_ELEMENT_ACTION_TYPE.LOCK,
       color: 'accent',
       content: this.multiLanguageService.instant(
         'customer.individual_info.lock'
@@ -370,9 +370,9 @@ export class MerchantListComponent implements OnInit {
         console.log('merchant list', data?.result);
         this._parseData(data?.result);
         this.dataSource.data = data?.result?.data;
-        if (this.filterForm.controls.id.value) {
+        if (this.filterForm.controls.id?.value) {
           this.expandedElementMerchant = data?.result?.data.find((value) => {
-            return value.id === this.filterForm.controls.id.value;
+            return value.id === this.filterForm.controls.id?.value;
           });
         }
       });
@@ -593,10 +593,10 @@ export class MerchantListComponent implements OnInit {
     const list = event.selectedList;
     const idArr = list.map((merchant) => merchant.id);
     switch (action) {
-      case 'lock':
+      case MULTIPLE_ELEMENT_ACTION_TYPE.LOCK:
         this.lockMultiplePrompt(idArr);
         break;
-      case 'delete':
+      case MULTIPLE_ELEMENT_ACTION_TYPE.DELETE:
         this.deleteMultiplePrompt(idArr);
         break;
       default:
@@ -648,7 +648,7 @@ export class MerchantListComponent implements OnInit {
     });
     confirmLockRef.afterClosed().subscribe((result) => {
       if (result === BUTTON_TYPE.PRIMARY) {
-        this._doMultipleAction(ids, 'lock');
+        this._doMultipleAction(ids, MULTIPLE_ELEMENT_ACTION_TYPE.LOCK);
       }
     });
   }
@@ -658,7 +658,7 @@ export class MerchantListComponent implements OnInit {
       return;
     }
     ids.forEach((id) => {
-      if (action === 'lock') {
+      if (action === MULTIPLE_ELEMENT_ACTION_TYPE.LOCK) {
         this._lockById(id);
       } else {
         this._deleteById(id);
@@ -714,7 +714,7 @@ export class MerchantListComponent implements OnInit {
     });
     confirmDeleteRef.afterClosed().subscribe((result) => {
       if (result === BUTTON_TYPE.PRIMARY) {
-        this._doMultipleAction(ids, 'delete');
+        this._doMultipleAction(ids, MULTIPLE_ELEMENT_ACTION_TYPE.DELETE);
       }
     });
   }
@@ -757,7 +757,7 @@ export class MerchantListComponent implements OnInit {
   }
 
   public onFilterActionTrigger(event: FilterActionEventModel) {
-    if (event.type === 'FILTER_EXTRA_ACTION') {
+    if (event.type === FILTER_ACTION_TYPE.FILTER_EXTRA_ACTION) {
       const addMerchantGroupDialogRef = this.dialog.open(
         MerchantGroupDialogComponent,
         {

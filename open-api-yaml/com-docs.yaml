@@ -6,6 +6,88 @@ servers:
 - url: http://localhost:8004
   description: Generated server url
 paths:
+  /v1/applicationDocuments/{id}:
+    put:
+      tags:
+      - application-document-controller
+      operationId: updateApplicationDocument
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateApplicationDocumentRequest'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseApplicationDocument'
+    delete:
+      tags:
+      - application-document-controller
+      operationId: deleteApplicationDocument
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseString'
+  /v1/applicationDocuments/applicationDocumentType/{id}:
+    put:
+      tags:
+      - application-document-controller
+      operationId: updateApplicationDocumentType
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateApplicationDocumentTypeRequest'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseApplicationDocumentType'
+    delete:
+      tags:
+      - application-document-controller
+      operationId: deleteApplicationDocumentType
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseString'
   /v1/templateNotifications:
     get:
       tags:
@@ -242,6 +324,44 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ApiResponseObject'
+  /v1/files/uploadPublicCkeditorFile:
+    post:
+      tags:
+      - file-controller
+      operationId: uploadPublicCkeditorFile
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+  /v1/files/uploadOverwriteFile:
+    post:
+      tags:
+      - file-controller
+      operationId: uploadOverwriteFile
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/UploadOverwriteFileRequest'
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseObject'
   /v1/files/uploadCoreDocument:
     post:
       tags:
@@ -313,6 +433,8 @@ paths:
           enum:
           - HMG
           - TNG
+          - VACOFFICE
+          - VACFACTORY
       requestBody:
         content:
           application/json:
@@ -340,6 +462,8 @@ paths:
           enum:
           - HMG
           - TNG
+          - VACOFFICE
+          - VACFACTORY
       requestBody:
         content:
           application/json:
@@ -367,6 +491,8 @@ paths:
           enum:
           - HMG
           - TNG
+          - VACOFFICE
+          - VACFACTORY
       requestBody:
         content:
           application/json:
@@ -428,6 +554,42 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiResponseString'
+  /v1/applicationDocuments:
+    post:
+      tags:
+      - application-document-controller
+      operationId: createApplicationDocument
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateApplicationDocumentRequest'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseApplicationDocument'
+  /v1/applicationDocuments/applicationDocumentType:
+    post:
+      tags:
+      - application-document-controller
+      operationId: createApplicationDocumentType
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateApplicationDocumentTypeRequest'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseApplicationDocumentType'
   /v1/notifications/{customerId}:
     get:
       tags:
@@ -484,6 +646,110 @@ paths:
                 $ref: '#/components/schemas/ApiResponseString'
 components:
   schemas:
+    ApiResponseString:
+      type: object
+      properties:
+        result:
+          type: string
+        errorCode:
+          type: string
+        message:
+          type: object
+        responseCode:
+          type: integer
+          format: int32
+    UpdateApplicationDocumentRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        applicationDocumentTypeId:
+          type: array
+          items:
+            type: string
+        description:
+          type: string
+        applicationDocumentUser:
+          type: string
+    ApiResponseApplicationDocument:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/ApplicationDocument'
+        errorCode:
+          type: string
+        message:
+          type: object
+        responseCode:
+          type: integer
+          format: int32
+    ApplicationDocument:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        applicationDocumentType:
+          type: array
+          items:
+            type: string
+        description:
+          type: string
+        applicationDocumentUser:
+          type: string
+          enum:
+          - BORROWER
+          - CREDITOR
+          - BUSINESS_PARTNER
+        createdBy:
+          type: string
+        updatedBy:
+          type: string
+        createdAt:
+          type: string
+        updatedAt:
+          type: string
+    UpdateApplicationDocumentTypeRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        isAvailableForCustomer:
+          type: boolean
+    ApiResponseApplicationDocumentType:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/ApplicationDocumentType'
+        errorCode:
+          type: string
+        message:
+          type: object
+        responseCode:
+          type: integer
+          format: int32
+    ApplicationDocumentType:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        isAvailableForCustomer:
+          type: boolean
+        createdBy:
+          type: string
+        updatedBy:
+          type: string
+        createdAt:
+          type: string
+        updatedAt:
+          type: string
     ContentNotificationRequest:
       required:
       - content
@@ -517,18 +783,6 @@ components:
             $ref: '#/components/schemas/ContentNotificationRequest'
         description:
           type: string
-    ApiResponseString:
-      type: object
-      properties:
-        result:
-          type: string
-        errorCode:
-          type: string
-        message:
-          type: object
-        responseCode:
-          type: integer
-          format: int32
     UpdateTemplateStatusRequest:
       required:
       - nameTemplate
@@ -644,6 +898,8 @@ components:
           enum:
           - HMG
           - TNG
+          - VACOFFICE
+          - VACFACTORY
         page:
           type: integer
           format: int32
@@ -721,6 +977,20 @@ components:
           type: string
           format: binary
         customerId:
+          type: string
+    UploadOverwriteFileRequest:
+      required:
+      - document_type
+      - file
+      - fileName
+      type: object
+      properties:
+        document_type:
+          type: string
+        file:
+          type: string
+          format: binary
+        fileName:
           type: string
     DownloadFileRequest:
       required:
@@ -885,6 +1155,19 @@ components:
           type: string
         company:
           type: string
+        loanAmount:
+          type: integer
+          format: int32
+        vaAccountOwner:
+          type: string
+        vaAccountNumber:
+          type: string
+        accountOwner:
+          type: string
+        accountNumber:
+          type: string
+        isThreeMonths:
+          type: boolean
     ApiResponseCreateLetterResponse:
       type: object
       properties:
@@ -994,6 +1277,34 @@ components:
         idDocument:
           type: integer
           format: int32
+    CreateApplicationDocumentRequest:
+      required:
+      - applicationDocumentTypeId
+      - name
+      type: object
+      properties:
+        name:
+          type: string
+        applicationDocumentTypeId:
+          type: array
+          items:
+            type: string
+        description:
+          type: string
+        applicationDocumentUser:
+          type: string
+    CreateApplicationDocumentTypeRequest:
+      required:
+      - isAvailableForCustomer
+      - name
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        isAvailableForCustomer:
+          type: boolean
     ApiResponseListTemplateNotificationEntity:
       type: object
       properties:
@@ -1022,6 +1333,8 @@ components:
         title:
           type: string
         isActive:
+          type: boolean
+        sendUnderwriter:
           type: boolean
     TemplateNotificationEntity:
       type: object
@@ -1060,6 +1373,8 @@ components:
           enum:
           - HMG
           - TNG
+          - VACOFFICE
+          - VACFACTORY
         documentType:
           type: string
         page:
@@ -1074,10 +1389,10 @@ components:
     SigningPosition:
       type: object
       properties:
-        xposition:
+        yposition:
           type: integer
           format: int32
-        yposition:
+        xposition:
           type: integer
           format: int32
     ApiResponseListTransactionNotificationEntity:

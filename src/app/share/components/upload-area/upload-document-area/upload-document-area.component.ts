@@ -30,6 +30,7 @@ export class UploadDocumentAreaComponent implements OnInit, AfterViewInit {
   @Input() hiddenDownloadBtn: boolean = false;
   @Input() acceptFileType: string = 'image/*';
   @Input() hiddenDeleteBtn: boolean = false;
+  @Input() maxSizeOfFile: number = 5; //MB
   public viewerOptions: any = {
     navbar: false,
     toolbar: {

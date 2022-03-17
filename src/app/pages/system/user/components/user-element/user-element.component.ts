@@ -2,7 +2,8 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import {
   AdminAccountControllerService,
   AdminAccountEntity,
-  ApiResponseAdminAccountEntity, CustomerInfo,
+  ApiResponseAdminAccountEntity,
+  CustomerInfo,
   GroupEntity,
   PermissionTypeLevelOneResponse,
 } from '../../../../../../../open-api-modules/dashboard-api-docs';
@@ -12,7 +13,10 @@ import { MultiLanguageService } from '../../../../../share/translate/multiLangua
 import { NotificationService } from '../../../../../core/services/notification.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
-import { RESPONSE_CODE } from '../../../../../core/common/enum/operator';
+import {
+  MULTIPLE_ELEMENT_ACTION_TYPE,
+  RESPONSE_CODE,
+} from '../../../../../core/common/enum/operator';
 
 @Component({
   selector: 'app-user-element',
@@ -82,7 +86,7 @@ export class UserElementComponent implements OnInit {
   private updateUserInfo(updateInfoRequest) {
     this.subManager.add(
       this.identityAdminAccountControllerService
-        .updateFullInfo(this.userId, updateInfoRequest)
+        .updateFullInfoAdminAccount(this.userId, updateInfoRequest)
         .subscribe((data: ApiResponseAdminAccountEntity) => {
           if (!data || data.responseCode !== RESPONSE_CODE.SUCCESS) {
             return this.notifier.error(
@@ -105,7 +109,7 @@ export class UserElementComponent implements OnInit {
   updateElementInfo(updateInfoRequest) {
     if (!updateInfoRequest) {
       this.refreshContent();
-    } else if (updateInfoRequest === 'delete') {
+    } else if (updateInfoRequest === MULTIPLE_ELEMENT_ACTION_TYPE.DELETE) {
       this.triggerUpdateElementInfo.emit();
     } else {
       this.updateUserInfo(updateInfoRequest);

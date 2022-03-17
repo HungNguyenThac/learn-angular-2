@@ -49,4 +49,5 @@ export const environment = {
   COUNTDOWN_TIME: '2021-09-06 00:00:00',
   PROJECT_NAME: 'Kênh vận hành Monex',
   BROWSER_TAB_TITLE_DELIMITER: ' - ',
+  UPLOAD_FILE_CKEDITOR_PATH: "/v1/files/uploadPublicCkeditorFile"
 };

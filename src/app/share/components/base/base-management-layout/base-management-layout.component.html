@@ -39,7 +39,8 @@
             (triggerExpandedElementChange)="triggerExpandElementChange($event)"
             (triggerPageChange)="triggerPageChange($event)"
             (triggerSortChange)="triggerSortChange($event)"
-            (outputAction)="outputAction($event)"
+            (triggerTableActionClick)="triggerTableActionClick($event)"
+            (triggerMultipleElementActionClick)="triggerMultipleElementAction($event)"
             [allColumns]="allColumns"
             [dataSource]="dataSource"
             [detailElementTemplate]="detailElementTemplate"
@@ -56,6 +57,8 @@
             [expandElementByDefault]="forceExpandElement"
             [overviewItems]="overviewItems"
             [showRefreshBtn]="showRefreshBtn"
+            [hasActions]="hasActions"
+            [actionButtons]="actionButtons"
           >
           </app-base-expanded-table>
         </div>

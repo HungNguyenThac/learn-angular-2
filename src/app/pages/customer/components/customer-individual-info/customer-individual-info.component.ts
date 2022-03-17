@@ -289,7 +289,7 @@ export class CustomerIndividualInfoComponent implements OnInit, OnDestroy {
         const unlockTime = new Date(now.getTime() + value * 1000);
         this.subManager.add(
           this.customerControllerService
-            .lockAccount({
+            .lockAccountCustomer({
               accountId: this.customerId,
               unLockTime: this.formatTimeSecond(unlockTime)
             })
@@ -328,7 +328,7 @@ export class CustomerIndividualInfoComponent implements OnInit, OnDestroy {
       if (result === BUTTON_TYPE.PRIMARY) {
         this.subManager.add(
           this.customerControllerService
-            .unLockAccount(this.customerId)
+            .unLockAccountCustomer(this.customerId)
             .subscribe((result: ApiResponseCustomerAccountEntity) => {
               if (!result || result.responseCode !== RESPONSE_CODE.SUCCESS) {
                 return this.notifier.error(

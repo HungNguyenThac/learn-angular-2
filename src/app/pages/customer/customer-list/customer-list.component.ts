@@ -39,7 +39,7 @@ import {
 } from '../../../core/common/enum/payday-loan';
 import * as _ from 'lodash';
 import { DisplayedFieldsModel } from '../../../public/models/filter/displayed-fields.model';
-import { overviewItemModel } from 'src/app/public/models/external/overview-item.model';
+import { OverviewItemModel } from 'src/app/public/models/external/overview-item.model';
 import { CommonState } from 'src/app/core/store/reducers/common.reducer';
 
 @Component({
@@ -61,7 +61,7 @@ export class CustomerListComponent implements OnInit, OnDestroy {
     title: this.multiLanguageService.instant('breadcrumb.manage_customer'),
     iconClass: 'sprite-group-5-customer-green-medium',
     searchPlaceholder: this.multiLanguageService.instant(
-      'breadcrumb.search_field_customer_list'
+      'breadcrumb.search_field.customer_list'
     ),
     searchable: true,
     showBtnAdd: false,
@@ -330,7 +330,7 @@ export class CustomerListComponent implements OnInit, OnDestroy {
   expandedElementId: string;
   expandElementFromLoan: any;
   expandedElementCustomer: CustomerInfo;
-  overviewItems: overviewItemModel[] = [
+  overviewItems: OverviewItemModel[] = [
     {
       field: this.multiLanguageService.instant(
         'customer.total_customer_number'
@@ -500,7 +500,7 @@ export class CustomerListComponent implements OnInit, OnDestroy {
       .subscribe((data: ApiResponseSearchAndPaginationResponseCustomerInfo) => {
         this._parseData(data?.result);
         this.getOverviewData(data?.result);
-        if (this.filterForm.controls.id.value) {
+        if (this.filterForm.controls.id?.value) {
           this.expandElementFromLoan = data?.result.data[0];
         }
       });

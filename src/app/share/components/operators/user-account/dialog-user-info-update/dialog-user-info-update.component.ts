@@ -163,7 +163,7 @@ export class DialogUserInfoUpdateComponent implements OnInit {
       this.changePassForm.getRawValue()
     );
     this.adminAccountControllerService
-      .accountChangePassword(updateInfoRequest)
+      .accountAdminChangePassword(updateInfoRequest)
       .subscribe((result: ApiResponseObject) => {
         if (!result || result.responseCode !== RESPONSE_CODE.SUCCESS) {
           return this.notifier.error(

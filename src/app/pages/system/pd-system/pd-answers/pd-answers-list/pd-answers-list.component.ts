@@ -1,8 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import {
   BUTTON_TYPE,
-  DATA_CELL_TYPE,
-  FILTER_TYPE,
+  DATA_CELL_TYPE, FILTER_ACTION_TYPE,
+  FILTER_TYPE, MULTIPLE_ELEMENT_ACTION_TYPE,
   QUERY_CONDITION_TYPE,
 } from '../../../../../core/common/enum/operator';
 import { TableSelectActionModel } from '../../../../../public/models/external/table-select-action.model';
@@ -382,10 +382,10 @@ export class PdAnswersListComponent implements OnInit, OnDestroy {
     const action = event.action;
     const list = event.selectedList;
     switch (action) {
-      case 'lock':
+      case MULTIPLE_ELEMENT_ACTION_TYPE.LOCK:
         this.lockPrompt();
         break;
-      case 'delete':
+      case MULTIPLE_ELEMENT_ACTION_TYPE.DELETE:
         this.deletePrompt();
         break;
       default:
@@ -441,7 +441,7 @@ export class PdAnswersListComponent implements OnInit, OnDestroy {
   }
 
   public onFilterActionTrigger(event: FilterActionEventModel) {
-    if (event.type === 'FILTER_EXTRA_ACTION') {
+    if (event.type === FILTER_ACTION_TYPE.FILTER_EXTRA_ACTION) {
       const addMerchantGroupDialogRef = this.dialog.open(
         MerchantGroupDialogComponent,
         {
