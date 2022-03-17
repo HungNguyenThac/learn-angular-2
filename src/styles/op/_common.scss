@@ -386,12 +386,12 @@ input.pl-text-otp {
   font-family: $sfPro;
 }
 
-.test {
-  background-color: #f7fbff !important;
-  border: 1px solid #007aff;
-  border-radius: 4px;
-}
-
 .gray {
   background-color: #36b5ff21;
+}
+
+.close-btn {
+  position: absolute;
+  right: 0;
+  top: 0;
 }

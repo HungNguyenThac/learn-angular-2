@@ -76,7 +76,8 @@
     "process_downloading": "Đang tải xuống tài liệu",
     "export_excel": "Xuất file",
     "refresh": "Tải lại",
-    "upload": "Tải lên"
+    "upload": "Tải lên",
+    "action": "Thao tác"
   },
   "auth": {
     "phone_number": "Số điện thoại",
@@ -135,7 +136,9 @@
       "pd_group": "Quản lý Nhóm câu hỏi PD",
       "pd_questions": "Quản lý Câu hỏi PD",
       "pd_answers": "Quản lý Câu trả lời PD",
-      "pd_model": "Quản lý PD Model"
+      "pd_model": "Quản lý PD Model",
+      "config_document": "Quản lý tài liệu",
+      "config_contract": "Quản lý hợp đồng"
     },
     "account": "Tài khoản",
     "navigation": {
@@ -199,7 +202,7 @@
     }
   },
   "customer": {
-    "total_customer_number":"Tổng số khách hàng",
+    "total_customer_number": "Tổng số khách hàng",
     "tabs": {
       "individual_info": "Thông tin cá nhân",
       "ekyc_info": "Thông tin CMND/CCCD",
@@ -511,7 +514,7 @@
       "salary_infomation_one": "Tháng lương thứ nhất",
       "salary_infomation_two": "Tháng lương thứ hai",
       "salary_infomation_three": "Tháng lương thứ ba",
-      "customer_provide_info" : "Thông tin khách hàng cung cấp",
+      "customer_provide_info": "Thông tin khách hàng cung cấp",
       "hr_provide_info": "Thông tin HR cung cấp",
       "bank_code": "Mã ngân hàng",
       "bank_name": "Tên ngân hàng",
@@ -670,9 +673,6 @@
   "breadcrumb": {
     "manage_customer": "Quản lý khách hàng",
     "manage_payday_loan": "Quản lý khoản ứng",
-    "search_field_payday_loan": "Mã khoản ứng, Tên, Số điện thoại...",
-    "search_field_customer_list": "Họ tên, Mã nhân viên, Số điện thoại, Email",
-    "search_field_user_list": "Tên đăng nhập, tên người dùng",
     "manage_user": "Quản lý người dùng",
     "merchant": "Quản lý Merchant",
     "pd_group": "Quản lý Nhóm câu hỏi PD",
@@ -681,7 +681,16 @@
     "pd_model": "Quản lý PD Model",
     "product_status": "Quản lý trạng thái",
     "product_workflow": "Quản lý luồng trạng thái",
-    "monex_product": "Quản lý sản phẩm"
+    "monex_product": "Quản lý sản phẩm",
+    "config_document": "Quản lý tài liệu",
+    "config_document_type": "Quản lý nhóm tài liệu",
+    "search_field": {
+      "payday_loan": "Mã khoản ứng, Tên, Số điện thoại",
+      "customer_list": "Họ tên, Mã nhân viên, Số điện thoại, Email",
+      "user_list": "Tên đăng nhập, Tên người dùng",
+      "config_document": "Tên tài liệu, Mô tả",
+      "config_document_type": "Tên nhóm tài liệu, Mô tả"
+    }
   },
   "system": {
     "add_user": "Thêm người dùng",
@@ -742,6 +751,53 @@
     "role": {
       "super_admin": "Super Admin",
       "developer": "Developer"
+    },
+    "system_config": {
+      "application_document": {
+        "title": "Quản lý tài liệu",
+        "add": "Tài liệu vay",
+        "delete": "Xóa",
+        "total": "Tổng số tài liệu",
+        "name": "Tên tài liệu",
+        "description": "Mô tả",
+        "created_at": "Ngày tạo",
+        "updated_at": "Ngày cập nhật",
+        "updated_by": "Người cập nhật",
+        "document_type": "Nhóm tài liệu",
+        "application_document_type": "Nhóm tài liệu",
+        "file_type": "Kiểu dữ liệu",
+        "new_file_type": "Kiểu dữ liệu mới...",
+        "delete_prompt": {
+          "title": "Xóa tài liệu",
+          "success": "Xóa tài liệu thành công",
+          "content": "Bạn có muốn xóa tài liệu này?"
+        },
+        "add_form_title": "Thêm mới tài liệu",
+        "update_form_title": "Cập nhật tài liệu",
+        "add_success": "Thêm mới tài liệu thành công",
+        "update_success": "Cập nhật tài liệu thành công"
+      },
+      "document_type": {
+        "title": "Quản lý nhóm tài liệu",
+        "add": "Nhóm tài liệu",
+        "delete": "Xóa",
+        "total": "Tổng số nhóm tài liệu",
+        "name": "Tên nhóm tài liệu",
+        "description": "Mô tả",
+        "created_at": "Ngày tạo",
+        "updated_at": "Ngày cập nhật",
+        "updated_by": "Người cập nhật",
+        "is_available_for_customer": "Hiển thị ở mục tài liệu trong chi tiết khách hàng",
+        "delete_prompt": {
+          "title": "Xóa nhóm tài liệu",
+          "success": "Xóa nhóm tài liệu thành công",
+          "content": "Bạn có muốn xóa nhóm tài liệu này?"
+        },
+        "add_form_title": "Thêm mới nhóm tài liệu",
+        "update_form_title": "Cập nhật nhóm tài liệu",
+        "add_success": "Thêm mới nhóm tài liệu thành công",
+        "update_success": "Cập nhật nhóm tài liệu thành công"
+      }
     }
   },
   "lock_title": {

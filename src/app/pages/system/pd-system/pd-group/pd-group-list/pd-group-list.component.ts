@@ -2,8 +2,8 @@ import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import {
   BUTTON_TYPE,
   DATA_CELL_TYPE,
-  DATA_STATUS_TYPE,
-  FILTER_TYPE,
+  DATA_STATUS_TYPE, FILTER_ACTION_TYPE,
+  FILTER_TYPE, MULTIPLE_ELEMENT_ACTION_TYPE,
   QUERY_CONDITION_TYPE,
   RESPONSE_CODE,
 } from '../../../../../core/common/enum/operator';
@@ -100,7 +100,7 @@ export class PdGroupListComponent implements OnInit, OnDestroy {
   selectButtons: TableSelectActionModel[] = [
     {
       hidden: false,
-      action: 'delete',
+      action: MULTIPLE_ELEMENT_ACTION_TYPE.DELETE,
       color: 'accent',
       content: this.multiLanguageService.instant('pd_system.pd_group.delete'),
       imageSrc: 'assets/img/icon/group-5/svg/trash.svg',
@@ -108,7 +108,7 @@ export class PdGroupListComponent implements OnInit, OnDestroy {
     },
     {
       hidden: true,
-      action: 'lock',
+      action: MULTIPLE_ELEMENT_ACTION_TYPE.LOCK,
       color: 'accent',
       content: this.multiLanguageService.instant(
         'customer.individual_info.lock'
@@ -433,10 +433,10 @@ export class PdGroupListComponent implements OnInit, OnDestroy {
     const list = event.selectedList;
     const idArr = list.map((group) => group.objectId);
     switch (action) {
-      case 'lock':
+      case MULTIPLE_ELEMENT_ACTION_TYPE.LOCK:
         this.lockMultiplePrompt(idArr);
         break;
-      case 'delete':
+      case MULTIPLE_ELEMENT_ACTION_TYPE.DELETE:
         this.deleteMultiplePrompt(idArr);
         break;
       default:
@@ -449,14 +449,14 @@ export class PdGroupListComponent implements OnInit, OnDestroy {
       return;
     }
     ids.forEach((id) => {
-      if (action === 'lock') {
+      if (action === MULTIPLE_ELEMENT_ACTION_TYPE.LOCK) {
         this._lockById(id);
       } else {
         this._deleteById(id);
       }
     });
     setTimeout(() => {
-      if (action === 'delete') {
+      if (action === MULTIPLE_ELEMENT_ACTION_TYPE.DELETE) {
         this.notifier.success(
           this.multiLanguageService.instant('pd_system.pd_group.delete_toast')
         );
@@ -480,7 +480,7 @@ export class PdGroupListComponent implements OnInit, OnDestroy {
     });
     confirmLockRef.afterClosed().subscribe((result) => {
       if (result === BUTTON_TYPE.PRIMARY) {
-        this._doMultipleAction(ids, 'lock');
+        this._doMultipleAction(ids, MULTIPLE_ELEMENT_ACTION_TYPE.LOCK);
       }
     });
   }
@@ -532,7 +532,7 @@ export class PdGroupListComponent implements OnInit, OnDestroy {
     });
     confirmDeleteRef.afterClosed().subscribe((result) => {
       if (result === BUTTON_TYPE.PRIMARY) {
-        this._doMultipleAction(ids, 'delete');
+        this._doMultipleAction(ids, MULTIPLE_ELEMENT_ACTION_TYPE.DELETE);
       }
     });
   }
@@ -562,7 +562,7 @@ export class PdGroupListComponent implements OnInit, OnDestroy {
   }
 
   public onFilterActionTrigger(event: FilterActionEventModel) {
-    if (event.type === 'FILTER_EXTRA_ACTION') {
+    if (event.type === FILTER_ACTION_TYPE.FILTER_EXTRA_ACTION) {
       const addMerchantGroupDialogRef = this.dialog.open(
         MerchantGroupDialogComponent,
         {

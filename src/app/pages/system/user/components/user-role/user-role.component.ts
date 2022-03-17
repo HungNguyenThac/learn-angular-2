@@ -192,7 +192,7 @@ export class UserRoleComponent implements OnInit, OnDestroy {
   ) {
     this.subManager.add(
       this.identityGroupControllerService
-        .create2({
+        .createGroup({
           code: code,
           name: groupName,
           description: 'ko có mô tả',
@@ -239,7 +239,7 @@ export class UserRoleComponent implements OnInit, OnDestroy {
   ) {
     this.subManager.add(
       this.identityGroupControllerService
-        .update2(groupId, {
+        .updateGroup(groupId, {
           code: groupName,
           name: groupName,
           description: 'ko có mô tả',
@@ -309,7 +309,7 @@ export class UserRoleComponent implements OnInit, OnDestroy {
   deleteGroup(groupId: string, groupName: string) {
     this.subManager.add(
       this.identityGroupControllerService
-        .delete1(groupId)
+        .deleteGroup(groupId)
         .subscribe((response) => {
           if (
             !response ||

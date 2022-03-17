@@ -1,11 +1,5 @@
 import { Routes } from '@angular/router';
-import { PdQuestionsModule } from './pd-system/pd-questions/pd-questions.module';
-import { PdAnswersModule } from './pd-system/pd-answers/pd-answers.module';
-import { PdGroupModule } from './pd-system/pd-group/pd-group.module';
 import { TitleConstants } from '../../core/common/providers/title-constants';
-import { ProductStatusModule } from './product-config/product-status/product-status.module';
-import { ProductWorkflowModule } from './product-config/product-workflow/product-workflow.module';
-import { MonexProductModule } from './product-config/monex-product/monex-product.module';
 
 export const SystemRoutes: Routes = [
   {
@@ -93,6 +87,13 @@ export const SystemRoutes: Routes = [
         data: {
           title: TitleConstants.TITLE_VALUE.PRODUCT_WORKFLOW,
         },
+      },
+      {
+        path: 'system-config',
+        loadChildren: () =>
+          import('./system-config/system-config.module').then(
+            (m) => m.SystemConfigModule
+          ),
       },
     ],
   },

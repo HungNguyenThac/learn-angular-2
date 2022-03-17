@@ -87,7 +87,7 @@ export class ProfileToolbarComponent implements OnInit, OnDestroy {
     console.log('updateUserInfoRequest', updateUserInfoRequest);
     this.subManager.add(
       this.adminAccountControllerService
-        .updateInfo(updateUserInfoRequest)
+        .updateInfoAdminAccount(updateUserInfoRequest)
         .subscribe((response) => {
           if (response.responseCode !== RESPONSE_CODE.SUCCESS) {
             this.notifier.error(
@@ -112,6 +112,14 @@ export class ProfileToolbarComponent implements OnInit, OnDestroy {
 
   onClickMonexProduct() {
     this.router.navigateByUrl('/system/monex-product/list');
+  }
+
+  onClickConfigDocument() {
+    this.router.navigateByUrl('/system/system-config/document');
+  }
+
+  onClickConfigContract() {
+    this.router.navigateByUrl('/system/system-config/contract');
   }
 
   onClickPdGroup() {

@@ -1,4 +1,4 @@
-export interface overviewItemModel {
+export interface OverviewItemModel {
   field: string;
   value: any;
 }

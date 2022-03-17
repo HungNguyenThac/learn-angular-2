@@ -53,7 +53,7 @@ import * as moment from 'moment';
 import { NgxPermissionsService } from 'ngx-permissions';
 import { GlobalConstants } from '../../../../core/common/global-constants';
 import { FilterItemModel } from '../../../../public/models/filter/filter-item.model';
-import { overviewItemModel } from 'src/app/public/models/external/overview-item.model';
+import { OverviewItemModel } from 'src/app/public/models/external/overview-item.model';
 
 @Component({
   selector: 'app-loan-list',
@@ -77,7 +77,7 @@ export class LoanListComponent implements OnInit, OnDestroy {
       this.groupName,
     iconImgSrc: 'assets/img/icon/group-5/svg/pl-24-available.png',
     searchPlaceholder: this.multiLanguageService.instant(
-      'breadcrumb.search_field_payday_loan'
+      'breadcrumb.search_field.payday_loan'
     ),
     searchable: true,
     showBtnExport: true,
@@ -600,7 +600,7 @@ export class LoanListComponent implements OnInit, OnDestroy {
   filterForm: FormGroup;
   private readonly routeAllState$: Observable<Params>;
 
-  overviewItems: overviewItemModel[] = [
+  overviewItems: OverviewItemModel[] = [
     {
       field: this.multiLanguageService.instant(
         'loan_app.loan_info.total_loan_number'

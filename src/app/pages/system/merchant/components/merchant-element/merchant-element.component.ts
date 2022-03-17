@@ -9,7 +9,7 @@ import { MultiLanguageService } from '../../../../../share/translate/multiLangua
 import { NotificationService } from '../../../../../core/services/notification.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
-import { RESPONSE_CODE } from '../../../../../core/common/enum/operator';
+import {MULTIPLE_ELEMENT_ACTION_TYPE, RESPONSE_CODE} from '../../../../../core/common/enum/operator';
 import {
   AdminControllerService,
   ApiResponseString,
@@ -119,7 +119,7 @@ export class MerchantElementComponent implements OnInit {
   updateElementInfo(updateInfoRequest) {
     if (!updateInfoRequest) {
       this.refreshContent();
-    } else if (updateInfoRequest === 'delete') {
+    } else if (updateInfoRequest === MULTIPLE_ELEMENT_ACTION_TYPE.DELETE) {
       this.triggerUpdateElementInfo.emit();
     } else {
       this.updateMerchantInfo(updateInfoRequest);

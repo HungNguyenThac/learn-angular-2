@@ -2,7 +2,9 @@ import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import {
   BUTTON_TYPE,
   DATA_CELL_TYPE,
+  FILTER_ACTION_TYPE,
   FILTER_TYPE,
+  MULTIPLE_ELEMENT_ACTION_TYPE,
   QUERY_CONDITION_TYPE,
   RESPONSE_CODE,
 } from '../../../../../core/common/enum/operator';
@@ -11,41 +13,28 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
 import { BreadcrumbOptionsModel } from '../../../../../public/models/external/breadcrumb-options.model';
 import { FilterOptionModel } from '../../../../../public/models/filter/filter-option.model';
-import { PAYDAY_LOAN_UI_STATUS } from '../../../../../core/common/enum/payday-loan';
 import { MultiLanguageService } from '../../../../../share/translate/multiLanguageService';
 import { NotificationService } from '../../../../../core/services/notification.service';
 import { ToastrService } from 'ngx-toastr';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { Title } from '@angular/platform-browser';
-import { GlobalConstants } from '../../../../../core/common/global-constants';
 import { Sort } from '@angular/material/sort';
 import { FilterEventModel } from '../../../../../public/models/filter/filter-event.model';
 import { PageEvent } from '@angular/material/paginator/public-api';
 import { FilterActionEventModel } from '../../../../../public/models/filter/filter-action-event.model';
 import {
-  AddNewUserDialogComponent,
   BaseManagementLayoutComponent,
-  MerchantDetailDialogComponent,
   MerchantGroupDialogComponent,
 } from '../../../../../share/components';
-import { AddNewPdDialogComponent } from '../../../../../share/components/operators/pd-system/add-new-pd-dialog/add-new-pd-dialog.component';
 import { AddNewQuestionComponent } from '../../../../../share/components/operators/pd-system/add-new-question/add-new-question.component';
-import {
-  ApiResponseSearchAndPaginationResponseAdminAccountEntity,
-  ApiResponseSearchAndPaginationResponseMerchant,
-  ApiResponseSearchAndPaginationResponseQuestion,
-} from '../../../../../../../open-api-modules/dashboard-api-docs';
+import { ApiResponseSearchAndPaginationResponseQuestion } from '../../../../../../../open-api-modules/dashboard-api-docs';
 import { Observable, Subscription } from 'rxjs';
 import { PdQuestionsListService } from './pd-questions-list.service';
 import {
   ApiResponse,
   CdeService,
 } from '../../../../../../../open-api-modules/monexcore-api-docs';
-import {
-  ApiResponseMerchant,
-  ApiResponseString,
-} from '../../../../../../../open-api-modules/merchant-api-docs';
 import * as fromStore from '../../../../../core/store';
 import * as fromSelectors from '../../../../../core/store/selectors';
 import { Store } from '@ngrx/store';
@@ -106,7 +95,7 @@ export class PdQuestionsListComponent implements OnInit, OnDestroy {
   selectButtons: TableSelectActionModel[] = [
     {
       hidden: false,
-      action: 'delete',
+      action: MULTIPLE_ELEMENT_ACTION_TYPE.DELETE,
       color: 'accent',
       content: this.multiLanguageService.instant(
         'pd_system.pd_questions.delete'
@@ -116,7 +105,7 @@ export class PdQuestionsListComponent implements OnInit, OnDestroy {
     },
     {
       hidden: true,
-      action: 'lock',
+      action: MULTIPLE_ELEMENT_ACTION_TYPE.LOCK,
       color: 'accent',
       content: this.multiLanguageService.instant(
         'customer.individual_info.lock'
@@ -413,10 +402,10 @@ export class PdQuestionsListComponent implements OnInit, OnDestroy {
     const list = event.selectedList;
     const idArr = list.map((question) => question.objectId);
     switch (action) {
-      case 'lock':
+      case MULTIPLE_ELEMENT_ACTION_TYPE.LOCK:
         this.lockMultiplePrompt(idArr);
         break;
-      case 'delete':
+      case MULTIPLE_ELEMENT_ACTION_TYPE.DELETE:
         this.deleteMultiplePrompt(idArr);
         break;
       default:
@@ -439,7 +428,7 @@ export class PdQuestionsListComponent implements OnInit, OnDestroy {
     });
     confirmLockRef.afterClosed().subscribe((result) => {
       if (result === BUTTON_TYPE.PRIMARY) {
-        this._doMultipleAction(ids, 'lock');
+        this._doMultipleAction(ids, MULTIPLE_ELEMENT_ACTION_TYPE.LOCK);
       }
     });
   }
@@ -449,14 +438,14 @@ export class PdQuestionsListComponent implements OnInit, OnDestroy {
       return;
     }
     ids.forEach((id) => {
-      if (action === 'lock') {
+      if (action === MULTIPLE_ELEMENT_ACTION_TYPE.LOCK) {
         this._lockById(id);
       } else {
         this._deleteById(id);
       }
     });
     setTimeout(() => {
-      if (action === 'delete') {
+      if (action === MULTIPLE_ELEMENT_ACTION_TYPE.DELETE) {
         this.notifier.success(
           this.multiLanguageService.instant(
             'pd_system.pd_questions.delete_toast'
@@ -514,7 +503,7 @@ export class PdQuestionsListComponent implements OnInit, OnDestroy {
     });
     confirmDeleteRef.afterClosed().subscribe((result) => {
       if (result === BUTTON_TYPE.PRIMARY) {
-        this._doMultipleAction(ids, 'delete');
+        this._doMultipleAction(ids, MULTIPLE_ELEMENT_ACTION_TYPE.DELETE);
       }
     });
   }
@@ -544,7 +533,7 @@ export class PdQuestionsListComponent implements OnInit, OnDestroy {
   }
 
   public onFilterActionTrigger(event: FilterActionEventModel) {
-    if (event.type === 'FILTER_EXTRA_ACTION') {
+    if (event.type === FILTER_ACTION_TYPE.FILTER_EXTRA_ACTION) {
       const addMerchantGroupDialogRef = this.dialog.open(
         MerchantGroupDialogComponent,
         {

@@ -7,6 +7,7 @@ import {
   BUTTON_TYPE,
   DATA_CELL_TYPE,
   DATA_STATUS_TYPE,
+  MULTIPLE_ELEMENT_ACTION_TYPE,
   RESPONSE_CODE,
 } from '../../../../../core/common/enum/operator';
 import { FormBuilder } from '@angular/forms';
@@ -200,7 +201,9 @@ export class MerchantDetailComponent implements OnInit {
                 );
               }
               if (result.responseCode === 200) {
-                this.updateElementInfo.emit('delete');
+                this.updateElementInfo.emit(
+                  MULTIPLE_ELEMENT_ACTION_TYPE.DELETE
+                );
                 setTimeout(() => {
                   this.notifier.success(
                     this.multiLanguageService.instant(

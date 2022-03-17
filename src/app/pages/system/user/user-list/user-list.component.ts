@@ -8,7 +8,7 @@ import {
   DATA_CELL_TYPE,
   DATA_STATUS_TYPE,
   FILTER_ACTION_TYPE,
-  FILTER_TYPE,
+  FILTER_TYPE, MULTIPLE_ELEMENT_ACTION_TYPE,
   QUERY_CONDITION_TYPE,
   RESPONSE_CODE,
 } from '../../../../core/common/enum/operator';
@@ -63,7 +63,7 @@ export class UserListComponent implements OnInit, OnDestroy {
   selectButtons: TableSelectActionModel[] = [
     {
       hidden: false,
-      action: 'delete',
+      action: MULTIPLE_ELEMENT_ACTION_TYPE.DELETE,
       color: 'accent',
       content: this.multiLanguageService.instant(
         'customer.individual_info.delete'
@@ -73,7 +73,7 @@ export class UserListComponent implements OnInit, OnDestroy {
     },
     {
       hidden: false,
-      action: 'lock',
+      action: MULTIPLE_ELEMENT_ACTION_TYPE.LOCK,
       color: 'accent',
       content: this.multiLanguageService.instant(
         'customer.individual_info.lock'
@@ -91,7 +91,7 @@ export class UserListComponent implements OnInit, OnDestroy {
     title: this.multiLanguageService.instant('breadcrumb.manage_user'),
     iconImgSrc: 'assets/img/icon/group-5/svg/person-roll.svg',
     searchPlaceholder: this.multiLanguageService.instant(
-      'breadcrumb.search_field_user_list'
+      'breadcrumb.search_field.user_list'
     ),
     searchable: true,
     showBtnAdd: false,
@@ -208,14 +208,10 @@ export class UserListComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    // this.titleService.setTitle(
-    //   this.multiLanguageService.instant('page_title.user_list') +
-    //     ' - ' +
-    //     environment.PROJECT_NAME
-    // );
     this.store.dispatch(new fromActions.SetOperatorInfo(null));
-    this._initSubscription();
+    this.getRoleList();
     this._getPermissionList();
+    this._initSubscription();
   }
 
   private async _checkActionPermissions() {
@@ -236,11 +232,11 @@ export class UserListComponent implements OnInit, OnDestroy {
 
     let selectedButtons = JSON.parse(JSON.stringify(this.selectButtons));
     selectedButtons.forEach((button) => {
-      if (button.action === 'delete') {
+      if (button.action === MULTIPLE_ELEMENT_ACTION_TYPE.DELETE) {
         button.hidden = !hasDeleteAccountPermission;
         return;
       }
-      if (button.action === 'lock') {
+      if (button.action === MULTIPLE_ELEMENT_ACTION_TYPE.LOCK) {
         button.hidden = !hasLockMultipleAccountPermission;
       }
     });
@@ -256,9 +252,10 @@ export class UserListComponent implements OnInit, OnDestroy {
         (data: ApiResponseSearchAndPaginationResponseAdminAccountEntity) => {
           this._parseData(data?.result);
           this.dataSource.data = data?.result?.data;
-          if (this.filterForm.controls.id.value) {
+          if (this.filterForm.controls.id?.value) {
             this.expandElementFromLoan = data?.result?.data[0];
           }
+          this.filterOptions = JSON.parse(JSON.stringify(this.filterOptions));
         }
       );
   }
@@ -380,10 +377,10 @@ export class UserListComponent implements OnInit, OnDestroy {
     const list = event.selectedList;
     const idArr = list.map((user) => user.id);
     switch (action) {
-      case 'lock':
+      case MULTIPLE_ELEMENT_ACTION_TYPE.LOCK:
         this.lockMultiplePrompt(idArr);
         break;
-      case 'delete':
+      case MULTIPLE_ELEMENT_ACTION_TYPE.DELETE:
         this.deleteMultiplePrompt(idArr);
         break;
       default:
@@ -417,7 +414,7 @@ export class UserListComponent implements OnInit, OnDestroy {
     }
     this.subManager.add(
       this.adminAccountControllerService
-        .lockMultiAccount({
+        .lockMultiAccountAdmin({
           accountIds: userIds,
         })
         .subscribe((result: ApiResponseString) => {
@@ -530,7 +527,6 @@ export class UserListComponent implements OnInit, OnDestroy {
       this.routeAllState$.subscribe((params) => {
         this._parseQueryParams(params?.queryParams);
         this._getUserList();
-        this.getRoleList();
       })
     );
 
@@ -674,7 +670,7 @@ export class UserListComponent implements OnInit, OnDestroy {
   sendAddUserRequest(updateInfoRequest) {
     this.subManager.add(
       this.adminAccountControllerService
-        .create3(updateInfoRequest)
+        .createAdminAccount(updateInfoRequest)
         .subscribe((result: ApiResponseAdminAccountEntity) => {
           if (!result || result.responseCode !== RESPONSE_CODE.SUCCESS) {
             return this.notifier.error(

@@ -1064,6 +1064,51 @@ paths:
                 $ref: '#/components/schemas/ApiResponseSearchAndPaginationResponseGroup'
       security:
       - bearerAuth: []
+  /v1/bnplApplications:
+    post:
+      tags:
+      - bnpl-application-controller
+      operationId: findBnplApplications
+      parameters:
+      - name: pageSize
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: pageNumber
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: orderBy
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: descending
+        in: query
+        required: false
+        schema:
+          type: boolean
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties:
+                type: object
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseSearchAndPaginationResponseBnplApplication'
+      security:
+      - bearerAuth: []
   /v1/banks:
     post:
       tags:
@@ -1310,7 +1355,7 @@ paths:
           content:
             '*/*':
               schema:
-                $ref: '#/components/schemas/ApiResponseLoanPortfolioComparison'
+                $ref: '#/components/schemas/ApiResponseLoanPortfolioComparisonResponse'
   /v1/applications/appendCustomerInfo:
     post:
       tags:
@@ -1323,6 +1368,96 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ApiResponseString'
+  /v1/applicationDocuments:
+    post:
+      tags:
+      - application-document-controller
+      operationId: getApplicationDocuments
+      parameters:
+      - name: pageSize
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: pageNumber
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: orderBy
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: descending
+        in: query
+        required: false
+        schema:
+          type: boolean
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties:
+                type: object
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseSearchAndPaginationResponseApplicationDocument'
+      security:
+      - bearerAuth: []
+  /v1/applicationDocuments/applicationDocumentTypes:
+    post:
+      tags:
+      - application-document-controller
+      operationId: getApplicationDocumentTypes
+      parameters:
+      - name: pageSize
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: pageNumber
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: orderBy
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: descending
+        in: query
+        required: false
+        schema:
+          type: boolean
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties:
+                type: object
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseSearchAndPaginationResponseApplicationDocumentType'
+      security:
+      - bearerAuth: []
   /v1/adminAccounts:
     get:
       tags:
@@ -1974,6 +2109,26 @@ paths:
                 $ref: '#/components/schemas/ApiResponseGroup'
       security:
       - bearerAuth: []
+  /v1/bnplApplications/{bnplApplicationId}:
+    get:
+      tags:
+      - bnpl-application-controller
+      operationId: getBnplApplicationById
+      parameters:
+      - name: bnplApplicationId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseBnplApplication'
+      security:
+      - bearerAuth: []
   /v1/banks/{bankId}:
     get:
       tags:
@@ -2060,6 +2215,46 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ApiResponseSearchVoucherInfoResponse'
+  /v1/applicationDocuments/{applicationDocumentId}:
+    get:
+      tags:
+      - application-document-controller
+      operationId: getApplicationDocumentById
+      parameters:
+      - name: applicationDocumentId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseApplicationDocument'
+      security:
+      - bearerAuth: []
+  /v1/applicationDocuments/applicationDocumentTypes/{applicationDocumentTypeId}:
+    get:
+      tags:
+      - application-document-controller
+      operationId: getApplicationDocumentTypeById
+      parameters:
+      - name: applicationDocumentTypeId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseApplicationDocumentType'
+      security:
+      - bearerAuth: []
   /v1/adminAccounts/{adminAccountId}:
     get:
       tags:
@@ -3893,6 +4088,68 @@ components:
           type: object
           additionalProperties:
             type: object
+    ApiResponseSearchAndPaginationResponseBnplApplication:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/SearchAndPaginationResponseBnplApplication'
+        errorCode:
+          type: string
+        message:
+          type: object
+        responseCode:
+          type: integer
+          format: int32
+    BnplApplication:
+      type: object
+      properties:
+        id:
+          type: string
+        customerId:
+          type: string
+        cdeDataId:
+          type: string
+        merchant:
+          $ref: '#/components/schemas/Merchant'
+        loanAmount:
+          type: integer
+          format: int32
+        latePenaltyPayment:
+          type: integer
+          format: int32
+        productId:
+          type: integer
+          format: int32
+        status:
+          type: string
+        oldStatus:
+          type: string
+        coreLoanId:
+          type: integer
+          format: int32
+        contract:
+          type: string
+        createdAt:
+          type: string
+        updatedAt:
+          type: string
+        repaymentTransactions:
+          type: array
+          items:
+            $ref: '#/components/schemas/RepaymentTransaction'
+    SearchAndPaginationResponseBnplApplication:
+      type: object
+      properties:
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/BnplApplication'
+        meta:
+          type: object
+          additionalProperties:
+            type: object
     ApiResponseSearchAndPaginationResponseBank:
       type: object
       properties:
@@ -3913,6 +4170,16 @@ components:
         bankName:
           type: string
         bankCode:
+          type: string
+        avatar:
+          type: string
+        createdBy:
+          type: string
+        updatedBy:
+          type: string
+        createdAt:
+          type: string
+        updatedAt:
           type: string
     SearchAndPaginationResponseBank:
       type: object
@@ -4110,11 +4377,11 @@ components:
           type: object
           additionalProperties:
             type: object
-    ApiResponseLoanPortfolioComparison:
+    ApiResponseLoanPortfolioComparisonResponse:
       type: object
       properties:
         result:
-          $ref: '#/components/schemas/LoanPortfolioComparison'
+          $ref: '#/components/schemas/LoanPortfolioComparisonResponse'
         errorCode:
           type: string
         message:
@@ -4131,12 +4398,121 @@ components:
         totalBadLoans:
           type: integer
           format: int32
-        totalLoans:
-          type: integer
-          format: int32
         defaultOdds:
           type: number
           format: float
+        month:
+          type: object
+          additionalProperties:
+            type: object
+            additionalProperties:
+              type: object
+    LoanPortfolioComparisonResponse:
+      type: object
+      properties:
+        loanPortfolioComparisons:
+          type: array
+          items:
+            $ref: '#/components/schemas/LoanPortfolioComparison'
+        totalLoansPeriod:
+          type: integer
+          format: int32
+    ApiResponseSearchAndPaginationResponseApplicationDocument:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/SearchAndPaginationResponseApplicationDocument'
+        errorCode:
+          type: string
+        message:
+          type: object
+        responseCode:
+          type: integer
+          format: int32
+    ApplicationDocument:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        applicationDocumentType:
+          type: array
+          items:
+            type: string
+        description:
+          type: string
+        applicationDocumentUser:
+          type: string
+          enum:
+          - BORROWER
+          - CREDITOR
+          - BUSINESS_PARTNER
+        createdBy:
+          type: string
+        updatedBy:
+          type: string
+        createdAt:
+          type: string
+        updatedAt:
+          type: string
+    SearchAndPaginationResponseApplicationDocument:
+      type: object
+      properties:
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/ApplicationDocument'
+        meta:
+          type: object
+          additionalProperties:
+            type: object
+    ApiResponseSearchAndPaginationResponseApplicationDocumentType:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/SearchAndPaginationResponseApplicationDocumentType'
+        errorCode:
+          type: string
+        message:
+          type: object
+        responseCode:
+          type: integer
+          format: int32
+    ApplicationDocumentType:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        isAvailableForCustomer:
+          type: boolean
+        createdBy:
+          type: string
+        updatedBy:
+          type: string
+        createdAt:
+          type: string
+        updatedAt:
+          type: string
+    SearchAndPaginationResponseApplicationDocumentType:
+      type: object
+      properties:
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/ApplicationDocumentType'
+        meta:
+          type: object
+          additionalProperties:
+            type: object
     AdminAccountEntity:
       type: object
       properties:
@@ -4605,6 +4981,18 @@ components:
         responseCode:
           type: integer
           format: int32
+    ApiResponseBnplApplication:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/BnplApplication'
+        errorCode:
+          type: string
+        message:
+          type: object
+        responseCode:
+          type: integer
+          format: int32
     ApiResponseBank:
       type: object
       properties:
@@ -4634,6 +5022,30 @@ components:
       properties:
         result:
           $ref: '#/components/schemas/PaydayLoanTng'
+        errorCode:
+          type: string
+        message:
+          type: object
+        responseCode:
+          type: integer
+          format: int32
+    ApiResponseApplicationDocument:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/ApplicationDocument'
+        errorCode:
+          type: string
+        message:
+          type: object
+        responseCode:
+          type: integer
+          format: int32
+    ApiResponseApplicationDocumentType:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/ApplicationDocumentType'
         errorCode:
           type: string
         message:

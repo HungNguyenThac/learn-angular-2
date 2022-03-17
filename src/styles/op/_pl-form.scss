@@ -18,7 +18,8 @@
   color: $grey-10;
   margin-top: 0 !important;
 
-  &:disabled, &:read-only {
+  &:disabled,
+  &:read-only {
     cursor: no-drop;
   }
 }
@@ -55,11 +56,11 @@
 }
 
 ::ng-deep.mat-form-field-appearance-outline.mat-form-field-can-float.mat-form-field-should-float
-.mat-form-field-label,
+  .mat-form-field-label,
 .mat-form-field-appearance-outline.mat-form-field-can-float
-.mat-input-server:focus
-+ .mat-form-field-label-wrapper
-.mat-form-field-label {
+  .mat-input-server:focus
+  + .mat-form-field-label-wrapper
+  .mat-form-field-label {
   font-family: $sfPro;
   font-style: normal;
   font-weight: normal;
@@ -130,11 +131,11 @@
 }
 
 ::ng-deep.mat-form-field-appearance-outline.mat-form-field-can-float.mat-form-field-should-float
-.mat-form-field-label,
+  .mat-form-field-label,
 .mat-form-field-appearance-outline.mat-form-field-can-float
-.mat-input-server:focus
-+ .mat-form-field-label-wrapper
-.mat-form-field-label {
+  .mat-input-server:focus
+  + .mat-form-field-label-wrapper
+  .mat-form-field-label {
   transform: translateY(-1.34375em) scale(0.75);
 }
 
@@ -294,5 +295,21 @@ mat-radio-button {
   .mat-form-field-appearance-outline .mat-form-field-outline {
     position: absolute;
     top: 0;
+  }
+}
+
+.mat-standard-chip {
+  .mat-chip-remove {
+    border: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    padding: 0;
+    background: none;
+
+    .mat-icon {
+      width: 18px;
+      height: 18px;
+      font-size: 18px !important;
+    }
   }
 }

@@ -14,5 +14,8 @@ export class TitleConstants {
     PRODUCT_STATUS: 'Danh sách trạng thái',
     PRODUCT_WORKFLOW: 'Danh sách luồng trạng thái',
     MERCHANT_LIST: 'Danh sách merchant',
+    CONFIG_DOCUMENT_LIST: 'Quản lý tài liệu',
+    CONFIG_DOCUMENT_TYPE_LIST: 'Quản lý nhóm tài liệu',
+    CONFIG_CONTRACT_LIST: 'Quản lý hợp đồng',
   };
 }

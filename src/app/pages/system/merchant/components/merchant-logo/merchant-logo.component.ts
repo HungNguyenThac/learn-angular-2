@@ -5,7 +5,7 @@ import { MultiLanguageService } from '../../../../../share/translate/multiLangua
 import { NotificationService } from '../../../../../core/services/notification.service';
 import { ToastrService } from 'ngx-toastr';
 import {
-  BUTTON_TYPE,
+  BUTTON_TYPE, MULTIPLE_ELEMENT_ACTION_TYPE,
   RESPONSE_CODE,
 } from '../../../../../core/common/enum/operator';
 import { MerchantDetailDialogComponent } from '../../../../../share/components';
@@ -285,7 +285,7 @@ export class MerchantLogoComponent implements OnInit {
                 );
               }
               if (result.responseCode === 200) {
-                this.updateElementInfo.emit('delete');
+                this.updateElementInfo.emit(MULTIPLE_ELEMENT_ACTION_TYPE.DELETE);
                 setTimeout(() => {
                   this.notifier.success(
                     this.multiLanguageService.instant(

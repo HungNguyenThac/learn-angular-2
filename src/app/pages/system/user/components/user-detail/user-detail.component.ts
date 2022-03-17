@@ -13,6 +13,7 @@ import {
   BUTTON_TYPE,
   DATA_CELL_TYPE,
   DATA_STATUS_TYPE,
+  MULTIPLE_ELEMENT_ACTION_TYPE,
   RESPONSE_CODE,
 } from '../../../../../core/common/enum/operator';
 import { NotificationService } from '../../../../../core/services/notification.service';
@@ -121,7 +122,7 @@ export class UserDetailComponent implements OnInit, OnDestroy {
         const unlockTime = new Date(now.getTime() + 999999999 * 1000);
         this.subManager.add(
           this.adminAccountControllerService
-            .lockAccount1({
+            .lockAccountAdmin({
               accountId: this.userInfo.id,
               unLockTime: this.formatTimeSecond(unlockTime),
             })
@@ -159,7 +160,7 @@ export class UserDetailComponent implements OnInit, OnDestroy {
       if (result === BUTTON_TYPE.PRIMARY) {
         this.subManager.add(
           this.adminAccountControllerService
-            .unLockAccount1(this.userInfo.id)
+            .unLockAccountAdmin(this.userInfo.id)
             .subscribe((result: ApiResponseAdminAccountEntity) => {
               if (!result || result.responseCode !== RESPONSE_CODE.SUCCESS) {
                 return this.notifier.error(
@@ -207,7 +208,9 @@ export class UserDetailComponent implements OnInit, OnDestroy {
                 );
               }
               if (result.responseCode === 200) {
-                this.updateElementInfo.emit('delete');
+                this.updateElementInfo.emit(
+                  MULTIPLE_ELEMENT_ACTION_TYPE.DELETE
+                );
                 setTimeout(() => {
                   this.notifier.success(
                     this.multiLanguageService.instant(
@@ -318,7 +321,7 @@ export class UserDetailComponent implements OnInit, OnDestroy {
   private changeUserPass(changePassData: AdminChangePassProviderRequest) {
     this.subManager.add(
       this.adminAccountControllerService
-        .changePass({
+        .changePassAdminAccount({
           username: changePassData.username,
           newSecret: changePassData.newSecret,
           confirmSecret: changePassData.confirmSecret,

@@ -17,7 +17,7 @@ import {
   DATA_CELL_TYPE,
   DATA_STATUS_TYPE,
   FILTER_ACTION_TYPE,
-  FILTER_TYPE,
+  FILTER_TYPE, MULTIPLE_ELEMENT_ACTION_TYPE,
   QUERY_CONDITION_TYPE,
   RESPONSE_CODE,
 } from '../../../../../core/common/enum/operator';
@@ -64,7 +64,7 @@ export class ProductStatusListComponent implements OnInit {
   selectButtons: TableSelectActionModel[] = [
     {
       hidden: false,
-      action: 'delete',
+      action: MULTIPLE_ELEMENT_ACTION_TYPE.DELETE,
       color: 'accent',
       content: this.multiLanguageService.instant('product_status.delete'),
       imageSrc: 'assets/img/icon/group-5/svg/trash.svg',
@@ -72,7 +72,7 @@ export class ProductStatusListComponent implements OnInit {
     },
     {
       hidden: true,
-      action: 'lock',
+      action: MULTIPLE_ELEMENT_ACTION_TYPE.LOCK,
       color: 'accent',
       content: this.multiLanguageService.instant(
         'customer.individual_info.lock'
@@ -88,7 +88,7 @@ export class ProductStatusListComponent implements OnInit {
     title: this.multiLanguageService.instant('breadcrumb.product_status'),
     iconImgSrc: 'assets/img/icon/group-5/svg/person-roll.svg',
     searchPlaceholder: this.multiLanguageService.instant(
-      'breadcrumb.search_field_user_list'
+      'breadcrumb.search_field.user_list'
     ),
     searchable: true,
     showBtnAdd: true,
@@ -228,11 +228,11 @@ export class ProductStatusListComponent implements OnInit {
   //
   //   let selectedButtons = JSON.parse(JSON.stringify(this.selectButtons));
   //   selectedButtons.forEach((button) => {
-  //     if (button.action === 'delete') {
+  //     if (button.action === MULTIPLE_ELEMENT_ACTION_TYPE.DELETE) {
   //       button.hidden = !hasDeleteAccountPermission;
   //       return;
   //     }
-  //     if (button.action === 'lock') {
+  //     if (button.action === MULTIPLE_ELEMENT_ACTION_TYPE.LOCK) {
   //       button.hidden = !hasLockMultipleAccountPermission;
   //     }
   //   });
@@ -402,10 +402,10 @@ export class ProductStatusListComponent implements OnInit {
     const list = event.selectedList;
     const idArr = list.map((user) => user.id);
     switch (action) {
-      case 'lock':
+      case MULTIPLE_ELEMENT_ACTION_TYPE.LOCK:
         this.lockMultiplePrompt(idArr);
         break;
-      case 'delete':
+      case MULTIPLE_ELEMENT_ACTION_TYPE.DELETE:
         this.deleteMultiplePrompt(idArr);
         break;
       default:
@@ -428,7 +428,7 @@ export class ProductStatusListComponent implements OnInit {
     });
     confirmLockRef.afterClosed().subscribe((result) => {
       if (result === BUTTON_TYPE.PRIMARY) {
-        this._doMultipleAction(ids, 'lock');
+        this._doMultipleAction(ids, MULTIPLE_ELEMENT_ACTION_TYPE.LOCK);
       }
     });
   }
@@ -438,14 +438,14 @@ export class ProductStatusListComponent implements OnInit {
       return;
     }
     ids.forEach((id) => {
-      if (action === 'lock') {
+      if (action === MULTIPLE_ELEMENT_ACTION_TYPE.LOCK) {
         this._lockById(id);
       } else {
         this._deleteById(id);
       }
     });
     setTimeout(() => {
-      if (action === 'delete') {
+      if (action === MULTIPLE_ELEMENT_ACTION_TYPE.DELETE) {
         this.notifier.success(
           this.multiLanguageService.instant('product_status.delete_success')
         );
@@ -473,7 +473,7 @@ export class ProductStatusListComponent implements OnInit {
     });
     confirmDeleteRef.afterClosed().subscribe((result) => {
       if (result === BUTTON_TYPE.PRIMARY) {
-        this._doMultipleAction(ids, 'delete');
+        this._doMultipleAction(ids, MULTIPLE_ELEMENT_ACTION_TYPE.DELETE);
       }
     });
   }

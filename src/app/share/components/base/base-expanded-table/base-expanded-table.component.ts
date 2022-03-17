@@ -25,7 +25,11 @@ import { NotificationService } from '../../../../core/services/notification.serv
 import { ToastrService } from 'ngx-toastr';
 import { TableSelectActionModel } from '../../../../public/models/external/table-select-action.model';
 import * as _ from 'lodash';
-import { overviewItemModel } from 'src/app/public/models/external/overview-item.model';
+import { OverviewItemModel } from 'src/app/public/models/external/overview-item.model';
+import { TableActionButtonModel } from '../../../../public/models/external/table-action-button.model';
+import { TABLE_ACTION_TYPE } from '../../../../core/common/enum/operator';
+import { TableActionEventModel } from '../../../../public/models/filter/table-action-event.model';
+import {MultipleElementActionEventModel} from "../../../../public/models/filter/multiple-element-action-event.model";
 
 @Component({
   selector: 'app-base-expanded-table',
@@ -51,8 +55,10 @@ export class BaseExpandedTableComponent implements OnInit, AfterViewInit {
   @Input() sortDirection: SortDirection;
   @Input() allColumns: DisplayedFieldsModel[];
   @Input() hasSelect: boolean;
+  @Input() hasActions: boolean;
   @Input() selectButtons: TableSelectActionModel[];
-  @Input() overviewItems: overviewItemModel[];
+  @Input() actionButtons: TableActionButtonModel[];
+  @Input() overviewItems: OverviewItemModel[];
   @Input() showRefreshBtn: boolean;
   _expandElementByDefault;
   @Input() get expandElementByDefault() {
@@ -66,10 +72,11 @@ export class BaseExpandedTableComponent implements OnInit, AfterViewInit {
     }
   }
 
-  @Output() triggerPageChange = new EventEmitter<any>();
-  @Output() triggerSortChange = new EventEmitter<any>();
+  @Output() triggerPageChange = new EventEmitter<PageEvent>();
+  @Output() triggerSortChange = new EventEmitter<Sort>();
   @Output() triggerExpandedElementChange = new EventEmitter<any>();
-  @Output() outputAction = new EventEmitter<any>();
+  @Output() triggerMultipleElementActionClick = new EventEmitter<MultipleElementActionEventModel>();
+  @Output() triggerTableActionClick = new EventEmitter<TableActionEventModel>();
   @Output() triggerRefresh = new EventEmitter<any>();
 
   pressed: boolean = false;
@@ -109,6 +116,10 @@ export class BaseExpandedTableComponent implements OnInit, AfterViewInit {
     });
     if (this.hasSelect) {
       this.displayColumnKeys.unshift('select');
+    }
+
+    if (this.hasActions) {
+      this.displayColumnKeys.push('action');
     }
   }
 
@@ -170,7 +181,7 @@ export class BaseExpandedTableComponent implements OnInit, AfterViewInit {
   }
 
   public onClickRefreshBtn(event) {
-    this.triggerRefresh.emit(event)
+    this.triggerRefresh.emit(event);
   }
 
   public expandElement(element) {
@@ -197,15 +208,22 @@ export class BaseExpandedTableComponent implements OnInit, AfterViewInit {
         format: item.format,
         showed: item.showed,
         externalKey: item.externalKey,
-        isBadLoan: item.isBadLoan
+        isBadLoan: item.isBadLoan,
       };
     });
   }
 
-  onClick(action) {
-    this.outputAction.emit({
+  onMultipleElementActionClick(action) {
+    this.triggerMultipleElementActionClick.emit({
       action: action,
       selectedList: this.selection.selected,
+    });
+  }
+
+  onTableActionClick(action: TABLE_ACTION_TYPE, element) {
+    this.triggerTableActionClick.emit({
+      action: action,
+      element: element,
     });
   }
 
@@ -249,6 +267,15 @@ export class BaseExpandedTableComponent implements OnInit, AfterViewInit {
         title: '',
       });
     }
+
+    if (this.hasActions) {
+      tableColumn.push({
+        key: 'action',
+        width: 100,
+        title: '',
+      });
+    }
+
     tableColumn.forEach((column) => {
       totWidth += column.width;
     });
