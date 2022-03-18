@@ -781,6 +781,51 @@ paths:
                 $ref: '#/components/schemas/ApiResponseSearchAndPaginationResponseCustomerInfo'
       security:
       - bearerAuth: []
+  /v1/contractTemplates:
+    post:
+      tags:
+      - contract-template-controller
+      operationId: getContractTemplates
+      parameters:
+      - name: pageSize
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: pageNumber
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: orderBy
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: descending
+        in: query
+        required: false
+        schema:
+          type: boolean
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties:
+                type: object
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseSearchAndPaginationResponseContractTemplateEntity'
+      security:
+      - bearerAuth: []
   /v1/companies:
     post:
       tags:
@@ -1967,6 +2012,26 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ApiResponseListKalapaResponse'
+      security:
+      - bearerAuth: []
+  /v1/contractTemplates/{contractTemplateId}:
+    get:
+      tags:
+      - contract-template-controller
+      operationId: getContractTemplateById
+      parameters:
+      - name: contractTemplateId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseContractTemplateEntity'
       security:
       - bearerAuth: []
   /v1/companies/{companyId}:
@@ -3762,6 +3827,52 @@ components:
           type: object
           additionalProperties:
             type: object
+    ApiResponseSearchAndPaginationResponseContractTemplateEntity:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/SearchAndPaginationResponseContractTemplateEntity'
+        errorCode:
+          type: string
+        message:
+          type: object
+        responseCode:
+          type: integer
+          format: int32
+    ContractTemplateEntity:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        productId:
+          type: string
+        statusId:
+          type: string
+        isActive:
+          type: boolean
+        content:
+          type: string
+        actionBy:
+          type: string
+        createAt:
+          type: string
+        updateAt:
+          type: string
+    SearchAndPaginationResponseContractTemplateEntity:
+      type: object
+      properties:
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/ContractTemplateEntity'
+        meta:
+          type: object
+          additionalProperties:
+            type: object
     ApiResponseSearchAndPaginationResponseCompanyInfo:
       type: object
       properties:
@@ -4874,6 +4985,18 @@ components:
       properties:
         result:
           $ref: '#/components/schemas/CustomerInfo'
+        errorCode:
+          type: string
+        message:
+          type: object
+        responseCode:
+          type: integer
+          format: int32
+    ApiResponseContractTemplateEntity:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/ContractTemplateEntity'
         errorCode:
           type: string
         message:
