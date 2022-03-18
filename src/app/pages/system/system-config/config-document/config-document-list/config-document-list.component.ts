@@ -165,13 +165,20 @@ export class ConfigDocumentListComponent implements OnInit {
       title: this.multiLanguageService.instant(
         'system.system_config.application_document.document_type'
       ),
-      type: FILTER_TYPE.MULTIPLE_CHOICE,
+      type: FILTER_TYPE.SEARCH_SELECT,
       controlName: 'applicationDocumentType',
       value: null,
       showAction: true,
       titleAction: this.multiLanguageService.instant('common.view'),
       actionControlName: 'SELECT_ALL_DOCUMENT_TYPE',
       options: [],
+      multiple: true,
+      searchPlaceholder: this.multiLanguageService.instant(
+        'system.system_config.application_document.search_document_type'
+      ),
+      emptyResultText: this.multiLanguageService.instant(
+        'system.system_config.application_document.empty_document_type'
+      ),
     },
   ];
 
@@ -264,6 +271,7 @@ export class ConfigDocumentListComponent implements OnInit {
 
   public onSubmitSearchForm(event) {
     this.filterForm.controls.keyword.setValue(event.keyword);
+    this.pageIndex = 0;
     this._onFilterChange();
   }
 
@@ -276,23 +284,15 @@ export class ConfigDocumentListComponent implements OnInit {
         this.filterForm.controls.dateFilterType.setValue(event.value.type);
         this.filterForm.controls.dateFilterTitle.setValue(event.value.title);
         break;
-      case FILTER_TYPE.MULTIPLE_CHOICE:
+      case FILTER_TYPE.SEARCH_SELECT:
         if (event.controlName === 'applicationDocumentType') {
           this.filterForm.controls.applicationDocumentType?.setValue(
             event.value ? event.value.join(',') : ''
           );
-          // if (_.isEmpty(event.value)) {
-          //   this.changeActionSelectAllDocumentTypeTitle(
-          //     this.multiLanguageService.instant('filter.select_all')
-          //   );
-          // } else {
-          //   this.changeActionSelectAllDocumentTypeTitle(
-          //     this.multiLanguageService.instant('filter.deselect_all')
-          //   );
-          // }
         }
         break;
       case FILTER_TYPE.SELECT:
+      case FILTER_TYPE.MULTIPLE_CHOICE:
       default:
         break;
     }
@@ -494,15 +494,6 @@ export class ConfigDocumentListComponent implements OnInit {
     }
   }
 
-  private changeActionSelectAllDocumentTypeTitle(title: string) {
-    this.filterOptions.forEach((filterOption) => {
-      if (filterOption.controlName === 'applicationDocumentType') {
-        filterOption.titleAction =
-          title || this.multiLanguageService.instant('filter.select_all');
-      }
-    });
-  }
-
   public onOutputAction(event) {
     const action = event.action;
     const list = event.selectedList;
@@ -607,6 +598,7 @@ export class ConfigDocumentListComponent implements OnInit {
               name: result?.data?.name,
               applicationDocumentTypeId: result?.data?.applicationDocumentType,
               description: result?.data?.description,
+              fileType: result?.data?.fileType.join(','),
             };
           this._updateApplicationDocument(
             element.id,
@@ -640,6 +632,7 @@ export class ConfigDocumentListComponent implements OnInit {
               name: result?.data?.name,
               applicationDocumentTypeId: result?.data?.applicationDocumentType,
               description: result?.data?.description,
+              fileType: result?.data?.fileType.join(','),
             };
           this._createApplicationDocument(createApplicationDocumentRequest);
         }

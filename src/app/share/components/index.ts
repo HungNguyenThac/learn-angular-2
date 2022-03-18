@@ -38,6 +38,7 @@ import { MonexLoadingComponent } from './loading/monex-loading/monex-loading.com
 import { ProductStatusDialogComponent } from './operators/product-config/product-status-dialog/product-status-dialog.component';
 import { ProductWorkflowDialogComponent } from './operators/product-config/product-workflow-dialog/product-workflow-dialog.component';
 import { MonexProductDialogComponent } from './operators/product-config/monex-product-dialog/monex-product-dialog.component';
+import { SearchSelectFilterComponent } from './filter-boxs/search-select-filter/search-select-filter.component';
 
 export const components: any[] = [
   ConfirmationDialog,
@@ -80,6 +81,7 @@ export const components: any[] = [
   ProductStatusDialogComponent,
   ProductWorkflowDialogComponent,
   MonexProductDialogComponent,
+  SearchSelectFilterComponent,
 ];
 
 export * from './dialogs/confirmation-dialog/confirmation-dialog.component';
@@ -122,3 +124,4 @@ export * from './loading/monex-loading/monex-loading.component';
 export * from './operators/product-config/product-status-dialog/product-status-dialog.component';
 export * from './operators/product-config/product-workflow-dialog/product-workflow-dialog.component';
 export * from './operators/product-config/monex-product-dialog/monex-product-dialog.component';
+export * from './filter-boxs/search-select-filter/search-select-filter.component';

@@ -4553,12 +4553,8 @@ components:
             type: string
         description:
           type: string
-        applicationDocumentUser:
+        fileType:
           type: string
-          enum:
-          - BORROWER
-          - CREDITOR
-          - BUSINESS_PARTNER
         createdBy:
           type: string
         updatedBy:
@@ -4603,6 +4599,8 @@ components:
           type: string
         isAvailableForCustomer:
           type: boolean
+        codeName:
+          type: string
         createdBy:
           type: string
         updatedBy:

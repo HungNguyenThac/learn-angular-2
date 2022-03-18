@@ -804,13 +804,11 @@ export class InfoVerificationComponent implements OnInit, AfterViewInit {
     } else {
       search = search.toLowerCase();
     }
-    let filteredBanksByCode = this.bankOptions.filter(
-      (bank) => bank.bankCode.toLowerCase().indexOf(search) > -1
+    this.filteredBanks =  this.bankOptions.filter(
+      (bank) =>
+        bank.bankCode.toLowerCase().indexOf(search) > -1 ||
+        bank.bankName.toLowerCase().indexOf(search) > -1
     );
-    let filteredBanksByName = this.bankOptions.filter(
-      (bank) => bank.bankName.toLowerCase().indexOf(search) > -1
-    );
-    this.filteredBanks = filteredBanksByName.concat(filteredBanksByCode);
   }
 
   handleResponseError(errorCode: string) {

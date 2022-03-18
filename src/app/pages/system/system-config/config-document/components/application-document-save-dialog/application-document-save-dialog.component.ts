@@ -5,7 +5,7 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { BUTTON_TYPE } from '../../../../../../core/common/enum/operator';
 import { ApplicationDocument } from '../../../../../../../../open-api-modules/com-api-docs';
@@ -41,6 +41,7 @@ export class ApplicationDocumentSaveDialogComponent implements OnInit {
   ];
 
   @ViewChild('fileTypeInput') fileTypeInput: ElementRef<HTMLInputElement>;
+  fileTypeControl = new FormControl('', [Validators.required]);
 
   constructor(
     @Inject(MAT_DIALOG_DATA) private data: any,
@@ -69,7 +70,7 @@ export class ApplicationDocumentSaveDialogComponent implements OnInit {
     this.applicationDocumentForm = this.formBuilder.group({
       name: [''],
       description: [''],
-      fileType: [''],
+      fileType: this.fileTypeControl,
       applicationDocumentType: [''],
     });
   }
@@ -78,7 +79,7 @@ export class ApplicationDocumentSaveDialogComponent implements OnInit {
     this.title = data?.title;
     this.applicationDocumentTypeOptions = data?.applicationDocumentTypeOptions;
     this.applicationDocument = data?.element;
-    this.fileTypes = this.applicationDocument?.description.split(',') || [];
+    this.fileTypes = this.applicationDocument?.fileType.split(',') || [];
 
     this.applicationDocumentForm.patchValue({
       name: this.applicationDocument?.name,

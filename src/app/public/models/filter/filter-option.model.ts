@@ -14,4 +14,6 @@ export interface FilterOptionModel {
   showIconAction?: boolean;
   hidden?: boolean;
   options?: FilterItemModel[];
+  searchPlaceholder?: string;
+  emptyResultText?: string;
 }

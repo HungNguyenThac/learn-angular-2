@@ -110,7 +110,7 @@
                 "system.system_config.application_document.file_type"
                   | translate
               }}</mat-label>
-              <mat-chip-list #chipList aria-label="Fruit selection">
+              <mat-chip-list #chipList aria-label="File type selection" [formControl]="fileTypeControl">
                 <mat-chip
                   *ngFor="let fileType of fileTypes"
                   (removed)="removeFileType(fileType)"
@@ -127,6 +127,7 @@
                   "
                   #fileTypeInput
                   formControlName="fileType"
+                  required
                   [matAutocomplete]="fileTypeAuto"
                   [matChipInputFor]="chipList"
                   [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
