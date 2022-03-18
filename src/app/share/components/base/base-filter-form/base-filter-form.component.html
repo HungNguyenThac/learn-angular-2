@@ -18,24 +18,41 @@
       </mat-expansion-panel-header>
       <div class="expansion-panel-content">
         <ng-container *ngFor="let filterOption of filterOptions">
+
+          <!--    Date filter      -->
           <app-datetime-filter
             *ngIf="filterOption.type === 'DATETIME'"
             [filterOption]="filterOption"
             (completeFilter)="completeFilter($event)"
           ></app-datetime-filter>
+          <!--   END: Date filter      -->
 
+          <!--    Select filter      -->
           <app-select-filter
             *ngIf="filterOption.type === 'SELECT'"
             [filterOption]="filterOption"
             (completeFilter)="completeFilter($event)"
           ></app-select-filter>
+          <!--   END: Select filter      -->
 
+          <!--    Multiple choice filter      -->
           <app-multiple-choice-filter
             *ngIf="filterOption.type === 'MULTIPLE_CHOICE'"
             [filterOption]="filterOption"
             (completeFilter)="completeFilter($event)"
             (clickActionBtn)="clickActionBtn($event)"
           ></app-multiple-choice-filter>
+          <!--   END: Multiple choice filter      -->
+
+          <!--    Search select filter      -->
+          <app-search-select-filter
+            *ngIf="filterOption.type === 'SEARCH_SELECT'"
+            [filterOption]="filterOption"
+            (completeFilter)="completeFilter($event)"
+            (clickActionBtn)="clickActionBtn($event)"
+          ></app-search-select-filter>
+          <!--    END: Search select filter      -->
+
         </ng-container>
 
         <div class="text-center">
@@ -55,24 +72,40 @@
   <!-- Desktop view -->
   <ng-template #desktopView>
     <ng-container *ngFor="let filterOption of filterOptions">
+      <!--    Date filter      -->
       <app-datetime-filter
         *ngIf="filterOption.type === 'DATETIME'"
         [filterOption]="filterOption"
         (completeFilter)="completeFilter($event)"
       ></app-datetime-filter>
+      <!--   END: Date filter      -->
 
+      <!--    Select filter      -->
       <app-select-filter
         *ngIf="filterOption.type === 'SELECT'"
         [filterOption]="filterOption"
         (completeFilter)="completeFilter($event)"
       ></app-select-filter>
+      <!--   END: Select filter      -->
 
+      <!--    Multiple choice filter      -->
       <app-multiple-choice-filter
         *ngIf="filterOption.type === 'MULTIPLE_CHOICE'"
         [filterOption]="filterOption"
         (completeFilter)="completeFilter($event)"
         (clickActionBtn)="clickActionBtn($event)"
       ></app-multiple-choice-filter>
+      <!--   END: Multiple choice filter      -->
+
+      <!--    Search select filter      -->
+      <app-search-select-filter
+        *ngIf="filterOption.type === 'SEARCH_SELECT'"
+        [filterOption]="filterOption"
+        (completeFilter)="completeFilter($event)"
+        (clickActionBtn)="clickActionBtn($event)"
+      ></app-search-select-filter>
+      <!--    END: Search select filter      -->
+
     </ng-container>
   </ng-template>
 

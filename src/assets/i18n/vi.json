@@ -775,7 +775,9 @@
         "add_form_title": "Thêm mới tài liệu",
         "update_form_title": "Cập nhật tài liệu",
         "add_success": "Thêm mới tài liệu thành công",
-        "update_success": "Cập nhật tài liệu thành công"
+        "update_success": "Cập nhật tài liệu thành công",
+        "search_document_type": "Nhóm tài liệu",
+        "empty_document_type": "Nhóm tài liệu không tồn tại"
       },
       "document_type": {
         "title": "Quản lý nhóm tài liệu",

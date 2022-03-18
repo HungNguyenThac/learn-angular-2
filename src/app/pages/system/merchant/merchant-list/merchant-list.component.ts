@@ -13,8 +13,10 @@ import * as _ from 'lodash';
 import {
   BUTTON_TYPE,
   DATA_CELL_TYPE,
-  DATA_STATUS_TYPE, FILTER_ACTION_TYPE,
-  FILTER_TYPE, MULTIPLE_ELEMENT_ACTION_TYPE,
+  DATA_STATUS_TYPE,
+  FILTER_ACTION_TYPE,
+  FILTER_TYPE,
+  MULTIPLE_ELEMENT_ACTION_TYPE,
   NAV_ITEM,
   QUERY_CONDITION_TYPE,
   RESPONSE_CODE,
@@ -41,7 +43,8 @@ import {
 import {
   AdminControllerService,
   ApiResponseMerchant,
-  ApiResponseString, CreateMerchantRequestDto,
+  ApiResponseString,
+  CreateMerchantRequestDto,
 } from '../../../../../../open-api-modules/merchant-api-docs';
 import { Observable, Subscription } from 'rxjs';
 import { MerchantListService } from './merchant-list.service';
@@ -393,6 +396,7 @@ export class MerchantListComponent implements OnInit {
 
   public onSubmitSearchForm(event) {
     this.filterForm.controls.keyword.setValue(event.keyword);
+    this.pageIndex = 0;
     this._onFilterChange();
   }
 
@@ -808,7 +812,7 @@ export class MerchantListComponent implements OnInit {
       addMerchantDialogRef.afterClosed().subscribe((result: any) => {
         if (result && result.type === BUTTON_TYPE.PRIMARY) {
           let createRequest = this._bindingDialogData(result.data);
-          console.log('createRequest', createRequest)
+          console.log('createRequest', createRequest);
           // this.sendAddRequest(createRequest);
         }
       })

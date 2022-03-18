@@ -669,8 +669,33 @@ components:
             type: string
         description:
           type: string
-        applicationDocumentUser:
+        fileType:
           type: string
+        documentType:
+          type: string
+          enum:
+          - ID_CARD
+          - FRONT_ID_CARD
+          - FRONT_ID_CARD_TWO
+          - BACK_ID_CARD_TWO
+          - BACK_ID_CARD
+          - SELFIE
+          - BANK_BOOK
+          - PAY_SLIP
+          - UN_KNOWN
+          - CONTRACT
+          - LETTER
+          - SALARY_INFORMATION
+          - SALARY_INFORMATION_ONE
+          - SALARY_INFORMATION_TWO
+          - SALARY_INFORMATION_THREE
+          - VEHICLE_REGISTRATION
+          - LETTER_SIGN_DONE
+          - CONTRACT_SIGN_DONE
+          - CONTRACT_CUSTOMER_SIGN_DONE
+          - COMPANY_LOGO
+          - BANK_LOGO
+          - CKEDITOR_IMAGE
     ApiResponseApplicationDocument:
       type: object
       properties:
@@ -696,12 +721,8 @@ components:
             type: string
         description:
           type: string
-        applicationDocumentUser:
+        fileType:
           type: string
-          enum:
-          - BORROWER
-          - CREDITOR
-          - BUSINESS_PARTNER
         createdBy:
           type: string
         updatedBy:
@@ -742,6 +763,8 @@ components:
           type: string
         isAvailableForCustomer:
           type: boolean
+        codeName:
+          type: string
         createdBy:
           type: string
         updatedBy:
@@ -1280,6 +1303,7 @@ components:
     CreateApplicationDocumentRequest:
       required:
       - applicationDocumentTypeId
+      - fileType
       - name
       type: object
       properties:
@@ -1291,7 +1315,7 @@ components:
             type: string
         description:
           type: string
-        applicationDocumentUser:
+        fileType:
           type: string
     CreateApplicationDocumentTypeRequest:
       required:

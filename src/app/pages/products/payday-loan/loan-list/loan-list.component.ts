@@ -705,6 +705,7 @@ export class LoanListComponent implements OnInit, OnDestroy {
 
   public onSubmitSearchForm(event) {
     this.filterForm.controls.keyword.setValue(event.keyword);
+    this.pageIndex = 0;
     this._onFilterChange();
   }
 

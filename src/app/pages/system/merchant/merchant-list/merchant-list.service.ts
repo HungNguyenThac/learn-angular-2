@@ -42,9 +42,13 @@ export class MerchantListService {
     }
 
     if (params.keyword) {
-      requestBody['fullName' + QUERY_CONDITION_TYPE.LIKE_KEYWORD] =
+      requestBody['code' + QUERY_CONDITION_TYPE.LIKE_KEYWORD] =
         params.keyword;
-      requestBody['username' + QUERY_CONDITION_TYPE.LIKE_KEYWORD] =
+      requestBody['name' + QUERY_CONDITION_TYPE.LIKE_KEYWORD] =
+        params.keyword;
+      requestBody['email' + QUERY_CONDITION_TYPE.LIKE_KEYWORD] =
+        params.keyword;
+      requestBody['mobile' + QUERY_CONDITION_TYPE.LIKE_KEYWORD] =
         params.keyword;
     }
 
