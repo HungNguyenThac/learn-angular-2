@@ -12,6 +12,12 @@ Auto migrate effect
 
 - ng generate @ngrx/schematics:create-effect-migration
 
+### Install openapi-generator-cli dependency
+
+```
+yarn global add @openapitools/openapi-generator-cli
+```
+
 ### Generate api docs
 
 ```

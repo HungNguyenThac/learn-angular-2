@@ -13,10 +13,6 @@ import { NgxViewerModule } from 'ngx-viewer';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
-import { MaxFileSizeDirective } from './directives/max-file-size.directive';
-import { MaxFileCountDirective } from './directives/max-file-count.directive';
-import { ImageFileOnlyDirective } from './directives/image-file-only.directive';
-import { SearchSelectFilterComponent } from './components/filter-boxs/search-select-filter/search-select-filter.component';
 
 @NgModule({
   declarations: [
@@ -24,10 +20,6 @@ import { SearchSelectFilterComponent } from './components/filter-boxs/search-sel
     ...fromValidators.validators,
     ...fromDirectives.directives,
     ...fromPipes.pipes,
-    MaxFileSizeDirective,
-    MaxFileCountDirective,
-    ImageFileOnlyDirective,
-    SearchSelectFilterComponent,
   ],
   imports: [
     CommonModule,

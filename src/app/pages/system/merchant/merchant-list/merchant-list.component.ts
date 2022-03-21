@@ -45,7 +45,7 @@ import {
   ApiResponseMerchant,
   ApiResponseString,
   CreateMerchantRequestDto,
-} from '../../../../../../open-api-modules/merchant-api-docs';
+} from '../../../../../../open-api-modules/bnpl-api-docs';
 import { Observable, Subscription } from 'rxjs';
 import { MerchantListService } from './merchant-list.service';
 import * as fromSelectors from '../../../../core/store/selectors';
@@ -857,7 +857,7 @@ export class MerchantListComponent implements OnInit {
       ward: data?.ward || null,
       district: data?.district || null,
       province: data?.province || null,
-      bdStaffId: data?.bdStaffId || null,
+      bdStaffName: data?.bdStaffName || null,
       sellTypes: data?.sellTypes || null,
       mobile: data?.mobile || null,
       email: data?.email || null,
@@ -875,6 +875,7 @@ export class MerchantListComponent implements OnInit {
       logo: data?.logo ? data?.logo : null,
       description: data?.description ? data?.description : null,
       descriptionImg: data?.descriptionImg ? data?.descriptionImg : null,
+      createAgentInformationDto: null
     };
   }
 

@@ -16,7 +16,7 @@ import {
   DOCUMENT_BTN_TYPE,
   RESPONSE_CODE,
 } from '../../../../../core/common/enum/operator';
-import { AdminControllerService } from '../../../../../../../open-api-modules/merchant-api-docs';
+import { AdminControllerService } from '../../../../../../../open-api-modules/bnpl-api-docs';
 import fileToBase64 from '../../../../../core/utils/file-to-base64';
 
 @Component({
