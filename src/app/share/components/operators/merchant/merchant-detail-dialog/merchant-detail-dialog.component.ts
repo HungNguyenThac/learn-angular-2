@@ -10,7 +10,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MultiLanguageService } from '../../../../translate/multiLanguageService';
 import { BUTTON_TYPE } from '../../../../../core/common/enum/operator';
-import { Merchant } from '../../../../../../../open-api-modules/merchant-api-docs';
+import { Merchant } from '../../../../../../../open-api-modules/bnpl-api-docs';
 import * as DecoupledEditor from '@ckeditor/ckeditor5-build-decoupled-document';
 import CkEditorAdapters from '../../../../../core/utils/ck-editor-adapters';
 // import * as SourceEditing from '@ckeditor/ckeditor5-source-editing';
@@ -151,7 +151,7 @@ export class MerchantDetailDialogComponent implements OnInit, AfterViewChecked {
       // code: this.merchantInfo?.code,
       name: this.merchantInfo?.name,
       address: this.merchantInfo?.address,
-      bdStaffId: this.merchantInfo?.bdStaffId,
+      bdStaffId: this.merchantInfo?.bdStaffName,
       sellTypes: this.merchantInfo?.sellTypes
         ? this.merchantInfo?.sellTypes
         : '',

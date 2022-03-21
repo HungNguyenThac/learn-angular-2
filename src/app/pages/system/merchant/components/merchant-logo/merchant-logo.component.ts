@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { MultiLanguageService } from '../../../../../share/translate/multiLanguageService';
@@ -14,7 +14,7 @@ import {
   AdminControllerService,
   ApiResponseMerchant,
   ApiResponseString,
-} from '../../../../../../../open-api-modules/merchant-api-docs';
+} from '../../../../../../../open-api-modules/bnpl-api-docs';
 import {
   ApiResponseCustomerInfo,
   MerchantControllerService,
@@ -27,7 +27,7 @@ import * as DecoupledEditor from '@ckeditor/ckeditor5-build-decoupled-document';
   templateUrl: './merchant-logo.component.html',
   styleUrls: ['./merchant-logo.component.scss'],
 })
-export class MerchantLogoComponent implements OnInit {
+export class MerchantLogoComponent implements OnInit, OnDestroy {
   _merchantId: string;
   @Input()
   get merchantId(): string {
@@ -140,7 +140,6 @@ export class MerchantLogoComponent implements OnInit {
 
   submitForm() {
     const data = this.merchantInfoForm.getRawValue();
-    console.log('asdojhasdohas', data);
     this.subManager.add(
       this.adminControllerService
         .v1AdminMerchantsIdPut(this.merchantId, data)
@@ -342,6 +341,10 @@ export class MerchantLogoComponent implements OnInit {
       editor.ui.view.toolbar.element,
       editor.ui.getEditableElement()
     );
+  }
+
+  ngOnDestroy(): void {
+    this.subManager.unsubscribe();
   }
 
 }

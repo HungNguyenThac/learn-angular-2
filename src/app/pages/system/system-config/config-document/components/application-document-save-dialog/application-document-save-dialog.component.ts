@@ -5,16 +5,21 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
-import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { BUTTON_TYPE } from '../../../../../../core/common/enum/operator';
 import { ApplicationDocument } from '../../../../../../../../open-api-modules/com-api-docs';
 import { ApplicationDocumentType } from '../../../../../../../../open-api-modules/dashboard-api-docs';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { MatChipInputEvent } from '@angular/material/chips';
-import { map, startWith } from 'rxjs/operators';
+import { map, startWith, takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-application-document-save-dialog',
@@ -42,6 +47,9 @@ export class ApplicationDocumentSaveDialogComponent implements OnInit {
 
   @ViewChild('fileTypeInput') fileTypeInput: ElementRef<HTMLInputElement>;
   fileTypeControl = new FormControl('', [Validators.required]);
+  selectSearchCtrl: FormControl = new FormControl();
+  _onDestroy = new Subject<void>();
+  filteredDocumentTypeItems: ApplicationDocumentType[] = [];
 
   constructor(
     @Inject(MAT_DIALOG_DATA) private data: any,
@@ -64,7 +72,26 @@ export class ApplicationDocumentSaveDialogComponent implements OnInit {
     );
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.selectSearchCtrl.valueChanges
+      .pipe(takeUntil(this._onDestroy))
+      .subscribe(() => {
+        this.filterSelectOptions();
+      });
+  }
+
+  filterSelectOptions() {
+    let search = this.selectSearchCtrl.value;
+    if (!search) {
+      this.filteredDocumentTypeItems = this.applicationDocumentTypeOptions;
+      return;
+    } else {
+      search = search.toLowerCase();
+    }
+    this.filteredDocumentTypeItems = this.applicationDocumentTypeOptions.filter(
+      (item) => item.name.toLowerCase().indexOf(search) > -1
+    );
+  }
 
   buildForm() {
     this.applicationDocumentForm = this.formBuilder.group({
@@ -88,6 +115,8 @@ export class ApplicationDocumentSaveDialogComponent implements OnInit {
       applicationDocumentType:
         this.applicationDocument?.applicationDocumentType,
     });
+
+    this.filterSelectOptions();
   }
 
   submitForm() {

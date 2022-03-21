@@ -18,7 +18,7 @@ import {
   ApiResponseMerchant,
   ApiResponseString,
   UpdateMerchantRequestDto,
-} from '../../../../../../../open-api-modules/merchant-api-docs';
+} from '../../../../../../../open-api-modules/bnpl-api-docs';
 
 @Component({
   selector: 'app-merchant-detail',
@@ -223,7 +223,7 @@ export class MerchantDetailComponent implements OnInit {
       code: data?.code || null,
       name: data?.name || null,
       address: data?.address || null,
-      bdStaffId: data?.bdStaffId || null,
+      bdStaffName: data?.bdStaffName || null,
       sellTypes: data?.sellTypes || null,
       mobile: data?.mobile || null,
       email: data?.email || null,
@@ -240,6 +240,7 @@ export class MerchantDetailComponent implements OnInit {
       customerServiceFee: data?.customerServiceFee
         ? data?.customerServiceFee / 100
         : null,
+      updateAgentInformationDto: null
     };
   }
 

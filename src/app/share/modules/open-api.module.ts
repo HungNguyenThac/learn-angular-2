@@ -9,7 +9,7 @@ import * as identityApiDocs from '../../../../open-api-modules/identity-api-docs
 import * as coreApiDocs from '../../../../open-api-modules/core-api-docs';
 import * as paymentApiDocs from '../../../../open-api-modules/payment-api-docs';
 import * as contractApiDocs from '../../../../open-api-modules/contract-api-docs';
-import * as merchantApiDocs from '../../../../open-api-modules/merchant-api-docs';
+import * as bnplApiDocs from '../../../../open-api-modules/bnpl-api-docs';
 import * as monexCoreApiDocs from '../../../../open-api-modules/monexcore-api-docs';
 import { environment } from '../../../environments/environment';
 
@@ -63,8 +63,8 @@ import { environment } from '../../../environments/environment';
         basePath: environment.API_BASE_URL + environment.CONTRACT_API_PATH,
       });
     }),
-    merchantApiDocs.ApiModule.forRoot(() => {
-      return new merchantApiDocs.Configuration({
+    bnplApiDocs.ApiModule.forRoot(() => {
+      return new bnplApiDocs.Configuration({
         basePath: environment.API_BASE_URL + environment.BNPL_API_PATH,
       });
     }),

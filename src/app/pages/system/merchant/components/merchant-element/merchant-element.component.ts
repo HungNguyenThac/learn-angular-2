@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import { Subscription } from 'rxjs';
 import {
   ApiResponseMerchant,
@@ -14,7 +14,7 @@ import {
   AdminControllerService,
   ApiResponseString,
   UpdateMerchantRequestDto,
-} from '../../../../../../../open-api-modules/merchant-api-docs';
+} from '../../../../../../../open-api-modules/bnpl-api-docs';
 import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
@@ -22,7 +22,7 @@ import { DomSanitizer } from '@angular/platform-browser';
   templateUrl: './merchant-element.component.html',
   styleUrls: ['./merchant-element.component.scss'],
 })
-export class MerchantElementComponent implements OnInit {
+export class MerchantElementComponent implements OnInit, OnDestroy {
   @Input() merchantInfo: Merchant;
 
   private _merchantId: string;
@@ -124,5 +124,9 @@ export class MerchantElementComponent implements OnInit {
     } else {
       this.updateMerchantInfo(updateInfoRequest);
     }
+  }
+
+  ngOnDestroy(): void {
+    this.subManager.unsubscribe();
   }
 }

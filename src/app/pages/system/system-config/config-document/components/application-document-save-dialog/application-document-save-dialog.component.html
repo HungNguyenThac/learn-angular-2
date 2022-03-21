@@ -81,8 +81,15 @@
                     nhóm
                   </ng-template>
                 </mat-select-trigger>
+                <mat-option>
+                  <ngx-mat-select-search
+                    [formControl]="selectSearchCtrl"
+                    [placeholderLabel]="'Nhóm tài liệu'"
+                    [noEntriesFoundLabel]="'Nhóm tài liệu không tồn tại'"
+                  ></ngx-mat-select-search>
+                </mat-option>
                 <mat-option
-                  *ngFor="let option of applicationDocumentTypeOptions"
+                  *ngFor="let option of filteredDocumentTypeItems"
                   [value]="option.id"
                   >{{ option.name }}</mat-option
                 >
