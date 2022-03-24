@@ -16,10 +16,7 @@
 </span>
 
 <span *ngIf="type === 'CHECK'">
-  <app-pl-check-element
-    [statusValue]="value"
-  >
-  </app-pl-check-element>
+  <app-pl-check-element [statusValue]="value"> </app-pl-check-element>
 </span>
 
 <span *ngIf="type === 'NUMBER'">
@@ -27,9 +24,12 @@
 </span>
 
 <span *ngIf="type === 'PERCENT'">
-  <ng-container *ngIf="value">
-      {{ value | percent }}
+  <ng-container *ngIf="value; else zero">
+    {{ value | percent }}
   </ng-container>
+  <ng-template #zero>
+    {{ 0 | percent }}
+  </ng-template>
 </span>
 
 <span *ngIf="type === 'HYPERLINK'">

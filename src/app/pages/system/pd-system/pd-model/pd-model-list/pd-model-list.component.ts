@@ -2,8 +2,10 @@ import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import {
   BUTTON_TYPE,
   DATA_CELL_TYPE,
-  DATA_STATUS_TYPE, FILTER_ACTION_TYPE,
-  FILTER_TYPE, MULTIPLE_ELEMENT_ACTION_TYPE,
+  DATA_STATUS_TYPE,
+  FILTER_ACTION_TYPE,
+  FILTER_TYPE,
+  MULTIPLE_ELEMENT_ACTION_TYPE,
   QUERY_CONDITION_TYPE,
   RESPONSE_CODE,
 } from '../../../../../core/common/enum/operator';
@@ -18,25 +20,22 @@ import { ToastrService } from 'ngx-toastr';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { Title } from '@angular/platform-browser';
-import { GlobalConstants } from '../../../../../core/common/global-constants';
 import { Sort } from '@angular/material/sort';
 import { FilterEventModel } from '../../../../../public/models/filter/filter-event.model';
 import { PageEvent } from '@angular/material/paginator/public-api';
 import { FilterActionEventModel } from '../../../../../public/models/filter/filter-action-event.model';
 import {
-  AddNewQuestionComponent,
+  AddNewPdDialogComponent,
   BaseManagementLayoutComponent,
-  MerchantDetailDialogComponent,
   MerchantGroupDialogComponent,
 } from '../../../../../share/components';
-import { AddNewPdDialogComponent } from '../../../../../share/components';
 import { PdModelListService } from './pd-model-list.service';
 import { Observable, Subscription } from 'rxjs';
 import {
   ApiResponse,
   CdeService,
 } from '../../../../../../../open-api-modules/monexcore-api-docs';
-import { CustomApiResponse, PDGroup, PDModel } from '../../pd-interface';
+import { CustomApiResponse, PDModel } from '../../pd-interface';
 import {
   ApiResponseSearchAndPaginationResponseGroup,
   ApiResponseSearchAndPaginationResponseModel,

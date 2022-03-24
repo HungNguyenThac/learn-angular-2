@@ -267,6 +267,17 @@
 //  }
 //}
 
+#logo-monex-center {
+  position: absolute;
+  z-index: 1;
+  margin: auto;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  width: 36px;
+}
+
 @media (max-width: 768px) {
   .op-customer-avatar {
     width: 56px;

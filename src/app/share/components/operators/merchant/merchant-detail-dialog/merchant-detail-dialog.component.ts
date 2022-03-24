@@ -2,17 +2,34 @@ import {
   AfterViewChecked,
   ChangeDetectorRef,
   Component,
+  ElementRef,
   Inject,
-  Input,
   OnInit,
+  ViewChild,
 } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { MultiLanguageService } from '../../../../translate/multiLanguageService';
-import { BUTTON_TYPE } from '../../../../../core/common/enum/operator';
-import { Merchant } from '../../../../../../../open-api-modules/bnpl-api-docs';
+import {
+  MerchantFeature,
+  MerchantSellType,
+} from '../../../../../../../open-api-modules/bnpl-api-docs';
 import * as DecoupledEditor from '@ckeditor/ckeditor5-build-decoupled-document';
 import CkEditorAdapters from '../../../../../core/utils/ck-editor-adapters';
+import { map, startWith, takeUntil } from 'rxjs/operators';
+import { Observable, Subject } from 'rxjs';
+import { MatChipInputEvent } from '@angular/material/chips';
+import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+import { COMMA, ENTER } from '@angular/cdk/keycodes';
+import { Merchant } from '../../../../../../../open-api-modules/dashboard-api-docs';
+import { BUTTON_TYPE } from '../../../../../core/common/enum/operator';
+import * as moment from 'moment';
+
 // import * as SourceEditing from '@ckeditor/ckeditor5-source-editing';
 
 @Component({
@@ -24,37 +41,61 @@ export class MerchantDetailDialogComponent implements OnInit, AfterViewChecked {
   public Editor = DecoupledEditor;
   tabIndex: number = 0;
   merchantInfoForm: FormGroup;
-  merchantInfo: Merchant;
-  merchantInfoDescription: any;
+  merchantInfo: Merchant = {};
   dialogTitle = this.multiLanguageService.instant(
     'merchant.merchant_dialog.add_merchant_title'
   );
-  typeOptions: any[] = [
+
+  allProductTypes: any[] = ['Thời trang', 'Thực phẩm', 'Điện tử'];
+  productTypes: any[] = [];
+  merchantSellTypes: any[] = [
     {
-      id: 1,
-      name: 'Tại cửa hàng',
+      value: MerchantSellType.Offline,
+      title: this.multiLanguageService.instant(
+        'merchant.merchant_sell_type.offline'
+      ),
     },
     {
-      id: 2,
-      name: 'Trực tuyến',
+      value: MerchantSellType.Online,
+      title: this.multiLanguageService.instant(
+        'merchant.merchant_sell_type.online'
+      ),
     },
   ];
-  showOptions: any[] = [
+  merchantFeatures: any[] = [
     {
-      id: 1,
-      name: 'Hiển thị',
+      value: MerchantFeature.Display,
+      title: this.multiLanguageService.instant(
+        'merchant.merchant_feature.display'
+      ),
     },
     {
-      id: 2,
-      name: 'Hot Brand',
+      value: MerchantFeature.HotBrand,
+      title: this.multiLanguageService.instant(
+        'merchant.merchant_feature.hot_brand'
+      ),
     },
     {
-      id: 2,
-      name: 'Promotion',
+      value: MerchantFeature.Promotion,
+      title: this.multiLanguageService.instant(
+        'merchant.merchant_feature.promotion'
+      ),
     },
   ];
 
-  managers: any[] = [];
+  bdStaffOptions: any[] = [];
+  allMerchant: any[] = [];
+  selectStaffCtrl: FormControl = new FormControl();
+  selectMerchantCtrl: FormControl = new FormControl();
+  productTypeControl: FormControl = new FormControl('', [Validators.required]);
+  _onDestroy = new Subject<void>();
+  filteredStaffOptions: any[] = [];
+  filteredMerchantOptions: any[] = [];
+  isCreateMode: boolean = false;
+  separatorKeysCodes: number[] = [ENTER, COMMA];
+  filteredProductTypes: Observable<string[]>;
+
+  @ViewChild('productTypeInput') fileTypeInput: ElementRef<HTMLInputElement>;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) private data: any,
@@ -67,15 +108,66 @@ export class MerchantDetailDialogComponent implements OnInit, AfterViewChecked {
     if (data) {
       this.initDialogData(data);
     }
+    this._changeFilterProductType();
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.selectStaffCtrl.valueChanges
+      .pipe(takeUntil(this._onDestroy))
+      .subscribe(() => {
+        this.filterStaffOptions();
+      });
+
+    this.selectMerchantCtrl.valueChanges
+      .pipe(takeUntil(this._onDestroy))
+      .subscribe(() => {
+        this.filterMerchantOptions();
+      });
+  }
+
+  private _changeFilterProductType() {
+    this.filteredProductTypes = this.merchantInfoForm.valueChanges.pipe(
+      startWith(null),
+      map((data) =>
+        data ? this._filterProductType(data) : this.allProductTypes.slice()
+      )
+    );
+  }
+
+  filterStaffOptions() {
+    let search = this.selectStaffCtrl.value;
+    if (!search) {
+      this.filteredStaffOptions = this.bdStaffOptions;
+      return;
+    } else {
+      search = search.toLowerCase();
+    }
+    this.filteredStaffOptions = this.bdStaffOptions.filter(
+      (item) => item.title.toLowerCase().indexOf(search) > -1
+    );
+  }
+
+  filterMerchantOptions() {
+    let search = this.selectMerchantCtrl.value;
+    if (!search || !this.allMerchant) {
+      this.filteredMerchantOptions = this.allMerchant;
+      return;
+    } else {
+      search = search.toLowerCase();
+    }
+    this.filteredMerchantOptions = this.allMerchant.filter(
+      (item) => item.title.toLowerCase().indexOf(search) > -1
+    );
+  }
 
   ngAfterViewChecked(): void {
     this.changeDetectorRef.detectChanges();
   }
 
   ckeditorConfig: any = {
+    fontSize: {
+      options: [9, 11, 13, 'default', 17, 19, 21],
+    },
     toolbar: [
       'heading',
       '|',
@@ -142,27 +234,44 @@ export class MerchantDetailDialogComponent implements OnInit, AfterViewChecked {
   }
 
   initDialogData(data: any) {
-    this.merchantInfo = data?.merchantInfo;
+    this.merchantInfo = data?.merchantInfo
+      ? JSON.parse(JSON.stringify(data?.merchantInfo))
+      : null;
     this.tabIndex = data?.tabIndex;
-    this.dialogTitle = data?.dialogTitle;
+    this.dialogTitle =
+      data?.dialogTitle ||
+      this.multiLanguageService.instant(
+        'merchant.merchant_dialog.add_merchant_title'
+      );
+    this.isCreateMode = data?.isCreateMode;
+    this.bdStaffOptions = data?.bdStaffOptions;
+    this.allMerchant = data?.allMerchant
+      ? data?.allMerchant.filter((merchant) => {
+          return merchant.value != data?.merchantInfo?.id;
+        })
+      : [];
+    this.productTypes = this.merchantInfo?.productTypes || [];
+    this.filterStaffOptions();
+    this.filterMerchantOptions();
+    this.initMerchantInfoForm();
+  }
 
+  private initMerchantInfoForm() {
     this.merchantInfoForm.patchValue({
       id: this.merchantInfo?.id,
-      // code: this.merchantInfo?.code,
+      code: this.merchantInfo?.code,
       name: this.merchantInfo?.name,
       address: this.merchantInfo?.address,
-      bdStaffId: this.merchantInfo?.bdStaffName,
-      sellTypes: this.merchantInfo?.sellTypes
-        ? this.merchantInfo?.sellTypes
-        : '',
+      bdStaffId: this.merchantInfo?.bdStaffId,
+      merchantSellTypes: this.merchantInfo?.merchantSellTypes || [],
       mobile: this.merchantInfo?.mobile,
       email: this.merchantInfo?.email,
       website: this.merchantInfo?.website,
       identificationNumber: this.merchantInfo?.identificationNumber,
-      establishTime: this.merchantInfo?.establishTime,
-      productTypes: this.merchantInfo?.productTypes
-        ? this.merchantInfo?.productTypes
-        : '',
+      establishTime: this.merchantInfo?.establishTime
+        ? this.formatTimeToDisplay(this.merchantInfo?.establishTime)
+        : null,
+      productTypes: this.productTypes || [],
       merchantServiceFee: this.merchantInfo?.merchantServiceFee
         ? this.merchantInfo?.merchantServiceFee * 100
         : 0,
@@ -172,18 +281,24 @@ export class MerchantDetailDialogComponent implements OnInit, AfterViewChecked {
       status: this.merchantInfo?.status,
       logo: this.merchantInfo?.logo,
       descriptionImg: this.merchantInfo?.descriptionImg,
-      description: this.merchantInfo?.description,
+      description: this.merchantInfo?.description || null,
+      merchantParentId: this.merchantInfo?.merchantParentId,
+      merchantFeatures: this.merchantInfo?.merchantFeatures || [],
+      managerName: this.merchantInfo?.agentInformation?.name,
+      managerPosition: this.merchantInfo?.agentInformation?.position,
+      managerMobile: this.merchantInfo?.agentInformation?.mobile,
+      managerEmail: this.merchantInfo?.agentInformation?.email,
     });
   }
 
   buildIndividualForm() {
     this.merchantInfoForm = this.formBuilder.group({
       id: [''],
-      // code: [''],
+      code: [''],
       name: [''],
       address: [''],
       bdStaffId: ['', [Validators.required]],
-      sellTypes: [''],
+      merchantSellTypes: [''],
       mobile: ['', [Validators.required]],
       email: ['', [Validators.email, Validators.required]],
       website: [
@@ -197,7 +312,7 @@ export class MerchantDetailDialogComponent implements OnInit, AfterViewChecked {
       ],
       identificationNumber: [''],
       establishTime: ['', Validators.required],
-      productTypes: ['', Validators.required],
+      productTypes: this.productTypeControl,
       merchantServiceFee: [
         '',
         [Validators.required, Validators.min(0), Validators.max(100)],
@@ -207,14 +322,71 @@ export class MerchantDetailDialogComponent implements OnInit, AfterViewChecked {
         [Validators.required, Validators.min(0), Validators.max(100)],
       ],
       status: [''],
-      logo: [''],
-      descriptionImg: [''],
+      logo: ['', Validators.required],
+      descriptionImg: ['', Validators.required],
       description: [''],
+      merchantParentId: [''],
       managerName: ['', Validators.required],
       managerEmail: ['', [Validators.required, Validators.email]],
       managerMobile: ['', Validators.required],
       managerPosition: ['', Validators.required],
-      displayFormats: [''],
+      merchantFeatures: [''],
     });
+  }
+
+  changeDescriptionImages(event) {
+    this.merchantInfoForm.controls.descriptionImg.setValue(event);
+  }
+
+  changeLogo(event) {
+    this.merchantInfoForm.controls.logo.setValue(event);
+  }
+
+  addFileType(event: MatChipInputEvent): void {
+    const value = (event.value || '').trim();
+
+    // Add our fruit
+    if (value) {
+      this.productTypes.push(value);
+    }
+
+    // Clear the input value
+    event.chipInput!.clear();
+
+    this.merchantInfoForm.controls.productTypes.setValue(this.productTypes);
+  }
+
+  removeProductType(productType: string): void {
+    const index = this.productTypes.indexOf(productType);
+
+    if (index >= 0) {
+      this.productTypes.splice(index, 1);
+    }
+
+    this.merchantInfoForm.controls.productTypes.setValue(this.productTypes);
+  }
+
+  selected(event: MatAutocompleteSelectedEvent): void {
+    this.fileTypeInput.nativeElement.value = '';
+    if (this.productTypes && this.productTypes.includes(event.option.viewValue))
+      return;
+
+    this.productTypes.push(event.option.viewValue);
+    this.merchantInfoForm.controls.productTypes.setValue(this.productTypes);
+  }
+
+  private _filterProductType(data: any): string[] {
+    const filterValue = data.productTypes;
+    return this.allProductTypes.filter(
+      (productType) => !filterValue.includes(productType)
+    );
+  }
+
+  formatTimeToDisplay(time) {
+    if (!time) return;
+    let formatDate = moment(time, ['DD-MM-YYYY', 'DD/MM/YYYY']).format(
+      'YYYY-DD-MM HH:mm:ss'
+    );
+    return moment(formatDate, 'YYYY-DD-MM').toISOString();
   }
 }

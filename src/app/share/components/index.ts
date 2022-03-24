@@ -39,6 +39,7 @@ import { ProductStatusDialogComponent } from './operators/product-config/product
 import { ProductWorkflowDialogComponent } from './operators/product-config/product-workflow-dialog/product-workflow-dialog.component';
 import { MonexProductDialogComponent } from './operators/product-config/monex-product-dialog/monex-product-dialog.component';
 import { SearchSelectFilterComponent } from './filter-boxs/search-select-filter/search-select-filter.component';
+import { MerchantQrCodeDialogComponent } from './operators/merchant/merchant-qr-code-dialog/merchant-qr-code-dialog.component';
 
 export const components: any[] = [
   ConfirmationDialog,
@@ -82,6 +83,7 @@ export const components: any[] = [
   ProductWorkflowDialogComponent,
   MonexProductDialogComponent,
   SearchSelectFilterComponent,
+  MerchantQrCodeDialogComponent,
 ];
 
 export * from './dialogs/confirmation-dialog/confirmation-dialog.component';
@@ -125,3 +127,4 @@ export * from './operators/product-config/product-status-dialog/product-status-d
 export * from './operators/product-config/product-workflow-dialog/product-workflow-dialog.component';
 export * from './operators/product-config/monex-product-dialog/monex-product-dialog.component';
 export * from './filter-boxs/search-select-filter/search-select-filter.component';
+export * from './operators/merchant/merchant-qr-code-dialog/merchant-qr-code-dialog.component';

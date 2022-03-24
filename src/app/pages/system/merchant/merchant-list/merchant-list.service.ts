@@ -1,13 +1,21 @@
 import { Injectable } from '@angular/core';
-import { MerchantControllerService } from 'open-api-modules/dashboard-api-docs';
+import {
+  AdminAccountControllerService,
+  ApiResponseSearchAndPaginationResponseAdminAccountEntity,
+  MerchantControllerService,
+} from 'open-api-modules/dashboard-api-docs';
 import * as _ from 'lodash';
 import { QUERY_CONDITION_TYPE } from '../../../../core/common/enum/operator';
+import { MerchantStatus } from '../../../../../../open-api-modules/bnpl-api-docs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class MerchantListService {
-  constructor(private merchantControllerService: MerchantControllerService) {}
+  constructor(
+    private merchantControllerService: MerchantControllerService,
+    private adminAccountControllerService: AdminAccountControllerService
+  ) {}
 
   public getData(params) {
     let requestBody = this._buildRequestBodyGetList(params);
@@ -42,12 +50,9 @@ export class MerchantListService {
     }
 
     if (params.keyword) {
-      requestBody['code' + QUERY_CONDITION_TYPE.LIKE_KEYWORD] =
-        params.keyword;
-      requestBody['name' + QUERY_CONDITION_TYPE.LIKE_KEYWORD] =
-        params.keyword;
-      requestBody['email' + QUERY_CONDITION_TYPE.LIKE_KEYWORD] =
-        params.keyword;
+      requestBody['code' + QUERY_CONDITION_TYPE.LIKE_KEYWORD] = params.keyword;
+      requestBody['name' + QUERY_CONDITION_TYPE.LIKE_KEYWORD] = params.keyword;
+      requestBody['email' + QUERY_CONDITION_TYPE.LIKE_KEYWORD] = params.keyword;
       requestBody['mobile' + QUERY_CONDITION_TYPE.LIKE_KEYWORD] =
         params.keyword;
     }
@@ -56,4 +61,42 @@ export class MerchantListService {
     console.log('params----', params);
     return requestBody;
   }
+
+  public getBDList() {
+    let requestBody = {};
+    requestBody['position__e'] = 'BD';
+    return this.adminAccountControllerService.getAdminAccounts(
+      100,
+      0,
+      requestBody,
+      'createdAt',
+      true
+    );
+  }
+
+  public getMerchantParentList() {
+    let requestBody = {};
+    requestBody['childMerchantIds__ne'] = null;
+    requestBody['childMerchantIds__ex'] = true;
+    return this.merchantControllerService.getMerchants(
+      100,
+      0,
+      requestBody,
+      'createdAt',
+      true
+    );
+  }
+
+  public getAllMerchant() {
+    let requestBody = {};
+    requestBody['status__e'] = MerchantStatus.Active;
+    return this.merchantControllerService.getMerchants(
+      100,
+      0,
+      requestBody,
+      'createdAt',
+      true
+    );
+  }
+
 }

@@ -1,4 +1,4 @@
-@import "../../../../../../styles/op/pl-expansion-panel";
+@import "src/styles/op/pl-expansion-panel";
 
 .expansion-panel-content {
   .image-grid {
@@ -11,7 +11,13 @@
   }
 }
 
-
 .w-90 {
   width: 90%;
+}
+
+.error-msg {
+  font-family: $sfPro;
+  color: $system-color-red;
+  font-size: 0.7em;
+  padding-top: 4px;
 }

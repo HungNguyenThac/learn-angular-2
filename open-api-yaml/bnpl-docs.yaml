@@ -698,7 +698,7 @@ components:
       - code
       - name
       - address
-      - bdStaffName
+      - bdStaffId
       - mobile
       - email
       - website
@@ -731,14 +731,14 @@ components:
           type: string
         province:
           type: string
-        bdStaffName:
+        bdStaffId:
           pattern: \S
           type: string
           nullable: false
-        sellTypes:
+        merchantSellTypes:
           type: array
           items:
-            $ref: '#/components/schemas/SellType'
+            $ref: '#/components/schemas/MerchantSellType'
         mobile:
           pattern: \S
           type: string
@@ -796,11 +796,11 @@ components:
           allOf:
           - $ref: '#/components/schemas/CreateAgentInformationDto'
           - nullable: false
-        features:
+        merchantFeatures:
           type: array
           items:
-            $ref: '#/components/schemas/Feature'
-        merchantParent:
+            $ref: '#/components/schemas/MerchantFeature'
+        merchantParentId:
           type: string
     Currency:
       type: object
@@ -824,12 +824,6 @@ components:
           $ref: '#/components/schemas/PersonalData'
         financialData:
           $ref: '#/components/schemas/FinancialData'
-    Feature:
-      enum:
-      - DISPLAY
-      - HOT_BRAND
-      - PROMOTION
-      type: string
     FinancialData:
       type: object
       properties:
@@ -894,12 +888,12 @@ components:
           type: string
         province:
           type: string
-        bdStaffName:
+        bdStaffId:
           type: string
-        sellTypes:
+        merchantSellTypes:
           type: array
           items:
-            $ref: '#/components/schemas/SellType'
+            type: string
         mobile:
           type: string
         email:
@@ -930,11 +924,11 @@ components:
             type: string
         description:
           type: string
-        features:
+        merchantFeatures:
           type: array
           items:
-            $ref: '#/components/schemas/Feature'
-        merchantParent:
+            type: string
+        merchantParentId:
           type: string
         agentInformation:
           $ref: '#/components/schemas/CreateAgentInformationDto'
@@ -946,6 +940,17 @@ components:
           type: string
         updatedBy:
           type: string
+    MerchantFeature:
+      enum:
+      - DISPLAY
+      - HOT_BRAND
+      - PROMOTION
+      type: string
+    MerchantSellType:
+      enum:
+      - OFFLINE
+      - ONLINE
+      type: string
     MerchantStatus:
       enum:
       - ACTIVE
@@ -1134,11 +1139,6 @@ components:
           type: string
         selfie:
           type: string
-    SellType:
-      enum:
-      - OFFLINE
-      - ONLINE
-      type: string
     Type:
       type: object
       properties:
@@ -1192,15 +1192,6 @@ components:
           type: string
         email:
           type: string
-    UpdateImageMerchantRequestDto:
-      type: object
-      properties:
-        action:
-          type: string
-        files:
-          type: array
-          items:
-            type: string
     UpdateMerchantRequestDto:
       type: object
       properties:
@@ -1217,12 +1208,12 @@ components:
           type: string
         province:
           type: string
-        bdStaffName:
+        bdStaffId:
           type: string
-        sellTypes:
+        merchantSellTypes:
           type: array
           items:
-            $ref: '#/components/schemas/SellType'
+            $ref: '#/components/schemas/MerchantSellType'
         mobile:
           maxLength: 12
           type: string
@@ -1250,15 +1241,21 @@ components:
           $ref: '#/components/schemas/MerchantStatus'
         logo:
           type: string
-        updateDescriptionImgRequest:
-          $ref: '#/components/schemas/UpdateImageMerchantRequestDto'
+        appendDescImageMerchant:
+          type: array
+          items:
+            type: string
+        deleteDescImageMerchant:
+          type: array
+          items:
+            type: string
         description:
           type: string
         updateAgentInformationDto:
           $ref: '#/components/schemas/UpdateAgentInformationDto'
-        features:
+        merchantFeatures:
           type: array
           items:
-            $ref: '#/components/schemas/Feature'
-        merchantParent:
+            $ref: '#/components/schemas/MerchantFeature'
+        merchantParentId:
           type: string

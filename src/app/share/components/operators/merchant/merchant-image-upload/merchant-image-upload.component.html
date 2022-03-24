@@ -5,9 +5,16 @@
       <mat-accordion>
         <mat-expansion-panel>
           <mat-expansion-panel-header class="pb-2 pt-2 ps-3 pe-3">
-            <mat-panel-title>{{
-              "merchant.merchant_image.logo" | translate
-            }}</mat-panel-title>
+            <mat-panel-title>
+              <div class="d-flex justify-content-between w-100">
+                <p>
+                  {{ "merchant.merchant_image.logo" | translate }}
+                </p>
+                <p class="fw-lighter">
+                  {{ "merchant.merchant_image.valid_logo_text" | translate }}
+                </p>
+              </div>
+            </mat-panel-title>
           </mat-expansion-panel-header>
           <div class="expansion-panel-content">
             <div class="row">
@@ -19,15 +26,13 @@
                   [classes]="'p-3'"
                   [title]="'merchant.merchant_image.logo' | translate"
                   [imgSrc]="logoSrc"
-                  [hiddenDeleteBtn]="hiddenDeleteBtn"
-                  [hiddenUploadBtn]="hiddenUploadBtn"
+                  [hiddenDeleteBtn]="hiddenDeleteBtn || isViewMode"
+                  [hiddenUploadBtn]="hiddenUploadBtn || isViewMode"
+                  [hiddenUpdateBtn]="isViewMode"
+                  [hiddenDownloadBtn]="isCreateMode"
                   [maxSizeOfFile]="maxSizeOfFile"
                   (onChangeDocument)="
-                    onChangeDocument(
-                      $event,
-                      merchantInfo?.logo,
-                      documentTypes.LOGO
-                    )
+                    onChangeDocument($event, logoSrc, documentTypes.LOGO)
                   "
                 ></app-upload-document-area>
               </article>
@@ -35,23 +40,37 @@
           </div>
         </mat-expansion-panel>
       </mat-accordion>
+      <mat-error class="error-msg" *ngIf="shouldShowErrors(logoControl)">{{
+        getErrorMessage(logoControl)
+      }}</mat-error>
     </article>
   </div>
 
   <div class="row">
-    <!-- Salary Document -->
     <article>
       <mat-accordion>
         <mat-expansion-panel>
           <mat-expansion-panel-header class="pb-2 pt-2 ps-3 pe-3">
-            <mat-panel-title>{{
-              "merchant.merchant_image.images" | translate
-            }}</mat-panel-title>
+            <mat-panel-title>
+              <div class="d-flex justify-content-between w-100">
+                <p>
+                  {{ "merchant.merchant_image.images" | translate }}
+                </p>
+                <p class="px-2 fw-lighter">{{ imagesSrc.length || 0 }}/5</p>
+                <p class="fw-lighter">
+                  {{
+                    "merchant.merchant_image.valid_desc_img_text" | translate
+                  }}
+                </p>
+              </div>
+            </mat-panel-title>
           </mat-expansion-panel-header>
           <div class="expansion-panel-content">
             <div class="row">
-              <!-- Salary 1  -->
-              <article *ngFor="let imageSrc of imagesSrc; let i = index" class="col-12 col-xs-12 col-sm-6 col-md-4 col-lg-3">
+              <article
+                *ngFor="let imageSrc of imagesSrc; let i = index"
+                class="col-12 col-xs-12 col-sm-6 col-md-4 col-lg-3"
+              >
                 <app-upload-document-area
                   [id]="'image' + i"
                   name="image{{ i }}"
@@ -60,22 +79,29 @@
                     'merchant.merchant_image.image' | translate: { i: i + 1 }
                   "
                   [imgSrc]="imageSrc"
-                  [hiddenDeleteBtn]="hiddenDeleteBtn"
+                  [hiddenDeleteBtn]="hiddenDeleteBtn || isViewMode"
                   [hiddenUpdateBtn]="true"
-                  [hiddenUploadBtn]="hiddenUploadBtn"
+                  [hiddenDownloadBtn]="isCreateMode"
+                  [hiddenUploadBtn]="hiddenUploadBtn || isViewMode"
                   [maxSizeOfFile]="maxSizeOfFile"
                   (onChangeDocument)="
                     onChangeDocument($event, imageSrc, documentTypes.IMAGES, i)
                   "
                 ></app-upload-document-area>
               </article>
-              <article *ngIf="imagesSrc.length < 5" class="col-12 col-xs-12 col-sm-6 col-md-4 col-lg-3 my-auto">
-                <div class="text-center m-3 d-flex">
-                  <button (click)="triggerClickInsertImageInput()" color="primary" mat-flat-button type="submit">
+              <article
+                *ngIf="!imagesSrc || imagesSrc?.length < 5"
+                class="col-12 col-xs-12 col-sm-6 col-md-4 col-lg-3 my-auto"
+              >
+                <div class="text-center m-3 d-flex" *ngIf="!isViewMode">
+                  <button
+                    (click)="triggerClickInsertImageInput()"
+                    color="primary"
+                    mat-flat-button
+                    type="button"
+                  >
                     <span class="sprite-group-5-add-white"></span>
-                    <span class="ms-1">{{
-                      "common.upload" | translate
-                      }}</span>
+                    <span class="ms-1">{{ "common.upload" | translate }}</span>
                   </button>
                   <input
                     hidden
@@ -92,18 +118,23 @@
                     [(ngModel)]="inputFiles"
                     (change)="onChangeInputFiles($event)"
                   />
-                  <input
-                    type="reset"
-                    name="resetMerchantFile"
-                    [id]="'reset-merchant-files'"
-                    hidden
-                  />
+                  <!--                  <input-->
+                  <!--                    type="reset"-->
+                  <!--                    name="resetMerchantFile"-->
+                  <!--                    [id]="'reset-merchant-files'"-->
+                  <!--                    hidden-->
+                  <!--                  />-->
                 </div>
               </article>
             </div>
           </div>
         </mat-expansion-panel>
       </mat-accordion>
+      <mat-error
+        class="error-msg"
+        *ngIf="shouldShowErrors(descriptionImgControl)"
+        >{{ getErrorMessage(descriptionImgControl) }}</mat-error
+      >
     </article>
   </div>
 </div>
