@@ -14,6 +14,7 @@ import {
   BUTTON_TYPE,
   DATA_CELL_TYPE,
   DATA_STATUS_TYPE,
+  DOCUMENT_BTN_TYPE,
   FILTER_ACTION_TYPE,
   FILTER_TYPE,
   MULTIPLE_ELEMENT_ACTION_TYPE,
@@ -23,7 +24,6 @@ import {
 } from '../../../../core/common/enum/operator';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { FilterOptionModel } from '../../../../public/models/filter/filter-option.model';
-import { PAYDAY_LOAN_UI_STATUS } from '../../../../core/common/enum/payday-loan';
 import { BreadcrumbOptionsModel } from '../../../../public/models/external/breadcrumb-options.model';
 import { MatTableDataSource } from '@angular/material/table';
 import { PageEvent } from '@angular/material/paginator/public-api';
@@ -37,6 +37,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { Title } from '@angular/platform-browser';
 import { DisplayedFieldsModel } from '../../../../public/models/filter/displayed-fields.model';
 import {
+  ApiResponseSearchAndPaginationResponseAdminAccountEntity,
   ApiResponseSearchAndPaginationResponseMerchant,
   Merchant,
 } from '../../../../../../open-api-modules/dashboard-api-docs';
@@ -45,10 +46,14 @@ import {
   ApiResponseMerchant,
   ApiResponseString,
   CreateMerchantRequestDto,
+  MerchantStatus,
 } from '../../../../../../open-api-modules/bnpl-api-docs';
 import { Observable, Subscription } from 'rxjs';
 import { MerchantListService } from './merchant-list.service';
 import * as fromSelectors from '../../../../core/store/selectors';
+import { OverviewItemModel } from '../../../../public/models/external/overview-item.model';
+import * as moment from 'moment';
+import { DOCUMENT_TYPE } from '../../../../core/common/enum/payday-loan';
 
 @Component({
   selector: 'app-merchant-list',
@@ -56,35 +61,9 @@ import * as fromSelectors from '../../../../core/store/selectors';
   styleUrls: ['./merchant-list.component.scss'],
 })
 export class MerchantListComponent implements OnInit {
-  bdList = [
-    {
-      name: 'BD1',
-      id: '1',
-    },
-    {
-      name: 'BD2',
-      id: '2',
-    },
-    {
-      name: 'BD3',
-      id: '3',
-    },
-  ];
-
-  productList = [
-    {
-      name: 'Thời trang',
-      id: '1',
-    },
-    {
-      name: 'Thực phẩm',
-      id: '2',
-    },
-    {
-      name: 'Điện tử',
-      id: '3',
-    },
-  ];
+  bdList: any[] = [];
+  merchantParentList: any[] = [];
+  allMerchant: any[] = [];
 
   allColumns: DisplayedFieldsModel[] = [
     {
@@ -132,7 +111,7 @@ export class MerchantListComponent implements OnInit {
       showed: true,
     },
     {
-      key: 'bdStaffId',
+      key: 'adminAccountEntity.username',
       title: this.multiLanguageService.instant(
         'merchant.merchant_list.merchant_manager'
       ),
@@ -198,6 +177,12 @@ export class MerchantListComponent implements OnInit {
   tableTitle: string = this.multiLanguageService.instant(
     'merchant.merchant_list.title'
   );
+  overviewItems: OverviewItemModel[] = [
+    {
+      field: this.multiLanguageService.instant('merchant.total_merchant'),
+      value: 0,
+    },
+  ];
   hasSelect: boolean = true;
   selectButtons: TableSelectActionModel[] = [
     {
@@ -254,76 +239,37 @@ export class MerchantListComponent implements OnInit {
       value: null,
     },
     {
+      title: this.multiLanguageService.instant('filter.merchant_parent'),
+      type: FILTER_TYPE.SEARCH_SELECT,
+      controlName: 'merchantParentId',
+      value: null,
+      options: [],
+      multiple: true,
+      searchPlaceholder: this.multiLanguageService.instant(
+        'merchant.merchant_list.search_merchant_parent'
+      ),
+      emptyResultText: this.multiLanguageService.instant(
+        'merchant.merchant_list.empty_merchant_parent'
+      ),
+    },
+    {
       title: this.multiLanguageService.instant('filter.bd'),
-      type: FILTER_TYPE.SELECT,
+      type: FILTER_TYPE.SEARCH_SELECT,
       controlName: 'bdStaffId',
       value: null,
-      options: [
-        {
-          title: this.multiLanguageService.instant('filter.choose_bd'),
-          value: null,
-          showAction: false,
-          subTitle: this.multiLanguageService.instant('filter.choose_bd'),
-          subOptions: [],
-          disabled: false,
-          count: 0,
-        },
-      ],
+      options: [],
+      multiple: true,
+      searchPlaceholder: this.multiLanguageService.instant(
+        'merchant.merchant_list.search_bd_staff'
+      ),
+      emptyResultText: this.multiLanguageService.instant(
+        'merchant.merchant_list.empty_bd_staff'
+      ),
     },
-    // {
-    //   title: this.multiLanguageService.instant('filter.product_type'),
-    //   type: FILTER_TYPE.SELECT,
-    //   controlName: 'productTypes',
-    //   value: null,
-    //   options: [
-    //     {
-    //       title: this.multiLanguageService.instant('filter.choose_product'),
-    //       value: null,
-    //       showAction: false,
-    //       subTitle: this.multiLanguageService.instant('filter.choose_product'),
-    //       subOptions: [],
-    //       disabled: false,
-    //       count: 0,
-    //     },
-    //   ],
-    // },
-    // {
-    //   title: this.multiLanguageService.instant('filter.merchant_group'),
-    //   type: FILTER_TYPE.MULTIPLE_CHOICE,
-    //   controlName: 'companyId',
-    //   value: null,
-    //   showAction: true,
-    //   titleAction: 'Thêm nhóm nhà cung cấp',
-    //   actionIconClass: 'sprite-group-7-add-blue',
-    //   options: [
-    //     {
-    //       title: 'Nhóm nhà cung cấp 1',
-    //       note: '',
-    //       value: '1',
-    //       showAction: true,
-    //       actionTitle: 'Sửa nhóm nhà cung cấp',
-    //       actionIconClass: 'sprite-group-5-edit-blue',
-    //       subTitle: 'casca',
-    //       disabled: false,
-    //       count: 0,
-    //     },
-    //     {
-    //       title: 'Nhóm nhà cung cấp 2',
-    //       note: 'zz',
-    //       value: '2',
-    //       showAction: true,
-    //       actionTitle: 'Sửa nhóm nhà cung cấp',
-    //       actionIconClass: 'sprite-group-5-edit-blue',
-    //       subTitle: 'váv',
-    //       disabled: false,
-    //       count: 0,
-    //     },
-    //   ],
-    // },
     {
-      title: this.multiLanguageService.instant('filter.account_status'),
+      title: this.multiLanguageService.instant('filter.merchant_status'),
       type: FILTER_TYPE.SELECT,
-      controlName: 'unknow',
+      controlName: 'status',
       value: null,
       options: [
         {
@@ -332,12 +278,16 @@ export class MerchantListComponent implements OnInit {
         },
         {
           title: this.multiLanguageService.instant('common.active'),
-          value: PAYDAY_LOAN_UI_STATUS.NOT_COMPLETE_EKYC_YET,
+          value: MerchantStatus.Active,
         },
         {
           title: this.multiLanguageService.instant('common.inactive'),
-          value: PAYDAY_LOAN_UI_STATUS.NOT_COMPLETE_FILL_EKYC_YET,
+          value: MerchantStatus.Locked,
         },
+        // {
+        //   title: this.multiLanguageService.instant('common.locked'),
+        //   value: MerchantStatus.Locked,
+        // },
       ],
     },
   ];
@@ -370,8 +320,8 @@ export class MerchantListComponent implements OnInit {
     this.merchantListService
       .getData(params)
       .subscribe((data: ApiResponseSearchAndPaginationResponseMerchant) => {
-        console.log('merchant list', data?.result);
         this._parseData(data?.result);
+        this.getOverviewData(data?.result);
         this.dataSource.data = data?.result?.data;
         if (this.filterForm.controls.id?.value) {
           this.expandedElementMerchant = data?.result?.data.find((value) => {
@@ -379,13 +329,6 @@ export class MerchantListComponent implements OnInit {
           });
         }
       });
-    // this.subManager.add(
-    //   this.merlistService
-    //     .v1AdminMerchantsGet()
-    //     .subscribe((data: ApiResponseListMerchant) => {
-    //       this.dataSource.data = data?.result;
-    //     })
-    // );
   }
 
   public onSortChange(sortState: Sort) {
@@ -412,12 +355,17 @@ export class MerchantListComponent implements OnInit {
       case FILTER_TYPE.MULTIPLE_CHOICE:
         break;
       case FILTER_TYPE.SELECT:
+        if (event.controlName === 'status') {
+          this.filterForm.controls.status.setValue(event.value || null);
+        }
+        break;
+      case FILTER_TYPE.SEARCH_SELECT:
         if (event.controlName === 'bdStaffId') {
           this.filterForm.controls.bdStaffId.setValue(
             event.value ? event.value.join(',') : ''
           );
-        } else if (event.controlName === 'productTypes') {
-          this.filterForm.controls.productTypes.setValue(
+        } else if (event.controlName === 'merchantParentId') {
+          this.filterForm.controls.merchantParentId.setValue(
             event.value ? event.value.join(',') : ''
           );
         }
@@ -433,7 +381,8 @@ export class MerchantListComponent implements OnInit {
       id: [''],
       keyword: [''],
       bdStaffId: [''],
-      productTypes: [''],
+      merchantParentId: [''],
+      status: [''],
       orderBy: ['createdAt'],
       sortDirection: ['desc'],
       startTime: [null],
@@ -442,7 +391,8 @@ export class MerchantListComponent implements OnInit {
       dateFilterTitle: [''],
       filterConditions: {
         bdStaffId: QUERY_CONDITION_TYPE.IN,
-        productTypes: QUERY_CONDITION_TYPE.IN,
+        merchantParentId: QUERY_CONDITION_TYPE.IN,
+        status: QUERY_CONDITION_TYPE.EQUAL,
       },
     });
   }
@@ -452,6 +402,8 @@ export class MerchantListComponent implements OnInit {
       id: [''],
       keyword: [''],
       bdStaffId: [''],
+      merchantParentId: [''],
+      status: [''],
       productTypes: [''],
       orderBy: ['createdAt'],
       sortDirection: ['desc'],
@@ -461,7 +413,8 @@ export class MerchantListComponent implements OnInit {
       dateFilterTitle: [''],
       filterConditions: {
         bdStaffId: QUERY_CONDITION_TYPE.IN,
-        productTypes: QUERY_CONDITION_TYPE.IN,
+        merchantParentId: QUERY_CONDITION_TYPE.IN,
+        status: QUERY_CONDITION_TYPE.EQUAL,
       },
     });
   }
@@ -481,7 +434,15 @@ export class MerchantListComponent implements OnInit {
 
     this.breadcrumbOptions.keyword = params.keyword;
     this.pageIndex = params.pageIndex || 0;
-    this.pageSize = params.pageSize || 20;
+    this.pageSize = params.pageSize || 10;
+  }
+
+  getOverviewData(rawData) {
+    this.overviewItems.find(
+      (ele) =>
+        ele.field ===
+        this.multiLanguageService.instant('merchant.total_merchant')
+    ).value = rawData?.pagination?.total;
   }
 
   private _initFilterFormFromQueryParams(params) {
@@ -516,9 +477,9 @@ export class MerchantListComponent implements OnInit {
           type: params.dateFilterType,
           title: params.dateFilterTitle,
         };
-      } else if (filterOption.controlName === 'productTypes') {
-        filterOption.value = this.filterForm.controls.productTypes.value
-          ? this.filterForm.controls.productTypes.value.split(',')
+      } else if (filterOption.controlName === 'merchantParentId') {
+        filterOption.value = this.filterForm.controls.merchantParentId.value
+          ? this.filterForm.controls.merchantParentId.value.split(',')
           : [];
       } else if (filterOption.controlName === 'bdStaffId') {
         filterOption.value = this.filterForm.controls.bdStaffId.value
@@ -609,32 +570,46 @@ export class MerchantListComponent implements OnInit {
   }
 
   private _initOptions() {
-    this.filterOptions.forEach((filterOption: FilterOptionModel) => {
-      if (filterOption.controlName !== 'bdStaffId' || !this.bdList) {
-        return;
-      }
-      filterOption.options[0].subOptions = this.bdList.map((bd) => {
-        return {
-          title: bd.name,
-          value: bd.id,
-          imgSrc: null,
-          code: null,
-        };
-      });
-    });
-    this.filterOptions.forEach((filterOption: FilterOptionModel) => {
-      if (filterOption.controlName !== 'productTypes' || !this.productList) {
-        return;
-      }
-      filterOption.options[0].subOptions = this.productList.map((product) => {
-        return {
-          title: product.name,
-          value: product.id,
-          imgSrc: null,
-          code: null,
-        };
-      });
-    });
+    this._getBDList();
+    this._getAllMerchant();
+  }
+
+  private _getBDList() {
+    this.subManager.add(
+      this.merchantListService
+        .getBDList()
+        .subscribe(
+          (
+            response: ApiResponseSearchAndPaginationResponseAdminAccountEntity
+          ) => {
+            if (!response || response.responseCode !== RESPONSE_CODE.SUCCESS) {
+              return this.notifier.error(
+                JSON.stringify(response?.message),
+                response?.errorCode
+              );
+            }
+            let bdStaffOptions = response?.result?.data.map((bd) => {
+              return {
+                ...bd,
+                title: bd.username,
+                value: bd.id,
+              };
+            });
+
+            this.filterOptions.forEach((filterOption: FilterOptionModel) => {
+              if (filterOption.controlName !== 'bdStaffId') {
+                return;
+              }
+
+              filterOption.options = bdStaffOptions;
+
+              this.bdList = bdStaffOptions;
+            });
+
+            this.filterOptions = JSON.parse(JSON.stringify(this.filterOptions));
+          }
+        )
+    );
   }
 
   public lockMultiplePrompt(ids) {
@@ -760,35 +735,7 @@ export class MerchantListComponent implements OnInit {
     this._onFilterChange();
   }
 
-  public onFilterActionTrigger(event: FilterActionEventModel) {
-    if (event.type === FILTER_ACTION_TYPE.FILTER_EXTRA_ACTION) {
-      const addMerchantGroupDialogRef = this.dialog.open(
-        MerchantGroupDialogComponent,
-        {
-          panelClass: 'custom-info-dialog-container',
-          maxWidth: '360px',
-          width: '90%',
-        }
-      );
-    } else {
-      const editMerchantGroupDialogRef = this.dialog.open(
-        MerchantGroupDialogComponent,
-        {
-          panelClass: 'custom-info-dialog-container',
-          maxWidth: '360px',
-          width: '90%',
-          data: {
-            merchantGroupInfo: this.filterOptions[0].options.filter(
-              (option) => option.value === event.value
-            )[0],
-            dialogTitle: this.multiLanguageService.instant(
-              'merchant.merchant_dialog.edit_group_title'
-            ),
-          },
-        }
-      );
-    }
-  }
+  public onFilterActionTrigger(event: FilterActionEventModel) {}
 
   public onExpandElementChange(element: any) {
     this.expandedElementId = element.id;
@@ -806,14 +753,19 @@ export class MerchantListComponent implements OnInit {
         panelClass: 'custom-info-dialog-container',
         maxWidth: '1200px',
         width: '90%',
+        data: {
+          merchantInfo: this.merchantInfo,
+          bdStaffOptions: this.bdList,
+          isCreateMode: true,
+          allMerchant: this.allMerchant,
+        },
       }
     );
     this.subManager.add(
       addMerchantDialogRef.afterClosed().subscribe((result: any) => {
         if (result && result.type === BUTTON_TYPE.PRIMARY) {
           let createRequest = this._bindingDialogData(result.data);
-          console.log('createRequest', createRequest);
-          // this.sendAddRequest(createRequest);
+          this.sendAddRequest(createRequest);
         }
       })
     );
@@ -836,7 +788,12 @@ export class MerchantListComponent implements OnInit {
                 'merchant.merchant_list.created'
               )
             );
-            this.refreshContent();
+            this._getMerchantList();
+            this.allMerchant.push({
+              ...result.result,
+              title: result.result.name + ' (' + result.result.code + ')',
+              value: result.result.id,
+            });
             this.notificationService.hideLoading();
           }, 3000);
         })
@@ -857,13 +814,16 @@ export class MerchantListComponent implements OnInit {
       ward: data?.ward || null,
       district: data?.district || null,
       province: data?.province || null,
-      bdStaffName: data?.bdStaffName || null,
-      sellTypes: data?.sellTypes || null,
+      bdStaffId: data?.bdStaffId || null,
+      merchantSellTypes: data?.merchantSellTypes || null,
+      merchantParentId: data?.merchantParentId || null,
       mobile: data?.mobile || null,
       email: data?.email || null,
       website: data?.website || null,
       identificationNumber: data?.identificationNumber || null,
-      establishTime: data?.establishTime || null,
+      establishTime: data?.establishTime
+        ? this.formatTime(data?.establishTime)
+        : null,
       productTypes: data?.productTypes || null,
       merchantServiceFee: data?.merchantServiceFee
         ? data?.merchantServiceFee / 100
@@ -871,11 +831,17 @@ export class MerchantListComponent implements OnInit {
       customerServiceFee: data?.customerServiceFee
         ? data?.customerServiceFee / 100
         : 0.0,
-      status: data?.status ? data?.status : 'ACTIVE',
-      logo: data?.logo ? data?.logo : null,
-      description: data?.description ? data?.description : null,
-      descriptionImg: data?.descriptionImg ? data?.descriptionImg : null,
-      createAgentInformationDto: null
+      status: data?.status ? data?.status : MerchantStatus.Active,
+      logo: data?.logo || null,
+      merchantFeatures: data?.merchantFeatures || null,
+      description: data?.description || null,
+      descriptionImg: data?.descriptionImg || null,
+      createAgentInformationDto: {
+        name: data?.managerName,
+        position: data?.managerPosition,
+        mobile: data?.managerMobile,
+        email: data?.managerEmail,
+      },
     };
   }
 
@@ -895,5 +861,118 @@ export class MerchantListComponent implements OnInit {
       return item;
     });
     // this.refreshContent();
+  }
+
+  private _getAllMerchant() {
+    this.merchantListService
+      .getAllMerchant()
+      .subscribe((response: ApiResponseSearchAndPaginationResponseMerchant) => {
+        this.allMerchant = response?.result?.data.map((merchant) => {
+          return {
+            ...merchant,
+            title: merchant.name + ' (' + merchant.code + ')',
+            value: merchant.id,
+          };
+        });
+
+        if (!this.allMerchant) return;
+
+        let parentMerchant = this.allMerchant.filter((merchant) => {
+          return (
+            merchant.childMerchantIds && merchant.childMerchantIds.length > 0
+          );
+        });
+
+        this.filterOptions.forEach((filterOption: FilterOptionModel) => {
+          if (filterOption.controlName !== 'merchantParentId') {
+            return;
+          }
+
+          filterOption.options = parentMerchant;
+
+          this.merchantParentList = parentMerchant;
+        });
+
+        this.filterOptions = JSON.parse(JSON.stringify(this.filterOptions));
+      });
+  }
+
+  formatTime(time) {
+    if (!time) return;
+    return moment(new Date(time), 'YYYY-MM-DD HH:mm:ss').format('DD/MM/YYYY');
+  }
+
+  private _updateDocument(
+    documentType: DOCUMENT_TYPE,
+    imgSrc,
+    documentBtnType: DOCUMENT_BTN_TYPE
+  ) {
+    switch (documentType) {
+      case DOCUMENT_TYPE.LOGO:
+        this.sendUpdateRequest(
+          {
+            logo: imgSrc,
+          },
+          documentType
+        );
+        break;
+      case DOCUMENT_TYPE.IMAGES:
+        let action = null;
+        if (documentBtnType === DOCUMENT_BTN_TYPE.UPDATE) {
+          action = 'remove';
+        } else if (documentBtnType === DOCUMENT_BTN_TYPE.UPLOAD) {
+          action = 'add';
+        }
+
+        this.sendUpdateRequest(
+          {
+            updateDescriptionImgRequest: {
+              action: action,
+              files: [imgSrc],
+            },
+          },
+          documentType
+        );
+        break;
+      default:
+        break;
+    }
+  }
+
+  private sendUpdateRequest(request, documentType) {
+    this.notificationService.showLoading({ showContent: true });
+    this.subManager.add(
+      this.adminControllerService
+        .v1AdminMerchantsIdPut(this.expandedElementId, request)
+        .subscribe(
+          (result) => {
+            if (result?.responseCode !== RESPONSE_CODE.SUCCESS) {
+              this.notifier.error(
+                JSON.stringify(result?.message),
+                result?.errorCode
+              );
+              return;
+            }
+            this.refreshDocumentInfo();
+          },
+          (error) => {
+            this.notifier.error(JSON.stringify(error));
+            this.notificationService.hideLoading();
+          },
+          () => {
+            this.notificationService.hideLoading();
+          }
+        )
+    );
+  }
+
+  private refreshDocumentInfo() {
+    setTimeout(() => {
+      this.refreshContent();
+      this.notifier.success(
+        this.multiLanguageService.instant('common.update_success')
+      );
+      this.notificationService.hideLoading();
+    }, 3000);
   }
 }

@@ -1,10 +1,11 @@
-@import "../../../../../../styles/variables";
-@import "../../../../../../styles/op/common";
-@import "../../../../../../styles/op/pl-form-merchant";
+@import "src/styles/variables";
+@import "src/styles/op/common";
+@import "src/styles/op/pl-form-merchant";
 @import "src/styles/op/pl-tab";
-@import "../../../../../../styles/op/pl-button";
-@import "../../../../../../styles/op/pl-ckeditor";
-@import "../../../../../../styles/op/pl-expansion-panel";
+@import "src/styles/op/pl-button";
+@import "src/styles/op/pl-ckeditor";
+@import "src/styles/op/pl-expansion-panel";
+@import "src/styles/op/pl-form";
 
 .text-area {
   width: 100%;

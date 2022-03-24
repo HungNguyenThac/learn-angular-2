@@ -2,8 +2,18 @@
   <div class="card-body no-padding-bot">
     <div class="row">
       <div class="d-flex justify-content-center">
-        <div class="qr-code">
-          <img [src]="'data:image/jpg;base64,' + _merchantQr" alt="">
+        <div class="qr-code position-relative">
+          <img
+            id="merchant-qr-code-img"
+            [src]="'data:image/jpg;base64,' + _merchantQr"
+            alt=""
+            class="cursor-pointer"
+            (click)="printQr()"
+          />
+          <img
+            src="./assets/img/logo/favicon.svg"
+            id="logo-monex-center"
+          />
         </div>
       </div>
     </div>

@@ -77,7 +77,8 @@
     "export_excel": "Xuất file",
     "refresh": "Tải lại",
     "upload": "Tải lên",
-    "action": "Thao tác"
+    "action": "Thao tác",
+    "locked": "Bị khóa"
   },
   "auth": {
     "phone_number": "Số điện thoại",
@@ -591,6 +592,8 @@
     "pl_ui_status": "Trạng thái tài khoản",
     "account_status": "Trạng thái hoạt động",
     "loan_status": "Trạng thái khoản ứng",
+    "merchant_status": "Trạng thái hoạt động",
+    "merchant_parent": "Merchant cha",
     "term_type": "Kỳ hạn vay",
     "merchant_group": "Nhóm merchant",
     "role_group": "Vai trò",
@@ -818,6 +821,7 @@
     "permanent": "Vĩnh viễn"
   },
   "merchant": {
+    "total_merchant": "Tổng số merchant",
     "merchant_list": {
       "title": "Danh sách merchant",
       "id": "Mã merchant",
@@ -841,7 +845,11 @@
       "delete_merchant": "Xoá Merchant",
       "merchant_fee": "Chiết khấu",
       "customer_fee": "Phí người mua",
-      "created": "Đã tạo merchant thành công"
+      "created": "Đã tạo merchant thành công",
+      "search_bd_staff": "Tất cả",
+      "empty_bd_staff": "Nhân viên BD không tồn tại",
+      "search_merchant_parent": "Tất cả",
+      "empty_merchant_parent": "Merchant cha không tồn tại"
     },
     "merchant_detail": {
       "delete_merchant": {
@@ -862,6 +870,7 @@
       "info": "Thông tin",
       "id": "Mã merchant",
       "name": "Tên merchant",
+      "code": "Mã merchant",
       "status": "Trạng thái",
       "phone": "Điện thoại",
       "product": "Ngành hàng",
@@ -893,19 +902,24 @@
       "position": "Chức vụ",
       "show": "Cho phép hiển thị",
       "delete": "Xóa merchant",
-      "create": "Tạo merchant thành công"
+      "create": "Tạo merchant thành công",
+      "merchant_parent": "Merchant cha",
+      "new_product_type": "Ngành hàng mới"
     },
     "merchant_image": {
       "title": "Logo hình ảnh, giới thiệu",
       "logo": "Logo",
       "images": "Hình ảnh giới thiệu",
       "image": "Ảnh {{i}}",
-      "introduction": "Giới thiệu chi tiết"
+      "introduction": "Giới thiệu chi tiết",
+      "valid_logo_text": "Ảnh: jpg, jpeg, png. kích cỡ dưới 2MB",
+      "valid_desc_img_text": "Ảnh: jpg, jpeg, png. kích cỡ dưới 2MB"
     },
     "merchant_qr": {
       "title": "QR Code"
     },
     "merchant_dialog": {
+      "qr_code": "Mã QR chi nhánh",
       "add_group_title": "Thêm nhóm merchant",
       "edit_group_title": "Chỉnh sửa nhóm merchant",
       "group_name": "Tên nhóm merchant",
@@ -916,7 +930,19 @@
       "admin_heading": "Thông tin đại diện merchant",
       "feature_heading": "Tính năng",
       "cancel": "Bỏ qua",
-      "save": "Lưu"
+      "save": "Lưu",
+      "require_logo": "Vui lòng tải lên Ảnh logo nhà cung cấp",
+      "require_desc_img": "Vui lòng tải lên ảnh giới thiệu merchant",
+      "print_qr": "In mã"
+    },
+    "merchant_feature": {
+      "display": "Hiển thị",
+      "hot_brand": "Hot brand",
+      "promotion": "Promotion"
+    },
+    "merchant_sell_type": {
+      "offline": "Tại cửa hàng",
+      "online": "Trực tuyến"
     }
   },
   "pd_system": {

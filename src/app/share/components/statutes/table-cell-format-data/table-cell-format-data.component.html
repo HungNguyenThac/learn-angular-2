@@ -7,9 +7,12 @@
 </span>
 
 <span *ngIf="type === 'PERCENT'">
-  <ng-container *ngIf="value">
+  <ng-container *ngIf="value; else zero">
     {{ value | percent }}
   </ng-container>
+  <ng-template #zero>
+    {{ 0 | percent }}
+  </ng-template>
 </span>
 
 <div *ngIf="type === 'STATUS'">

@@ -23,6 +23,7 @@
   [totalItems]="totalItems"
   [hasSelect]="hasSelect"
   [selectButtons]="selectButtons"
+  [overviewItems]="overviewItems"
   [showRefreshBtn]="true"
 >
 </app-base-management-layout>
@@ -31,6 +32,8 @@
   <app-merchant-element
     [merchantId]="expandedElementId"
     [merchantInfo]="expandedElementMerchant"
+    [allMerchant]="allMerchant"
+    [bdStaffOptions]="bdList"
     (triggerUpdateElementInfo)="updateElementInfo($event)"
     class="w-100"
   ></app-merchant-element>

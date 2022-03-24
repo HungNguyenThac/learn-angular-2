@@ -49,7 +49,7 @@ export class DialogUserInfoUpdateComponent implements OnInit {
 
   positionOptions = {
     fieldName: 'Vị trí công việc',
-    options: ['Kiểm duyệt viên', 'DB Merchant', 'Operator Admin', 'Kế toán'],
+    options: ['Kiểm duyệt viên', 'BD', 'Operator Admin', 'Kế toán'],
   };
 
   constructor(

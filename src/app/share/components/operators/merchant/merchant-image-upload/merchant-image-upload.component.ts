@@ -14,10 +14,11 @@ import { UpdatedDocumentModel } from '../../../../../public/models/external/upda
 import {
   BUTTON_TYPE,
   DOCUMENT_BTN_TYPE,
-  RESPONSE_CODE,
 } from '../../../../../core/common/enum/operator';
 import { AdminControllerService } from '../../../../../../../open-api-modules/bnpl-api-docs';
 import fileToBase64 from '../../../../../core/utils/file-to-base64';
+import * as isBase64 from 'is-base64';
+import { AbstractControl, FormGroupDirective } from '@angular/forms';
 
 @Component({
   selector: 'app-merchant-image-upload',
@@ -46,7 +47,36 @@ export class MerchantImageUploadComponent implements OnInit {
     this._merchantId = value;
   }
 
+  @Input()
+  get merchantLogo(): any {
+    return this.logoSrc;
+  }
+
+  set merchantLogo(value) {
+    if (this.logoSrc != value) {
+      this.logoSrc = value;
+    }
+  }
+
+  @Input()
+  get merchantDescriptionImg(): any {
+    return this.imagesSrc;
+  }
+
+  set merchantDescriptionImg(value: any) {
+    if (this.imagesSrc != value) {
+      this.imagesSrc = value || [];
+    }
+  }
+  @Input() isCreateMode: boolean = false;
+  @Input() isViewMode: boolean = false;
+  @Input() ngForm: FormGroupDirective;
+  @Input() logoControl: AbstractControl;
+  @Input() descriptionImgControl: AbstractControl;
+
   @Output() refreshContent = new EventEmitter<any>();
+  @Output() changeLogoSrc = new EventEmitter<any>();
+  @Output() changeDescriptionImgs = new EventEmitter<any>();
 
   maxCountFile: number = 5;
   maxSizeOfFile: number = 2; //MB
@@ -111,82 +141,20 @@ export class MerchantImageUploadComponent implements OnInit {
 
   private _deleteDocument(documentType: DOCUMENT_TYPE, imgSrc) {
     if (documentType === DOCUMENT_TYPE.LOGO) {
-      this.sendUpdateRequest({ logo: '' }, documentType);
+      this.logoSrc = null;
+      this.changeLogoSrc.emit(null);
     } else if (documentType === DOCUMENT_TYPE.IMAGES) {
-      this.sendUpdateRequest(
-        {
-          updateDescriptionImgRequest: {
-            action: 'remove',
-            files: [imgSrc],
-          },
-        },
-        documentType
-      );
+      this.removeItem(this.imagesSrc, imgSrc);
+      this.changeDescriptionImgs.emit(this.imagesSrc);
     }
   }
 
-  private _updateDocument(
-    documentType: DOCUMENT_TYPE,
-    imgSrc,
-    documentBtnType: DOCUMENT_BTN_TYPE
-  ) {
-    switch (documentType) {
-      case DOCUMENT_TYPE.LOGO:
-        this.sendUpdateRequest(
-          {
-            logo: imgSrc,
-          },
-          documentType
-        );
-        break;
-      case DOCUMENT_TYPE.IMAGES:
-        let action = null;
-        if (documentBtnType === DOCUMENT_BTN_TYPE.UPDATE) {
-          action = 'remove';
-        } else if (documentBtnType === DOCUMENT_BTN_TYPE.UPLOAD) {
-          action = 'add';
-        }
-
-        this.sendUpdateRequest(
-          {
-            updateDescriptionImgRequest: {
-              action: action,
-              files: [imgSrc],
-            },
-          },
-          documentType
-        );
-        break;
-      default:
-        break;
+  removeItem<T>(arr: Array<T>, value: T): Array<T> {
+    const index = arr.indexOf(value);
+    if (index > -1) {
+      arr.splice(index, 1);
     }
-  }
-
-  private sendUpdateRequest(request, documentType) {
-    this.notificationService.showLoading({ showContent: true });
-    this.subManager.add(
-      this.adminControllerService
-        .v1AdminMerchantsIdPut(this.merchantId, request)
-        .subscribe(
-          (result) => {
-            if (result?.responseCode !== RESPONSE_CODE.SUCCESS) {
-              this.notifier.error(
-                JSON.stringify(result?.message),
-                result?.errorCode
-              );
-              return;
-            }
-            this.refreshDocumentInfo();
-          },
-          (error) => {
-            this.notifier.error(JSON.stringify(error));
-            this.notificationService.hideLoading();
-          },
-          () => {
-            this.notificationService.hideLoading();
-          }
-        )
-    );
+    return arr;
   }
 
   private _downloadDocumentByPath(documentPath) {
@@ -221,16 +189,6 @@ export class MerchantImageUploadComponent implements OnInit {
     );
   }
 
-  private refreshDocumentInfo() {
-    setTimeout(() => {
-      this.refreshContent.emit();
-      this.notifier.success(
-        this.multiLanguageService.instant('common.update_success')
-      );
-      this.notificationService.hideLoading();
-    }, 3000);
-  }
-
   public onChangeDocument(
     updatedDocumentModel: UpdatedDocumentModel,
     documentPath: string,
@@ -242,18 +200,24 @@ export class MerchantImageUploadComponent implements OnInit {
       case DOCUMENT_BTN_TYPE.UPDATE:
         if (documentType === DOCUMENT_TYPE.LOGO) {
           this.logoSrc = updatedDocumentModel.imgSrc;
+          this.changeLogoSrc.emit(this.logoSrc);
+        } else if (documentType === DOCUMENT_TYPE.IMAGES) {
+          this.imagesSrc[index] = updatedDocumentModel.imgSrc;
+          this.changeDescriptionImgs.emit(this.imagesSrc);
         }
-        // this._updateDocument(
-        //   documentType,
-        //   updatedDocumentModel.imgSrc,
-        //   updatedDocumentModel.type
-        // );
         break;
       case DOCUMENT_BTN_TYPE.DOWNLOAD:
+        if (this.isBase64Img(documentPath)) {
+          return;
+        }
         this._downloadDocumentByPath(documentPath);
         break;
       case DOCUMENT_BTN_TYPE.DELETE:
-        this._deleteDocumentPath(documentType, this.imagesSrc[index]);
+        if (documentType === DOCUMENT_TYPE.LOGO) {
+          this._deleteDocumentPath(documentType, this.logoSrc);
+        } else if (documentType === DOCUMENT_TYPE.IMAGES) {
+          this._deleteDocumentPath(documentType, this.imagesSrc[index]);
+        }
         break;
       default:
         break;
@@ -267,13 +231,13 @@ export class MerchantImageUploadComponent implements OnInit {
     document.getElementById('import-merchant-files').click();
   }
 
-  triggerClickResetInput(): void {
-    let resetInput: HTMLElement = document.getElementById(
-      `reset-merchant-files`
-    ) as HTMLElement;
-    if (!resetInput) return;
-    resetInput.click();
-  }
+  // triggerClickResetInput(): void {
+  //   let resetInput: HTMLElement = document.getElementById(
+  //     `reset-merchant-files`
+  //   ) as HTMLElement;
+  //   if (!resetInput) return;
+  //   resetInput.click();
+  // }
 
   async onChangeInputFiles($event) {
     let files = $event.target.files;
@@ -287,7 +251,9 @@ export class MerchantImageUploadComponent implements OnInit {
     }
     let srcFiles = await this.convertFilesToBase64(validFiles);
     this.imagesSrc.push(...srcFiles);
-    this.triggerClickResetInput();
+    this.changeDescriptionImgs.emit(this.imagesSrc);
+    this.inputFiles = null;
+    // this.triggerClickResetInput();
   }
 
   async convertFilesToBase64(files: any[]) {
@@ -296,5 +262,33 @@ export class MerchantImageUploadComponent implements OnInit {
       result.push(await fileToBase64(file));
     }
     return result;
+  }
+
+  public isBase64Img(imgSrc) {
+    return isBase64(imgSrc, { mimeRequired: true });
+  }
+
+  getErrorMessage(controlName: AbstractControl) {
+    if (
+      controlName === this.logoControl &&
+      this.logoControl.hasError('required')
+    ) {
+      return this.multiLanguageService.instant(
+        'merchant.merchant_dialog.require_logo'
+      );
+    }
+
+    if (
+      controlName === this.descriptionImgControl &&
+      this.descriptionImgControl.hasError('required')
+    ) {
+      return this.multiLanguageService.instant(
+        'merchant.merchant_dialog.require_desc_img'
+      );
+    }
+  }
+
+  shouldShowErrors(control: AbstractControl): boolean {
+    return control && control.errors && this.ngForm.submitted;
   }
 }

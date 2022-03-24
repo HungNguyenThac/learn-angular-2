@@ -6,7 +6,14 @@ import { ToastrService } from 'ngx-toastr';
 import { MatDialog } from '@angular/material/dialog';
 import { FormBuilder } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
-import { AdminAccountEntity } from '../../../../../../../open-api-modules/dashboard-api-docs';
+import {
+  AdminAccountEntity,
+  Merchant,
+} from '../../../../../../../open-api-modules/dashboard-api-docs';
+import {
+  DialogEkycInfoDetailComponent,
+  MerchantQrCodeDialogComponent,
+} from '../../../../../share/components';
 
 @Component({
   selector: 'app-merchant-qr',
@@ -14,13 +21,13 @@ import { AdminAccountEntity } from '../../../../../../../open-api-modules/dashbo
   styleUrls: ['./merchant-qr.component.scss'],
 })
 export class MerchantQrComponent implements OnInit {
-  _merchantInfo;
+  _merchantInfo: Merchant;
   @Input()
-  get merchantInfo() {
+  get merchantInfo(): Merchant {
     return this._merchantInfo;
   }
 
-  set merchantInfo(value) {
+  set merchantInfo(value: Merchant) {
     this._merchantInfo = value;
     this.leftCompanyInfos = this._initLeftCompanyInfos();
   }
@@ -67,5 +74,17 @@ export class MerchantQrComponent implements OnInit {
         format: null,
       },
     ];
+  }
+
+  public printQr() {
+    this.dialog.open(MerchantQrCodeDialogComponent, {
+      panelClass: 'custom-info-dialog-container',
+      maxWidth: '600px',
+      width: '60%',
+      data: {
+        merchantInfo: this.merchantInfo,
+        merchantQr: this._merchantQr,
+      },
+    });
   }
 }

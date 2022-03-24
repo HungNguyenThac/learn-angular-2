@@ -2705,6 +2705,47 @@ components:
           type: object
           additionalProperties:
             type: object
+    AdminAccountEntity:
+      type: object
+      properties:
+        createdAt:
+          type: string
+        updatedAt:
+          type: string
+        createdBy:
+          type: string
+        updateBy:
+          type: string
+        id:
+          type: string
+        username:
+          type: string
+        secretHash:
+          type: string
+        fullName:
+          type: string
+        email:
+          type: string
+        mobile:
+          type: string
+        note:
+          type: string
+        position:
+          type: string
+        userStatus:
+          type: string
+          enum:
+          - ACTIVE
+          - LOCKED
+        unLockTime:
+          type: string
+          format: date-time
+        groupEntity:
+          $ref: '#/components/schemas/GroupEntity'
+        groupId:
+          type: string
+        isDeleted:
+          type: boolean
     ApiResponseSearchAndPaginationResponseMerchant:
       type: object
       properties:
@@ -2717,6 +2758,36 @@ components:
         responseCode:
           type: integer
           format: int32
+    CreateAgentInformationDto:
+      type: object
+      properties:
+        name:
+          type: string
+        position:
+          type: string
+        mobile:
+          type: string
+        email:
+          type: string
+    GroupEntity:
+      type: object
+      properties:
+        createdAt:
+          type: string
+        updatedAt:
+          type: string
+        createdBy:
+          type: string
+        updateBy:
+          type: string
+        id:
+          type: string
+        code:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
     Merchant:
       type: object
       properties:
@@ -2736,7 +2807,9 @@ components:
           type: string
         bdStaffId:
           type: string
-        sellTypes:
+        adminAccountEntity:
+          $ref: '#/components/schemas/AdminAccountEntity'
+        merchantSellTypes:
           type: array
           items:
             type: string
@@ -2770,6 +2843,10 @@ components:
             type: string
         description:
           type: string
+        merchantFeatures:
+          type: array
+          items:
+            type: string
         createdAt:
           type: string
         createdBy:
@@ -2778,6 +2855,16 @@ components:
           type: string
         updatedBy:
           type: string
+        merchantParentId:
+          type: string
+        userName:
+          type: string
+        agentInformation:
+          $ref: '#/components/schemas/CreateAgentInformationDto'
+        childMerchantIds:
+          type: array
+          items:
+            type: string
     SearchAndPaginationResponseMerchant:
       type: object
       properties:
@@ -3053,6 +3140,8 @@ components:
           type: string
         updatedAt:
           type: string
+        isActive:
+          type: boolean
     CompleteApplication:
       type: object
       properties:
@@ -3699,25 +3788,6 @@ components:
         responseCode:
           type: integer
           format: int32
-    GroupEntity:
-      type: object
-      properties:
-        createdAt:
-          type: string
-        updatedAt:
-          type: string
-        createdBy:
-          type: string
-        updateBy:
-          type: string
-        id:
-          type: string
-        code:
-          type: string
-        name:
-          type: string
-        description:
-          type: string
     SearchAndPaginationResponseGroupEntity:
       type: object
       properties:
@@ -4622,47 +4692,6 @@ components:
           type: object
           additionalProperties:
             type: object
-    AdminAccountEntity:
-      type: object
-      properties:
-        createdAt:
-          type: string
-        updatedAt:
-          type: string
-        createdBy:
-          type: string
-        updateBy:
-          type: string
-        id:
-          type: string
-        username:
-          type: string
-        secretHash:
-          type: string
-        fullName:
-          type: string
-        email:
-          type: string
-        mobile:
-          type: string
-        note:
-          type: string
-        position:
-          type: string
-        userStatus:
-          type: string
-          enum:
-          - ACTIVE
-          - LOCKED
-        unLockTime:
-          type: string
-          format: date-time
-        groupEntity:
-          $ref: '#/components/schemas/GroupEntity'
-        groupId:
-          type: string
-        isDeleted:
-          type: boolean
     ApiResponseSearchAndPaginationResponseAdminAccountEntity:
       type: object
       properties:
