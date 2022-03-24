@@ -4621,6 +4621,10 @@ components:
           type: array
           items:
             type: string
+        isHidden:
+          type: boolean
+        isMandatory:
+          type: boolean
         description:
           type: string
         fileType:
@@ -4667,8 +4671,6 @@ components:
           type: string
         description:
           type: string
-        isAvailableForCustomer:
-          type: boolean
         codeName:
           type: string
         createdBy:

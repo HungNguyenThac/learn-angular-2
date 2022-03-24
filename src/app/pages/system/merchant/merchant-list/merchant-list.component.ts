@@ -138,7 +138,7 @@ export class MerchantListComponent implements OnInit {
       showed: true,
     },
     {
-      key: 'updatedBy',
+      key: 'userName',
       title: this.multiLanguageService.instant(
         'merchant.merchant_list.updated_by'
       ),

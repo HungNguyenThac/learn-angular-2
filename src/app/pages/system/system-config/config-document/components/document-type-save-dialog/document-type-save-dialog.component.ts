@@ -42,8 +42,6 @@ export class DocumentTypeSaveDialogComponent implements OnInit {
     this.applicationDocumentTypeForm.patchValue({
       name: this.applicationDocumentType?.name,
       description: this.applicationDocumentType?.description,
-      isAvailableForCustomer:
-        this.applicationDocumentType?.isAvailableForCustomer,
     });
   }
 
