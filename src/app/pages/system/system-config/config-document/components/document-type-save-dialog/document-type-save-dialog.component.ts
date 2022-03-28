@@ -31,7 +31,6 @@ export class DocumentTypeSaveDialogComponent implements OnInit {
     this.applicationDocumentTypeForm = this.formBuilder.group({
       name: [''],
       description: [''],
-      isAvailableForCustomer: [''],
     });
   }
 

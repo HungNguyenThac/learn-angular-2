@@ -1,5 +1,8 @@
 import { Injectable } from '@angular/core';
-import { CdeControllerService } from '../../../../../../../open-api-modules/dashboard-api-docs';
+import {
+  CdeControllerService,
+  ContractTemplateControllerService,
+} from '../../../../../../../open-api-modules/dashboard-api-docs';
 import { QUERY_CONDITION_TYPE } from '../../../../../core/common/enum/operator';
 import * as _ from 'lodash';
 
@@ -7,12 +10,14 @@ import * as _ from 'lodash';
   providedIn: 'root',
 })
 export class ConfigContractListService {
-  constructor(private cdeControllerService: CdeControllerService) {}
+  constructor(
+    private contractTemplateControllerService: ContractTemplateControllerService
+  ) {}
 
   public getData(params) {
     let requestBody = this._buildRequestBodyGetList(params);
 
-    return this.cdeControllerService.getGroups1(
+    return this.contractTemplateControllerService.getContractTemplates(
       params.limit,
       params.pageIndex,
       requestBody,
@@ -42,9 +47,7 @@ export class ConfigContractListService {
     }
 
     if (params.keyword) {
-      requestBody['fullName' + QUERY_CONDITION_TYPE.LIKE_KEYWORD] =
-        params.keyword;
-      requestBody['username' + QUERY_CONDITION_TYPE.LIKE_KEYWORD] =
+      requestBody['name' + QUERY_CONDITION_TYPE.LIKE_KEYWORD] =
         params.keyword;
     }
 

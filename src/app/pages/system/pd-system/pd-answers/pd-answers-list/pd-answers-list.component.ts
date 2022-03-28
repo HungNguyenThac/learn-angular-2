@@ -133,7 +133,7 @@ export class PdAnswersListComponent implements OnInit, OnDestroy {
   merchantInfo: any;
   breadcrumbOptions: BreadcrumbOptionsModel = {
     title: this.multiLanguageService.instant('breadcrumb.pd_answers'),
-    iconImgSrc: 'assets/img/icon/group-7/svg/merchant.svg',
+    iconImgSrc: 'assets/img/icon/group-7/svg/setting-green.svg',
     searchPlaceholder: 'Mã câu trả lời, câu hỏi, nội dung câu trả lời',
     searchable: true,
     showBtnAdd: true,

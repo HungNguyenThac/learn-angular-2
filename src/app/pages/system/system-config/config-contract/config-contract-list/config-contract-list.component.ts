@@ -4,13 +4,12 @@ import {
   MerchantGroupDialogComponent,
 } from '../../../../../share/components';
 import {
-  BUTTON_TYPE,
   DATA_CELL_TYPE,
-  DATA_STATUS_TYPE,
   FILTER_ACTION_TYPE,
-  FILTER_TYPE, MULTIPLE_ELEMENT_ACTION_TYPE,
+  FILTER_TYPE,
   QUERY_CONDITION_TYPE,
   RESPONSE_CODE,
+  TABLE_ACTION_TYPE,
 } from '../../../../../core/common/enum/operator';
 import { TableSelectActionModel } from '../../../../../public/models/external/table-select-action.model';
 import { FormBuilder, FormGroup } from '@angular/forms';
@@ -24,8 +23,6 @@ import { NotificationService } from '../../../../../core/services/notification.s
 import { ToastrService } from 'ngx-toastr';
 import { MatDialog } from '@angular/material/dialog';
 import { Title } from '@angular/platform-browser';
-import { PdGroupListService } from '../../../pd-system/pd-group/pd-group-list/pd-group-list.service';
-import { CdeControllerService } from '../../../../../../../open-api-modules/dashboard-api-docs';
 import { CdeService } from '../../../../../../../open-api-modules/monexcore-api-docs';
 import { Store } from '@ngrx/store';
 import * as fromSelectors from '../../../../../core/store/selectors';
@@ -35,6 +32,9 @@ import { Sort } from '@angular/material/sort';
 import { FilterEventModel } from '../../../../../public/models/filter/filter-event.model';
 import { CustomApiResponse, PDGroup } from '../../../pd-system/pd-interface';
 import * as fromStore from '../../../../../core/store';
+import { TableActionButtonModel } from '../../../../../public/models/external/table-action-button.model';
+import { OverviewItemModel } from '../../../../../public/models/external/overview-item.model';
+import { ConfigContractListService } from './config-contract-list.service';
 
 @Component({
   selector: 'app-config-contract-list',
@@ -47,23 +47,27 @@ export class ConfigContractListComponent implements OnInit {
 
   allColumns: any[] = [
     {
-      key: 'code',
-      title: this.multiLanguageService.instant('pd_system.pd_group.id'),
-      type: DATA_CELL_TYPE.TEXT,
-      format: null,
-      showed: true,
-    },
-    {
-      key: 'content',
-      title: this.multiLanguageService.instant('pd_system.pd_group.name'),
-      type: DATA_CELL_TYPE.TEXT,
-      format: null,
-      showed: true,
-    },
-    {
-      key: 'description',
+      key: 'name',
       title: this.multiLanguageService.instant(
-        'pd_system.pd_group.description'
+        'system.system_config.contract_template.name'
+      ),
+      type: DATA_CELL_TYPE.TEXT,
+      format: null,
+      showed: true,
+    },
+    {
+      key: 'productId',
+      title: this.multiLanguageService.instant(
+        'system.system_config.contract_template.product_name'
+      ),
+      type: DATA_CELL_TYPE.TEXT,
+      format: null,
+      showed: true,
+    },
+    {
+      key: 'active',
+      title: this.multiLanguageService.instant(
+        'system.system_config.contract_template.status'
       ),
       type: DATA_CELL_TYPE.TEXT,
       format: null,
@@ -72,44 +76,18 @@ export class ConfigContractListComponent implements OnInit {
     {
       key: 'createdAt',
       title: this.multiLanguageService.instant(
-        'pd_system.pd_group.created_date'
+        'system.system_config.contract_template.created_at'
       ),
       type: DATA_CELL_TYPE.DATETIME,
       format: 'dd/MM/yyyy HH:mm',
-      showed: true,
-    },
-    {
-      key: 'status',
-      title: this.multiLanguageService.instant('pd_system.pd_group.status'),
-      type: DATA_CELL_TYPE.STATUS,
-      format: DATA_STATUS_TYPE.USER_STATUS,
-      showed: true,
+      showed: false,
     },
   ];
   tableTitle: string = this.multiLanguageService.instant(
-    'pd_system.pd_group.title'
+    'system.system_config.contract_template.title'
   );
-  hasSelect: boolean = true;
-  selectButtons: TableSelectActionModel[] = [
-    {
-      hidden: false,
-      action: MULTIPLE_ELEMENT_ACTION_TYPE.DELETE,
-      color: 'accent',
-      content: this.multiLanguageService.instant('pd_system.pd_group.delete'),
-      imageSrc: 'assets/img/icon/group-5/svg/trash.svg',
-      style: 'background-color: rgba(255, 255, 255, 0.1);',
-    },
-    {
-      hidden: true,
-      action: MULTIPLE_ELEMENT_ACTION_TYPE.LOCK,
-      color: 'accent',
-      content: this.multiLanguageService.instant(
-        'customer.individual_info.lock'
-      ),
-      imageSrc: 'assets/img/icon/group-5/svg/lock-white.svg',
-      style: 'background-color: rgba(255, 255, 255, 0.1);',
-    },
-  ];
+  hasSelect: boolean = false;
+  selectButtons: TableSelectActionModel[] = [];
 
   totalItems: number = 0;
   filterForm: FormGroup;
@@ -121,23 +99,59 @@ export class ConfigContractListComponent implements OnInit {
   pageSizeOptions: number[] = [10, 20, 50];
   expandedElementId: number;
   subManager = new Subscription();
+  hasActions: boolean = true;
   breadcrumbOptions: BreadcrumbOptionsModel = {
-    title: this.multiLanguageService.instant('breadcrumb.pd_group'),
-    iconImgSrc: 'assets/img/icon/group-7/svg/merchant.svg',
-    searchPlaceholder: 'Mã nhóm câu hỏi, tên nhóm câu hỏi',
-    searchable: true,
+    title: this.multiLanguageService.instant('breadcrumb.contract_template'),
+    iconImgSrc: 'assets/img/icon/group-7/svg/setting-green.svg',
+    searchable: false,
     showBtnAdd: true,
     btnAddText: this.multiLanguageService.instant(
-      'pd_system.pd_group.add_group'
+      'system.system_config.contract_template.add'
     ),
     keyword: '',
   };
   filterOptions: FilterOptionModel[] = [
+    // {
+    //   title: this.multiLanguageService.instant('filter.time'),
+    //   type: FILTER_TYPE.DATETIME,
+    //   controlName: 'createdAt',
+    //   value: null,
+    // },
+  ];
+
+  actionButtons: TableActionButtonModel[] = [
     {
-      title: this.multiLanguageService.instant('filter.time'),
-      type: FILTER_TYPE.DATETIME,
-      controlName: 'createdAt',
-      value: null,
+      hidden: false,
+      action: TABLE_ACTION_TYPE.VIEW,
+      color: 'accent',
+      tooltip: this.multiLanguageService.instant('common.view'),
+      imageSrc: 'assets/img/icon/group-5/svg/eye.svg',
+      style: 'background-color: rgba(255, 255, 255, 0.1);',
+    },
+    {
+      hidden: false,
+      action: TABLE_ACTION_TYPE.EDIT,
+      color: 'accent',
+      tooltip: this.multiLanguageService.instant('common.edit'),
+      imageSrc: 'assets/img/icon/group-5/svg/edit-small.svg',
+      style: 'background-color: rgba(255, 255, 255, 0.1);',
+    },
+    {
+      hidden: false,
+      action: TABLE_ACTION_TYPE.DELETE,
+      color: 'accent',
+      tooltip: this.multiLanguageService.instant('common.delete'),
+      imageSrc: 'assets/img/icon/group-5/svg/trash-red.svg',
+      style: 'background-color: rgba(255, 255, 255, 0.1);',
+    },
+  ];
+
+  overviewItems: OverviewItemModel[] = [
+    {
+      field: this.multiLanguageService.instant(
+        'system.system_config.contract_template.total'
+      ),
+      value: 0,
     },
   ];
 
@@ -152,8 +166,7 @@ export class ConfigContractListComponent implements OnInit {
     private dialog: MatDialog,
     private titleService: Title,
     private activatedRoute: ActivatedRoute,
-    private pdGroupListService: PdGroupListService,
-    private cdeControllerService: CdeControllerService,
+    private configContractListService: ConfigContractListService,
     private cdeService: CdeService,
     private store: Store<fromStore.State>
   ) {
@@ -169,7 +182,7 @@ export class ConfigContractListComponent implements OnInit {
     this.subManager.add(
       this.routeAllState$.subscribe((params) => {
         this._parseQueryParams(params?.queryParams);
-        this._getConfigDocumentList();
+        this._getContractTemplateList();
       })
     );
   }
@@ -304,7 +317,7 @@ export class ConfigContractListComponent implements OnInit {
     });
     this.breadcrumbOptions.keyword = params.keyword;
     this.pageIndex = params.pageIndex || 0;
-    this.pageSize = params.pageSize || 20;
+    this.pageSize = params.pageSize || 10;
   }
 
   private _buildParams() {
@@ -352,82 +365,22 @@ export class ConfigContractListComponent implements OnInit {
       .then((r) => {});
   }
 
-  public _getConfigDocumentList() {
+  public _getContractTemplateList() {
     const params = this._buildParams();
-    this.pdGroupListService.getData(params).subscribe((data) => {
+    this.configContractListService.getData(params).subscribe((data) => {
       this._parseData(data?.result);
-      let list = data?.result?.data.map((item) => {
-        return {
-          ...item,
-          code: item.code + '-' + item.objectId,
-        };
-      });
-      this.dataSource.data = list;
+      this.getOverviewData(data?.result);
     });
-    // this.subManager.add(
-    //   this.cdeService.cdeControllerGetPdGroup().subscribe((data) => {
-    //     // @ts-ignore
-    //     this.dataSource.data = data?.result;
-    //   })
-    // );
   }
 
   triggerDeselectUsers() {
     this.child.triggerDeselectUsers();
   }
 
-  public onOutputAction(event) {
-    const action = event.action;
-    const list = event.selectedList;
-    const idArr = list.map((group) => group.objectId);
-    switch (action) {
-      case MULTIPLE_ELEMENT_ACTION_TYPE.DELETE:
-        this.deleteMultiplePrompt(idArr);
-        break;
-      default:
-        return;
-    }
-  }
-
-  public deleteMultiplePrompt(ids) {
-    const confirmDeleteRef = this.notificationService.openPrompt({
-      imgUrl: '../../../../../assets/img/icon/group-5/svg/delete-dialog.svg',
-      title: this.multiLanguageService.instant('pd_system.pd_group.delete'),
-      content: this.multiLanguageService.instant(
-        'pd_system.pd_group.delete_content'
-      ),
-      primaryBtnText: this.multiLanguageService.instant('common.delete'),
-      primaryBtnClass: 'btn-error',
-      secondaryBtnText: this.multiLanguageService.instant('common.skip'),
-    });
-    confirmDeleteRef.afterClosed().subscribe((result) => {
-      if (result === BUTTON_TYPE.PRIMARY) {
-        this._doMultipleAction(ids, MULTIPLE_ELEMENT_ACTION_TYPE.DELETE);
-      }
-    });
-  }
-
-  public _doMultipleAction(ids, action) {
-    if (!ids) {
-      return;
-    }
-    ids.forEach((id) => {
-      this._deleteById(id);
-    });
-    setTimeout(() => {
-      if (action === MULTIPLE_ELEMENT_ACTION_TYPE.DELETE) {
-        this.notifier.success(
-          this.multiLanguageService.instant('pd_system.pd_group.delete_toast')
-        );
-        this.refreshContent();
-      }
-    }, 2000);
-  }
-
   public refreshContent() {
     setTimeout(() => {
       this.triggerDeselectUsers();
-      this._getConfigDocumentList();
+      this._getContractTemplateList();
     }, 2000);
   }
 
@@ -497,5 +450,15 @@ export class ConfigContractListComponent implements OnInit {
     //     }
     //   })
     // );
+  }
+
+  getOverviewData(rawData) {
+    this.overviewItems.find(
+      (ele) =>
+        ele.field ===
+        this.multiLanguageService.instant(
+          'system.system_config.contract_template.total'
+        )
+    ).value = rawData?.pagination?.total;
   }
 }

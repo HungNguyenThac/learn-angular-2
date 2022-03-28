@@ -28,7 +28,10 @@ import { ToastrService } from 'ngx-toastr';
 import { MatDialog } from '@angular/material/dialog';
 import { Title } from '@angular/platform-browser';
 import { ConfigDocumentListService } from '../config-document-list/config-document-list.service';
-import { CdeService } from '../../../../../../../open-api-modules/monexcore-api-docs';
+import {
+  CreateApplicationDocumentTypeDto,
+  UpdateApplicationDocumentTypeDto,
+} from '../../../../../../../open-api-modules/monexcore-api-docs';
 import { Store } from '@ngrx/store';
 import * as fromStore from '../../../../../core/store';
 import * as fromActions from '../../../../../core/store';
@@ -37,10 +40,6 @@ import { FilterActionEventModel } from '../../../../../public/models/filter/filt
 import { PageEvent } from '@angular/material/paginator/public-api';
 import { Sort } from '@angular/material/sort';
 import { FilterEventModel } from '../../../../../public/models/filter/filter-event.model';
-import {
-  CreateApplicationDocumentTypeRequest,
-  UpdateApplicationDocumentTypeRequest,
-} from '../../../../../../../open-api-modules/com-api-docs';
 import { TableActionEventModel } from '../../../../../public/models/filter/table-action-event.model';
 import * as _ from 'lodash';
 import { DocumentTypeSaveDialogComponent } from '../components/document-type-save-dialog/document-type-save-dialog.component';
@@ -133,7 +132,7 @@ export class DocumentTypeListComponent implements OnInit {
   subManager = new Subscription();
   breadcrumbOptions: BreadcrumbOptionsModel = {
     title: this.multiLanguageService.instant('breadcrumb.config_document_type'),
-    iconImgSrc: 'assets/img/icon/group-7/svg/merchant.svg',
+    iconImgSrc: 'assets/img/icon/group-7/svg/setting-green.svg',
     searchPlaceholder: this.multiLanguageService.instant(
       'breadcrumb.search_field.config_document_type'
     ),
@@ -524,11 +523,11 @@ export class DocumentTypeListComponent implements OnInit {
     this.subManager.add(
       addGroupDialogRef.afterClosed().subscribe((result: any) => {
         if (result && result.type === BUTTON_TYPE.PRIMARY) {
-          let updateApplicationDocumentTypeRequest: UpdateApplicationDocumentTypeRequest =
+          let updateApplicationDocumentTypeRequest: UpdateApplicationDocumentTypeDto =
             {
               name: result?.data?.name,
-              isAvailableForCustomer: result?.data?.isAvailableForCustomer,
               description: result?.data?.description,
+              codeName: result?.data?.codeName,
             };
           this._updateApplicationDocumentType(
             element.id,
@@ -557,11 +556,11 @@ export class DocumentTypeListComponent implements OnInit {
     this.subManager.add(
       documentSaveDialogRef.afterClosed().subscribe((result: any) => {
         if (result && result.type === BUTTON_TYPE.PRIMARY) {
-          let createApplicationDocumentTypeRequest: CreateApplicationDocumentTypeRequest =
+          let createApplicationDocumentTypeRequest: CreateApplicationDocumentTypeDto =
             {
               name: result?.data?.name,
-              isAvailableForCustomer: result?.data?.isAvailableForCustomer,
               description: result?.data?.description,
+              codeName: result?.data?.codeName,
             };
           this._createApplicationDocumentType(
             createApplicationDocumentTypeRequest
@@ -605,7 +604,7 @@ export class DocumentTypeListComponent implements OnInit {
   }
 
   private _createApplicationDocumentType(
-    createApplicationDocumentTypeRequest: CreateApplicationDocumentTypeRequest
+    createApplicationDocumentTypeRequest: CreateApplicationDocumentTypeDto
   ) {
     if (!createApplicationDocumentTypeRequest) {
       return;
@@ -632,7 +631,7 @@ export class DocumentTypeListComponent implements OnInit {
 
   private _updateApplicationDocumentType(
     id: string,
-    updateApplicationDocumentTypeRequest: UpdateApplicationDocumentTypeRequest
+    updateApplicationDocumentTypeRequest: UpdateApplicationDocumentTypeDto
   ) {
     if (!updateApplicationDocumentTypeRequest) {
       return;

@@ -130,7 +130,7 @@ export class PdGroupListComponent implements OnInit, OnDestroy {
   subManager = new Subscription();
   breadcrumbOptions: BreadcrumbOptionsModel = {
     title: this.multiLanguageService.instant('breadcrumb.pd_group'),
-    iconImgSrc: 'assets/img/icon/group-7/svg/merchant.svg',
+    iconImgSrc: 'assets/img/icon/group-7/svg/setting-green.svg',
     searchPlaceholder: 'Mã nhóm câu hỏi, tên nhóm câu hỏi',
     searchable: true,
     showBtnAdd: true,

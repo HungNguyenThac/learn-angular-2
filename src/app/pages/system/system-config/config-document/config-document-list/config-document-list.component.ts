@@ -42,9 +42,9 @@ import { TableActionButtonModel } from '../../../../../public/models/external/ta
 import { TableActionEventModel } from '../../../../../public/models/filter/table-action-event.model';
 import { ApplicationDocumentSaveDialogComponent } from '../components/application-document-save-dialog/application-document-save-dialog.component';
 import {
-  CreateApplicationDocumentRequest,
-  UpdateApplicationDocumentRequest,
-} from '../../../../../../../open-api-modules/com-api-docs';
+  CreateApplicationDocumentDto,
+  UpdateApplicationDocumentDto,
+} from '../../../../../../../open-api-modules/monexcore-api-docs';
 
 @Component({
   selector: 'app-config-document-list',
@@ -143,7 +143,7 @@ export class ConfigDocumentListComponent implements OnInit {
   subManager = new Subscription();
   breadcrumbOptions: BreadcrumbOptionsModel = {
     title: this.multiLanguageService.instant('breadcrumb.config_document'),
-    iconImgSrc: 'assets/img/icon/group-7/svg/merchant.svg',
+    iconImgSrc: 'assets/img/icon/group-7/svg/setting-green.svg',
     searchPlaceholder: this.multiLanguageService.instant(
       'breadcrumb.search_field.config_document'
     ),
@@ -462,6 +462,7 @@ export class ConfigDocumentListComponent implements OnInit {
   }
 
   private _bindDocumentTypeName(documentTypeIds: Array<string>) {
+    if (!documentTypeIds) return null;
     if (!this.documentTypeList) return documentTypeIds;
     let documentTypeInTypeIds: ApplicationDocumentType[] =
       this.documentTypeList?.filter((value) => {
@@ -593,16 +594,18 @@ export class ConfigDocumentListComponent implements OnInit {
     this.subManager.add(
       addGroupDialogRef.afterClosed().subscribe((result: any) => {
         if (result && result.type === BUTTON_TYPE.PRIMARY) {
-          let updateApplicationDocumentRequest: UpdateApplicationDocumentRequest =
-            {
-              name: result?.data?.name,
-              applicationDocumentTypeId: result?.data?.applicationDocumentType,
-              description: result?.data?.description,
-              fileType: result?.data?.fileType.join(','),
-            };
+          let updateApplicationDocumentRequest: UpdateApplicationDocumentDto = {
+            isDisplayed: result?.data?.isDisplayed,
+            isMandatory: result?.data?.isMandatory,
+            name: result?.data?.name,
+            description: result?.data?.description,
+            fileType: result?.data?.fileType.join(','),
+          };
           this._updateApplicationDocument(
             element.id,
-            updateApplicationDocumentRequest
+            updateApplicationDocumentRequest,
+            result?.data?.applicationDocumentType,
+            element
           );
         }
       })
@@ -627,14 +630,17 @@ export class ConfigDocumentListComponent implements OnInit {
     this.subManager.add(
       documentSaveDialogRef.afterClosed().subscribe((result: any) => {
         if (result && result.type === BUTTON_TYPE.PRIMARY) {
-          let createApplicationDocumentRequest: CreateApplicationDocumentRequest =
-            {
-              name: result?.data?.name,
-              applicationDocumentTypeId: result?.data?.applicationDocumentType,
-              description: result?.data?.description,
-              fileType: result?.data?.fileType.join(','),
-            };
-          this._createApplicationDocument(createApplicationDocumentRequest);
+          let createApplicationDocumentRequest: CreateApplicationDocumentDto = {
+            isDisplayed: result?.data?.isDisplayed || false,
+            isMandatory: result?.data?.isMandatory || false,
+            name: result?.data?.name,
+            description: result?.data?.description,
+            fileType: result?.data?.fileType.join(','),
+          };
+          this._createApplicationDocument(
+            createApplicationDocumentRequest,
+            result?.data?.applicationDocumentType
+          );
         }
       })
     );
@@ -716,7 +722,8 @@ export class ConfigDocumentListComponent implements OnInit {
   }
 
   private _createApplicationDocument(
-    createApplicationDocumentRequest: CreateApplicationDocumentRequest
+    createApplicationDocumentRequest: CreateApplicationDocumentDto,
+    applicationDocumentTypes: string[]
   ) {
     if (!createApplicationDocumentRequest) {
       return;
@@ -725,6 +732,7 @@ export class ConfigDocumentListComponent implements OnInit {
       this.configDocumentListService
         .createApplicationDocument(createApplicationDocumentRequest)
         .subscribe((response) => {
+          response.result.id;
           if (!response || response.responseCode !== RESPONSE_CODE.SUCCESS) {
             return this.notifier.error(
               JSON.stringify(response?.message),
@@ -736,6 +744,19 @@ export class ConfigDocumentListComponent implements OnInit {
               'system.system_config.application_document.add_success'
             )
           );
+
+          if (applicationDocumentTypes) {
+            this.configDocumentListService
+              .updateDocumentTypeApplicationDocument(
+                response.result.id,
+                applicationDocumentTypes,
+                null
+              )
+              .subscribe((res) => {
+                this.refreshContent();
+              });
+          }
+
           this.refreshContent();
         })
     );
@@ -743,11 +764,28 @@ export class ConfigDocumentListComponent implements OnInit {
 
   private _updateApplicationDocument(
     id: string,
-    updateApplicationDocumentRequest: UpdateApplicationDocumentRequest
+    updateApplicationDocumentRequest: UpdateApplicationDocumentDto,
+    applicationDocumentTypes,
+    element: ApplicationDocument
   ) {
     if (!updateApplicationDocumentRequest) {
       return;
     }
+
+    if (
+      updateApplicationDocumentRequest.name === element.name &&
+      updateApplicationDocumentRequest.description === element.description &&
+      updateApplicationDocumentRequest.fileType === element.fileType &&
+      updateApplicationDocumentRequest.isDisplayed === element.isDisplayed &&
+      updateApplicationDocumentRequest.isMandatory === element.isMandatory
+    ) {
+      this.updateApplicationDocumentTypeOfDocument(
+        applicationDocumentTypes,
+        element
+      );
+      return;
+    }
+
     this.subManager.add(
       this.configDocumentListService
         .updateApplicationDocument(id, updateApplicationDocumentRequest)
@@ -763,8 +801,63 @@ export class ConfigDocumentListComponent implements OnInit {
               'system.system_config.application_document.update_success'
             )
           );
-          this.refreshContent();
+
+          this.updateApplicationDocumentTypeOfDocument(
+            applicationDocumentTypes,
+            element
+          );
         })
     );
+  }
+
+  updateApplicationDocumentTypeOfDocument(
+    applicationDocumentTypes,
+    element: ApplicationDocument
+  ) {
+    if (element?.applicationDocumentType == applicationDocumentTypes) {
+      this.refreshContent();
+      return;
+    }
+    let newApplicationDocuments = [];
+    let deletedApplicationDocuments = [];
+
+    if (element?.applicationDocumentType) {
+      element?.applicationDocumentType.forEach((documentType) => {
+        if (applicationDocumentTypes.includes(documentType)) {
+          return;
+        }
+        deletedApplicationDocuments.push(documentType);
+      });
+
+      applicationDocumentTypes.forEach((documentType) => {
+        if (element?.applicationDocumentType.includes(documentType)) {
+          return;
+        }
+        newApplicationDocuments.push(documentType);
+      });
+    }
+
+    newApplicationDocuments = applicationDocumentTypes;
+
+    this.configDocumentListService
+      .updateDocumentTypeApplicationDocument(
+        element.id,
+        newApplicationDocuments,
+        deletedApplicationDocuments
+      )
+      .subscribe((result) => {
+        if (!result || result.responseCode !== RESPONSE_CODE.SUCCESS) {
+          return this.notifier.error(
+            JSON.stringify(result?.message),
+            result?.errorCode
+          );
+        }
+        this.notifier.success(
+          this.multiLanguageService.instant(
+            'system.system_config.application_document.update_success'
+          )
+        );
+        this.refreshContent();
+      });
   }
 }

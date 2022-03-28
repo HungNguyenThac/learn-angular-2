@@ -5,7 +5,6 @@
   (onPageChange)="onPageChange($event)"
   (onSortChange)="onSortChange($event)"
   (onSubmitSearchForm)="onSubmitSearchForm($event)"
-  (onOutputAction)="onOutputAction($event)"
   (onClickBtnAdd)="onClickBtnAdd($event)"
   [allColumns]="allColumns"
   [dataSource]="dataSource"
@@ -22,6 +21,10 @@
   [totalItems]="totalItems"
   [hasSelect]="hasSelect"
   [selectButtons]="selectButtons"
+  [hasActions]="hasActions"
+  [showRefreshBtn]="true"
+  [overviewItems]="overviewItems"
+  [actionButtons]="actionButtons"
 >
 </app-base-management-layout>
 

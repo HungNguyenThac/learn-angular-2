@@ -29,7 +29,7 @@ import { OverviewItemModel } from 'src/app/public/models/external/overview-item.
 import { TableActionButtonModel } from '../../../../public/models/external/table-action-button.model';
 import { TABLE_ACTION_TYPE } from '../../../../core/common/enum/operator';
 import { TableActionEventModel } from '../../../../public/models/filter/table-action-event.model';
-import {MultipleElementActionEventModel} from "../../../../public/models/filter/multiple-element-action-event.model";
+import { MultipleElementActionEventModel } from '../../../../public/models/filter/multiple-element-action-event.model';
 
 @Component({
   selector: 'app-base-expanded-table',
@@ -75,7 +75,8 @@ export class BaseExpandedTableComponent implements OnInit, AfterViewInit {
   @Output() triggerPageChange = new EventEmitter<PageEvent>();
   @Output() triggerSortChange = new EventEmitter<Sort>();
   @Output() triggerExpandedElementChange = new EventEmitter<any>();
-  @Output() triggerMultipleElementActionClick = new EventEmitter<MultipleElementActionEventModel>();
+  @Output() triggerMultipleElementActionClick =
+    new EventEmitter<MultipleElementActionEventModel>();
   @Output() triggerTableActionClick = new EventEmitter<TableActionEventModel>();
   @Output() triggerRefresh = new EventEmitter<any>();
 
@@ -271,7 +272,10 @@ export class BaseExpandedTableComponent implements OnInit, AfterViewInit {
     if (this.hasActions) {
       tableColumn.push({
         key: 'action',
-        width: 100,
+        width:
+          this.actionButtons.length * 50 > 100
+            ? this.actionButtons.length * 50
+            : 100,
         title: '',
       });
     }

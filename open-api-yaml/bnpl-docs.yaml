@@ -107,22 +107,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiResponseMerchant'
-  /v1/admin/merchants/qrcode:
-    post:
-      tags:
-      - Admin Controller
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/GenerateMerchantQrRequestDto'
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ApiResponseString'
   /v1/admin/merchants/{id}:
     put:
       tags:
@@ -240,6 +224,22 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiResponseCdeData'
+  /v1/application/qrcode:
+    post:
+      tags:
+      - Bnpl Controller
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GenerateMerchantQrRequestDto'
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseString'
   /v1/application/{id}:
     get:
       tags:
@@ -257,6 +257,17 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiResponseLoanDetailDto'
+  /v1/cronJobs/cronJobWithExpressionInConfig:
+    post:
+      tags:
+      - Cron Job Controller
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseString'
   /v1/merchants:
     get:
       tags:
@@ -835,13 +846,22 @@ components:
           type: string
     GenerateMerchantQrRequestDto:
       required:
-      - id
+      - merchantId
       type: object
       properties:
-        id:
+        merchantId:
           pattern: \S
           type: string
           nullable: false
+        merchantOrderId:
+          type: string
+        totalAmount:
+          format: int32
+          type: integer
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrderItemDto'
     LoanDetailDto:
       type: object
       properties:
@@ -993,6 +1013,20 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Period'
+    OrderItemDto:
+      type: object
+      properties:
+        name:
+          type: string
+        price:
+          format: int32
+          type: integer
+        numberOfItems:
+          format: int32
+          type: integer
+        totalPrice:
+          format: int32
+          type: integer
     Period:
       type: object
       properties:

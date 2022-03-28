@@ -55,16 +55,17 @@
               <mat-label>{{
                 "system.system_config.document_type.description" | translate
               }}</mat-label>
-              <input
+              <textarea
+                matInput
+                class="text-area"
+                name="description"
+                formControlName="description"
+                appTypeMaxLength
+                maxlength="250"
                 [placeholder]="
                   'system.system_config.document_type.description' | translate
                 "
-                formControlName="description"
-                matInput
-                appTypeMaxLength
-                maxlength="250"
-                type="text"
-              />
+              ></textarea>
               <show-errors
                 [control]="applicationDocumentTypeForm.controls['description']"
                 [controlLabel]="
@@ -75,22 +76,6 @@
               </show-errors>
             </mat-form-field>
 
-            <!--  Is available for customer  -->
-            <mat-checkbox formControlName="isAvailableForCustomer">{{
-              "system.system_config.document_type.is_available_for_customer"
-                | translate
-            }}</mat-checkbox>
-            <show-errors
-              [control]="
-                applicationDocumentTypeForm.controls['isAvailableForCustomer']
-              "
-              [controlLabel]="
-                'system.system_config.document_type.isAvailableForCustomer'
-                  | translate
-              "
-              [hasIconPrefix]="false"
-            >
-            </show-errors>
           </div>
         </div>
 

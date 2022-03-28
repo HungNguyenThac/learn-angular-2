@@ -24,7 +24,7 @@ export const SystemConfigRoutes: Routes = [
           title: TitleConstants.TITLE_VALUE.CONFIG_DOCUMENT_LIST,
           animation: true,
           permissions: {
-            only: [''],
+            only: ['dashboardApplicationDocuments:getApplicationDocuments'],
             redirectTo: '/',
           },
         },
@@ -37,7 +37,7 @@ export const SystemConfigRoutes: Routes = [
           title: TitleConstants.TITLE_VALUE.CONFIG_DOCUMENT_TYPE_LIST,
           animation: true,
           permissions: {
-            only: [''],
+            only: ['dashboardApplicationDocuments:getApplicationDocumentTypes'],
             redirectTo: '/',
           },
         },
@@ -50,7 +50,7 @@ export const SystemConfigRoutes: Routes = [
           title: TitleConstants.TITLE_VALUE.CONFIG_CONTRACT_LIST,
           animation: true,
           permissions: {
-            only: [''],
+            only: ['dashboardContractTemplates:getContractTemplates'],
             redirectTo: '/',
           },
         },

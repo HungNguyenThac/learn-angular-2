@@ -241,6 +241,33 @@ mat-radio-button {
   margin-top: 2px;
 }
 
+.text-area {
+  width: 100%;
+  border: none;
+  min-height: 50px;
+  font-family: $sfPro;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 18px;
+  letter-spacing: 0.1px;
+
+  &::placeholder {
+    font-family: $sfPro;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 18px;
+    letter-spacing: 0.1px;
+    color: $grey-04;
+  }
+
+  .mat-form-field {
+    width: 100%;
+    height: 100%;
+  }
+}
+
 //Responsive
 
 @media (max-width: 768px) {

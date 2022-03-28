@@ -685,8 +685,9 @@
     "product_status": "Quản lý trạng thái",
     "product_workflow": "Quản lý luồng trạng thái",
     "monex_product": "Quản lý sản phẩm",
-    "config_document": "Quản lý tài liệu",
+    "config_document": "Quản lý tài liệu vay",
     "config_document_type": "Quản lý nhóm tài liệu",
+    "contract_template": "Quản lý hợp đồng vay",
     "search_field": {
       "payday_loan": "Mã khoản ứng, Tên, Số điện thoại",
       "customer_list": "Họ tên, Mã nhân viên, Số điện thoại, Email",
@@ -757,7 +758,7 @@
     },
     "system_config": {
       "application_document": {
-        "title": "Quản lý tài liệu",
+        "title": "Quản lý tài liệu vay",
         "add": "Tài liệu vay",
         "delete": "Xóa",
         "total": "Tổng số tài liệu",
@@ -780,7 +781,9 @@
         "add_success": "Thêm mới tài liệu thành công",
         "update_success": "Cập nhật tài liệu thành công",
         "search_document_type": "Nhóm tài liệu",
-        "empty_document_type": "Nhóm tài liệu không tồn tại"
+        "empty_document_type": "Nhóm tài liệu không tồn tại",
+        "is_mandatory": "Bắt buộc",
+        "is_display": "Hiển thị trên app"
       },
       "document_type": {
         "title": "Quản lý nhóm tài liệu",
@@ -802,6 +805,20 @@
         "update_form_title": "Cập nhật nhóm tài liệu",
         "add_success": "Thêm mới nhóm tài liệu thành công",
         "update_success": "Cập nhật nhóm tài liệu thành công"
+      },
+      "contract_template": {
+        "title": "Quản lý hợp đồng vay",
+        "add": "Hợp đồng vay",
+        "name": "Tên hợp đồng",
+        "product_name": "Sản phẩm vay",
+        "status": "Trạng thái hoạt động",
+        "status_send_contract": "Trạng thái gửi hợp đồng",
+        "content": "Nội dung hợp đồng",
+        "detail_token": "Xem chi tiết danh sách biến",
+        "preview": "Xem trước hợp đồng",
+        "active": "Hoạt động",
+        "created_at": "Ngày tạo",
+        "total": "Tổng số hợp đồng"
       }
     }
   },

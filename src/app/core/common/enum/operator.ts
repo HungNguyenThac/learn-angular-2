@@ -104,6 +104,7 @@ export enum MULTIPLE_ELEMENT_ACTION_TYPE {
 export enum TABLE_ACTION_TYPE {
   DELETE = 'DELETE',
   EDIT = 'EDIT',
+  VIEW = 'VIEW',
 }
 
 export enum LOCK_TIME_OPTIONS {
