@@ -111,39 +111,39 @@ export class ProfileToolbarComponent implements OnInit, OnDestroy {
   }
 
   onClickMonexProduct() {
-    this.router.navigateByUrl('/system/monex-product/list');
+    this.router.navigateByUrl('/system/product-config/product-list');
   }
 
   onClickConfigDocument() {
-    this.router.navigateByUrl('/system/system-config/document');
+    this.router.navigateByUrl('/system/product-config/document');
   }
 
   onClickConfigContract() {
-    this.router.navigateByUrl('/system/system-config/contract');
-  }
-
-  onClickPdGroup() {
-    this.router.navigateByUrl('/system/pd-group/list');
+    this.router.navigateByUrl('/system/product-config/contract');
   }
 
   onClickProductStatus() {
-    this.router.navigateByUrl('/system/product-status/list');
+    this.router.navigateByUrl('/system/product-config/product-status');
   }
 
   onClickStatusFlow() {
-    this.router.navigateByUrl('/system/product-workflow/list');
+    this.router.navigateByUrl('/system/product-config/product-workflow');
   }
 
   onClickPdQuestions() {
-    this.router.navigateByUrl('/system/pd-questions/list');
+    this.router.navigateByUrl('/system/pd-system/pd-questions');
+  }
+
+  onClickPdGroup() {
+    this.router.navigateByUrl('/system/pd-system/pd-group');
   }
 
   onClickPdAnswers() {
-    this.router.navigateByUrl('/system/pd-answers/list');
+    this.router.navigateByUrl('/system/pd-system/pd-answers');
   }
 
   onClickPdModel() {
-    this.router.navigateByUrl('/system/pd-model/list');
+    this.router.navigateByUrl('/system/pd-system/pd-model');
   }
 
   logout() {

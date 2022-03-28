@@ -11,11 +11,39 @@ import { TitleConstants } from '../../../core/common/providers/title-constants';
 import { ApplicationDocumentSaveDialogComponent } from './config-document/components/application-document-save-dialog/application-document-save-dialog.component';
 import { DocumentTypeListComponent } from './config-document/document-type-list/document-type-list.component';
 import { DocumentTypeSaveDialogComponent } from './config-document/components/document-type-save-dialog/document-type-save-dialog.component';
+import { MonexProductListComponent } from './monex-product/monex-product-list/monex-product-list.component';
+import { PdfViewerModule } from 'ng2-pdf-viewer';
+import { ProductStatusListComponent } from './product-status/product-status-list/product-status-list.component';
+import { ProductWorkflowListComponent } from './product-workflow/product-workflow-list/product-workflow-list.component';
 
-export const SystemConfigRoutes: Routes = [
+export const ProductConfigRoutes: Routes = [
   {
     path: '',
     children: [
+      {
+        path: 'product-list',
+        component: MonexProductListComponent,
+        data: {
+          title: TitleConstants.TITLE_VALUE.MONEX_PRODUCT,
+          animation: true,
+        },
+      },
+      {
+        path: 'product-status',
+        component: ProductStatusListComponent,
+        data: {
+          title: TitleConstants.TITLE_VALUE.PRODUCT_STATUS,
+          animation: true,
+        },
+      },
+      {
+        path: 'product-workflow',
+        component: ProductWorkflowListComponent,
+        data: {
+          title: TitleConstants.TITLE_VALUE.PRODUCT_WORKFLOW,
+          animation: true,
+        },
+      },
       {
         path: 'document',
         component: ConfigDocumentListComponent,
@@ -66,13 +94,17 @@ export const SystemConfigRoutes: Routes = [
     ApplicationDocumentSaveDialogComponent,
     DocumentTypeListComponent,
     DocumentTypeSaveDialogComponent,
+    MonexProductListComponent,
+    ProductStatusListComponent,
+    ProductWorkflowListComponent,
   ],
   imports: [
     CommonModule,
-    RouterModule.forChild(SystemConfigRoutes),
+    RouterModule.forChild(ProductConfigRoutes),
     SharedModule,
     TranslateModule,
     FormsModule,
+    PdfViewerModule,
   ],
 })
-export class SystemConfigModule {}
+export class ProductConfigModule {}
