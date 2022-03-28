@@ -1,7 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import {
-  AdminAccountEntity,
-  ApiResponseSearchAndPaginationResponseAdminAccountEntity,
   CompanyControllerService,
   GroupControllerService,
   GroupEntity,
@@ -15,9 +13,9 @@ import * as _ from 'lodash';
 import {
   BUTTON_TYPE,
   DATA_CELL_TYPE,
-  DATA_STATUS_TYPE,
   FILTER_ACTION_TYPE,
-  FILTER_TYPE, MULTIPLE_ELEMENT_ACTION_TYPE,
+  FILTER_TYPE,
+  MULTIPLE_ELEMENT_ACTION_TYPE,
   QUERY_CONDITION_TYPE,
   RESPONSE_CODE,
 } from '../../../../../core/common/enum/operator';
@@ -33,10 +31,7 @@ import * as fromActions from '../../../../../core/store';
 import { MultiLanguageService } from '../../../../../share/translate/multiLanguageService';
 import { NotificationService } from '../../../../../core/services/notification.service';
 import { ToastrService } from 'ngx-toastr';
-import {
-  AdminAccountControllerService,
-  ApiResponseAdminAccountEntity,
-} from '../../../../../../../open-api-modules/identity-api-docs';
+import { AdminAccountControllerService } from '../../../../../../../open-api-modules/identity-api-docs';
 import { MatDialog } from '@angular/material/dialog';
 import { UserListService } from '../../../user/user-list/user-list.service';
 import { NgxPermissionsService } from 'ngx-permissions';
@@ -44,9 +39,10 @@ import { PageEvent } from '@angular/material/paginator/public-api';
 import { Sort } from '@angular/material/sort';
 import { FilterEventModel } from '../../../../../public/models/filter/filter-event.model';
 import { FilterActionEventModel } from '../../../../../public/models/filter/filter-action-event.model';
-import { BaseManagementLayoutComponent } from '../../../../../share/components';
-import * as moment from 'moment';
-import { ProductStatusDialogComponent } from '../../../../../share/components';
+import {
+  BaseManagementLayoutComponent,
+  ProductStatusDialogComponent,
+} from '../../../../../share/components';
 import {
   ApiResponse,
   LoanStatusService,

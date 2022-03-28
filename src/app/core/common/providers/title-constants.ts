@@ -11,6 +11,7 @@ export class TitleConstants {
     PD_QUESTION: 'Danh sách câu hỏi PD',
     PD_GROUP: 'Danh sách nhóm câu hỏi PD',
     PD_MODEL: 'Danh sách PD Model',
+    PD_ANSWER: 'Danh sách câu trả lời PD',
     PRODUCT_STATUS: 'Danh sách trạng thái',
     PRODUCT_WORKFLOW: 'Danh sách luồng trạng thái',
     MERCHANT_LIST: 'Danh sách merchant',

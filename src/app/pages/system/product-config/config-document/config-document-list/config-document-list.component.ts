@@ -507,7 +507,7 @@ export class ConfigDocumentListComponent implements OnInit {
 
   handleFilterActionTriggerDocumentTypeId(event: FilterActionEventModel) {
     if (event.actionControlName === 'SELECT_ALL_DOCUMENT_TYPE') {
-      this.router.navigateByUrl('/system/system-config/document-type');
+      this.router.navigateByUrl('/system/product-config/document-type');
     }
   }
 
