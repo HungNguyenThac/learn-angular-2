@@ -6,13 +6,14 @@ export class GlobalConstants {
     DOCUMENTATION_COMPLETE: 'dashboardApplications:findDocumentCompleteTngLoan',
     FUNDED: 'dashboardApplications:findAwaitingContractTngLoan',
     CONTRACT_ACCEPTED: 'dashboardApplications:findContractAcceptedTngLoan',
-    AWAITING_DISBURSEMENT: 'dashboardApplications:findAwaitingDisbursementTngLoan',
+    AWAITING_DISBURSEMENT:
+      'dashboardApplications:findAwaitingDisbursementTngLoan',
     DISBURSED: 'dashboardApplications:findDisbursedTngLoan',
     IN_REPAYMENT: 'dashboardApplications:findUnderRepaymentTngLoan',
     COMPLETED: 'dashboardApplications:findCompletedTngLoan',
     REJECTED: 'dashboardApplications:findRejectedTngLoan',
     WITHDRAW: 'dashboardApplications:findWithdrawTngLoan',
-    CONTRACT_REJECTED: 'dashboardApplications:findContractRejectTngLoan'
+    CONTRACT_REJECTED: 'dashboardApplications:findContractRejectTngLoan',
   };
 
   public static VIEW_LOAN_VAC_STATUS_PERMISSION: any = {
@@ -22,7 +23,8 @@ export class GlobalConstants {
     DOCUMENTATION_COMPLETE: 'dashboardApplications:findDocumentCompleteVacLoan',
     FUNDED: 'dashboardApplications:findAwaitingContractVacLoan',
     CONTRACT_ACCEPTED: 'dashboardApplications:findContractAcceptedVacLoan',
-    AWAITING_DISBURSEMENT: 'dashboardApplications:findAwaitingDisbursementVacLoan',
+    AWAITING_DISBURSEMENT:
+      'dashboardApplications:findAwaitingDisbursementVacLoan',
     DISBURSED: 'dashboardApplications:findDisbursedVacLoan',
     IN_REPAYMENT: 'dashboardApplications:findUnderRepaymentVacLoan',
     COMPLETED: 'dashboardApplications:findCompletedVacLoan',
@@ -44,9 +46,8 @@ export class GlobalConstants {
     COMPLETED: 'paydays:updateStatusCompletedTngLoan',
     REJECTED: 'paydays:updateStatusRejectedTngLoan',
     WITHDRAW: 'paydays:updateStatusWithdrawTngLoan',
-    CONTRACT_REJECTED: 'paydays:updateStatusContractRejectTngLoan'
+    CONTRACT_REJECTED: 'paydays:updateStatusContractRejectTngLoan',
   };
-
 
   public static CHANGE_LOAN_VAC_STATUS_PERMISSION: any = {
     INITIALIZED: 'paydays:updateStatusInitializeVacLoan',
@@ -61,6 +62,19 @@ export class GlobalConstants {
     COMPLETED: 'paydays:updateStatusCompletedVacLoan',
     REJECTED: 'paydays:updateStatusRejectedVacLoan',
     WITHDRAW: 'paydays:updateStatusWithdrawVacLoan',
-    CONTRACT_REJECTED: 'paydays:updateStatusContractRejectVacLoan'
+    CONTRACT_REJECTED: 'paydays:updateStatusContractRejectVacLoan',
+  };
+
+  public static CHANGE_APPLICATION_DOCUMENT_TYPE: any = {
+    GET: 'dashboardApplicationDocuments:getApplicationDocumentTypes',
+    CREATE: 'applicationDocuments:createApplicationDocumentType',
+    UPDATE: 'applicationDocuments:updateApplicationDocumentType',
+    DELETE: 'applicationDocuments:deleteApplicationDocumentType',
+  };
+
+  public static CHANGE_APPLICATION_DOCUMENT: any = {
+    CREATE: 'applicationDocuments:createApplicationDocument',
+    UPDATE: 'applicationDocuments:updateApplicationDocument',
+    DELETE: 'applicationDocuments:deleteApplicationDocument',
   };
 }

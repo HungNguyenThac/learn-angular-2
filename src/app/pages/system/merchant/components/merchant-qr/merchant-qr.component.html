@@ -5,6 +5,7 @@
         <div
           class="qr-code position-relative cursor-pointer"
           (click)="printQr()"
+          *ngIf="_merchantQr"
         >
           <img
             id="merchant-qr-code-img"

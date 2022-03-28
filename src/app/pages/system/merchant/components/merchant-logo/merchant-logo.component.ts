@@ -11,18 +11,8 @@ import { Subscription } from 'rxjs';
 import { MultiLanguageService } from '../../../../../share/translate/multiLanguageService';
 import { NotificationService } from '../../../../../core/services/notification.service';
 import { ToastrService } from 'ngx-toastr';
-import {
-  BUTTON_TYPE,
-  MULTIPLE_ELEMENT_ACTION_TYPE,
-  RESPONSE_CODE,
-} from '../../../../../core/common/enum/operator';
-import { MerchantDetailDialogComponent } from '../../../../../share/components';
 import { MatDialog } from '@angular/material/dialog';
-import {
-  AdminControllerService,
-  ApiResponseMerchant,
-  ApiResponseString,
-} from '../../../../../../../open-api-modules/bnpl-api-docs';
+import { AdminControllerService } from '../../../../../../../open-api-modules/bnpl-api-docs';
 import {
   ApiResponseCustomerInfo,
   MerchantControllerService,
@@ -96,7 +86,7 @@ export class MerchantLogoComponent implements OnInit, OnDestroy {
       'undo',
       'redo',
     ],
-    readOnly: true
+    readOnly: true,
   };
 
   constructor(
@@ -166,17 +156,16 @@ export class MerchantLogoComponent implements OnInit, OnDestroy {
   }
 
   public onReadyCkEditor(editor) {
-    editor.plugins.get('FileRepository').createUploadAdapter = (loader) => {
-      return new CkEditorAdapters(loader, editor.config);
-    };
+    // editor.plugins.get('FileRepository').createUploadAdapter = (loader) => {
+    //   return new CkEditorAdapters(loader, editor.config);
+    // };
 
-    editor.ui
-      .getEditableElement()
-      .parentElement.insertBefore(
-        editor.ui.view.toolbar.element,
-        editor.ui.getEditableElement()
-      );
-
+    // editor.ui
+    //   .getEditableElement()
+    //   .parentElement.insertBefore(
+    //     editor.ui.view.toolbar.element,
+    //     editor.ui.getEditableElement()
+    //   );
   }
 
   ngOnDestroy(): void {

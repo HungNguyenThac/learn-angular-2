@@ -45,6 +45,8 @@ import {
   CreateApplicationDocumentDto,
   UpdateApplicationDocumentDto,
 } from '../../../../../../../open-api-modules/monexcore-api-docs';
+import { GlobalConstants } from '../../../../../core/common/global-constants';
+import { NgxPermissionsService } from 'ngx-permissions';
 
 @Component({
   selector: 'app-config-document-list',
@@ -148,7 +150,7 @@ export class ConfigDocumentListComponent implements OnInit {
       'breadcrumb.search_field.config_document'
     ),
     searchable: true,
-    showBtnAdd: true,
+    showBtnAdd: false,
     btnAddText: this.multiLanguageService.instant(
       'system.system_config.application_document.add'
     ),
@@ -168,7 +170,7 @@ export class ConfigDocumentListComponent implements OnInit {
       type: FILTER_TYPE.SEARCH_SELECT,
       controlName: 'applicationDocumentType',
       value: null,
-      showAction: true,
+      showAction: false,
       titleAction: this.multiLanguageService.instant('common.view'),
       actionControlName: 'SELECT_ALL_DOCUMENT_TYPE',
       options: [],
@@ -210,6 +212,12 @@ export class ConfigDocumentListComponent implements OnInit {
     },
   ];
 
+  userHasPermissions = {
+    updateDocument: false,
+    deleteDocument: false,
+    getDocumentType: false,
+  };
+
   private readonly routeAllState$: Observable<Params>;
 
   constructor(
@@ -222,6 +230,7 @@ export class ConfigDocumentListComponent implements OnInit {
     private titleService: Title,
     private activatedRoute: ActivatedRoute,
     private configDocumentListService: ConfigDocumentListService,
+    private permissionsService: NgxPermissionsService,
     private store: Store<fromStore.State>
   ) {
     this.routeAllState$ = store.select(fromSelectors.getRouterAllState);
@@ -241,6 +250,13 @@ export class ConfigDocumentListComponent implements OnInit {
       this.routeAllState$.subscribe((params) => {
         this._parseQueryParams(params?.queryParams);
         this._getApplicationDocumentList();
+      })
+    );
+    this.subManager.add(
+      this.permissionsService.permissions$.subscribe((permissions) => {
+        if (permissions) {
+          this._checkUserPermissions();
+        }
       })
     );
   }
@@ -859,5 +875,72 @@ export class ConfigDocumentListComponent implements OnInit {
         );
         this.refreshContent();
       });
+  }
+
+  private async _checkUserPermissions() {
+    this.breadcrumbOptions.showBtnAdd =
+      await this.permissionsService.hasPermission(
+        GlobalConstants.CHANGE_APPLICATION_DOCUMENT.CREATE
+      );
+
+    this.userHasPermissions.deleteDocument =
+      await this.permissionsService.hasPermission(
+        GlobalConstants.CHANGE_APPLICATION_DOCUMENT.DELETE
+      );
+
+    this.userHasPermissions.updateDocument =
+      await this.permissionsService.hasPermission(
+        GlobalConstants.CHANGE_APPLICATION_DOCUMENT.UPDATE
+      );
+
+    this.userHasPermissions.getDocumentType =
+      await this.permissionsService.hasPermission(
+        GlobalConstants.CHANGE_APPLICATION_DOCUMENT_TYPE.GET
+      );
+
+    this.displaySelectBtn();
+    this.displayTableBtn();
+    this.displayFilterAction();
+  }
+
+  private displaySelectBtn() {
+    for (const selectBtn of this.selectButtons) {
+      if (
+        selectBtn.action === MULTIPLE_ELEMENT_ACTION_TYPE.DELETE &&
+        this.userHasPermissions.deleteDocument
+      ) {
+        selectBtn.hidden = false;
+      }
+    }
+  }
+
+  private displayTableBtn() {
+    for (const actionBtn of this.actionButtons) {
+      switch (actionBtn.action) {
+        case TABLE_ACTION_TYPE.EDIT:
+          if (this.userHasPermissions.updateDocument) {
+            actionBtn.hidden = false;
+          }
+          break;
+        case TABLE_ACTION_TYPE.DELETE:
+          if (this.userHasPermissions.deleteDocument) {
+            actionBtn.hidden = false;
+          }
+          break;
+        default:
+          break;
+      }
+    }
+  }
+
+  private displayFilterAction() {
+    for (const filterOption of this.filterOptions) {
+      if (
+        filterOption.controlName === 'applicationDocumentType' &&
+        this.userHasPermissions.getDocumentType
+      ) {
+        filterOption.showAction = true;
+      }
+    }
   }
 }
