@@ -43,6 +43,8 @@ import { FilterEventModel } from '../../../../../public/models/filter/filter-eve
 import { TableActionEventModel } from '../../../../../public/models/filter/table-action-event.model';
 import * as _ from 'lodash';
 import { DocumentTypeSaveDialogComponent } from '../components/document-type-save-dialog/document-type-save-dialog.component';
+import { NgxPermissionsService } from 'ngx-permissions';
+import { GlobalConstants } from '../../../../../core/common/global-constants';
 
 @Component({
   selector: 'app-document-type-list',
@@ -107,7 +109,7 @@ export class DocumentTypeListComponent implements OnInit {
   ];
   selectButtons: TableSelectActionModel[] = [
     {
-      hidden: false,
+      hidden: true,
       action: MULTIPLE_ELEMENT_ACTION_TYPE.DELETE,
       color: 'accent',
       content: this.multiLanguageService.instant(
@@ -137,7 +139,7 @@ export class DocumentTypeListComponent implements OnInit {
       'breadcrumb.search_field.config_document_type'
     ),
     searchable: true,
-    showBtnAdd: true,
+    showBtnAdd: false,
     btnAddText: this.multiLanguageService.instant(
       'system.system_config.document_type.add'
     ),
@@ -161,26 +163,10 @@ export class DocumentTypeListComponent implements OnInit {
     },
   ];
 
-  actionButtons: TableActionButtonModel[] = [
-    {
-      hidden: false,
-      action: TABLE_ACTION_TYPE.EDIT,
-      color: 'accent',
-      tooltip: this.multiLanguageService.instant('common.edit'),
-      imageSrc: 'assets/img/icon/group-5/svg/edit-small.svg',
-      style: 'background-color: rgba(255, 255, 255, 0.1);',
-    },
-    {
-      hidden: false,
-      action: TABLE_ACTION_TYPE.DELETE,
-      color: 'accent',
-      tooltip: this.multiLanguageService.instant('common.delete'),
-      imageSrc: 'assets/img/icon/group-5/svg/trash-red.svg',
-      style: 'background-color: rgba(255, 255, 255, 0.1);',
-    },
-  ];
-
-  private readonly routeAllState$: Observable<Params>;
+  userHasPermissions = {
+    updateDocumentType: false,
+    deleteDocumentType: false,
+  };
 
   constructor(
     private multiLanguageService: MultiLanguageService,
@@ -192,11 +178,33 @@ export class DocumentTypeListComponent implements OnInit {
     private titleService: Title,
     private activatedRoute: ActivatedRoute,
     private configDocumentListService: ConfigDocumentListService,
-    private store: Store<fromStore.State>
+    private store: Store<fromStore.State>,
+    private permissionsService: NgxPermissionsService
   ) {
     this.routeAllState$ = store.select(fromSelectors.getRouterAllState);
     this._initFilterForm();
   }
+
+  actionButtons: TableActionButtonModel[] = [
+    {
+      hidden: true,
+      action: TABLE_ACTION_TYPE.EDIT,
+      color: 'accent',
+      tooltip: this.multiLanguageService.instant('common.edit'),
+      imageSrc: 'assets/img/icon/group-5/svg/edit-small.svg',
+      style: 'background-color: rgba(255, 255, 255, 0.1);',
+    },
+    {
+      hidden: true,
+      action: TABLE_ACTION_TYPE.DELETE,
+      color: 'accent',
+      tooltip: this.multiLanguageService.instant('common.delete'),
+      imageSrc: 'assets/img/icon/group-5/svg/trash-red.svg',
+      style: 'background-color: rgba(255, 255, 255, 0.1);',
+    },
+  ];
+
+  private readonly routeAllState$: Observable<Params>;
 
   ngOnInit(): void {
     this.store.dispatch(new fromActions.SetOperatorInfo(null));
@@ -208,6 +216,13 @@ export class DocumentTypeListComponent implements OnInit {
       this.routeAllState$.subscribe((params) => {
         this._parseQueryParams(params?.queryParams);
         this._getApplicationDocumentTypeList();
+      })
+    );
+    this.subManager.add(
+      this.permissionsService.permissions$.subscribe((permissions) => {
+        if (permissions) {
+          this._checkUserPermissions();
+        }
       })
     );
   }
@@ -654,5 +669,55 @@ export class DocumentTypeListComponent implements OnInit {
           this.refreshContent();
         })
     );
+  }
+
+  private async _checkUserPermissions() {
+    this.breadcrumbOptions.showBtnAdd =
+      await this.permissionsService.hasPermission(
+        GlobalConstants.CHANGE_APPLICATION_DOCUMENT_TYPE.CREATE
+      );
+
+    this.userHasPermissions.deleteDocumentType =
+      await this.permissionsService.hasPermission(
+        GlobalConstants.CHANGE_APPLICATION_DOCUMENT_TYPE.DELETE
+      );
+
+    this.userHasPermissions.updateDocumentType =
+      await this.permissionsService.hasPermission(
+        GlobalConstants.CHANGE_APPLICATION_DOCUMENT_TYPE.UPDATE
+      );
+
+    this.displaySelectBtn();
+    this.displayTableBtn();
+  }
+
+  private displaySelectBtn() {
+    for (const selectBtn of this.selectButtons) {
+      if (
+        selectBtn.action === MULTIPLE_ELEMENT_ACTION_TYPE.DELETE &&
+        this.userHasPermissions.deleteDocumentType
+      ) {
+        selectBtn.hidden = false;
+      }
+    }
+  }
+
+  private displayTableBtn() {
+    for (const actionBtn of this.actionButtons) {
+      switch (actionBtn.action) {
+        case TABLE_ACTION_TYPE.EDIT:
+          if (this.userHasPermissions.updateDocumentType) {
+            actionBtn.hidden = false;
+          }
+          break;
+        case TABLE_ACTION_TYPE.DELETE:
+          if (this.userHasPermissions.deleteDocumentType) {
+            actionBtn.hidden = false;
+          }
+          break;
+        default:
+          break;
+      }
+    }
   }
 }
