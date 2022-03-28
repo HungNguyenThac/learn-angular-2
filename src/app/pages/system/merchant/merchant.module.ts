@@ -11,7 +11,8 @@ import { MerchantDetailComponent } from './components/merchant-detail/merchant-d
 import { MerchantLogoComponent } from './components/merchant-logo/merchant-logo.component';
 import { MerchantQrComponent } from './components/merchant-qr/merchant-qr.component';
 import { TitleConstants } from '../../../core/common/providers/title-constants';
-import {CKEditorModule} from "@ckeditor/ckeditor5-angular";
+import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
+import { NgxPermissionsGuard } from 'ngx-permissions';
 
 export const MerchantRoutes: Routes = [
   {
@@ -20,9 +21,14 @@ export const MerchantRoutes: Routes = [
       {
         path: 'list',
         component: MerchantListComponent,
+        canActivateChild: [NgxPermissionsGuard],
         data: {
           title: TitleConstants.TITLE_VALUE.MERCHANT_LIST,
           animation: true,
+          permissions: {
+            only: ['dashboardMerchants:getMerchants'],
+            redirectTo: '/',
+          },
         },
       },
     ],
@@ -44,7 +50,7 @@ export const MerchantRoutes: Routes = [
     TranslateModule,
     FormsModule,
     PdfViewerModule,
-    CKEditorModule
+    CKEditorModule,
   ],
 })
 export class MerchantModule {}

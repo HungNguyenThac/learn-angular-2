@@ -128,7 +128,7 @@ export class PdQuestionsListComponent implements OnInit, OnDestroy {
   subManager = new Subscription();
   breadcrumbOptions: BreadcrumbOptionsModel = {
     title: this.multiLanguageService.instant('breadcrumb.pd_questions'),
-    iconImgSrc: 'assets/img/icon/group-7/svg/merchant.svg',
+    iconImgSrc: 'assets/img/icon/group-7/svg/setting-green.svg',
     searchPlaceholder: 'Mã câu hỏi, nội dung câu hỏi',
     searchable: true,
     showBtnAdd: true,

@@ -4621,7 +4621,7 @@ components:
           type: array
           items:
             type: string
-        isHidden:
+        isDisplayed:
           type: boolean
         isMandatory:
           type: boolean

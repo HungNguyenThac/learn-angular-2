@@ -25,6 +25,7 @@ import {
   AdminControllerService,
   ApiResponseMerchant,
   ApiResponseString,
+  BnplControllerService,
   MerchantStatus,
   UpdateAgentInformationDto,
   UpdateMerchantRequestDto,
@@ -68,6 +69,7 @@ export class MerchantElementComponent implements OnInit, OnDestroy {
     private notifier: ToastrService,
     private merchantControllerService: MerchantControllerService,
     private adminControllerService: AdminControllerService,
+    private bnplControllerService: BnplControllerService,
     private _sanitizer: DomSanitizer
   ) {}
 
@@ -78,8 +80,8 @@ export class MerchantElementComponent implements OnInit, OnDestroy {
   public generateQrCode(merchantId) {
     if (!merchantId) return;
     this.subManager.add(
-      this.adminControllerService
-        .v1AdminMerchantsQrcodePost({ id: this.merchantId })
+      this.bnplControllerService
+        .v1ApplicationQrcodePost({ merchantId: this.merchantId })
         .subscribe((data: ApiResponseString) => {
           if (!data || data.responseCode !== RESPONSE_CODE.SUCCESS) {
             this.notifier.error(JSON.stringify(data?.message), data?.errorCode);

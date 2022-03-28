@@ -88,42 +88,42 @@ export class ProductWorkflowListComponent implements OnInit {
   );
   breadcrumbOptions: BreadcrumbOptionsModel = {
     title: this.multiLanguageService.instant('breadcrumb.product_workflow'),
-    iconImgSrc: 'assets/img/icon/group-5/svg/person-roll.svg',
+    iconImgSrc: 'assets/img/icon/group-7/svg/setting-green.svg',
     searchPlaceholder: this.multiLanguageService.instant(
       'breadcrumb.search_field.user_list'
     ),
-    searchable: true,
+    searchable: false,
     showBtnAdd: true,
     btnAddText: this.multiLanguageService.instant('product_workflow.add'),
     keyword: '',
   };
   filterOptions: FilterOptionModel[] = [
-    {
-      title: this.multiLanguageService.instant('filter.time'),
-      type: FILTER_TYPE.DATETIME,
-      controlName: 'createdAt',
-      value: null,
-    },
-    {
-      title: this.multiLanguageService.instant('filter.account_status'),
-      type: FILTER_TYPE.SELECT,
-      controlName: 'userStatus',
-      value: null,
-      options: [
-        {
-          title: this.multiLanguageService.instant('common.all'),
-          value: null,
-        },
-        {
-          title: this.multiLanguageService.instant('common.active'),
-          value: AdminAccountEntity.UserStatusEnum.Active,
-        },
-        {
-          title: this.multiLanguageService.instant('common.inactive'),
-          value: AdminAccountEntity.UserStatusEnum.Locked,
-        },
-      ],
-    },
+    // {
+    //   title: this.multiLanguageService.instant('filter.time'),
+    //   type: FILTER_TYPE.DATETIME,
+    //   controlName: 'createdAt',
+    //   value: null,
+    // },
+    // {
+    //   title: this.multiLanguageService.instant('filter.account_status'),
+    //   type: FILTER_TYPE.SELECT,
+    //   controlName: 'userStatus',
+    //   value: null,
+    //   options: [
+    //     {
+    //       title: this.multiLanguageService.instant('common.all'),
+    //       value: null,
+    //     },
+    //     {
+    //       title: this.multiLanguageService.instant('common.active'),
+    //       value: AdminAccountEntity.UserStatusEnum.Active,
+    //     },
+    //     {
+    //       title: this.multiLanguageService.instant('common.inactive'),
+    //       value: AdminAccountEntity.UserStatusEnum.Locked,
+    //     },
+    //   ],
+    // },
   ];
 
   allColumns: DisplayedFieldsModel[] = [

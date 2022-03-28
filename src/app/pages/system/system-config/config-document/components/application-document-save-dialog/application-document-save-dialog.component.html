@@ -54,7 +54,6 @@
               }}</mat-label>
               <mat-select
                 disableOptionCentering="true"
-                required
                 formControlName="applicationDocumentType"
                 multiple
               >
@@ -84,8 +83,14 @@
                 <mat-option>
                   <ngx-mat-select-search
                     [formControl]="selectSearchCtrl"
-                    [placeholderLabel]="'Nhóm tài liệu'"
-                    [noEntriesFoundLabel]="'Nhóm tài liệu không tồn tại'"
+                    [placeholderLabel]="
+                      'system.system_config.application_document.search_document_type'
+                        | translate
+                    "
+                    [noEntriesFoundLabel]="
+                      'system.system_config.application_document.empty_document_type'
+                        | translate
+                    "
                   ></ngx-mat-select-search>
                 </mat-option>
                 <mat-option
@@ -117,7 +122,11 @@
                 "system.system_config.application_document.file_type"
                   | translate
               }}</mat-label>
-              <mat-chip-list #chipList aria-label="File type selection" [formControl]="fileTypeControl">
+              <mat-chip-list
+                #chipList
+                aria-label="File type selection"
+                [formControl]="fileTypeControl"
+              >
                 <mat-chip
                   *ngFor="let fileType of fileTypes"
                   (removed)="removeFileType(fileType)"
@@ -174,17 +183,18 @@
                 "system.system_config.application_document.description"
                   | translate
               }}</mat-label>
-              <input
+              <textarea
+                matInput
+                class="text-area"
+                name="description"
+                formControlName="description"
+                appTypeMaxLength
+                maxlength="256"
                 [placeholder]="
                   'system.system_config.application_document.description'
                     | translate
                 "
-                formControlName="description"
-                matInput
-                appTypeMaxLength
-                maxlength="256"
-                type="text"
-              />
+              ></textarea>
               <show-errors
                 [control]="applicationDocumentForm.controls['description']"
                 [controlLabel]="
@@ -195,11 +205,26 @@
               >
               </show-errors>
             </mat-form-field>
+
+            <div class="row">
+              <div class="col-6">
+                <mat-checkbox formControlName="isMandatory">{{
+                  "system.system_config.application_document.is_mandatory"
+                    | translate
+                }}</mat-checkbox>
+              </div>
+              <div class="col-6">
+                <mat-checkbox formControlName="isDisplayed">{{
+                  "system.system_config.application_document.is_display"
+                    | translate
+                }}</mat-checkbox>
+              </div>
+            </div>
           </div>
         </div>
 
         <!--  Actions -->
-        <div class="row mt-2">
+        <div class="row mt-4">
           <div class="col-12 d-flex gap-2 justify-content-end">
             <button class="bg-grey" mat-button mat-dialog-close>
               {{ "account.info.cancel_update" | translate }}

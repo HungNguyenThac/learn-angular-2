@@ -14,8 +14,6 @@ import {
   BUTTON_TYPE,
   DATA_CELL_TYPE,
   DATA_STATUS_TYPE,
-  DOCUMENT_BTN_TYPE,
-  FILTER_ACTION_TYPE,
   FILTER_TYPE,
   MULTIPLE_ELEMENT_ACTION_TYPE,
   NAV_ITEM,
@@ -31,7 +29,6 @@ import { FilterActionEventModel } from '../../../../public/models/filter/filter-
 import {
   BaseManagementLayoutComponent,
   MerchantDetailDialogComponent,
-  MerchantGroupDialogComponent,
 } from '../../../../share/components';
 import { MatDialog } from '@angular/material/dialog';
 import { Title } from '@angular/platform-browser';
@@ -53,7 +50,6 @@ import { MerchantListService } from './merchant-list.service';
 import * as fromSelectors from '../../../../core/store/selectors';
 import { OverviewItemModel } from '../../../../public/models/external/overview-item.model';
 import * as moment from 'moment';
-import { DOCUMENT_TYPE } from '../../../../core/common/enum/payday-loan';
 
 @Component({
   selector: 'app-merchant-list',
@@ -900,79 +896,5 @@ export class MerchantListComponent implements OnInit {
   formatTime(time) {
     if (!time) return;
     return moment(new Date(time), 'YYYY-MM-DD HH:mm:ss').format('DD/MM/YYYY');
-  }
-
-  private _updateDocument(
-    documentType: DOCUMENT_TYPE,
-    imgSrc,
-    documentBtnType: DOCUMENT_BTN_TYPE
-  ) {
-    switch (documentType) {
-      case DOCUMENT_TYPE.LOGO:
-        this.sendUpdateRequest(
-          {
-            logo: imgSrc,
-          },
-          documentType
-        );
-        break;
-      case DOCUMENT_TYPE.IMAGES:
-        let action = null;
-        if (documentBtnType === DOCUMENT_BTN_TYPE.UPDATE) {
-          action = 'remove';
-        } else if (documentBtnType === DOCUMENT_BTN_TYPE.UPLOAD) {
-          action = 'add';
-        }
-
-        this.sendUpdateRequest(
-          {
-            updateDescriptionImgRequest: {
-              action: action,
-              files: [imgSrc],
-            },
-          },
-          documentType
-        );
-        break;
-      default:
-        break;
-    }
-  }
-
-  private sendUpdateRequest(request, documentType) {
-    this.notificationService.showLoading({ showContent: true });
-    this.subManager.add(
-      this.adminControllerService
-        .v1AdminMerchantsIdPut(this.expandedElementId, request)
-        .subscribe(
-          (result) => {
-            if (result?.responseCode !== RESPONSE_CODE.SUCCESS) {
-              this.notifier.error(
-                JSON.stringify(result?.message),
-                result?.errorCode
-              );
-              return;
-            }
-            this.refreshDocumentInfo();
-          },
-          (error) => {
-            this.notifier.error(JSON.stringify(error));
-            this.notificationService.hideLoading();
-          },
-          () => {
-            this.notificationService.hideLoading();
-          }
-        )
-    );
-  }
-
-  private refreshDocumentInfo() {
-    setTimeout(() => {
-      this.refreshContent();
-      this.notifier.success(
-        this.multiLanguageService.instant('common.update_success')
-      );
-      this.notificationService.hideLoading();
-    }, 3000);
   }
 }

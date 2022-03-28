@@ -6,13 +6,8 @@
     >
       <div class="d-inline-flex row align-items-center gap-3">
         <section
-          class="
-            col-12 col-sm-12 col-md-6 col-lg-5
-            d-flex
-            align-items-center
-            gap-2
-            pe-0
-          "
+          class="d-flex align-items-center gap-2 pe-0"
+          [ngClass]="{ 'col-12 col-sm-12 col-md-6 col-lg-5': searchable }"
         >
           <span
             *ngIf="iconClass; else isIconImgSrc"
@@ -28,11 +23,10 @@
           </h2>
         </section>
 
-        <section class="col-12 col-sm-12 col-md-6 col-lg-5">
+        <section class="col-12 col-sm-12 col-md-6 col-lg-5" *ngIf="searchable">
           <form
             [formGroup]="searchForm"
             class="form-container"
-            *ngIf="searchable"
             (submit)="submitSearch()"
           >
             <div

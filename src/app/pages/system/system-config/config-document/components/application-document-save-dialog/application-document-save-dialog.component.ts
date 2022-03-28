@@ -13,8 +13,10 @@ import {
 } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { BUTTON_TYPE } from '../../../../../../core/common/enum/operator';
-import { ApplicationDocument } from '../../../../../../../../open-api-modules/com-api-docs';
-import { ApplicationDocumentType } from '../../../../../../../../open-api-modules/dashboard-api-docs';
+import {
+  ApplicationDocument,
+  ApplicationDocumentType,
+} from '../../../../../../../../open-api-modules/dashboard-api-docs';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { Observable, Subject } from 'rxjs';
@@ -99,6 +101,8 @@ export class ApplicationDocumentSaveDialogComponent implements OnInit {
       description: [''],
       fileType: this.fileTypeControl,
       applicationDocumentType: [''],
+      isDisplayed: [''],
+      isMandatory: [''],
     });
   }
 
@@ -114,6 +118,8 @@ export class ApplicationDocumentSaveDialogComponent implements OnInit {
       fileType: this.fileTypes,
       applicationDocumentType:
         this.applicationDocument?.applicationDocumentType,
+      isDisplayed: this.applicationDocument?.isDisplayed,
+      isMandatory: this.applicationDocument?.isMandatory,
     });
 
     this.filterSelectOptions();

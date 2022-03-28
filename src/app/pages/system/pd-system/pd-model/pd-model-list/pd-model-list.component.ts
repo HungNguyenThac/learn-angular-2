@@ -131,7 +131,7 @@ export class PdModelListComponent implements OnInit, OnDestroy {
   subManager = new Subscription();
   breadcrumbOptions: BreadcrumbOptionsModel = {
     title: this.multiLanguageService.instant('breadcrumb.pd_model'),
-    iconImgSrc: 'assets/img/icon/group-7/svg/merchant.svg',
+    iconImgSrc: 'assets/img/icon/group-7/svg/setting-green.svg',
     searchPlaceholder: 'Mã PD model, tên PD model, tên nhóm câu hỏi',
     searchable: true,
     showBtnAdd: true,

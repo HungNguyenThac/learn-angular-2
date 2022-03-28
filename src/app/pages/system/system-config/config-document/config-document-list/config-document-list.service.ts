@@ -7,6 +7,14 @@ import {
   UpdateApplicationDocumentTypeRequest,
 } from '../../../../../../../open-api-modules/com-api-docs';
 import { ApplicationDocumentControllerService as DashboardApplicationDocumentControllerService } from '../../../../../../../open-api-modules/dashboard-api-docs';
+import {
+  ApplicationDocumentsService as MonexCoreApplicationDocumentControllerService,
+  CreateApplicationDocumentDto,
+  CreateApplicationDocumentTypeDto,
+  UpdateAdtMapAdDto,
+  UpdateApplicationDocumentDto,
+  UpdateApplicationDocumentTypeDto,
+} from '../../../../../../../open-api-modules/monexcore-api-docs';
 import { QUERY_CONDITION_TYPE } from '../../../../../core/common/enum/operator';
 import * as _ from 'lodash';
 
@@ -15,8 +23,8 @@ import * as _ from 'lodash';
 })
 export class ConfigDocumentListService {
   constructor(
-    private comApplicationDocumentControllerService: ComApplicationDocumentControllerService,
-    private dashboardApplicationDocumentControllerService: DashboardApplicationDocumentControllerService
+    private dashboardApplicationDocumentControllerService: DashboardApplicationDocumentControllerService,
+    private monexCoreApplicationDocumentControllerService: MonexCoreApplicationDocumentControllerService
   ) {}
 
   public getDataApplicationDocuments(params) {
@@ -107,50 +115,76 @@ export class ConfigDocumentListService {
   }
 
   public deleteApplicationDocument(id: string) {
-    return this.comApplicationDocumentControllerService.deleteApplicationDocument(
+    return this.monexCoreApplicationDocumentControllerService.applicationDocumentControllerDeleteApplicationDocument(
       id
     );
   }
 
   public deleteApplicationDocumentType(id: string) {
-    return this.comApplicationDocumentControllerService.deleteApplicationDocumentType(
+    return this.monexCoreApplicationDocumentControllerService.applicationDocumentControllerDeleteApplicationDocumentType(
       id
     );
   }
 
   public createApplicationDocument(
-    createApplicationDocumentRequest: CreateApplicationDocumentRequest
+    createApplicationDocumentRequest: CreateApplicationDocumentDto
   ) {
-    return this.comApplicationDocumentControllerService.createApplicationDocument(
+    return this.monexCoreApplicationDocumentControllerService.applicationDocumentControllerCreateApplicationDocument(
       createApplicationDocumentRequest
     );
   }
 
   public updateApplicationDocument(
     id: string,
-    updateApplicationDocumentRequest: UpdateApplicationDocumentRequest
+    updateApplicationDocumentRequest: UpdateApplicationDocumentDto
   ) {
-    return this.comApplicationDocumentControllerService.updateApplicationDocument(
+    return this.monexCoreApplicationDocumentControllerService.applicationDocumentControllerUpdateApplicationDocument(
       id,
       updateApplicationDocumentRequest
     );
   }
 
   public createApplicationDocumentType(
-    createApplicationDocumentTypeRequest: CreateApplicationDocumentTypeRequest
+    createApplicationDocumentTypeRequest: CreateApplicationDocumentTypeDto
   ) {
-    return this.comApplicationDocumentControllerService.createApplicationDocumentType(
+    return this.monexCoreApplicationDocumentControllerService.applicationDocumentControllerCreateApplicationDocumentType(
       createApplicationDocumentTypeRequest
     );
   }
 
   public updateApplicationDocumentType(
     id: string,
-    updateApplicationDocumentTypeRequest: UpdateApplicationDocumentTypeRequest
+    updateApplicationDocumentTypeRequest: UpdateApplicationDocumentTypeDto
   ) {
-    return this.comApplicationDocumentControllerService.updateApplicationDocumentType(
+    return this.monexCoreApplicationDocumentControllerService.applicationDocumentControllerUpdateApplicationDocumentType(
       id,
       updateApplicationDocumentTypeRequest
+    );
+  }
+
+  public updateDocumentTypeApplicationDocument(
+    id,
+    appendApplicationDocumentTypeIds,
+    descApplicationDocumentTypeIds
+  ) {
+    let updateAdtMapAdDto: UpdateAdtMapAdDto = {};
+    if (
+      appendApplicationDocumentTypeIds &&
+      appendApplicationDocumentTypeIds.length > 0
+    ) {
+      updateAdtMapAdDto.appendApplicationDocumentTypeIds =
+        appendApplicationDocumentTypeIds;
+    }
+    if (
+      descApplicationDocumentTypeIds &&
+      descApplicationDocumentTypeIds.length > 0
+    ) {
+      updateAdtMapAdDto.descApplicationDocumentTypeIds =
+        descApplicationDocumentTypeIds;
+    }
+    return this.monexCoreApplicationDocumentControllerService.applicationDocumentControllerUpdateAdtAd(
+      id,
+      updateAdtMapAdDto
     );
   }
 }
