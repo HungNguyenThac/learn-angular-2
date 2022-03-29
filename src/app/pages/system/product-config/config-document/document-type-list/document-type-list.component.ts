@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { BaseManagementLayoutComponent } from '../../../../../share/components';
 import {
   BUTTON_TYPE,
@@ -51,7 +51,7 @@ import { GlobalConstants } from '../../../../../core/common/global-constants';
   templateUrl: './document-type-list.component.html',
   styleUrls: ['./document-type-list.component.scss'],
 })
-export class DocumentTypeListComponent implements OnInit {
+export class DocumentTypeListComponent implements OnInit, OnDestroy {
   @ViewChild(BaseManagementLayoutComponent)
   child: BaseManagementLayoutComponent;
 
@@ -719,5 +719,9 @@ export class DocumentTypeListComponent implements OnInit {
           break;
       }
     }
+  }
+
+  ngOnDestroy(): void {
+    this.subManager.unsubscribe();
   }
 }

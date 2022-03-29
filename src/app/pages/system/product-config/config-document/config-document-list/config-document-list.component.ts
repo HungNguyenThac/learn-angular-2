@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import {
   BUTTON_TYPE,
   DATA_CELL_TYPE,
@@ -53,7 +53,7 @@ import { NgxPermissionsService } from 'ngx-permissions';
   templateUrl: './config-document-list.component.html',
   styleUrls: ['./config-document-list.component.scss'],
 })
-export class ConfigDocumentListComponent implements OnInit {
+export class ConfigDocumentListComponent implements OnInit, OnDestroy {
   @ViewChild(BaseManagementLayoutComponent)
   child: BaseManagementLayoutComponent;
 
@@ -235,6 +235,10 @@ export class ConfigDocumentListComponent implements OnInit {
   ) {
     this.routeAllState$ = store.select(fromSelectors.getRouterAllState);
     this._initFilterForm();
+  }
+
+  ngOnDestroy(): void {
+    this.subManager.unsubscribe();
   }
 
   ngOnInit(): void {
