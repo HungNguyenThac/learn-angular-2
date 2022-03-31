@@ -6,6 +6,23 @@
   {{ value | formatPrice: null }}
 </span>
 
+<span *ngIf="type === 'BOOLEAN'">
+  <div *ngIf="value; else booleanFalse" class="d-flex">
+    <img
+      src="assets/img/icon/group-6-op/svg/Checkbox/Checked.svg"
+      alt="checked"
+    />
+  </div>
+  <ng-template #booleanFalse>
+    <div class="d-flex">
+      <img
+        src="assets/img/icon/group-6-op/svg/Checkbox/Unchecked.svg"
+        alt="unchecked"
+      />
+    </div>
+  </ng-template>
+</span>
+
 <span *ngIf="type === 'PERCENT'">
   <ng-container *ngIf="value; else zero">
     {{ value | percent }}

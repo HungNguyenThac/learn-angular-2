@@ -812,13 +812,29 @@
         "name": "Tên hợp đồng",
         "product_name": "Sản phẩm vay",
         "status": "Trạng thái hoạt động",
+        "is_active": "Hoạt động",
         "status_send_contract": "Trạng thái gửi hợp đồng",
         "content": "Nội dung hợp đồng",
         "detail_token": "Xem chi tiết danh sách biến",
         "preview": "Xem trước hợp đồng",
         "active": "Hoạt động",
         "created_at": "Ngày tạo",
-        "total": "Tổng số hợp đồng"
+        "total": "Tổng số hợp đồng",
+        "delete_prompt": {
+          "title": "Xóa cấu hình hợp đồng",
+          "success": "Xóa cấu hình hợp đồng thành công",
+          "content": "Bạn có muốn xóa cấu hình hợp đồng này?"
+        },
+        "add_form_title": "Thêm mới cấu hình hợp đồng",
+        "update_form_title": "Cập nhật cấu hình hợp đồng",
+        "add_success": "Thêm mới cấu hình hợp đồng thành công",
+        "update_success": "Cập nhật cấu hình hợp đồng thành công",
+        "search_product": "Chọn sản phẩm vay",
+        "empty_product": "Sản phẩm vay không tồn tại",
+        "search_product_status": "Chọn trạng thái gửi hợp đồng",
+        "empty_product_status": "Trạng thái không tồn tại",
+        "view_all_properties": "Xem chi tiết danh sách biến",
+        "all_properties": "Chi tiết danh sách biến"
       }
     }
   },

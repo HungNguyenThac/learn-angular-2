@@ -54,32 +54,8 @@
               }}</mat-label>
               <mat-select
                 disableOptionCentering="true"
-                formControlName="applicationDocumentType"
-                multiple
+                formControlName="requiredDocumentGroupId"
               >
-                <mat-select-trigger>
-                  <span
-                    *ngIf="
-                      applicationDocumentForm.controls.applicationDocumentType
-                        .value?.length <= 1;
-                      else typeMultipleOptions
-                    "
-                    >{{
-                      applicationDocumentForm.controls.applicationDocumentType
-                        .value
-                        ? "Đã chọn 1 nhóm"
-                        : ""
-                    }}</span
-                  >
-                  <ng-template #typeMultipleOptions>
-                    Đã chọn
-                    {{
-                      applicationDocumentForm.controls.applicationDocumentType
-                        .value.length
-                    }}
-                    nhóm
-                  </ng-template>
-                </mat-select-trigger>
                 <mat-option>
                   <ngx-mat-select-search
                     [formControl]="selectSearchCtrl"
@@ -101,7 +77,7 @@
               </mat-select>
               <show-errors
                 [control]="
-                  applicationDocumentForm.controls['applicationDocumentType']
+                  applicationDocumentForm.controls['requiredDocumentGroupId']
                 "
                 [controlLabel]="
                   'system.system_config.application_document.application_document_type'
