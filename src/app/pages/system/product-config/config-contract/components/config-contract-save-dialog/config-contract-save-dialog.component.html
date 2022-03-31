@@ -1,0 +1,266 @@
+<div class="container-fluid">
+  <div class="card op-card">
+    <button class="close-btn" mat-dialog-close mat-icon-button tabindex="-1">
+      <span class="sprite-group-7-close"></span>
+    </button>
+
+    <div class="card-title title">
+      {{ title }}
+    </div>
+    <div class="card-body">
+      <form
+        [formGroup]="contractTemplateForm"
+        (ngSubmit)="submitForm()"
+        autocomplete="off"
+      >
+        <div class="row m-content-card-body-dialog">
+          <!--  Info  -->
+          <section class="col-12 mt-2">
+            <div class="row">
+              <!-- Name -->
+              <div class="col-12 col-sm-12 col-md-6 col-lg-6">
+                <mat-form-field
+                  appearance="outline"
+                  class="w-100"
+                  floatLabel="never"
+                >
+                  <mat-label>{{
+                    "system.system_config.contract_template.name" | translate
+                  }}</mat-label>
+                  <input
+                    [placeholder]="
+                      'system.system_config.contract_template.name' | translate
+                    "
+                    formControlName="name"
+                    required
+                    matInput
+                    appTypeMaxLength
+                    maxlength="250"
+                    type="text"
+                  />
+                  <show-errors
+                    [control]="contractTemplateForm.controls['name']"
+                    [controlLabel]="
+                      'system.system_config.contract_template.name' | translate
+                    "
+                    [hasIconPrefix]="false"
+                  >
+                  </show-errors>
+                </mat-form-field>
+              </div>
+
+              <!-- Product -->
+              <div class="col-12 col-sm-12 col-md-6 col-lg-6">
+                <mat-form-field
+                  appearance="outline"
+                  class="w-100"
+                  floatLabel="never"
+                >
+                  <mat-label>{{
+                    "system.system_config.contract_template.product_name"
+                      | translate
+                  }}</mat-label>
+                  <mat-select formControlName="productId">
+                    <mat-option>
+                      <ngx-mat-select-search
+                        [formControl]="productFilterCtrl"
+                        [placeholderLabel]="
+                          'system.system_config.contract_template.search_product'
+                            | translate
+                        "
+                        [noEntriesFoundLabel]="
+                          'system.system_config.contract_template.empty_product'
+                            | translate
+                        "
+                      ></ngx-mat-select-search>
+                    </mat-option>
+                    <mat-option
+                      *ngFor="let option of productStatuses"
+                      [value]="option.id"
+                      >{{ option.name }}</mat-option
+                    >
+                  </mat-select>
+                  <show-errors
+                    [control]="contractTemplateForm.controls['statusId']"
+                    [controlLabel]="
+                      'system.system_config.contract_template.product_name'
+                        | translate
+                    "
+                    [hasIconPrefix]="false"
+                  >
+                  </show-errors>
+                </mat-form-field>
+              </div>
+
+              <!-- Status send contract -->
+              <div class="col-12 col-sm-12 col-md-6 col-lg-6">
+                <mat-form-field
+                  appearance="outline"
+                  class="w-100"
+                  floatLabel="never"
+                >
+                  <mat-label>{{
+                    "system.system_config.contract_template.status_send_contract"
+                      | translate
+                  }}</mat-label>
+                  <mat-select formControlName="statusId">
+                    <mat-option>
+                      <ngx-mat-select-search
+                        [formControl]="productStatusFilterCtrl"
+                        [placeholderLabel]="
+                          'system.system_config.contract_template.search_product_status'
+                            | translate
+                        "
+                        [noEntriesFoundLabel]="
+                          'system.system_config.contract_template.empty_product_status'
+                            | translate
+                        "
+                      ></ngx-mat-select-search>
+                    </mat-option>
+                    <mat-option
+                      *ngFor="let option of productStatuses"
+                      [value]="option.id"
+                      >{{ option.name }}</mat-option
+                    >
+                  </mat-select>
+                  <show-errors
+                    [control]="contractTemplateForm.controls['statusId']"
+                    [controlLabel]="
+                      'system.system_config.contract_template.status_send_contract'
+                        | translate
+                    "
+                    [hasIconPrefix]="false"
+                  >
+                  </show-errors>
+                </mat-form-field>
+              </div>
+
+              <!-- Status -->
+              <div class="col-12 col-sm-12 col-md-6 col-lg-6 align-self-center">
+                <mat-checkbox formControlName="isActive">{{
+                  "system.system_config.contract_template.is_active" | translate
+                }}</mat-checkbox>
+              </div>
+            </div>
+          </section>
+
+          <section class="col-12 mb-4">
+            <mat-accordion>
+              <mat-expansion-panel>
+                <mat-expansion-panel-header class="pb-2 pt-2 ps-3 pe-3">
+                  <mat-panel-title>
+                    <div class="d-flex w-100">
+                      {{
+                        "system.system_config.contract_template.view_all_properties"
+                          | translate
+                      }}
+                    </div>
+                  </mat-panel-title>
+                </mat-expansion-panel-header>
+                <div class="expansion-panel-content">
+                  <div class="p-3">
+                    <table
+                      [dataSource]="dataSource"
+                      mat-table
+                      multiTemplateDataRows
+                      class="expanded-table"
+                    >
+                      <ng-container
+                        *ngFor="let column of displayColumns"
+                        matColumnDef="{{ column?.key }}"
+                      >
+                        <th
+                          *matHeaderCellDef
+                          mat-header-cell
+                        >
+                          {{ column?.title }}
+                        </th>
+
+                        <td *matCellDef="let element" mat-cell>
+                          <app-table-cell-format-data
+                            [format]="column?.format"
+                            [type]="column?.type"
+                            [value]="getPropByString(element, column?.key)"
+                            class="table-cell-format-data"
+                          ></app-table-cell-format-data>
+                        </td>
+                      </ng-container>
+                      <tr
+                        *matHeaderRowDef="displayColumnRowDef"
+                        class="gap-2"
+                        mat-header-row
+                      ></tr>
+                      <tr
+                        *matRowDef="let element; columns: displayColumnRowDef"
+                        class="op-element-row gap-2 d-flex"
+                        mat-row
+                      ></tr>
+
+                      <!-- Row shown when there is no matching data. -->
+                      <tr *matNoDataRow class="mat-row">
+                        <td
+                          [attr.colspan]="displayColumns.length"
+                          class="mat-cell"
+                        >
+                          {{ "common.no_matching_records" | translate }}
+                        </td>
+                      </tr>
+                    </table>
+
+                    <mat-paginator
+                      (page)="onPageChange($event)"
+                      [length]="totalItems"
+                      [pageIndex]="pageIndex"
+                      [pageSizeOptions]="pageSizeOptions"
+                      [pageSize]="pageSize"
+                      showFirstLastButtons
+                    >
+                    </mat-paginator>
+                  </div>
+                </div>
+              </mat-expansion-panel>
+            </mat-accordion>
+          </section>
+
+          <section class="col-12">
+            <div class="row">
+              <div class="col-12 col-sm-12 col-md-6 col-lg-6">
+                <!--  Content  -->
+                <ckeditor
+                  [editor]="Editor"
+                  [formControlName]="'content'"
+                  [config]="ckeditorConfig"
+                  (ready)="onReadyCkEditor($event)"
+                ></ckeditor>
+                <show-errors
+                  [control]="contractTemplateForm.controls['content']"
+                  [controlLabel]="
+                    'system.system_config.contract_template.content' | translate
+                  "
+                  [hasIconPrefix]="false"
+                >
+                </show-errors>
+              </div>
+              <div class="col-12 col-sm-12 col-md-6 col-lg-6">1231</div>
+            </div>
+          </section>
+        </div>
+
+        <!--  Actions -->
+        <div class="row mt-2">
+          <div class="col-12 d-flex gap-2 justify-content-end">
+            <button class="bg-grey" mat-button mat-dialog-close>
+              {{ "account.info.cancel_update" | translate }}
+            </button>
+            <button type="submit" color="accent" mat-flat-button>
+              <span class="sprite-group-5-save-white"></span>
+              <span class="ms-1">{{
+                "account.info.save_update" | translate
+              }}</span>
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
