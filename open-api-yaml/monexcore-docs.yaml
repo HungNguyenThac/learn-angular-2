@@ -1092,45 +1092,45 @@ paths:
         - "contract-property"
   /v1/applicationDocuments:
     post:
-      operationId: "ApplicationDocumentController_createApplicationDocument"
+      operationId: "DocumentController_createApplicationDocument"
       parameters: []
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/CreateApplicationDocumentDto"
+              $ref: "#/components/schemas/CreateDocumentDto"
       responses:
         200:
           description: ""
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ApiResponseApplicationDocument"
+                $ref: "#/components/schemas/ApiResponseRequiredDocument"
       tags:
         - "applicationDocuments"
   /v1/applicationDocuments/applicationDocumentType:
     post:
-      operationId: "ApplicationDocumentController_createApplicationDocumentType"
+      operationId: "DocumentController_createApplicationDocumentType"
       parameters: []
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/CreateApplicationDocumentTypeDto"
+              $ref: "#/components/schemas/CreateDocumentTypeDto"
       responses:
         200:
           description: ""
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ApiResponseApplicationDocumentType"
+                $ref: "#/components/schemas/ApiResponseRequiredDocumentGroup"
       tags:
         - "applicationDocuments"
   /v1/applicationDocuments/{id}:
     put:
-      operationId: "ApplicationDocumentController_updateApplicationDocument"
+      operationId: "DocumentController_updateApplicationDocument"
       parameters:
         - name: "id"
           required: true
@@ -1142,18 +1142,18 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/UpdateApplicationDocumentDto"
+              $ref: "#/components/schemas/UpdateDocumentDto"
       responses:
         200:
           description: ""
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ApiResponseApplicationDocument"
+                $ref: "#/components/schemas/ApiResponseRequiredDocument"
       tags:
         - "applicationDocuments"
     delete:
-      operationId: "ApplicationDocumentController_deleteApplicationDocument"
+      operationId: "DocumentController_deleteApplicationDocument"
       parameters:
         - name: "id"
           required: true
@@ -1171,7 +1171,7 @@ paths:
         - "applicationDocuments"
   /v1/applicationDocuments/applicationDocumentType/{id}:
     put:
-      operationId: "ApplicationDocumentController_updateApplicationDocumentType"
+      operationId: "DocumentController_updateApplicationDocumentType"
       parameters:
         - name: "id"
           required: true
@@ -1183,48 +1183,24 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/UpdateApplicationDocumentTypeDto"
+              $ref: "#/components/schemas/UpdateDocumentTypeDto"
       responses:
         200:
           description: ""
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ApiResponseApplicationDocumentType"
+                $ref: "#/components/schemas/ApiResponseRequiredDocumentGroup"
       tags:
         - "applicationDocuments"
     delete:
-      operationId: "ApplicationDocumentController_deleteApplicationDocumentType"
+      operationId: "DocumentController_deleteApplicationDocumentType"
       parameters:
         - name: "id"
           required: true
           in: "path"
           schema:
             type: "string"
-      responses:
-        200:
-          description: ""
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ApiResponse"
-      tags:
-        - "applicationDocuments"
-  /v1/applicationDocuments/adtAd/{id}:
-    put:
-      operationId: "ApplicationDocumentController_updateAdtAd"
-      parameters:
-        - name: "id"
-          required: true
-          in: "path"
-          schema:
-            type: "string"
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/UpdateAdtMapAdDto"
       responses:
         200:
           description: ""
@@ -1293,6 +1269,37 @@ paths:
       responses:
         200:
           description: ""
+  /customer:
+    post:
+      operationId: "CustomerController_createClient"
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateCustomerRequestDto"
+      responses:
+        201:
+          description: ""
+  /customer/{id}:
+    put:
+      operationId: "CustomerController_updateClient"
+      parameters:
+        - name: "id"
+          required: true
+          in: "path"
+          schema:
+            type: "string"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateCustomerRequestDto"
+      responses:
+        200:
+          description: ""
 info:
   title: "MonexcoreService"
   description: ""
@@ -1301,6 +1308,11 @@ info:
 tags: []
 servers: []
 components:
+  securitySchemes:
+    bearer:
+      scheme: "bearer"
+      bearerFormat: "JWT"
+      type: "http"
   schemas:
     ApiResponse:
       type: "object"
@@ -1711,7 +1723,7 @@ components:
           type: "string"
         name:
           type: "string"
-    CreateApplicationDocumentDto:
+    CreateDocumentDto:
       type: "object"
       properties:
         name:
@@ -1724,13 +1736,15 @@ components:
           type: "boolean"
         isMandatory:
           type: "boolean"
+        requiredDocumentGroupId:
+          type: "string"
       required:
         - "name"
         - "description"
         - "fileType"
         - "isDisplayed"
         - "isMandatory"
-    ApplicationDocumentEntity:
+    RequiredDocumentEntity:
       type: "object"
       properties:
         id:
@@ -1753,11 +1767,13 @@ components:
           type: "string"
         updatedAt:
           type: "string"
-    ApiResponseApplicationDocument:
+        requiredDocumentGroupId:
+          type: "string"
+    ApiResponseRequiredDocument:
       type: "object"
       properties:
         result:
-          $ref: "#/components/schemas/ApplicationDocumentEntity"
+          $ref: "#/components/schemas/RequiredDocumentEntity"
         errorCode:
           type: "string"
         message:
@@ -1769,7 +1785,7 @@ components:
         - "errorCode"
         - "message"
         - "responseCode"
-    CreateApplicationDocumentTypeDto:
+    CreateDocumentTypeDto:
       type: "object"
       properties:
         name:
@@ -1783,14 +1799,14 @@ components:
         - "name"
         - "description"
         - "codeName"
-    ApplicationDocumentTypeEntity:
+    RequiredDocumentGroupEntity:
       type: "object"
       properties: {}
-    ApiResponseApplicationDocumentType:
+    ApiResponseRequiredDocumentGroup:
       type: "object"
       properties:
         result:
-          $ref: "#/components/schemas/ApplicationDocumentTypeEntity"
+          $ref: "#/components/schemas/RequiredDocumentGroupEntity"
         errorCode:
           type: "string"
         message:
@@ -1802,7 +1818,7 @@ components:
         - "errorCode"
         - "message"
         - "responseCode"
-    UpdateApplicationDocumentDto:
+    UpdateDocumentDto:
       type: "object"
       properties:
         name:
@@ -1815,13 +1831,13 @@ components:
           type: "boolean"
         isMandatory:
           type: "boolean"
+        requiredDocumentGroupId:
+          type: "string"
       required:
         - "name"
         - "description"
         - "fileType"
-        - "isDisplayed"
-        - "isMandatory"
-    UpdateApplicationDocumentTypeDto:
+    UpdateDocumentTypeDto:
       type: "object"
       properties:
         name:
@@ -1835,17 +1851,6 @@ components:
         - "name"
         - "description"
         - "codeName"
-    UpdateAdtMapAdDto:
-      type: "object"
-      properties:
-        appendApplicationDocumentTypeIds:
-          type: "array"
-          items:
-            type: "string"
-        descApplicationDocumentTypeIds:
-          type: "array"
-          items:
-            type: "string"
     CreatePromotionDto:
       type: "object"
       properties:
@@ -1858,3 +1863,9 @@ components:
       properties:
         name:
           type: "string"
+    CreateCustomerRequestDto:
+      type: "object"
+      properties: {}
+    UpdateCustomerRequestDto:
+      type: "object"
+      properties: {}

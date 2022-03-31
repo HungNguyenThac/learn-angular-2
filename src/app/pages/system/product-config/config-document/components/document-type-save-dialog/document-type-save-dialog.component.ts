@@ -1,8 +1,8 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { ApplicationDocumentType } from '../../../../../../../../open-api-modules/dashboard-api-docs';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { BUTTON_TYPE } from '../../../../../../core/common/enum/operator';
+import { RequiredDocumentGroup } from '../../../../../../../../open-api-modules/dashboard-api-docs';
 
 @Component({
   selector: 'app-document-type-save-dialog',
@@ -12,7 +12,7 @@ import { BUTTON_TYPE } from '../../../../../../core/common/enum/operator';
 export class DocumentTypeSaveDialogComponent implements OnInit {
   applicationDocumentTypeForm: FormGroup;
   title: string;
-  applicationDocumentType: ApplicationDocumentType;
+  applicationDocumentType: RequiredDocumentGroup;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) private data: any,

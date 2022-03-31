@@ -13,15 +13,15 @@ import {
 } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { BUTTON_TYPE } from '../../../../../../core/common/enum/operator';
-import {
-  ApplicationDocument,
-  ApplicationDocumentType,
-} from '../../../../../../../../open-api-modules/dashboard-api-docs';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { Observable, Subject } from 'rxjs';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { map, startWith, takeUntil } from 'rxjs/operators';
+import {
+  RequiredDocument,
+  RequiredDocumentGroup,
+} from '../../../../../../../../open-api-modules/dashboard-api-docs';
 
 @Component({
   selector: 'app-application-document-save-dialog',
@@ -31,8 +31,8 @@ import { map, startWith, takeUntil } from 'rxjs/operators';
 export class ApplicationDocumentSaveDialogComponent implements OnInit {
   applicationDocumentForm: FormGroup;
   title: string;
-  applicationDocument: ApplicationDocument;
-  applicationDocumentTypeOptions: ApplicationDocumentType[] = [];
+  applicationDocument: RequiredDocument;
+  requiredDocumentGroupIdOptions: RequiredDocumentGroup[] = [];
   separatorKeysCodes: number[] = [ENTER, COMMA];
   filteredFileTypes: Observable<string[]>;
   fileTypes: string[] = [];
@@ -51,7 +51,7 @@ export class ApplicationDocumentSaveDialogComponent implements OnInit {
   fileTypeControl = new FormControl('', [Validators.required]);
   selectSearchCtrl: FormControl = new FormControl();
   _onDestroy = new Subject<void>();
-  filteredDocumentTypeItems: ApplicationDocumentType[] = [];
+  filteredDocumentTypeItems: RequiredDocumentGroup[] = [];
 
   constructor(
     @Inject(MAT_DIALOG_DATA) private data: any,
@@ -85,12 +85,12 @@ export class ApplicationDocumentSaveDialogComponent implements OnInit {
   filterSelectOptions() {
     let search = this.selectSearchCtrl.value;
     if (!search) {
-      this.filteredDocumentTypeItems = this.applicationDocumentTypeOptions;
+      this.filteredDocumentTypeItems = this.requiredDocumentGroupIdOptions;
       return;
     } else {
       search = search.toLowerCase();
     }
-    this.filteredDocumentTypeItems = this.applicationDocumentTypeOptions.filter(
+    this.filteredDocumentTypeItems = this.requiredDocumentGroupIdOptions.filter(
       (item) => item.name.toLowerCase().indexOf(search) > -1
     );
   }
@@ -100,7 +100,7 @@ export class ApplicationDocumentSaveDialogComponent implements OnInit {
       name: [''],
       description: [''],
       fileType: this.fileTypeControl,
-      applicationDocumentType: [''],
+      requiredDocumentGroupId: [''],
       isDisplayed: [''],
       isMandatory: [''],
     });
@@ -108,16 +108,18 @@ export class ApplicationDocumentSaveDialogComponent implements OnInit {
 
   initDialogData(data) {
     this.title = data?.title;
-    this.applicationDocumentTypeOptions = data?.applicationDocumentTypeOptions;
+    this.requiredDocumentGroupIdOptions = data?.requiredDocumentGroupIdOptions;
     this.applicationDocument = data?.element;
-    this.fileTypes = this.applicationDocument?.fileType.split(',') || [];
+    this.fileTypes = this.applicationDocument?.fileType
+      ? this.applicationDocument?.fileType.split(',')
+      : [];
 
     this.applicationDocumentForm.patchValue({
       name: this.applicationDocument?.name,
       description: this.applicationDocument?.description,
       fileType: this.fileTypes,
-      applicationDocumentType:
-        this.applicationDocument?.applicationDocumentType,
+      requiredDocumentGroupId:
+        this.applicationDocument?.requiredDocumentGroupId,
       isDisplayed: this.applicationDocument?.isDisplayed,
       isMandatory: this.applicationDocument?.isMandatory,
     });

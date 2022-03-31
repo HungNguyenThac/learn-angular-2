@@ -4,10 +4,10 @@ import {
   MerchantGroupDialogComponent,
 } from '../../../../../share/components';
 import {
+  BUTTON_TYPE,
   DATA_CELL_TYPE,
   FILTER_ACTION_TYPE,
   FILTER_TYPE,
-  QUERY_CONDITION_TYPE,
   RESPONSE_CODE,
   TABLE_ACTION_TYPE,
 } from '../../../../../core/common/enum/operator';
@@ -23,7 +23,11 @@ import { NotificationService } from '../../../../../core/services/notification.s
 import { ToastrService } from 'ngx-toastr';
 import { MatDialog } from '@angular/material/dialog';
 import { Title } from '@angular/platform-browser';
-import { CdeService } from '../../../../../../../open-api-modules/monexcore-api-docs';
+import {
+  CdeService,
+  CreateContractDto,
+  UpdateContractDto,
+} from '../../../../../../../open-api-modules/monexcore-api-docs';
 import { Store } from '@ngrx/store';
 import * as fromSelectors from '../../../../../core/store/selectors';
 import { FilterActionEventModel } from '../../../../../public/models/filter/filter-action-event.model';
@@ -35,6 +39,10 @@ import * as fromStore from '../../../../../core/store';
 import { TableActionButtonModel } from '../../../../../public/models/external/table-action-button.model';
 import { OverviewItemModel } from '../../../../../public/models/external/overview-item.model';
 import { ConfigContractListService } from './config-contract-list.service';
+import { ConfigContractSaveDialogComponent } from '../components/config-contract-save-dialog/config-contract-save-dialog.component';
+import { TableActionEventModel } from '../../../../../public/models/filter/table-action-event.model';
+import { ContractTemplateEntity } from '../../../../../../../open-api-modules/dashboard-api-docs';
+import { ApplicationDocumentSaveDialogComponent } from '../../config-document/components/application-document-save-dialog/application-document-save-dialog.component';
 
 @Component({
   selector: 'app-config-contract-list',
@@ -65,16 +73,16 @@ export class ConfigContractListComponent implements OnInit {
       showed: true,
     },
     {
-      key: 'active',
+      key: 'isActive',
       title: this.multiLanguageService.instant(
         'system.system_config.contract_template.status'
       ),
-      type: DATA_CELL_TYPE.TEXT,
+      type: DATA_CELL_TYPE.BOOLEAN,
       format: null,
       showed: true,
     },
     {
-      key: 'createdAt',
+      key: 'createAt',
       title: this.multiLanguageService.instant(
         'system.system_config.contract_template.created_at'
       ),
@@ -89,6 +97,7 @@ export class ConfigContractListComponent implements OnInit {
   hasSelect: boolean = false;
   selectButtons: TableSelectActionModel[] = [];
 
+  productList: any[];
   totalItems: number = 0;
   filterForm: FormGroup;
   dataSource: MatTableDataSource<any> = new MatTableDataSource([]);
@@ -114,7 +123,7 @@ export class ConfigContractListComponent implements OnInit {
     // {
     //   title: this.multiLanguageService.instant('filter.time'),
     //   type: FILTER_TYPE.DATETIME,
-    //   controlName: 'createdAt',
+    //   controlName: 'createAt',
     //   value: null,
     // },
   ];
@@ -191,35 +200,7 @@ export class ConfigContractListComponent implements OnInit {
     this.openUpdateDialog(element);
   }
 
-  public onFilterActionTrigger(event: FilterActionEventModel) {
-    if (event.type === FILTER_ACTION_TYPE.FILTER_EXTRA_ACTION) {
-      const addMerchantGroupDialogRef = this.dialog.open(
-        MerchantGroupDialogComponent,
-        {
-          panelClass: 'custom-info-dialog-container',
-          maxWidth: '360px',
-          width: '90%',
-        }
-      );
-    } else {
-      const editMerchantGroupDialogRef = this.dialog.open(
-        MerchantGroupDialogComponent,
-        {
-          panelClass: 'custom-info-dialog-container',
-          maxWidth: '360px',
-          width: '90%',
-          data: {
-            merchantGroupInfo: this.filterOptions[0].options.filter(
-              (option) => option.value === event.value
-            )[0],
-            dialogTitle: this.multiLanguageService.instant(
-              'merchant.merchant_dialog.edit_group_title'
-            ),
-          },
-        }
-      );
-    }
-  }
+  public onFilterActionTrigger(event: FilterActionEventModel) {}
 
   public onPageChange(event: PageEvent) {
     this.pageSize = event.pageSize;
@@ -251,13 +232,6 @@ export class ConfigContractListComponent implements OnInit {
       case FILTER_TYPE.MULTIPLE_CHOICE:
         break;
       case FILTER_TYPE.SELECT:
-        if (event.controlName === 'companyId') {
-          this.filterForm.controls.companyId.setValue(
-            event.value ? event.value.join(',') : ''
-          );
-        } else if (event.controlName === 'paydayLoanStatus') {
-          this.filterForm.controls.paydayLoanStatus.setValue(event.value);
-        }
         break;
       default:
         break;
@@ -268,18 +242,13 @@ export class ConfigContractListComponent implements OnInit {
   private _initFilterForm() {
     this.filterForm = this.formBuilder.group({
       keyword: [''],
-      companyId: [''],
-      paydayLoanStatus: [''],
-      orderBy: ['createdAt'],
+      orderBy: ['createAt'],
       sortDirection: ['desc'],
       startTime: [null],
       endTime: [null],
       dateFilterType: [''],
       dateFilterTitle: [''],
-      filterConditions: {
-        companyId: QUERY_CONDITION_TYPE.IN,
-        paydayLoanStatus: QUERY_CONDITION_TYPE.EQUAL,
-      },
+      filterConditions: {},
     });
   }
 
@@ -307,12 +276,6 @@ export class ConfigContractListComponent implements OnInit {
           type: params.dateFilterType,
           title: params.dateFilterTitle,
         };
-      } else if (filterOption.controlName === 'companyId') {
-        filterOption.value = this.filterForm.controls.companyId.value
-          ? this.filterForm.controls.companyId.value.split(',')
-          : [];
-      } else if (filterOption.controlName === 'paydayLoanStatus') {
-        filterOption.value = this.filterForm.controls.paydayLoanStatus.value;
       }
     });
     this.breadcrumbOptions.keyword = params.keyword;
@@ -405,7 +368,7 @@ export class ConfigContractListComponent implements OnInit {
   openUpdateDialog(info: PDGroup) {
     // const addGroupDialogRef = this.dialog.open(AddNewPdDialogComponent, {
     //   panelClass: 'custom-info-dialog-container',
-    //   maxWidth: '1200px',
+    //   maxWidth: '1600px',
     //   width: '90%',
     //   data: {
     //     isPdGroup: true,
@@ -428,28 +391,174 @@ export class ConfigContractListComponent implements OnInit {
   }
 
   onClickBtnAdd(event) {
-    // const addGroupDialogRef = this.dialog.open(AddNewPdDialogComponent, {
-    //   panelClass: 'custom-info-dialog-container',
-    //   maxWidth: '1200px',
-    //   width: '90%',
-    //   data: {
-    //     isPdGroup: true,
-    //     leftArr: this.questionList,
-    //     dialogTitle: 'Thêm nhóm câu hỏi',
-    //     inputName: 'Tên nhóm câu hỏi',
-    //     inputCode: 'Mã nhóm câu hỏi',
-    //     listTitle: 'Danh sách câu hỏi',
-    //   },
-    // });
-    // this.subManager.add(
-    //   addGroupDialogRef.afterClosed().subscribe((result: any) => {
-    //     if (result && result.type === BUTTON_TYPE.PRIMARY) {
-    //       let createRequest = this._bindingDialogData(result.data, 'create');
-    //       let addRequest = this._bindingDialogData(result.data.addArr);
-    //       this.sendCreateRequest(createRequest, addRequest);
-    //     }
-    //   })
-    // );
+    const contractSaveDialogRef = this.dialog.open(
+      ConfigContractSaveDialogComponent,
+      {
+        panelClass: 'custom-info-dialog-container',
+        maxWidth: '1600px',
+        width: '90%',
+        data: {
+          title: this.multiLanguageService.instant(
+            'system.system_config.contract_template.add_form_title'
+          ),
+        },
+      }
+    );
+    this.subManager.add(
+      contractSaveDialogRef.afterClosed().subscribe((result: any) => {
+        if (result && result.type === BUTTON_TYPE.PRIMARY) {
+          let createContractDto: CreateContractDto = {
+            code: result?.data?.code,
+            content: result?.data?.content,
+            name: result?.data?.name,
+            description: result?.data?.description,
+          };
+          this._createContractTemplate(createContractDto);
+        }
+      })
+    );
+  }
+
+  public openDeleteContractTemplateDialog(element) {
+    const confirmDeleteRef = this.notificationService.openPrompt({
+      imgUrl: '../../../../../assets/img/icon/group-5/svg/delete-dialog.svg',
+      title: this.multiLanguageService.instant(
+        'system.system_config.contract_template.delete_prompt.title'
+      ),
+      content: this.multiLanguageService.instant(
+        'system.system_config.contract_template.delete_prompt.content'
+      ),
+      primaryBtnText: this.multiLanguageService.instant('common.delete'),
+      primaryBtnClass: 'btn-error',
+      secondaryBtnText: this.multiLanguageService.instant('common.skip'),
+    });
+    confirmDeleteRef.afterClosed().subscribe((result) => {
+      if (result === BUTTON_TYPE.PRIMARY) {
+        this._deleteContractTemplateById(element?.id);
+      }
+    });
+  }
+
+  private _deleteContractTemplateById(contractTemplateId: string) {
+    if (!contractTemplateId) {
+      return;
+    }
+    this.subManager.add(
+      this.configContractListService
+        .deleteContractTemplate(contractTemplateId)
+        .subscribe((result) => {
+          if (!result || result.responseCode !== RESPONSE_CODE.SUCCESS) {
+            return this.notifier.error(
+              JSON.stringify(result?.message),
+              result?.errorCode
+            );
+          }
+          this.notifier.success(
+            this.multiLanguageService.instant(
+              'system.system_config.contract_template.delete_prompt.success'
+            )
+          );
+          this.dataSource.data = this.dataSource.data.filter((element) => {
+            return element.id != contractTemplateId;
+          });
+        })
+    );
+  }
+
+  private _createContractTemplate(createContractDto: CreateContractDto) {
+    if (!createContractDto) {
+      return;
+    }
+    this.subManager.add(
+      this.configContractListService
+        .createContractTemplate(createContractDto)
+        .subscribe((response) => {
+          if (!response || response.responseCode !== RESPONSE_CODE.SUCCESS) {
+            return this.notifier.error(
+              JSON.stringify(response?.message),
+              response?.errorCode
+            );
+          }
+          this.notifier.success(
+            this.multiLanguageService.instant(
+              'system.system_config.contract_template.add_success'
+            )
+          );
+          this.refreshContent();
+        })
+    );
+  }
+
+  openUpdateContractTemplateDialog(element: ContractTemplateEntity) {
+    const addGroupDialogRef = this.dialog.open(
+      ApplicationDocumentSaveDialogComponent,
+      {
+        panelClass: 'custom-info-dialog-container',
+        maxWidth: '800px',
+        width: '90%',
+        data: {
+          title: this.multiLanguageService.instant(
+            'system.system_config.contract_template.update_form_title'
+          ),
+          element: element,
+          productList: this.productList,
+        },
+      }
+    );
+    this.subManager.add(
+      addGroupDialogRef.afterClosed().subscribe((result: any) => {
+        if (result && result.type === BUTTON_TYPE.PRIMARY) {
+          let updateContractDto: UpdateContractDto = {
+            name: result?.data?.name,
+            description: result?.data?.description,
+            content: result?.data?.content,
+            code: result?.data?.code,
+          };
+          this._updateContractTemplate(element.id, updateContractDto, element);
+        }
+      })
+    );
+  }
+
+  private _updateContractTemplate(
+    id: string,
+    updateContractDto: UpdateContractDto,
+    element: ContractTemplateEntity
+  ) {
+    if (!updateContractDto) {
+      return;
+    }
+
+    // if (
+    //   updateContractDto.name === element.name &&
+    //   updateContractDto.description === element.description &&
+    //   updateContractDto.code === element.code &&
+    //   updateContractDto.isDisplayed === element.isDisplayed
+    // ) {
+    //   this.updateContractTemplate(
+    //     applicationDocumentTypes,
+    //     element
+    //   );
+    //   return;
+    // }
+
+    this.subManager.add(
+      this.configContractListService
+        .updateContractTemplate(id, updateContractDto)
+        .subscribe((response) => {
+          if (!response || response.responseCode !== RESPONSE_CODE.SUCCESS) {
+            return this.notifier.error(
+              JSON.stringify(response?.message),
+              response?.errorCode
+            );
+          }
+          this.notifier.success(
+            this.multiLanguageService.instant(
+              'system.system_config.contract_template.update_success'
+            )
+          );
+        })
+    );
   }
 
   getOverviewData(rawData) {
@@ -460,5 +569,14 @@ export class ConfigContractListComponent implements OnInit {
           'system.system_config.contract_template.total'
         )
     ).value = rawData?.pagination?.total;
+  }
+
+  public onTableActionClick(event: TableActionEventModel) {
+    console.log('onTableActionClick', event);
+    if (event.action === TABLE_ACTION_TYPE.DELETE) {
+      this.openDeleteContractTemplateDialog(event.element);
+    } else if (event.action === TABLE_ACTION_TYPE.EDIT) {
+      // this.openUpdateApplicationDocumentDialog(event.element);
+    }
   }
 }

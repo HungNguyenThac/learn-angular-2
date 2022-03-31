@@ -1455,7 +1455,7 @@ paths:
           content:
             '*/*':
               schema:
-                $ref: '#/components/schemas/ApiResponseSearchAndPaginationResponseApplicationDocument'
+                $ref: '#/components/schemas/ApiResponseSearchAndPaginationResponseRequiredDocument'
       security:
       - bearerAuth: []
   /v1/applicationDocuments/applicationDocumentTypes:
@@ -1500,7 +1500,7 @@ paths:
           content:
             '*/*':
               schema:
-                $ref: '#/components/schemas/ApiResponseSearchAndPaginationResponseApplicationDocumentType'
+                $ref: '#/components/schemas/ApiResponseSearchAndPaginationResponseRequiredDocumentGroup'
       security:
       - bearerAuth: []
   /v1/adminAccounts:
@@ -2297,7 +2297,7 @@ paths:
           content:
             '*/*':
               schema:
-                $ref: '#/components/schemas/ApiResponseApplicationDocument'
+                $ref: '#/components/schemas/ApiResponseRequiredDocument'
       security:
       - bearerAuth: []
   /v1/applicationDocuments/applicationDocumentTypes/{applicationDocumentTypeId}:
@@ -2317,7 +2317,7 @@ paths:
           content:
             '*/*':
               schema:
-                $ref: '#/components/schemas/ApiResponseApplicationDocumentType'
+                $ref: '#/components/schemas/ApiResponseRequiredDocumentGroup'
       security:
       - bearerAuth: []
   /v1/adminAccounts/{adminAccountId}:
@@ -4598,11 +4598,11 @@ components:
         totalLoansPeriod:
           type: integer
           format: int32
-    ApiResponseSearchAndPaginationResponseApplicationDocument:
+    ApiResponseSearchAndPaginationResponseRequiredDocument:
       type: object
       properties:
         result:
-          $ref: '#/components/schemas/SearchAndPaginationResponseApplicationDocument'
+          $ref: '#/components/schemas/SearchAndPaginationResponseRequiredDocument'
         errorCode:
           type: string
         message:
@@ -4610,17 +4610,13 @@ components:
         responseCode:
           type: integer
           format: int32
-    ApplicationDocument:
+    RequiredDocument:
       type: object
       properties:
         id:
           type: string
         name:
           type: string
-        applicationDocumentType:
-          type: array
-          items:
-            type: string
         isDisplayed:
           type: boolean
         isMandatory:
@@ -4637,7 +4633,9 @@ components:
           type: string
         updatedAt:
           type: string
-    SearchAndPaginationResponseApplicationDocument:
+        requiredDocumentGroupId:
+          type: string
+    SearchAndPaginationResponseRequiredDocument:
       type: object
       properties:
         pagination:
@@ -4645,16 +4643,16 @@ components:
         data:
           type: array
           items:
-            $ref: '#/components/schemas/ApplicationDocument'
+            $ref: '#/components/schemas/RequiredDocument'
         meta:
           type: object
           additionalProperties:
             type: object
-    ApiResponseSearchAndPaginationResponseApplicationDocumentType:
+    ApiResponseSearchAndPaginationResponseRequiredDocumentGroup:
       type: object
       properties:
         result:
-          $ref: '#/components/schemas/SearchAndPaginationResponseApplicationDocumentType'
+          $ref: '#/components/schemas/SearchAndPaginationResponseRequiredDocumentGroup'
         errorCode:
           type: string
         message:
@@ -4662,7 +4660,7 @@ components:
         responseCode:
           type: integer
           format: int32
-    ApplicationDocumentType:
+    RequiredDocumentGroup:
       type: object
       properties:
         id:
@@ -4681,7 +4679,7 @@ components:
           type: string
         updatedAt:
           type: string
-    SearchAndPaginationResponseApplicationDocumentType:
+    SearchAndPaginationResponseRequiredDocumentGroup:
       type: object
       properties:
         pagination:
@@ -4689,7 +4687,7 @@ components:
         data:
           type: array
           items:
-            $ref: '#/components/schemas/ApplicationDocumentType'
+            $ref: '#/components/schemas/RequiredDocumentGroup'
         meta:
           type: object
           additionalProperties:
@@ -5181,11 +5179,11 @@ components:
         responseCode:
           type: integer
           format: int32
-    ApiResponseApplicationDocument:
+    ApiResponseRequiredDocument:
       type: object
       properties:
         result:
-          $ref: '#/components/schemas/ApplicationDocument'
+          $ref: '#/components/schemas/RequiredDocument'
         errorCode:
           type: string
         message:
@@ -5193,11 +5191,11 @@ components:
         responseCode:
           type: integer
           format: int32
-    ApiResponseApplicationDocumentType:
+    ApiResponseRequiredDocumentGroup:
       type: object
       properties:
         result:
-          $ref: '#/components/schemas/ApplicationDocumentType'
+          $ref: '#/components/schemas/RequiredDocumentGroup'
         errorCode:
           type: string
         message:

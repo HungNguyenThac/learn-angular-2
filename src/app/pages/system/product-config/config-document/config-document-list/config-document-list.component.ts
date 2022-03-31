@@ -28,8 +28,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { Title } from '@angular/platform-browser';
 import {
   ApiResponseSearchAndPaginationResponseGroupEntity,
-  ApplicationDocument,
-  ApplicationDocumentType,
+  RequiredDocument,
+  RequiredDocumentGroup,
 } from '../../../../../../../open-api-modules/dashboard-api-docs';
 import { Store } from '@ngrx/store';
 import * as fromStore from '../../../../../core/store';
@@ -42,11 +42,12 @@ import { TableActionButtonModel } from '../../../../../public/models/external/ta
 import { TableActionEventModel } from '../../../../../public/models/filter/table-action-event.model';
 import { ApplicationDocumentSaveDialogComponent } from '../components/application-document-save-dialog/application-document-save-dialog.component';
 import {
-  CreateApplicationDocumentDto,
-  UpdateApplicationDocumentDto,
+  CreateDocumentDto,
+  UpdateDocumentDto,
 } from '../../../../../../../open-api-modules/monexcore-api-docs';
 import { GlobalConstants } from '../../../../../core/common/global-constants';
 import { NgxPermissionsService } from 'ngx-permissions';
+import { DocumentType } from '../../../../../../../open-api-modules/contract-api-docs';
 
 @Component({
   selector: 'app-config-document-list',
@@ -131,8 +132,8 @@ export class ConfigDocumentListComponent implements OnInit, OnDestroy {
     },
   ];
 
-  documentTypeList: ApplicationDocumentType[];
-  expandedElementApplicationDocument: ApplicationDocument;
+  documentTypeList: RequiredDocumentGroup[];
+  expandedElementApplicationDocument: RequiredDocument;
   totalItems: number = 0;
   filterForm: FormGroup;
   dataSource: MatTableDataSource<any> = new MatTableDataSource([]);
@@ -168,7 +169,7 @@ export class ConfigDocumentListComponent implements OnInit, OnDestroy {
         'system.system_config.application_document.document_type'
       ),
       type: FILTER_TYPE.SEARCH_SELECT,
-      controlName: 'applicationDocumentType',
+      controlName: 'requiredDocumentGroupId',
       value: null,
       showAction: false,
       titleAction: this.multiLanguageService.instant('common.view'),
@@ -271,7 +272,7 @@ export class ConfigDocumentListComponent implements OnInit, OnDestroy {
 
   public onFilterActionTrigger(event: FilterActionEventModel) {
     if (event.type === FILTER_ACTION_TYPE.FILTER_EXTRA_ACTION) {
-      if (event.controlName === 'applicationDocumentType') {
+      if (event.controlName === 'requiredDocumentGroupId') {
         this.handleFilterActionTriggerDocumentTypeId(event);
       }
     }
@@ -305,8 +306,8 @@ export class ConfigDocumentListComponent implements OnInit, OnDestroy {
         this.filterForm.controls.dateFilterTitle.setValue(event.value.title);
         break;
       case FILTER_TYPE.SEARCH_SELECT:
-        if (event.controlName === 'applicationDocumentType') {
-          this.filterForm.controls.applicationDocumentType?.setValue(
+        if (event.controlName === 'requiredDocumentGroupId') {
+          this.filterForm.controls.requiredDocumentGroupId?.setValue(
             event.value ? event.value.join(',') : ''
           );
         }
@@ -323,7 +324,7 @@ export class ConfigDocumentListComponent implements OnInit, OnDestroy {
     this.filterForm = this.formBuilder.group({
       id: [''],
       keyword: [''],
-      applicationDocumentType: [''],
+      requiredDocumentGroupId: [''],
       orderBy: ['createdAt'],
       sortDirection: ['desc'],
       startTime: [null],
@@ -331,7 +332,7 @@ export class ConfigDocumentListComponent implements OnInit, OnDestroy {
       dateFilterType: [''],
       dateFilterTitle: [''],
       filterConditions: {
-        applicationDocumentType: QUERY_CONDITION_TYPE.IN,
+        requiredDocumentGroupId: QUERY_CONDITION_TYPE.IN,
       },
     });
   }
@@ -383,7 +384,7 @@ export class ConfigDocumentListComponent implements OnInit, OnDestroy {
     this.filterForm.patchValue({
       id: '',
       keyword: '',
-      applicationDocumentType: '',
+      requiredDocumentGroupId: '',
       orderBy: 'createdAt',
       sortDirection: 'desc',
       startTime: null,
@@ -391,7 +392,7 @@ export class ConfigDocumentListComponent implements OnInit, OnDestroy {
       dateFilterType: '',
       dateFilterTitle: '',
       filterConditions: {
-        applicationDocumentType: QUERY_CONDITION_TYPE.IN,
+        requiredDocumentGroupId: QUERY_CONDITION_TYPE.IN,
       },
     });
   }
@@ -403,10 +404,10 @@ export class ConfigDocumentListComponent implements OnInit, OnDestroy {
           type: params.dateFilterType,
           title: params.dateFilterTitle,
         };
-      } else if (filterOption.controlName === 'applicationDocumentType') {
-        filterOption.value = this.filterForm.controls.applicationDocumentType
+      } else if (filterOption.controlName === 'requiredDocumentGroupId') {
+        filterOption.value = this.filterForm.controls.requiredDocumentGroupId
           .value
-          ? this.filterForm.controls.applicationDocumentType.value.split(',')
+          ? this.filterForm.controls.requiredDocumentGroupId.value.split(',')
           : [];
       }
     });
@@ -465,11 +466,11 @@ export class ConfigDocumentListComponent implements OnInit, OnDestroy {
         this._parseData(data?.result);
         this.getOverviewData(data?.result);
         this.dataSource.data = data?.result?.data.map(
-          (item: ApplicationDocument) => {
+          (item: RequiredDocument) => {
             return {
               ...item,
               documentTypeName: this._bindDocumentTypeName(
-                item.applicationDocumentType
+                item.requiredDocumentGroupId
               ),
             };
           }
@@ -481,18 +482,14 @@ export class ConfigDocumentListComponent implements OnInit, OnDestroy {
       });
   }
 
-  private _bindDocumentTypeName(documentTypeIds: Array<string>) {
-    if (!documentTypeIds) return null;
-    if (!this.documentTypeList) return documentTypeIds;
-    let documentTypeInTypeIds: ApplicationDocumentType[] =
-      this.documentTypeList?.filter((value) => {
-        return documentTypeIds.includes(value.id);
-      });
-    return documentTypeInTypeIds
-      ?.map((value) => {
-        return value.name;
-      })
-      .join(', ');
+  private _bindDocumentTypeName(documentGroupId: string) {
+    if (!documentGroupId) return null;
+    if (!this.documentTypeList) return documentGroupId;
+    let filteredDocumentGroup = this.documentTypeList?.find((documentGroup) => {
+      return documentGroup.id === documentGroupId;
+    });
+    if (filteredDocumentGroup) return filteredDocumentGroup.name;
+    return documentGroupId;
   }
 
   getOverviewData(rawData) {
@@ -595,7 +592,7 @@ export class ConfigDocumentListComponent implements OnInit, OnDestroy {
     );
   }
 
-  openUpdateApplicationDocumentDialog(element: ApplicationDocument) {
+  openUpdateApplicationDocumentDialog(element: RequiredDocument) {
     const addGroupDialogRef = this.dialog.open(
       ApplicationDocumentSaveDialogComponent,
       {
@@ -607,25 +604,24 @@ export class ConfigDocumentListComponent implements OnInit, OnDestroy {
             'system.system_config.application_document.update_form_title'
           ),
           element: element,
-          applicationDocumentTypeOptions: this.documentTypeList,
+          requiredDocumentGroupIdOptions: this.documentTypeList,
         },
       }
     );
     this.subManager.add(
       addGroupDialogRef.afterClosed().subscribe((result: any) => {
         if (result && result.type === BUTTON_TYPE.PRIMARY) {
-          let updateApplicationDocumentRequest: UpdateApplicationDocumentDto = {
+          let updateApplicationDocumentRequest: UpdateDocumentDto = {
             isDisplayed: result?.data?.isDisplayed,
             isMandatory: result?.data?.isMandatory,
             name: result?.data?.name,
             description: result?.data?.description,
+            requiredDocumentGroupId: result?.data?.requiredDocumentGroupId,
             fileType: result?.data?.fileType.join(','),
           };
           this._updateApplicationDocument(
             element.id,
-            updateApplicationDocumentRequest,
-            result?.data?.applicationDocumentType,
-            element
+            updateApplicationDocumentRequest
           );
         }
       })
@@ -643,24 +639,22 @@ export class ConfigDocumentListComponent implements OnInit, OnDestroy {
           title: this.multiLanguageService.instant(
             'system.system_config.application_document.add_form_title'
           ),
-          applicationDocumentTypeOptions: this.documentTypeList,
+          requiredDocumentGroupIdOptions: this.documentTypeList,
         },
       }
     );
     this.subManager.add(
       documentSaveDialogRef.afterClosed().subscribe((result: any) => {
         if (result && result.type === BUTTON_TYPE.PRIMARY) {
-          let createApplicationDocumentRequest: CreateApplicationDocumentDto = {
+          let createApplicationDocumentRequest: CreateDocumentDto = {
             isDisplayed: result?.data?.isDisplayed || false,
             isMandatory: result?.data?.isMandatory || false,
             name: result?.data?.name,
             description: result?.data?.description,
+            requiredDocumentGroupId: result?.data?.requiredDocumentGroupId,
             fileType: result?.data?.fileType.join(','),
           };
-          this._createApplicationDocument(
-            createApplicationDocumentRequest,
-            result?.data?.applicationDocumentType
-          );
+          this._createApplicationDocument(createApplicationDocumentRequest);
         }
       })
     );
@@ -692,16 +686,16 @@ export class ConfigDocumentListComponent implements OnInit, OnDestroy {
   private _initApplicationDocumentTypeOptions() {
     this.filterOptions.forEach((filterOption: FilterOptionModel) => {
       if (
-        filterOption.controlName !== 'applicationDocumentType' ||
+        filterOption.controlName !== 'requiredDocumentGroupId' ||
         !this.documentTypeList
       ) {
         return;
       }
       filterOption.options = this.documentTypeList.map(
-        (applicationDocumentType: ApplicationDocumentType) => {
+        (requiredDocumentGroupId: RequiredDocumentGroup) => {
           return {
-            title: applicationDocumentType.name,
-            value: applicationDocumentType.id,
+            title: requiredDocumentGroupId.name,
+            value: requiredDocumentGroupId.id,
           };
         }
       );
@@ -741,16 +735,13 @@ export class ConfigDocumentListComponent implements OnInit, OnDestroy {
     });
   }
 
-  private _createApplicationDocument(
-    createApplicationDocumentRequest: CreateApplicationDocumentDto,
-    applicationDocumentTypes: string[]
-  ) {
-    if (!createApplicationDocumentRequest) {
+  private _createApplicationDocument(createDocumentDto: CreateDocumentDto) {
+    if (!createDocumentDto) {
       return;
     }
     this.subManager.add(
       this.configDocumentListService
-        .createApplicationDocument(createApplicationDocumentRequest)
+        .createApplicationDocument(createDocumentDto)
         .subscribe((response) => {
           response.result.id;
           if (!response || response.responseCode !== RESPONSE_CODE.SUCCESS) {
@@ -765,18 +756,6 @@ export class ConfigDocumentListComponent implements OnInit, OnDestroy {
             )
           );
 
-          if (applicationDocumentTypes) {
-            this.configDocumentListService
-              .updateDocumentTypeApplicationDocument(
-                response.result.id,
-                applicationDocumentTypes,
-                null
-              )
-              .subscribe((res) => {
-                this.refreshContent();
-              });
-          }
-
           this.refreshContent();
         })
     );
@@ -784,31 +763,15 @@ export class ConfigDocumentListComponent implements OnInit, OnDestroy {
 
   private _updateApplicationDocument(
     id: string,
-    updateApplicationDocumentRequest: UpdateApplicationDocumentDto,
-    applicationDocumentTypes,
-    element: ApplicationDocument
+    updateDocument: UpdateDocumentDto
   ) {
-    if (!updateApplicationDocumentRequest) {
-      return;
-    }
-
-    if (
-      updateApplicationDocumentRequest.name === element.name &&
-      updateApplicationDocumentRequest.description === element.description &&
-      updateApplicationDocumentRequest.fileType === element.fileType &&
-      updateApplicationDocumentRequest.isDisplayed === element.isDisplayed &&
-      updateApplicationDocumentRequest.isMandatory === element.isMandatory
-    ) {
-      this.updateApplicationDocumentTypeOfDocument(
-        applicationDocumentTypes,
-        element
-      );
+    if (!updateDocument) {
       return;
     }
 
     this.subManager.add(
       this.configDocumentListService
-        .updateApplicationDocument(id, updateApplicationDocumentRequest)
+        .updateApplicationDocument(id, updateDocument)
         .subscribe((response) => {
           if (!response || response.responseCode !== RESPONSE_CODE.SUCCESS) {
             return this.notifier.error(
@@ -821,64 +784,8 @@ export class ConfigDocumentListComponent implements OnInit, OnDestroy {
               'system.system_config.application_document.update_success'
             )
           );
-
-          this.updateApplicationDocumentTypeOfDocument(
-            applicationDocumentTypes,
-            element
-          );
         })
     );
-  }
-
-  updateApplicationDocumentTypeOfDocument(
-    applicationDocumentTypes,
-    element: ApplicationDocument
-  ) {
-    if (element?.applicationDocumentType == applicationDocumentTypes) {
-      this.refreshContent();
-      return;
-    }
-    let newApplicationDocuments = [];
-    let deletedApplicationDocuments = [];
-
-    if (element?.applicationDocumentType) {
-      element?.applicationDocumentType.forEach((documentType) => {
-        if (applicationDocumentTypes.includes(documentType)) {
-          return;
-        }
-        deletedApplicationDocuments.push(documentType);
-      });
-
-      applicationDocumentTypes.forEach((documentType) => {
-        if (element?.applicationDocumentType.includes(documentType)) {
-          return;
-        }
-        newApplicationDocuments.push(documentType);
-      });
-    }
-
-    newApplicationDocuments = applicationDocumentTypes;
-
-    this.configDocumentListService
-      .updateDocumentTypeApplicationDocument(
-        element.id,
-        newApplicationDocuments,
-        deletedApplicationDocuments
-      )
-      .subscribe((result) => {
-        if (!result || result.responseCode !== RESPONSE_CODE.SUCCESS) {
-          return this.notifier.error(
-            JSON.stringify(result?.message),
-            result?.errorCode
-          );
-        }
-        this.notifier.success(
-          this.multiLanguageService.instant(
-            'system.system_config.application_document.update_success'
-          )
-        );
-        this.refreshContent();
-      });
   }
 
   private async _checkUserPermissions() {
@@ -940,7 +847,7 @@ export class ConfigDocumentListComponent implements OnInit, OnDestroy {
   private displayFilterAction() {
     for (const filterOption of this.filterOptions) {
       if (
-        filterOption.controlName === 'applicationDocumentType' &&
+        filterOption.controlName === 'requiredDocumentGroupId' &&
         this.userHasPermissions.getDocumentType
       ) {
         filterOption.showAction = true;

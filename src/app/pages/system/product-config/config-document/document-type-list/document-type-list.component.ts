@@ -10,10 +10,6 @@ import {
   TABLE_ACTION_TYPE,
 } from '../../../../../core/common/enum/operator';
 import { TableSelectActionModel } from '../../../../../public/models/external/table-select-action.model';
-import {
-  ApplicationDocument,
-  ApplicationDocumentType,
-} from '../../../../../../../open-api-modules/dashboard-api-docs';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
 import { Observable, Subscription } from 'rxjs';
@@ -28,10 +24,6 @@ import { ToastrService } from 'ngx-toastr';
 import { MatDialog } from '@angular/material/dialog';
 import { Title } from '@angular/platform-browser';
 import { ConfigDocumentListService } from '../config-document-list/config-document-list.service';
-import {
-  CreateApplicationDocumentTypeDto,
-  UpdateApplicationDocumentTypeDto,
-} from '../../../../../../../open-api-modules/monexcore-api-docs';
 import { Store } from '@ngrx/store';
 import * as fromStore from '../../../../../core/store';
 import * as fromActions from '../../../../../core/store';
@@ -45,6 +37,11 @@ import * as _ from 'lodash';
 import { DocumentTypeSaveDialogComponent } from '../components/document-type-save-dialog/document-type-save-dialog.component';
 import { NgxPermissionsService } from 'ngx-permissions';
 import { GlobalConstants } from '../../../../../core/common/global-constants';
+import { RequiredDocumentGroup } from '../../../../../../../open-api-modules/dashboard-api-docs';
+import {
+  CreateDocumentTypeDto,
+  UpdateDocumentTypeDto,
+} from '../../../../../../../open-api-modules/monexcore-api-docs';
 
 @Component({
   selector: 'app-document-type-list',
@@ -120,8 +117,8 @@ export class DocumentTypeListComponent implements OnInit, OnDestroy {
     },
   ];
 
-  documentTypeList: ApplicationDocumentType[];
-  expandedElementApplicationDocumentType: ApplicationDocument;
+  documentTypeList: RequiredDocumentGroup[];
+  expandedElementApplicationDocumentType: RequiredDocumentGroup;
   totalItems: number = 0;
   filterForm: FormGroup;
   dataSource: MatTableDataSource<any> = new MatTableDataSource([]);
@@ -520,7 +517,7 @@ export class DocumentTypeListComponent implements OnInit, OnDestroy {
     );
   }
 
-  openUpdateApplicationDocumentDialog(element: ApplicationDocument) {
+  openUpdateDocumentTypeDialog(element: RequiredDocumentGroup) {
     const addGroupDialogRef = this.dialog.open(
       DocumentTypeSaveDialogComponent,
       {
@@ -538,12 +535,11 @@ export class DocumentTypeListComponent implements OnInit, OnDestroy {
     this.subManager.add(
       addGroupDialogRef.afterClosed().subscribe((result: any) => {
         if (result && result.type === BUTTON_TYPE.PRIMARY) {
-          let updateApplicationDocumentTypeRequest: UpdateApplicationDocumentTypeDto =
-            {
-              name: result?.data?.name,
-              description: result?.data?.description,
-              codeName: result?.data?.codeName,
-            };
+          let updateApplicationDocumentTypeRequest: UpdateDocumentTypeDto = {
+            name: result?.data?.name,
+            description: result?.data?.description,
+            codeName: result?.data?.codeName,
+          };
           this._updateApplicationDocumentType(
             element.id,
             updateApplicationDocumentTypeRequest
@@ -571,12 +567,11 @@ export class DocumentTypeListComponent implements OnInit, OnDestroy {
     this.subManager.add(
       documentSaveDialogRef.afterClosed().subscribe((result: any) => {
         if (result && result.type === BUTTON_TYPE.PRIMARY) {
-          let createApplicationDocumentTypeRequest: CreateApplicationDocumentTypeDto =
-            {
-              name: result?.data?.name,
-              description: result?.data?.description,
-              codeName: result?.data?.codeName,
-            };
+          let createApplicationDocumentTypeRequest: CreateDocumentTypeDto = {
+            name: result?.data?.name,
+            description: result?.data?.description,
+            codeName: result?.data?.codeName,
+          };
           this._createApplicationDocumentType(
             createApplicationDocumentTypeRequest
           );
@@ -592,13 +587,13 @@ export class DocumentTypeListComponent implements OnInit, OnDestroy {
   public onTableActionClick(event: TableActionEventModel) {
     console.log('onTableActionClick', event);
     if (event.action === TABLE_ACTION_TYPE.DELETE) {
-      this.openDeleteApplicationDocumentDialog(event.element);
+      this.openDeleteDocumentTypeDialog(event.element);
     } else if (event.action === TABLE_ACTION_TYPE.EDIT) {
-      this.openUpdateApplicationDocumentDialog(event.element);
+      this.openUpdateDocumentTypeDialog(event.element);
     }
   }
 
-  public openDeleteApplicationDocumentDialog(element) {
+  public openDeleteDocumentTypeDialog(element) {
     const confirmDeleteRef = this.notificationService.openPrompt({
       imgUrl: '../../../../../assets/img/icon/group-5/svg/delete-dialog.svg',
       title: this.multiLanguageService.instant(
@@ -619,7 +614,7 @@ export class DocumentTypeListComponent implements OnInit, OnDestroy {
   }
 
   private _createApplicationDocumentType(
-    createApplicationDocumentTypeRequest: CreateApplicationDocumentTypeDto
+    createApplicationDocumentTypeRequest: CreateDocumentTypeDto
   ) {
     if (!createApplicationDocumentTypeRequest) {
       return;
@@ -646,7 +641,7 @@ export class DocumentTypeListComponent implements OnInit, OnDestroy {
 
   private _updateApplicationDocumentType(
     id: string,
-    updateApplicationDocumentTypeRequest: UpdateApplicationDocumentTypeDto
+    updateApplicationDocumentTypeRequest: UpdateDocumentTypeDto
   ) {
     if (!updateApplicationDocumentTypeRequest) {
       return;
