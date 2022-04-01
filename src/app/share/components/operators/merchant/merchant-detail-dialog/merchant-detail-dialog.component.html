@@ -706,10 +706,11 @@
                             <!-- Logo  -->
                             <article class="col-12">
                               <ckeditor
-                                [editor]="Editor"
                                 [formControlName]="'description'"
                                 [config]="ckeditorConfig"
                                 (ready)="onReadyCkEditor($event)"
+                                (fileUploadRequest)="fileUploadRequest($event)"
+                                (fileUploadResponse)="fileUploadResponse($event)"
                               ></ckeditor>
                             </article>
                           </div>

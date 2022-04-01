@@ -16,7 +16,7 @@ import { PdfViewerModule } from 'ng2-pdf-viewer';
 import { ProductStatusListComponent } from './product-status/product-status-list/product-status-list.component';
 import { ProductWorkflowListComponent } from './product-workflow/product-workflow-list/product-workflow-list.component';
 import { ConfigContractSaveDialogComponent } from './config-contract/components/config-contract-save-dialog/config-contract-save-dialog.component';
-import {CKEditorModule} from "@ckeditor/ckeditor5-angular";
+import { CKEditorModule } from 'ckeditor4-angular';
 
 export const ProductConfigRoutes: Routes = [
   {

@@ -1,12 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import {
-  BaseManagementLayoutComponent,
-  MerchantGroupDialogComponent,
-} from '../../../../../share/components';
+import { BaseManagementLayoutComponent } from '../../../../../share/components';
 import {
   BUTTON_TYPE,
   DATA_CELL_TYPE,
-  FILTER_ACTION_TYPE,
   FILTER_TYPE,
   RESPONSE_CODE,
   TABLE_ACTION_TYPE,

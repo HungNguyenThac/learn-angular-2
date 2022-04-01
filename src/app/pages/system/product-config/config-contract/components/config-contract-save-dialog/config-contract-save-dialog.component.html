@@ -169,10 +169,7 @@
                         *ngFor="let column of displayColumns"
                         matColumnDef="{{ column?.key }}"
                       >
-                        <th
-                          *matHeaderCellDef
-                          mat-header-cell
-                        >
+                        <th *matHeaderCellDef mat-header-cell>
                           {{ column?.title }}
                         </th>
 
@@ -227,10 +224,12 @@
               <div class="col-12 col-sm-12 col-md-6 col-lg-6">
                 <!--  Content  -->
                 <ckeditor
-                  [editor]="Editor"
                   [formControlName]="'content'"
                   [config]="ckeditorConfig"
                   (ready)="onReadyCkEditor($event)"
+                  (fileUploadRequest)="fileUploadRequest($event)"
+                  (fileUploadResponse)="fileUploadResponse($event)"
+                  (dataChange)="onCkeditorChange($event)"
                 ></ckeditor>
                 <show-errors
                   [control]="contractTemplateForm.controls['content']"
@@ -241,7 +240,9 @@
                 >
                 </show-errors>
               </div>
-              <div class="col-12 col-sm-12 col-md-6 col-lg-6">1231</div>
+              <div class="col-12 col-sm-12 col-md-6 col-lg-6">
+                <div id="preview-frame"></div>
+              </div>
             </div>
           </section>
         </div>

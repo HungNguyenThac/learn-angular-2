@@ -65,9 +65,8 @@ export class ConfigContractListService {
   }
 
   public deleteContractTemplate(id: any) {
-    return this.monexCoreContractTemplateControllerService.contractTemplateControllerDownloadContract(
-      id,
-      null
+    return this.monexCoreContractTemplateControllerService.contractTemplateControllerDeleteContract(
+      id
     );
   }
 

@@ -545,10 +545,14 @@ paths:
           required: true
           in: "path"
           schema:
-            type: "number"
+            type: "string"
       responses:
         200:
           description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiResponseContractTemplate"
       tags:
         - "contract-templates"
     put:
@@ -558,7 +562,7 @@ paths:
           required: true
           in: "path"
           schema:
-            type: "number"
+            type: "string"
       requestBody:
         required: true
         content:
@@ -568,25 +572,27 @@ paths:
       responses:
         200:
           description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiResponseContractTemplate"
       tags:
         - "contract-templates"
     delete:
-      operationId: "ContractTemplateController_downloadContract"
+      operationId: "ContractTemplateController_deleteContract"
       parameters:
         - name: "id"
           required: true
           in: "path"
           schema:
-            type: "number"
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/BaseDto"
+            type: "string"
       responses:
         200:
           description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiResponseDelete"
       tags:
         - "contract-templates"
   /v1/contract-templates:
@@ -596,6 +602,10 @@ paths:
       responses:
         200:
           description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiResponseContractTemplates"
       tags:
         - "contract-templates"
     post:
@@ -613,9 +623,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ApiResponse"
-        201:
-          description: ""
+                $ref: "#/components/schemas/ApiResponseContractTemplate"
       tags:
         - "contract-templates"
   /v1/loan-status/groups/{id}:
@@ -1011,26 +1019,30 @@ paths:
         - "loans"
   /contract-property/{id}:
     get:
-      operationId: "ContractPropertyController_getContractDetail"
+      operationId: "ContractPropertyController_getProperty"
       parameters:
         - name: "id"
           required: true
           in: "path"
           schema:
-            type: "number"
+            type: "string"
       responses:
         200:
           description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiResponseContractProperty"
       tags:
         - "contract-property"
     put:
-      operationId: "ContractPropertyController_updateContract"
+      operationId: "ContractPropertyController_updateProperty"
       parameters:
         - name: "id"
           required: true
           in: "path"
           schema:
-            type: "number"
+            type: "string"
       requestBody:
         required: true
         content:
@@ -1040,38 +1052,44 @@ paths:
       responses:
         200:
           description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiResponseContractProperty"
       tags:
         - "contract-property"
     delete:
-      operationId: "ContractPropertyController_downloadContract"
+      operationId: "ContractPropertyController_deleteProperty"
       parameters:
         - name: "id"
           required: true
           in: "path"
           schema:
-            type: "number"
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/BaseDto"
+            type: "string"
       responses:
         200:
           description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiResponseDelete"
       tags:
         - "contract-property"
   /contract-property:
     get:
-      operationId: "ContractPropertyController_getListContract"
+      operationId: "ContractPropertyController_getListProperty"
       parameters: []
       responses:
         200:
           description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiResponseContractProperties"
       tags:
         - "contract-property"
     post:
-      operationId: "ContractPropertyController_createContract"
+      operationId: "ContractPropertyController_createProperty"
       parameters: []
       requestBody:
         required: true
@@ -1085,9 +1103,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ApiResponse"
-        201:
-          description: ""
+                $ref: "#/components/schemas/ApiResponseContractProperty"
       tags:
         - "contract-property"
   /v1/applicationDocuments:
@@ -1508,6 +1524,42 @@ components:
     DeleteLoanProductDto:
       type: "object"
       properties: {}
+    ContractTemplate:
+      type: "object"
+      properties: {}
+    ApiResponseContractTemplate:
+      type: "object"
+      properties:
+        result:
+          $ref: "#/components/schemas/ContractTemplate"
+        errorCode:
+          type: "string"
+        message:
+          type: "object"
+        responseCode:
+          type: "number"
+      required:
+        - "result"
+        - "errorCode"
+        - "message"
+        - "responseCode"
+    ApiResponseContractTemplates:
+      type: "object"
+      properties:
+        result:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/ContractTemplate"
+        errorCode:
+          type: "string"
+        message:
+          type: "object"
+        responseCode:
+          type: "number"
+      required:
+        - "errorCode"
+        - "message"
+        - "responseCode"
     CreateContractDto:
       type: "object"
       properties:
@@ -1534,9 +1586,22 @@ components:
           type: "string"
         description:
           type: "string"
-    BaseDto:
+    ApiResponseDelete:
       type: "object"
-      properties: {}
+      properties:
+        result:
+          type: "string"
+        errorCode:
+          type: "string"
+        message:
+          type: "object"
+        responseCode:
+          type: "number"
+      required:
+        - "result"
+        - "errorCode"
+        - "message"
+        - "responseCode"
     CreateGroupLoanStatusDto:
       type: "object"
       properties:
@@ -1698,6 +1763,39 @@ components:
         - "currentStatus"
         - "coreLoanId"
         - "productId"
+    ApiResponseContractProperty:
+      type: "object"
+      properties:
+        result:
+          $ref: "#/components/schemas/ContractTemplate"
+        errorCode:
+          type: "string"
+        message:
+          type: "object"
+        responseCode:
+          type: "number"
+      required:
+        - "result"
+        - "errorCode"
+        - "message"
+        - "responseCode"
+    ApiResponseContractProperties:
+      type: "object"
+      properties:
+        result:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/ContractTemplate"
+        errorCode:
+          type: "string"
+        message:
+          type: "object"
+        responseCode:
+          type: "number"
+      required:
+        - "errorCode"
+        - "message"
+        - "responseCode"
     CreateContractPropertyDto:
       type: "object"
       properties:

@@ -661,7 +661,13 @@ export class DocumentTypeListComponent implements OnInit, OnDestroy {
               'system.system_config.document_type.update_success'
             )
           );
-          this.refreshContent();
+          this.dataSource.data = this.dataSource.data.map((obj) => {
+            if (obj.id === id) {
+              return { ...obj, ...response.result };
+            }
+
+            return obj;
+          });
         })
     );
   }

@@ -19,8 +19,6 @@ import {
   MerchantFeature,
   MerchantSellType,
 } from '../../../../../../../open-api-modules/bnpl-api-docs';
-import * as DecoupledEditor from '@ckeditor/ckeditor5-build-decoupled-document';
-import CkEditorAdapters from '../../../../../core/utils/ck-editor-adapters';
 import { map, startWith, takeUntil } from 'rxjs/operators';
 import { Observable, Subject } from 'rxjs';
 import { MatChipInputEvent } from '@angular/material/chips';
@@ -29,8 +27,10 @@ import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { Merchant } from '../../../../../../../open-api-modules/dashboard-api-docs';
 import { BUTTON_TYPE } from '../../../../../core/common/enum/operator';
 import * as moment from 'moment';
-
-// import * as SourceEditing from '@ckeditor/ckeditor5-source-editing';
+import { environment } from '../../../../../../environments/environment';
+import * as fromSelectors from '../../../../../core/store/selectors';
+import { Store } from '@ngrx/store';
+import * as fromStore from '../../../../../core/store';
 
 @Component({
   selector: 'app-merchant-detail-dialog',
@@ -38,7 +38,6 @@ import * as moment from 'moment';
   styleUrls: ['./merchant-detail-dialog.component.scss'],
 })
 export class MerchantDetailDialogComponent implements OnInit, AfterViewChecked {
-  public Editor = DecoupledEditor;
   tabIndex: number = 0;
   merchantInfoForm: FormGroup;
   merchantInfo: Merchant = {};
@@ -94,6 +93,8 @@ export class MerchantDetailDialogComponent implements OnInit, AfterViewChecked {
   isCreateMode: boolean = false;
   separatorKeysCodes: number[] = [ENTER, COMMA];
   filteredProductTypes: Observable<string[]>;
+  accessToken$: Observable<string>;
+  token: string;
 
   @ViewChild('productTypeInput') fileTypeInput: ElementRef<HTMLInputElement>;
 
@@ -102,7 +103,8 @@ export class MerchantDetailDialogComponent implements OnInit, AfterViewChecked {
     private dialogRef: MatDialogRef<MerchantDetailDialogComponent>,
     private multiLanguageService: MultiLanguageService,
     private formBuilder: FormBuilder,
-    private readonly changeDetectorRef: ChangeDetectorRef
+    private readonly changeDetectorRef: ChangeDetectorRef,
+    private store: Store<fromStore.State>
   ) {
     this.buildIndividualForm();
     if (data) {
@@ -123,6 +125,11 @@ export class MerchantDetailDialogComponent implements OnInit, AfterViewChecked {
       .subscribe(() => {
         this.filterMerchantOptions();
       });
+
+    this.accessToken$ = this.store.select(fromSelectors.getTokenState);
+    this.accessToken$.subscribe((token) => {
+      this.token = token;
+    });
   }
 
   private _changeFilterProductType() {
@@ -165,62 +172,65 @@ export class MerchantDetailDialogComponent implements OnInit, AfterViewChecked {
   }
 
   ckeditorConfig: any = {
-    fontSize: {
-      options: [9, 11, 13, 'default', 17, 19, 21],
-    },
-    toolbar: [
-      'heading',
-      '|',
-      'fontfamily',
-      'fontsize',
-      '|',
-      'alignment',
-      '|',
-      'fontColor',
-      'fontBackgroundColor',
-      '|',
-      'bold',
-      'italic',
-      'strikethrough',
-      'underline',
-      'subscript',
-      'superscript',
-      '|',
-      'link',
-      '|',
-      'outdent',
-      'indent',
-      '|',
-      'bulletedList',
-      'numberedList',
-      'todoList',
-      '|',
-      'sourceEditing',
-      '|',
-      'insertTable',
-      '|',
-      'mediaEmbed',
-      'uploadImage',
-      'blockQuote',
-      'watchDog',
-      'widget',
-      '|',
-      'undo',
-      'redo',
-    ],
+    extraPlugins:
+      'image,dialogui,dialog,a11yhelp,about,basicstyles,bidi,blockquote,clipboard,' +
+      'button,panelbutton,panel,floatpanel,colorbutton,colordialog,menu,' +
+      'contextmenu,dialogadvtab,div,elementspath,enterkey,entities,popup,' +
+      'filebrowser,find,fakeobjects,floatingspace,listblock,richcombo,' +
+      'font,format,forms,horizontalrule,htmlwriter,iframe,indent,' +
+      'indentblock,indentlist,justify,link,list,liststyle,magicline,' +
+      'maximize,newpage,pagebreak,pastefromword,pastetext,preview,print,' +
+      'removeformat,resize,save,menubutton,scayt,selectall,showblocks,' +
+      'showborders,smiley,sourcearea,specialchar,stylescombo,tab,table,' +
+      'tabletools,templates,toolbar,undo,wysiwygarea,exportpdf',
+    removePlugins: '',
+    extraAllowedContent: 'code',
+    filebrowserBrowseUrl:
+      environment.API_BASE_URL +
+      environment.COM_API_PATH +
+      environment.UPLOAD_FILE_CKEDITOR_PATH,
+    filebrowserUploadUrl:
+      environment.API_BASE_URL +
+      environment.COM_API_PATH +
+      environment.UPLOAD_FILE_CKEDITOR_PATH,
+    filebrowserImageUploadUrl:
+      environment.API_BASE_URL +
+      environment.COM_API_PATH +
+      environment.UPLOAD_FILE_CKEDITOR_PATH,
+    imageUploadUrl:
+      environment.API_BASE_URL +
+      environment.COM_API_PATH +
+      environment.UPLOAD_FILE_CKEDITOR_PATH,
+    uploadUrl:
+      environment.API_BASE_URL +
+      environment.COM_API_PATH +
+      environment.UPLOAD_FILE_CKEDITOR_PATH,
   };
 
-  public onReadyCkEditor(editor) {
-    editor.plugins.get('FileRepository').createUploadAdapter = (loader) => {
-      return new CkEditorAdapters(loader, editor.config);
-    };
+  public onReadyCkEditor(editor) {}
 
-    editor.ui
-      .getEditableElement()
-      .parentElement.insertBefore(
-        editor.ui.view.toolbar.element,
-        editor.ui.getEditableElement()
-      );
+  public fileUploadRequest($event) {
+    console.log('$event', $event);
+    const xhr = $event.data.fileLoader.xhr;
+    xhr.setRequestHeader('Accept', 'application/json');
+    xhr.setRequestHeader('Authorization', 'Bearer ' + this.token);
+  }
+
+  public fileUploadResponse(e) {
+    e.stop();
+
+    const genericErrorText = `Couldn't upload file`;
+    let response = JSON.parse(e.data.fileLoader.xhr.responseText);
+    console.log('response', response);
+
+    if (!response || response.error) {
+      e.data.message =
+        response && response.error ? response.error.message : genericErrorText;
+      e.cancel();
+      return;
+    }
+
+    e.data.url = response.url;
   }
 
   submitForm() {

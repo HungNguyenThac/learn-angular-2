@@ -47,7 +47,6 @@ import {
 } from '../../../../../../../open-api-modules/monexcore-api-docs';
 import { GlobalConstants } from '../../../../../core/common/global-constants';
 import { NgxPermissionsService } from 'ngx-permissions';
-import { DocumentType } from '../../../../../../../open-api-modules/contract-api-docs';
 
 @Component({
   selector: 'app-config-document-list',
@@ -784,6 +783,13 @@ export class ConfigDocumentListComponent implements OnInit, OnDestroy {
               'system.system_config.application_document.update_success'
             )
           );
+          this.dataSource.data = this.dataSource.data.map((obj) => {
+            if (obj.id === id) {
+              return { ...obj, ...response.result };
+            }
+
+            return obj;
+          });
         })
     );
   }

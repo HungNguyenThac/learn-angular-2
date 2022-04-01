@@ -23,11 +23,9 @@
                     <!-- Logo  -->
                     <article class="col-12">
                       <ckeditor
-                        [editor]="Editor"
                         [formControlName]="'description'"
                         [config]="ckeditorConfig"
                         [disabled]="true"
-                        (ready)="onReadyCkEditor($event)"
                       ></ckeditor>
                     </article>
                   </div>
