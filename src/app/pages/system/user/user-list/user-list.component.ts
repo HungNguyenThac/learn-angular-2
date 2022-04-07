@@ -69,7 +69,7 @@ export class UserListComponent implements OnInit, OnDestroy {
         'customer.individual_info.delete'
       ),
       imageSrc: 'assets/img/icon/group-5/svg/trash.svg',
-      style: 'background-color: rgba(255, 255, 255, 0.1);',
+      style: 'background-color: #dc3545;',
     },
     {
       hidden: false,
@@ -79,7 +79,7 @@ export class UserListComponent implements OnInit, OnDestroy {
         'customer.individual_info.lock'
       ),
       imageSrc: 'assets/img/icon/group-5/svg/lock-white.svg',
-      style: 'background-color: rgba(255, 255, 255, 0.1);',
+      style: 'background-color: #dc3545;',
     },
   ];
 

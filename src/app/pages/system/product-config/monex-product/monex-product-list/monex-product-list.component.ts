@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {
   CompanyControllerService,
   GroupControllerService,
@@ -57,7 +57,7 @@ import {
   templateUrl: './monex-product-list.component.html',
   styleUrls: ['./monex-product-list.component.scss'],
 })
-export class MonexProductListComponent implements OnInit {
+export class MonexProductListComponent implements OnInit, OnDestroy {
   roleList: Array<GroupEntity>;
   selectButtons: TableSelectActionModel[] = [
     {
@@ -513,7 +513,7 @@ export class MonexProductListComponent implements OnInit {
     }
     this.subManager.add(
       this.loanProductsService
-        .loanProductControllerDeleteLoanProduct(parseInt(id), {})
+        .loanProductControllerDeleteLoanProduct(id, {})
         .subscribe((result: ApiResponse) => {
           if (!result || result.responseCode !== RESPONSE_CODE.SUCCESS) {
             return this.notifier.error(

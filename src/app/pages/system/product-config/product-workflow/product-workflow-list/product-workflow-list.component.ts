@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {
   CompanyControllerService,
   GroupControllerService,
@@ -53,7 +53,7 @@ import { CustomApiResponse, PDGroup } from '../../../pd-system/pd-interface';
   templateUrl: './product-workflow-list.component.html',
   styleUrls: ['./product-workflow-list.component.scss'],
 })
-export class ProductWorkflowListComponent implements OnInit {
+export class ProductWorkflowListComponent implements OnInit, OnDestroy {
   roleList: Array<GroupEntity>;
   statusList: any;
   selectButtons: TableSelectActionModel[] = [
@@ -63,7 +63,7 @@ export class ProductWorkflowListComponent implements OnInit {
       color: 'accent',
       content: this.multiLanguageService.instant('product_workflow.delete'),
       imageSrc: 'assets/img/icon/group-5/svg/trash.svg',
-      style: 'background-color: rgba(255, 255, 255, 0.1);',
+      style: 'background-color: #dc3545;',
     },
     {
       hidden: true,
@@ -73,7 +73,7 @@ export class ProductWorkflowListComponent implements OnInit {
         'customer.individual_info.lock'
       ),
       imageSrc: 'assets/img/icon/group-5/svg/lock-white.svg',
-      style: 'background-color: rgba(255, 255, 255, 0.1);',
+      style: 'background-color: #dc3545;',
     },
   ];
 
@@ -467,7 +467,7 @@ export class ProductWorkflowListComponent implements OnInit {
     }
     this.subManager.add(
       this.loanStatusService
-        .loanStatusControllerDeleteStatusGroup(parseInt(id), {})
+        .loanStatusControllerDeleteStatusGroup(id, {})
         .subscribe((result: CustomApiResponse<PDGroup>) => {
           if (!result || result.responseCode !== RESPONSE_CODE.SUCCESS) {
             return this.notifier.error(

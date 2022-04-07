@@ -332,10 +332,10 @@ export class MerchantElementComponent implements OnInit, OnDestroy {
       request['bdStaffId'] = data?.bdStaffId;
     }
     if (
-      JSON.stringify(data?.merchantSellTypes) !=
-      JSON.stringify(this.merchantInfo?.merchantSellTypes)
+      JSON.stringify(data?.merchantSellType) !=
+      JSON.stringify(this.merchantInfo?.merchantSellType)
     ) {
-      request['merchantSellTypes'] = data?.merchantSellTypes;
+      request['merchantSellType'] = data?.merchantSellType;
     }
     if (data?.mobile != this.merchantInfo?.mobile) {
       request['mobile'] = data?.mobile;

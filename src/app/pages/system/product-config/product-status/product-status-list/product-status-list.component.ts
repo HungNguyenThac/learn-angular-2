@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {
   CompanyControllerService,
   GroupControllerService,
@@ -53,7 +53,7 @@ import {
   templateUrl: './product-status-list.component.html',
   styleUrls: ['./product-status-list.component.scss'],
 })
-export class ProductStatusListComponent implements OnInit {
+export class ProductStatusListComponent implements OnInit, OnDestroy{
   //Mock data
   roleList: Array<GroupEntity>;
 
@@ -64,7 +64,7 @@ export class ProductStatusListComponent implements OnInit {
       color: 'accent',
       content: this.multiLanguageService.instant('product_status.delete'),
       imageSrc: 'assets/img/icon/group-5/svg/trash.svg',
-      style: 'background-color: rgba(255, 255, 255, 0.1);',
+      style: 'background-color: #dc3545;',
     },
     {
       hidden: true,
@@ -74,7 +74,7 @@ export class ProductStatusListComponent implements OnInit {
         'customer.individual_info.lock'
       ),
       imageSrc: 'assets/img/icon/group-5/svg/lock-white.svg',
-      style: 'background-color: rgba(255, 255, 255, 0.1);',
+      style: 'background-color: #dc3545;',
     },
   ];
 
@@ -481,7 +481,7 @@ export class ProductStatusListComponent implements OnInit {
     }
     this.subManager.add(
       this.loanStatusService
-        .statusGroupControllerDeleteStatus(parseInt(id), {})
+        .statusGroupControllerDeleteStatus(id, {})
         .subscribe((result: ApiResponse) => {
           if (!result || result.responseCode !== RESPONSE_CODE.SUCCESS) {
             return this.notifier.error(

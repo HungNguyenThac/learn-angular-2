@@ -719,7 +719,6 @@ components:
       - customerServiceFee
       - status
       - logo
-      - description
       - createAgentInformationDto
       type: object
       properties:
@@ -746,10 +745,8 @@ components:
           pattern: \S
           type: string
           nullable: false
-        merchantSellTypes:
-          type: array
-          items:
-            $ref: '#/components/schemas/MerchantSellType'
+        merchantSellType:
+          $ref: '#/components/schemas/MerchantSellType'
         mobile:
           pattern: \S
           type: string
@@ -796,9 +793,7 @@ components:
           type: string
           nullable: false
         description:
-          pattern: \S
           type: string
-          nullable: false
         descriptionImg:
           type: array
           items:
@@ -910,10 +905,8 @@ components:
           type: string
         bdStaffId:
           type: string
-        merchantSellTypes:
-          type: array
-          items:
-            type: string
+        merchantSellType:
+          type: string
         mobile:
           type: string
         email:
@@ -968,6 +961,7 @@ components:
       type: string
     MerchantSellType:
       enum:
+      - ALL
       - OFFLINE
       - ONLINE
       type: string
@@ -1244,10 +1238,8 @@ components:
           type: string
         bdStaffId:
           type: string
-        merchantSellTypes:
-          type: array
-          items:
-            $ref: '#/components/schemas/MerchantSellType'
+        merchantSellType:
+          $ref: '#/components/schemas/MerchantSellType'
         mobile:
           maxLength: 12
           type: string

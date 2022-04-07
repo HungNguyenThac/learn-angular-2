@@ -19,7 +19,6 @@ import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { PageEvent } from '@angular/material/paginator/public-api';
 import { SortDirection } from '@angular/material/sort/sort-direction';
 import { SelectionModel } from '@angular/cdk/collections';
-import { PeriodicElement } from '../../../../pages/dashboard/dashboard.component';
 import { MultiLanguageService } from '../../../translate/multiLanguageService';
 import { NotificationService } from '../../../../core/services/notification.service';
 import { ToastrService } from 'ngx-toastr';
@@ -60,6 +59,9 @@ export class BaseExpandedTableComponent implements OnInit, AfterViewInit {
   @Input() actionButtons: TableActionButtonModel[];
   @Input() overviewItems: OverviewItemModel[];
   @Input() showRefreshBtn: boolean;
+  @Input() hiddenPaginator: boolean = false;
+  @Input() hiddenTableMenuFunc: boolean = false;
+  @Input() hiddenSortDirective: boolean = false;
   _expandElementByDefault;
   @Input() get expandElementByDefault() {
     return this._expandElementByDefault;
@@ -86,7 +88,7 @@ export class BaseExpandedTableComponent implements OnInit, AfterViewInit {
   expandedElement: any;
   selectedFields: DisplayedFieldsModel[] = [];
   panelOpenState = false;
-  selection = new SelectionModel<PeriodicElement>(true, []);
+  selection = new SelectionModel<any>(true, []);
   displayColumns: DisplayedFieldsModel[] = [];
   displayColumnKeys: string[] = [];
 

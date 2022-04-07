@@ -1,6 +1,6 @@
 <div class="card op-card h-100">
   <div
-    *ngIf="!showSelectedPanel"
+    *ngIf="!showSelectedPanel && !hiddenTableMenuFunc"
     class="card-title d-flex align-items-center gap-1"
   >
     <h2 [innerHTML]="tableTitle" class="card-name"></h2>
@@ -26,7 +26,7 @@
         (click)="onClickRefreshBtn($event)"
         mat-flat-button
         type="button"
-        [title]="'common.refresh' | translate"
+        [matTooltip]="'common.refresh' | translate"
       >
         <span class="sprite-group-1-arrow-counterclockwise"></span>
       </button>
@@ -76,6 +76,7 @@
       </mat-accordion>
     </div>
   </div>
+
   <div
     *ngIf="showSelectedPanel"
     class="
@@ -170,13 +171,20 @@
             [resizeColumn]="true"
             [index]="hasSelect ? i + 1 : i"
           >
-            <span
-              arrowPosition="before"
-              mat-sort-header
-              sortActionDescription="Sort by field"
-            >
-              {{ column?.title }}
-            </span>
+            <ng-container *ngIf="hiddenSortDirective; else showSortDirective">
+              <span>
+                {{ column?.title }}
+              </span>
+            </ng-container>
+            <ng-template #showSortDirective>
+              <span
+                arrowPosition="before"
+                mat-sort-header
+                sortActionDescription="Sort by field"
+              >
+                {{ column?.title }}
+              </span>
+            </ng-template>
           </th>
 
           <td *matCellDef="let element" mat-cell>
@@ -264,6 +272,7 @@
       </table>
 
       <mat-paginator
+        [hidden]="hiddenPaginator"
         (page)="onPageChange($event)"
         [length]="totalItems"
         [pageIndex]="pageIndex"

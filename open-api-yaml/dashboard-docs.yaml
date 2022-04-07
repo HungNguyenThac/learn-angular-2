@@ -334,6 +334,96 @@ paths:
                 $ref: '#/components/schemas/ApiResponseSearchAndPaginationResponseMerchant'
       security:
       - bearerAuth: []
+  /v1/loanStatuses:
+    post:
+      tags:
+      - loan-status-controller
+      operationId: getLoanStatuses
+      parameters:
+      - name: pageSize
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: pageNumber
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: orderBy
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: descending
+        in: query
+        required: false
+        schema:
+          type: boolean
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties:
+                type: object
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseSearchAndPaginationResponseLoanStatus'
+      security:
+      - bearerAuth: []
+  /v1/loanProducts:
+    post:
+      tags:
+      - loan-product-controller
+      operationId: getLoanProducts
+      parameters:
+      - name: pageSize
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: pageNumber
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: orderBy
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: descending
+        in: query
+        required: false
+        schema:
+          type: boolean
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties:
+                type: object
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseSearchAndPaginationResponseLoanProduct'
+      security:
+      - bearerAuth: []
   /v1/insurances/types:
     post:
       tags:
@@ -823,7 +913,52 @@ paths:
           content:
             '*/*':
               schema:
-                $ref: '#/components/schemas/ApiResponseSearchAndPaginationResponseContractTemplateEntity'
+                $ref: '#/components/schemas/ApiResponseSearchAndPaginationResponseContractTemplate'
+      security:
+      - bearerAuth: []
+  /v1/contractProperties:
+    post:
+      tags:
+      - contract-property-controller
+      operationId: getContractProperties
+      parameters:
+      - name: pageSize
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: pageNumber
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: orderBy
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: descending
+        in: query
+        required: false
+        schema:
+          type: boolean
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties:
+                type: object
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseSearchAndPaginationResponseContractProperty'
       security:
       - bearerAuth: []
   /v1/companies:
@@ -1741,6 +1876,46 @@ paths:
                 $ref: '#/components/schemas/ApiResponseMerchant'
       security:
       - bearerAuth: []
+  /v1/loanStatuses/{loanStatusId}:
+    get:
+      tags:
+      - loan-status-controller
+      operationId: getLoanStatusById
+      parameters:
+      - name: loanStatusId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseLoanStatus'
+      security:
+      - bearerAuth: []
+  /v1/loanProducts/{loanProductId}:
+    get:
+      tags:
+      - loan-product-controller
+      operationId: getLoanProductById
+      parameters:
+      - name: loanProductId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseLoanProduct'
+      security:
+      - bearerAuth: []
   /v1/insurances/types/{insuranceTypeId}:
     get:
       tags:
@@ -2031,7 +2206,27 @@ paths:
           content:
             '*/*':
               schema:
-                $ref: '#/components/schemas/ApiResponseContractTemplateEntity'
+                $ref: '#/components/schemas/ApiResponseContractTemplate'
+      security:
+      - bearerAuth: []
+  /v1/contractProperties/{contractPropertyId}:
+    get:
+      tags:
+      - contract-property-controller
+      operationId: getContractPropertyById
+      parameters:
+      - name: contractPropertyId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseContractProperty'
       security:
       - bearerAuth: []
   /v1/companies/{companyId}:
@@ -2809,10 +3004,8 @@ components:
           type: string
         adminAccountEntity:
           $ref: '#/components/schemas/AdminAccountEntity'
-        merchantSellTypes:
-          type: array
-          items:
-            type: string
+        merchantSellType:
+          type: string
         mobile:
           type: string
         email:
@@ -2874,6 +3067,258 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Merchant'
+        meta:
+          type: object
+          additionalProperties:
+            type: object
+    ApiResponseSearchAndPaginationResponseLoanStatus:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/SearchAndPaginationResponseLoanStatus'
+        errorCode:
+          type: string
+        message:
+          type: object
+        responseCode:
+          type: integer
+          format: int32
+    LoanStatus:
+      type: object
+      properties:
+        id:
+          type: string
+        code:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        createdBy:
+          type: string
+        updatedBy:
+          type: string
+        createdAt:
+          type: string
+        updatedAt:
+          type: string
+        statusFlows:
+          type: array
+          items:
+            $ref: '#/components/schemas/StatusFlow'
+    SearchAndPaginationResponseLoanStatus:
+      type: object
+      properties:
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/LoanStatus'
+        meta:
+          type: object
+          additionalProperties:
+            type: object
+    StatusFlow:
+      type: object
+      properties:
+        id:
+          type: string
+        statusGroupId:
+          type: string
+        loanStatusId:
+          type: string
+        order:
+          type: integer
+          format: int32
+        loanStatus:
+          $ref: '#/components/schemas/LoanStatus'
+        statusGroup:
+          $ref: '#/components/schemas/StatusGroup'
+    StatusGroup:
+      type: object
+      properties:
+        id:
+          type: string
+        code:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        createdBy:
+          type: string
+        updatedBy:
+          type: string
+        createdAt:
+          type: string
+        updatedAt:
+          type: string
+    ApiResponseSearchAndPaginationResponseLoanProduct:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/SearchAndPaginationResponseLoanProduct'
+        errorCode:
+          type: string
+        message:
+          type: object
+        responseCode:
+          type: integer
+          format: int32
+    Group:
+      type: object
+      properties:
+        id:
+          type: string
+        objectId:
+          type: string
+        pdGroupQuestions:
+          type: array
+          items:
+            $ref: '#/components/schemas/GroupQuestion'
+        code:
+          type: string
+        content:
+          type: string
+        description:
+          type: string
+        status:
+          type: string
+        createdAt:
+          type: string
+        createdBy:
+          type: string
+        updatedAt:
+          type: string
+        updatedBy:
+          type: string
+    GroupQuestion:
+      type: object
+      properties:
+        id:
+          type: string
+        objectId:
+          type: string
+        order:
+          type: string
+        pdGroupId:
+          type: string
+        pdQuestionId:
+          type: string
+        pdGroup:
+          $ref: '#/components/schemas/Group'
+        pdQuestion:
+          $ref: '#/components/schemas/Question'
+    LoanProduct:
+      type: object
+      properties:
+        id:
+          type: string
+        objectId:
+          type: string
+        code:
+          type: string
+        name:
+          type: string
+        createdAt:
+          type: string
+        createdBy:
+          type: string
+        updatedAt:
+          type: string
+        updatedBy:
+          type: string
+        pdModels:
+          type: array
+          items:
+            $ref: '#/components/schemas/Model'
+    Model:
+      type: object
+      properties:
+        id:
+          type: string
+        objectId:
+          type: string
+        pdModelGroups:
+          type: array
+          items:
+            $ref: '#/components/schemas/ModelGroup'
+        loanProduct:
+          $ref: '#/components/schemas/LoanProduct'
+        code:
+          type: string
+        content:
+          type: string
+        description:
+          type: string
+        status:
+          type: string
+        createdAt:
+          type: string
+        createdBy:
+          type: string
+        updatedAt:
+          type: string
+        updatedBy:
+          type: string
+    ModelGroup:
+      type: object
+      properties:
+        id:
+          type: string
+        objectId:
+          type: string
+        order:
+          type: string
+        pdModelId:
+          type: string
+        pdGroupId:
+          type: string
+        pdModel:
+          $ref: '#/components/schemas/Model'
+        pdGroup:
+          $ref: '#/components/schemas/Group'
+    Question:
+      type: object
+      properties:
+        id:
+          type: string
+        objectId:
+          type: string
+        code:
+          type: string
+        content:
+          type: string
+        isMandatory:
+          type: boolean
+        description:
+          type: string
+        answerType:
+          type: string
+        placeHolder:
+          type: string
+        createdAt:
+          type: string
+        createdBy:
+          type: string
+        updatedAt:
+          type: string
+        updatedBy:
+          type: string
+        answers:
+          type: array
+          items:
+            type: string
+    SearchAndPaginationResponseLoanProduct:
+      type: object
+      properties:
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/LoanProduct'
         meta:
           type: object
           additionalProperties:
@@ -3897,11 +4342,11 @@ components:
           type: object
           additionalProperties:
             type: object
-    ApiResponseSearchAndPaginationResponseContractTemplateEntity:
+    ApiResponseSearchAndPaginationResponseContractTemplate:
       type: object
       properties:
         result:
-          $ref: '#/components/schemas/SearchAndPaginationResponseContractTemplateEntity'
+          $ref: '#/components/schemas/SearchAndPaginationResponseContractTemplate'
         errorCode:
           type: string
         message:
@@ -3909,28 +4354,38 @@ components:
         responseCode:
           type: integer
           format: int32
-    ContractTemplateEntity:
+    ContractTemplate:
       type: object
       properties:
         id:
           type: string
+        content:
+          type: string
+        code:
+          type: string
+        description:
+          type: string
         name:
+          type: string
+        product:
+          $ref: '#/components/schemas/LoanProduct'
+        statusFlow:
+          $ref: '#/components/schemas/StatusFlow'
+        isActive:
+          type: boolean
+        createdBy:
+          type: string
+        updatedBy:
+          type: string
+        createdAt:
+          type: string
+        updatedAt:
+          type: string
+        statusFlowId:
           type: string
         productId:
           type: string
-        statusId:
-          type: string
-        isActive:
-          type: boolean
-        content:
-          type: string
-        actionBy:
-          type: string
-        createAt:
-          type: string
-        updateAt:
-          type: string
-    SearchAndPaginationResponseContractTemplateEntity:
+    SearchAndPaginationResponseContractTemplate:
       type: object
       properties:
         pagination:
@@ -3938,7 +4393,53 @@ components:
         data:
           type: array
           items:
-            $ref: '#/components/schemas/ContractTemplateEntity'
+            $ref: '#/components/schemas/ContractTemplate'
+        meta:
+          type: object
+          additionalProperties:
+            type: object
+    ApiResponseSearchAndPaginationResponseContractProperty:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/SearchAndPaginationResponseContractProperty'
+        errorCode:
+          type: string
+        message:
+          type: object
+        responseCode:
+          type: integer
+          format: int32
+    ContractProperty:
+      type: object
+      properties:
+        id:
+          type: string
+        code:
+          type: string
+        variableName:
+          type: string
+        description:
+          type: string
+        name:
+          type: string
+        createdBy:
+          type: string
+        updatedBy:
+          type: string
+        createdAt:
+          type: string
+        updatedAt:
+          type: string
+    SearchAndPaginationResponseContractProperty:
+      type: object
+      properties:
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/ContractProperty'
         meta:
           type: object
           additionalProperties:
@@ -4066,81 +4567,6 @@ components:
         responseCode:
           type: integer
           format: int32
-    Group:
-      type: object
-      properties:
-        id:
-          type: string
-        objectId:
-          type: string
-        code:
-          type: string
-        content:
-          type: string
-        description:
-          type: string
-        status:
-          type: string
-        createdAt:
-          type: string
-        createdBy:
-          type: string
-        updatedAt:
-          type: string
-        updatedBy:
-          type: string
-    GroupQuestion:
-      type: object
-      properties:
-        id:
-          type: string
-        objectId:
-          type: string
-        order:
-          type: string
-        pdGroupId:
-          type: string
-        pdQuestionId:
-          type: string
-        pdGroup:
-          $ref: '#/components/schemas/Group'
-        pdQuestion:
-          $ref: '#/components/schemas/Question'
-    Question:
-      type: object
-      properties:
-        id:
-          type: string
-        objectId:
-          type: string
-        code:
-          type: string
-        content:
-          type: string
-        isMandatory:
-          type: boolean
-        description:
-          type: string
-        answerType:
-          type: string
-        placeHolder:
-          type: string
-        createdAt:
-          type: string
-        createdBy:
-          type: string
-        updatedAt:
-          type: string
-        updatedBy:
-          type: string
-        answers:
-          type: array
-          items:
-            type: string
-        pdGroupQuestions:
-          type: array
-          items:
-            $ref: '#/components/schemas/GroupQuestion'
     SearchAndPaginationResponseQuestion:
       type: object
       properties:
@@ -4166,71 +4592,6 @@ components:
         responseCode:
           type: integer
           format: int32
-    LoanProduct:
-      type: object
-      properties:
-        id:
-          type: string
-        objectId:
-          type: string
-        code:
-          type: string
-        name:
-          type: string
-        createdAt:
-          type: string
-        createdBy:
-          type: string
-        updatedAt:
-          type: string
-        updatedBy:
-          type: string
-    Model:
-      type: object
-      properties:
-        id:
-          type: string
-        objectId:
-          type: string
-        pdModelGroups:
-          type: array
-          items:
-            $ref: '#/components/schemas/ModelGroup'
-        loanProduct:
-          $ref: '#/components/schemas/LoanProduct'
-        code:
-          type: string
-        content:
-          type: string
-        description:
-          type: string
-        status:
-          type: string
-        createdAt:
-          type: string
-        createdBy:
-          type: string
-        updatedAt:
-          type: string
-        updatedBy:
-          type: string
-    ModelGroup:
-      type: object
-      properties:
-        id:
-          type: string
-        objectId:
-          type: string
-        order:
-          type: string
-        pdModelId:
-          type: string
-        pdGroupId:
-          type: string
-        pdModel:
-          $ref: '#/components/schemas/Model'
-        pdGroup:
-          $ref: '#/components/schemas/Group'
     SearchAndPaginationResponseModel:
       type: object
       properties:
@@ -4299,15 +4660,13 @@ components:
           type: integer
           format: int32
         productId:
-          type: integer
-          format: int32
+          type: string
         status:
           type: string
         oldStatus:
           type: string
         coreLoanId:
-          type: integer
-          format: int32
+          type: string
         contract:
           type: string
         createdAt:
@@ -4318,6 +4677,8 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/RepaymentTransaction'
+        customerInfo:
+          $ref: '#/components/schemas/CustomerInfo'
     SearchAndPaginationResponseBnplApplication:
       type: object
       properties:
@@ -4847,6 +5208,30 @@ components:
         responseCode:
           type: integer
           format: int32
+    ApiResponseLoanStatus:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/LoanStatus'
+        errorCode:
+          type: string
+        message:
+          type: object
+        responseCode:
+          type: integer
+          format: int32
+    ApiResponseLoanProduct:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/LoanProduct'
+        errorCode:
+          type: string
+        message:
+          type: object
+        responseCode:
+          type: integer
+          format: int32
     ApiResponseInsuranceType:
       type: object
       properties:
@@ -5019,11 +5404,23 @@ components:
         responseCode:
           type: integer
           format: int32
-    ApiResponseContractTemplateEntity:
+    ApiResponseContractTemplate:
       type: object
       properties:
         result:
-          $ref: '#/components/schemas/ContractTemplateEntity'
+          $ref: '#/components/schemas/ContractTemplate'
+        errorCode:
+          type: string
+        message:
+          type: object
+        responseCode:
+          type: integer
+          format: int32
+    ApiResponseContractProperty:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/ContractProperty'
         errorCode:
           type: string
         message:

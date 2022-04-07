@@ -5,7 +5,9 @@ import * as _ from 'lodash';
 import {
   ContractTemplatesService,
   CreateContractDto,
-  UpdateContractDto,
+  LoanProductsService,
+  LoanStatusService,
+  UpdateContractDto, V1ContractPropertyService,
 } from '../../../../../../../open-api-modules/monexcore-api-docs';
 
 @Injectable({
@@ -14,7 +16,10 @@ import {
 export class ConfigContractListService {
   constructor(
     private dashboardContractTemplateControllerService: DashboardContractTemplateControllerService,
-    private monexCoreContractTemplateControllerService: ContractTemplatesService
+    private monexCoreContractTemplateControllerService: ContractTemplatesService,
+    private contractPropertyService: V1ContractPropertyService,
+    private loanProductsService: LoanProductsService,
+    private loanStatusService: LoanStatusService
   ) {}
 
   public getData(params) {
@@ -77,13 +82,27 @@ export class ConfigContractListService {
     );
   }
 
-  public getDataPropertiesContract(params) {
-    return this.dashboardContractTemplateControllerService.getContractTemplates(
-      params.limit,
-      params.pageIndex,
-      {},
-      'createdAt',
-      true
+  public getDataPropertiesContract(
+    descending: boolean,
+    page: number,
+    limit: number,
+    orderBy: string
+  ) {
+    return this.contractPropertyService.contractPropertyControllerSearchPagination(
+      descending,
+      page,
+      limit,
+      orderBy
+    );
+  }
+
+  public getLoanProducts() {
+    return this.loanProductsService.loanProductControllerGetListLoanProduct();
+  }
+
+  public getLoanStatuses(groupId: any) {
+    return this.loanStatusService.loanStatusControllerGetStatusGroupById(
+      groupId
     );
   }
 }

@@ -1,9 +1,10 @@
 import {
+  BNPL_STATUS,
   DEBT_STATUS,
   PAYDAY_LOAN_REPAYMENT_STATUS,
   TERM_TYPE,
 } from './../../../../core/common/enum/payday-loan';
-import { PlStatusLabelComponent } from './../pl-status-label/pl-status-label.component';
+import {PlStatusLabelComponent} from './../pl-status-label/pl-status-label.component';
 import {
   PAYDAY_LOAN_OTHER_STATUS,
   PAYDAY_LOAN_RATING_STATUS,
@@ -11,18 +12,11 @@ import {
   PAYDAY_LOAN_UI_STATUS,
   REPAYMENT_STATUS,
 } from '../../../../core/common/enum/payday-loan';
-import {
-  AfterViewInit,
-  ChangeDetectorRef,
-  Component,
-  Input,
-  OnInit,
-  ViewChild,
-} from '@angular/core';
-import { DATA_STATUS_TYPE } from '../../../../core/common/enum/operator';
-import { PL_LABEL_STATUS } from '../../../../core/common/enum/label-status';
-import { MultiLanguageService } from '../../../translate/multiLanguageService';
-import { AdminAccountEntity } from '../../../../../../open-api-modules/dashboard-api-docs';
+import {AfterViewInit, ChangeDetectorRef, Component, Input, OnInit, ViewChild,} from '@angular/core';
+import {DATA_STATUS_TYPE} from '../../../../core/common/enum/operator';
+import {PL_LABEL_STATUS} from '../../../../core/common/enum/label-status';
+import {MultiLanguageService} from '../../../translate/multiLanguageService';
+import {AdminAccountEntity} from '../../../../../../open-api-modules/dashboard-api-docs';
 import UserStatusEnum = AdminAccountEntity.UserStatusEnum;
 
 @Component({
@@ -105,6 +99,8 @@ export class PlStatusElementComponent implements OnInit, AfterViewInit {
         return this.loanRatingStatusContent(this.statusValue);
       case DATA_STATUS_TYPE.USER_STATUS:
         return this.userStatus(this.statusValue);
+      case DATA_STATUS_TYPE.BNPL_STATUS:
+        return this.bnplStatus(this.statusValue, this.externalValue);
       default:
         return {
           label: this.statusValue,
@@ -609,6 +605,79 @@ export class PlStatusElementComponent implements OnInit, AfterViewInit {
         return {
           label: this.multiLanguageService.instant('common.active'),
           labelStatus: PL_LABEL_STATUS.SUCCESS,
+        };
+    }
+  }
+
+  bnplStatus(status, repaymentStatus) {
+    switch (status) {
+      case BNPL_STATUS.PENDING:
+        return {
+          label: this.multiLanguageService.instant(
+            `bnpl.status.${status.toLowerCase()}`
+          ),
+          labelStatus: PL_LABEL_STATUS.PENDING,
+        };
+      case BNPL_STATUS.UNDOAPPROVAL:
+        return {
+          label: this.multiLanguageService.instant(
+            `bnpl.status.${status.toLowerCase()}`
+          ),
+          labelStatus: PL_LABEL_STATUS.DOCUMENTATION_COMPLETE,
+        };
+      case BNPL_STATUS.APPROVE:
+        return {
+          label: this.multiLanguageService.instant(
+            `bnpl.status.${status.toLowerCase()}`
+          ),
+          labelStatus: PL_LABEL_STATUS.FUNDED,
+        };
+      case BNPL_STATUS.CONTRACT_AWAITING:
+        return {
+          label: this.multiLanguageService.instant(
+            `bnpl.status.${status.toLowerCase()}`
+          ),
+          labelStatus: PL_LABEL_STATUS.CONTRACT_AWAITING,
+        };
+      case BNPL_STATUS.CONTRACT_ACCEPTED:
+        return {
+          label: this.multiLanguageService.instant(
+            `bnpl.status.${status.toLowerCase()}`
+          ),
+          labelStatus: PL_LABEL_STATUS.CONTRACT_AWAITING,
+        };
+      case BNPL_STATUS.DISBURSE:
+        return {
+          label: this.multiLanguageService.instant(
+            `bnpl.status.${status.toLowerCase()}`
+          ),
+          labelStatus: PL_LABEL_STATUS.DISBURSED,
+        };
+      case BNPL_STATUS.COMPLETED:
+        return {
+          label: this.multiLanguageService.instant(
+            `bnpl.status.${status.toLowerCase()}`
+          ),
+          labelStatus: PL_LABEL_STATUS.COMPLETED,
+        };
+      case BNPL_STATUS.REJECT:
+        return {
+          label: this.multiLanguageService.instant(
+            `bnpl.status.${status.toLowerCase()}`
+          ),
+          labelStatus: PL_LABEL_STATUS.REJECTED,
+        };
+      case BNPL_STATUS.WITHDRAW:
+        return {
+          label: this.multiLanguageService.instant(
+            `bnpl.status.${status.toLowerCase()}`
+          ),
+          labelStatus: PL_LABEL_STATUS.WITHDRAW,
+        };
+      default:
+        return {
+          label: status,
+          labelStatus: PL_LABEL_STATUS.REJECT,
         };
     }
   }

@@ -202,34 +202,33 @@
                         }}</mat-label>
                         <mat-select
                           disableOptionCentering="true"
-                          formControlName="merchantSellTypes"
-                          multiple
+                          formControlName="merchantSellType"
                         >
-                          <mat-select-trigger>
-                            <span
-                              *ngIf="
-                                merchantInfoForm.controls.merchantSellTypes
-                                  .value?.length <= 1;
-                                else typeMultipleOptions
-                              "
-                              >{{
-                                merchantInfoForm.controls.merchantSellTypes
-                                  .value
-                                  ? "Đã chọn 1 nhóm"
-                                  : ""
-                              }}</span
-                            >
-                            <ng-template #typeMultipleOptions>
-                              Đã chọn
-                              {{
-                                merchantInfoForm.controls.merchantSellTypes
-                                  .value?.length
-                              }}
-                              nhóm
-                            </ng-template>
-                          </mat-select-trigger>
+<!--                          <mat-select-trigger>-->
+<!--                            <span-->
+<!--                              *ngIf="-->
+<!--                                merchantInfoForm.controls.merchantSellType-->
+<!--                                  .value?.length <= 1;-->
+<!--                                else typeMultipleOptions-->
+<!--                              "-->
+<!--                              >{{-->
+<!--                                merchantInfoForm.controls.merchantSellType-->
+<!--                                  .value-->
+<!--                                  ? "Đã chọn 1 nhóm"-->
+<!--                                  : ""-->
+<!--                              }}</span-->
+<!--                            >-->
+<!--                            <ng-template #typeMultipleOptions>-->
+<!--                              Đã chọn-->
+<!--                              {{-->
+<!--                                merchantInfoForm.controls.merchantSellType-->
+<!--                                  .value?.length-->
+<!--                              }}-->
+<!--                              nhóm-->
+<!--                            </ng-template>-->
+<!--                          </mat-select-trigger>-->
                           <mat-option
-                            *ngFor="let option of merchantSellTypes"
+                            *ngFor="let option of merchantSellType"
                             [value]="option.value"
                             [title]="option.title"
                             >{{ option.title }}</mat-option
@@ -237,7 +236,7 @@
                         </mat-select>
                         <show-errors
                           [control]="
-                            merchantInfoForm.controls['merchantSellTypes']
+                            merchantInfoForm.controls['merchantSellType']
                           "
                           [controlLabel]="
                             'merchant.merchant_detail.type' | translate
@@ -426,6 +425,7 @@
 
                         <mat-chip-list
                           #chipList
+                          required
                           aria-label="Product type selection"
                           [formControl]="productTypeControl"
                         >

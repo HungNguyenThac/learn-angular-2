@@ -151,7 +151,8 @@
       "customer": "Khách hàng",
       "merchant": "Merchant",
       "insurance": "Bảo hiểm",
-      "saving": "Đầu tư"
+      "saving": "Đầu tư",
+      "bnpl": "BNPL"
     },
     "mange_user": "Quản lý người dùng"
   },
@@ -597,6 +598,7 @@
     "term_type": "Kỳ hạn vay",
     "merchant_group": "Nhóm merchant",
     "role_group": "Vai trò",
+    "merchant_name": "Merchant bán",
     "select_all": "Chọn tất cả",
     "deselect_all": "Bỏ chọn tất cả",
     "account_classification": "Phân loại tài khoản",
@@ -671,11 +673,13 @@
     "loan_list": "Danh sách khoản ứng",
     "dashboard": "Tổng quan",
     "user_list": "Danh sách người dùng",
-    "merchant_list": "Danh sách merchant"
+    "merchant_list": "Danh sách merchant",
+    "bnpl_list": "Danh sách đơn hàng BNPL"
   },
   "breadcrumb": {
     "manage_customer": "Quản lý khách hàng",
     "manage_payday_loan": "Quản lý khoản ứng",
+    "manage_bnpl": "Đơn hàng BNPL",
     "manage_user": "Quản lý người dùng",
     "merchant": "Quản lý Merchant",
     "pd_group": "Quản lý Nhóm câu hỏi PD",
@@ -693,7 +697,8 @@
       "customer_list": "Họ tên, Mã nhân viên, Số điện thoại, Email",
       "user_list": "Tên đăng nhập, Tên người dùng",
       "config_document": "Tên tài liệu, Mô tả",
-      "config_document_type": "Tên nhóm tài liệu, Mô tả"
+      "config_document_type": "Tên nhóm tài liệu, Mô tả",
+      "bnpl": "Mã đơn mua, Tên KH, Số điện thoại KH, Email KH, Merchant bán hàng"
     }
   },
   "system": {
@@ -821,20 +826,30 @@
         "created_at": "Ngày tạo",
         "total": "Tổng số hợp đồng",
         "delete_prompt": {
-          "title": "Xóa cấu hình hợp đồng",
-          "success": "Xóa cấu hình hợp đồng thành công",
-          "content": "Bạn có muốn xóa cấu hình hợp đồng này?"
+          "title": "Xóa hợp đồng vay",
+          "success": "Xóa hợp đồng vay thành công",
+          "content": "Bạn có muốn xóa hợp đồng vay này?"
         },
-        "add_form_title": "Thêm mới cấu hình hợp đồng",
-        "update_form_title": "Cập nhật cấu hình hợp đồng",
-        "add_success": "Thêm mới cấu hình hợp đồng thành công",
-        "update_success": "Cập nhật cấu hình hợp đồng thành công",
+        "add_form_title": "Tạo mới hợp đồng vay",
+        "update_form_title": "Chỉnh sửa hợp đồng vay",
+        "view_form_title": "Chi tiết hợp đồng vay",
+        "add_success": "Thêm mới hợp đồng thành công",
+        "update_success": "Cập nhật hợp đồng thành công",
         "search_product": "Chọn sản phẩm vay",
         "empty_product": "Sản phẩm vay không tồn tại",
         "search_product_status": "Chọn trạng thái gửi hợp đồng",
         "empty_product_status": "Trạng thái không tồn tại",
         "view_all_properties": "Xem chi tiết danh sách biến",
-        "all_properties": "Chi tiết danh sách biến"
+        "all_properties": "Chi tiết danh sách biến",
+        "back": "Quay lại",
+        "prompt_update_contract_title": "Sản phẩm vay đã có hợp đồng",
+        "prompt_update_contract_content": "Bạn có chắc chắn muốn thay thế bằng hợp đồng này không"
+      },
+      "contract_property": {
+        "order_number": "STT",
+        "variable_name": "Tên biến",
+        "description": "Ý nghĩa",
+        "code": "Code"
       }
     }
   },
@@ -975,7 +990,8 @@
     },
     "merchant_sell_type": {
       "offline": "Tại cửa hàng",
-      "online": "Trực tuyến"
+      "online": "Trực tuyến",
+      "all": "Cả 2"
     }
   },
   "pd_system": {
@@ -1098,5 +1114,50 @@
     "created_at": "Ngày tạo",
     "updated_at": "Ngày cập nhật",
     "updated_by": "Người cập nhật"
+  },
+  "bnpl": {
+    "loan_info": {
+      "customer_name": "Tên khách hàng",
+      "loan_code": "Mã đơn hàng",
+      "merchant": "Merchant bán",
+      "origin_amount": "Tổng tiền hàng",
+      "discount": "Monex giảm giá",
+      "total_amount": "Tổng cộng",
+      "status": "Trạng thái",
+      "created_at": "Thời gian đặt hàng",
+      "updated_at": "Ngày cập nhật",
+      "email": "Email",
+      "total_loan_number": "Tổng số khoản ứng",
+      "total_loan_amount_number": "Tổng số tiền ứng",
+      "total_late_penalty_number": "Tổng số tiền trả chậm"
+    },
+    "status": {
+      "pending": "Chờ xác nhận",
+      "undoapproval": "Chờ phê duyệt",
+      "approve": "Đã duyệt",
+      "reject": "Bị từ chối",
+      "disburse": "Đã giải ngân",
+      "contract_accepted": "Đã ký",
+      "contract_awaiting": "Chờ ký",
+      "withdraw": "Đã hủy",
+      "completed": "Hoàn thành",
+      "payment_term_1": "Đã thanh toán kỳ 1",
+      "payment_term_2": "Đã thanh toán kỳ 2",
+      "payment_term_3": "Đã thanh toán kỳ 3"
+    },
+    "repayment_status": {
+      "overdue": "Quá hạn"
+    },
+    "tabs": {
+      "loan_info": "Thông tin",
+      "repayment_transaction_info": "Lịch sử giao dịch",
+      "loan_contract": "Hợp đồng dịch vụ"
+    },
+    "loan_contract": {
+      "download": "Tải xuống",
+      "no_contract": "Không có hợp đồng",
+      "downloading": "Đang tải xuống tài liệu",
+      "downloading_fail": "Tải xuống thất bại"
+    }
   }
 }

@@ -47,7 +47,7 @@ export class MerchantDetailDialogComponent implements OnInit, AfterViewChecked {
 
   allProductTypes: any[] = ['Thời trang', 'Thực phẩm', 'Điện tử'];
   productTypes: any[] = [];
-  merchantSellTypes: any[] = [
+  merchantSellType: any[] = [
     {
       value: MerchantSellType.Offline,
       title: this.multiLanguageService.instant(
@@ -58,6 +58,12 @@ export class MerchantDetailDialogComponent implements OnInit, AfterViewChecked {
       value: MerchantSellType.Online,
       title: this.multiLanguageService.instant(
         'merchant.merchant_sell_type.online'
+      ),
+    },
+    {
+      value: MerchantSellType.All,
+      title: this.multiLanguageService.instant(
+        'merchant.merchant_sell_type.all'
       ),
     },
   ];
@@ -273,7 +279,7 @@ export class MerchantDetailDialogComponent implements OnInit, AfterViewChecked {
       name: this.merchantInfo?.name,
       address: this.merchantInfo?.address,
       bdStaffId: this.merchantInfo?.bdStaffId,
-      merchantSellTypes: this.merchantInfo?.merchantSellTypes || [],
+      merchantSellType: this.merchantInfo?.merchantSellType || [],
       mobile: this.merchantInfo?.mobile,
       email: this.merchantInfo?.email,
       website: this.merchantInfo?.website,
@@ -308,7 +314,7 @@ export class MerchantDetailDialogComponent implements OnInit, AfterViewChecked {
       name: [''],
       address: [''],
       bdStaffId: ['', [Validators.required]],
-      merchantSellTypes: [''],
+      merchantSellType: [''],
       mobile: ['', [Validators.required]],
       email: ['', [Validators.email, Validators.required]],
       website: [

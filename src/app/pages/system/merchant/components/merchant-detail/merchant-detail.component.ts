@@ -49,8 +49,7 @@ export class MerchantDetailComponent implements OnInit {
     return this.merchantInfo?.status;
   }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   // submitForm() {
   //   const data = this.merchantInfoForm.getRawValue();
@@ -142,7 +141,7 @@ export class MerchantDetailComponent implements OnInit {
         title: this.multiLanguageService.instant(
           'merchant.merchant_detail.type'
         ),
-        value: this.merchantSellType(this.merchantInfo?.merchantSellTypes),
+        value: this.merchantSellType(this.merchantInfo?.merchantSellType),
         type: DATA_CELL_TYPE.TEXT,
         format: null,
       },
@@ -210,16 +209,8 @@ export class MerchantDetailComponent implements OnInit {
     ];
   }
 
-  merchantSellType(sellTypes) {
-    if (!sellTypes) return null;
-    let merchantSellTypes = [];
-    if (sellTypes.length > 0) {
-      sellTypes.forEach((type) => {
-        merchantSellTypes.push(
-          this.multiLanguageService.instant(MERCHANT_SELL_TYPE_TEXT[type])
-        );
-      });
-    }
-    return merchantSellTypes.join(', ');
+  merchantSellType(sellType) {
+    if (!sellType) return null;
+    return this.multiLanguageService.instant(MERCHANT_SELL_TYPE_TEXT[sellType]);
   }
 }

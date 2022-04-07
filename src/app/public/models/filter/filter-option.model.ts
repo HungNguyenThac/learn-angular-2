@@ -13,6 +13,7 @@ export interface FilterOptionModel {
   showAction?: boolean;
   showIconAction?: boolean;
   hidden?: boolean;
+  showToggleAllCheckbox?: boolean;
   options?: FilterItemModel[];
   searchPlaceholder?: string;
   emptyResultText?: string;

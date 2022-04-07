@@ -127,7 +127,7 @@ export class ConfigDocumentListComponent implements OnInit, OnDestroy {
         'system.system_config.application_document.delete'
       ),
       imageSrc: 'assets/img/icon/group-5/svg/trash.svg',
-      style: 'background-color: rgba(255, 255, 255, 0.1);',
+      style: 'background-color: #dc3545;',
     },
   ];
 

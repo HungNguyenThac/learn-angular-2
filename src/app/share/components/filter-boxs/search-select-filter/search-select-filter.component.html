@@ -39,6 +39,8 @@
             [formControl]="selectSearchCtrl"
             [placeholderLabel]="filterOption.searchPlaceholder"
             [noEntriesFoundLabel]="filterOption.emptyResultText"
+            [showToggleAllCheckbox]="filterOption.showToggleAllCheckbox"
+            (toggleAll)="onToggleAll($event, filterOption)"
           ></ngx-mat-select-search>
         </mat-option>
         <mat-option

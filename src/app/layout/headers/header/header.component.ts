@@ -60,7 +60,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
             'header.navigation.loanapp_hmg'
           ),
           iconClass: 'sprite-group-5-pl-24',
-          path: '/payday-loan/list',
+          path: '/product/payday-loan',
           queryParams: { groupName: 'HMG' },
           canActivate: ['dashboardHmgApplications:findApplications'],
         },
@@ -69,7 +69,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
             'header.navigation.loanapp_tng'
           ),
           iconClass: 'sprite-group-5-pl-24',
-          path: '/payday-loan/list',
+          path: '/product/payday-loan',
           queryParams: { groupName: 'TNG' },
           canActivate: ['dashboardApplications:findTngApplications'],
         },
@@ -78,12 +78,12 @@ export class HeaderComponent implements OnInit, OnDestroy {
             'header.navigation.loanapp_vac'
           ),
           iconClass: 'sprite-group-5-pl-24',
-          path: '/payday-loan/list',
+          path: '/product/payday-loan',
           queryParams: { groupName: 'VAC' },
           canActivate: ['dashboardApplications:findVacApplications'],
         },
       ],
-      path: '/payday-loan/list',
+      path: '/product/payday-loan',
     },
     {
       navItem: NAV_ITEM.CUSTOMER,
@@ -101,13 +101,14 @@ export class HeaderComponent implements OnInit, OnDestroy {
       path: '/system/merchant/list',
       canActivate: ['dashboardMerchants:getMerchants'],
     },
-    // {
-    //   navItem: NAV_ITEM.INSURANCE,
-    //   title: this.multiLanguageService.instant('header.navigation.insurance'),
-    //   defaultIconClass: 'sprite-group-5-shield-check',
-    //   activeIconClass: 'sprite-group-5-shield-check-white',
-    //   path: '/',
-    // },
+    {
+      navItem: NAV_ITEM.BNPL,
+      canActivate: ['dashboardBnplApplications:findBnplApplications'],
+      title: this.multiLanguageService.instant('header.navigation.bnpl'),
+      defaultIconClass: 'sprite-group-5-shield-check',
+      activeIconClass: 'sprite-group-5-shield-check-white',
+      path: '/product/bnpl',
+    },
     // {
     //   navItem: NAV_ITEM.SAVING,
     //   title: this.multiLanguageService.instant('header.navigation.saving'),

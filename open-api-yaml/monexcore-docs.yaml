@@ -8,7 +8,7 @@ paths:
           required: true
           in: "path"
           schema:
-            type: "number"
+            type: "string"
       responses:
         200:
           description: ""
@@ -25,7 +25,7 @@ paths:
           required: true
           in: "path"
           schema:
-            type: "number"
+            type: "string"
       requestBody:
         required: true
         content:
@@ -48,7 +48,7 @@ paths:
           required: true
           in: "path"
           schema:
-            type: "number"
+            type: "string"
       requestBody:
         required: true
         content:
@@ -72,7 +72,7 @@ paths:
           required: false
           in: "query"
           schema:
-            type: "number"
+            type: "string"
         - name: "code"
           required: false
           in: "query"
@@ -123,7 +123,7 @@ paths:
           required: true
           in: "path"
           schema:
-            type: "number"
+            type: "string"
       responses:
         200:
           description: ""
@@ -140,7 +140,7 @@ paths:
           required: true
           in: "path"
           schema:
-            type: "number"
+            type: "string"
       requestBody:
         required: true
         content:
@@ -163,7 +163,7 @@ paths:
           required: true
           in: "path"
           schema:
-            type: "number"
+            type: "string"
       requestBody:
         required: true
         content:
@@ -187,7 +187,7 @@ paths:
           required: false
           in: "query"
           schema:
-            type: "number"
+            type: "string"
         - name: "code"
           required: false
           in: "query"
@@ -238,7 +238,7 @@ paths:
           required: true
           in: "path"
           schema:
-            type: "number"
+            type: "string"
         - name: "action"
           required: true
           in: "path"
@@ -267,7 +267,7 @@ paths:
           required: true
           in: "path"
           schema:
-            type: "number"
+            type: "string"
       responses:
         200:
           description: ""
@@ -284,7 +284,7 @@ paths:
           required: true
           in: "path"
           schema:
-            type: "number"
+            type: "string"
       requestBody:
         required: true
         content:
@@ -307,7 +307,7 @@ paths:
           required: true
           in: "path"
           schema:
-            type: "number"
+            type: "string"
       requestBody:
         required: true
         content:
@@ -331,7 +331,7 @@ paths:
           required: false
           in: "query"
           schema:
-            type: "number"
+            type: "string"
         - name: "code"
           required: false
           in: "query"
@@ -382,7 +382,7 @@ paths:
           required: true
           in: "path"
           schema:
-            type: "number"
+            type: "string"
         - name: "action"
           required: true
           in: "path"
@@ -403,6 +403,35 @@ paths:
                 $ref: "#/components/schemas/ApiResponse"
       tags:
         - "cde"
+  /v1/loan-products/pagination/loan-product:
+    get:
+      operationId: "LoanProductController_searchPagination"
+      parameters:
+        - name: "descending"
+          required: true
+          in: "query"
+          schema:
+            type: "boolean"
+        - name: "page"
+          required: true
+          in: "query"
+          schema:
+            type: "number"
+        - name: "limit"
+          required: true
+          in: "query"
+          schema:
+            type: "number"
+        - name: "orderBy"
+          required: true
+          in: "query"
+          schema:
+            type: "string"
+      responses:
+        200:
+          description: ""
+      tags:
+        - "loan-products"
   /v1/loan-products/mifos:
     get:
       operationId: "LoanProductController_getListMifosProduct"
@@ -435,7 +464,7 @@ paths:
           required: true
           in: "path"
           schema:
-            type: "number"
+            type: "string"
       responses:
         200:
           description: ""
@@ -448,7 +477,7 @@ paths:
           required: true
           in: "path"
           schema:
-            type: "number"
+            type: "string"
       requestBody:
         required: true
         content:
@@ -467,7 +496,7 @@ paths:
           required: true
           in: "path"
           schema:
-            type: "number"
+            type: "string"
       requestBody:
         required: true
         content:
@@ -531,12 +560,41 @@ paths:
           required: true
           in: "path"
           schema:
-            type: "number"
+            type: "string"
       responses:
         200:
           description: ""
       tags:
         - "loan-products"
+  /v1/contract-templates/pagination:
+    get:
+      operationId: "ContractTemplateController_searchPagination"
+      parameters:
+        - name: "descending"
+          required: true
+          in: "query"
+          schema:
+            type: "boolean"
+        - name: "page"
+          required: true
+          in: "query"
+          schema:
+            type: "number"
+        - name: "limit"
+          required: true
+          in: "query"
+          schema:
+            type: "number"
+        - name: "orderBy"
+          required: true
+          in: "query"
+          schema:
+            type: "string"
+      responses:
+        200:
+          description: ""
+      tags:
+        - "contract-templates"
   /v1/contract-templates/{id}:
     get:
       operationId: "ContractTemplateController_getContractDetail"
@@ -626,6 +684,35 @@ paths:
                 $ref: "#/components/schemas/ApiResponseContractTemplate"
       tags:
         - "contract-templates"
+  /v1/loan-status/groups/pagination:
+    get:
+      operationId: "LoanStatusController_searchPaginationStatusGroup"
+      parameters:
+        - name: "descending"
+          required: true
+          in: "query"
+          schema:
+            type: "boolean"
+        - name: "page"
+          required: true
+          in: "query"
+          schema:
+            type: "number"
+        - name: "limit"
+          required: true
+          in: "query"
+          schema:
+            type: "number"
+        - name: "orderBy"
+          required: true
+          in: "query"
+          schema:
+            type: "string"
+      responses:
+        200:
+          description: ""
+      tags:
+        - "loan-status"
   /v1/loan-status/groups/{id}:
     get:
       operationId: "LoanStatusController_getStatusGroupById"
@@ -651,7 +738,7 @@ paths:
           required: true
           in: "path"
           schema:
-            type: "number"
+            type: "string"
       requestBody:
         required: true
         content:
@@ -674,7 +761,7 @@ paths:
           required: true
           in: "path"
           schema:
-            type: "number"
+            type: "string"
       requestBody:
         required: true
         content:
@@ -694,26 +781,6 @@ paths:
     get:
       operationId: "LoanStatusController_getListStatusGroup"
       parameters:
-        - name: "createdAt"
-          required: false
-          in: "query"
-          schema:
-            type: "string"
-        - name: "createdBy"
-          required: false
-          in: "query"
-          schema:
-            type: "string"
-        - name: "updatedAt"
-          required: false
-          in: "query"
-          schema:
-            type: "string"
-        - name: "updatedBy"
-          required: false
-          in: "query"
-          schema:
-            type: "string"
         - name: "code"
           required: false
           in: "query"
@@ -764,7 +831,7 @@ paths:
           required: true
           in: "path"
           schema:
-            type: "number"
+            type: "string"
         - name: "action"
           required: true
           in: "path"
@@ -783,6 +850,35 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ApiResponse"
+      tags:
+        - "loan-status"
+  /v1/loan-status/pagination:
+    get:
+      operationId: "StatusGroupController_searchPaginationLoanStatus"
+      parameters:
+        - name: "descending"
+          required: true
+          in: "query"
+          schema:
+            type: "boolean"
+        - name: "page"
+          required: true
+          in: "query"
+          schema:
+            type: "number"
+        - name: "limit"
+          required: true
+          in: "query"
+          schema:
+            type: "number"
+        - name: "orderBy"
+          required: true
+          in: "query"
+          schema:
+            type: "string"
+      responses:
+        200:
+          description: ""
       tags:
         - "loan-status"
   /v1/loan-status/{id}:
@@ -810,7 +906,7 @@ paths:
           required: true
           in: "path"
           schema:
-            type: "number"
+            type: "string"
       requestBody:
         required: true
         content:
@@ -833,7 +929,7 @@ paths:
           required: true
           in: "path"
           schema:
-            type: "number"
+            type: "string"
       requestBody:
         required: true
         content:
@@ -853,26 +949,6 @@ paths:
     get:
       operationId: "StatusGroupController_getListStatus"
       parameters:
-        - name: "createdAt"
-          required: false
-          in: "query"
-          schema:
-            type: "string"
-        - name: "createdBy"
-          required: false
-          in: "query"
-          schema:
-            type: "string"
-        - name: "updatedAt"
-          required: false
-          in: "query"
-          schema:
-            type: "string"
-        - name: "updatedBy"
-          required: false
-          in: "query"
-          schema:
-            type: "string"
         - name: "code"
           required: false
           in: "query"
@@ -1017,7 +1093,36 @@ paths:
           description: ""
       tags:
         - "loans"
-  /contract-property/{id}:
+  /v1/contract-property/pagination:
+    get:
+      operationId: "ContractPropertyController_searchPagination"
+      parameters:
+        - name: "descending"
+          required: true
+          in: "query"
+          schema:
+            type: "boolean"
+        - name: "page"
+          required: true
+          in: "query"
+          schema:
+            type: "number"
+        - name: "limit"
+          required: true
+          in: "query"
+          schema:
+            type: "number"
+        - name: "orderBy"
+          required: true
+          in: "query"
+          schema:
+            type: "string"
+      responses:
+        200:
+          description: ""
+      tags:
+        - "v1/contract-property"
+  /v1/contract-property/{id}:
     get:
       operationId: "ContractPropertyController_getProperty"
       parameters:
@@ -1034,7 +1139,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/ApiResponseContractProperty"
       tags:
-        - "contract-property"
+        - "v1/contract-property"
     put:
       operationId: "ContractPropertyController_updateProperty"
       parameters:
@@ -1057,7 +1162,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/ApiResponseContractProperty"
       tags:
-        - "contract-property"
+        - "v1/contract-property"
     delete:
       operationId: "ContractPropertyController_deleteProperty"
       parameters:
@@ -1074,8 +1179,8 @@ paths:
               schema:
                 $ref: "#/components/schemas/ApiResponseDelete"
       tags:
-        - "contract-property"
-  /contract-property:
+        - "v1/contract-property"
+  /v1/contract-property:
     get:
       operationId: "ContractPropertyController_getListProperty"
       parameters: []
@@ -1087,7 +1192,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/ApiResponseContractProperties"
       tags:
-        - "contract-property"
+        - "v1/contract-property"
     post:
       operationId: "ContractPropertyController_createProperty"
       parameters: []
@@ -1105,7 +1210,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/ApiResponseContractProperty"
       tags:
-        - "contract-property"
+        - "v1/contract-property"
   /v1/applicationDocuments:
     post:
       operationId: "DocumentController_createApplicationDocument"
@@ -1427,7 +1532,7 @@ components:
       type: "object"
       properties:
         questionId:
-          type: "number"
+          type: "string"
         order:
           type: "number"
       required:
@@ -1443,7 +1548,7 @@ components:
         description:
           type: "string"
         loanProductId:
-          type: "number"
+          type: "string"
         status:
           type: "string"
       required:
@@ -1460,14 +1565,14 @@ components:
         description:
           type: "string"
         loanProductId:
-          type: "number"
+          type: "string"
         status:
           type: "string"
     UpdatePdModelGroupRequestDto:
       type: "object"
       properties:
         groupId:
-          type: "number"
+          type: "string"
         order:
           type: "number"
       required:
@@ -1484,7 +1589,7 @@ components:
         name:
           type: "string"
         statusGroupId:
-          type: "number"
+          type: "string"
         pdModelIds:
           type: "array"
           items:
@@ -1493,10 +1598,6 @@ components:
           type: "number"
         description:
           type: "string"
-        contractTemplateIds:
-          type: "array"
-          items:
-            type: "string"
       required:
         - "code"
         - "name"
@@ -1510,17 +1611,13 @@ components:
         description:
           type: "string"
         statusGroupId:
-          type: "number"
+          type: "string"
         pdModelIds:
           type: "array"
           items:
             type: "number"
         mifosProductId:
           type: "number"
-        contractTemplateIds:
-          type: "array"
-          items:
-            type: "string"
     DeleteLoanProductDto:
       type: "object"
       properties: {}
@@ -1565,26 +1662,30 @@ components:
       properties:
         content:
           type: "string"
-        code:
-          type: "string"
+        isActive:
+          type: "boolean"
         name:
           type: "string"
-        description:
+        statusFlowId:
+          type: "string"
+        productId:
           type: "string"
       required:
         - "content"
-        - "code"
+        - "isActive"
         - "name"
     UpdateContractDto:
       type: "object"
       properties:
         content:
           type: "string"
-        code:
-          type: "string"
         name:
           type: "string"
-        description:
+        isActive:
+          type: "boolean"
+        statusFlowId:
+          type: "string"
+        productId:
           type: "string"
     ApiResponseDelete:
       type: "object"
@@ -1605,14 +1706,6 @@ components:
     CreateGroupLoanStatusDto:
       type: "object"
       properties:
-        createdAt:
-          type: "string"
-        createdBy:
-          type: "string"
-        updatedAt:
-          type: "string"
-        updatedBy:
-          type: "string"
         code:
           type: "string"
         name:
@@ -1626,14 +1719,6 @@ components:
     UpdateGroupLoanStatusDto:
       type: "object"
       properties:
-        createdAt:
-          type: "string"
-        createdBy:
-          type: "string"
-        updatedAt:
-          type: "string"
-        updatedBy:
-          type: "string"
         code:
           type: "string"
         name:
@@ -1642,28 +1727,12 @@ components:
           type: "string"
     DeleteLoanStatusGroupDto:
       type: "object"
-      properties:
-        createdAt:
-          type: "string"
-        createdBy:
-          type: "string"
-        updatedAt:
-          type: "string"
-        updatedBy:
-          type: "string"
+      properties: {}
     UpdateStatusFlowDto:
       type: "object"
       properties:
-        createdAt:
-          type: "string"
-        createdBy:
-          type: "string"
-        updatedAt:
-          type: "string"
-        updatedBy:
-          type: "string"
         statusId:
-          type: "number"
+          type: "string"
         order:
           type: "number"
       required:
@@ -1671,14 +1740,6 @@ components:
     CreateLoanStatusDto:
       type: "object"
       properties:
-        createdAt:
-          type: "string"
-        createdBy:
-          type: "string"
-        updatedAt:
-          type: "string"
-        updatedBy:
-          type: "string"
         code:
           type: "string"
         name:
@@ -1692,14 +1753,6 @@ components:
     UpdateLoanStatusDto:
       type: "object"
       properties:
-        createdAt:
-          type: "string"
-        createdBy:
-          type: "string"
-        updatedAt:
-          type: "string"
-        updatedBy:
-          type: "string"
         code:
           type: "string"
         name:
@@ -1708,15 +1761,7 @@ components:
           type: "string"
     DeleteLoanStatusDto:
       type: "object"
-      properties:
-        createdAt:
-          type: "string"
-        createdBy:
-          type: "string"
-        updatedAt:
-          type: "string"
-        updatedBy:
-          type: "string"
+      properties: {}
     CreateLoanDto:
       type: "object"
       properties:

@@ -22,10 +22,10 @@ const routes: Routes = [
         canActivate: [AuthGuard],
       },
       {
-        path: 'payday-loan',
+        path: 'product',
         loadChildren: () =>
-          import('./pages/products/payday-loan/payday-loan.module').then(
-            (m) => m.PaydayLoanModule
+          import('./pages/products/product.module').then(
+            (m) => m.ProductModule
           ),
         data: { preload: true, delay: true },
       },
