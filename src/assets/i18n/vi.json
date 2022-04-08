@@ -1118,6 +1118,7 @@
   "bnpl": {
     "loan_info": {
       "customer_name": "Tên khách hàng",
+      "phone_number": "Số điện thoại",
       "loan_code": "Mã đơn hàng",
       "merchant": "Merchant bán",
       "origin_amount": "Tổng tiền hàng",
@@ -1140,24 +1141,44 @@
       "contract_accepted": "Đã ký",
       "contract_awaiting": "Chờ ký",
       "withdraw": "Đã hủy",
-      "completed": "Hoàn thành",
+      "completed": "Hoàn thành"
+    },
+    "repayment_status": {
+      "overdue": "Quá hạn",
       "payment_term_1": "Đã thanh toán kỳ 1",
       "payment_term_2": "Đã thanh toán kỳ 2",
       "payment_term_3": "Đã thanh toán kỳ 3"
     },
-    "repayment_status": {
-      "overdue": "Quá hạn"
-    },
     "tabs": {
       "loan_info": "Thông tin",
       "repayment_transaction_info": "Lịch sử giao dịch",
-      "loan_contract": "Hợp đồng dịch vụ"
+      "loan_contract": "Hợp đồng dịch vụ",
+      "loan_note": "Ghi chú"
     },
     "loan_contract": {
       "download": "Tải xuống",
       "no_contract": "Không có hợp đồng",
       "downloading": "Đang tải xuống tài liệu",
       "downloading_fail": "Tải xuống thất bại"
+    },
+    "loan_note": {
+      "note": "Ghi chú",
+      "type_note": "Nhập ghi chú",
+      "save_update": "Cập nhật"
+    },
+    "repayment_transaction": {
+      "created_at": "Thời gian thanh toán",
+      "amount": "Số tiền",
+      "provider": "Hình thức thanh toán",
+      "status": "Trạng thái"
+    },
+    "gpay_repayment_status": {
+      "success": "Thành công",
+      "pending": "Pending",
+      "processing": "Trong tiến trình",
+      "failed": "Thất bại",
+      "cancel": "Bị hủy",
+      "verifying": "Đang xác thực"
     }
   }
 }

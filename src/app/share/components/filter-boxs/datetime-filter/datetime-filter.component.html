@@ -206,7 +206,6 @@
                         <mat-card class="calendar-card w-100">
                           <mat-calendar
                             [selected]="selectedStartDate"
-                            [maxDate]="currentTime"
                             (selectedChange)="onSelectStartDate($event, null)"
                           ></mat-calendar>
                         </mat-card>
@@ -230,7 +229,6 @@
                         <mat-card class="calendar-card w-100">
                           <mat-calendar
                             [selected]="selectedEndDate"
-                            [maxDate]="currentTime"
                             [minDate]="selectedStartDate"
                             (selectedChange)="onSelectEndDateMobile($event)"
                           ></mat-calendar>
@@ -314,7 +312,6 @@
                       <mat-card class="calendar-card">
                         <mat-calendar
                           [selected]="selectedStartDate"
-                          [maxDate]="currentTime"
                           (selectedChange)="
                             onSelectStartDate($event, timeRangeMethodEle)
                           "
@@ -340,7 +337,6 @@
                       <mat-card class="calendar-card">
                         <mat-calendar
                           [selected]="selectedEndDate"
-                          [maxDate]="currentTime"
                           [minDate]="selectedStartDate"
                           (selectedChange)="
                             onSelectEndDate($event, timeRangeMethodEle)

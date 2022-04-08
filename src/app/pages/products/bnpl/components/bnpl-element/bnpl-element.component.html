@@ -23,4 +23,16 @@
       </ng-template>
     </mat-tab>
   </ng-container>
+
+  <!--  Note  -->
+  <ng-container *ngxPermissionsOnly="[]">
+    <mat-tab [label]="'bnpl.tabs.loan_note' | translate">
+      <ng-template matTabContent>
+        <app-bnpl-note
+          [loanDetail]="loanDetail"
+          (triggerUpdateLoanInfo)="triggerUpdateLoanInfo($event)"
+        ></app-bnpl-note>
+      </ng-template>
+    </mat-tab>
+  </ng-container>
 </mat-tab-group>

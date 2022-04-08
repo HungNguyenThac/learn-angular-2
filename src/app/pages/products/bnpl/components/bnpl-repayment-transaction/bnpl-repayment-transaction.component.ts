@@ -1,15 +1,18 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { CustomerInfo } from '../../../../../../../open-api-modules/dashboard-api-docs';
+import {
+  BnplApplication,
+  CustomerInfo,
+} from '../../../../../../../open-api-modules/dashboard-api-docs';
 import { MatTableDataSource } from '@angular/material/table';
 import { DisplayedFieldsModel } from '../../../../../public/models/filter/displayed-fields.model';
-import { DATA_CELL_TYPE } from '../../../../../core/common/enum/operator';
+import {
+  DATA_CELL_TYPE,
+  DATA_STATUS_TYPE,
+} from '../../../../../core/common/enum/operator';
 import { Store } from '@ngrx/store';
 import { MultiLanguageService } from '../../../../../share/translate/multiLanguageService';
-import * as fromActions from '../../../../../core/store';
 import * as fromStore from '../../../../../core/store';
-import * as fromSelectors from '../../../../../core/store/selectors';
-import { PageEvent } from '@angular/material/paginator/public-api';
-import { Sort } from '@angular/material/sort';
+import {REPAYMENT_STATUS} from "../../../../../core/common/enum/bnpl";
 
 @Component({
   selector: 'app-bnpl-repayment-transaction',
@@ -17,7 +20,16 @@ import { Sort } from '@angular/material/sort';
   styleUrls: ['./bnpl-repayment-transaction.component.scss'],
 })
 export class BnplRepaymentTransactionComponent implements OnInit {
-  @Input() loanDetail: any;
+  _loanDetail: BnplApplication;
+  @Input()
+  get loanDetail(): BnplApplication {
+    return this._loanDetail;
+  }
+
+  set loanDetail(value: BnplApplication) {
+    this._loanDetail = value;
+    this.initTableData();
+  }
   @Input() userInfo: CustomerInfo;
 
   dataSource: MatTableDataSource<any> = new MatTableDataSource([]);
@@ -26,9 +38,38 @@ export class BnplRepaymentTransactionComponent implements OnInit {
   allColumns: DisplayedFieldsModel[] = [
     {
       key: 'createdAt',
-      title: this.multiLanguageService.instant('bnpl.loan_info.created_at'),
+      title: this.multiLanguageService.instant(
+        'bnpl.repayment_transaction.created_at'
+      ),
       type: DATA_CELL_TYPE.DATETIME,
       format: 'dd/MM/yyyy HH:mm:ss',
+      showed: true,
+    },
+    {
+      key: 'amount',
+      title: this.multiLanguageService.instant(
+        'bnpl.repayment_transaction.amount'
+      ),
+      type: DATA_CELL_TYPE.CURRENCY,
+      format: null,
+      showed: true,
+    },
+    {
+      key: 'provider',
+      title: this.multiLanguageService.instant(
+        'bnpl.repayment_transaction.provider'
+      ),
+      type: DATA_CELL_TYPE.TEXT,
+      format: null,
+      showed: true,
+    },
+    {
+      key: 'status',
+      title: this.multiLanguageService.instant(
+        'bnpl.repayment_transaction.status'
+      ),
+      type: DATA_CELL_TYPE.STATUS,
+      format: DATA_STATUS_TYPE.GPAY_REPAYMENT_STATUS,
       showed: true,
     },
   ];
@@ -39,4 +80,9 @@ export class BnplRepaymentTransactionComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {}
+
+  initTableData() {
+    this.dataSource.data = this.dataSource.data =
+      this.loanDetail?.repaymentTransactions;
+  }
 }
