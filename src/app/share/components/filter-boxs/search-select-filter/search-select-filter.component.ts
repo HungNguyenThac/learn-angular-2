@@ -88,4 +88,13 @@ export class SearchSelectFilterComponent implements OnInit {
       value: this.selectedOptions,
     });
   }
+
+  public onToggleAll(isToggleAll: boolean, filterItem: FilterOptionModel) {
+    this.clickActionBtn.emit({
+      type: FILTER_ACTION_TYPE.FILTER_EXTRA_ACTION,
+      controlName: this._filterOption.controlName,
+      value: isToggleAll,
+      actionControlName: filterItem.actionControlName,
+    });
+  }
 }

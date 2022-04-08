@@ -3,7 +3,10 @@
 </div>
 
 <span *ngIf="type === 'CURRENCY'">
-  {{ value | formatPrice: null }}
+  <ng-container *ngIf="value; else currencyZero">
+    {{ value | formatPrice: null }}
+  </ng-container>
+  <ng-template #currencyZero> 0 </ng-template>
 </span>
 
 <span *ngIf="type === 'BOOLEAN'">

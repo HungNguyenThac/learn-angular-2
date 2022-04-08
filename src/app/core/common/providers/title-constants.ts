@@ -5,6 +5,7 @@ export class TitleConstants {
     SIGN_IN: 'Đăng nhập',
     CUSTOMER: 'Danh sách khách hàng',
     PAYDAY_LOAN: 'Danh sách khoản ứng',
+    BNPL: 'Danh sách đơn hàng BNPL',
     USER: 'Danh sách người dùng',
     MONEX_PRODUCT: 'Danh sách sản phẩm Monex',
     MERCHANT: 'Danh sách Merchant',

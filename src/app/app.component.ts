@@ -42,7 +42,7 @@ export class AppComponent implements OnInit {
   ) {
     sessionStorage.clear();
     this.multiLanguageService.changeLanguage('vi');
-    this.multiLanguageService.onSetupMultiLanguage('payment');
+    // this.multiLanguageService.onSetupMultiLanguage('payment');
     this._initSubscribeState();
   }
 

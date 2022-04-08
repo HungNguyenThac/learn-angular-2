@@ -35,8 +35,9 @@
                     required
                     matInput
                     appTypeMaxLength
-                    maxlength="250"
+                    maxlength="100"
                     type="text"
+                    [disabled]="action === 'VIEW'"
                   />
                   <show-errors
                     [control]="contractTemplateForm.controls['name']"
@@ -60,7 +61,12 @@
                     "system.system_config.contract_template.product_name"
                       | translate
                   }}</mat-label>
-                  <mat-select formControlName="productId">
+                  <mat-select
+                    formControlName="productId"
+                    (ngModelChange)="onChangeProduct($event)"
+                    [disabled]="action === 'VIEW'"
+                    required
+                  >
                     <mat-option>
                       <ngx-mat-select-search
                         [formControl]="productFilterCtrl"
@@ -75,13 +81,13 @@
                       ></ngx-mat-select-search>
                     </mat-option>
                     <mat-option
-                      *ngFor="let option of productStatuses"
+                      *ngFor="let option of filteredProducts"
                       [value]="option.id"
                       >{{ option.name }}</mat-option
                     >
                   </mat-select>
                   <show-errors
-                    [control]="contractTemplateForm.controls['statusId']"
+                    [control]="contractTemplateForm.controls['productId']"
                     [controlLabel]="
                       'system.system_config.contract_template.product_name'
                         | translate
@@ -103,7 +109,11 @@
                     "system.system_config.contract_template.status_send_contract"
                       | translate
                   }}</mat-label>
-                  <mat-select formControlName="statusId">
+                  <mat-select
+                    formControlName="statusFlowId"
+                    [disabled]="action === 'VIEW'"
+                    required
+                  >
                     <mat-option>
                       <ngx-mat-select-search
                         [formControl]="productStatusFilterCtrl"
@@ -118,13 +128,13 @@
                       ></ngx-mat-select-search>
                     </mat-option>
                     <mat-option
-                      *ngFor="let option of productStatuses"
-                      [value]="option.id"
-                      >{{ option.name }}</mat-option
+                      *ngFor="let option of filteredWorkflowStatuses"
+                      [value]="option?.id"
+                      >{{ option.loanStatus?.name }}</mat-option
                     >
                   </mat-select>
                   <show-errors
-                    [control]="contractTemplateForm.controls['statusId']"
+                    [control]="contractTemplateForm.controls['statusFlowId']"
                     [controlLabel]="
                       'system.system_config.contract_template.status_send_contract'
                         | translate
@@ -137,9 +147,14 @@
 
               <!-- Status -->
               <div class="col-12 col-sm-12 col-md-6 col-lg-6 align-self-center">
-                <mat-checkbox formControlName="isActive">{{
-                  "system.system_config.contract_template.is_active" | translate
-                }}</mat-checkbox>
+                <mat-checkbox
+                  formControlName="isActive"
+                  [disabled]="action === 'VIEW'"
+                  >{{
+                    "system.system_config.contract_template.is_active"
+                      | translate
+                  }}</mat-checkbox
+                >
               </div>
             </div>
           </section>
@@ -158,21 +173,19 @@
                   </mat-panel-title>
                 </mat-expansion-panel-header>
                 <div class="expansion-panel-content">
-                  <div class="p-3">
+                  <div class="p-2">
                     <table
                       [dataSource]="dataSource"
                       mat-table
                       multiTemplateDataRows
+                      (contentChanged)="resizeTableAfterContentChanged()"
                       class="expanded-table"
                     >
                       <ng-container
                         *ngFor="let column of displayColumns"
                         matColumnDef="{{ column?.key }}"
                       >
-                        <th
-                          *matHeaderCellDef
-                          mat-header-cell
-                        >
+                        <th *matHeaderCellDef mat-header-cell>
                           {{ column?.title }}
                         </th>
 
@@ -227,10 +240,13 @@
               <div class="col-12 col-sm-12 col-md-6 col-lg-6">
                 <!--  Content  -->
                 <ckeditor
-                  [editor]="Editor"
                   [formControlName]="'content'"
                   [config]="ckeditorConfig"
                   (ready)="onReadyCkEditor($event)"
+                  (fileUploadRequest)="fileUploadRequest($event)"
+                  (fileUploadResponse)="fileUploadResponse($event)"
+                  (dataChange)="onCkeditorChange($event)"
+                  [disabled]="action === 'VIEW'"
                 ></ckeditor>
                 <show-errors
                   [control]="contractTemplateForm.controls['content']"
@@ -241,7 +257,9 @@
                 >
                 </show-errors>
               </div>
-              <div class="col-12 col-sm-12 col-md-6 col-lg-6">1231</div>
+              <div class="col-12 col-sm-12 col-md-6 col-lg-6">
+                <div id="preview-frame"></div>
+              </div>
             </div>
           </section>
         </div>
@@ -249,10 +267,28 @@
         <!--  Actions -->
         <div class="row mt-2">
           <div class="col-12 d-flex gap-2 justify-content-end">
-            <button class="bg-grey" mat-button mat-dialog-close>
+            <button
+              *ngIf="action === 'VIEW'"
+              class="bg-grey"
+              mat-button
+              mat-dialog-close
+            >
+              {{ "system.system_config.contract_template.back" | translate }}
+            </button>
+            <button
+              *ngIf="action != 'VIEW'"
+              class="bg-grey"
+              mat-button
+              mat-dialog-close
+            >
               {{ "account.info.cancel_update" | translate }}
             </button>
-            <button type="submit" color="accent" mat-flat-button>
+            <button
+              *ngIf="action != 'VIEW'"
+              type="submit"
+              color="accent"
+              mat-flat-button
+            >
               <span class="sprite-group-5-save-white"></span>
               <span class="ms-1">{{
                 "account.info.save_update" | translate

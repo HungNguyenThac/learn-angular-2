@@ -77,4 +77,16 @@ export class GlobalConstants {
     UPDATE: 'applicationDocuments:updateApplicationDocument',
     DELETE: 'applicationDocuments:deleteApplicationDocument',
   };
+
+  public static VIEW_BNPL_STATUS_PERMISSION: any = {
+    PENDING: 'dashboardApplications:findPendingBnplLoan',
+    UNDOAPPROVAL: 'dashboardApplications:findUndoApprovalBnplLoan',
+    APPROVE: 'dashboardApplications:findApproveBnplLoan',
+    REJECT: 'dashboardApplications:findRejectBnplLoan',
+    DISBURSE: 'dashboardApplications:findDisburseBnplLoan',
+    CONTRACT_ACCEPTED: 'dashboardApplications:findContractAcceptedBnplLoan',
+    CONTRACT_AWAITING: 'dashboardApplications:findContractAwaitingBnplLoan',
+    WITHDRAW: 'dashboardApplications:findWithdrawBnplLoan',
+    COMPLETED: 'dashboardApplications:findCompletedBnplLoan',
+  };
 }

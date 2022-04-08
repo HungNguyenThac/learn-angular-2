@@ -12,7 +12,7 @@ import { NgxPermissionsModule } from 'ngx-permissions';
 import { NgxViewerModule } from 'ngx-viewer';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
-import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
+import { CKEditorModule } from 'ckeditor4-angular';
 
 @NgModule({
   declarations: [

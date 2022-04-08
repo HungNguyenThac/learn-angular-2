@@ -189,7 +189,7 @@ export class MerchantListComponent implements OnInit {
         'merchant.merchant_list.delete_merchant'
       ),
       imageSrc: 'assets/img/icon/group-5/svg/trash.svg',
-      style: 'background-color: rgba(255, 255, 255, 0.1);',
+      style: 'background-color: #dc3545;',
     },
     {
       hidden: false,
@@ -199,7 +199,7 @@ export class MerchantListComponent implements OnInit {
         'customer.individual_info.lock'
       ),
       imageSrc: 'assets/img/icon/group-5/svg/lock-white.svg',
-      style: 'background-color: rgba(255, 255, 255, 0.1);',
+      style: 'background-color: #dc3545;',
     },
   ];
   private readonly routeAllState$: Observable<Params>;
@@ -811,7 +811,7 @@ export class MerchantListComponent implements OnInit {
       district: data?.district || null,
       province: data?.province || null,
       bdStaffId: data?.bdStaffId || null,
-      merchantSellTypes: data?.merchantSellTypes || null,
+      merchantSellType: data?.merchantSellType || null,
       merchantParentId: data?.merchantParentId || null,
       mobile: data?.mobile || null,
       email: data?.email || null,

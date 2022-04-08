@@ -1,41 +1,41 @@
-import {DialogEkycInfoDetailComponent} from '../dialog-ekyc-info-detail/dialog-ekyc-info-detail.component';
-import {MatDialog} from '@angular/material/dialog';
-import {Subscription} from 'rxjs';
-import {
-  ApiResponseSearchAndPaginationResponseKalapaResponse
-} from '../../../../../../../open-api-modules/dashboard-api-docs';
-import {
-  EkycControllerService
-} from '../../../../../../../open-api-modules/dashboard-api-docs';
+import { DialogEkycInfoDetailComponent } from '../dialog-ekyc-info-detail/dialog-ekyc-info-detail.component';
+import { MatDialog } from '@angular/material/dialog';
+import { Subscription } from 'rxjs';
+import { ApiResponseSearchAndPaginationResponseKalapaResponse } from '../../../../../../../open-api-modules/dashboard-api-docs';
+import { EkycControllerService } from '../../../../../../../open-api-modules/dashboard-api-docs';
 import {
   DATA_CELL_TYPE,
   DATA_STATUS_TYPE,
 } from '../../../../../core/common/enum/operator';
 import {
-  Component, ElementRef,
-  EventEmitter, HostListener,
+  AfterViewInit,
+  Component,
+  ElementRef,
+  EventEmitter,
+  HostListener,
   Input,
   OnInit,
   Output,
-  TemplateRef, ViewChild,
+  TemplateRef,
+  ViewChild,
 } from '@angular/core';
-import {Sort} from '@angular/material/sort';
-import {LiveAnnouncer} from '@angular/cdk/a11y';
-import {MatTable, MatTableDataSource} from '@angular/material/table';
-import {PageEvent} from '@angular/material/paginator/public-api';
-import {SortDirection} from '@angular/material/sort/sort-direction';
-import {MultiLanguageService} from '../../../../translate/multiLanguageService';
-import {NotificationService} from '../../../../../core/services/notification.service';
-import {ToastrService} from 'ngx-toastr';
+import { Sort } from '@angular/material/sort';
+import { LiveAnnouncer } from '@angular/cdk/a11y';
+import { MatTable, MatTableDataSource } from '@angular/material/table';
+import { PageEvent } from '@angular/material/paginator/public-api';
+import { SortDirection } from '@angular/material/sort/sort-direction';
+import { MultiLanguageService } from '../../../../translate/multiLanguageService';
+import { NotificationService } from '../../../../../core/services/notification.service';
+import { ToastrService } from 'ngx-toastr';
 import * as _ from 'lodash';
-import {DisplayedFieldsModel} from "../../../../../public/models/filter/displayed-fields.model";
+import { DisplayedFieldsModel } from '../../../../../public/models/filter/displayed-fields.model';
 
 @Component({
   selector: 'app-customer-check-info',
   templateUrl: './customer-check-info.component.html',
   styleUrls: ['./customer-check-info.component.scss'],
 })
-export class CustomerCheckInfoComponent implements OnInit {
+export class CustomerCheckInfoComponent implements OnInit, AfterViewInit {
   @Input() customerId: string;
   @Output() outputAction = new EventEmitter<any>();
   @ViewChild(MatTable, { read: ElementRef }) private matTableRef: ElementRef;
@@ -59,7 +59,7 @@ export class CustomerCheckInfoComponent implements OnInit {
       type: DATA_CELL_TYPE.DATETIME,
       format: 'dd/MM/yyyy HH:mm:ss',
       showed: true,
-      width: 100
+      width: 100,
     },
     {
       key: 'status',
@@ -69,7 +69,7 @@ export class CustomerCheckInfoComponent implements OnInit {
       type: DATA_CELL_TYPE.STATUS,
       format: DATA_STATUS_TYPE.PL_OTHER_STATUS,
       showed: true,
-      width: 100
+      width: 100,
     },
   ];
 
@@ -199,7 +199,6 @@ export class CustomerCheckInfoComponent implements OnInit {
       this.setColumnWidth(column);
     });
   }
-
 
   triggerWindowResize() {
     if (typeof Event === 'function') {

@@ -104,7 +104,7 @@ export class PdModelListComponent implements OnInit, OnDestroy {
       color: 'accent',
       content: this.multiLanguageService.instant('pd_system.pd_model.delete'),
       imageSrc: 'assets/img/icon/group-5/svg/trash.svg',
-      style: 'background-color: rgba(255, 255, 255, 0.1);',
+      style: 'background-color: #dc3545;',
     },
     {
       hidden: true,
@@ -114,7 +114,7 @@ export class PdModelListComponent implements OnInit, OnDestroy {
         'customer.individual_info.lock'
       ),
       imageSrc: 'assets/img/icon/group-5/svg/lock-white.svg',
-      style: 'background-color: rgba(255, 255, 255, 0.1);',
+      style: 'background-color: #dc3545;',
     },
   ];
   groupList;
@@ -535,7 +535,7 @@ export class PdModelListComponent implements OnInit, OnDestroy {
     }
     this.subManager.add(
       this.cdeService
-        .cdeControllerDeletePdModel(parseInt(id), {})
+        .cdeControllerDeletePdModel(id, {})
         .subscribe((result: ApiResponse) => {
           if (!result || result.responseCode !== RESPONSE_CODE.SUCCESS) {
             return this.notifier.error(

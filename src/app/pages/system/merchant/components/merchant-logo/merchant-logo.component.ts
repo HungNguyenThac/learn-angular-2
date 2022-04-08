@@ -18,7 +18,6 @@ import {
   MerchantControllerService,
 } from '../../../../../../../open-api-modules/dashboard-api-docs';
 import CkEditorAdapters from '../../../../../core/utils/ck-editor-adapters';
-import * as DecoupledEditor from '@ckeditor/ckeditor5-build-decoupled-document';
 
 @Component({
   selector: 'app-merchant-logo',
@@ -43,49 +42,8 @@ export class MerchantLogoComponent implements OnInit, OnDestroy {
   @Output() triggerUnlockMerchant = new EventEmitter<any>();
   merchantInfoForm: FormGroup;
   subManager = new Subscription();
-  public Editor = DecoupledEditor;
 
   ckeditorConfig: any = {
-    toolbar: [
-      'heading',
-      '|',
-      'fontfamily',
-      'fontsize',
-      '|',
-      'alignment',
-      '|',
-      'fontColor',
-      'fontBackgroundColor',
-      '|',
-      'bold',
-      'italic',
-      'strikethrough',
-      'underline',
-      'subscript',
-      'superscript',
-      '|',
-      'link',
-      '|',
-      'outdent',
-      'indent',
-      '|',
-      'bulletedList',
-      'numberedList',
-      'todoList',
-      '|',
-      'sourceEditing',
-      '|',
-      'insertTable',
-      '|',
-      'mediaEmbed',
-      'uploadImage',
-      'blockQuote',
-      'watchDog',
-      'widget',
-      '|',
-      'undo',
-      'redo',
-    ],
     readOnly: true,
   };
 

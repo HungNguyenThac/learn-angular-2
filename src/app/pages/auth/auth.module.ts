@@ -8,7 +8,6 @@ import { TranslateModule } from '@ngx-translate/core';
 import { MaterialModule } from 'src/app/share/modules/material.modules';
 import { SignInComponent } from './sign-in/sign-in.component';
 import { SharedModule } from 'src/app/share/shared.module';
-import { PaydayLoanModule } from '../products/payday-loan/payday-loan.module';
 
 @NgModule({
   declarations: [
@@ -22,7 +21,6 @@ import { PaydayLoanModule } from '../products/payday-loan/payday-loan.module';
     RouterModule.forChild(AuthRoutes),
     ReactiveFormsModule,
     FormsModule,
-    PaydayLoanModule,
   ],
 })
 export class AuthModule {}

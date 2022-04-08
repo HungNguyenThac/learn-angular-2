@@ -113,7 +113,7 @@ export class DocumentTypeListComponent implements OnInit, OnDestroy {
         'system.system_config.document_type.delete'
       ),
       imageSrc: 'assets/img/icon/group-5/svg/trash.svg',
-      style: 'background-color: rgba(255, 255, 255, 0.1);',
+      style: 'background-color: #dc3545;',
     },
   ];
 
@@ -661,7 +661,13 @@ export class DocumentTypeListComponent implements OnInit, OnDestroy {
               'system.system_config.document_type.update_success'
             )
           );
-          this.refreshContent();
+          this.dataSource.data = this.dataSource.data.map((obj) => {
+            if (obj.id === id) {
+              return { ...obj, ...response.result };
+            }
+
+            return obj;
+          });
         })
     );
   }

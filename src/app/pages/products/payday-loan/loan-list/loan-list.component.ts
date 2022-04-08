@@ -54,6 +54,7 @@ import { NgxPermissionsService } from 'ngx-permissions';
 import { GlobalConstants } from '../../../../core/common/global-constants';
 import { FilterItemModel } from '../../../../public/models/filter/filter-item.model';
 import { OverviewItemModel } from 'src/app/public/models/external/overview-item.model';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-loan-list',
@@ -771,12 +772,8 @@ export class LoanListComponent implements OnInit, OnDestroy {
       companyId: [''],
       groupName: [''],
       loanCode: [''],
-      'customerInfo.mobileNumber': [''],
-      'customerInfo.emailAddress': [''],
       status: [''],
       termType: [''],
-      'customerInfo.organizationName': [''],
-      'customerInfo.identityNumberOne': [''],
       updatedAt: [''],
       orderBy: ['createdAt'],
       sortDirection: ['desc'],
@@ -794,26 +791,40 @@ export class LoanListComponent implements OnInit, OnDestroy {
   }
 
   private _parseQueryParams(params) {
+    this._initFilterFormFromQueryParams(params);
+    this._initFilterOptionsFromQueryParams(params);
+
+    this.breadcrumbOptions.keyword = params.keyword;
+    this.pageIndex = params.pageIndex || 0;
+    this.pageSize = params.pageSize || 10;
+  }
+
+  private _initFilterFormFromQueryParams(params) {
     let filterConditionsValue =
       this.filterForm.controls.filterConditions?.value;
+    if (_.isEmpty(params)) {
+      this._resetFilterForm();
+      this._resetFilterOptions();
+    }
 
     for (const [param, paramValue] of Object.entries(params)) {
       let paramHasCondition = param.split('__');
       if (paramHasCondition.length > 1) {
-        this.filterForm.controls[paramHasCondition[0]].setValue(
+        this.filterForm.controls[paramHasCondition[0]]?.setValue(
           paramValue || ''
         );
         filterConditionsValue[paramHasCondition[0]] =
           '__' + paramHasCondition[1];
       } else {
         if (this.filterForm.controls[param]) {
-          this.filterForm.controls[param].setValue(paramValue || '');
+          this.filterForm.controls[param]?.setValue(paramValue || '');
         }
       }
     }
-
     this.filterForm.controls.filterConditions.setValue(filterConditionsValue);
+  }
 
+  private _initFilterOptionsFromQueryParams(params) {
     this.filterOptions.forEach((filterOption) => {
       if (filterOption.type === FILTER_TYPE.DATETIME) {
         filterOption.value = {
@@ -839,10 +850,30 @@ export class LoanListComponent implements OnInit, OnDestroy {
           : '';
       }
     });
+  }
 
-    this.breadcrumbOptions.keyword = params.keyword;
-    this.pageIndex = params.pageIndex || 0;
-    this.pageSize = params.pageSize || 10;
+  private _resetFilterForm() {
+    this.filterForm = this.formBuilder.group({
+      keyword: [''],
+      companyId: [''],
+      groupName: [''],
+      loanCode: [''],
+      status: [''],
+      termType: [''],
+      updatedAt: [''],
+      orderBy: ['createdAt'],
+      sortDirection: ['desc'],
+      startTime: [''],
+      endTime: [''],
+      dateFilterType: [''],
+      dateFilterTitle: [''],
+      accountClassification: [ACCOUNT_CLASSIFICATION.REAL],
+      filterConditions: {
+        companyId: QUERY_CONDITION_TYPE.IN,
+        status: QUERY_CONDITION_TYPE.IN,
+        termType: QUERY_CONDITION_TYPE.IN,
+      },
+    });
   }
 
   private _initSubscription() {
@@ -948,33 +979,6 @@ export class LoanListComponent implements OnInit, OnDestroy {
       default:
         break;
     }
-  }
-
-  private _getCompanyList() {
-    const params = this._buildParams();
-    this.companyControllerService
-      .getCompanies(10, 0, {})
-      .subscribe((data: ApiResponseSearchAndPaginationResponseCompanyInfo) => {
-        this.companyList = data?.result?.data;
-        this._initCompanyOptions(params.groupName);
-      });
-  }
-
-  private _getBankOptions() {
-    this.subManager.add(
-      this.bankControllerService
-        .getBanks(200, 0, {})
-        .subscribe((response: ApiResponseSearchAndPaginationResponseBank) => {
-          if (response.responseCode !== RESPONSE_CODE.SUCCESS) {
-            this.notifier.error(
-              JSON.stringify(response?.message),
-              response?.errorCode
-            );
-            return;
-          }
-          this.bankList = response?.result?.data;
-        })
-    );
   }
 
   private _initCompanyOptions(groupName) {

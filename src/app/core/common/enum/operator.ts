@@ -5,6 +5,7 @@ export enum NAV_ITEM {
   INSURANCE = 'INSURANCE',
   MERCHANT = 'MERCHANT',
   SAVING = 'SAVING',
+  BNPL = 'BNPL',
 }
 
 export enum DOCUMENT_BTN_TYPE {
@@ -61,6 +62,7 @@ export enum DATA_STATUS_TYPE {
   USER_STATUS = 'USER_STATUS',
   PL_EKYC_STATUS = 'PL_EKYC_STATUS',
   MERCHANT_SELL_TYPE = 'MERCHANT_SELL_TYPE',
+  BNPL_STATUS = 'BNPL_STATUS',
 }
 
 export enum FILTER_TYPE {
@@ -106,6 +108,7 @@ export enum TABLE_ACTION_TYPE {
   DELETE = 'DELETE',
   EDIT = 'EDIT',
   VIEW = 'VIEW',
+  CREATE = 'CREATE',
 }
 
 export enum LOCK_TIME_OPTIONS {
