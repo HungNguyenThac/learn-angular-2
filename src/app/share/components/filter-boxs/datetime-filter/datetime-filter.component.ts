@@ -34,6 +34,7 @@ export class DatetimeFilterComponent implements OnInit {
 
   @Output() completeFilter = new EventEmitter<FilterEventModel>();
 
+  currentTime = new Date();
   currentDate = moment();
   currentQuarter = moment().quarter();
   responsive: boolean = false;

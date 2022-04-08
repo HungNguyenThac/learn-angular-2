@@ -222,13 +222,6 @@
   dependencies:
     tslib "^2.2.0"
 
-"@angular/flex-layout@^12.0.0-beta.34":
-  version "12.0.0-beta.34"
-  resolved "https://registry.npmjs.org/@angular/flex-layout/-/flex-layout-12.0.0-beta.34.tgz"
-  integrity sha512-nLwKovXpyG+/U3Lbmfwt+q4ARupxtbPmFTZD0Y8oItFAV6/Oh9l+QQsNQa2VhOHAOrVagyDwcEM+SePtB5EmrQ==
-  dependencies:
-    tslib "^2.1.0"
-
 "@angular/forms@~12.1.2":
   version "12.1.5"
   resolved "https://registry.npmjs.org/@angular/forms/-/forms-12.1.5.tgz"
@@ -1341,80 +1334,6 @@
     "@angular-devkit/core" "12.1.4"
     "@angular-devkit/schematics" "12.1.4"
     jsonc-parser "3.0.0"
-
-"@sentry/angular@^6.13.2":
-  version "6.13.2"
-  resolved "https://registry.npmjs.org/@sentry/angular/-/angular-6.13.2.tgz"
-  integrity sha512-egWliCahBwHH4cFQvzz5ptt9V+oo5xWE3HdpbTTHlLhXXVqAHRuORNfVm8+PFQUDF7z3976fbYdY8LPneF08kg==
-  dependencies:
-    "@sentry/browser" "6.13.2"
-    "@sentry/types" "6.13.2"
-    "@sentry/utils" "6.13.2"
-    rxjs "^6.6.0"
-    tslib "^1.9.3"
-
-"@sentry/browser@6.13.2":
-  version "6.13.2"
-  resolved "https://registry.npmjs.org/@sentry/browser/-/browser-6.13.2.tgz"
-  integrity sha512-bkFXK4vAp2UX/4rQY0pj2Iky55Gnwr79CtveoeeMshoLy5iDgZ8gvnLNAz7om4B9OQk1u7NzLEa4IXAmHTUyag==
-  dependencies:
-    "@sentry/core" "6.13.2"
-    "@sentry/types" "6.13.2"
-    "@sentry/utils" "6.13.2"
-    tslib "^1.9.3"
-
-"@sentry/core@6.13.2":
-  version "6.13.2"
-  resolved "https://registry.npmjs.org/@sentry/core/-/core-6.13.2.tgz"
-  integrity sha512-snXNNFLwlS7yYxKTX4DBXebvJK+6ikBWN6noQ1CHowvM3ReFBlrdrs0Z0SsSFEzXm2S4q7f6HHbm66GSQZ/8FQ==
-  dependencies:
-    "@sentry/hub" "6.13.2"
-    "@sentry/minimal" "6.13.2"
-    "@sentry/types" "6.13.2"
-    "@sentry/utils" "6.13.2"
-    tslib "^1.9.3"
-
-"@sentry/hub@6.13.2":
-  version "6.13.2"
-  resolved "https://registry.npmjs.org/@sentry/hub/-/hub-6.13.2.tgz"
-  integrity sha512-sppSuJdNMiMC/vFm/dQowCBh11uTrmvks00fc190YWgxHshodJwXMdpc+pN61VSOmy2QA4MbQ5aMAgHzPzel3A==
-  dependencies:
-    "@sentry/types" "6.13.2"
-    "@sentry/utils" "6.13.2"
-    tslib "^1.9.3"
-
-"@sentry/minimal@6.13.2":
-  version "6.13.2"
-  resolved "https://registry.npmjs.org/@sentry/minimal/-/minimal-6.13.2.tgz"
-  integrity sha512-6iJfEvHzzpGBHDfLxSHcGObh73XU1OSQKWjuhDOe7UQDyI4BQmTfcXAC+Fr8sm8C/tIsmpVi/XJhs8cubFdSMw==
-  dependencies:
-    "@sentry/hub" "6.13.2"
-    "@sentry/types" "6.13.2"
-    tslib "^1.9.3"
-
-"@sentry/tracing@^6.13.2":
-  version "6.13.2"
-  resolved "https://registry.npmjs.org/@sentry/tracing/-/tracing-6.13.2.tgz"
-  integrity sha512-bHJz+C/nd6biWTNcYAu91JeRilsvVgaye4POkdzWSmD0XoLWHVMrpCQobGpXe7onkp2noU3YQjhqgtBqPHtnpw==
-  dependencies:
-    "@sentry/hub" "6.13.2"
-    "@sentry/minimal" "6.13.2"
-    "@sentry/types" "6.13.2"
-    "@sentry/utils" "6.13.2"
-    tslib "^1.9.3"
-
-"@sentry/types@6.13.2":
-  version "6.13.2"
-  resolved "https://registry.npmjs.org/@sentry/types/-/types-6.13.2.tgz"
-  integrity sha512-6WjGj/VjjN8LZDtqJH5ikeB1o39rO1gYS6anBxiS3d0sXNBb3Ux0pNNDFoBxQpOhmdDHXYS57MEptX9EV82gmg==
-
-"@sentry/utils@6.13.2":
-  version "6.13.2"
-  resolved "https://registry.npmjs.org/@sentry/utils/-/utils-6.13.2.tgz"
-  integrity sha512-foF4PbxqPMWNbuqdXkdoOmKm3quu3PP7Q7j/0pXkri4DtCuvF/lKY92mbY0V9rHS/phCoj+3/Se5JvM2ymh2/w==
-  dependencies:
-    "@sentry/types" "6.13.2"
-    tslib "^1.9.3"
 
 "@tootallnate/once@1":
   version "1.1.2"
@@ -5307,20 +5226,6 @@ ng2-pdf-viewer@^7.0.1:
     pdfjs-dist "~2.7.570"
     tslib "^2.0.0"
 
-ngrx-immer@^1.0.1:
-  version "1.0.3"
-  resolved "https://registry.npmjs.org/ngrx-immer/-/ngrx-immer-1.0.3.tgz"
-  integrity sha512-Eo1sES5gQ+HB0mv3aV8rJYA9OgIsAM+Hvcx6M6UyYI4liCWDhgGtqHful1pea0XTRVW0uR2e7gYwZr7dZX8Svw==
-  dependencies:
-    tslib "^2.2.0"
-
-ngrx-slice@^4.0.0:
-  version "4.0.0"
-  resolved "https://registry.npmjs.org/ngrx-slice/-/ngrx-slice-4.0.0.tgz"
-  integrity sha512-tazXkSzZrpKNRC9ILej72zAB83YonfKTwo2MTm6ape/w3wXdZkngeonr3Srw1/NNl6PuWAmdD8zxso6iapYoCQ==
-  dependencies:
-    tslib "^2.1.0"
-
 ngrx-store-localstorage@^12.0.1:
   version "12.0.1"
   resolved "https://registry.npmjs.org/ngrx-store-localstorage/-/ngrx-store-localstorage-12.0.1.tgz"
@@ -6942,7 +6847,7 @@ rxjs-compat@6.6.7:
   resolved "https://registry.npmjs.org/rxjs-compat/-/rxjs-compat-6.6.7.tgz"
   integrity sha512-szN4fK+TqBPOFBcBcsR0g2cmTTUF/vaFEOZNuSdfU8/pGFnNmmn2u8SystYXG1QMrjOPBc6XTKHMVfENDf6hHw==
 
-rxjs@6.6.7, rxjs@^6.5.3, rxjs@^6.6.0, rxjs@^6.6.6:
+rxjs@6.6.7, rxjs@^6.5.3, rxjs@^6.6.6:
   version "6.6.7"
   resolved "https://registry.npmjs.org/rxjs/-/rxjs-6.6.7.tgz"
   integrity sha512-hTdwr+7yYNIT5n4AMYp85KA6yw2Va0FLa3Rguvbpa4W3I5xynaBZo41cM3XM+4Q6fRMj3sBYIR1VAmZMXYJvRQ==
@@ -7735,7 +7640,7 @@ tslib@2.3.0, tslib@^2.0.0, tslib@^2.1.0, tslib@^2.2.0, tslib@^2.3.0:
   resolved "https://registry.npmjs.org/tslib/-/tslib-2.3.0.tgz"
   integrity sha512-N82ooyxVNm6h1riLCoyS9e3fuJ3AMG2zIZs2Gd1ATcSFjSA23Q0fzjjZeh0jbJvWVDZ0cJT8yaNNaaXHzueNjg==
 
-tslib@^1.10.0, tslib@^1.9.0, tslib@^1.9.3:
+tslib@^1.10.0, tslib@^1.9.0:
   version "1.14.1"
   resolved "https://registry.npmjs.org/tslib/-/tslib-1.14.1.tgz"
   integrity sha512-Xni35NKzjgMrwevysHTCArtLDpPvye8zV/0E4EyYn43P7/7qvQwPh9BGkHewbMulVntbigmcT7rdX3BNo9wRJg==

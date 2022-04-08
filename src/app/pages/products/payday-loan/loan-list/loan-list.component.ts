@@ -1,7 +1,6 @@
 import { CommonState } from 'src/app/core/store/reducers/common.reducer';
 import { Bank } from './../../../../../../open-api-modules/dashboard-api-docs/model/bank';
 import { BankControllerService } from './../../../../../../open-api-modules/dashboard-api-docs/api/bankController.service';
-import { ApiResponseSearchAndPaginationResponseBank } from './../../../../../../open-api-modules/dashboard-api-docs/model/apiResponseSearchAndPaginationResponseBank';
 import { PaydayLoanTng } from './../../../../../../open-api-modules/dashboard-api-docs/model/paydayLoanTng';
 import { ToastrService } from 'ngx-toastr';
 import {
@@ -14,7 +13,6 @@ import {
   TERM_TYPE,
 } from '../../../../core/common/enum/payday-loan';
 import {
-  ApiResponseSearchAndPaginationResponseCompanyInfo,
   ApiResponseSearchAndPaginationResponsePaydayLoanHmg,
   ApiResponseSearchAndPaginationResponsePaydayLoanTng,
   CompanyControllerService,
@@ -24,7 +22,7 @@ import {
 import { FilterActionEventModel } from '../../../../public/models/filter/filter-action-event.model';
 import { FilterEventModel } from '../../../../public/models/filter/filter-event.model';
 import { CompanyInfo } from '../../../../../../open-api-modules/customer-api-docs';
-import { FILTER_TYPE, RESPONSE_CODE } from 'src/app/core/common/enum/operator';
+import { FILTER_TYPE } from 'src/app/core/common/enum/operator';
 import { LoanListService } from './loan-list.service';
 import { PageEvent } from '@angular/material/paginator/public-api';
 import { Sort } from '@angular/material/sort';
@@ -119,89 +117,7 @@ export class LoanListComponent implements OnInit, OnDestroy {
         {
           title: this.multiLanguageService.instant('common.all'),
           value: null,
-        },
-        {
-          title: this.multiLanguageService.instant(
-            'loan_app.loan_info.initialized'
-          ),
-          value: PAYDAY_LOAN_STATUS.INITIALIZED,
-        },
-        {
-          title: this.multiLanguageService.instant(
-            'loan_app.loan_info.document_awaiting'
-          ),
-          value: PAYDAY_LOAN_STATUS.DOCUMENT_AWAITING,
-        },
-        {
-          title: this.multiLanguageService.instant(
-            'payday_loan.status.documentation_complete'
-          ),
-          value: PAYDAY_LOAN_STATUS.DOCUMENTATION_COMPLETE,
-        },
-        {
-          title: this.multiLanguageService.instant(
-            'loan_app.loan_info.auction'
-          ),
-          value: PAYDAY_LOAN_STATUS.AUCTION,
-        },
-        {
-          title: this.multiLanguageService.instant('payday_loan.status.funded'),
-          value: PAYDAY_LOAN_STATUS.FUNDED,
-        },
-        {
-          title: this.multiLanguageService.instant(
-            'payday_loan.status.contract_awaiting'
-          ),
-          value: PAYDAY_LOAN_STATUS.CONTRACT_AWAITING,
-        },
-        {
-          title: this.multiLanguageService.instant(
-            'loan_app.loan_info.disbursement_awaiting'
-          ),
-          value: PAYDAY_LOAN_STATUS.AWAITING_DISBURSEMENT,
-        },
-        {
-          title: this.multiLanguageService.instant(
-            'loan_app.loan_info.disbursed'
-          ),
-          value: PAYDAY_LOAN_STATUS.DISBURSED,
-        },
-        {
-          title: this.multiLanguageService.instant(
-            'loan_app.loan_info.ỉn_repayment'
-          ),
-          value: PAYDAY_LOAN_STATUS.IN_REPAYMENT,
-        },
-        {
-          title: this.multiLanguageService.instant(
-            'payday_loan.repayment_status.overdue'
-          ),
-          value: REPAYMENT_STATUS.OVERDUE,
-        },
-        {
-          title: this.multiLanguageService.instant(
-            'payday_loan.repayment_status.bad_debt'
-          ),
-          value: DEBT_STATUS.BADDEBT,
-        },
-        {
-          title: this.multiLanguageService.instant(
-            'loan_app.loan_info.completed'
-          ),
-          value: PAYDAY_LOAN_STATUS.COMPLETED,
-        },
-        {
-          title: this.multiLanguageService.instant(
-            'loan_app.loan_info.rejected'
-          ),
-          value: PAYDAY_LOAN_STATUS.REJECTED,
-        },
-        {
-          title: this.multiLanguageService.instant(
-            'loan_app.loan_info.withdrew'
-          ),
-          value: PAYDAY_LOAN_STATUS.WITHDRAW,
-        },
+        }
       ],
     },
     {

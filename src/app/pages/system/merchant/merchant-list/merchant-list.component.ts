@@ -213,6 +213,7 @@ export class MerchantListComponent implements OnInit {
   pageSizeOptions: number[] = [10, 20, 50];
   expandedElementId: string;
   expandedElementMerchant: Merchant;
+  forceElementMerchant: Merchant;
   merchantInfo: any;
   subManager = new Subscription();
   breadcrumbOptions: BreadcrumbOptionsModel = {
@@ -320,7 +321,7 @@ export class MerchantListComponent implements OnInit {
         this.getOverviewData(data?.result);
         this.dataSource.data = data?.result?.data;
         if (this.filterForm.controls.id?.value) {
-          this.expandedElementMerchant = data?.result?.data.find((value) => {
+          this.forceElementMerchant = data?.result?.data.find((value) => {
             return value.id === this.filterForm.controls.id?.value;
           });
         }

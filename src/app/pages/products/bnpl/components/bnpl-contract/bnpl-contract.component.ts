@@ -1,5 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { CustomerInfo } from '../../../../../../../open-api-modules/dashboard-api-docs';
+import {
+  CustomerInfo,
+  PaydayLoanTng,
+} from '../../../../../../../open-api-modules/dashboard-api-docs';
 import {
   ApiResponseContract,
   Contract,
@@ -10,6 +13,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { DomSanitizer } from '@angular/platform-browser';
 import { MultiLanguageService } from '../../../../../share/translate/multiLanguageService';
 import { LoanListService } from '../../../payday-loan/loan-list/loan-list.service';
+import { BnplApplication } from '../../../../../../../open-api-modules/bnpl-api-docs';
 
 @Component({
   selector: 'app-bnpl-contract',
@@ -17,14 +21,24 @@ import { LoanListService } from '../../../payday-loan/loan-list/loan-list.servic
   styleUrls: ['./bnpl-contract.component.scss'],
 })
 export class BnplContractComponent implements OnInit {
-  @Input() loanDetail: any;
-  @Input() userInfo: CustomerInfo;
   loanContractView: any;
   loanContractData: Contract;
   loanContractFile: any;
   subManager = new Subscription();
   downloadable: boolean = false;
 
+  private _loanDetail: BnplApplication;
+  @Input()
+  get loanDetail(): BnplApplication {
+    return this._loanDetail;
+  }
+
+  set loanDetail(value: BnplApplication) {
+    this._loanDetail = value;
+    if (value.contract) {
+      this.downloadFileContract(value.contract, value.customerId);
+    }
+  }
 
   constructor(
     private notifier: ToastrService,
@@ -41,6 +55,8 @@ export class BnplContractComponent implements OnInit {
       this.loanListService
         .downloadSingleFileContract(documentPath, customerId)
         .subscribe((data) => {
+          if (!data) return;
+          this.downloadable = true;
           this.loanContractFile = data;
           this.pdfView(this.loanContractFile);
         })
@@ -69,26 +85,5 @@ export class BnplContractComponent implements OnInit {
 
   ngOnDestroy() {
     this.subManager.unsubscribe();
-  }
-
-  private _getLoanContractData() {
-    this.subManager.add(
-      this.loanListService
-        .getContractData(
-          this.loanDetail?.id,
-          this.loanDetail?.companyInfo?.groupName
-        )
-        .subscribe((response: ApiResponseContract) => {
-          if (response.result === null) {
-            return (this.loanContractData = null);
-          }
-          this.downloadable = true;
-          this.loanContractData = response.result;
-          this.downloadFileContract(
-            this.loanContractData.path,
-            this.loanDetail?.customerId
-          );
-        })
-    );
   }
 }

@@ -18,12 +18,7 @@ import {
   QUERY_CONDITION_TYPE,
   RESPONSE_CODE,
 } from '../../../../core/common/enum/operator';
-import {
-  ACCOUNT_CLASSIFICATION,
-  BNPL_STATUS,
-  DEBT_STATUS,
-  REPAYMENT_STATUS,
-} from '../../../../core/common/enum/payday-loan';
+import { ACCOUNT_CLASSIFICATION } from '../../../../core/common/enum/payday-loan';
 import { FilterItemModel } from '../../../../public/models/filter/filter-item.model';
 import { DisplayedFieldsModel } from '../../../../public/models/filter/displayed-fields.model';
 import { MatTableDataSource } from '@angular/material/table';
@@ -47,6 +42,11 @@ import { GlobalConstants } from '../../../../core/common/global-constants';
 import { BnplListService } from './bnpl-list.service';
 import * as _ from 'lodash';
 import { MerchantListService } from '../../../system/merchant/merchant-list/merchant-list.service';
+import {
+  BNPL_STATUS,
+  REPAYMENT_STATUS,
+} from '../../../../core/common/enum/bnpl';
+import { BnplApplication } from '../../../../../../open-api-modules/bnpl-api-docs';
 
 @Component({
   selector: 'app-bnpl-list',
@@ -105,60 +105,6 @@ export class BnplListComponent implements OnInit, OnDestroy {
         {
           title: this.multiLanguageService.instant('common.all'),
           value: null,
-        },
-        {
-          title: this.multiLanguageService.instant('bnpl.status.pending'),
-          value: BNPL_STATUS.PENDING,
-        },
-        {
-          title: this.multiLanguageService.instant('bnpl.status.undoapproval'),
-          value: BNPL_STATUS.UNDOAPPROVAL,
-        },
-        {
-          title: this.multiLanguageService.instant(
-            'payday_loan.status.approve'
-          ),
-          value: BNPL_STATUS.APPROVE,
-        },
-        {
-          title: this.multiLanguageService.instant('bnpl.status.reject'),
-          value: BNPL_STATUS.REJECT,
-        },
-        {
-          title: this.multiLanguageService.instant('bnpl.status.disburse'),
-          value: BNPL_STATUS.DISBURSE,
-        },
-        {
-          title: this.multiLanguageService.instant(
-            'bnpl.status.contract_accepted'
-          ),
-          value: BNPL_STATUS.CONTRACT_ACCEPTED,
-        },
-        {
-          title: this.multiLanguageService.instant(
-            'bnpl.status.contract_awaiting'
-          ),
-          value: BNPL_STATUS.CONTRACT_AWAITING,
-        },
-        {
-          title: this.multiLanguageService.instant(
-            'bnpl.repayment_status.overdue'
-          ),
-          value: REPAYMENT_STATUS.OVERDUE,
-        },
-        {
-          title: this.multiLanguageService.instant(
-            'bnpl.repayment_status.bad_debt'
-          ),
-          value: DEBT_STATUS.BADDEBT,
-        },
-        {
-          title: this.multiLanguageService.instant('bnpl.status.completed'),
-          value: BNPL_STATUS.COMPLETED,
-        },
-        {
-          title: this.multiLanguageService.instant('bnpl.status.withdraw'),
-          value: BNPL_STATUS.WITHDRAW,
         },
       ],
     },
@@ -222,6 +168,24 @@ export class BnplListComponent implements OnInit, OnDestroy {
       value: BNPL_STATUS.DISBURSE,
     },
     {
+      title: this.multiLanguageService.instant(
+        'bnpl.repayment_status.payment_term_1'
+      ),
+      value: REPAYMENT_STATUS.PAYMENT_TERM_1,
+    },
+    {
+      title: this.multiLanguageService.instant(
+        'bnpl.repayment_status.payment_term_2'
+      ),
+      value: REPAYMENT_STATUS.PAYMENT_TERM_2,
+    },
+    {
+      title: this.multiLanguageService.instant(
+        'bnpl.repayment_status.payment_term_3'
+      ),
+      value: REPAYMENT_STATUS.PAYMENT_TERM_3,
+    },
+    {
       title: this.multiLanguageService.instant('bnpl.repayment_status.overdue'),
       value: REPAYMENT_STATUS.OVERDUE,
     },
@@ -232,12 +196,12 @@ export class BnplListComponent implements OnInit, OnDestroy {
     //   value: DEBT_STATUS.BADDEBT,
     // },
     {
-      title: this.multiLanguageService.instant('bnpl.status.withdraw'),
-      value: BNPL_STATUS.WITHDRAW,
-    },
-    {
       title: this.multiLanguageService.instant('bnpl.status.completed'),
       value: BNPL_STATUS.COMPLETED,
+    },
+    {
+      title: this.multiLanguageService.instant('bnpl.status.withdraw'),
+      value: BNPL_STATUS.WITHDRAW,
     },
   ];
 
@@ -318,7 +282,6 @@ export class BnplListComponent implements OnInit, OnDestroy {
   dataSource: MatTableDataSource<any> = new MatTableDataSource([]);
   expandedElementLoanId: string;
   expandedElementLoanDetail: any;
-  expandedElementCustomerId: string;
   pages: Array<number>;
   pageSize: number = 10;
   pageIndex: number = 0;
@@ -414,7 +377,7 @@ export class BnplListComponent implements OnInit, OnDestroy {
     this._getLoanList();
   }
 
-  public updateElementInfo(updatedLoan: PaydayLoanHmg) {
+  public updateElementInfo(updatedLoan: BnplApplication) {
     this.dataSource.data.map((item) => {
       if (item.id === updatedLoan.id) {
         this.allColumns.forEach((column) => {

@@ -1,10 +1,10 @@
 import {
-  BNPL_STATUS,
   DEBT_STATUS,
+  GPAY_RESULT_STATUS,
   PAYDAY_LOAN_REPAYMENT_STATUS,
   TERM_TYPE,
 } from './../../../../core/common/enum/payday-loan';
-import {PlStatusLabelComponent} from './../pl-status-label/pl-status-label.component';
+import { PlStatusLabelComponent } from './../pl-status-label/pl-status-label.component';
 import {
   PAYDAY_LOAN_OTHER_STATUS,
   PAYDAY_LOAN_RATING_STATUS,
@@ -12,12 +12,23 @@ import {
   PAYDAY_LOAN_UI_STATUS,
   REPAYMENT_STATUS,
 } from '../../../../core/common/enum/payday-loan';
-import {AfterViewInit, ChangeDetectorRef, Component, Input, OnInit, ViewChild,} from '@angular/core';
-import {DATA_STATUS_TYPE} from '../../../../core/common/enum/operator';
-import {PL_LABEL_STATUS} from '../../../../core/common/enum/label-status';
-import {MultiLanguageService} from '../../../translate/multiLanguageService';
-import {AdminAccountEntity} from '../../../../../../open-api-modules/dashboard-api-docs';
+import {
+  AfterViewInit,
+  ChangeDetectorRef,
+  Component,
+  Input,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
+import { DATA_STATUS_TYPE } from '../../../../core/common/enum/operator';
+import { PL_LABEL_STATUS } from '../../../../core/common/enum/label-status';
+import { MultiLanguageService } from '../../../translate/multiLanguageService';
+import { AdminAccountEntity } from '../../../../../../open-api-modules/dashboard-api-docs';
 import UserStatusEnum = AdminAccountEntity.UserStatusEnum;
+import {
+  BNPL_STATUS,
+  GPAY_REPAYMENT_STATUS,
+} from '../../../../core/common/enum/bnpl';
 
 @Component({
   selector: 'app-pl-status-element',
@@ -101,6 +112,8 @@ export class PlStatusElementComponent implements OnInit, AfterViewInit {
         return this.userStatus(this.statusValue);
       case DATA_STATUS_TYPE.BNPL_STATUS:
         return this.bnplStatus(this.statusValue, this.externalValue);
+      case DATA_STATUS_TYPE.GPAY_REPAYMENT_STATUS:
+        return this.gpayStatus(this.statusValue);
       default:
         return {
           label: this.statusValue,
@@ -673,6 +686,58 @@ export class PlStatusElementComponent implements OnInit, AfterViewInit {
             `bnpl.status.${status.toLowerCase()}`
           ),
           labelStatus: PL_LABEL_STATUS.WITHDRAW,
+        };
+      default:
+        return {
+          label: status,
+          labelStatus: PL_LABEL_STATUS.REJECT,
+        };
+    }
+  }
+
+  gpayStatus(status) {
+    switch (status) {
+      case GPAY_REPAYMENT_STATUS.ORDER_SUCCESS:
+        return {
+          label: this.multiLanguageService.instant(
+            `bnpl.gpay_repayment_status.${status.toLowerCase()}`
+          ),
+          labelStatus: PL_LABEL_STATUS.SUCCESS,
+        };
+      case GPAY_REPAYMENT_STATUS.ORDER_PENDING:
+        return {
+          label: this.multiLanguageService.instant(
+            `bnpl.gpay_repayment_status.${status.toLowerCase()}`
+          ),
+          labelStatus: PL_LABEL_STATUS.PENDING,
+        };
+      case GPAY_REPAYMENT_STATUS.ORDER_VERIFYING:
+        return {
+          label: this.multiLanguageService.instant(
+            `bnpl.gpay_repayment_status.${status.toLowerCase()}`
+          ),
+          labelStatus: PL_LABEL_STATUS.DOCUMENTATION_COMPLETE,
+        };
+      case GPAY_REPAYMENT_STATUS.ORDER_PROCESSING:
+        return {
+          label: this.multiLanguageService.instant(
+            `bnpl.gpay_repayment_status.${status.toLowerCase()}`
+          ),
+          labelStatus: PL_LABEL_STATUS.AUCTION,
+        };
+      case GPAY_REPAYMENT_STATUS.ORDER_FAILED:
+        return {
+          label: this.multiLanguageService.instant(
+            `bnpl.gpay_repayment_status.${status.toLowerCase()}`
+          ),
+          labelStatus: PL_LABEL_STATUS.WITHDRAW,
+        };
+      case GPAY_REPAYMENT_STATUS.ORDER_CANCEL:
+        return {
+          label: this.multiLanguageService.instant(
+            `bnpl.gpay_repayment_status.${status.toLowerCase()}`
+          ),
+          labelStatus: PL_LABEL_STATUS.REJECT,
         };
       default:
         return {

@@ -7,15 +7,18 @@ import {
 } from '../../../../core/common/enum/payday-loan';
 import { QUERY_CONDITION_TYPE } from '../../../../core/common/enum/operator';
 import { environment } from '../../../../../environments/environment';
-import { BnplApplicationControllerService } from '../../../../../../open-api-modules/dashboard-api-docs';
 import * as _ from 'lodash';
+import {BNPL_STATUS} from "../../../../core/common/enum/bnpl";
+import {BnplApplicationControllerService} from "../../../../../../open-api-modules/dashboard-api-docs";
+import {BnplControllerService} from "../../../../../../open-api-modules/bnpl-api-docs";
 
 @Injectable({
   providedIn: 'root',
 })
 export class BnplListService {
   constructor(
-    private bnplApplicationControllerService: BnplApplicationControllerService
+    private dashboardBnplApplicationControllerService: BnplApplicationControllerService,
+    private bnplControllerService: BnplControllerService
   ) {}
 
   private _buildRequestBodyGetList(params) {
@@ -33,7 +36,7 @@ export class BnplListService {
         requestBody['repaymentStatus__e'] = REPAYMENT_STATUS.OVERDUE;
         params.status = PAYDAY_LOAN_STATUS.IN_REPAYMENT;
         break;
-      case PAYDAY_LOAN_STATUS.IN_REPAYMENT:
+      case BNPL_STATUS.DISBURSE:
         requestBody['repaymentStatus__ne'] = REPAYMENT_STATUS.OVERDUE;
         break;
       default:
@@ -104,7 +107,7 @@ export class BnplListService {
   public getData(params) {
     let requestBody = this._buildRequestBodyGetList(params);
 
-    return this.bnplApplicationControllerService.findBnplApplications(
+    return this.dashboardBnplApplicationControllerService.findBnplApplications(
       params.pageSize,
       params.pageNumber,
       requestBody,
@@ -119,4 +122,10 @@ export class BnplListService {
     let url = window.URL.createObjectURL(blob);
     return url;
   }
+
+  public updateBnplApplication(id, params) {
+    return this.bnplControllerService.v1ApplicationIdGet(id);
+  }
+
+
 }

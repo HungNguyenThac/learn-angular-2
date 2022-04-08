@@ -1,14 +1,17 @@
 import {
-  AfterViewInit,
   Component,
   ElementRef,
-  HostListener,
   Inject,
   OnDestroy,
   OnInit,
   ViewChild,
 } from '@angular/core';
-import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import {
   BUTTON_TYPE,
@@ -36,9 +39,7 @@ import { NotificationService } from '../../../../../../core/services/notificatio
   templateUrl: './config-contract-save-dialog.component.html',
   styleUrls: ['./config-contract-save-dialog.component.scss'],
 })
-export class ConfigContractSaveDialogComponent
-  implements OnInit, OnDestroy, AfterViewInit
-{
+export class ConfigContractSaveDialogComponent implements OnInit, OnDestroy {
   @ViewChild(MatTable, { read: ElementRef }) private matTableRef: ElementRef;
   contractTemplateForm: FormGroup;
   title: string;
@@ -46,8 +47,6 @@ export class ConfigContractSaveDialogComponent
   action: TABLE_ACTION_TYPE;
   workflowStatuses: any[];
   loanProducts: any[];
-
-  resizeTimeout: any;
 
   dataSource: MatTableDataSource<any> = new MatTableDataSource([]);
   pageSize: number = 20;
@@ -80,7 +79,7 @@ export class ConfigContractSaveDialogComponent
       type: DATA_CELL_TYPE.TEXT,
       format: null,
       showed: true,
-      width: 200,
+      width: 100,
     },
     {
       key: 'description',
@@ -90,7 +89,7 @@ export class ConfigContractSaveDialogComponent
       type: DATA_CELL_TYPE.TEXT,
       format: null,
       showed: true,
-      width: 200,
+      width: 100,
     },
     {
       key: 'code',
@@ -100,7 +99,7 @@ export class ConfigContractSaveDialogComponent
       type: DATA_CELL_TYPE.TEXT,
       format: null,
       showed: true,
-      width: 200,
+      width: 100,
     },
   ];
 
@@ -338,27 +337,6 @@ export class ConfigContractSaveDialogComponent
     e.data.url = response.url;
   }
 
-  getPropByString(obj, propString) {
-    if (!propString || !obj) return null;
-
-    var prop,
-      props = propString.split('.');
-
-    for (var i = 0, iLen = props.length - 1; i < iLen; i++) {
-      prop = props[i];
-
-      var candidate = obj[prop];
-
-      if (!_.isEmpty(candidate)) {
-        obj = candidate;
-      } else {
-        break;
-      }
-    }
-
-    return obj[props[i]];
-  }
-
   public onPageChange(event: PageEvent) {
     this.pageSize = event.pageSize;
     this.pageIndex = event.pageIndex;
@@ -434,52 +412,6 @@ export class ConfigContractSaveDialogComponent
     this.syncPreview(data);
   }
 
-  resizeTableAfterContentChanged() {
-    this.setTableResize();
-  }
-
-  setTableResize() {
-    if (!this.matTableRef) {
-      return;
-    }
-    let tableWidth = this.matTableRef.nativeElement.clientWidth;
-    let totWidth = 0;
-
-    let tableColumn: DisplayedFieldsModel[] = [...this.displayColumns];
-    tableColumn.forEach((column) => {
-      totWidth += column.width;
-    });
-    const scale = (tableWidth - 5) / totWidth;
-    tableColumn.forEach((column) => {
-      column.width *= scale;
-      this.setColumnWidth(column);
-    });
-  }
-
-  @HostListener('window:resize', ['$event'])
-  onResize(event) {
-    //debounce resize, wait for resize to finish before doing stuff
-    if (this.resizeTimeout) {
-      clearTimeout(this.resizeTimeout);
-    }
-
-    this.resizeTimeout = setTimeout(() => {
-      this.setTableResize();
-    }, 100);
-  }
-
-  setColumnWidth(column: DisplayedFieldsModel) {
-    const columnEls = Array.from(
-      this.matTableRef.nativeElement.getElementsByClassName(
-        'mat-column-' + column.key.replace(/\./g, '-')
-      )
-    );
-
-    columnEls.forEach((el: HTMLDivElement) => {
-      el.style.width = column.width + 'px';
-    });
-  }
-
   onChangeProduct(productId) {
     this.contractTemplateForm.controls.statusFlowId.setValue(null);
     this.filteredProducts = [];
@@ -495,9 +427,5 @@ export class ConfigContractSaveDialogComponent
     });
     if (!selectedProduct) return;
     this.workflowStatuses = selectedProduct.statusGroup?.statusFlows || [];
-  }
-
-  ngAfterViewInit(): void {
-    this.setTableResize();
   }
 }
