@@ -265,7 +265,7 @@ export class BnplListComponent implements OnInit, OnDestroy {
     {
       key: 'status',
       externalKey: 'repaymentStatus',
-      isBadLoan: 'defaultStatus',
+      externalKey2: 'defaultStatus',
       title: this.multiLanguageService.instant('bnpl.loan_info.status'),
       type: DATA_CELL_TYPE.STATUS,
       format: DATA_STATUS_TYPE.BNPL_STATUS,

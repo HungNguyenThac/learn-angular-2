@@ -406,7 +406,7 @@ export class LoanListComponent implements OnInit, OnDestroy {
     {
       key: 'status',
       externalKey: 'repaymentStatus',
-      isBadLoan: 'defaultStatus',
+      externalKey2: 'defaultStatus',
       title: this.multiLanguageService.instant('loan_app.loan_info.status'),
       type: DATA_CELL_TYPE.STATUS,
       format: DATA_STATUS_TYPE.PL_HMG_STATUS,

@@ -4669,6 +4669,16 @@ components:
           type: string
         contract:
           type: string
+        sellType:
+          type: string
+        note:
+          type: string
+        staffId:
+          type: string
+        approvedAt:
+          type: string
+        completedAt:
+          type: string
         createdAt:
           type: string
         updatedAt:

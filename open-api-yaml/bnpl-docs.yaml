@@ -26,6 +26,15 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiResponseLoanDetailDto'
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+      security:
+      - SecurityScheme:
+        - application:changeStatus
+      - SecurityScheme:
+        - application:changeStatus
   /v1/admin/application/{id}/repayment:
     post:
       tags:
@@ -48,6 +57,15 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiResponseCorePaymentTransactionResponseDto'
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+      security:
+      - SecurityScheme:
+        - application:repayment
+      - SecurityScheme:
+        - application:repayment
   /v1/admin/merchants:
     get:
       tags:
@@ -107,6 +125,15 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiResponseMerchant'
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+      security:
+      - SecurityScheme:
+        - merchants:create
+      - SecurityScheme:
+        - merchants:create
   /v1/admin/merchants/{id}:
     put:
       tags:
@@ -129,6 +156,15 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiResponseMerchant'
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+      security:
+      - SecurityScheme:
+        - merchants:update
+      - SecurityScheme:
+        - merchants:update
     delete:
       tags:
       - Admin Controller
@@ -145,6 +181,15 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiResponseString'
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+      security:
+      - SecurityScheme:
+        - merchants:delete
+      - SecurityScheme:
+        - merchants:delete
   /v1/application:
     get:
       tags:
@@ -187,22 +232,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiResponseLoanDetailDto'
-  /v1/application/calculate-repayment:
-    post:
-      tags:
-      - Bnpl Controller
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/CreateLoanRequestDto'
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ApiResponseMifosCalculateRepaymentDto'
   /v1/application/cde:
     get:
       tags:
@@ -246,6 +275,45 @@ paths:
       - Bnpl Controller
       parameters:
       - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseLoanDetailDto'
+  /v1/application/{loanId}:
+    put:
+      tags:
+      - Bnpl Controller
+      parameters:
+      - name: loanId
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateLoanRequestDto'
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseBnplApplication'
+  /v1/application/{loanId}/approve:
+    put:
+      tags:
+      - Bnpl Controller
+      parameters:
+      - name: loanId
         in: path
         required: true
         schema:
@@ -403,18 +471,6 @@ components:
         responseCode:
           format: int32
           type: integer
-    ApiResponseMifosCalculateRepaymentDto:
-      type: object
-      properties:
-        result:
-          $ref: '#/components/schemas/MifosCalculateRepaymentDto'
-        errorCode:
-          type: string
-        message:
-          type: string
-        responseCode:
-          format: int32
-          type: integer
     ApiResponseString:
       type: object
       properties:
@@ -445,8 +501,7 @@ components:
           format: int32
           type: integer
         productId:
-          format: int32
-          type: integer
+          type: string
         status:
           type: string
         oldStatus:
@@ -455,6 +510,16 @@ components:
           format: int32
           type: integer
         contract:
+          type: string
+        sellType:
+          type: string
+        note:
+          type: string
+        staffId:
+          type: string
+        approvedAt:
+          type: string
+        completedAt:
           type: string
         createdAt:
           type: string
@@ -678,6 +743,7 @@ components:
       - loanTerm
       - numberOfRepayments
       - repaymentEvery
+      - sellType
       type: object
       properties:
         merchantId:
@@ -701,6 +767,13 @@ components:
           type: integer
           nullable: false
         CdeDataId:
+          type: string
+        note:
+          type: string
+        sellType:
+          type: string
+          nullable: false
+        staffId:
           type: string
         cdeDataId:
           type: string
@@ -872,8 +945,7 @@ components:
           format: int32
           type: integer
         productId:
-          format: int32
-          type: integer
+          type: string
         contract:
           type: string
         status:
@@ -882,6 +954,16 @@ components:
           type: string
         coreLoanDetail:
           $ref: '#/components/schemas/CoreLoanDetailDto'
+        sellType:
+          type: string
+        note:
+          type: string
+        staffId:
+          type: string
+        approvedAt:
+          type: string
+        completedAt:
+          type: string
         createdAt:
           type: string
         updatedAt:
@@ -1219,6 +1301,34 @@ components:
         mobile:
           type: string
         email:
+          type: string
+    UpdateLoanRequestDto:
+      type: object
+      properties:
+        cdeDataId:
+          type: string
+        merchantId:
+          type: string
+        loanAmount:
+          format: int32
+          type: integer
+        latePenaltyPayment:
+          format: int32
+          type: integer
+        productId:
+          type: string
+        status:
+          $ref: '#/components/schemas/BnplStatus'
+        coreLoanId:
+          format: int32
+          type: integer
+        contract:
+          type: string
+        note:
+          type: string
+        staffId:
+          type: string
+        saleType:
           type: string
     UpdateMerchantRequestDto:
       type: object

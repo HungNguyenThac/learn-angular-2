@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {
   BnplApplication,
   CustomerInfo,
@@ -31,6 +31,8 @@ export class BnplRepaymentTransactionComponent implements OnInit {
     this.initTableData();
   }
   @Input() userInfo: CustomerInfo;
+  @Output() triggerChangeStatusBnplApplication = new EventEmitter<any>();
+  @Output() triggerRepaymentBnplApplication = new EventEmitter<any>();
 
   dataSource: MatTableDataSource<any> = new MatTableDataSource([]);
   expandedElementLoanDetail: any;
@@ -84,5 +86,28 @@ export class BnplRepaymentTransactionComponent implements OnInit {
   initTableData() {
     this.dataSource.data = this.dataSource.data =
       this.loanDetail?.repaymentTransactions;
+  }
+
+  changeLoanStatus(status) {
+    this.triggerChangeStatusBnplApplication.emit({
+      id: this.loanDetail?.id,
+      status,
+    });
+  }
+
+  repaymentSinglePeriod() {
+    let payment = 0;
+    this.triggerRepaymentBnplApplication.emit({
+      id: this.loanDetail?.id,
+      transactionAmount: payment,
+    });
+  }
+
+  repaymentAllPeriod() {
+    let payment = 0;
+    this.triggerRepaymentBnplApplication.emit({
+      id: this.loanDetail?.id,
+      transactionAmount: payment,
+    });
   }
 }

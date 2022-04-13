@@ -171,17 +171,17 @@
             [resizeColumn]="true"
             [index]="hasSelect ? i + 1 : i"
           >
-            <ng-container *ngIf="hiddenSortDirective; else showSortDirective">
-              <span>
-                {{ column?.title }}
-              </span>
-            </ng-container>
-            <ng-template #showSortDirective>
+            <ng-container *ngIf="sortable; else hiddenSort">
               <span
                 arrowPosition="before"
                 mat-sort-header
                 sortActionDescription="Sort by field"
               >
+                {{ column?.title }}
+              </span>
+            </ng-container>
+            <ng-template #hiddenSort>
+              <span>
                 {{ column?.title }}
               </span>
             </ng-template>

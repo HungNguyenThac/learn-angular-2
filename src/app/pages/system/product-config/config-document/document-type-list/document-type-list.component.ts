@@ -32,7 +32,7 @@ import { FilterActionEventModel } from '../../../../../public/models/filter/filt
 import { PageEvent } from '@angular/material/paginator/public-api';
 import { Sort } from '@angular/material/sort';
 import { FilterEventModel } from '../../../../../public/models/filter/filter-event.model';
-import { TableActionEventModel } from '../../../../../public/models/filter/table-action-event.model';
+import { TableActionEventModel } from '../../../../../public/models/external/table-action-event.model';
 import * as _ from 'lodash';
 import { DocumentTypeSaveDialogComponent } from '../components/document-type-save-dialog/document-type-save-dialog.component';
 import { NgxPermissionsService } from 'ngx-permissions';

@@ -39,7 +39,7 @@ import { ConfigDocumentListService } from './config-document-list.service';
 import { OverviewItemModel } from '../../../../../public/models/external/overview-item.model';
 import * as _ from 'lodash';
 import { TableActionButtonModel } from '../../../../../public/models/external/table-action-button.model';
-import { TableActionEventModel } from '../../../../../public/models/filter/table-action-event.model';
+import { TableActionEventModel } from '../../../../../public/models/external/table-action-event.model';
 import { ApplicationDocumentSaveDialogComponent } from '../components/application-document-save-dialog/application-document-save-dialog.component';
 import {
   CreateDocumentDto,

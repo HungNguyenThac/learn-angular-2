@@ -36,7 +36,7 @@ import { TableActionButtonModel } from '../../../../../public/models/external/ta
 import { OverviewItemModel } from '../../../../../public/models/external/overview-item.model';
 import { ConfigContractListService } from './config-contract-list.service';
 import { ConfigContractSaveDialogComponent } from '../components/config-contract-save-dialog/config-contract-save-dialog.component';
-import { TableActionEventModel } from '../../../../../public/models/filter/table-action-event.model';
+import { TableActionEventModel } from '../../../../../public/models/external/table-action-event.model';
 import { ContractTemplate } from '../../../../../../../open-api-modules/dashboard-api-docs';
 import { ApplicationDocumentSaveDialogComponent } from '../../config-document/components/application-document-save-dialog/application-document-save-dialog.component';
 
@@ -289,9 +289,9 @@ export class ConfigContractListComponent implements OnInit, OnDestroy {
   }
 
   private _parseData(rawData) {
-    this.pageLength = rawData?.pagination?.maxPage || 0;
-    this.totalItems = rawData?.pagination?.total || 0;
-    this.dataSource.data = rawData?.data || [];
+    this.pageLength = rawData?.meta?.totalPages || 0;
+    this.totalItems = rawData?.meta?.totalItems || 0;
+    this.dataSource.data = rawData?.items || [];
   }
 
   private _onFilterChange() {

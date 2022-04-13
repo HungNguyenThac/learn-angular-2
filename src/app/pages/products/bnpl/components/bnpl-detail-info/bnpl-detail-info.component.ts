@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import {
   BnplApplication,
   CustomerInfo,
@@ -29,6 +29,9 @@ export class BnplDetailInfoComponent implements OnInit {
     this.leftColumns = this._initLeftColumn();
     this.rightColumns = this._initRightColumn();
   }
+
+  @Output() triggerChangeStatusBnplApplication = new EventEmitter<any>();
+  @Output() triggerRepaymentBnplApplication = new EventEmitter<any>();
 
   leftColumns: any[] = [];
   rightColumns: any[] = [];
@@ -77,11 +80,64 @@ export class BnplDetailInfoComponent implements OnInit {
   private _initRightColumn() {
     return [
       {
+        title: this.multiLanguageService.instant('bnpl.loan_info.sell_type'),
+        value: this.loanDetail?.sellType,
+        type: DATA_CELL_TYPE.TEXT,
+        format: null,
+      },
+      {
+        title: this.multiLanguageService.instant('bnpl.loan_info.approved_at'),
+        value: this.loanDetail?.approvedAt,
+        type: DATA_CELL_TYPE.DATETIME,
+        format: 'HH:mm:ss - dd/MM/yyyy',
+      },
+      {
+        title: this.multiLanguageService.instant('bnpl.loan_info.repayment_at'),
+        value: this.loanDetail?.completedAt,
+        type: DATA_CELL_TYPE.DATETIME,
+        format: 'HH:mm:ss - dd/MM/yyyy',
+      },
+      {
+        title: this.multiLanguageService.instant('bnpl.loan_info.completed_at'),
+        value: this.loanDetail?.completedAt,
+        type: DATA_CELL_TYPE.DATETIME,
+        format: 'HH:mm:ss - dd/MM/yyyy',
+      },
+      {
+        title: this.multiLanguageService.instant('bnpl.loan_info.staff'),
+        value: this.loanDetail?.staffId,
+        type: DATA_CELL_TYPE.TEXT,
+        format: null,
+      },
+      {
         title: this.multiLanguageService.instant('bnpl.loan_info.status'),
         value: this.loanDetail?.status,
         type: DATA_CELL_TYPE.STATUS,
         format: DATA_STATUS_TYPE.BNPL_STATUS,
       },
     ];
+  }
+
+  changeLoanStatus(status) {
+    this.triggerChangeStatusBnplApplication.emit({
+      id: this.loanDetail?.id,
+      status,
+    });
+  }
+
+  repaymentSinglePeriod() {
+    let payment = 0;
+    this.triggerRepaymentBnplApplication.emit({
+      id: this.loanDetail?.id,
+      transactionAmount: payment,
+    });
+  }
+
+  repaymentAllPeriod() {
+    let payment = 0;
+    this.triggerRepaymentBnplApplication.emit({
+      id: this.loanDetail?.id,
+      transactionAmount: payment,
+    });
   }
 }

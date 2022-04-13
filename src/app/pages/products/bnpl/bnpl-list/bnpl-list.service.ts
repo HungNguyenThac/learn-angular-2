@@ -8,9 +8,15 @@ import {
 import { QUERY_CONDITION_TYPE } from '../../../../core/common/enum/operator';
 import { environment } from '../../../../../environments/environment';
 import * as _ from 'lodash';
-import {BNPL_STATUS} from "../../../../core/common/enum/bnpl";
-import {BnplApplicationControllerService} from "../../../../../../open-api-modules/dashboard-api-docs";
-import {BnplControllerService} from "../../../../../../open-api-modules/bnpl-api-docs";
+import { BNPL_STATUS } from '../../../../core/common/enum/bnpl';
+import { BnplApplicationControllerService } from '../../../../../../open-api-modules/dashboard-api-docs';
+import {
+  AdminControllerService,
+  BnplControllerService,
+  ChangeLoanStatusRequest,
+  CorePaymentRequest,
+  UpdateLoanRequestDto,
+} from '../../../../../../open-api-modules/bnpl-api-docs';
 
 @Injectable({
   providedIn: 'root',
@@ -18,7 +24,8 @@ import {BnplControllerService} from "../../../../../../open-api-modules/bnpl-api
 export class BnplListService {
   constructor(
     private dashboardBnplApplicationControllerService: BnplApplicationControllerService,
-    private bnplControllerService: BnplControllerService
+    private bnplControllerService: BnplControllerService,
+    private adminBnplControllerService: AdminControllerService
   ) {}
 
   private _buildRequestBodyGetList(params) {
@@ -70,9 +77,8 @@ export class BnplListService {
       requestBody[
         'customerInfo.emailAddress' + QUERY_CONDITION_TYPE.LIKE_KEYWORD
       ] = params.keyword;
-      requestBody[
-        'merchant.name' + QUERY_CONDITION_TYPE.LIKE_KEYWORD
-      ] = params.keyword;
+      requestBody['merchant.name' + QUERY_CONDITION_TYPE.LIKE_KEYWORD] =
+        params.keyword;
     }
 
     switch (params.accountClassification) {
@@ -116,16 +122,39 @@ export class BnplListService {
     );
   }
 
-
   public convertBlobType(data: any, type: string) {
     let blob = new Blob([data], { type: type });
     let url = window.URL.createObjectURL(blob);
     return url;
   }
 
-  public updateBnplApplication(id, params) {
-    return this.bnplControllerService.v1ApplicationIdGet(id);
+  public updateBnplApplication(
+    id,
+    updateLoanRequestDto?: UpdateLoanRequestDto
+  ) {
+    return this.bnplControllerService.v1ApplicationLoanIdPut(
+      id,
+      updateLoanRequestDto
+    );
   }
 
+  public changeStatusBnplApplication(
+    id: string,
+    changeLoanStatusRequest?: ChangeLoanStatusRequest
+  ) {
+    return this.adminBnplControllerService.v1AdminApplicationIdChangeStatusPost(
+      id,
+      changeLoanStatusRequest
+    );
+  }
 
+  public repaymentBnplApplication(
+    id: string,
+    corePaymentRequest?: CorePaymentRequest
+  ) {
+    return this.adminBnplControllerService.v1AdminApplicationIdRepaymentPost(
+      id,
+      corePaymentRequest
+    );
+  }
 }
