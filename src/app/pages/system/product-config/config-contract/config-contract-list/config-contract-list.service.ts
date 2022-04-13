@@ -7,7 +7,8 @@ import {
   CreateContractDto,
   LoanProductsService,
   LoanStatusService,
-  UpdateContractDto, V1ContractPropertyService,
+  UpdateContractDto,
+  V1ContractPropertyService,
 } from '../../../../../../../open-api-modules/monexcore-api-docs';
 
 @Injectable({
@@ -23,14 +24,13 @@ export class ConfigContractListService {
   ) {}
 
   public getData(params) {
-    let requestBody = this._buildRequestBodyGetList(params);
+    // let requestBody = this._buildRequestBodyGetList(params);
 
-    return this.dashboardContractTemplateControllerService.getContractTemplates(
+    return this.monexCoreContractTemplateControllerService.contractTemplateControllerSearchPagination(
+      params.sortDirection === 'desc',
+      params.pageIndex + 1,
       params.limit,
-      params.pageIndex,
-      requestBody,
-      params.orderBy,
-      params.sortDirection === 'desc'
+      params.orderBy
     );
   }
 

@@ -16,6 +16,9 @@ import { FilterActionEventModel } from '../../../../public/models/filter/filter-
   styleUrls: ['./base-filter-form.component.scss'],
 })
 export class BaseFilterFormComponent implements OnInit {
+  /**
+   * List filter option
+   */
   _filterOptions: FilterOptionModel[];
   @Input() get filterOptions(): FilterOptionModel[] {
     return this._filterOptions;
@@ -24,10 +27,21 @@ export class BaseFilterFormComponent implements OnInit {
     this._filterOptions = value;
   }
 
+  /**
+   * Trigger when change filter
+   */
   @Output() triggerFilterChange = new EventEmitter<FilterEventModel>();
+
+  /**
+   * Trigger when click action of filter
+   */
   @Output() triggerFilterAction = new EventEmitter<FilterActionEventModel>();
 
+  /**
+   * Check is desktop or mobile view
+   */
   responsive: boolean = false;
+
   resizeTimeout: any;
   panelOpenState = false;
 

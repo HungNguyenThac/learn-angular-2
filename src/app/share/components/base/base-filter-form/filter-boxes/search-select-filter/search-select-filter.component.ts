@@ -1,12 +1,12 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FilterOptionModel } from '../../../../public/models/filter/filter-option.model';
-import { FilterEventModel } from '../../../../public/models/filter/filter-event.model';
-import { FilterActionEventModel } from '../../../../public/models/filter/filter-action-event.model';
-import { FILTER_ACTION_TYPE } from '../../../../core/common/enum/operator';
+import { FilterOptionModel } from '../../../../../../public/models/filter/filter-option.model';
+import { FilterEventModel } from '../../../../../../public/models/filter/filter-event.model';
+import { FilterActionEventModel } from '../../../../../../public/models/filter/filter-action-event.model';
+import { FILTER_ACTION_TYPE } from '../../../../../../core/common/enum/operator';
 import { FormControl } from '@angular/forms';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
-import { FilterItemModel } from '../../../../public/models/filter/filter-item.model';
+import { FilterItemModel } from '../../../../../../public/models/filter/filter-item.model';
 
 @Component({
   selector: 'app-search-select-filter',

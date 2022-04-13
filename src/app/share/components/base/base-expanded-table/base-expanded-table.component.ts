@@ -27,7 +27,7 @@ import * as _ from 'lodash';
 import { OverviewItemModel } from 'src/app/public/models/external/overview-item.model';
 import { TableActionButtonModel } from '../../../../public/models/external/table-action-button.model';
 import { TABLE_ACTION_TYPE } from '../../../../core/common/enum/operator';
-import { TableActionEventModel } from '../../../../public/models/filter/table-action-event.model';
+import { TableActionEventModel } from '../../../../public/models/external/table-action-event.model';
 import { MultipleElementActionEventModel } from '../../../../public/models/filter/multiple-element-action-event.model';
 
 @Component({
@@ -42,26 +42,119 @@ import { MultipleElementActionEventModel } from '../../../../public/models/filte
 export class BaseExpandedTableComponent implements OnInit, AfterViewInit {
   @ViewChild(MatTable, { read: ElementRef }) private matTableRef: ElementRef;
 
+  /**
+   * Template of detail element
+   */
   @Input() detailElementTemplate: TemplateRef<any>;
+
+  /**
+   * Table title
+   */
   @Input() tableTitle: string;
+
+  /**
+   * Data source of mat-table
+   */
   @Input() dataSource: MatTableDataSource<any>;
+
+  /**
+   * Page size options - Number of elements in a page.
+   *
+   * Example [10, 20, 30]
+   */
   @Input() pageSizeOptions: number[];
+
+  /**
+   * Total items
+   */
   @Input() totalItems: number;
+
+  /**
+   * Total pages
+   */
   @Input() pageLength: number;
+
+  /**
+   * Current page index
+   *
+   * The default the pageIndex is 0
+   */
   @Input() pageIndex: number;
+
+  /**
+   * Number of elements in a page
+   */
   @Input() pageSize: number;
+
+  /**
+   * The field name table order by
+   */
   @Input() orderBy: string;
+
+  /**
+   * Sort direction: desc (descending) or asc (ascending)
+   */
   @Input() sortDirection: SortDirection;
+
+  /**
+   * List of columns can display in mat-table
+   */
   @Input() allColumns: DisplayedFieldsModel[];
+
+  /**
+   * Display checkbox button in every row of table: true or false
+   */
   @Input() hasSelect: boolean;
+
+  /**
+   * Display table actions : true or false
+   */
   @Input() hasActions: boolean;
+
+  /**
+   * List actions for selected rows
+   */
   @Input() selectButtons: TableSelectActionModel[];
+
+  /**
+   * List actions in every row of table
+   */
   @Input() actionButtons: TableActionButtonModel[];
+
+  /**
+   * List overview infos in top of table
+   */
   @Input() overviewItems: OverviewItemModel[];
+
+  /**
+   * Show refresh button: true or false
+   */
   @Input() showRefreshBtn: boolean;
+
+  /**
+   * Hidden paginator of table: true or false
+   *
+   * Default is false
+   */
   @Input() hiddenPaginator: boolean = false;
+
+  /**
+   * Hidden table menu function ( Table title, Refresh button, Show/hide column) : true or false
+   *
+   * Default is false
+   */
   @Input() hiddenTableMenuFunc: boolean = false;
-  @Input() hiddenSortDirective: boolean = false;
+
+  /**
+   * Sortable: true or false
+   *
+   * Default is true
+   */
+  @Input() sortable: boolean = true;
+
+  /**
+   * Expanded element default
+   */
   _expandElementByDefault;
   @Input() get expandElementByDefault() {
     return this._expandElementByDefault;
@@ -74,23 +167,65 @@ export class BaseExpandedTableComponent implements OnInit, AfterViewInit {
     }
   }
 
+  /**
+   * Trigger when paginator change
+   */
   @Output() triggerPageChange = new EventEmitter<PageEvent>();
+
+  /**
+   * Trigger when click sort by any field
+   */
   @Output() triggerSortChange = new EventEmitter<Sort>();
+
+  /**
+   * Trigger when click expand any row of table
+   */
   @Output() triggerExpandedElementChange = new EventEmitter<any>();
+
+  /**
+   * Trigger when any multiple element action is clicked
+   */
   @Output() triggerMultipleElementActionClick =
     new EventEmitter<MultipleElementActionEventModel>();
+
+  /**
+   * Trigger when table action is clicked
+   */
   @Output() triggerTableActionClick = new EventEmitter<TableActionEventModel>();
+
+  /**
+   * Trigger when refresh button is clicked
+   */
   @Output() triggerRefresh = new EventEmitter<any>();
 
-  pressed: boolean = false;
+  /**
+   * Expanded element data
+   */
+  expandedElement: any;
+
+  /**
+   * Selected fields are fields can show/hide
+   */
+  selectedFields: DisplayedFieldsModel[] = [];
+
+  /**
+   * Selected rows
+   */
+  selection = new SelectionModel<any>(true, []);
+
+  /**
+   * Display columns are showed fields
+   */
+  displayColumns: DisplayedFieldsModel[] = [];
+
+  /**
+   * List key of showed fields
+   */
+  displayColumnKeys: string[] = [];
+
   resizeTimeout: any;
 
-  expandedElement: any;
-  selectedFields: DisplayedFieldsModel[] = [];
   panelOpenState = false;
-  selection = new SelectionModel<any>(true, []);
-  displayColumns: DisplayedFieldsModel[] = [];
-  displayColumnKeys: string[] = [];
 
   constructor(
     private multiLanguageService: MultiLanguageService,
@@ -211,7 +346,7 @@ export class BaseExpandedTableComponent implements OnInit, AfterViewInit {
         format: item.format,
         showed: item.showed,
         externalKey: item.externalKey,
-        isBadLoan: item.isBadLoan,
+        isBadLoan: item.externalKey2,
       };
     });
   }

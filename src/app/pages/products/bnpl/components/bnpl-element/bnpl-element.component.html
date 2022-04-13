@@ -2,7 +2,13 @@
   <!--  Loan Info-->
   <mat-tab [label]="'bnpl.tabs.loan_info' | translate">
     <ng-template matTabContent>
-      <app-bnpl-detail-info [loanDetail]="loanDetail"></app-bnpl-detail-info>
+      <app-bnpl-detail-info
+        [loanDetail]="loanDetail"
+        (triggerChangeStatusBnplApplication)="
+          changeStatusBnplApplication($event)
+        "
+        (triggerRepaymentBnplApplication)="repaymentBnplApplication($event)"
+      ></app-bnpl-detail-info>
     </ng-template>
   </mat-tab>
 
@@ -11,6 +17,10 @@
     <ng-template matTabContent>
       <app-bnpl-repayment-transaction
         [loanDetail]="loanDetail"
+        (triggerChangeStatusBnplApplication)="
+          changeStatusBnplApplication($event)
+        "
+        (triggerRepaymentBnplApplication)="repaymentBnplApplication($event)"
       ></app-bnpl-repayment-transaction>
     </ng-template>
   </mat-tab>

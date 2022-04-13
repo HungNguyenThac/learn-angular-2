@@ -9,18 +9,71 @@ import { AddNewUserDialogComponent } from '../../operators/user-account/add-new-
   styleUrls: ['./base-breadcrumb.component.scss'],
 })
 export class BaseBreadcrumbComponent implements OnInit {
+  /**
+   * Breadcrumb title
+   */
   @Input() title: string;
+
+  /**
+   * Class image use sprite-css
+   */
   @Input() iconClass: string;
+
+  /**
+   * Image src icon
+   */
   @Input() iconImgSrc: string;
+
+  /**
+   * Search placeholder in search box
+   */
   @Input() searchPlaceholder: string;
+
+  /**
+   * Searchable: true or false
+   *
+   * Default is true
+   */
   @Input() searchable: boolean = true;
+
+  /**
+   * Label of extra action button
+   */
   @Input() extraActionLabel: string;
+
+  /**
+   * Text of add button
+   */
   @Input() btnAddText: string;
+
+  /**
+   * Show button add: true or false
+   */
   @Input() showBtnAdd: boolean = false;
+
+  /**
+   * Max length of search box
+   *
+   * Default maxLength is 50
+   */
   @Input() maxLengthSearchInput: number = 50;
+
+  /**
+   * Text of export button
+   */
   @Input() btnExportText: string;
+
+  /**
+   * Show button export: true or false
+   *
+   * Default is false
+   */
   @Input() showBtnExport: boolean = false;
 
+
+  /**
+   * Value of search box
+   */
   _keyword: string;
   @Input()
   get keyword(): string {
@@ -32,8 +85,19 @@ export class BaseBreadcrumbComponent implements OnInit {
     this._keyword = value;
   }
 
+  /**
+   * Trigger when submit search form
+   */
   @Output() submitSearchForm = new EventEmitter<string>();
+
+  /**
+   * Trigger when click button add
+   */
   @Output() clickBtnAdd = new EventEmitter<string>();
+
+  /**
+   * Trigger when click button export
+   */
   @Output() clickBtnExport = new EventEmitter<string>();
 
   searchForm: FormGroup;
