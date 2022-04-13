@@ -6,9 +6,9 @@ import {
   OnInit,
   Output,
 } from '@angular/core';
-import { FilterOptionModel } from '../../../../public/models/filter/filter-option.model';
-import { FilterEventModel } from '../../../../public/models/filter/filter-event.model';
-import { FilterItemModel } from '../../../../public/models/filter/filter-item.model';
+import { FilterOptionModel } from '../../../../../../public/models/filter/filter-option.model';
+import { FilterEventModel } from '../../../../../../public/models/filter/filter-event.model';
+import { FilterItemModel } from '../../../../../../public/models/filter/filter-item.model';
 
 @Component({
   selector: 'app-select-filter',

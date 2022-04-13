@@ -1,10 +1,10 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FilterEventModel } from '../../../../public/models/filter/filter-event.model';
-import { FilterActionEventModel } from '../../../../public/models/filter/filter-action-event.model';
-import { FilterOptionModel } from '../../../../public/models/filter/filter-option.model';
-import { FILTER_ACTION_TYPE } from '../../../../core/common/enum/operator';
-import { FilterItemModel } from '../../../../public/models/filter/filter-item.model';
-import { FilterDisplayedOptionModel } from '../../../../public/models/filter/filter-displayed-option.model';
+import { FilterEventModel } from '../../../../../../public/models/filter/filter-event.model';
+import { FilterActionEventModel } from '../../../../../../public/models/filter/filter-action-event.model';
+import { FilterOptionModel } from '../../../../../../public/models/filter/filter-option.model';
+import { FILTER_ACTION_TYPE } from '../../../../../../core/common/enum/operator';
+import { FilterItemModel } from '../../../../../../public/models/filter/filter-item.model';
+import { FilterDisplayedOptionModel } from '../../../../../../public/models/filter/filter-displayed-option.model';
 
 @Component({
   selector: 'app-multiple-choice-filter',
