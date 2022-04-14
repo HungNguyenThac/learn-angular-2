@@ -1019,7 +1019,12 @@ paths:
   /v1/loans/{coreLoanId}:
     put:
       operationId: "LoanController_updateLoanProduct"
-      parameters: []
+      parameters:
+        - name: "coreLoanId"
+          required: true
+          in: "path"
+          schema:
+            type: "number"
       requestBody:
         required: true
         content:
