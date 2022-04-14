@@ -46,6 +46,12 @@ router-outlet ~ * {
   font-size: 20px;
 }
 
+.preview-pane-pdfoject {
+  height: 650px;
+  position: relative;
+  z-index: 999;
+}
+
 ::ng-deep .custom-dialog-container {
   .mat-dialog-container {
     padding: 0;
@@ -401,7 +407,7 @@ input.pl-text-otp {
 }
 
 .bg-grey {
-  background-color: #F7F7FC;
+  background-color: #f7f7fc;
 }
 
 .m-content-card-body-dialog {

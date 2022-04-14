@@ -83,3 +83,8 @@ Reference https://github.com/OpenAPITools/openapi-generator/issues/10182
   }
 }
 ```
+
+- If you want generate custom font for pdfMake 
+```
+pdfmakefg ./src/assets/fonts ./src/app/public/vfs_fonts/vfs_custom_fonts.js
+```

@@ -21,7 +21,7 @@ import { DisplayedFieldsModel } from '../../../../public/models/filter/displayed
 import { OverviewItemModel } from 'src/app/public/models/external/overview-item.model';
 import { TableActionButtonModel } from '../../../../public/models/external/table-action-button.model';
 import { TableActionEventModel } from '../../../../public/models/external/table-action-event.model';
-import {MultipleElementActionEventModel} from "../../../../public/models/filter/multiple-element-action-event.model";
+import { MultipleElementActionEventModel } from '../../../../public/models/filter/multiple-element-action-event.model';
 
 @Component({
   selector: 'app-base-management-layout',
@@ -151,7 +151,6 @@ export class BaseManagementLayoutComponent implements OnInit {
    */
   @Output() onExpandElementChange = new EventEmitter<any>();
 
-
   /**
    * Trigger when click button add
    */
@@ -187,7 +186,6 @@ export class BaseManagementLayoutComponent implements OnInit {
    */
   @Output() onTableActionClick = new EventEmitter<any>();
 
-
   /**
    * List filter option
    */
@@ -222,7 +220,6 @@ export class BaseManagementLayoutComponent implements OnInit {
   triggerDeselectUsers() {
     this.child.deselectAll();
   }
-
 
   clickBtnAdd(event) {
     this.onClickBtnAdd.emit(event);

@@ -4677,6 +4677,10 @@ components:
           type: string
         approvedAt:
           type: string
+        periods:
+          type: array
+          items:
+            $ref: '#/components/schemas/Period'
         completedAt:
           type: string
         createdAt:
@@ -4689,6 +4693,77 @@ components:
             $ref: '#/components/schemas/RepaymentTransaction'
         customerInfo:
           $ref: '#/components/schemas/CustomerInfo'
+        adminAccountEntity:
+          $ref: '#/components/schemas/AdminAccountEntity'
+    Period:
+      type: object
+      properties:
+        period:
+          type: integer
+          format: int32
+        fromDate:
+          type: array
+          items:
+            type: integer
+            format: int32
+        dueDate:
+          type: array
+          items:
+            type: integer
+            format: int32
+        complete:
+          type: boolean
+        daysInPeriod:
+          type: integer
+          format: int32
+        principalDisbursed:
+          type: integer
+          format: int32
+        principalLoanBalanceOutstanding:
+          type: integer
+          format: int32
+        feeChargesDue:
+          type: integer
+          format: int32
+        feeChargesOutstanding:
+          type: integer
+          format: int32
+        totalOriginalDueForPeriod:
+          type: integer
+          format: int32
+        totalDueForPeriod:
+          type: integer
+          format: int32
+        totalOutstandingForPeriod:
+          type: integer
+          format: int32
+        totalActualCostOfLoanForPeriod:
+          type: integer
+          format: int32
+        principalOriginalDue:
+          type: integer
+          format: int32
+        principalDue:
+          type: integer
+          format: int32
+        principalOutstanding:
+          type: integer
+          format: int32
+        interestOriginalDue:
+          type: integer
+          format: int32
+        interestOutstanding:
+          type: integer
+          format: int32
+        penaltyChargesDue:
+          type: integer
+          format: int32
+        totalPaidForPeriod:
+          type: integer
+          format: int32
+        totalInstallmentAmountForPeriod:
+          type: integer
+          format: int32
     SearchAndPaginationResponseBnplApplication:
       type: object
       properties:

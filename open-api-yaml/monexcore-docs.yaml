@@ -593,6 +593,10 @@ paths:
       responses:
         200:
           description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiResponseContractTemplates"
       tags:
         - "contract-templates"
   /v1/contract-templates/{id}:
@@ -1012,6 +1016,34 @@ paths:
           description: ""
       tags:
         - "loans"
+  /v1/loans/{coreLoanId}:
+    put:
+      operationId: "LoanController_updateLoanProduct"
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateLoanDto"
+      responses:
+        200:
+          description: ""
+      tags:
+        - "loans"
+    get:
+      operationId: "LoanController_getLoanProduct"
+      parameters:
+        - name: "coreLoanId"
+          required: true
+          in: "path"
+          schema:
+            type: "number"
+      responses:
+        200:
+          description: ""
+      tags:
+        - "loans"
   /v1/loans/calculate-repayment:
     post:
       operationId: "LoanController_calculateLoanProduct"
@@ -1059,23 +1091,9 @@ paths:
           description: ""
       tags:
         - "loans"
-  /v1/loans/{coreLoanId}:
-    get:
-      operationId: "LoanController_getLoanProduct"
-      parameters:
-        - name: "coreLoanId"
-          required: true
-          in: "path"
-          schema:
-            type: "number"
-      responses:
-        200:
-          description: ""
-      tags:
-        - "loans"
   /v1/loans/{coreLoanId}/status:
     put:
-      operationId: "LoanController_updateLoanProduct"
+      operationId: "LoanController_changeLoanStatus"
       parameters:
         - name: "coreLoanId"
           required: true
@@ -1211,6 +1229,72 @@ paths:
                 $ref: "#/components/schemas/ApiResponseContractProperty"
       tags:
         - "v1/contract-property"
+  /v1/applicationDocuments/pagination/requiredDocument:
+    get:
+      operationId: "DocumentController_searchRequiredDocumentPagination"
+      parameters:
+        - name: "descending"
+          required: true
+          in: "query"
+          schema:
+            type: "boolean"
+        - name: "page"
+          required: true
+          in: "query"
+          schema:
+            type: "number"
+        - name: "limit"
+          required: true
+          in: "query"
+          schema:
+            type: "number"
+        - name: "orderBy"
+          required: true
+          in: "query"
+          schema:
+            type: "string"
+      responses:
+        200:
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiResponseRequiredDocument"
+      tags:
+        - "applicationDocuments"
+  /v1/applicationDocuments/pagination/requiredDocumentType:
+    get:
+      operationId: "DocumentController_searchPaginationRequiredDocumentType"
+      parameters:
+        - name: "descending"
+          required: true
+          in: "query"
+          schema:
+            type: "boolean"
+        - name: "page"
+          required: true
+          in: "query"
+          schema:
+            type: "number"
+        - name: "limit"
+          required: true
+          in: "query"
+          schema:
+            type: "number"
+        - name: "orderBy"
+          required: true
+          in: "query"
+          schema:
+            type: "string"
+      responses:
+        200:
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiResponseRequiredDocumentGroup"
+      tags:
+        - "applicationDocuments"
   /v1/applicationDocuments:
     post:
       operationId: "DocumentController_createApplicationDocument"
@@ -1390,7 +1474,7 @@ paths:
       responses:
         200:
           description: ""
-  /customer:
+  /v1/customers:
     post:
       operationId: "CustomerController_createClient"
       parameters: []
@@ -1403,7 +1487,7 @@ paths:
       responses:
         201:
           description: ""
-  /customer/{id}:
+  /v1/customers/{id}:
     put:
       operationId: "CustomerController_updateClient"
       parameters:
@@ -1623,23 +1707,15 @@ components:
       properties: {}
     ContractTemplate:
       type: "object"
-      properties: {}
-    ApiResponseContractTemplate:
-      type: "object"
       properties:
-        result:
-          $ref: "#/components/schemas/ContractTemplate"
-        errorCode:
+        createdBy:
           type: "string"
-        message:
-          type: "object"
-        responseCode:
-          type: "number"
-      required:
-        - "result"
-        - "errorCode"
-        - "message"
-        - "responseCode"
+        updatedBy:
+          type: "string"
+        createdAt:
+          type: "string"
+        updatedAt:
+          type: "string"
     ApiResponseContractTemplates:
       type: "object"
       properties:
@@ -1654,6 +1730,22 @@ components:
         responseCode:
           type: "number"
       required:
+        - "errorCode"
+        - "message"
+        - "responseCode"
+    ApiResponseContractTemplate:
+      type: "object"
+      properties:
+        result:
+          $ref: "#/components/schemas/ContractTemplate"
+        errorCode:
+          type: "string"
+        message:
+          type: "object"
+        responseCode:
+          type: "number"
+      required:
+        - "result"
         - "errorCode"
         - "message"
         - "responseCode"
@@ -1789,6 +1881,13 @@ components:
         - "loanTerm"
         - "numberOfRepayments"
         - "repaymentEvery"
+    UpdateLoanDto:
+      type: "object"
+      properties:
+        loanAmount:
+          type: "number"
+        loanTerm:
+          type: "number"
     RepaymentLoanProductDto:
       type: "object"
       properties: {}
@@ -1866,27 +1965,6 @@ components:
           type: "string"
         name:
           type: "string"
-    CreateDocumentDto:
-      type: "object"
-      properties:
-        name:
-          type: "string"
-        description:
-          type: "string"
-        fileType:
-          type: "string"
-        isDisplayed:
-          type: "boolean"
-        isMandatory:
-          type: "boolean"
-        requiredDocumentGroupId:
-          type: "string"
-      required:
-        - "name"
-        - "description"
-        - "fileType"
-        - "isDisplayed"
-        - "isMandatory"
     RequiredDocumentEntity:
       type: "object"
       properties:
@@ -1912,6 +1990,8 @@ components:
           type: "string"
         requiredDocumentGroupId:
           type: "string"
+      required:
+        - "fileType"
     ApiResponseRequiredDocument:
       type: "object"
       properties:
@@ -1928,23 +2008,14 @@ components:
         - "errorCode"
         - "message"
         - "responseCode"
-    CreateDocumentTypeDto:
+    RequiredDocumentGroupEntity:
       type: "object"
       properties:
-        name:
-          type: "string"
         description:
-          type: "string"
-        codeName:
           type: "string"
           nullable: true
       required:
-        - "name"
         - "description"
-        - "codeName"
-    RequiredDocumentGroupEntity:
-      type: "object"
-      properties: {}
     ApiResponseRequiredDocumentGroup:
       type: "object"
       properties:
@@ -1961,6 +2032,47 @@ components:
         - "errorCode"
         - "message"
         - "responseCode"
+    CreateDocumentDto:
+      type: "object"
+      properties:
+        name:
+          type: "string"
+        description:
+          type: "string"
+          nullable: true
+        fileType:
+          type: "string"
+        isDisplayed:
+          type: "boolean"
+          nullable: true
+        isMandatory:
+          type: "boolean"
+          nullable: true
+        requiredDocumentGroupId:
+          type: "string"
+          nullable: true
+      required:
+        - "name"
+        - "description"
+        - "fileType"
+        - "isDisplayed"
+        - "isMandatory"
+        - "requiredDocumentGroupId"
+    CreateDocumentTypeDto:
+      type: "object"
+      properties:
+        name:
+          type: "string"
+        description:
+          type: "string"
+          nullable: true
+        codeName:
+          type: "string"
+          nullable: true
+      required:
+        - "name"
+        - "description"
+        - "codeName"
     UpdateDocumentDto:
       type: "object"
       properties:
@@ -1968,8 +2080,10 @@ components:
           type: "string"
         description:
           type: "string"
+          nullable: true
         fileType:
           type: "string"
+          nullable: true
         isDisplayed:
           type: "boolean"
         isMandatory:
@@ -1992,7 +2106,6 @@ components:
           nullable: true
       required:
         - "name"
-        - "description"
         - "codeName"
     CreatePromotionDto:
       type: "object"

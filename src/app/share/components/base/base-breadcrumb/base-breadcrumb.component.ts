@@ -1,7 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { AddNewUserDialogComponent } from '../../operators/user-account/add-new-user-dialog/add-new-user-dialog.component';
 
 @Component({
   selector: 'app-base-breadcrumb',
@@ -69,7 +68,6 @@ export class BaseBreadcrumbComponent implements OnInit {
    * Default is false
    */
   @Input() showBtnExport: boolean = false;
-
 
   /**
    * Value of search box
