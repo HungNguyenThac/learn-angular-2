@@ -30,9 +30,39 @@ import { environment } from '../../../../../../../environments/environment';
 import * as fromSelectors from '../../../../../../core/store/selectors';
 import { Store } from '@ngrx/store';
 import * as fromStore from '../../../../../../core/store';
-import { jsPDF } from 'jspdf';
 import { takeUntil } from 'rxjs/operators';
 import { NotificationService } from '../../../../../../core/services/notification.service';
+import * as PDFObject from 'pdfobject';
+import { ContractTemplate } from '../../../../../../../../open-api-modules/dashboard-api-docs';
+import * as htmlToPdfmake from 'html-to-pdfmake';
+import pdfmake from 'pdfmake/build/pdfmake';
+// import pdfFonts from 'pdfmake/build/vfs_fonts';
+// @ts-ignore
+import pdfFonts from '../../../../../../public/vfs_fonts/vfs_custom_fonts'
+pdfmake.vfs = pdfFonts.pdfMake.vfs;
+
+pdfmake.fonts = {
+  // Default font should still be available
+  Roboto: {
+    normal: 'Roboto-Regular.ttf',
+    bold: 'Roboto-Bold.ttf',
+    italics: 'Roboto-Italic.ttf',
+    bolditalics: 'Roboto-BoldItalic.ttf',
+  },
+  // Make sure you define all 4 components - normal, bold, italics, bolditalics - (even if they all point to the same font file)
+  Arial: {
+    normal: 'arial.ttf',
+    bold: 'arialbd.ttf',
+    italics: 'ariali.ttf',
+    bolditalics: 'arialbi.ttf',
+  },
+  TimesNewRoman: {
+    normal: 'times.ttf',
+    bold: 'timesbd.ttf',
+    italics: 'timesi.ttf',
+    bolditalics: 'timesbi.ttf',
+  },
+};
 
 @Component({
   selector: 'app-config-contract-save-dialog',
@@ -43,7 +73,7 @@ export class ConfigContractSaveDialogComponent implements OnInit, OnDestroy {
   @ViewChild(MatTable, { read: ElementRef }) private matTableRef: ElementRef;
   contractTemplateForm: FormGroup;
   title: string;
-  contractTemplate: any;
+  contractTemplate: ContractTemplate;
   action: TABLE_ACTION_TYPE;
   workflowStatuses: any[];
   loanProducts: any[];
@@ -58,7 +88,7 @@ export class ConfigContractSaveDialogComponent implements OnInit, OnDestroy {
   subManager = new Subscription();
   accessToken$: Observable<string>;
   token: string;
-  liveContent: any;
+  timeout: any;
 
   displayColumns: DisplayedFieldsModel[] = [
     {
@@ -115,6 +145,7 @@ export class ConfigContractSaveDialogComponent implements OnInit, OnDestroy {
       'removeformat,resize,save,menubutton,scayt,selectall,showblocks,' +
       'showborders,smiley,sourcearea,specialchar,stylescombo,tab,table,' +
       'tabletools,templates,toolbar,undo,wysiwygarea,exportpdf',
+    font_names: 'Arial;Times New Roman;Roboto;',
     removePlugins: '',
     extraAllowedContent: 'code',
     filebrowserBrowseUrl:
@@ -236,6 +267,8 @@ export class ConfigContractSaveDialogComponent implements OnInit, OnDestroy {
       productId: this.contractTemplate?.product?.id,
       isActive: this.contractTemplate?.isActive,
     });
+
+    this.convertHtmlToPdf(this.contractTemplate?.content || '');
   }
 
   submitForm() {
@@ -382,34 +415,73 @@ export class ConfigContractSaveDialogComponent implements OnInit, OnDestroy {
         this.loanProducts = response.result;
         this.filteredProducts = this.loanProducts;
         this._getWorkflowStatusesFromProductId(
-          this.contractTemplate?.productId
+          this.contractTemplate?.product?.id
         );
         this.filteredWorkflowStatuses = this.workflowStatuses || [];
       })
     );
   }
 
-  syncPreview(data) {
-    this.liveContent = data;
+  convertHtmlToPdf(data) {
+    // let doc = new jsPDF('p', 'pt', 'a4');
+    // const specialElementHandlers = {
+    //   '#editor': function (element, renderer) {
+    //     return true;
+    //   },
+    // };
+    //
+    // doc.fromHTML('<p>đạt</p>', 15, 15, {
+    //   width: 190,
+    //   elementHandlers: specialElementHandlers,
+    // });
+
+    let doc = this.pdfMakeHtmlToPdf(data);
+
+    setTimeout(function () {
+      if (typeof doc !== 'undefined')
+        try {
+          if (
+            navigator.appVersion.indexOf('MSIE') !== -1 ||
+            navigator.appVersion.indexOf('Edge') !== -1 ||
+            navigator.appVersion.indexOf('Trident') !== -1
+          ) {
+            let options = {
+              pdfOpenParams: {
+                navpanes: 0,
+                toolbar: 0,
+                statusbar: 0,
+                view: 'FitV',
+              },
+              forcePDFJS: true,
+              PDFJS_URL: 'examples/PDF.js/web/viewer.html',
+            };
+
+            doc.getBlob(function (dataURL) {
+              PDFObject.embed(dataURL, '#preview-pane', options);
+            });
+            // PDFObject.embed(doc.output("bloburl"), "#preview-pane", options);
+          } else {
+            doc.getDataUrl(function (dataURL) {
+              PDFObject.embed(dataURL, '#preview-pane');
+            });
+
+            // PDFObject.embed(doc.output("datauristring"), "#preview-pane");
+          }
+        } catch (e) {
+          alert('Error ' + e);
+        }
+    }, 0);
   }
 
-  convertHtmlToPdf(html) {
-    let pdf = new jsPDF();
-    let specialElementHandlers = {
-      '#editor': function (element, renderer) {
-        return true;
-      },
-    };
-    // pdf.html(this.liveContent, 15, 15, {
-    //     'width': 170,
-    //     'elementHandlers':specialElementHandlers
-    //   }
-    // );
-    console.log(pdf);
-  }
-
+  /**
+   * Sync preview after 3s ckeditor changed
+   * @param data
+   */
   onCkeditorChange(data) {
-    this.syncPreview(data);
+    if (this.timeout) clearTimeout(this.timeout);
+    this.timeout = setTimeout(() => {
+      this.convertHtmlToPdf(data);
+    }, 3000);
   }
 
   onChangeProduct(productId) {
@@ -427,5 +499,11 @@ export class ConfigContractSaveDialogComponent implements OnInit, OnDestroy {
     });
     if (!selectedProduct) return;
     this.workflowStatuses = selectedProduct.statusGroup?.statusFlows || [];
+  }
+
+  pdfMakeHtmlToPdf(data) {
+    let val = htmlToPdfmake(data);
+    let pdfData = { content: val };
+    return pdfmake.createPdf(pdfData);
   }
 }
