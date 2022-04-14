@@ -62,6 +62,12 @@ pdfmake.fonts = {
     italics: 'timesi.ttf',
     bolditalics: 'timesbi.ttf',
   },
+  Calibri: {
+    normal: 'calibri.ttf',
+    bold: 'calibrib.ttf',
+    italics: 'calibrii.ttf',
+    bolditalics: 'calibriz.ttf',
+  }
 };
 
 @Component({
