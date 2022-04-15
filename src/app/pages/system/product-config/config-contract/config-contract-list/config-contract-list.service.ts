@@ -28,7 +28,7 @@ export class ConfigContractListService {
 
     return this.monexCoreContractTemplateControllerService.contractTemplateControllerSearchPagination(
       params.sortDirection === 'desc',
-      params.pageIndex + 1,
+      parseInt(params.pageIndex) + 1,
       params.limit,
       params.orderBy
     );

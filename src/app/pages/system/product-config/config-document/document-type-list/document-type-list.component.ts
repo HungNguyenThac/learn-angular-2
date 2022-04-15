@@ -135,7 +135,7 @@ export class DocumentTypeListComponent implements OnInit, OnDestroy {
     searchPlaceholder: this.multiLanguageService.instant(
       'breadcrumb.search_field.config_document_type'
     ),
-    searchable: true,
+    searchable: false,
     showBtnAdd: false,
     btnAddText: this.multiLanguageService.instant(
       'system.system_config.document_type.add'
@@ -362,9 +362,9 @@ export class DocumentTypeListComponent implements OnInit, OnDestroy {
   }
 
   private _parseData(rawData) {
-    this.pageLength = rawData?.pagination?.maxPage || 0;
-    this.totalItems = rawData?.pagination?.total || 0;
-    this.dataSource.data = rawData?.data || [];
+    this.pageLength = rawData?.meta?.totalPages || 0;
+    this.totalItems = rawData?.meta?.totalItems || 0;
+    this.dataSource.data = rawData?.items || [];
   }
 
   private _onFilterChange() {
@@ -402,11 +402,11 @@ export class DocumentTypeListComponent implements OnInit, OnDestroy {
     const params = this._buildParams();
     this.configDocumentListService
       .getDataApplicationDocumentTypes(params)
-      .subscribe((data) => {
+      .subscribe((data: any) => {
         this._parseData(data?.result);
         this.getOverviewData(data?.result);
         if (this.filterForm.controls.id?.value) {
-          this.expandedElementApplicationDocumentType = data?.result.data[0];
+          this.expandedElementApplicationDocumentType = data?.result?.items[0];
         }
         this.filterOptions = JSON.parse(JSON.stringify(this.filterOptions));
       });
@@ -419,7 +419,7 @@ export class DocumentTypeListComponent implements OnInit, OnDestroy {
         this.multiLanguageService.instant(
           'system.system_config.document_type.total'
         )
-    ).value = rawData?.pagination?.total;
+    ).value = rawData?.meta?.totalItems;
   }
 
   triggerDeselectUsers() {

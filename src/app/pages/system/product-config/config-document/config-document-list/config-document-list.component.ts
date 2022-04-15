@@ -27,7 +27,6 @@ import { ToastrService } from 'ngx-toastr';
 import { MatDialog } from '@angular/material/dialog';
 import { Title } from '@angular/platform-browser';
 import {
-  ApiResponseSearchAndPaginationResponseGroupEntity,
   RequiredDocument,
   RequiredDocumentGroup,
 } from '../../../../../../../open-api-modules/dashboard-api-docs';
@@ -149,7 +148,7 @@ export class ConfigDocumentListComponent implements OnInit, OnDestroy {
     searchPlaceholder: this.multiLanguageService.instant(
       'breadcrumb.search_field.config_document'
     ),
-    searchable: true,
+    searchable: false,
     showBtnAdd: false,
     btnAddText: this.multiLanguageService.instant(
       'system.system_config.application_document.add'
@@ -421,9 +420,9 @@ export class ConfigDocumentListComponent implements OnInit, OnDestroy {
   }
 
   private _parseData(rawData) {
-    this.pageLength = rawData?.pagination?.maxPage || 0;
-    this.totalItems = rawData?.pagination?.total || 0;
-    this.dataSource.data = rawData?.data || [];
+    this.pageLength = rawData?.meta?.totalPages || 0;
+    this.totalItems = rawData?.meta?.totalItems || 0;
+    this.dataSource.data = rawData?.items || [];
   }
 
   private _onFilterChange() {
@@ -461,21 +460,19 @@ export class ConfigDocumentListComponent implements OnInit, OnDestroy {
     const params = this._buildParams();
     this.configDocumentListService
       .getDataApplicationDocuments(params)
-      .subscribe((data) => {
+      .subscribe((data: any) => {
         this._parseData(data?.result);
         this.getOverviewData(data?.result);
-        this.dataSource.data = data?.result?.data.map(
-          (item: RequiredDocument) => {
-            return {
-              ...item,
-              documentTypeName: this._bindDocumentTypeName(
-                item.requiredDocumentGroupId
-              ),
-            };
-          }
-        );
+        this.dataSource.data = data?.result?.items.map((item: any) => {
+          return {
+            ...item,
+            documentTypeName: this._bindDocumentTypeName(
+              item.requiredDocumentGroupId
+            ),
+          };
+        });
         if (this.filterForm.controls.id?.value) {
-          this.expandedElementApplicationDocument = data?.result.data[0];
+          this.expandedElementApplicationDocument = data?.result?.items[0];
         }
         this.filterOptions = JSON.parse(JSON.stringify(this.filterOptions));
       });
@@ -498,7 +495,7 @@ export class ConfigDocumentListComponent implements OnInit, OnDestroy {
         this.multiLanguageService.instant(
           'system.system_config.application_document.total'
         )
-    ).value = rawData?.pagination?.total;
+    ).value = rawData?.meta?.totalItems;
   }
 
   triggerDeselectUsers() {
@@ -667,19 +664,17 @@ export class ConfigDocumentListComponent implements OnInit, OnDestroy {
         orderBy: 'createdAt',
         keyword: '',
       })
-      .subscribe(
-        (result: ApiResponseSearchAndPaginationResponseGroupEntity) => {
-          if (!result || result.responseCode !== RESPONSE_CODE.SUCCESS) {
-            return this.notifier.error(
-              JSON.stringify(result?.message),
-              result?.errorCode
-            );
-          }
-          this.documentTypeList = result?.result?.data;
-          this._initApplicationDocumentTypeOptions();
-          this.filterOptions = JSON.parse(JSON.stringify(this.filterOptions));
+      .subscribe((result: any) => {
+        if (!result || result.responseCode !== RESPONSE_CODE.SUCCESS) {
+          return this.notifier.error(
+            JSON.stringify(result?.message),
+            result?.errorCode
+          );
         }
-      );
+        this.documentTypeList = result?.result?.items;
+        this._initApplicationDocumentTypeOptions();
+        this.filterOptions = JSON.parse(JSON.stringify(this.filterOptions));
+      });
   }
 
   private _initApplicationDocumentTypeOptions() {
@@ -785,7 +780,13 @@ export class ConfigDocumentListComponent implements OnInit, OnDestroy {
           );
           this.dataSource.data = this.dataSource.data.map((obj) => {
             if (obj.id === id) {
-              return { ...obj, ...response.result };
+              return {
+                ...obj,
+                ...response.result,
+                documentTypeName: this._bindDocumentTypeName(
+                  response?.result?.requiredDocumentGroupId
+                ),
+              };
             }
 
             return obj;
