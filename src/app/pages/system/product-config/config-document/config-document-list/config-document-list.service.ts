@@ -20,91 +20,90 @@ export class ConfigDocumentListService {
   ) {}
 
   public getDataApplicationDocuments(params) {
-    let requestBody = this._buildRequestBodyGetListApplicationDocument(params);
+    // let requestBody = this._buildRequestBodyGetListApplicationDocument(params);
 
-    return this.dashboardApplicationDocumentControllerService.getApplicationDocuments(
+    return this.monexCoreApplicationDocumentControllerService.documentControllerSearchRequiredDocumentPagination(
+      params.sortDirection === 'desc',
+      parseInt(params.pageIndex) + 1,
       params.limit,
-      params.pageIndex,
-      requestBody,
       params.orderBy,
-      params.sortDirection === 'desc'
+      params.requiredDocumentGroupId
     );
   }
 
-  private _buildRequestBodyGetListApplicationDocument(params) {
-    let requestBody = {};
-
-    if (params.filterConditions) {
-      for (const [paramName, paramValue] of Object.entries(
-        params.filterConditions
-      )) {
-        if (!_.isEmpty(params[paramName])) {
-          requestBody[paramName + paramValue] = params[paramName] || '';
-        }
-      }
-    }
-
-    if (params.startTime || params.endTime) {
-      requestBody['createdAt' + QUERY_CONDITION_TYPE.BETWEEN] = {
-        start: params.startTime,
-        end: params.endTime,
-      };
-    }
-
-    if (params.keyword) {
-      requestBody['name' + QUERY_CONDITION_TYPE.LIKE_KEYWORD] = params.keyword;
-      requestBody['description' + QUERY_CONDITION_TYPE.LIKE_KEYWORD] =
-        params.keyword;
-    }
-
-    console.log('requestBody----', requestBody);
-    console.log('params----', params);
-    return requestBody;
-  }
+  // private _buildRequestBodyGetListApplicationDocument(params) {
+  //   let requestBody = {};
+  //
+  //   if (params.filterConditions) {
+  //     for (const [paramName, paramValue] of Object.entries(
+  //       params.filterConditions
+  //     )) {
+  //       if (!_.isEmpty(params[paramName])) {
+  //         requestBody[paramName + paramValue] = params[paramName] || '';
+  //       }
+  //     }
+  //   }
+  //
+  //   if (params.startTime || params.endTime) {
+  //     requestBody['createdAt' + QUERY_CONDITION_TYPE.BETWEEN] = {
+  //       start: params.startTime,
+  //       end: params.endTime,
+  //     };
+  //   }
+  //
+  //   if (params.keyword) {
+  //     requestBody['name' + QUERY_CONDITION_TYPE.LIKE_KEYWORD] = params.keyword;
+  //     requestBody['description' + QUERY_CONDITION_TYPE.LIKE_KEYWORD] =
+  //       params.keyword;
+  //   }
+  //
+  //   console.log('requestBody----', requestBody);
+  //   console.log('params----', params);
+  //   return requestBody;
+  // }
 
   public getDataApplicationDocumentTypes(params) {
-    let requestBody =
-      this._buildRequestBodyGetListApplicationDocumentType(params);
+    // let requestBody =
+    //   this._buildRequestBodyGetListApplicationDocumentType(params);
 
-    return this.dashboardApplicationDocumentControllerService.getApplicationDocumentTypes(
+    return this.monexCoreApplicationDocumentControllerService.documentControllerSearchPaginationRequiredDocumentType(
+      params.sortDirection === 'desc',
+      parseInt(params.pageIndex) + 1,
       params.limit,
-      params.pageIndex,
-      requestBody,
-      params.orderBy,
-      params.sortDirection === 'desc'
+      params.orderBy
     );
   }
 
-  private _buildRequestBodyGetListApplicationDocumentType(params) {
-    let requestBody = {};
-
-    if (params.filterConditions) {
-      for (const [paramName, paramValue] of Object.entries(
-        params.filterConditions
-      )) {
-        if (!_.isEmpty(params[paramName])) {
-          requestBody[paramName + paramValue] = params[paramName] || '';
-        }
-      }
-    }
-
-    if (params.startTime || params.endTime) {
-      requestBody['createdAt' + QUERY_CONDITION_TYPE.BETWEEN] = {
-        start: params.startTime,
-        end: params.endTime,
-      };
-    }
-
-    if (params.keyword) {
-      requestBody['name' + QUERY_CONDITION_TYPE.LIKE_KEYWORD] = params.keyword;
-      requestBody['description' + QUERY_CONDITION_TYPE.LIKE_KEYWORD] =
-        params.keyword;
-    }
-
-    console.log('requestBody----', requestBody);
-    console.log('params----', params);
-    return requestBody;
-  }
+  // private _buildRequestBodyGetListApplicationDocumentType(params) {
+  //   let requestBody = {};
+  //
+  //   if (params.filterConditions) {
+  //     for (const [paramName, paramValue] of Object.entries(
+  //       params.filterConditions
+  //     )) {
+  //       if (!_.isEmpty(params[paramName])) {
+  //         requestBody[paramName + paramValue] = params[paramName] || '';
+  //       }
+  //     }
+  //   }
+  //
+  //   if (params.startTime || params.endTime) {
+  //     requestBody['createdAt' + QUERY_CONDITION_TYPE.BETWEEN] = {
+  //       start: params.startTime,
+  //       end: params.endTime,
+  //     };
+  //   }
+  //
+  //   if (params.keyword) {
+  //     requestBody['name' + QUERY_CONDITION_TYPE.LIKE_KEYWORD] = params.keyword;
+  //     requestBody['description' + QUERY_CONDITION_TYPE.LIKE_KEYWORD] =
+  //       params.keyword;
+  //   }
+  //
+  //   console.log('requestBody----', requestBody);
+  //   console.log('params----', params);
+  //   return requestBody;
+  // }
 
   public deleteApplicationDocument(id: string) {
     return this.monexCoreApplicationDocumentControllerService.documentControllerDeleteApplicationDocument(

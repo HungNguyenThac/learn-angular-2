@@ -531,7 +531,7 @@ export class ConfigContractListComponent implements OnInit, OnDestroy {
         this.multiLanguageService.instant(
           'system.system_config.contract_template.total'
         )
-    ).value = rawData?.pagination?.total;
+    ).value = rawData?.meta?.totalItems;
   }
 
   public onTableActionClick(event: TableActionEventModel) {
