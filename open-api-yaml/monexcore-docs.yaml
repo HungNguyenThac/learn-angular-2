@@ -427,6 +427,11 @@ paths:
           in: "query"
           schema:
             type: "string"
+        - name: "queryMap"
+          required: true
+          in: "query"
+          schema:
+            type: "string"
       responses:
         200:
           description: ""
@@ -590,6 +595,11 @@ paths:
           in: "query"
           schema:
             type: "string"
+        - name: "queryMap"
+          required: true
+          in: "query"
+          schema:
+            type: "string"
       responses:
         200:
           description: ""
@@ -708,6 +718,11 @@ paths:
           schema:
             type: "number"
         - name: "orderBy"
+          required: true
+          in: "query"
+          schema:
+            type: "string"
+        - name: "queryMap"
           required: true
           in: "query"
           schema:
@@ -876,6 +891,11 @@ paths:
           schema:
             type: "number"
         - name: "orderBy"
+          required: true
+          in: "query"
+          schema:
+            type: "string"
+        - name: "queryMap"
           required: true
           in: "query"
           schema:
@@ -1140,6 +1160,11 @@ paths:
           in: "query"
           schema:
             type: "string"
+        - name: "queryMap"
+          required: true
+          in: "query"
+          schema:
+            type: "string"
       responses:
         200:
           description: ""
@@ -1258,7 +1283,7 @@ paths:
           in: "query"
           schema:
             type: "string"
-        - name: "requiredDocumentTypeId"
+        - name: "queryMap"
           required: true
           in: "query"
           schema:
@@ -1292,6 +1317,11 @@ paths:
           schema:
             type: "number"
         - name: "orderBy"
+          required: true
+          in: "query"
+          schema:
+            type: "string"
+        - name: "queryMap"
           required: true
           in: "query"
           schema:
@@ -1883,6 +1913,8 @@ components:
           type: "number"
         repaymentEvery:
           type: "number"
+        isPaymentNow:
+          type: "boolean"
       required:
         - "merchantId"
         - "customerId"

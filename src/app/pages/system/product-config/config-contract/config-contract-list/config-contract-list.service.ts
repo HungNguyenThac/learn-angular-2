@@ -24,13 +24,14 @@ export class ConfigContractListService {
   ) {}
 
   public getData(params) {
-    // let requestBody = this._buildRequestBodyGetList(params);
+    let requestBody = this._buildRequestBodyGetList(params);
 
     return this.monexCoreContractTemplateControllerService.contractTemplateControllerSearchPagination(
       params.sortDirection === 'desc',
       parseInt(params.pageIndex) + 1,
       params.limit,
-      params.orderBy
+      params.orderBy,
+      JSON.stringify(requestBody)
     );
   }
 
@@ -92,7 +93,8 @@ export class ConfigContractListService {
       descending,
       page,
       limit,
-      orderBy
+      orderBy,
+      null
     );
   }
 

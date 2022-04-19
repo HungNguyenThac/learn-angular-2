@@ -368,6 +368,7 @@ export class MerchantDetailDialogComponent implements OnInit, AfterViewChecked {
 
     // Clear the input value
     event.chipInput!.clear();
+    event.chipInput.focus();
 
     this.merchantInfoForm.controls.productTypes.setValue(this.productTypes);
   }
@@ -389,6 +390,7 @@ export class MerchantDetailDialogComponent implements OnInit, AfterViewChecked {
 
     this.productTypes.push(event.option.viewValue);
     this.merchantInfoForm.controls.productTypes.setValue(this.productTypes);
+    this.fileTypeInput.nativeElement.blur();
   }
 
   private _filterProductType(data: any): string[] {

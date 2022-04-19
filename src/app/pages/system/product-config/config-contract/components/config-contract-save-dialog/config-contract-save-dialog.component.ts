@@ -38,7 +38,7 @@ import * as htmlToPdfmake from 'html-to-pdfmake';
 import pdfmake from 'pdfmake/build/pdfmake';
 // import pdfFonts from 'pdfmake/build/vfs_fonts';
 // @ts-ignore
-import pdfFonts from '../../../../../../public/vfs_fonts/vfs_custom_fonts'
+import pdfFonts from '../../../../../../public/vfs_fonts/vfs_custom_fonts';
 pdfmake.vfs = pdfFonts.pdfMake.vfs;
 
 pdfmake.fonts = {
@@ -67,7 +67,7 @@ pdfmake.fonts = {
     bold: 'calibrib.ttf',
     italics: 'calibrii.ttf',
     bolditalics: 'calibriz.ttf',
-  }
+  },
 };
 
 @Component({
@@ -95,6 +95,7 @@ export class ConfigContractSaveDialogComponent implements OnInit, OnDestroy {
   accessToken$: Observable<string>;
   token: string;
   timeout: any;
+  docPdf: any;
 
   displayColumns: DisplayedFieldsModel[] = [
     {
@@ -441,10 +442,10 @@ export class ConfigContractSaveDialogComponent implements OnInit, OnDestroy {
     //   elementHandlers: specialElementHandlers,
     // });
 
-    let doc = this.pdfMakeHtmlToPdf(data);
+    this.docPdf = this.pdfMakeHtmlToPdf(data);
 
-    setTimeout(function () {
-      if (typeof doc !== 'undefined')
+    setTimeout(() => {
+      if (typeof this.docPdf !== 'undefined')
         try {
           if (
             navigator.appVersion.indexOf('MSIE') !== -1 ||
@@ -462,12 +463,12 @@ export class ConfigContractSaveDialogComponent implements OnInit, OnDestroy {
               PDFJS_URL: 'examples/PDF.js/web/viewer.html',
             };
 
-            doc.getBlob(function (dataURL) {
+            this.docPdf.getBlob(function (dataURL) {
               PDFObject.embed(dataURL, '#preview-pane', options);
             });
             // PDFObject.embed(doc.output("bloburl"), "#preview-pane", options);
           } else {
-            doc.getDataUrl(function (dataURL) {
+            this.docPdf.getDataUrl(function (dataURL) {
               PDFObject.embed(dataURL, '#preview-pane');
             });
 
@@ -511,5 +512,9 @@ export class ConfigContractSaveDialogComponent implements OnInit, OnDestroy {
     let val = htmlToPdfmake(data);
     let pdfData = { content: val };
     return pdfmake.createPdf(pdfData);
+  }
+
+  openPdfPreviewNewTab() {
+    this.docPdf.open();
   }
 }
