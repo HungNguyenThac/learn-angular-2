@@ -204,29 +204,29 @@
                           disableOptionCentering="true"
                           formControlName="merchantSellType"
                         >
-<!--                          <mat-select-trigger>-->
-<!--                            <span-->
-<!--                              *ngIf="-->
-<!--                                merchantInfoForm.controls.merchantSellType-->
-<!--                                  .value?.length <= 1;-->
-<!--                                else typeMultipleOptions-->
-<!--                              "-->
-<!--                              >{{-->
-<!--                                merchantInfoForm.controls.merchantSellType-->
-<!--                                  .value-->
-<!--                                  ? "Đã chọn 1 nhóm"-->
-<!--                                  : ""-->
-<!--                              }}</span-->
-<!--                            >-->
-<!--                            <ng-template #typeMultipleOptions>-->
-<!--                              Đã chọn-->
-<!--                              {{-->
-<!--                                merchantInfoForm.controls.merchantSellType-->
-<!--                                  .value?.length-->
-<!--                              }}-->
-<!--                              nhóm-->
-<!--                            </ng-template>-->
-<!--                          </mat-select-trigger>-->
+                          <!--                          <mat-select-trigger>-->
+                          <!--                            <span-->
+                          <!--                              *ngIf="-->
+                          <!--                                merchantInfoForm.controls.merchantSellType-->
+                          <!--                                  .value?.length <= 1;-->
+                          <!--                                else typeMultipleOptions-->
+                          <!--                              "-->
+                          <!--                              >{{-->
+                          <!--                                merchantInfoForm.controls.merchantSellType-->
+                          <!--                                  .value-->
+                          <!--                                  ? "Đã chọn 1 nhóm"-->
+                          <!--                                  : ""-->
+                          <!--                              }}</span-->
+                          <!--                            >-->
+                          <!--                            <ng-template #typeMultipleOptions>-->
+                          <!--                              Đã chọn-->
+                          <!--                              {{-->
+                          <!--                                merchantInfoForm.controls.merchantSellType-->
+                          <!--                                  .value?.length-->
+                          <!--                              }}-->
+                          <!--                              nhóm-->
+                          <!--                            </ng-template>-->
+                          <!--                          </mat-select-trigger>-->
                           <mat-option
                             *ngFor="let option of merchantSellType"
                             [value]="option.value"
@@ -710,7 +710,9 @@
                                 [config]="ckeditorConfig"
                                 (ready)="onReadyCkEditor($event)"
                                 (fileUploadRequest)="fileUploadRequest($event)"
-                                (fileUploadResponse)="fileUploadResponse($event)"
+                                (fileUploadResponse)="
+                                  fileUploadResponse($event)
+                                "
                               ></ckeditor>
                             </article>
                           </div>

@@ -843,7 +843,8 @@
         "all_properties": "Chi tiết danh sách biến",
         "back": "Quay lại",
         "prompt_update_contract_title": "Sản phẩm vay đã có hợp đồng",
-        "prompt_update_contract_content": "Bạn có chắc chắn muốn thay thế bằng hợp đồng này không"
+        "prompt_update_contract_content": "Bạn có chắc chắn muốn thay thế bằng hợp đồng này không",
+        "preview_pdf": "Preview PDF"
       },
       "contract_property": {
         "order_number": "STT",

@@ -220,7 +220,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ApiResponseBnplApplication'
+                $ref: '#/components/schemas/ApiResponseLoanDetailDto'
   /v1/application/active:
     get:
       tags:
@@ -746,7 +746,6 @@ components:
       - loanTerm
       - numberOfRepayments
       - repaymentEvery
-      - sellType
       type: object
       properties:
         merchantId:
@@ -773,9 +772,6 @@ components:
           type: string
         note:
           type: string
-        sellType:
-          type: string
-          nullable: false
         staffId:
           type: string
         cdeDataId:
@@ -1330,8 +1326,6 @@ components:
         note:
           type: string
         staffId:
-          type: string
-        saleType:
           type: string
     UpdateMerchantRequestDto:
       type: object

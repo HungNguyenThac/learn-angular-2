@@ -194,6 +194,7 @@
             <div class="row">
               <div class="col-12 col-sm-12 col-md-6 col-lg-6">
                 <!--  Content  -->
+                <div class="content-contract-pdf my-3">Nội dung hợp đồng</div>
                 <ckeditor
                   [formControlName]="'content'"
                   [config]="ckeditorConfig"
@@ -214,7 +215,21 @@
               </div>
               <div class="col-12 col-sm-12 col-md-6 col-lg-6">
                 <div id="preview-frame">
-                  <div id="preview-pane" class="preview-pane-pdfoject"></div>
+                  <button
+                    (click)="openPdfPreviewNewTab()"
+                    type="button"
+                    color="accent"
+                    mat-flat-button
+                  >
+                    {{
+                      "system.system_config.contract_template.preview_pdf"
+                        | translate
+                    }}
+                  </button>
+                  <div
+                    id="preview-pane"
+                    class="preview-pane-pdfoject mt-2"
+                  ></div>
                 </div>
               </div>
             </div>
@@ -229,6 +244,7 @@
               class="bg-grey"
               mat-button
               mat-dialog-close
+              type="button"
             >
               {{ "system.system_config.contract_template.back" | translate }}
             </button>
@@ -237,6 +253,7 @@
               class="bg-grey"
               mat-button
               mat-dialog-close
+              type="button"
             >
               {{ "account.info.cancel_update" | translate }}
             </button>

@@ -168,6 +168,7 @@ export class ApplicationDocumentSaveDialogComponent implements OnInit {
 
     this.fileTypes.push(event.option.viewValue);
     this.applicationDocumentForm.controls.fileType.setValue(this.fileTypes);
+    this.fileTypeInput.nativeElement.blur();
   }
 
   private _filterFileType(data: any): string[] {
