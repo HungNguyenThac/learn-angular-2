@@ -94,7 +94,7 @@ export class ConfigContractListService {
       page,
       limit,
       orderBy,
-      null
+      JSON.stringify({})
     );
   }
 
