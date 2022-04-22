@@ -6,88 +6,6 @@ servers:
 - url: http://localhost:8004
   description: Generated server url
 paths:
-  /v1/applicationDocuments/{id}:
-    put:
-      tags:
-      - application-document-controller
-      operationId: updateApplicationDocument
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/UpdateApplicationDocumentRequest'
-        required: true
-      responses:
-        "200":
-          description: OK
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/ApiResponseApplicationDocument'
-    delete:
-      tags:
-      - application-document-controller
-      operationId: deleteApplicationDocument
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          description: OK
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/ApiResponseString'
-  /v1/applicationDocuments/applicationDocumentType/{id}:
-    put:
-      tags:
-      - application-document-controller
-      operationId: updateApplicationDocumentType
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/UpdateApplicationDocumentTypeRequest'
-        required: true
-      responses:
-        "200":
-          description: OK
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/ApiResponseApplicationDocumentType'
-    delete:
-      tags:
-      - application-document-controller
-      operationId: deleteApplicationDocumentType
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          description: OK
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/ApiResponseString'
   /v1/templateNotifications:
     get:
       tags:
@@ -335,7 +253,7 @@ paths:
             schema:
               type: object
               properties:
-                file:
+                upload:
                   type: string
                   format: binary
       responses:
@@ -505,7 +423,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ApiResponseCreateLetterResponse'
+                $ref: '#/components/schemas/ApiResponseCreateDocumentResponse'
   /v1/contracts/getTokenOnSign:
     post:
       tags:
@@ -536,6 +454,79 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiResponseConfirmOTPResponse'
+  /v1/contracts/bnpl/{loanId}:
+    post:
+      tags:
+      - contract-controller
+      summary: Tạo hợp đồng bnpl
+      operationId: createContractBnpl
+      parameters:
+      - name: loanId
+        in: path
+        description: Mã khoản vay
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseCreateDocumentResponse'
+  /v1/contracts/bnpl/{loanId}/download:
+    post:
+      tags:
+      - contract-controller
+      summary: Tải về hợp đồng
+      operationId: getContractFile
+      parameters:
+      - name: loanId
+        in: path
+        description: Mã khoản vay
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Trả về hợp đồng dưới dạng byte array
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+                format: binary
+        "400":
+          description: Mã khoản vay không đúng
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+  /v1/contracts/bnpl/{loanId}/accept:
+    post:
+      tags:
+      - contract-controller
+      summary: Chập nhận hợp đồng bnpl
+      operationId: acceptContractBnpl
+      parameters:
+      - name: loanId
+        in: path
+        description: Mã khoản vay
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SignInfoDto'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseCreateDocumentResponse'
   /v1/contracts/adminSignContract:
     post:
       tags:
@@ -554,42 +545,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiResponseString'
-  /v1/applicationDocuments:
-    post:
-      tags:
-      - application-document-controller
-      operationId: createApplicationDocument
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/CreateApplicationDocumentRequest'
-        required: true
-      responses:
-        "200":
-          description: OK
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/ApiResponseApplicationDocument'
-  /v1/applicationDocuments/applicationDocumentType:
-    post:
-      tags:
-      - application-document-controller
-      operationId: createApplicationDocumentType
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/CreateApplicationDocumentTypeRequest'
-        required: true
-      responses:
-        "200":
-          description: OK
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/ApiResponseApplicationDocumentType'
   /v1/notifications/{customerId}:
     get:
       tags:
@@ -608,6 +563,26 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ApiResponseListTransactionNotificationEntity'
+  /v1/contracts/bnpl/{loanId}/session:
+    get:
+      tags:
+      - contract-controller
+      summary: Nhận về phiên ký hợp đồng
+      operationId: getLoanContract
+      parameters:
+      - name: loanId
+        in: path
+        description: Mã khoản vay
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseSigningSessionBnplEntity'
   /v1/templateNotifications/{idTemplate}:
     delete:
       tags:
@@ -658,121 +633,6 @@ components:
         responseCode:
           type: integer
           format: int32
-    UpdateApplicationDocumentRequest:
-      type: object
-      properties:
-        name:
-          type: string
-        applicationDocumentTypeId:
-          type: array
-          items:
-            type: string
-        description:
-          type: string
-        fileType:
-          type: string
-        documentType:
-          type: string
-          enum:
-          - ID_CARD
-          - FRONT_ID_CARD
-          - FRONT_ID_CARD_TWO
-          - BACK_ID_CARD_TWO
-          - BACK_ID_CARD
-          - SELFIE
-          - BANK_BOOK
-          - PAY_SLIP
-          - UN_KNOWN
-          - CONTRACT
-          - LETTER
-          - SALARY_INFORMATION
-          - SALARY_INFORMATION_ONE
-          - SALARY_INFORMATION_TWO
-          - SALARY_INFORMATION_THREE
-          - VEHICLE_REGISTRATION
-          - LETTER_SIGN_DONE
-          - CONTRACT_SIGN_DONE
-          - CONTRACT_CUSTOMER_SIGN_DONE
-          - COMPANY_LOGO
-          - BANK_LOGO
-          - CKEDITOR_IMAGE
-    ApiResponseApplicationDocument:
-      type: object
-      properties:
-        result:
-          $ref: '#/components/schemas/ApplicationDocument'
-        errorCode:
-          type: string
-        message:
-          type: object
-        responseCode:
-          type: integer
-          format: int32
-    ApplicationDocument:
-      type: object
-      properties:
-        id:
-          type: string
-        name:
-          type: string
-        applicationDocumentType:
-          type: array
-          items:
-            type: string
-        description:
-          type: string
-        fileType:
-          type: string
-        createdBy:
-          type: string
-        updatedBy:
-          type: string
-        createdAt:
-          type: string
-        updatedAt:
-          type: string
-    UpdateApplicationDocumentTypeRequest:
-      type: object
-      properties:
-        name:
-          type: string
-        description:
-          type: string
-        isAvailableForCustomer:
-          type: boolean
-    ApiResponseApplicationDocumentType:
-      type: object
-      properties:
-        result:
-          $ref: '#/components/schemas/ApplicationDocumentType'
-        errorCode:
-          type: string
-        message:
-          type: object
-        responseCode:
-          type: integer
-          format: int32
-    ApplicationDocumentType:
-      type: object
-      properties:
-        id:
-          type: string
-        name:
-          type: string
-        description:
-          type: string
-        isAvailableForCustomer:
-          type: boolean
-        codeName:
-          type: string
-        createdBy:
-          type: string
-        updatedBy:
-          type: string
-        createdAt:
-          type: string
-        updatedAt:
-          type: string
     ContentNotificationRequest:
       required:
       - content
@@ -941,6 +801,7 @@ components:
         getyPosition:
           type: integer
           format: int32
+      description: Vị trí chữ ký
     SendOtpRequest:
       required:
       - mobile
@@ -1191,11 +1052,11 @@ components:
           type: string
         isThreeMonths:
           type: boolean
-    ApiResponseCreateLetterResponse:
+    ApiResponseCreateDocumentResponse:
       type: object
       properties:
         result:
-          $ref: '#/components/schemas/CreateLetterResponse'
+          $ref: '#/components/schemas/CreateDocumentResponse'
         errorCode:
           type: string
         message:
@@ -1203,13 +1064,16 @@ components:
         responseCode:
           type: integer
           format: int32
-    CreateLetterResponse:
+    CreateDocumentResponse:
       type: object
       properties:
         customerId:
           type: string
+          description: Mã khách hàng
         documentPath:
           type: string
+          description: Đường dẫn đến tài liệu hợp đồng
+      description: Thông tin khi hoàn thành tạo hợp đồng
     ApiResponseCreateTokenResponse:
       type: object
       properties:
@@ -1285,6 +1149,45 @@ components:
         remainingRequests:
           type: integer
           format: int32
+    ApiResponse:
+      type: object
+      properties:
+        result:
+          type: object
+        errorCode:
+          type: string
+        message:
+          type: object
+        responseCode:
+          type: integer
+          format: int32
+    SignInfoDto:
+      required:
+      - name
+      - page
+      - position
+      type: object
+      properties:
+        name:
+          type: string
+          description: Chữ ký
+        page:
+          type: integer
+          description: Trang ký
+          format: int32
+        position:
+          $ref: '#/components/schemas/SigningPosition'
+      description: Thông tin về chữ ký
+    SigningPosition:
+      type: object
+      properties:
+        yposition:
+          type: integer
+          format: int32
+        xposition:
+          type: integer
+          format: int32
+      description: Vị trí chữ ký
     AdminSignContractAutomationRequest:
       required:
       - customerId
@@ -1300,35 +1203,6 @@ components:
         idDocument:
           type: integer
           format: int32
-    CreateApplicationDocumentRequest:
-      required:
-      - applicationDocumentTypeId
-      - fileType
-      - name
-      type: object
-      properties:
-        name:
-          type: string
-        applicationDocumentTypeId:
-          type: array
-          items:
-            type: string
-        description:
-          type: string
-        fileType:
-          type: string
-    CreateApplicationDocumentTypeRequest:
-      required:
-      - isAvailableForCustomer
-      - name
-      type: object
-      properties:
-        name:
-          type: string
-        description:
-          type: string
-        isAvailableForCustomer:
-          type: boolean
     ApiResponseListTemplateNotificationEntity:
       type: object
       properties:
@@ -1410,15 +1284,6 @@ components:
           $ref: '#/components/schemas/SigningPosition'
         positionEpay:
           $ref: '#/components/schemas/SigningPosition'
-    SigningPosition:
-      type: object
-      properties:
-        yposition:
-          type: integer
-          format: int32
-        xposition:
-          type: integer
-          format: int32
     ApiResponseListTransactionNotificationEntity:
       type: object
       properties:
@@ -1454,10 +1319,93 @@ components:
           type: string
         date:
           type: string
+    ApiResponseSigningSessionBnplEntity:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/SigningSessionBnplEntity'
+        errorCode:
+          type: string
+        message:
+          type: object
+        responseCode:
+          type: integer
+          format: int32
+    SigningSessionBnplEntity:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Mã hợp đồng
+        customerId:
+          type: string
+          description: Mã khách hàng
+        email:
+          type: string
+          description: Email khách hàng
+        documentType:
+          type: string
+          description: Loại tài liệu
+          enum:
+          - ID_CARD
+          - FRONT_ID_CARD
+          - FRONT_ID_CARD_TWO
+          - BACK_ID_CARD_TWO
+          - BACK_ID_CARD
+          - SELFIE
+          - BANK_BOOK
+          - PAY_SLIP
+          - UN_KNOWN
+          - CONTRACT
+          - LETTER
+          - SALARY_INFORMATION
+          - SALARY_INFORMATION_ONE
+          - SALARY_INFORMATION_TWO
+          - SALARY_INFORMATION_THREE
+          - VEHICLE_REGISTRATION
+          - LETTER_SIGN_DONE
+          - CONTRACT_SIGN_DONE
+          - CONTRACT_CUSTOMER_SIGN_DONE
+          - COMPANY_LOGO
+          - BANK_LOGO
+          - CKEDITOR_IMAGE
+          - CONTRACT_BNPL_ACCEPTED
+          - CONTRACT_BNPL
+        name:
+          type: string
+          description: Tên khách hàng
+        address:
+          type: string
+          description: Địa chỉ khách hàng
+        mobile:
+          type: string
+          description: Số điện thoại khách hàng
+        nationalId:
+          type: string
+          description: Mã quốc gia
+        loanId:
+          type: string
+          description: Mã khoản vay
+        loanAmount:
+          type: integer
+          description: Tổng khoản vay
+          format: int32
+        merchantWebsite:
+          type: string
+          description: Website của merchant
+        createAt:
+          type: string
+          description: Thời gian tạo
+          format: date-time
+        documentPath:
+          type: string
+          description: Đường dẫn đến tài liệu hợp đồng
+        documentPathSigned:
+          type: string
+          description: Đường dẫn đến tài liệu hợp đồng đã ký
+      description: Phiên ký hợp đồng
   securitySchemes:
     Bearer:
       type: apiKey
       name: Authorization
       in: header
-      scheme: bearer
-      bearerFormat: JWT

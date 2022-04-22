@@ -6,6 +6,24 @@ servers:
 - url: http://localhost:8004
   description: Generated server url
 paths:
+  /v1/repayments/updateRepaymentTransaction:
+    put:
+      tags:
+      - repayment-controller
+      operationId: updateRepaymentTransaction
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateRepaymentTransactionRequest'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseString'
   /v1/gpayVirtualAccounts/{customerId}:
     get:
       tags:
@@ -137,6 +155,24 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiResponseGpayNapasOrderRepaymentResponse'
+  /v1/gpayVirtualAccounts/paymentOrdersOldLoan:
+    post:
+      tags:
+      - gpay-virtual-account-controller
+      operationId: createPaymentOrderInRepaymentLoan
+      parameters:
+      - name: applicationType
+        in: query
+        required: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseRepaymentTransaction'
   /v1/gpayVirtualAccounts/paymentOrders:
     post:
       tags:
@@ -240,6 +276,24 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiResponseListRepaymentTransaction'
+  /v1/gpayVirtualAccounts/getTotalPaymentAmount:
+    get:
+      tags:
+      - gpay-virtual-account-controller
+      operationId: getTotalPaymentAmount
+      parameters:
+      - name: request
+        in: query
+        required: true
+        schema:
+          $ref: '#/components/schemas/GetTotalPaymentAmountRequest'
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseGetTotalPaymentAmountResponse'
   /v1/gpayVirtualAccounts/accessToken:
     get:
       tags:
@@ -266,6 +320,35 @@ paths:
                 $ref: '#/components/schemas/ApiResponseString'
 components:
   schemas:
+    UpdateRepaymentTransactionRequest:
+      required:
+      - amount
+      - applicationId
+      - applicationType
+      - provider
+      type: object
+      properties:
+        amount:
+          type: integer
+          format: int32
+        applicationId:
+          type: string
+        applicationType:
+          type: string
+        provider:
+          type: string
+    ApiResponseString:
+      type: object
+      properties:
+        result:
+          type: string
+        errorCode:
+          type: string
+        message:
+          type: object
+        responseCode:
+          type: integer
+          format: int32
     UpdateVARequest:
       type: object
       properties:
@@ -353,18 +436,6 @@ components:
           type: string
         hmac:
           type: string
-    ApiResponseString:
-      type: object
-      properties:
-        result:
-          type: string
-        errorCode:
-          type: string
-        message:
-          type: object
-        responseCode:
-          type: integer
-          format: int32
     RepaymentRequest:
       required:
       - applicationId
@@ -436,19 +507,6 @@ components:
           format: int32
         return_message:
           type: string
-    CreateRepaymentOrderRequest:
-      required:
-      - applicationId
-      - applicationType
-      - customerId
-      type: object
-      properties:
-        customerId:
-          type: string
-        applicationId:
-          type: string
-        applicationType:
-          type: string
     ApiResponseRepaymentTransaction:
       type: object
       properties:
@@ -487,6 +545,21 @@ components:
         createdAt:
           type: string
         updatedAt:
+          type: string
+        updatedBy:
+          type: string
+    CreateRepaymentOrderRequest:
+      required:
+      - applicationId
+      - applicationType
+      - customerId
+      type: object
+      properties:
+        customerId:
+          type: string
+        applicationId:
+          type: string
+        applicationType:
           type: string
     GpayChangeBalanceWebhook:
       type: object
@@ -595,6 +668,38 @@ components:
         responseCode:
           type: integer
           format: int32
+    GetTotalPaymentAmountRequest:
+      required:
+      - customerId
+      - loanId
+      type: object
+      properties:
+        customerId:
+          type: string
+        loanId:
+          type: string
+    ApiResponseGetTotalPaymentAmountResponse:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/GetTotalPaymentAmountResponse'
+        errorCode:
+          type: string
+        message:
+          type: object
+        responseCode:
+          type: integer
+          format: int32
+    GetTotalPaymentAmountResponse:
+      type: object
+      properties:
+        totalPaymentAmount:
+          type: integer
+          format: int32
+        transactionList:
+          type: array
+          items:
+            $ref: '#/components/schemas/RepaymentTransaction'
   securitySchemes:
     Bearer:
       type: apiKey

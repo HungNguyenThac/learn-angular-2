@@ -5,8 +5,10 @@ import {
 import { Injectable } from '@angular/core';
 import { CustomerControllerService } from 'open-api-modules/dashboard-api-docs';
 import * as _ from 'lodash';
-import { QUERY_CONDITION_TYPE } from '../../../core/common/enum/operator';
-import { GlobalConstants } from '../../../core/common/global-constants';
+import {
+  QUERY_CONDITION_TYPE,
+  QUERY_OPERATOR_TYPE,
+} from '../../../core/common/enum/operator';
 import { environment } from '../../../../environments/environment';
 
 @Injectable({
@@ -64,8 +66,19 @@ export class CustomerListService {
         break;
 
       case ACCOUNT_CLASSIFICATION.TEST:
-        requestBody['mobileNumber' + QUERY_CONDITION_TYPE.START_WITH] =
-          environment.PREFIX_MOBILE_NUMBER_TEST;
+        requestBody[
+          'mobileNumber' +
+            QUERY_OPERATOR_TYPE.OR +
+            QUERY_CONDITION_TYPE.START_WITH
+        ] = environment.PREFIX_MOBILE_NUMBER_TEST;
+        requestBody[
+          'identityNumberOne' +
+            QUERY_OPERATOR_TYPE.OR +
+            QUERY_CONDITION_TYPE.EQUAL
+        ] = environment.IDENTITY_NUMBER_ONE_TEST;
+        requestBody[
+          'organizationName' + QUERY_OPERATOR_TYPE.OR + QUERY_CONDITION_TYPE.IN
+        ] = environment.ORGANIZATION_NAME_TEST;
         break;
       case ACCOUNT_CLASSIFICATION.REAL:
       default:

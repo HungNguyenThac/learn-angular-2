@@ -9,6 +9,8 @@ import {
 import { FilterOptionModel } from '../../../../../../public/models/filter/filter-option.model';
 import { FilterEventModel } from '../../../../../../public/models/filter/filter-event.model';
 import { FilterItemModel } from '../../../../../../public/models/filter/filter-item.model';
+import {FILTER_ACTION_TYPE} from "../../../../../../core/common/enum/operator";
+import {FilterActionEventModel} from "../../../../../../public/models/filter/filter-action-event.model";
 
 @Component({
   selector: 'app-select-filter',
@@ -28,6 +30,7 @@ export class SelectFilterComponent implements OnInit {
   }
 
   @Output() completeFilter = new EventEmitter<FilterEventModel>();
+  @Output() clickActionBtn = new EventEmitter<FilterActionEventModel>();
 
   selectedItems: string[] = [];
   responsive: boolean = false;
@@ -127,6 +130,15 @@ export class SelectFilterComponent implements OnInit {
     }
     filterFormList.forEach((ele) => {
       ele.setAttribute('style', 'display:none');
+    });
+  }
+
+  public triggerExtraAction(filterItem: FilterOptionModel) {
+    this.clickActionBtn.emit({
+      type: FILTER_ACTION_TYPE.FILTER_EXTRA_ACTION,
+      controlName: this._filterOption.controlName,
+      value: filterItem.value,
+      actionControlName: filterItem.actionControlName,
     });
   }
 

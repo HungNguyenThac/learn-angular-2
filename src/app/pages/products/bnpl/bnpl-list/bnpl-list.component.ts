@@ -83,9 +83,9 @@ export class BnplListComponent implements OnInit, OnDestroy {
       type: FILTER_TYPE.SEARCH_SELECT,
       controlName: 'merchant.id',
       value: null,
-      showAction: false,
-      titleAction: this.multiLanguageService.instant('common.view'),
-      actionControlName: 'SELECT_ALL_MERCHANT',
+      showAction: true,
+      titleAction: this.multiLanguageService.instant('common.reset'),
+      actionControlName: 'RESET_FILTER_MERCHANT',
       options: [],
       multiple: true,
       searchPlaceholder: this.multiLanguageService.instant(
@@ -96,16 +96,19 @@ export class BnplListComponent implements OnInit, OnDestroy {
       ),
     },
     {
-      title: this.multiLanguageService.instant('filter.loan_status'),
+      title: this.multiLanguageService.instant('filter.bnpl_status'),
       type: FILTER_TYPE.SELECT,
       controlName: 'status',
       value: null,
-      multiple: true,
+      multiple: false,
+      showAction: true,
+      titleAction: this.multiLanguageService.instant('common.reset'),
+      actionControlName: 'RESET_FILTER_STATUS',
       options: [
-        {
-          title: this.multiLanguageService.instant('common.all'),
-          value: null,
-        },
+        // {
+        //   title: this.multiLanguageService.instant('common.all'),
+        //   value: null,
+        // },
       ],
     },
     {
@@ -113,6 +116,7 @@ export class BnplListComponent implements OnInit, OnDestroy {
       type: FILTER_TYPE.SELECT,
       controlName: 'accountClassification',
       value: null,
+      hidden: false,
       options: [
         {
           title: this.multiLanguageService.instant('common.all'),
@@ -135,10 +139,10 @@ export class BnplListComponent implements OnInit, OnDestroy {
   ];
 
   statusFilterOptions: FilterItemModel[] = [
-    {
-      title: this.multiLanguageService.instant('common.all'),
-      value: null,
-    },
+    // {
+    //   title: this.multiLanguageService.instant('common.all'),
+    //   value: null,
+    // },
     {
       title: this.multiLanguageService.instant('bnpl.status.pending'),
       value: BNPL_STATUS.PENDING,
@@ -150,10 +154,6 @@ export class BnplListComponent implements OnInit, OnDestroy {
     {
       title: this.multiLanguageService.instant('bnpl.status.approve'),
       value: BNPL_STATUS.APPROVE,
-    },
-    {
-      title: this.multiLanguageService.instant('bnpl.status.reject'),
-      value: BNPL_STATUS.REJECT,
     },
     {
       title: this.multiLanguageService.instant('bnpl.status.contract_awaiting'),
@@ -210,7 +210,7 @@ export class BnplListComponent implements OnInit, OnDestroy {
       key: 'createdAt',
       title: this.multiLanguageService.instant('bnpl.loan_info.created_at'),
       type: DATA_CELL_TYPE.DATETIME,
-      format: 'dd/MM/yyyy HH:mm:ss',
+      format: 'HH:mm:ss dd/MM/yyyy',
       showed: true,
     },
     {
@@ -264,8 +264,7 @@ export class BnplListComponent implements OnInit, OnDestroy {
     },
     {
       key: 'status',
-      externalKey: 'repaymentStatus',
-      externalKey2: 'defaultStatus',
+      externalKey: 'periodTimes',
       title: this.multiLanguageService.instant('bnpl.loan_info.status'),
       type: DATA_CELL_TYPE.STATUS,
       format: DATA_STATUS_TYPE.BNPL_STATUS,
@@ -402,7 +401,7 @@ export class BnplListComponent implements OnInit, OnDestroy {
       case FILTER_TYPE.SELECT:
         if (event.controlName === 'status') {
           this.filterForm.controls.status.setValue(
-            event.value ? event.value.join(',') : ''
+            event.value ? event.value : ''
           );
         } else if (event.controlName === 'accountClassification') {
           this.filterForm.controls.accountClassification.setValue(
@@ -429,25 +428,31 @@ export class BnplListComponent implements OnInit, OnDestroy {
     if (event.type === FILTER_ACTION_TYPE.FILTER_EXTRA_ACTION) {
       if (event.controlName === 'merchant.id') {
         this.handleFilterActionTriggerMerchantId(event);
+      } else if (event.controlName === 'status') {
+        this.handleFilterActionTriggerStatus(event);
       }
     }
   }
 
   private handleFilterActionTriggerMerchantId(event: FilterActionEventModel) {
-    if (event.actionControlName === 'SELECT_ALL_MERCHANT') {
-      let merchantIdValue = null;
-
-      if (event.value) {
-        merchantIdValue = this.merchantList.map((element) => {
-          return element.id;
-        });
-      }
-
+    if (event.actionControlName === 'RESET_FILTER_MERCHANT') {
       this.onFilterFormChange({
         type: FILTER_TYPE.SEARCH_SELECT,
         controlName: 'merchant.id',
-        value: merchantIdValue,
+        value: null,
       });
+      this._resetFilterOptions();
+    }
+  }
+
+  private handleFilterActionTriggerStatus(event: FilterActionEventModel) {
+    if (event.actionControlName === 'RESET_FILTER_STATUS') {
+      this.onFilterFormChange({
+        type: FILTER_TYPE.SELECT,
+        controlName: 'status',
+        value: null,
+      });
+      this._resetFilterOptions();
     }
   }
 
@@ -591,6 +596,14 @@ export class BnplListComponent implements OnInit, OnDestroy {
             return {
               ...item,
               totalAmount: item.loanAmount,
+              periodTimes: item.periods
+                ? {
+                    periodTime1: item.periodTime1,
+                    periodTime2: item.periodTime2,
+                    periodTime3: item.periodTime3,
+                    periodTime4: item.periodTime4,
+                  }
+                : null,
             };
           });
           this.getOverviewData(data?.result);
@@ -755,9 +768,6 @@ export class BnplListComponent implements OnInit, OnDestroy {
           break;
         case BNPL_STATUS.APPROVE:
           option.hidden = !this.userHasPermissions.bnplViewStatus.approve;
-          break;
-        case BNPL_STATUS.REJECT:
-          option.hidden = !this.userHasPermissions.bnplViewStatus.reject;
           break;
         case BNPL_STATUS.DISBURSE:
           option.hidden = !this.userHasPermissions.bnplViewStatus.disburse;

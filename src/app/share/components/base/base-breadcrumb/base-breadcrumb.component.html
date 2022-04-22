@@ -42,6 +42,7 @@
                 formControlName="keyword"
                 [placeholder]="searchPlaceholder"
                 [maxlength]="maxLengthSearchInput"
+                (ngModelChange)="changeInput($event)"
               />
             </div>
           </form>

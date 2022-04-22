@@ -1,14 +1,15 @@
 import { Injectable } from '@angular/core';
+import { ACCOUNT_CLASSIFICATION } from '../../../../core/common/enum/payday-loan';
 import {
-  ACCOUNT_CLASSIFICATION,
-  DEBT_STATUS,
-  PAYDAY_LOAN_STATUS,
-  REPAYMENT_STATUS,
-} from '../../../../core/common/enum/payday-loan';
-import { QUERY_CONDITION_TYPE } from '../../../../core/common/enum/operator';
+  QUERY_CONDITION_TYPE,
+  QUERY_OPERATOR_TYPE,
+} from '../../../../core/common/enum/operator';
 import { environment } from '../../../../../environments/environment';
 import * as _ from 'lodash';
-import { BNPL_STATUS } from '../../../../core/common/enum/bnpl';
+import {
+  BNPL_STATUS,
+  REPAYMENT_STATUS,
+} from '../../../../core/common/enum/bnpl';
 import { BnplApplicationControllerService } from '../../../../../../open-api-modules/dashboard-api-docs';
 import {
   AdminControllerService,
@@ -17,6 +18,8 @@ import {
   CorePaymentRequest,
   UpdateLoanRequestDto,
 } from '../../../../../../open-api-modules/bnpl-api-docs';
+import { ContractControllerService } from '../../../../../../open-api-modules/com-api-docs';
+import { catchError, map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
@@ -25,30 +28,12 @@ export class BnplListService {
   constructor(
     private dashboardBnplApplicationControllerService: BnplApplicationControllerService,
     private bnplControllerService: BnplControllerService,
-    private adminBnplControllerService: AdminControllerService
+    private adminBnplControllerService: AdminControllerService,
+    private contractControllerService: ContractControllerService
   ) {}
 
   private _buildRequestBodyGetList(params) {
     let requestBody = {};
-    if (!params.status) delete requestBody['status'];
-    console.log('params.status', params.status);
-    switch (params.status) {
-      case REPAYMENT_STATUS.OVERDUE:
-        params.status = PAYDAY_LOAN_STATUS.IN_REPAYMENT;
-        requestBody['defaultStatus__ne'] = true;
-        requestBody['repaymentStatus__e'] = REPAYMENT_STATUS.OVERDUE;
-        break;
-      case DEBT_STATUS.BADDEBT:
-        requestBody['defaultStatus'] = true;
-        requestBody['repaymentStatus__e'] = REPAYMENT_STATUS.OVERDUE;
-        params.status = PAYDAY_LOAN_STATUS.IN_REPAYMENT;
-        break;
-      case BNPL_STATUS.DISBURSE:
-        requestBody['repaymentStatus__ne'] = REPAYMENT_STATUS.OVERDUE;
-        break;
-      default:
-        break;
-    }
 
     if (params.filterConditions) {
       for (const [paramName, paramValue] of Object.entries(
@@ -58,6 +43,51 @@ export class BnplListService {
           requestBody[paramName + paramValue] = params[paramName] || '';
         }
       }
+    }
+
+    switch (params.status) {
+      case BNPL_STATUS.DISBURSE:
+        let now = new Date();
+        requestBody['periodTime1.complete' + QUERY_CONDITION_TYPE.EQUAL] = true;
+        requestBody[
+          'periodTime2.convertedDueDate' + QUERY_CONDITION_TYPE.GREATER_THAN
+        ] = now;
+        requestBody['periodTime2.complete' + QUERY_CONDITION_TYPE.NOT_EQUAL] =
+          true;
+        requestBody['periodTime3.complete' + QUERY_CONDITION_TYPE.NOT_EQUAL] =
+          true;
+        requestBody['periodTime4.complete' + QUERY_CONDITION_TYPE.NOT_EQUAL] =
+          true;
+        requestBody['status'] = BNPL_STATUS.DISBURSE;
+        delete requestBody['status__in'];
+        break;
+      case REPAYMENT_STATUS.PAYMENT_TERM_1:
+        requestBody['periodTime2.complete__e'] = true;
+        requestBody['periodTime3.complete' + QUERY_CONDITION_TYPE.NOT_EQUAL] =
+          true;
+        requestBody['periodTime4.complete' + QUERY_CONDITION_TYPE.NOT_EQUAL] =
+          true;
+        requestBody['status'] = BNPL_STATUS.DISBURSE;
+        delete requestBody['status__in'];
+        break;
+      case REPAYMENT_STATUS.PAYMENT_TERM_2:
+        requestBody['periodTime3.complete__e'] = true;
+        requestBody['periodTime4.complete' + QUERY_CONDITION_TYPE.NOT_EQUAL] =
+          true;
+        requestBody['status'] = BNPL_STATUS.DISBURSE;
+        delete requestBody['status__in'];
+        break;
+      case REPAYMENT_STATUS.PAYMENT_TERM_3:
+        requestBody['periodTime4.complete__e'] = true;
+        requestBody['status'] = BNPL_STATUS.DISBURSE;
+        delete requestBody['status__in'];
+        break;
+      case REPAYMENT_STATUS.OVERDUE:
+        requestBody['status'] = REPAYMENT_STATUS.OVERDUE;
+        delete requestBody['status__in'];
+        break;
+      default:
+        break;
     }
 
     if (params.startTime || params.endTime) {
@@ -88,8 +118,20 @@ export class BnplListService {
 
       case ACCOUNT_CLASSIFICATION.TEST:
         requestBody[
-          'customerInfo.mobileNumber' + QUERY_CONDITION_TYPE.START_WITH
+          'customerInfo.mobileNumber' +
+            QUERY_OPERATOR_TYPE.OR +
+            QUERY_CONDITION_TYPE.START_WITH
         ] = environment.PREFIX_MOBILE_NUMBER_TEST;
+        requestBody[
+          'customerInfo.identityNumberOne' +
+            QUERY_OPERATOR_TYPE.OR +
+            QUERY_CONDITION_TYPE.EQUAL
+        ] = environment.IDENTITY_NUMBER_ONE_TEST;
+        requestBody[
+          'customerInfo.organizationName' +
+            QUERY_OPERATOR_TYPE.OR +
+            QUERY_CONDITION_TYPE.IN
+        ] = environment.ORGANIZATION_NAME_TEST;
         break;
       case ACCOUNT_CLASSIFICATION.REAL:
       default:
@@ -102,8 +144,6 @@ export class BnplListService {
         requestBody[
           'customerInfo.organizationName' + QUERY_CONDITION_TYPE.NOT_IN
         ] = environment.ORGANIZATION_NAME_TEST;
-        requestBody['status' + QUERY_CONDITION_TYPE.NOT_EQUAL] =
-          environment.PAYDAY_LOAN_STATUS_TEST;
         break;
     }
     console.log('requestBody--------------------------------', requestBody);
@@ -156,5 +196,31 @@ export class BnplListService {
       id,
       corePaymentRequest
     );
+  }
+
+  public downloadBlobFile(src, loanId) {
+    const a = document.createElement('a');
+    a.setAttribute('target', '_blank');
+    a.setAttribute('href', src);
+    a.setAttribute('download', 'Hopdongmuangaytrasau-' + loanId + '.pdf');
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+  }
+
+  public downloadBnplContract(id: string) {
+    return this.contractControllerService
+      .getContractFile(id, null, null, {
+        httpHeaderAccept: 'application/octet-stream',
+      })
+      .pipe(
+        map((results) => {
+          return this.convertBlobType(results, 'application/pdf');
+        }),
+
+        catchError((err) => {
+          throw err;
+        })
+      );
   }
 }

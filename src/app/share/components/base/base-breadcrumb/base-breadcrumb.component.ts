@@ -117,6 +117,12 @@ export class BaseBreadcrumbComponent implements OnInit {
     this.submitSearchForm.emit(searchData);
   }
 
+  public changeInput(data) {
+    if (!data) {
+      this.submitSearch();
+    }
+  }
+
   onClickButtonAdd(event) {
     this.clickBtnAdd.emit(event);
   }

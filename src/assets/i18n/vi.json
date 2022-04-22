@@ -598,7 +598,8 @@
     "term_type": "Kỳ hạn vay",
     "merchant_group": "Nhóm merchant",
     "role_group": "Vai trò",
-    "merchant_name": "Merchant bán",
+    "merchant_name": "Merchant",
+    "bnpl_status": "Trạng thái",
     "select_all": "Chọn tất cả",
     "deselect_all": "Bỏ chọn tất cả",
     "account_classification": "Phân loại tài khoản",
@@ -698,7 +699,7 @@
       "user_list": "Tên đăng nhập, Tên người dùng",
       "config_document": "Tên tài liệu, Mô tả",
       "config_document_type": "Tên nhóm tài liệu, Mô tả",
-      "bnpl": "Mã đơn mua, Tên KH, Số điện thoại KH, Email KH, Merchant bán hàng"
+      "bnpl": "Mã đơn hàng, Tên KH, Số điện thoại KH, Email KH, Merchant"
     }
   },
   "system": {
@@ -848,9 +849,8 @@
       },
       "contract_property": {
         "order_number": "STT",
-        "variable_name": "Tên biến",
         "description": "Ý nghĩa",
-        "code": "Code"
+        "code": "Tên biến"
       }
     }
   },
@@ -1121,7 +1121,7 @@
       "customer_name": "Tên khách hàng",
       "phone_number": "Số điện thoại",
       "loan_code": "Mã đơn hàng",
-      "merchant": "Merchant bán",
+      "merchant": "Merchant",
       "origin_amount": "Tổng tiền hàng",
       "discount": "Monex giảm giá",
       "total_amount": "Tổng cộng",
@@ -1141,14 +1141,18 @@
       "repayment_single_period": "Thanh toán",
       "reject": "Từ chối",
       "approve": "Duyệt",
+      "undoapproval": "Hủy duyệt",
       "prompt_reject": "Bạn có chắc chắc từ chối khoản vay này?",
       "prompt_approve": "Bạn có chắc chắc duyệt khoản vay này?",
       "prompt_repayment_period": "Bạn có chắc chắc thanh toán khoản vay này?",
-      "prompt_repayment_all": "Bạn có chắc chắc tất toán khoản vay này?"
+      "prompt_repayment_all": "Bạn có chắc chắc tất toán khoản vay này?",
+      "confirm_change_status_description": "Bạn có chắc chuyển trạng thái đơn hàng BNPL {{loan_code}} từ {{current_loan_status}} → {{new_loan_status}}",
+      "change_status_success": "Chuyển trạng thái khoản vay thành công!",
+      "repayment_success": "Thanh toán thành công!"
     },
     "status": {
-      "pending": "Chờ xác nhận",
-      "undoapproval": "Chờ phê duyệt",
+      "pending": "Chờ phê duyệt",
+      "undoapproval": "Hủy duyệt",
       "approve": "Đã duyệt",
       "reject": "Bị từ chối",
       "disburse": "Đã giải ngân",

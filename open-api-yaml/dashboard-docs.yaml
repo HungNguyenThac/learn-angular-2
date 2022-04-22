@@ -4695,6 +4695,14 @@ components:
           $ref: '#/components/schemas/CustomerInfo'
         adminAccountEntity:
           $ref: '#/components/schemas/AdminAccountEntity'
+        periodTime1:
+          $ref: '#/components/schemas/PeriodTime'
+        periodTime2:
+          $ref: '#/components/schemas/PeriodTime'
+        periodTime3:
+          $ref: '#/components/schemas/PeriodTime'
+        periodTime4:
+          $ref: '#/components/schemas/PeriodTime'
     Period:
       type: object
       properties:
@@ -4713,6 +4721,69 @@ components:
             format: int32
         complete:
           type: boolean
+        daysInPeriod:
+          type: integer
+          format: int32
+        principalDisbursed:
+          type: integer
+          format: int32
+        principalLoanBalanceOutstanding:
+          type: integer
+          format: int32
+        feeChargesDue:
+          type: integer
+          format: int32
+        feeChargesOutstanding:
+          type: integer
+          format: int32
+        totalOriginalDueForPeriod:
+          type: integer
+          format: int32
+        totalDueForPeriod:
+          type: integer
+          format: int32
+        totalOutstandingForPeriod:
+          type: integer
+          format: int32
+        totalActualCostOfLoanForPeriod:
+          type: integer
+          format: int32
+        principalOriginalDue:
+          type: integer
+          format: int32
+        principalDue:
+          type: integer
+          format: int32
+        principalOutstanding:
+          type: integer
+          format: int32
+        interestOriginalDue:
+          type: integer
+          format: int32
+        interestOutstanding:
+          type: integer
+          format: int32
+        penaltyChargesDue:
+          type: integer
+          format: int32
+        totalPaidForPeriod:
+          type: integer
+          format: int32
+        totalInstallmentAmountForPeriod:
+          type: integer
+          format: int32
+    PeriodTime:
+      type: object
+      properties:
+        convertedFromDate:
+          type: string
+        convertedDueDate:
+          type: string
+        complete:
+          type: boolean
+        period:
+          type: integer
+          format: int32
         daysInPeriod:
           type: integer
           format: int32

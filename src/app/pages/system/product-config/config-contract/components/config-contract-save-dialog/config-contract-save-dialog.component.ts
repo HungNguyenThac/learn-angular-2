@@ -109,9 +109,9 @@ export class ConfigContractSaveDialogComponent implements OnInit, OnDestroy {
       width: 50,
     },
     {
-      key: 'variableName',
+      key: 'code',
       title: this.multiLanguageService.instant(
-        'system.system_config.contract_property.variable_name'
+        'system.system_config.contract_property.code'
       ),
       type: DATA_CELL_TYPE.TEXT,
       format: null,
@@ -128,16 +128,16 @@ export class ConfigContractSaveDialogComponent implements OnInit, OnDestroy {
       showed: true,
       width: 100,
     },
-    {
-      key: 'code',
-      title: this.multiLanguageService.instant(
-        'system.system_config.contract_property.code'
-      ),
-      type: DATA_CELL_TYPE.TEXT,
-      format: null,
-      showed: true,
-      width: 100,
-    },
+    // {
+    //   key: 'code',
+    //   title: this.multiLanguageService.instant(
+    //     'system.system_config.contract_property.code'
+    //   ),
+    //   type: DATA_CELL_TYPE.TEXT,
+    //   format: null,
+    //   showed: true,
+    //   width: 100,
+    // },
   ];
 
   ckeditorConfig: any = {

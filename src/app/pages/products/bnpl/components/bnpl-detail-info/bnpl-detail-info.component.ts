@@ -9,6 +9,7 @@ import {
   DATA_STATUS_TYPE,
 } from '../../../../../core/common/enum/operator';
 import { MultiLanguageService } from '../../../../../share/translate/multiLanguageService';
+import { MERCHANT_SELL_TYPE_TEXT } from '../../../../../core/common/enum/bnpl';
 
 @Component({
   selector: 'app-bnpl-detail-info',
@@ -20,7 +21,7 @@ export class BnplDetailInfoComponent implements OnInit {
 
   _loanDetail: BnplApplication;
   @Input()
-  get loanDetail(): BnplApplication {
+  get loanDetail(): BnplApplication | any {
     return this._loanDetail;
   }
 
@@ -52,7 +53,7 @@ export class BnplDetailInfoComponent implements OnInit {
         title: this.multiLanguageService.instant('bnpl.loan_info.created_at'),
         value: this.loanDetail?.createdAt,
         type: DATA_CELL_TYPE.DATETIME,
-        format: 'HH:mm:ss - dd/MM/yyyy',
+        format: 'HH:mm:ss dd/MM/yyyy',
       },
       {
         title: this.multiLanguageService.instant('bnpl.loan_info.merchant'),
@@ -81,7 +82,9 @@ export class BnplDetailInfoComponent implements OnInit {
     return [
       {
         title: this.multiLanguageService.instant('bnpl.loan_info.sell_type'),
-        value: this.loanDetail?.sellType,
+        value: this.merchantSellType(
+          this.loanDetail?.merchant?.merchantSellType
+        ),
         type: DATA_CELL_TYPE.TEXT,
         format: null,
       },
@@ -89,29 +92,31 @@ export class BnplDetailInfoComponent implements OnInit {
         title: this.multiLanguageService.instant('bnpl.loan_info.approved_at'),
         value: this.loanDetail?.approvedAt,
         type: DATA_CELL_TYPE.DATETIME,
-        format: 'HH:mm:ss - dd/MM/yyyy',
+        format: 'HH:mm:ss dd/MM/yyyy',
       },
       {
         title: this.multiLanguageService.instant('bnpl.loan_info.repayment_at'),
         value: this.loanDetail?.completedAt,
         type: DATA_CELL_TYPE.DATETIME,
-        format: 'HH:mm:ss - dd/MM/yyyy',
+        format: 'HH:mm:ss dd/MM/yyyy',
       },
       {
         title: this.multiLanguageService.instant('bnpl.loan_info.completed_at'),
         value: this.loanDetail?.completedAt,
         type: DATA_CELL_TYPE.DATETIME,
-        format: 'HH:mm:ss - dd/MM/yyyy',
+        format: 'HH:mm:ss dd/MM/yyyy',
       },
       {
         title: this.multiLanguageService.instant('bnpl.loan_info.staff'),
-        value: this.loanDetail?.staffId,
+        value:
+          this.loanDetail?.adminAccountEntity?.name || this.loanDetail?.staffId,
         type: DATA_CELL_TYPE.TEXT,
         format: null,
       },
       {
         title: this.multiLanguageService.instant('bnpl.loan_info.status'),
         value: this.loanDetail?.status,
+        externalValue: this.loanDetail?.periodTimes,
         type: DATA_CELL_TYPE.STATUS,
         format: DATA_STATUS_TYPE.BNPL_STATUS,
       },
@@ -121,7 +126,8 @@ export class BnplDetailInfoComponent implements OnInit {
   changeLoanStatus(status) {
     this.triggerChangeStatusBnplApplication.emit({
       id: this.loanDetail?.id,
-      status,
+      status: status,
+      loanInfo: this.loanDetail,
     });
   }
 
@@ -139,5 +145,17 @@ export class BnplDetailInfoComponent implements OnInit {
       id: this.loanDetail?.id,
       transactionAmount: payment,
     });
+  }
+
+  merchantSellType(sellType) {
+    if (!sellType) return null;
+    if (sellType === 'ALL') {
+      return (
+        this.multiLanguageService.instant(MERCHANT_SELL_TYPE_TEXT.OFFLINE) +
+        ', ' +
+        this.multiLanguageService.instant(MERCHANT_SELL_TYPE_TEXT.ONLINE)
+      );
+    }
+    return this.multiLanguageService.instant(MERCHANT_SELL_TYPE_TEXT[sellType]);
   }
 }

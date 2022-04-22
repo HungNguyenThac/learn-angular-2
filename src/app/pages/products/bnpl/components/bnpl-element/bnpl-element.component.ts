@@ -1,8 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import {
+  BnplApplication,
   CustomerInfo,
-  PaydayLoanHmg,
-  PaydayLoanTng,
 } from '../../../../../../../open-api-modules/dashboard-api-docs';
 import { MultiLanguageService } from '../../../../../share/translate/multiLanguageService';
 import { BnplListService } from '../../bnpl-list/bnpl-list.service';
@@ -12,7 +11,6 @@ import {
   BUTTON_TYPE,
   RESPONSE_CODE,
 } from '../../../../../core/common/enum/operator';
-import { ApiResponseString } from '../../../../../../../open-api-modules/bnpl-api-docs';
 import { NotificationService } from '../../../../../core/services/notification.service';
 
 @Component({
@@ -21,7 +19,7 @@ import { NotificationService } from '../../../../../core/services/notification.s
   styleUrls: ['./bnpl-element.component.scss'],
 })
 export class BnplElementComponent implements OnInit {
-  @Input() loanDetail: any;
+  @Input() loanDetail: BnplApplication;
   @Input() userInfo: CustomerInfo;
   @Output() loanDetailTriggerUpdateStatus = new EventEmitter<any>();
   subManager = new Subscription();
@@ -53,12 +51,26 @@ export class BnplElementComponent implements OnInit {
     );
   }
 
-  public changeStatusBnplApplication({ id, status }) {
+  public changeStatusBnplApplication(event) {
+    console.log(event);
+    const currentLoanStatusDisplay = this.multiLanguageService.instant(
+      `bnpl.status.${this.loanDetail?.status.toLowerCase()}`
+    );
+
+    const newStatusDisplay = this.multiLanguageService.instant(
+      `bnpl.status.${event.status.toLowerCase()}`
+    );
+
     const confirmDeleteRef = this.notificationService.openPrompt({
       imgUrl: 'assets/img/payday-loan/warning-prompt-icon.png',
       title: this.multiLanguageService.instant('common.are_you_sure'),
       content: this.multiLanguageService.instant(
-        'bnpl.loan_info.prompt_reject'
+        'bnpl.loan_info.confirm_change_status_description',
+        {
+          loan_code: this.loanDetail?.coreLoanId,
+          current_loan_status: currentLoanStatusDisplay,
+          new_loan_status: newStatusDisplay,
+        }
       ),
       primaryBtnText: this.multiLanguageService.instant('common.confirm'),
       primaryBtnClass: 'btn-accent',
@@ -68,7 +80,7 @@ export class BnplElementComponent implements OnInit {
       if (result === BUTTON_TYPE.PRIMARY) {
         this.subManager.add(
           this.bnplListService
-            .changeStatusBnplApplication(id, { status: status })
+            .changeStatusBnplApplication(event?.id, { status: event.status })
             .subscribe((result) => {
               if (!result || result.responseCode !== RESPONSE_CODE.SUCCESS) {
                 return this.notifier.error(
@@ -77,13 +89,13 @@ export class BnplElementComponent implements OnInit {
                 );
               }
               if (result.responseCode === 200) {
-                // setTimeout(() => {
-                //   this.notifier.success(
-                //     this.multiLanguageService.instant(
-                //       'merchant.merchant_detail.delete_merchant.toast'
-                //     )
-                //   );
-                // }, 3000);
+                setTimeout(() => {
+                  this.notifier.success(
+                    this.multiLanguageService.instant(
+                      'bnpl.loan_info.change_status_success'
+                    )
+                  );
+                }, 3000);
               }
             })
         );
@@ -92,7 +104,7 @@ export class BnplElementComponent implements OnInit {
   }
 
   public repaymentBnplApplication({ id, transactionAmount }) {
-    const confirmDeleteRef = this.notificationService.openPrompt({
+    const confirmRepaymentRef = this.notificationService.openPrompt({
       imgUrl: 'assets/img/payday-loan/warning-prompt-icon.png',
       title: this.multiLanguageService.instant('common.are_you_sure'),
       content: this.multiLanguageService.instant(
@@ -102,32 +114,36 @@ export class BnplElementComponent implements OnInit {
       primaryBtnClass: 'btn-accent',
       secondaryBtnText: this.multiLanguageService.instant('common.skip'),
     });
-    confirmDeleteRef.afterClosed().subscribe((result) => {
+    confirmRepaymentRef.afterClosed().subscribe((result) => {
       if (result === BUTTON_TYPE.PRIMARY) {
-        this.subManager.add(
-          this.bnplListService.repaymentBnplApplication(id, {
-            transactionAmount: transactionAmount,
-          })
-            .subscribe((result) => {
-              if (!result || result.responseCode !== RESPONSE_CODE.SUCCESS) {
-                return this.notifier.error(
-                  JSON.stringify(result?.message),
-                  result?.errorCode
-                );
-              }
-              if (result.responseCode === 200) {
-                // setTimeout(() => {
-                //   this.notifier.success(
-                //     this.multiLanguageService.instant(
-                //       'merchant.merchant_detail.delete_merchant.toast'
-                //     )
-                //   );
-                // }, 3000);
-              }
-            })
-        );
+        this.updatePaymentOrder({ id, transactionAmount });
       }
     });
   }
 
+  public updatePaymentOrder({ id, transactionAmount }) {
+    this.subManager.add(
+      this.bnplListService
+        .repaymentBnplApplication(id, {
+          transactionAmount: transactionAmount,
+        })
+        .subscribe((result) => {
+          if (!result || result.responseCode !== RESPONSE_CODE.SUCCESS) {
+            return this.notifier.error(
+              JSON.stringify(result?.message),
+              result?.errorCode
+            );
+          }
+          if (result.responseCode === 200) {
+            setTimeout(() => {
+              this.notifier.success(
+                this.multiLanguageService.instant(
+                  'bnpl.loan_info.repayment_success'
+                )
+              );
+            }, 1000);
+          }
+        })
+    );
+  }
 }
