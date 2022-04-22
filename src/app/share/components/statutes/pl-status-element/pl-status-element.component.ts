@@ -1,6 +1,5 @@
 import {
   DEBT_STATUS,
-  GPAY_RESULT_STATUS,
   PAYDAY_LOAN_REPAYMENT_STATUS,
   TERM_TYPE,
 } from './../../../../core/common/enum/payday-loan';
@@ -24,11 +23,12 @@ import { DATA_STATUS_TYPE } from '../../../../core/common/enum/operator';
 import { PL_LABEL_STATUS } from '../../../../core/common/enum/label-status';
 import { MultiLanguageService } from '../../../translate/multiLanguageService';
 import { AdminAccountEntity } from '../../../../../../open-api-modules/dashboard-api-docs';
-import UserStatusEnum = AdminAccountEntity.UserStatusEnum;
 import {
   BNPL_STATUS,
   GPAY_REPAYMENT_STATUS,
 } from '../../../../core/common/enum/bnpl';
+import { PeriodTimesModel } from '../../../../public/models/external/periodTimes.model';
+import UserStatusEnum = AdminAccountEntity.UserStatusEnum;
 
 @Component({
   selector: 'app-pl-status-element',
@@ -47,7 +47,7 @@ export class PlStatusElementComponent implements OnInit, AfterViewInit {
 
   _externalValue: any;
 
-  @Input() isBadLoan: boolean;
+  _externalValue2: any;
 
   _statusType: DATA_STATUS_TYPE;
 
@@ -81,6 +81,16 @@ export class PlStatusElementComponent implements OnInit, AfterViewInit {
     this.dataStatus = this.getDataStatus();
   }
 
+  @Input()
+  get externalValue2(): any {
+    return this._externalValue2;
+  }
+
+  set externalValue2(value: any) {
+    this._externalValue2 = value;
+    this.dataStatus = this.getDataStatus();
+  }
+
   dataStatus: any;
 
   getDataStatus() {
@@ -90,7 +100,7 @@ export class PlStatusElementComponent implements OnInit, AfterViewInit {
         return this.loanStatusContent(
           this.statusValue,
           this.externalValue,
-          this.isBadLoan
+          this.externalValue2
         );
       case DATA_STATUS_TYPE.PL_VAC_STATUS:
         return this.loanStatusVACContent(this.statusValue, this.externalValue);
@@ -622,7 +632,69 @@ export class PlStatusElementComponent implements OnInit, AfterViewInit {
     }
   }
 
-  bnplStatus(status, repaymentStatus) {
+  bnplStatus(status, periods: PeriodTimesModel) {
+    let now = new Date();
+    if (periods && status && status === BNPL_STATUS.DISBURSE) {
+      if (
+        (new Date(periods.periodTime2.convertedDueDate) < now &&
+          !periods.periodTime2.complete) ||
+        (new Date(periods.periodTime3.convertedDueDate) < now &&
+          !periods.periodTime3.complete) ||
+        (new Date(periods.periodTime4.convertedDueDate) < now &&
+          !periods.periodTime4.complete)
+      ) {
+        return {
+          label: this.multiLanguageService.instant(
+            `bnpl.repayment_status.overdue`
+          ),
+          labelStatus: PL_LABEL_STATUS.CANCEL,
+        };
+      }
+
+      if (periods.periodTime4?.complete) {
+        return {
+          label: this.multiLanguageService.instant(
+            `bnpl.repayment_status.payment_term_3`
+          ),
+          labelStatus: PL_LABEL_STATUS.IN_REPAYMENT,
+        };
+      }
+
+      if (periods.periodTime3?.complete && !periods.periodTime4?.complete) {
+        return {
+          label: this.multiLanguageService.instant(
+            `bnpl.repayment_status.payment_term_2`
+          ),
+          labelStatus: PL_LABEL_STATUS.IN_REPAYMENT,
+        };
+      }
+
+      if (
+        periods.periodTime2?.complete &&
+        !periods.periodTime3?.complete &&
+        !periods.periodTime4?.complete
+      ) {
+        return {
+          label: this.multiLanguageService.instant(
+            `bnpl.repayment_status.payment_term_1`
+          ),
+          labelStatus: PL_LABEL_STATUS.IN_REPAYMENT,
+        };
+      }
+
+      if (
+        periods.periodTime1?.complete &&
+        !periods.periodTime2?.complete &&
+        !periods.periodTime3?.complete &&
+        !periods.periodTime4?.complete
+      ) {
+        return {
+          label: this.multiLanguageService.instant(`bnpl.status.disburse`),
+          labelStatus: PL_LABEL_STATUS.IN_REPAYMENT,
+        };
+      }
+    }
+
     switch (status) {
       case BNPL_STATUS.PENDING:
         return {
@@ -636,7 +708,7 @@ export class PlStatusElementComponent implements OnInit, AfterViewInit {
           label: this.multiLanguageService.instant(
             `bnpl.status.${status.toLowerCase()}`
           ),
-          labelStatus: PL_LABEL_STATUS.DOCUMENTATION_COMPLETE,
+          labelStatus: PL_LABEL_STATUS.CANCEL,
         };
       case BNPL_STATUS.APPROVE:
         return {
@@ -672,13 +744,6 @@ export class PlStatusElementComponent implements OnInit, AfterViewInit {
             `bnpl.status.${status.toLowerCase()}`
           ),
           labelStatus: PL_LABEL_STATUS.COMPLETED,
-        };
-      case BNPL_STATUS.REJECT:
-        return {
-          label: this.multiLanguageService.instant(
-            `bnpl.status.${status.toLowerCase()}`
-          ),
-          labelStatus: PL_LABEL_STATUS.REJECTED,
         };
       case BNPL_STATUS.WITHDRAW:
         return {

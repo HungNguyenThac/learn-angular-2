@@ -8,9 +8,9 @@ import {DATA_CELL_TYPE, DATA_STATUS_TYPE} from "../../../../core/common/enum/ope
 })
 export class TableCellFormatDataComponent implements OnInit {
   @Input() type: DATA_CELL_TYPE;
-  @Input() value: string;
-  @Input() externalValue: string;
-  @Input() isBadLoan: boolean;
+  @Input() value: any;
+  @Input() externalValue: any;
+  @Input() externalValue2: any;
   @Input() format: string | DATA_STATUS_TYPE;
 
   constructor() {}

@@ -91,7 +91,8 @@ export class BnplRepaymentTransactionComponent implements OnInit {
   changeLoanStatus(status) {
     this.triggerChangeStatusBnplApplication.emit({
       id: this.loanDetail?.id,
-      status,
+      status: status,
+      loanInfo: this.loanDetail,
     });
   }
 

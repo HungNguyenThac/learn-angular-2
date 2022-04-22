@@ -1,4 +1,3 @@
-import { query } from '@angular/animations';
 import {
   APPLICATION_TYPE,
   COMPANY_NAME,
@@ -7,8 +6,8 @@ import {
   REPAYMENT_STATUS,
 } from './../../../../core/common/enum/payday-loan';
 import {
-  ApplicationHmgControllerService,
   ApplicationControllerService,
+  ApplicationHmgControllerService,
 } from '../../../../../../open-api-modules/dashboard-api-docs';
 import {
   ContractControllerService as ContractHmgControllerService,
@@ -19,7 +18,10 @@ import { Injectable } from '@angular/core';
 import { catchError, map } from 'rxjs/operators';
 import { CustomerControllerService } from 'open-api-modules/dashboard-api-docs';
 import * as _ from 'lodash';
-import { QUERY_CONDITION_TYPE } from '../../../../core/common/enum/operator';
+import {
+  QUERY_CONDITION_TYPE,
+  QUERY_OPERATOR_TYPE,
+} from '../../../../core/common/enum/operator';
 import {
   ApiResponseContract,
   ContractControllerService,
@@ -28,9 +30,7 @@ import {
 import { FileControllerService } from '../../../../../../open-api-modules/com-api-docs';
 import { SignDocumentControllerService } from '../../../../../../open-api-modules/contract-api-docs';
 import { ACCOUNT_CLASSIFICATION } from 'src/app/core/common/enum/payday-loan';
-import { GlobalConstants } from '../../../../core/common/global-constants';
 import { environment } from '../../../../../environments/environment';
-import { Observable } from 'rxjs/Observable';
 
 @Injectable({
   providedIn: 'root',
@@ -51,8 +51,6 @@ export class LoanListService {
 
   private _buildRequestBodyGetList(params) {
     let requestBody = {};
-    if (!params.status) delete requestBody['status'];
-    console.log('params.status', params.status);
     switch (params.status) {
       case REPAYMENT_STATUS.OVERDUE:
         params.status = PAYDAY_LOAN_STATUS.IN_REPAYMENT;
@@ -70,12 +68,6 @@ export class LoanListService {
       default:
         break;
     }
-    // if (params.status === REPAYMENT_STATUS.OVERDUE) {
-    //   params.status = PAYDAY_LOAN_STATUS.IN_REPAYMENT;
-    //   requestBody['repaymentStatus__e'] = REPAYMENT_STATUS.OVERDUE;
-    // } else if (params.status === PAYDAY_LOAN_STATUS.IN_REPAYMENT) {
-    //   requestBody['repaymentStatus__ne'] = REPAYMENT_STATUS.OVERDUE;
-    // }
 
     if (params.filterConditions) {
       for (const [paramName, paramValue] of Object.entries(
@@ -93,7 +85,6 @@ export class LoanListService {
         end: params.endTime,
       };
     }
-    // requestBody['status'] = params.status;
 
     if (params.keyword) {
       requestBody['loanCode' + QUERY_CONDITION_TYPE.LIKE_KEYWORD] =
@@ -122,8 +113,23 @@ export class LoanListService {
 
       case ACCOUNT_CLASSIFICATION.TEST:
         requestBody[
-          'customerInfo.mobileNumber' + QUERY_CONDITION_TYPE.START_WITH
+          'customerInfo.mobileNumber' +
+            QUERY_OPERATOR_TYPE.OR +
+            QUERY_CONDITION_TYPE.START_WITH
         ] = environment.PREFIX_MOBILE_NUMBER_TEST;
+        requestBody[
+          'customerInfo.identityNumberOne' +
+            QUERY_OPERATOR_TYPE.OR +
+            QUERY_CONDITION_TYPE.EQUAL
+        ] = environment.IDENTITY_NUMBER_ONE_TEST;
+        requestBody[
+          'customerInfo.organizationName' +
+            QUERY_OPERATOR_TYPE.OR +
+            QUERY_CONDITION_TYPE.IN
+        ] = environment.ORGANIZATION_NAME_TEST;
+        requestBody[
+          'status' + QUERY_OPERATOR_TYPE.OR + QUERY_CONDITION_TYPE.EQUAL
+        ] = environment.PAYDAY_LOAN_STATUS_TEST;
         break;
       case ACCOUNT_CLASSIFICATION.REAL:
       default:

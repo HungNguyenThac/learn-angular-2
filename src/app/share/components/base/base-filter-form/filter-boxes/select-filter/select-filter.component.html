@@ -3,6 +3,28 @@
     <h3 class="filter-title">
       {{ filterOption.title }}
     </h3>
+    <ng-container *ngIf="filterOption.showAction">
+      <button
+        *ngIf="filterOption.showIconAction; else showTitle"
+        mat-icon-button
+        [matTooltip]="filterOption.titleAction"
+        matTooltipPosition="right"
+        class="filter-action-btn"
+        (click)="triggerExtraAction(filterOption)"
+      >
+        <div [ngClass]="filterOption.actionIconClass"></div>
+      </button>
+
+      <ng-template #showTitle>
+        <p
+          [matTooltip]="filterOption.titleAction"
+          (click)="triggerExtraAction(filterOption)"
+          class="filter-action-title"
+        >
+          {{ filterOption.titleAction }}
+        </p>
+      </ng-template>
+    </ng-container>
   </div>
   <div>
     <ul class="filter-boxes-ul">

@@ -14,6 +14,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { MultiLanguageService } from '../../../../../share/translate/multiLanguageService';
 import { LoanListService } from '../../../payday-loan/loan-list/loan-list.service';
 import { BnplApplication } from '../../../../../../../open-api-modules/bnpl-api-docs';
+import { BnplListService } from '../../bnpl-list/bnpl-list.service';
 
 @Component({
   selector: 'app-bnpl-contract',
@@ -22,7 +23,6 @@ import { BnplApplication } from '../../../../../../../open-api-modules/bnpl-api-
 })
 export class BnplContractComponent implements OnInit {
   loanContractView: any;
-  loanContractData: Contract;
   loanContractFile: any;
   subManager = new Subscription();
   downloadable: boolean = false;
@@ -35,8 +35,8 @@ export class BnplContractComponent implements OnInit {
 
   set loanDetail(value: BnplApplication) {
     this._loanDetail = value;
-    if (value.contract) {
-      this.downloadFileContract(value.contract, value.customerId);
+    if (value.id) {
+      this.downloadFileContract(value.id);
     }
   }
 
@@ -45,26 +45,28 @@ export class BnplContractComponent implements OnInit {
     private dialog: MatDialog,
     private domSanitizer: DomSanitizer,
     private multiLanguageService: MultiLanguageService,
-    private loanListService: LoanListService
+    private loanListService: LoanListService,
+    private bnplListService: BnplListService
   ) {}
 
   ngOnInit(): void {}
 
-  downloadFileContract(documentPath, customerId) {
+  downloadFileContract(loanId) {
     this.subManager.add(
-      this.loanListService
-        .downloadSingleFileContract(documentPath, customerId)
-        .subscribe((data) => {
-          if (!data) return;
-          this.downloadable = true;
-          this.loanContractFile = data;
-          this.pdfView(this.loanContractFile);
-        })
+      this.bnplListService.downloadBnplContract(loanId).subscribe((data) => {
+        if (!data) return;
+        this.downloadable = true;
+        this.loanContractFile = data;
+        this.pdfView(this.loanContractFile);
+      })
     );
   }
 
   onClickDownload() {
-    this.loanListService.downloadBlobFile(this.loanContractFile);
+    this.bnplListService.downloadBlobFile(
+      this.loanContractFile,
+      this._loanDetail?.coreLoanId
+    );
     this.notifier.info(
       this.multiLanguageService.instant('bnpl.loan_contract.downloading')
     );

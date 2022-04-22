@@ -32,6 +32,7 @@
             *ngIf="filterOption.type === 'SELECT'"
             [filterOption]="filterOption"
             (completeFilter)="completeFilter($event)"
+            (clickActionBtn)="clickActionBtn($event)"
           ></app-select-filter>
           <!--   END: Select filter      -->
 
@@ -85,6 +86,7 @@
         *ngIf="filterOption.type === 'SELECT'"
         [filterOption]="filterOption"
         (completeFilter)="completeFilter($event)"
+        (clickActionBtn)="clickActionBtn($event)"
       ></app-select-filter>
       <!--   END: Select filter      -->
 

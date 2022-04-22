@@ -1,4 +1,4 @@
-import {REPAYMENT_STATUS} from "./bnpl";
+import { REPAYMENT_STATUS } from './bnpl';
 
 export enum NAV_ITEM {
   DASHBOARD = 'DASHBOARD',
@@ -38,6 +38,11 @@ export enum QUERY_CONDITION_TYPE {
   NOT_EXIST = '__nex',
 }
 
+export enum QUERY_OPERATOR_TYPE {
+  OR = '__o',
+  AND = '__a',
+}
+
 export enum DATA_CELL_TYPE {
   TEXT = 'TEXT',
   NUMBER = 'NUMBER',
@@ -65,7 +70,7 @@ export enum DATA_STATUS_TYPE {
   PL_EKYC_STATUS = 'PL_EKYC_STATUS',
   MERCHANT_SELL_TYPE = 'MERCHANT_SELL_TYPE',
   BNPL_STATUS = 'BNPL_STATUS',
-  GPAY_REPAYMENT_STATUS = 'GPAY_REPAYMENT_STATUS'
+  GPAY_REPAYMENT_STATUS = 'GPAY_REPAYMENT_STATUS',
 }
 
 export enum FILTER_TYPE {

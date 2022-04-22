@@ -1,10 +1,7 @@
-import { MerchantSellType } from '../../../../../open-api-modules/bnpl-api-docs';
-
 export enum BNPL_STATUS {
   PENDING = 'PENDING',
   UNDOAPPROVAL = 'UNDOAPPROVAL',
   APPROVE = 'APPROVE',
-  REJECT = 'REJECT',
   DISBURSE = 'DISBURSE',
   CONTRACT_ACCEPTED = 'CONTRACT_ACCEPTED',
   CONTRACT_AWAITING = 'CONTRACT_AWAITING',
