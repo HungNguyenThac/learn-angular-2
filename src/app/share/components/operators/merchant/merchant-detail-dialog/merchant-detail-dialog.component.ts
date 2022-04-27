@@ -299,7 +299,6 @@ export class MerchantDetailDialogComponent implements OnInit, AfterViewChecked {
   private initMerchantInfoForm() {
     this.merchantInfoForm.patchValue({
       id: this.merchantInfo?.id,
-      code: this.merchantInfo?.code,
       name: this.merchantInfo?.name,
       address: this.merchantInfo?.address,
       bdStaffId: this.merchantInfo?.bdStaffId,
@@ -334,7 +333,6 @@ export class MerchantDetailDialogComponent implements OnInit, AfterViewChecked {
   buildIndividualForm() {
     this.merchantInfoForm = this.formBuilder.group({
       id: [''],
-      code: [''],
       name: [''],
       address: [''],
       bdStaffId: ['', [Validators.required]],
