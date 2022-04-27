@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import {
   AdminAccountControllerService,
-  ApiResponseSearchAndPaginationResponseAdminAccountEntity,
   MerchantControllerService,
 } from 'open-api-modules/dashboard-api-docs';
 import * as _ from 'lodash';
@@ -55,6 +54,10 @@ export class MerchantListService {
       requestBody['email' + QUERY_CONDITION_TYPE.LIKE_KEYWORD] = params.keyword;
       requestBody['mobile' + QUERY_CONDITION_TYPE.LIKE_KEYWORD] =
         params.keyword;
+      requestBody['userName' + QUERY_CONDITION_TYPE.LIKE_KEYWORD] =
+        params.keyword;
+      requestBody['productTypes' + QUERY_CONDITION_TYPE.LIKE_KEYWORD] =
+        params.keyword;
     }
 
     console.log('requestBody----', requestBody);
@@ -97,5 +100,4 @@ export class MerchantListService {
       true
     );
   }
-
 }
