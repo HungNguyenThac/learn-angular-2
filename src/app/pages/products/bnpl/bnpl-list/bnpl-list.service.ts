@@ -123,6 +123,8 @@ export class BnplListService {
       ] = params.keyword;
       requestBody['merchant.name' + QUERY_CONDITION_TYPE.LIKE_KEYWORD] =
         params.keyword;
+      requestBody['merchant.code' + QUERY_CONDITION_TYPE.LIKE_KEYWORD] =
+        params.keyword;
     }
 
     switch (params.accountClassification) {
