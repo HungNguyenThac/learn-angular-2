@@ -1,12 +1,4 @@
 import { Component, Input, OnInit } from '@angular/core';
-import {
-  CustomerInfo,
-  PaydayLoanTng,
-} from '../../../../../../../open-api-modules/dashboard-api-docs';
-import {
-  ApiResponseContract,
-  Contract,
-} from '../../../../../../../open-api-modules/loanapp-tng-api-docs';
 import { Subscription } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 import { MatDialog } from '@angular/material/dialog';
@@ -15,7 +7,6 @@ import { MultiLanguageService } from '../../../../../share/translate/multiLangua
 import { LoanListService } from '../../../payday-loan/loan-list/loan-list.service';
 import { BnplApplication } from '../../../../../../../open-api-modules/bnpl-api-docs';
 import { BnplListService } from '../../bnpl-list/bnpl-list.service';
-import {BNPL_STATUS} from "../../../../../core/common/enum/bnpl";
 
 @Component({
   selector: 'app-bnpl-contract',
@@ -66,7 +57,7 @@ export class BnplContractComponent implements OnInit {
   onClickDownload() {
     this.bnplListService.downloadBlobFile(
       this.loanContractFile,
-      this._loanDetail?.coreLoanId
+      this._loanDetail?.loanCode
     );
     this.notifier.info(
       this.multiLanguageService.instant('bnpl.loan_contract.downloading')
