@@ -494,17 +494,27 @@
                       <mat-form-field appearance="outline" class="w-100">
                         <mat-label>{{
                           "merchant.merchant_detail.admin_name" | translate
-                        }}</mat-label>
-                        <input
-                          matInput
-                          required
-                          appTypeMaxLength
-                          maxlength="256"
-                          [placeholder]="
-                            'merchant.merchant_detail.admin_name' | translate
-                          "
-                          formControlName="managerName"
-                        />
+                          }}</mat-label>
+                        <mat-select required formControlName="managerName">
+                          <mat-option>
+                            <ngx-mat-select-search
+                              [formControl]="selectManagerCtrl"
+                              [placeholderLabel]="
+                                'merchant.merchant_list.search_manager'
+                                  | translate
+                              "
+                              [noEntriesFoundLabel]="
+                                'merchant.merchant_list.empty_manager'
+                                  | translate
+                              "
+                            ></ngx-mat-select-search>
+                          </mat-option>
+                          <mat-option
+                            *ngFor="let manager of filteredManagerOptions"
+                            [value]="manager.value"
+                          >{{ manager.title }}
+                          </mat-option>
+                        </mat-select>
                         <show-errors
                           [control]="merchantInfoForm.controls['managerName']"
                           [controlLabel]="
@@ -522,7 +532,6 @@
                         }}</mat-label>
                         <input
                           matInput
-                          required
                           appTypeMaxLength
                           maxlength="256"
                           [placeholder]="
@@ -552,7 +561,6 @@
                           "merchant.merchant_detail.phone_number" | translate
                         }}</mat-label>
                         <input
-                          required
                           matInput
                           appPhoneNumberOnly
                           phone-number-validate
@@ -580,7 +588,6 @@
                         }}</mat-label>
                         <input
                           matInput
-                          required
                           appTypeMaxLength
                           maxlength="256"
                           email

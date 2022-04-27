@@ -89,12 +89,15 @@ export class MerchantDetailDialogComponent implements OnInit, AfterViewChecked {
   ];
 
   bdStaffOptions: any[] = [];
+  managerOptions: any[] = [];
   allMerchant: any[] = [];
   selectStaffCtrl: FormControl = new FormControl();
+  selectManagerCtrl: FormControl = new FormControl();
   selectMerchantCtrl: FormControl = new FormControl();
   productTypeControl: FormControl = new FormControl('', [Validators.required]);
   _onDestroy = new Subject<void>();
   filteredStaffOptions: any[] = [];
+  filteredManagerOptions: any[] = [];
   filteredMerchantOptions: any[] = [];
   isCreateMode: boolean = false;
   separatorKeysCodes: number[] = [ENTER, COMMA];
@@ -124,6 +127,12 @@ export class MerchantDetailDialogComponent implements OnInit, AfterViewChecked {
       .pipe(takeUntil(this._onDestroy))
       .subscribe(() => {
         this.filterStaffOptions();
+      });
+
+    this.selectManagerCtrl.valueChanges
+      .pipe(takeUntil(this._onDestroy))
+      .subscribe(() => {
+        this.filterManagerOptions();
       });
 
     this.selectMerchantCtrl.valueChanges
@@ -156,6 +165,19 @@ export class MerchantDetailDialogComponent implements OnInit, AfterViewChecked {
       search = search.toLowerCase();
     }
     this.filteredStaffOptions = this.bdStaffOptions.filter(
+      (item) => item.title.toLowerCase().indexOf(search) > -1
+    );
+  }
+
+  filterManagerOptions() {
+    let search = this.selectManagerCtrl.value;
+    if (!search) {
+      this.filteredManagerOptions = this.managerOptions;
+      return;
+    } else {
+      search = search.toLowerCase();
+    }
+    this.filteredManagerOptions = this.managerOptions.filter(
       (item) => item.title.toLowerCase().indexOf(search) > -1
     );
   }
@@ -261,6 +283,7 @@ export class MerchantDetailDialogComponent implements OnInit, AfterViewChecked {
       );
     this.isCreateMode = data?.isCreateMode;
     this.bdStaffOptions = data?.bdStaffOptions;
+    this.managerOptions = data?.managerOptions;
     this.allMerchant = data?.allMerchant
       ? data?.allMerchant.filter((merchant) => {
           return merchant.value != data?.merchantInfo?.id;
@@ -268,6 +291,7 @@ export class MerchantDetailDialogComponent implements OnInit, AfterViewChecked {
       : [];
     this.productTypes = this.merchantInfo?.productTypes || [];
     this.filterStaffOptions();
+    this.filterManagerOptions();
     this.filterMerchantOptions();
     this.initMerchantInfoForm();
   }
@@ -343,9 +367,9 @@ export class MerchantDetailDialogComponent implements OnInit, AfterViewChecked {
       description: [''],
       merchantParentId: [''],
       managerName: ['', Validators.required],
-      managerEmail: ['', [Validators.required, Validators.email]],
-      managerMobile: ['', Validators.required],
-      managerPosition: ['', Validators.required],
+      managerEmail: ['', [Validators.email]],
+      managerMobile: [''],
+      managerPosition: [''],
       merchantFeatures: [''],
     });
   }

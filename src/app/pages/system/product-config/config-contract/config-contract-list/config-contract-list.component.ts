@@ -21,6 +21,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { Title } from '@angular/platform-browser';
 import {
   CdeService,
+  ContractTemplate,
   CreateContractDto,
   UpdateContractDto,
 } from '../../../../../../../open-api-modules/monexcore-api-docs';
@@ -37,8 +38,6 @@ import { OverviewItemModel } from '../../../../../public/models/external/overvie
 import { ConfigContractListService } from './config-contract-list.service';
 import { ConfigContractSaveDialogComponent } from '../components/config-contract-save-dialog/config-contract-save-dialog.component';
 import { TableActionEventModel } from '../../../../../public/models/external/table-action-event.model';
-import { ContractTemplate } from '../../../../../../../open-api-modules/dashboard-api-docs';
-import { ApplicationDocumentSaveDialogComponent } from '../../config-document/components/application-document-save-dialog/application-document-save-dialog.component';
 
 @Component({
   selector: 'app-config-contract-list',
@@ -372,7 +371,7 @@ export class ConfigContractListComponent implements OnInit, OnDestroy {
           if (result?.data?.name != info?.name) {
             updateContractDto.name = result?.data?.name;
           }
-          if (result?.data?.statusFlowId != info?.statusFlowId) {
+          if (result?.data?.statusFlowId != info?.statusFlow?.id) {
             updateContractDto.statusFlowId = result?.data?.statusFlowId;
             updateContractDto.productId = result?.data?.productId;
           }

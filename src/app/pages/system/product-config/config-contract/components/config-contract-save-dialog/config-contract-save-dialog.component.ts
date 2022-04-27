@@ -19,7 +19,6 @@ import {
   RESPONSE_CODE,
   TABLE_ACTION_TYPE,
 } from '../../../../../../core/common/enum/operator';
-import * as _ from 'lodash';
 import { DisplayedFieldsModel } from '../../../../../../public/models/filter/displayed-fields.model';
 import { MultiLanguageService } from '../../../../../../share/translate/multiLanguageService';
 import { PageEvent } from '@angular/material/paginator/public-api';
@@ -33,12 +32,13 @@ import * as fromStore from '../../../../../../core/store';
 import { takeUntil } from 'rxjs/operators';
 import { NotificationService } from '../../../../../../core/services/notification.service';
 import * as PDFObject from 'pdfobject';
-import { ContractTemplate } from '../../../../../../../../open-api-modules/dashboard-api-docs';
 import * as htmlToPdfmake from 'html-to-pdfmake';
 import pdfmake from 'pdfmake/build/pdfmake';
 // import pdfFonts from 'pdfmake/build/vfs_fonts';
 // @ts-ignore
 import pdfFonts from '../../../../../../public/vfs_fonts/vfs_custom_fonts';
+import { ContractTemplate } from '../../../../../../../../open-api-modules/monexcore-api-docs';
+
 pdfmake.vfs = pdfFonts.pdfMake.vfs;
 
 pdfmake.fonts = {

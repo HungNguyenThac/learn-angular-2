@@ -62,9 +62,8 @@ export class MerchantListService {
     return requestBody;
   }
 
-  public getBDList() {
+  public getUserList() {
     let requestBody = {};
-    requestBody['position__e'] = 'BD';
     return this.adminAccountControllerService.getAdminAccounts(
       100,
       0,

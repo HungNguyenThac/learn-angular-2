@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { ApplicationDocumentControllerService as DashboardApplicationDocumentControllerService } from '../../../../../../../open-api-modules/dashboard-api-docs';
 import {
   ApplicationDocumentsService as MonexCoreApplicationDocumentControllerService,
   CreateDocumentDto,
@@ -15,7 +14,6 @@ import * as _ from 'lodash';
 })
 export class ConfigDocumentListService {
   constructor(
-    private dashboardApplicationDocumentControllerService: DashboardApplicationDocumentControllerService,
     private monexCoreApplicationDocumentControllerService: MonexCoreApplicationDocumentControllerService
   ) {}
 

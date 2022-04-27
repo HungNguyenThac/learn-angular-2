@@ -19,9 +19,9 @@ import { Observable, Subject } from 'rxjs';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { map, startWith, takeUntil } from 'rxjs/operators';
 import {
-  RequiredDocument,
-  RequiredDocumentGroup,
-} from '../../../../../../../../open-api-modules/dashboard-api-docs';
+  RequiredDocumentEntity,
+  RequiredDocumentGroupEntity,
+} from '../../../../../../../../open-api-modules/monexcore-api-docs';
 
 @Component({
   selector: 'app-application-document-save-dialog',
@@ -31,8 +31,8 @@ import {
 export class ApplicationDocumentSaveDialogComponent implements OnInit {
   applicationDocumentForm: FormGroup;
   title: string;
-  applicationDocument: RequiredDocument;
-  requiredDocumentGroupIdOptions: RequiredDocumentGroup[] = [];
+  applicationDocument: RequiredDocumentEntity;
+  requiredDocumentGroupIdOptions: RequiredDocumentGroupEntity[] = [];
   separatorKeysCodes: number[] = [ENTER, COMMA];
   filteredFileTypes: Observable<string[]>;
   fileTypes: string[] = [];
@@ -51,7 +51,7 @@ export class ApplicationDocumentSaveDialogComponent implements OnInit {
   fileTypeControl = new FormControl('', [Validators.required]);
   selectSearchCtrl: FormControl = new FormControl();
   _onDestroy = new Subject<void>();
-  filteredDocumentTypeItems: RequiredDocumentGroup[] = [];
+  filteredDocumentTypeItems: RequiredDocumentGroupEntity[] = [];
 
   constructor(
     @Inject(MAT_DIALOG_DATA) private data: any,

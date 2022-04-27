@@ -514,12 +514,6 @@ paths:
         required: true
         schema:
           type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/SignInfoDto'
-        required: true
       responses:
         "200":
           description: OK
@@ -582,7 +576,7 @@ paths:
           content:
             '*/*':
               schema:
-                $ref: '#/components/schemas/ApiResponseSigningSessionBnplEntity'
+                $ref: '#/components/schemas/ApiResponseContractBnplEntity'
   /v1/templateNotifications/{idTemplate}:
     delete:
       tags:
@@ -1161,33 +1155,6 @@ components:
         responseCode:
           type: integer
           format: int32
-    SignInfoDto:
-      required:
-      - name
-      - page
-      - position
-      type: object
-      properties:
-        name:
-          type: string
-          description: Chữ ký
-        page:
-          type: integer
-          description: Trang ký
-          format: int32
-        position:
-          $ref: '#/components/schemas/SigningPosition'
-      description: Thông tin về chữ ký
-    SigningPosition:
-      type: object
-      properties:
-        yposition:
-          type: integer
-          format: int32
-        xposition:
-          type: integer
-          format: int32
-      description: Vị trí chữ ký
     AdminSignContractAutomationRequest:
       required:
       - customerId
@@ -1284,6 +1251,15 @@ components:
           $ref: '#/components/schemas/SigningPosition'
         positionEpay:
           $ref: '#/components/schemas/SigningPosition'
+    SigningPosition:
+      type: object
+      properties:
+        xposition:
+          type: integer
+          format: int32
+        yposition:
+          type: integer
+          format: int32
     ApiResponseListTransactionNotificationEntity:
       type: object
       properties:
@@ -1319,11 +1295,11 @@ components:
           type: string
         date:
           type: string
-    ApiResponseSigningSessionBnplEntity:
+    ApiResponseContractBnplEntity:
       type: object
       properties:
         result:
-          $ref: '#/components/schemas/SigningSessionBnplEntity'
+          $ref: '#/components/schemas/ContractBnplEntity'
         errorCode:
           type: string
         message:
@@ -1331,12 +1307,18 @@ components:
         responseCode:
           type: integer
           format: int32
-    SigningSessionBnplEntity:
+    ContractBnplEntity:
       type: object
       properties:
         id:
           type: string
           description: Mã hợp đồng
+        customerAdditionalInfos:
+          type: object
+          additionalProperties:
+            type: string
+            description: Thông tin chi tiết khách hàng
+          description: Thông tin chi tiết khách hàng
         customerId:
           type: string
           description: Mã khách hàng
@@ -1374,15 +1356,6 @@ components:
         name:
           type: string
           description: Tên khách hàng
-        address:
-          type: string
-          description: Địa chỉ khách hàng
-        mobile:
-          type: string
-          description: Số điện thoại khách hàng
-        nationalId:
-          type: string
-          description: Mã quốc gia
         loanId:
           type: string
           description: Mã khoản vay
@@ -1390,9 +1363,6 @@ components:
           type: integer
           description: Tổng khoản vay
           format: int32
-        merchantWebsite:
-          type: string
-          description: Website của merchant
         createAt:
           type: string
           description: Thời gian tạo
@@ -1403,7 +1373,7 @@ components:
         documentPathSigned:
           type: string
           description: Đường dẫn đến tài liệu hợp đồng đã ký
-      description: Phiên ký hợp đồng
+      description: Hợp đồng bnpl
   securitySchemes:
     Bearer:
       type: apiKey

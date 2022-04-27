@@ -12,6 +12,9 @@ import {
   RESPONSE_CODE,
 } from '../../../../../core/common/enum/operator';
 import { NotificationService } from '../../../../../core/services/notification.service';
+import { MatDialog } from '@angular/material/dialog';
+import { BnplPaymentDialogComponent } from '../bnpl-payment-dialog/bnpl-payment-dialog.component';
+import { BNPL_PAYMENT_TYPE } from '../../../../../core/common/enum/bnpl';
 
 @Component({
   selector: 'app-bnpl-element',
@@ -27,6 +30,7 @@ export class BnplElementComponent implements OnInit {
     private multiLanguageService: MultiLanguageService,
     private bnplListService: BnplListService,
     private notifier: ToastrService,
+    private dialog: MatDialog,
     private notificationService: NotificationService
   ) {}
 
@@ -52,7 +56,6 @@ export class BnplElementComponent implements OnInit {
   }
 
   public changeStatusBnplApplication(event) {
-    console.log(event);
     const currentLoanStatusDisplay = this.multiLanguageService.instant(
       `bnpl.status.${this.loanDetail?.status.toLowerCase()}`
     );
@@ -103,20 +106,24 @@ export class BnplElementComponent implements OnInit {
     });
   }
 
-  public repaymentBnplApplication({ id, transactionAmount }) {
-    const confirmRepaymentRef = this.notificationService.openPrompt({
-      imgUrl: 'assets/img/payday-loan/warning-prompt-icon.png',
-      title: this.multiLanguageService.instant('common.are_you_sure'),
-      content: this.multiLanguageService.instant(
-        'bnpl.loan_info.prompt_repayment_period'
-      ),
-      primaryBtnText: this.multiLanguageService.instant('common.confirm'),
-      primaryBtnClass: 'btn-accent',
-      secondaryBtnText: this.multiLanguageService.instant('common.skip'),
+  public repaymentBnplApplication({ id, type }) {
+    const confirmRepaymentRef = this.dialog.open(BnplPaymentDialogComponent, {
+      panelClass: 'custom-info-dialog-container',
+      maxWidth: '800px',
+      width: '90%',
+      data: {
+        type: type,
+        periodTimes: {
+          periodTime1: this.loanDetail?.periodTime1,
+          periodTime2: this.loanDetail?.periodTime2,
+          periodTime3: this.loanDetail?.periodTime3,
+          periodTime4: this.loanDetail?.periodTime4,
+        },
+      },
     });
     confirmRepaymentRef.afterClosed().subscribe((result) => {
-      if (result === BUTTON_TYPE.PRIMARY) {
-        this.updatePaymentOrder({ id, transactionAmount });
+      if (result.type === BUTTON_TYPE.PRIMARY) {
+        this.updatePaymentOrder({ id, transactionAmount: result.data.amount });
       }
     });
   }
@@ -124,9 +131,7 @@ export class BnplElementComponent implements OnInit {
   public updatePaymentOrder({ id, transactionAmount }) {
     this.subManager.add(
       this.bnplListService
-        .repaymentBnplApplication(id, {
-          transactionAmount: transactionAmount,
-        })
+        .repaymentBnplApplication(id, transactionAmount)
         .subscribe((result) => {
           if (!result || result.responseCode !== RESPONSE_CODE.SUCCESS) {
             return this.notifier.error(

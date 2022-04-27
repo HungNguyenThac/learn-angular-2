@@ -26,10 +26,6 @@ import { NotificationService } from '../../../../../core/services/notification.s
 import { ToastrService } from 'ngx-toastr';
 import { MatDialog } from '@angular/material/dialog';
 import { Title } from '@angular/platform-browser';
-import {
-  RequiredDocument,
-  RequiredDocumentGroup,
-} from '../../../../../../../open-api-modules/dashboard-api-docs';
 import { Store } from '@ngrx/store';
 import * as fromStore from '../../../../../core/store';
 import * as fromActions from '../../../../../core/store';
@@ -41,7 +37,7 @@ import { TableActionButtonModel } from '../../../../../public/models/external/ta
 import { TableActionEventModel } from '../../../../../public/models/external/table-action-event.model';
 import { ApplicationDocumentSaveDialogComponent } from '../components/application-document-save-dialog/application-document-save-dialog.component';
 import {
-  CreateDocumentDto,
+  CreateDocumentDto, RequiredDocumentEntity, RequiredDocumentGroupEntity,
   UpdateDocumentDto,
 } from '../../../../../../../open-api-modules/monexcore-api-docs';
 import { GlobalConstants } from '../../../../../core/common/global-constants';
@@ -130,8 +126,8 @@ export class ConfigDocumentListComponent implements OnInit, OnDestroy {
     },
   ];
 
-  documentTypeList: RequiredDocumentGroup[];
-  expandedElementApplicationDocument: RequiredDocument;
+  documentTypeList: RequiredDocumentGroupEntity[];
+  expandedElementApplicationDocument: RequiredDocumentEntity;
   totalItems: number = 0;
   filterForm: FormGroup;
   dataSource: MatTableDataSource<any> = new MatTableDataSource([]);
@@ -588,7 +584,7 @@ export class ConfigDocumentListComponent implements OnInit, OnDestroy {
     );
   }
 
-  openUpdateApplicationDocumentDialog(element: RequiredDocument) {
+  openUpdateApplicationDocumentDialog(element: RequiredDocumentEntity) {
     const addGroupDialogRef = this.dialog.open(
       ApplicationDocumentSaveDialogComponent,
       {
@@ -686,10 +682,10 @@ export class ConfigDocumentListComponent implements OnInit, OnDestroy {
         return;
       }
       filterOption.options = this.documentTypeList.map(
-        (requiredDocumentGroupId: RequiredDocumentGroup) => {
+        (requiredDocumentGroup: RequiredDocumentGroupEntity) => {
           return {
-            title: requiredDocumentGroupId.name,
-            value: requiredDocumentGroupId.id,
+            title: requiredDocumentGroup.name,
+            value: requiredDocumentGroup.id,
           };
         }
       );

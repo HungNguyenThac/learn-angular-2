@@ -9,7 +9,10 @@ import {
   DATA_STATUS_TYPE,
 } from '../../../../../core/common/enum/operator';
 import { MultiLanguageService } from '../../../../../share/translate/multiLanguageService';
-import { MERCHANT_SELL_TYPE_TEXT } from '../../../../../core/common/enum/bnpl';
+import {
+  BNPL_PAYMENT_TYPE,
+  MERCHANT_SELL_TYPE_TEXT,
+} from '../../../../../core/common/enum/bnpl';
 
 @Component({
   selector: 'app-bnpl-detail-info',
@@ -45,7 +48,7 @@ export class BnplDetailInfoComponent implements OnInit {
     return [
       {
         title: this.multiLanguageService.instant('bnpl.loan_info.loan_code'),
-        value: this.loanDetail?.id,
+        value: this.loanDetail?.loanCode,
         type: DATA_CELL_TYPE.TEXT,
         format: null,
       },
@@ -109,7 +112,8 @@ export class BnplDetailInfoComponent implements OnInit {
       {
         title: this.multiLanguageService.instant('bnpl.loan_info.staff'),
         value:
-          this.loanDetail?.adminAccountEntity?.name || this.loanDetail?.staffId,
+          this.loanDetail?.adminAccountEntity?.username ||
+          this.loanDetail?.staffId,
         type: DATA_CELL_TYPE.TEXT,
         format: null,
       },
@@ -132,18 +136,16 @@ export class BnplDetailInfoComponent implements OnInit {
   }
 
   repaymentSinglePeriod() {
-    let payment = 0;
     this.triggerRepaymentBnplApplication.emit({
       id: this.loanDetail?.id,
-      transactionAmount: payment,
+      type: BNPL_PAYMENT_TYPE.SINGLE_PERIOD,
     });
   }
 
   repaymentAllPeriod() {
-    let payment = 0;
     this.triggerRepaymentBnplApplication.emit({
       id: this.loanDetail?.id,
-      transactionAmount: payment,
+      type: BNPL_PAYMENT_TYPE.ALL_PERIOD,
     });
   }
 
