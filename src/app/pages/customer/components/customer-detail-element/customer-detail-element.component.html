@@ -51,8 +51,8 @@
   <mat-tab
     [label]="'customer.tabs.check_info' | translate"
     *ngxPermissionsOnly="[
-      'dashboardEkyc:getEkycInfo',
-      'dashboardCustomers:getEkycInfoByCustomerId'
+      listPermission.getEKYCInfo,
+      listPermission.getEkycInfoByCustomerId
     ]"
   >
     <ng-template matTabContent>

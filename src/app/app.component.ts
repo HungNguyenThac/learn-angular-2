@@ -13,7 +13,6 @@ import { RESPONSE_CODE } from './core/common/enum/operator';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { filter, map, mergeMap } from 'rxjs/operators';
-import { GlobalConstants } from './core/common/global-constants';
 import { environment } from '../environments/environment';
 
 @Component({

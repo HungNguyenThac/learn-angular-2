@@ -24,6 +24,7 @@ import {
   AdminAccountControllerService,
   ApiResponseObject,
 } from '../../../../../../../open-api-modules/identity-api-docs';
+import { PermissionConstants } from '../../../../../core/common/constants/permission-constants';
 
 @Component({
   selector: 'app-dialog-user-info-update',
@@ -111,7 +112,11 @@ export class DialogUserInfoUpdateComponent implements OnInit {
   }
 
   getRoleList() {
-    if (!this.permissionsService.hasPermission('dashboardGroups:getGroups')) {
+    if (
+      !this.permissionsService.hasPermission(
+        PermissionConstants.DASHBOARD_PERMISSION.GET_LIST_GROUP
+      )
+    ) {
       return;
     }
 

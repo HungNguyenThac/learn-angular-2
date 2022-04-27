@@ -10,7 +10,8 @@ import { UserElementComponent } from './components/user-element/user-element.com
 import { UserDetailComponent } from './components/user-detail/user-detail.component';
 import { UserRoleComponent } from './components/user-role/user-role.component';
 import { UserTimeLogComponent } from './components/user-time-log/user-time-log.component';
-import {NgxPermissionsGuard} from "ngx-permissions";
+import { NgxPermissionsGuard } from 'ngx-permissions';
+import { PermissionConstants } from '../../../core/common/constants/permission-constants';
 
 export const UserRoutes: Routes = [
   {
@@ -23,7 +24,7 @@ export const UserRoutes: Routes = [
         data: {
           animation: true,
           permissions: {
-            only: ['dashboardAdminAccounts:getAdminAccounts'],
+            only: [PermissionConstants.DASHBOARD_PERMISSION.GET_LIST_ADMIN_ACCOUNT],
             redirectTo: '/',
           },
         },

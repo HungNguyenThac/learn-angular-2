@@ -17,6 +17,7 @@ import {
 import { AdminAccountEntity } from '../../../../../open-api-modules/dashboard-api-docs';
 import { ToastrService } from 'ngx-toastr';
 import { MenuItemModel } from '../../../public/models/external/menu-item.model';
+import { PermissionConstants } from '../../../core/common/constants/permission-constants';
 
 @Component({
   selector: 'app-header',
@@ -50,9 +51,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
       defaultIconClass: 'sprite-group-5-coin',
       activeIconClass: 'sprite-group-5-coin-white',
       canActivate: [
-        'dashboardHmgApplications:findApplications',
-        'dashboardApplications:findTngApplications',
-        'dashboardApplications:findVacApplications',
+        PermissionConstants.DASHBOARD_PERMISSION.GET_LIST_HMG,
+        PermissionConstants.DASHBOARD_PERMISSION.GET_LIST_TNG,
+        PermissionConstants.DASHBOARD_PERMISSION.GET_LIST_VAC,
       ],
       subItems: [
         {
@@ -62,7 +63,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
           iconClass: 'sprite-group-5-pl-24',
           path: '/product/payday-loan',
           queryParams: { groupName: 'HMG' },
-          canActivate: ['dashboardHmgApplications:findApplications'],
+          canActivate: [PermissionConstants.DASHBOARD_PERMISSION.GET_LIST_HMG],
         },
         {
           title: this.multiLanguageService.instant(
@@ -71,7 +72,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
           iconClass: 'sprite-group-5-pl-24',
           path: '/product/payday-loan',
           queryParams: { groupName: 'TNG' },
-          canActivate: ['dashboardApplications:findTngApplications'],
+          canActivate: [PermissionConstants.DASHBOARD_PERMISSION.GET_LIST_TNG],
         },
         {
           title: this.multiLanguageService.instant(
@@ -80,7 +81,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
           iconClass: 'sprite-group-5-pl-24',
           path: '/product/payday-loan',
           queryParams: { groupName: 'VAC' },
-          canActivate: ['dashboardApplications:findVacApplications'],
+          canActivate: [PermissionConstants.DASHBOARD_PERMISSION.GET_LIST_VAC],
         },
       ],
       path: '/product/payday-loan',
@@ -91,7 +92,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
       defaultIconClass: 'sprite-group-5-customer',
       activeIconClass: 'sprite-group-5-customer-white',
       path: '/customer/list',
-      canActivate: ['dashboardCustomers:getCustomers'],
+      canActivate: [PermissionConstants.DASHBOARD_PERMISSION.GET_LIST_CUSTOMER],
     },
     {
       navItem: NAV_ITEM.MERCHANT,
@@ -99,11 +100,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
       defaultIconClass: 'sprite-group-8-hand-shake',
       activeIconClass: 'sprite-group-8-hand-shake-white',
       path: '/system/merchant/list',
-      canActivate: ['dashboardMerchants:getMerchants'],
+      canActivate: [PermissionConstants.DASHBOARD_PERMISSION.GET_LIST_MERCHANT],
     },
     {
       navItem: NAV_ITEM.BNPL,
-      canActivate: ['dashboardBnplApplications:findBnplApplications'],
+      canActivate: [PermissionConstants.DASHBOARD_PERMISSION.GET_LIST_BNPL],
       title: this.multiLanguageService.instant('header.navigation.bnpl'),
       defaultIconClass: 'sprite-group-5-shield-check',
       activeIconClass: 'sprite-group-5-shield-check-white',

@@ -21,6 +21,7 @@ import { Subscription } from 'rxjs';
 import { AdminAccountEntity } from '../../../../../../open-api-modules/dashboard-api-docs';
 import * as fromSelectors from '../../../../core/store/selectors';
 import { Observable } from 'rxjs/Observable';
+import {PermissionConstants} from "../../../../core/common/constants/permission-constants";
 
 @Component({
   selector: 'app-profile-toolbar',
@@ -33,6 +34,11 @@ export class ProfileToolbarComponent implements OnInit, OnDestroy {
   customerInfo$: Observable<AdminAccountEntity>;
   shortName: string = '0';
   userInfo: AdminAccountEntity;
+  listPermission = {
+    getListAdminAccount: PermissionConstants.DASHBOARD_PERMISSION.GET_LIST_ADMIN_ACCOUNT,
+    getApplicationDocuments: PermissionConstants.APPLICATION_DOCUMENT_PERMISSION.GET_LIST,
+    getContractTemplate: PermissionConstants.CONTRACT_TEMPLATE_PERMISSION.GET_LIST
+  }
 
   constructor(
     private adminAccountControllerService: AdminAccountControllerService,

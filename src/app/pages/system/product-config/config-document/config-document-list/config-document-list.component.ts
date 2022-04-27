@@ -40,7 +40,7 @@ import {
   CreateDocumentDto, RequiredDocumentEntity, RequiredDocumentGroupEntity,
   UpdateDocumentDto,
 } from '../../../../../../../open-api-modules/monexcore-api-docs';
-import { GlobalConstants } from '../../../../../core/common/global-constants';
+import { PermissionConstants } from '../../../../../core/common/constants/permission-constants';
 import { NgxPermissionsService } from 'ngx-permissions';
 
 @Component({
@@ -794,22 +794,22 @@ export class ConfigDocumentListComponent implements OnInit, OnDestroy {
   private async _checkUserPermissions() {
     this.breadcrumbOptions.showBtnAdd =
       await this.permissionsService.hasPermission(
-        GlobalConstants.CHANGE_APPLICATION_DOCUMENT.CREATE
+        PermissionConstants.APPLICATION_DOCUMENT_PERMISSION.CREATE
       );
 
     this.userHasPermissions.deleteDocument =
       await this.permissionsService.hasPermission(
-        GlobalConstants.CHANGE_APPLICATION_DOCUMENT.DELETE
+        PermissionConstants.APPLICATION_DOCUMENT_PERMISSION.DELETE
       );
 
     this.userHasPermissions.updateDocument =
       await this.permissionsService.hasPermission(
-        GlobalConstants.CHANGE_APPLICATION_DOCUMENT.UPDATE
+        PermissionConstants.APPLICATION_DOCUMENT_PERMISSION.UPDATE
       );
 
     this.userHasPermissions.getDocumentType =
       await this.permissionsService.hasPermission(
-        GlobalConstants.CHANGE_APPLICATION_DOCUMENT_TYPE.GET
+        PermissionConstants.APPLICATION_DOCUMENT_TYPE_PERMISSION.GET_LIST
       );
 
     this.displaySelectBtn();

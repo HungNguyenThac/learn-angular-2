@@ -10,9 +10,10 @@ import { MerchantElementComponent } from './components/merchant-element/merchant
 import { MerchantDetailComponent } from './components/merchant-detail/merchant-detail.component';
 import { MerchantLogoComponent } from './components/merchant-logo/merchant-logo.component';
 import { MerchantQrComponent } from './components/merchant-qr/merchant-qr.component';
-import { TitleConstants } from '../../../core/common/providers/title-constants';
+import { TitleConstants } from '../../../core/common/constants/title-constants';
 import { CKEditorModule } from 'ckeditor4-angular';
 import { NgxPermissionsGuard } from 'ngx-permissions';
+import { PermissionConstants } from '../../../core/common/constants/permission-constants';
 
 export const MerchantRoutes: Routes = [
   {
@@ -26,7 +27,7 @@ export const MerchantRoutes: Routes = [
           title: TitleConstants.TITLE_VALUE.MERCHANT_LIST,
           animation: true,
           permissions: {
-            only: ['dashboardMerchants:getMerchants'],
+            only: [PermissionConstants.DASHBOARD_PERMISSION.GET_LIST_MERCHANT],
             redirectTo: '/',
           },
         },

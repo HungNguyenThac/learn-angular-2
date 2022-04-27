@@ -5,7 +5,7 @@ import { Store } from '@ngrx/store';
 import * as fromStore from './../../../core/store';
 import * as fromActions from './../../../core/store';
 import { Title } from '@angular/platform-browser';
-import { GlobalConstants } from '../../../core/common/global-constants';
+import { PermissionConstants } from '../../../core/common/constants/permission-constants';
 import { MultiLanguageService } from '../../../share/translate/multiLanguageService';
 
 @Component({

@@ -1,8 +1,9 @@
 import { LoanListComponent } from './payday-loan/loan-list/loan-list.component';
 import { Routes } from '@angular/router';
 import { NgxPermissionsGuard } from 'ngx-permissions';
-import { TitleConstants } from '../../core/common/providers/title-constants';
-import {BnplListComponent} from "./bnpl/bnpl-list/bnpl-list.component";
+import { TitleConstants } from '../../core/common/constants/title-constants';
+import { BnplListComponent } from './bnpl/bnpl-list/bnpl-list.component';
+import { PermissionConstants } from '../../core/common/constants/permission-constants';
 
 export const ProductRoutes: Routes = [
   {
@@ -17,9 +18,9 @@ export const ProductRoutes: Routes = [
           animation: true,
           permissions: {
             only: [
-              'dashboardHmgApplications:findApplications',
-              'dashboardApplications:findTngApplications',
-              'dashboardApplications:findVacApplications',
+              PermissionConstants.DASHBOARD_PERMISSION.GET_LIST_HMG,
+              PermissionConstants.DASHBOARD_PERMISSION.GET_LIST_TNG,
+              PermissionConstants.DASHBOARD_PERMISSION.GET_LIST_VAC,
             ],
             redirectTo: '/',
           },
@@ -33,9 +34,7 @@ export const ProductRoutes: Routes = [
           title: TitleConstants.TITLE_VALUE.BNPL,
           animation: true,
           permissions: {
-            only: [
-              'dashboardBnplApplications:findBnplApplications',
-            ],
+            only: [PermissionConstants.DASHBOARD_PERMISSION.GET_LIST_BNPL],
             redirectTo: '/',
           },
         },
