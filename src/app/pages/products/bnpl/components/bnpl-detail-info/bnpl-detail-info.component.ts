@@ -97,12 +97,12 @@ export class BnplDetailInfoComponent implements OnInit {
         type: DATA_CELL_TYPE.DATETIME,
         format: 'HH:mm:ss dd/MM/yyyy',
       },
-      {
-        title: this.multiLanguageService.instant('bnpl.loan_info.repayment_at'),
-        value: this.loanDetail?.completedAt,
-        type: DATA_CELL_TYPE.DATETIME,
-        format: 'HH:mm:ss dd/MM/yyyy',
-      },
+      // {
+      //   title: this.multiLanguageService.instant('bnpl.loan_info.repayment_at'),
+      //   value: this.loanDetail?.completedAt,
+      //   type: DATA_CELL_TYPE.DATETIME,
+      //   format: 'HH:mm:ss dd/MM/yyyy',
+      // },
       {
         title: this.multiLanguageService.instant('bnpl.loan_info.completed_at'),
         value: this.loanDetail?.completedAt,
