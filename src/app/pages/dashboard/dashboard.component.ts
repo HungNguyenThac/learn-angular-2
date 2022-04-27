@@ -3,18 +3,16 @@ import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { Color, Label, MultiDataSet } from 'ng2-charts';
 import { ChartDataSets, ChartType } from 'chart.js';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
-import { MatSort, Sort } from '@angular/material/sort';
+import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { FormControl, FormBuilder, FormGroup } from '@angular/forms';
-import { GlobalConstants } from '../../core/common/global-constants';
+import { FormBuilder } from '@angular/forms';
 import { Title } from '@angular/platform-browser';
 import { Store } from '@ngrx/store';
 import * as fromStore from '../../core/store';
 import * as fromActions from '../../core/store';
 import { MultiLanguageService } from '../../share/translate/multiLanguageService';
 import { NAV_ITEM } from '../../core/common/enum/operator';
-import {DisplayedFieldsModel} from "../../public/models/filter/displayed-fields.model";
-import {environment} from "../../../environments/environment";
+import { DisplayedFieldsModel } from '../../public/models/filter/displayed-fields.model';
 
 export interface PeriodicElement {
   name: string;

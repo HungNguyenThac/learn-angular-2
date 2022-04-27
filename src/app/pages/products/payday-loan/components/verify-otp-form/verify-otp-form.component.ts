@@ -8,7 +8,7 @@ import {
   OnInit,
   Output,
 } from '@angular/core';
-import { GlobalConstants } from '../../../../../core/common/global-constants';
+import { PermissionConstants } from '../../../../../core/common/constants/permission-constants';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import * as moment from 'moment';
 import { environment } from '../../../../../../environments/environment';

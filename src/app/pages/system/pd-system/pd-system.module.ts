@@ -4,7 +4,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { SharedModule } from '../../../share/shared.module';
 import { TranslateModule } from '@ngx-translate/core';
 import { FormsModule } from '@angular/forms';
-import { TitleConstants } from '../../../core/common/providers/title-constants';
+import { TitleConstants } from '../../../core/common/constants/title-constants';
 import { PdAnswersListComponent } from './pd-answers/pd-answers-list/pd-answers-list.component';
 import { PdGroupListComponent } from './pd-group/pd-group-list/pd-group-list.component';
 import { PdModelListComponent } from './pd-model/pd-model-list/pd-model-list.component';

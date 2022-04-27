@@ -18,7 +18,7 @@ import { ToastrService } from 'ngx-toastr';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { Title } from '@angular/platform-browser';
-import { GlobalConstants } from '../../../../../core/common/global-constants';
+import { PermissionConstants } from '../../../../../core/common/constants/permission-constants';
 import { Sort } from '@angular/material/sort';
 import { FilterEventModel } from '../../../../../public/models/filter/filter-event.model';
 import { PageEvent } from '@angular/material/paginator/public-api';

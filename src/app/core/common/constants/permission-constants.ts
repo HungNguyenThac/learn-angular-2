@@ -1,4 +1,4 @@
-export class GlobalConstants {
+export class PermissionConstants {
   public static VIEW_LOAN_TNG_STATUS_PERMISSION: any = {
     INITIALIZED: 'dashboardApplications:findInitializeTngLoan',
     AUCTION: 'dashboardApplications:findPendingForMatchingTngLoan',
@@ -65,18 +65,40 @@ export class GlobalConstants {
     CONTRACT_REJECTED: 'paydays:updateStatusContractRejectVacLoan',
   };
 
-  public static CHANGE_APPLICATION_DOCUMENT_TYPE: any = {
-    GET: 'dashboardApplicationDocuments:getApplicationDocumentTypes',
+  public static APPLICATION_DOCUMENT_TYPE_PERMISSION: any = {
+    GET_LIST: 'dashboardApplicationDocuments:getApplicationDocumentTypes',
     CREATE: 'applicationDocuments:createApplicationDocumentType',
     UPDATE: 'applicationDocuments:updateApplicationDocumentType',
     DELETE: 'applicationDocuments:deleteApplicationDocumentType',
   };
 
-  public static CHANGE_APPLICATION_DOCUMENT: any = {
+  public static APPLICATION_DOCUMENT_PERMISSION: any = {
+    GET_LIST: 'dashboardApplicationDocuments:getApplicationDocuments',
     CREATE: 'applicationDocuments:createApplicationDocument',
     UPDATE: 'applicationDocuments:updateApplicationDocument',
     DELETE: 'applicationDocuments:deleteApplicationDocument',
   };
+
+  public static CONTRACT_TEMPLATE_PERMISSION: any = {
+    GET_LIST: 'dashboardContractTemplates:getContractTemplates',
+  };
+
+  public static DASHBOARD_PERMISSION: any = {
+    GET_LIST_BNPL: 'dashboardBnplApplications:findBnplApplications',
+    GET_BY_ID_BNPL: 'dashboardBnplApplications:getBnplApplicationById',
+    GET_LIST_TNG: 'dashboardApplications:findTngApplications',
+    GET_LIST_HMG: 'dashboardHmgApplications:findApplications',
+    GET_BY_ID_HMG: 'dashboardHmgApplications:getLoanById',
+    GET_LIST_VAC: 'dashboardApplications:findVacApplications',
+    GET_LIST_MERCHANT: 'dashboardMerchants:getMerchants',
+    GET_LIST_CUSTOMER: 'dashboardCustomers:getCustomers',
+    GET_BY_ID_CUSTOMER: 'dashboardCustomers:getCustomerById',
+    GET_LIST_ADMIN_ACCOUNT: 'dashboardAdminAccounts:getAdminAccounts',
+    GET_BY_ID_ADMIN_ACCOUNT: 'dashboardAdminAccounts:getAdminAccountById',
+    GET_EKYC_INFO: 'dashboardEkyc:getEkycInfo',
+    GET_LIST_EKYC_INFO_BY_CUSTOMER_ID: 'dashboardCustomers:getEkycInfoByCustomerId',
+    GET_LIST_GROUP: 'dashboardGroups:getGroups',
+  }
 
   public static VIEW_BNPL_STATUS_PERMISSION: any = {
     PENDING: 'dashboardApplications:findPendingBnplLoan',

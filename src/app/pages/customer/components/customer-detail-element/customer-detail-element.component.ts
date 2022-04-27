@@ -1,4 +1,11 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output,
+} from '@angular/core';
 import {
   ApiResponseCustomerInfo,
   ApiResponseSearchAndPaginationResponseBank,
@@ -12,17 +19,15 @@ import {
 
 import { CustomerDetailService } from './customer-detail.service';
 import { Subscription } from 'rxjs';
-import { OnDestroy } from '@angular/core';
 import { RESPONSE_CODE } from '../../../../core/common/enum/operator';
 import { ToastrService } from 'ngx-toastr';
 import { MultiLanguageService } from '../../../../share/translate/multiLanguageService';
 import { NotificationService } from '../../../../core/services/notification.service';
 import {
-  ApiResponseListCity,
-  ApiResponseListDistrict,
   CityControllerService,
   DistrictControllerService,
 } from '../../../../../../open-api-modules/customer-api-docs';
+import {PermissionConstants} from "../../../../core/common/constants/permission-constants";
 
 @Component({
   selector: 'app-customer-detail-element',
@@ -53,6 +58,11 @@ export class CustomerDetailElementComponent implements OnInit, OnDestroy {
 
   subManager = new Subscription();
 
+  listPermission = {
+    getEKYCInfo: PermissionConstants.DASHBOARD_PERMISSION.GET_EKYC_INFO,
+    getEkycInfoByCustomerId: PermissionConstants.DASHBOARD_PERMISSION.GET_LIST_EKYC_INFO_BY_CUSTOMER_ID
+  }
+
   constructor(
     private customerDetailService: CustomerDetailService,
     private cityControllerService: CityControllerService,
@@ -64,8 +74,7 @@ export class CustomerDetailElementComponent implements OnInit, OnDestroy {
     private notificationService: NotificationService
   ) {}
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   public refreshContent() {
     setTimeout(() => {

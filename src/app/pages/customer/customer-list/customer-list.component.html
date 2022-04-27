@@ -27,7 +27,7 @@
 
 <ng-template #detailElementTemplate>
   <app-customer-detail-element
-    *ngxPermissionsOnly="['dashboardCustomers:getCustomerById']"
+    *ngxPermissionsOnly="[listPermission.getCustomerById]"
     class="w-100"
     [customerId]="expandedElementId"
     [userInfo]="expandedElementCustomer"

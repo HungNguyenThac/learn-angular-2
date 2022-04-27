@@ -5,7 +5,7 @@ import { MainLayoutComponent } from './layout/main-layout/main-layout.component'
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { AuthGuardService as AuthGuard } from './core/services/auth-guard.service';
 import { CustomPreloadingStrategy } from './core/common/providers/custom-preloading-strategy';
-import { TitleConstants } from './core/common/providers/title-constants';
+import { TitleConstants } from './core/common/constants/title-constants';
 
 const routes: Routes = [
   {

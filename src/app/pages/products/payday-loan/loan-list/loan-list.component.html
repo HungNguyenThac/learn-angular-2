@@ -22,16 +22,15 @@
   [totalItems]="totalItems"
   [overviewItems]="overviewItems"
   [showRefreshBtn]="true"
-
 >
 </app-base-management-layout>
 
 <ng-template #detailElementTemplate>
   <app-loan-detail
     *ngxPermissionsOnly="[
-      'dashboardApplications:findTngApplications',
-      'dashboardApplications:findVacApplications',
-      'dashboardHmgApplications:getLoanById'
+      listPermission.getListTNG,
+      listPermission.getListVAC,
+      listPermission.getByIdHMG
     ]"
     (detectUpdateLoanAfterSign)="updateElementInfo($event)"
     (loanDetailTriggerUpdateStatus)="updateElementInfo($event)"

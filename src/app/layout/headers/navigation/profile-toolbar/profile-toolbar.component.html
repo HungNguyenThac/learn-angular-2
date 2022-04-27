@@ -22,7 +22,7 @@
       <mat-menu #settingMenu="matMenu">
         <span>
           <button
-            *ngxPermissionsOnly="['dashboardAdminAccounts:getAdminAccounts']"
+            *ngxPermissionsOnly="[listPermission.getListAdminAccount]"
             (click)="onClickManageUser()"
             class="gap-1"
             mat-menu-item
@@ -46,9 +46,7 @@
             </div>
           </button>
           <button
-            *ngxPermissionsOnly="[
-              'dashboardApplicationDocuments:getApplicationDocuments'
-            ]"
+            *ngxPermissionsOnly="[listPermission.getApplicationDocuments]"
             (click)="onClickConfigDocument()"
             class="gap-1"
             mat-menu-item
@@ -58,7 +56,7 @@
             </div>
           </button>
           <button
-            *ngxPermissionsOnly="['dashboardMerchants:getMerchants']"
+            *ngxPermissionsOnly="[listPermission.getContractTemplate]"
             (click)="onClickConfigContract()"
             class="gap-1"
             mat-menu-item
@@ -181,7 +179,7 @@
         <!--        </button>-->
 
         <button
-          *ngxPermissionsOnly="['dashboardAdminAccounts:getAdminAccounts']"
+          *ngxPermissionsOnly="[listPermission.getListAdminAccount]"
           (click)="onClickManageUser()"
           class="gap-1"
           mat-menu-item

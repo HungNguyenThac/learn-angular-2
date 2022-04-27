@@ -35,7 +35,7 @@ import formatPunishStartTimeHmg from '../../../../../core/utils/format-punish-st
 import formatPunishStartTimeTng from '../../../../../core/utils/format-punish-start-time-tng';
 import { environment } from '../../../../../../environments/environment';
 import { NgxPermissionsService } from 'ngx-permissions';
-import { GlobalConstants } from '../../../../../core/common/global-constants';
+import { PermissionConstants } from '../../../../../core/common/constants/permission-constants';
 
 @Component({
   selector: 'app-loan-detail-info',
@@ -1535,114 +1535,114 @@ export class LoanDetailInfoComponent implements OnInit, OnDestroy {
   private async _checkPermissionTng() {
     this.userHasPermissions.loanTngChangeStatus.initialized =
       await this.permissionsService.hasPermission(
-        GlobalConstants.CHANGE_LOAN_TNG_STATUS_PERMISSION.INITIALIZED
+        PermissionConstants.CHANGE_LOAN_TNG_STATUS_PERMISSION.INITIALIZED
       );
     this.userHasPermissions.loanTngChangeStatus.auction =
       await this.permissionsService.hasPermission(
-        GlobalConstants.CHANGE_LOAN_TNG_STATUS_PERMISSION.AUCTION
+        PermissionConstants.CHANGE_LOAN_TNG_STATUS_PERMISSION.AUCTION
       );
     this.userHasPermissions.loanTngChangeStatus.document_awaiting =
       await this.permissionsService.hasPermission(
-        GlobalConstants.CHANGE_LOAN_TNG_STATUS_PERMISSION.DOCUMENT_AWAITING
+        PermissionConstants.CHANGE_LOAN_TNG_STATUS_PERMISSION.DOCUMENT_AWAITING
       );
     this.userHasPermissions.loanTngChangeStatus.documentation_complete =
       await this.permissionsService.hasPermission(
-        GlobalConstants.CHANGE_LOAN_TNG_STATUS_PERMISSION.DOCUMENTATION_COMPLETE
+        PermissionConstants.CHANGE_LOAN_TNG_STATUS_PERMISSION.DOCUMENTATION_COMPLETE
       );
     this.userHasPermissions.loanTngChangeStatus.funded =
       await this.permissionsService.hasPermission(
-        GlobalConstants.CHANGE_LOAN_TNG_STATUS_PERMISSION.FUNDED
+        PermissionConstants.CHANGE_LOAN_TNG_STATUS_PERMISSION.FUNDED
       );
     this.userHasPermissions.loanTngChangeStatus.contract_accepted =
       await this.permissionsService.hasPermission(
-        GlobalConstants.CHANGE_LOAN_TNG_STATUS_PERMISSION.CONTRACT_ACCEPTED
+        PermissionConstants.CHANGE_LOAN_TNG_STATUS_PERMISSION.CONTRACT_ACCEPTED
       );
     this.userHasPermissions.loanTngChangeStatus.awaiting_disbursement =
       await this.permissionsService.hasPermission(
-        GlobalConstants.CHANGE_LOAN_TNG_STATUS_PERMISSION.AWAITING_DISBURSEMENT
+        PermissionConstants.CHANGE_LOAN_TNG_STATUS_PERMISSION.AWAITING_DISBURSEMENT
       );
     this.userHasPermissions.loanTngChangeStatus.disbursed =
       await this.permissionsService.hasPermission(
-        GlobalConstants.CHANGE_LOAN_TNG_STATUS_PERMISSION.DISBURSED
+        PermissionConstants.CHANGE_LOAN_TNG_STATUS_PERMISSION.DISBURSED
       );
     this.userHasPermissions.loanTngChangeStatus.in_repayment =
       await this.permissionsService.hasPermission(
-        GlobalConstants.CHANGE_LOAN_TNG_STATUS_PERMISSION.IN_REPAYMENT
+        PermissionConstants.CHANGE_LOAN_TNG_STATUS_PERMISSION.IN_REPAYMENT
       );
     this.userHasPermissions.loanTngChangeStatus.completed =
       await this.permissionsService.hasPermission(
-        GlobalConstants.CHANGE_LOAN_TNG_STATUS_PERMISSION.COMPLETED
+        PermissionConstants.CHANGE_LOAN_TNG_STATUS_PERMISSION.COMPLETED
       );
     this.userHasPermissions.loanTngChangeStatus.rejected =
       await this.permissionsService.hasPermission(
-        GlobalConstants.CHANGE_LOAN_TNG_STATUS_PERMISSION.REJECTED
+        PermissionConstants.CHANGE_LOAN_TNG_STATUS_PERMISSION.REJECTED
       );
     this.userHasPermissions.loanTngChangeStatus.withdraw =
       await this.permissionsService.hasPermission(
-        GlobalConstants.CHANGE_LOAN_TNG_STATUS_PERMISSION.WITHDRAW
+        PermissionConstants.CHANGE_LOAN_TNG_STATUS_PERMISSION.WITHDRAW
       );
     this.userHasPermissions.loanTngChangeStatus.contract_rejected =
       await this.permissionsService.hasPermission(
-        GlobalConstants.CHANGE_LOAN_TNG_STATUS_PERMISSION.CONTRACT_REJECTED
+        PermissionConstants.CHANGE_LOAN_TNG_STATUS_PERMISSION.CONTRACT_REJECTED
       );
   }
 
   private async _checkPermissionVac() {
     this.userHasPermissions.loanVacChangeStatus.initialized =
       await this.permissionsService.hasPermission(
-        GlobalConstants.CHANGE_LOAN_VAC_STATUS_PERMISSION.INITIALIZED
+        PermissionConstants.CHANGE_LOAN_VAC_STATUS_PERMISSION.INITIALIZED
       );
     this.userHasPermissions.loanVacChangeStatus.auction =
       await this.permissionsService.hasPermission(
-        GlobalConstants.CHANGE_LOAN_VAC_STATUS_PERMISSION.AUCTION
+        PermissionConstants.CHANGE_LOAN_VAC_STATUS_PERMISSION.AUCTION
       );
     this.userHasPermissions.loanVacChangeStatus.document_awaiting =
       await this.permissionsService.hasPermission(
-        GlobalConstants.CHANGE_LOAN_VAC_STATUS_PERMISSION.DOCUMENT_AWAITING
+        PermissionConstants.CHANGE_LOAN_VAC_STATUS_PERMISSION.DOCUMENT_AWAITING
       );
     this.userHasPermissions.loanVacChangeStatus.documentation_complete =
       await this.permissionsService.hasPermission(
-        GlobalConstants.CHANGE_LOAN_VAC_STATUS_PERMISSION.DOCUMENTATION_COMPLETE
+        PermissionConstants.CHANGE_LOAN_VAC_STATUS_PERMISSION.DOCUMENTATION_COMPLETE
       );
     this.userHasPermissions.loanVacChangeStatus.funded =
       await this.permissionsService.hasPermission(
-        GlobalConstants.CHANGE_LOAN_VAC_STATUS_PERMISSION.FUNDED
+        PermissionConstants.CHANGE_LOAN_VAC_STATUS_PERMISSION.FUNDED
       );
     this.userHasPermissions.loanVacChangeStatus.contract_awaiting =
       await this.permissionsService.hasPermission(
-        GlobalConstants.CHANGE_LOAN_VAC_STATUS_PERMISSION.CONTRACT_ACCEPTED
+        PermissionConstants.CHANGE_LOAN_VAC_STATUS_PERMISSION.CONTRACT_ACCEPTED
       );
     this.userHasPermissions.loanVacChangeStatus.contract_accepted =
       await this.permissionsService.hasPermission(
-        GlobalConstants.CHANGE_LOAN_VAC_STATUS_PERMISSION.CONTRACT_ACCEPTED
+        PermissionConstants.CHANGE_LOAN_VAC_STATUS_PERMISSION.CONTRACT_ACCEPTED
       );
     this.userHasPermissions.loanVacChangeStatus.awaiting_disbursement =
       await this.permissionsService.hasPermission(
-        GlobalConstants.CHANGE_LOAN_VAC_STATUS_PERMISSION.AWAITING_DISBURSEMENT
+        PermissionConstants.CHANGE_LOAN_VAC_STATUS_PERMISSION.AWAITING_DISBURSEMENT
       );
     this.userHasPermissions.loanVacChangeStatus.disbursed =
       await this.permissionsService.hasPermission(
-        GlobalConstants.CHANGE_LOAN_VAC_STATUS_PERMISSION.DISBURSED
+        PermissionConstants.CHANGE_LOAN_VAC_STATUS_PERMISSION.DISBURSED
       );
     this.userHasPermissions.loanVacChangeStatus.in_repayment =
       await this.permissionsService.hasPermission(
-        GlobalConstants.CHANGE_LOAN_VAC_STATUS_PERMISSION.IN_REPAYMENT
+        PermissionConstants.CHANGE_LOAN_VAC_STATUS_PERMISSION.IN_REPAYMENT
       );
     this.userHasPermissions.loanVacChangeStatus.completed =
       await this.permissionsService.hasPermission(
-        GlobalConstants.CHANGE_LOAN_VAC_STATUS_PERMISSION.COMPLETED
+        PermissionConstants.CHANGE_LOAN_VAC_STATUS_PERMISSION.COMPLETED
       );
     this.userHasPermissions.loanVacChangeStatus.rejected =
       await this.permissionsService.hasPermission(
-        GlobalConstants.CHANGE_LOAN_VAC_STATUS_PERMISSION.REJECTED
+        PermissionConstants.CHANGE_LOAN_VAC_STATUS_PERMISSION.REJECTED
       );
     this.userHasPermissions.loanVacChangeStatus.withdraw =
       await this.permissionsService.hasPermission(
-        GlobalConstants.CHANGE_LOAN_VAC_STATUS_PERMISSION.WITHDRAW
+        PermissionConstants.CHANGE_LOAN_VAC_STATUS_PERMISSION.WITHDRAW
       );
     this.userHasPermissions.loanVacChangeStatus.contract_rejected =
       await this.permissionsService.hasPermission(
-        GlobalConstants.CHANGE_LOAN_VAC_STATUS_PERMISSION.CONTRACT_REJECTED
+        PermissionConstants.CHANGE_LOAN_VAC_STATUS_PERMISSION.CONTRACT_REJECTED
       );
   }
 

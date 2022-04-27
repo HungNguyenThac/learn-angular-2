@@ -36,7 +36,7 @@ import { TableActionEventModel } from '../../../../../public/models/external/tab
 import * as _ from 'lodash';
 import { DocumentTypeSaveDialogComponent } from '../components/document-type-save-dialog/document-type-save-dialog.component';
 import { NgxPermissionsService } from 'ngx-permissions';
-import { GlobalConstants } from '../../../../../core/common/global-constants';
+import { PermissionConstants } from '../../../../../core/common/constants/permission-constants';
 import {
   CreateDocumentTypeDto, RequiredDocumentGroupEntity,
   UpdateDocumentTypeDto,
@@ -674,17 +674,17 @@ export class DocumentTypeListComponent implements OnInit, OnDestroy {
   private async _checkUserPermissions() {
     this.breadcrumbOptions.showBtnAdd =
       await this.permissionsService.hasPermission(
-        GlobalConstants.CHANGE_APPLICATION_DOCUMENT_TYPE.CREATE
+        PermissionConstants.APPLICATION_DOCUMENT_TYPE_PERMISSION.CREATE
       );
 
     this.userHasPermissions.deleteDocumentType =
       await this.permissionsService.hasPermission(
-        GlobalConstants.CHANGE_APPLICATION_DOCUMENT_TYPE.DELETE
+        PermissionConstants.APPLICATION_DOCUMENT_TYPE_PERMISSION.DELETE
       );
 
     this.userHasPermissions.updateDocumentType =
       await this.permissionsService.hasPermission(
-        GlobalConstants.CHANGE_APPLICATION_DOCUMENT_TYPE.UPDATE
+        PermissionConstants.APPLICATION_DOCUMENT_TYPE_PERMISSION.UPDATE
       );
 
     this.displaySelectBtn();

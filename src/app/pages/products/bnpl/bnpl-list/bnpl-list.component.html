@@ -28,8 +28,8 @@
 <ng-template #detailElementTemplate>
   <app-bnpl-element
     *ngxPermissionsOnly="[
-      'dashboardBnplApplications:findBnplApplications',
-      'dashboardBnplApplications:getBnplApplicationById'
+      listPermission.getListBnpl,
+      listPermission.getByIdBnpl
     ]"
     (loanDetailTriggerUpdateStatus)="updateElementInfo($event)"
     [loanDetail]="expandedElementLoanDetail"

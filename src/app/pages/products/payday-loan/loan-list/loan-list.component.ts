@@ -49,7 +49,7 @@ import { FilterOptionModel } from 'src/app/public/models/filter/filter-option.mo
 import { DisplayedFieldsModel } from '../../../../public/models/filter/displayed-fields.model';
 import * as moment from 'moment';
 import { NgxPermissionsService } from 'ngx-permissions';
-import { GlobalConstants } from '../../../../core/common/global-constants';
+import { PermissionConstants } from '../../../../core/common/constants/permission-constants';
 import { FilterItemModel } from '../../../../public/models/filter/filter-item.model';
 import { OverviewItemModel } from 'src/app/public/models/external/overview-item.model';
 import * as _ from 'lodash';
@@ -117,7 +117,7 @@ export class LoanListComponent implements OnInit, OnDestroy {
         {
           title: this.multiLanguageService.instant('common.all'),
           value: null,
-        }
+        },
       ],
     },
     {
@@ -537,6 +537,12 @@ export class LoanListComponent implements OnInit, OnDestroy {
       value: 0,
     },
   ];
+
+  listPermission = {
+    getListTNG: PermissionConstants.DASHBOARD_PERMISSION.GET_LIST_TNG,
+    getListVAC: PermissionConstants.DASHBOARD_PERMISSION.GET_LIST_VAC,
+    getByIdHMG: PermissionConstants.DASHBOARD_PERMISSION.GET_BY_ID_HMG,
+  };
 
   userHasPermissions = {
     loanTngViewStatus: {
@@ -1084,110 +1090,110 @@ export class LoanListComponent implements OnInit, OnDestroy {
   private async _checkPermissionTng() {
     this.userHasPermissions.loanTngViewStatus.initialized =
       await this.permissionsService.hasPermission(
-        GlobalConstants.VIEW_LOAN_TNG_STATUS_PERMISSION.INITIALIZED
+        PermissionConstants.VIEW_LOAN_TNG_STATUS_PERMISSION.INITIALIZED
       );
     this.userHasPermissions.loanTngViewStatus.auction =
       await this.permissionsService.hasPermission(
-        GlobalConstants.VIEW_LOAN_TNG_STATUS_PERMISSION.AUCTION
+        PermissionConstants.VIEW_LOAN_TNG_STATUS_PERMISSION.AUCTION
       );
     this.userHasPermissions.loanTngViewStatus.document_awaiting =
       await this.permissionsService.hasPermission(
-        GlobalConstants.VIEW_LOAN_TNG_STATUS_PERMISSION.DOCUMENT_AWAITING
+        PermissionConstants.VIEW_LOAN_TNG_STATUS_PERMISSION.DOCUMENT_AWAITING
       );
     this.userHasPermissions.loanTngViewStatus.documentation_complete =
       await this.permissionsService.hasPermission(
-        GlobalConstants.VIEW_LOAN_TNG_STATUS_PERMISSION.DOCUMENTATION_COMPLETE
+        PermissionConstants.VIEW_LOAN_TNG_STATUS_PERMISSION.DOCUMENTATION_COMPLETE
       );
     this.userHasPermissions.loanTngViewStatus.funded =
       await this.permissionsService.hasPermission(
-        GlobalConstants.VIEW_LOAN_TNG_STATUS_PERMISSION.FUNDED
+        PermissionConstants.VIEW_LOAN_TNG_STATUS_PERMISSION.FUNDED
       );
     this.userHasPermissions.loanTngViewStatus.contract_accepted =
       await this.permissionsService.hasPermission(
-        GlobalConstants.VIEW_LOAN_TNG_STATUS_PERMISSION.CONTRACT_ACCEPTED
+        PermissionConstants.VIEW_LOAN_TNG_STATUS_PERMISSION.CONTRACT_ACCEPTED
       );
     this.userHasPermissions.loanTngViewStatus.awaiting_disbursement =
       await this.permissionsService.hasPermission(
-        GlobalConstants.VIEW_LOAN_TNG_STATUS_PERMISSION.AWAITING_DISBURSEMENT
+        PermissionConstants.VIEW_LOAN_TNG_STATUS_PERMISSION.AWAITING_DISBURSEMENT
       );
     this.userHasPermissions.loanTngViewStatus.disbursed =
       await this.permissionsService.hasPermission(
-        GlobalConstants.VIEW_LOAN_TNG_STATUS_PERMISSION.DISBURSED
+        PermissionConstants.VIEW_LOAN_TNG_STATUS_PERMISSION.DISBURSED
       );
     this.userHasPermissions.loanTngViewStatus.in_repayment =
       await this.permissionsService.hasPermission(
-        GlobalConstants.VIEW_LOAN_TNG_STATUS_PERMISSION.IN_REPAYMENT
+        PermissionConstants.VIEW_LOAN_TNG_STATUS_PERMISSION.IN_REPAYMENT
       );
     this.userHasPermissions.loanTngViewStatus.completed =
       await this.permissionsService.hasPermission(
-        GlobalConstants.VIEW_LOAN_TNG_STATUS_PERMISSION.COMPLETED
+        PermissionConstants.VIEW_LOAN_TNG_STATUS_PERMISSION.COMPLETED
       );
     this.userHasPermissions.loanTngViewStatus.rejected =
       await this.permissionsService.hasPermission(
-        GlobalConstants.VIEW_LOAN_TNG_STATUS_PERMISSION.REJECTED
+        PermissionConstants.VIEW_LOAN_TNG_STATUS_PERMISSION.REJECTED
       );
     this.userHasPermissions.loanTngViewStatus.withdraw =
       await this.permissionsService.hasPermission(
-        GlobalConstants.VIEW_LOAN_TNG_STATUS_PERMISSION.WITHDRAW
+        PermissionConstants.VIEW_LOAN_TNG_STATUS_PERMISSION.WITHDRAW
       );
     this.userHasPermissions.loanTngViewStatus.contract_rejected =
       await this.permissionsService.hasPermission(
-        GlobalConstants.VIEW_LOAN_TNG_STATUS_PERMISSION.CONTRACT_REJECTED
+        PermissionConstants.VIEW_LOAN_TNG_STATUS_PERMISSION.CONTRACT_REJECTED
       );
   }
 
   private async _checkPermissionVac() {
     this.userHasPermissions.loanVacViewStatus.initialized =
       await this.permissionsService.hasPermission(
-        GlobalConstants.VIEW_LOAN_VAC_STATUS_PERMISSION.INITIALIZED
+        PermissionConstants.VIEW_LOAN_VAC_STATUS_PERMISSION.INITIALIZED
       );
     this.userHasPermissions.loanVacViewStatus.auction =
       await this.permissionsService.hasPermission(
-        GlobalConstants.VIEW_LOAN_VAC_STATUS_PERMISSION.AUCTION
+        PermissionConstants.VIEW_LOAN_VAC_STATUS_PERMISSION.AUCTION
       );
     this.userHasPermissions.loanVacViewStatus.document_awaiting =
       await this.permissionsService.hasPermission(
-        GlobalConstants.VIEW_LOAN_VAC_STATUS_PERMISSION.DOCUMENT_AWAITING
+        PermissionConstants.VIEW_LOAN_VAC_STATUS_PERMISSION.DOCUMENT_AWAITING
       );
     this.userHasPermissions.loanVacViewStatus.documentation_complete =
       await this.permissionsService.hasPermission(
-        GlobalConstants.VIEW_LOAN_VAC_STATUS_PERMISSION.DOCUMENTATION_COMPLETE
+        PermissionConstants.VIEW_LOAN_VAC_STATUS_PERMISSION.DOCUMENTATION_COMPLETE
       );
     this.userHasPermissions.loanVacViewStatus.funded =
       await this.permissionsService.hasPermission(
-        GlobalConstants.VIEW_LOAN_VAC_STATUS_PERMISSION.FUNDED
+        PermissionConstants.VIEW_LOAN_VAC_STATUS_PERMISSION.FUNDED
       );
     this.userHasPermissions.loanVacViewStatus.contract_accepted =
       await this.permissionsService.hasPermission(
-        GlobalConstants.VIEW_LOAN_VAC_STATUS_PERMISSION.CONTRACT_ACCEPTED
+        PermissionConstants.VIEW_LOAN_VAC_STATUS_PERMISSION.CONTRACT_ACCEPTED
       );
     this.userHasPermissions.loanVacViewStatus.awaiting_disbursement =
       await this.permissionsService.hasPermission(
-        GlobalConstants.VIEW_LOAN_VAC_STATUS_PERMISSION.AWAITING_DISBURSEMENT
+        PermissionConstants.VIEW_LOAN_VAC_STATUS_PERMISSION.AWAITING_DISBURSEMENT
       );
     this.userHasPermissions.loanVacViewStatus.disbursed =
       await this.permissionsService.hasPermission(
-        GlobalConstants.VIEW_LOAN_VAC_STATUS_PERMISSION.DISBURSED
+        PermissionConstants.VIEW_LOAN_VAC_STATUS_PERMISSION.DISBURSED
       );
     this.userHasPermissions.loanVacViewStatus.in_repayment =
       await this.permissionsService.hasPermission(
-        GlobalConstants.VIEW_LOAN_VAC_STATUS_PERMISSION.IN_REPAYMENT
+        PermissionConstants.VIEW_LOAN_VAC_STATUS_PERMISSION.IN_REPAYMENT
       );
     this.userHasPermissions.loanVacViewStatus.completed =
       await this.permissionsService.hasPermission(
-        GlobalConstants.VIEW_LOAN_VAC_STATUS_PERMISSION.COMPLETED
+        PermissionConstants.VIEW_LOAN_VAC_STATUS_PERMISSION.COMPLETED
       );
     this.userHasPermissions.loanVacViewStatus.rejected =
       await this.permissionsService.hasPermission(
-        GlobalConstants.VIEW_LOAN_VAC_STATUS_PERMISSION.REJECTED
+        PermissionConstants.VIEW_LOAN_VAC_STATUS_PERMISSION.REJECTED
       );
     this.userHasPermissions.loanVacViewStatus.withdraw =
       await this.permissionsService.hasPermission(
-        GlobalConstants.VIEW_LOAN_VAC_STATUS_PERMISSION.WITHDRAW
+        PermissionConstants.VIEW_LOAN_VAC_STATUS_PERMISSION.WITHDRAW
       );
     this.userHasPermissions.loanVacViewStatus.contract_rejected =
       await this.permissionsService.hasPermission(
-        GlobalConstants.VIEW_LOAN_VAC_STATUS_PERMISSION.CONTRACT_REJECTED
+        PermissionConstants.VIEW_LOAN_VAC_STATUS_PERMISSION.CONTRACT_REJECTED
       );
   }
 

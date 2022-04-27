@@ -38,7 +38,7 @@ import { PageEvent } from '@angular/material/paginator/public-api';
 import { Sort } from '@angular/material/sort';
 import { FilterEventModel } from '../../../../public/models/filter/filter-event.model';
 import { FilterActionEventModel } from '../../../../public/models/filter/filter-action-event.model';
-import { GlobalConstants } from '../../../../core/common/global-constants';
+import { PermissionConstants } from '../../../../core/common/constants/permission-constants';
 import { BnplListService } from './bnpl-list.service';
 import * as _ from 'lodash';
 import { MerchantListService } from '../../../system/merchant/merchant-list/merchant-list.service';
@@ -311,6 +311,11 @@ export class BnplListComponent implements OnInit, OnDestroy {
     //   value: 0,
     // },
   ];
+
+  listPermission = {
+    getListBnpl: PermissionConstants.DASHBOARD_PERMISSION.GET_LIST_BNPL,
+    getByIdBnpl: PermissionConstants.DASHBOARD_PERMISSION.GET_BY_ID_BNPL
+  }
 
   userHasPermissions = {
     bnplViewStatus: {
@@ -721,39 +726,39 @@ export class BnplListComponent implements OnInit, OnDestroy {
   private async _checkPermission() {
     this.userHasPermissions.bnplViewStatus.pending =
       await this.permissionsService.hasPermission(
-        GlobalConstants.VIEW_BNPL_STATUS_PERMISSION.PENDING
+        PermissionConstants.VIEW_BNPL_STATUS_PERMISSION.PENDING
       );
     this.userHasPermissions.bnplViewStatus.undoapproval =
       await this.permissionsService.hasPermission(
-        GlobalConstants.VIEW_BNPL_STATUS_PERMISSION.UNDOAPPROVAL
+        PermissionConstants.VIEW_BNPL_STATUS_PERMISSION.UNDOAPPROVAL
       );
     this.userHasPermissions.bnplViewStatus.approve =
       await this.permissionsService.hasPermission(
-        GlobalConstants.VIEW_BNPL_STATUS_PERMISSION.APPROVE
+        PermissionConstants.VIEW_BNPL_STATUS_PERMISSION.APPROVE
       );
     this.userHasPermissions.bnplViewStatus.reject =
       await this.permissionsService.hasPermission(
-        GlobalConstants.VIEW_BNPL_STATUS_PERMISSION.REJECT
+        PermissionConstants.VIEW_BNPL_STATUS_PERMISSION.REJECT
       );
     this.userHasPermissions.bnplViewStatus.disburse =
       await this.permissionsService.hasPermission(
-        GlobalConstants.VIEW_BNPL_STATUS_PERMISSION.DISBURSE
+        PermissionConstants.VIEW_BNPL_STATUS_PERMISSION.DISBURSE
       );
     this.userHasPermissions.bnplViewStatus.contract_accepted =
       await this.permissionsService.hasPermission(
-        GlobalConstants.VIEW_BNPL_STATUS_PERMISSION.CONTRACT_ACCEPTED
+        PermissionConstants.VIEW_BNPL_STATUS_PERMISSION.CONTRACT_ACCEPTED
       );
     this.userHasPermissions.bnplViewStatus.contract_awaiting =
       await this.permissionsService.hasPermission(
-        GlobalConstants.VIEW_BNPL_STATUS_PERMISSION.CONTRACT_AWAITING
+        PermissionConstants.VIEW_BNPL_STATUS_PERMISSION.CONTRACT_AWAITING
       );
     this.userHasPermissions.bnplViewStatus.withdraw =
       await this.permissionsService.hasPermission(
-        GlobalConstants.VIEW_BNPL_STATUS_PERMISSION.WITHDRAW
+        PermissionConstants.VIEW_BNPL_STATUS_PERMISSION.WITHDRAW
       );
     this.userHasPermissions.bnplViewStatus.completed =
       await this.permissionsService.hasPermission(
-        GlobalConstants.VIEW_BNPL_STATUS_PERMISSION.COMPLETED
+        PermissionConstants.VIEW_BNPL_STATUS_PERMISSION.COMPLETED
       );
   }
 

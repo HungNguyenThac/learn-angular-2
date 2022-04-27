@@ -1,7 +1,7 @@
 import { Bank } from './../../../../../open-api-modules/dashboard-api-docs/model/bank';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
-import { GlobalConstants } from 'src/app/core/common/global-constants';
+import { PermissionConstants } from 'src/app/core/common/constants/permission-constants';
 import { Store } from '@ngrx/store';
 import * as fromActions from '../../../core/store';
 import * as fromStore from '../../../core/store';
@@ -339,6 +339,10 @@ export class CustomerListComponent implements OnInit, OnDestroy {
     },
   ];
   private readonly routeAllState$: Observable<Params>;
+
+  listPermission= {
+    getCustomerById: PermissionConstants.DASHBOARD_PERMISSION.GET_BY_ID_CUSTOMER
+  }
 
   constructor(
     private titleService: Title,

@@ -7,7 +7,7 @@ import { NgxPermissionsGuard } from 'ngx-permissions';
 import { SharedModule } from '../../../share/shared.module';
 import { TranslateModule } from '@ngx-translate/core';
 import { FormsModule } from '@angular/forms';
-import { TitleConstants } from '../../../core/common/providers/title-constants';
+import { TitleConstants } from '../../../core/common/constants/title-constants';
 import { ApplicationDocumentSaveDialogComponent } from './config-document/components/application-document-save-dialog/application-document-save-dialog.component';
 import { DocumentTypeListComponent } from './config-document/document-type-list/document-type-list.component';
 import { DocumentTypeSaveDialogComponent } from './config-document/components/document-type-save-dialog/document-type-save-dialog.component';
@@ -17,6 +17,7 @@ import { ProductStatusListComponent } from './product-status/product-status-list
 import { ProductWorkflowListComponent } from './product-workflow/product-workflow-list/product-workflow-list.component';
 import { ConfigContractSaveDialogComponent } from './config-contract/components/config-contract-save-dialog/config-contract-save-dialog.component';
 import { CKEditorModule } from 'ckeditor4-angular';
+import { PermissionConstants } from '../../../core/common/constants/permission-constants';
 
 export const ProductConfigRoutes: Routes = [
   {
@@ -54,7 +55,7 @@ export const ProductConfigRoutes: Routes = [
           title: TitleConstants.TITLE_VALUE.CONFIG_DOCUMENT_LIST,
           animation: true,
           permissions: {
-            only: ['dashboardApplicationDocuments:getApplicationDocuments'],
+            only: [PermissionConstants.APPLICATION_DOCUMENT_PERMISSION.GET_LIST],
             redirectTo: '/',
           },
         },
@@ -67,7 +68,7 @@ export const ProductConfigRoutes: Routes = [
           title: TitleConstants.TITLE_VALUE.CONFIG_DOCUMENT_TYPE_LIST,
           animation: true,
           permissions: {
-            only: ['dashboardApplicationDocuments:getApplicationDocumentTypes'],
+            only: [PermissionConstants.APPLICATION_DOCUMENT_TYPE_PERMISSION.GET_LIST],
             redirectTo: '/',
           },
         },
@@ -80,7 +81,7 @@ export const ProductConfigRoutes: Routes = [
           title: TitleConstants.TITLE_VALUE.CONFIG_CONTRACT_LIST,
           animation: true,
           permissions: {
-            only: ['dashboardContractTemplates:getContractTemplates'],
+            only: [PermissionConstants.CONTRACT_TEMPLATE_PERMISSION.GET_LIST],
             redirectTo: '/',
           },
         },

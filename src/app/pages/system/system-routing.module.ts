@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { TitleConstants } from '../../core/common/providers/title-constants';
+import { TitleConstants } from '../../core/common/constants/title-constants';
 
 export const SystemRoutes: Routes = [
   {
