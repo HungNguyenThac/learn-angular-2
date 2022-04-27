@@ -299,7 +299,6 @@ export class MerchantDetailDialogComponent implements OnInit, AfterViewChecked {
   private initMerchantInfoForm() {
     this.merchantInfoForm.patchValue({
       id: this.merchantInfo?.id,
-      code: this.merchantInfo?.code,
       name: this.merchantInfo?.name,
       address: this.merchantInfo?.address,
       bdStaffId: this.merchantInfo?.bdStaffId,
@@ -324,7 +323,7 @@ export class MerchantDetailDialogComponent implements OnInit, AfterViewChecked {
       description: this.merchantInfo?.description || null,
       merchantParentId: this.merchantInfo?.merchantParentId,
       merchantFeatures: this.merchantInfo?.merchantFeatures || [],
-      managerName: this.merchantInfo?.agentInformation?.name,
+      merchantManagerId: this.merchantInfo?.merchantManagerId,
       managerPosition: this.merchantInfo?.agentInformation?.position,
       managerMobile: this.merchantInfo?.agentInformation?.mobile,
       managerEmail: this.merchantInfo?.agentInformation?.email,
@@ -334,7 +333,6 @@ export class MerchantDetailDialogComponent implements OnInit, AfterViewChecked {
   buildIndividualForm() {
     this.merchantInfoForm = this.formBuilder.group({
       id: [''],
-      code: [''],
       name: [''],
       address: [''],
       bdStaffId: ['', [Validators.required]],
@@ -366,7 +364,7 @@ export class MerchantDetailDialogComponent implements OnInit, AfterViewChecked {
       descriptionImg: ['', Validators.required],
       description: [''],
       merchantParentId: [''],
-      managerName: ['', Validators.required],
+      merchantManagerId: ['', Validators.required],
       managerEmail: ['', [Validators.email]],
       managerMobile: [''],
       managerPosition: [''],

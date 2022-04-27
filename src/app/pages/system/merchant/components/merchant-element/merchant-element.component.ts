@@ -333,6 +333,11 @@ export class MerchantElementComponent implements OnInit, OnDestroy {
     if (data?.bdStaffId != this.merchantInfo?.bdStaffId) {
       request['bdStaffId'] = data?.bdStaffId;
     }
+
+    if (data?.merchantManagerId != this.merchantInfo?.merchantManagerId) {
+      request['merchantManagerId'] = data?.merchantManagerId;
+    }
+
     if (
       JSON.stringify(data?.merchantSellType) !=
       JSON.stringify(this.merchantInfo?.merchantSellType)
@@ -403,9 +408,6 @@ export class MerchantElementComponent implements OnInit, OnDestroy {
     if (data?.managerMobile != this.merchantInfo?.agentInformation?.mobile) {
       agentInfo.mobile = data?.managerMobile;
     }
-    if (data?.managerName != this.merchantInfo?.agentInformation?.name) {
-      agentInfo.name = data?.managerName;
-    }
     if (
       data?.managerPosition != this.merchantInfo?.agentInformation?.position
     ) {
@@ -418,8 +420,7 @@ export class MerchantElementComponent implements OnInit, OnDestroy {
     if (
       agentInfo.email != null ||
       agentInfo.mobile != null ||
-      agentInfo.position != null ||
-      agentInfo.name != null
+      agentInfo.position != null
     ) {
       request['updateAgentInformationDto'] = agentInfo;
     }

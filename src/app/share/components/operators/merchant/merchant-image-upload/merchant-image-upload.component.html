@@ -21,7 +21,7 @@
               <!-- Logo  -->
               <article class="col-12">
                 <app-upload-document-area
-                  [id]="'logo'"
+                  [id]="isViewMode ? 'logo-view' : 'logo-edit'"
                   name="logo"
                   [classes]="'p-3'"
                   [title]="'merchant.merchant_image.logo' | translate"

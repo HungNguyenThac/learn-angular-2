@@ -57,29 +57,29 @@
                       </mat-form-field>
 
                       <!--  merchant code -->
-                      <mat-form-field appearance="outline" class="w-100">
-                        <mat-label>{{
-                          "merchant.merchant_detail.code" | translate
-                        }}</mat-label>
-                        <input
-                          required
-                          matInput
-                          appTypeMaxLength
-                          maxlength="256"
-                          [placeholder]="
-                            'merchant.merchant_detail.code' | translate
-                          "
-                          formControlName="code"
-                        />
-                        <show-errors
-                          [control]="merchantInfoForm.controls['code']"
-                          [controlLabel]="
-                            'merchant.merchant_detail.code' | translate
-                          "
-                          [hasIconPrefix]="false"
-                        >
-                        </show-errors>
-                      </mat-form-field>
+<!--                      <mat-form-field appearance="outline" class="w-100">-->
+<!--                        <mat-label>{{-->
+<!--                          "merchant.merchant_detail.code" | translate-->
+<!--                        }}</mat-label>-->
+<!--                        <input-->
+<!--                          required-->
+<!--                          matInput-->
+<!--                          appTypeMaxLength-->
+<!--                          maxlength="256"-->
+<!--                          [placeholder]="-->
+<!--                            'merchant.merchant_detail.code' | translate-->
+<!--                          "-->
+<!--                          formControlName="code"-->
+<!--                        />-->
+<!--                        <show-errors-->
+<!--                          [control]="merchantInfoForm.controls['code']"-->
+<!--                          [controlLabel]="-->
+<!--                            'merchant.merchant_detail.code' | translate-->
+<!--                          "-->
+<!--                          [hasIconPrefix]="false"-->
+<!--                        >-->
+<!--                        </show-errors>-->
+<!--                      </mat-form-field>-->
 
                       <!--  address -->
                       <mat-form-field appearance="outline" class="w-100">
@@ -494,8 +494,11 @@
                       <mat-form-field appearance="outline" class="w-100">
                         <mat-label>{{
                           "merchant.merchant_detail.admin_name" | translate
-                          }}</mat-label>
-                        <mat-select required formControlName="managerName">
+                        }}</mat-label>
+                        <mat-select
+                          required
+                          formControlName="merchantManagerId"
+                        >
                           <mat-option>
                             <ngx-mat-select-search
                               [formControl]="selectManagerCtrl"
@@ -512,11 +515,13 @@
                           <mat-option
                             *ngFor="let manager of filteredManagerOptions"
                             [value]="manager.value"
-                          >{{ manager.title }}
+                            >{{ manager.title }}
                           </mat-option>
                         </mat-select>
                         <show-errors
-                          [control]="merchantInfoForm.controls['managerName']"
+                          [control]="
+                            merchantInfoForm.controls['merchantManagerId']
+                          "
                           [controlLabel]="
                             'merchant.merchant_detail.admin_name' | translate
                           "

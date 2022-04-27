@@ -496,8 +496,6 @@ components:
           type: string
         merchant:
           $ref: '#/components/schemas/Merchant'
-        merchantManagerId:
-          type: string
         loanAmount:
           format: int32
           type: integer
@@ -715,15 +713,8 @@ components:
         dateFormat:
           type: string
     CreateAgentInformationDto:
-      required:
-      - name
       type: object
       properties:
-        name:
-          maxLength: 256
-          pattern: \S
-          type: string
-          nullable: false
         position:
           maxLength: 256
           type: string
@@ -745,8 +736,6 @@ components:
           pattern: \S
           type: string
           nullable: false
-        merchantManagerId:
-          type: string
         loanAmount:
           format: int32
           type: integer
@@ -763,10 +752,6 @@ components:
           format: int32
           type: integer
           nullable: false
-        note:
-          type: string
-        staffId:
-          type: string
     CreateMerchantRequestDto:
       required:
       - name
@@ -803,6 +788,8 @@ components:
           pattern: \S
           type: string
           nullable: false
+        merchantManagerId:
+          type: string
         merchantSellType:
           $ref: '#/components/schemas/MerchantSellType'
         mobile:
@@ -971,6 +958,8 @@ components:
         province:
           type: string
         bdStaffId:
+          type: string
+        merchantManagerId:
           type: string
         merchantSellType:
           type: string
@@ -1279,8 +1268,6 @@ components:
     UpdateAgentInformationDto:
       type: object
       properties:
-        name:
-          type: string
         position:
           type: string
         mobile:
@@ -1293,8 +1280,6 @@ components:
         cdeDataId:
           type: string
         merchantId:
-          type: string
-        merchantManagerId:
           type: string
         loanAmount:
           format: int32
@@ -1332,6 +1317,8 @@ components:
         province:
           type: string
         bdStaffId:
+          type: string
+        merchantManagerId:
           type: string
         merchantSellType:
           $ref: '#/components/schemas/MerchantSellType'
