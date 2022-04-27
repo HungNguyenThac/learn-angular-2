@@ -2,7 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { BUTTON_TYPE } from '../../../../../../core/common/enum/operator';
-import { RequiredDocumentGroup } from '../../../../../../../../open-api-modules/dashboard-api-docs';
+import { RequiredDocumentGroupEntity } from '../../../../../../../../open-api-modules/monexcore-api-docs';
 
 @Component({
   selector: 'app-document-type-save-dialog',
@@ -12,7 +12,7 @@ import { RequiredDocumentGroup } from '../../../../../../../../open-api-modules/
 export class DocumentTypeSaveDialogComponent implements OnInit {
   applicationDocumentTypeForm: FormGroup;
   title: string;
-  applicationDocumentType: RequiredDocumentGroup;
+  applicationDocumentType: RequiredDocumentGroupEntity;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) private data: any,

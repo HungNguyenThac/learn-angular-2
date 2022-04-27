@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import {
   BnplApplication,
   CustomerInfo,
@@ -12,7 +12,11 @@ import {
 import { Store } from '@ngrx/store';
 import { MultiLanguageService } from '../../../../../share/translate/multiLanguageService';
 import * as fromStore from '../../../../../core/store';
-import {REPAYMENT_STATUS} from "../../../../../core/common/enum/bnpl";
+import {
+  PAYMENT_METHOD,
+  PAYMENT_METHOD_TEXT,
+  REPAYMENT_STATUS,
+} from '../../../../../core/common/enum/bnpl';
 
 @Component({
   selector: 'app-bnpl-repayment-transaction',
@@ -57,7 +61,7 @@ export class BnplRepaymentTransactionComponent implements OnInit {
       showed: true,
     },
     {
-      key: 'provider',
+      key: 'providerName',
       title: this.multiLanguageService.instant(
         'bnpl.repayment_transaction.provider'
       ),
@@ -74,6 +78,16 @@ export class BnplRepaymentTransactionComponent implements OnInit {
       format: DATA_STATUS_TYPE.GPAY_REPAYMENT_STATUS,
       showed: true,
     },
+
+    {
+      key: 'actionBy',
+      title: this.multiLanguageService.instant(
+        'bnpl.repayment_transaction.action_by'
+      ),
+      type: DATA_CELL_TYPE.TEXT,
+      format: null,
+      showed: true,
+    },
   ];
 
   constructor(
@@ -84,8 +98,23 @@ export class BnplRepaymentTransactionComponent implements OnInit {
   ngOnInit(): void {}
 
   initTableData() {
-    this.dataSource.data = this.dataSource.data =
-      this.loanDetail?.repaymentTransactions;
+    let repaymentTransactions = (this.dataSource.data =
+      this.loanDetail?.repaymentTransactions);
+    if (!repaymentTransactions) {
+      return;
+    }
+    this.dataSource.data = repaymentTransactions.map((value) => {
+      return {
+        ...value,
+        providerName: this.multiLanguageService.instant(
+          PAYMENT_METHOD_TEXT[value.provider]
+        ),
+        actionBy:
+          value.provider == PAYMENT_METHOD.IN_CASH
+            ? value.adminAccountEntity?.username
+            : this?.loanDetail?.customerInfo?.firstName,
+      };
+    });
   }
 
   changeLoanStatus(status) {

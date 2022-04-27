@@ -163,10 +163,10 @@ export class BnplListComponent implements OnInit, OnDestroy {
       title: this.multiLanguageService.instant('bnpl.status.contract_accepted'),
       value: BNPL_STATUS.CONTRACT_ACCEPTED,
     },
-    {
-      title: this.multiLanguageService.instant('bnpl.status.disburse'),
-      value: BNPL_STATUS.DISBURSE,
-    },
+    // {
+    //   title: this.multiLanguageService.instant('bnpl.status.disburse'),
+    //   value: BNPL_STATUS.DISBURSE,
+    // },
     {
       title: this.multiLanguageService.instant(
         'bnpl.repayment_status.payment_term_1'
@@ -189,12 +189,12 @@ export class BnplListComponent implements OnInit, OnDestroy {
       title: this.multiLanguageService.instant('bnpl.repayment_status.overdue'),
       value: REPAYMENT_STATUS.OVERDUE,
     },
-    // {
-    //   title: this.multiLanguageService.instant(
-    //     'payday_loan.repayment_status.bad_debt'
-    //   ),
-    //   value: DEBT_STATUS.BADDEBT,
-    // },
+    {
+      title: this.multiLanguageService.instant(
+        'bnpl.repayment_status.bad_debt'
+      ),
+      value: REPAYMENT_STATUS.BADDEBT,
+    },
     {
       title: this.multiLanguageService.instant('bnpl.status.completed'),
       value: BNPL_STATUS.COMPLETED,
@@ -214,7 +214,7 @@ export class BnplListComponent implements OnInit, OnDestroy {
       showed: true,
     },
     {
-      key: 'id',
+      key: 'loanCode',
       title: this.multiLanguageService.instant('bnpl.loan_info.loan_code'),
       type: DATA_CELL_TYPE.TEXT,
       format: null,

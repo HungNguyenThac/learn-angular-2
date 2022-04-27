@@ -1,5 +1,8 @@
 import { Injectable } from '@angular/core';
-import { ACCOUNT_CLASSIFICATION } from '../../../../core/common/enum/payday-loan';
+import {
+  ACCOUNT_CLASSIFICATION,
+  APPLICATION_TYPE,
+} from '../../../../core/common/enum/payday-loan';
 import {
   QUERY_CONDITION_TYPE,
   QUERY_OPERATOR_TYPE,
@@ -8,6 +11,7 @@ import { environment } from '../../../../../environments/environment';
 import * as _ from 'lodash';
 import {
   BNPL_STATUS,
+  PAYMENT_METHOD,
   REPAYMENT_STATUS,
 } from '../../../../core/common/enum/bnpl';
 import { BnplApplicationControllerService } from '../../../../../../open-api-modules/dashboard-api-docs';
@@ -20,6 +24,7 @@ import {
 } from '../../../../../../open-api-modules/bnpl-api-docs';
 import { ContractControllerService } from '../../../../../../open-api-modules/com-api-docs';
 import { catchError, map } from 'rxjs/operators';
+import { RepaymentControllerService } from '../../../../../../open-api-modules/payment-api-docs';
 
 @Injectable({
   providedIn: 'root',
@@ -29,7 +34,8 @@ export class BnplListService {
     private dashboardBnplApplicationControllerService: BnplApplicationControllerService,
     private bnplControllerService: BnplControllerService,
     private adminBnplControllerService: AdminControllerService,
-    private contractControllerService: ContractControllerService
+    private contractControllerService: ContractControllerService,
+    private repaymentControllerService: RepaymentControllerService
   ) {}
 
   private _buildRequestBodyGetList(params) {
@@ -46,7 +52,20 @@ export class BnplListService {
     }
 
     switch (params.status) {
+      case REPAYMENT_STATUS.BADDEBT:
+        break;
       case BNPL_STATUS.DISBURSE:
+        requestBody['periodTime1.complete' + QUERY_CONDITION_TYPE.NOT_EQUAL] =
+          true;
+        requestBody['periodTime2.complete' + QUERY_CONDITION_TYPE.NOT_EQUAL] =
+          true;
+        requestBody['periodTime3.complete' + QUERY_CONDITION_TYPE.NOT_EQUAL] =
+          true;
+        requestBody['periodTime4.complete' + QUERY_CONDITION_TYPE.NOT_EQUAL] =
+          true;
+        requestBody['status'] = BNPL_STATUS.DISBURSE;
+        break;
+      case REPAYMENT_STATUS.PAYMENT_TERM_1:
         let now = new Date();
         requestBody['periodTime1.complete' + QUERY_CONDITION_TYPE.EQUAL] = true;
         requestBody[
@@ -61,7 +80,7 @@ export class BnplListService {
         requestBody['status'] = BNPL_STATUS.DISBURSE;
         delete requestBody['status__in'];
         break;
-      case REPAYMENT_STATUS.PAYMENT_TERM_1:
+      case REPAYMENT_STATUS.PAYMENT_TERM_2:
         requestBody['periodTime2.complete__e'] = true;
         requestBody['periodTime3.complete' + QUERY_CONDITION_TYPE.NOT_EQUAL] =
           true;
@@ -70,15 +89,10 @@ export class BnplListService {
         requestBody['status'] = BNPL_STATUS.DISBURSE;
         delete requestBody['status__in'];
         break;
-      case REPAYMENT_STATUS.PAYMENT_TERM_2:
+      case REPAYMENT_STATUS.PAYMENT_TERM_3:
         requestBody['periodTime3.complete__e'] = true;
         requestBody['periodTime4.complete' + QUERY_CONDITION_TYPE.NOT_EQUAL] =
           true;
-        requestBody['status'] = BNPL_STATUS.DISBURSE;
-        delete requestBody['status__in'];
-        break;
-      case REPAYMENT_STATUS.PAYMENT_TERM_3:
-        requestBody['periodTime4.complete__e'] = true;
         requestBody['status'] = BNPL_STATUS.DISBURSE;
         delete requestBody['status__in'];
         break;
@@ -188,14 +202,13 @@ export class BnplListService {
     );
   }
 
-  public repaymentBnplApplication(
-    id: string,
-    corePaymentRequest?: CorePaymentRequest
-  ) {
-    return this.adminBnplControllerService.v1AdminApplicationIdRepaymentPost(
-      id,
-      corePaymentRequest
-    );
+  public repaymentBnplApplication(id: string, transactionAmount: any) {
+    return this.repaymentControllerService.updateRepaymentTransaction({
+      amount: transactionAmount,
+      applicationId: id,
+      applicationType: APPLICATION_TYPE.BNPL,
+      provider: PAYMENT_METHOD.IN_CASH,
+    });
   }
 
   public downloadBlobFile(src, loanId) {

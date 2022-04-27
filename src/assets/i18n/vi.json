@@ -897,6 +897,8 @@
       "created": "Đã tạo merchant thành công",
       "search_bd_staff": "Tất cả",
       "empty_bd_staff": "Nhân viên BD không tồn tại",
+      "search_manager": "Tất cả",
+      "empty_manager": "Quản lý không tồn tại",
       "search_merchant_parent": "Tất cả",
       "empty_merchant_parent": "Merchant cha không tồn tại"
     },
@@ -1148,7 +1150,19 @@
       "prompt_repayment_all": "Bạn có chắc chắc tất toán khoản vay này?",
       "confirm_change_status_description": "Bạn có chắc chuyển trạng thái đơn hàng BNPL {{loan_code}} từ {{current_loan_status}} → {{new_loan_status}}",
       "change_status_success": "Chuyển trạng thái khoản vay thành công!",
-      "repayment_success": "Thanh toán thành công!"
+      "repayment_success": "Thanh toán thành công!",
+      "payment": {
+        "all_period": "Tất toán khoản vay",
+        "repayment_period": "Thanh toán khoản vay",
+        "amount": "Số tiền thanh toán",
+        "period": "Kỳ thanh toán",
+        "period_time_1": "Kỳ thanh toán đầu tiên",
+        "period_time_2": "Kỳ thanh toán thứ 2",
+        "period_time_3": "Kỳ thanh toán thứ 3",
+        "period_time_4": "Hoàn thành",
+        "cancel_update": "Hủy bỏ",
+        "save_update": "Đồng ý"
+      }
     },
     "status": {
       "pending": "Chờ phê duyệt",
@@ -1163,6 +1177,7 @@
     },
     "repayment_status": {
       "overdue": "Quá hạn",
+      "bad_debt": "Nợ xấu",
       "payment_term_1": "Đã thanh toán kỳ 1",
       "payment_term_2": "Đã thanh toán kỳ 2",
       "payment_term_3": "Đã thanh toán kỳ 3"
@@ -1188,7 +1203,14 @@
       "created_at": "Thời gian thanh toán",
       "amount": "Số tiền",
       "provider": "Hình thức thanh toán",
-      "status": "Trạng thái"
+      "status": "Trạng thái",
+      "action_by": "Người thực hiện",
+      "payment_type": {
+        "gpay_va": "Chuyển khoản VA",
+        "gpay_napas": "Thẻ Napas",
+        "transfer": "Chuyển khoản",
+        "in_cash": "Thu tại quầy"
+      }
     },
     "gpay_repayment_status": {
       "success": "Thành công",

@@ -15,6 +15,7 @@ import { MultiLanguageService } from '../../../../../share/translate/multiLangua
 import { LoanListService } from '../../../payday-loan/loan-list/loan-list.service';
 import { BnplApplication } from '../../../../../../../open-api-modules/bnpl-api-docs';
 import { BnplListService } from '../../bnpl-list/bnpl-list.service';
+import {BNPL_STATUS} from "../../../../../core/common/enum/bnpl";
 
 @Component({
   selector: 'app-bnpl-contract',

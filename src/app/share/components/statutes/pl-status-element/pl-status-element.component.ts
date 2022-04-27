@@ -653,9 +653,7 @@ export class PlStatusElementComponent implements OnInit, AfterViewInit {
 
       if (periods.periodTime4?.complete) {
         return {
-          label: this.multiLanguageService.instant(
-            `bnpl.repayment_status.payment_term_3`
-          ),
+          label: this.multiLanguageService.instant(`bnpl.status.completed`),
           labelStatus: PL_LABEL_STATUS.IN_REPAYMENT,
         };
       }
@@ -663,7 +661,7 @@ export class PlStatusElementComponent implements OnInit, AfterViewInit {
       if (periods.periodTime3?.complete && !periods.periodTime4?.complete) {
         return {
           label: this.multiLanguageService.instant(
-            `bnpl.repayment_status.payment_term_2`
+            `bnpl.repayment_status.payment_term_3`
           ),
           labelStatus: PL_LABEL_STATUS.IN_REPAYMENT,
         };
@@ -676,7 +674,7 @@ export class PlStatusElementComponent implements OnInit, AfterViewInit {
       ) {
         return {
           label: this.multiLanguageService.instant(
-            `bnpl.repayment_status.payment_term_1`
+            `bnpl.repayment_status.payment_term_2`
           ),
           labelStatus: PL_LABEL_STATUS.IN_REPAYMENT,
         };
@@ -689,7 +687,9 @@ export class PlStatusElementComponent implements OnInit, AfterViewInit {
         !periods.periodTime4?.complete
       ) {
         return {
-          label: this.multiLanguageService.instant(`bnpl.status.disburse`),
+          label: this.multiLanguageService.instant(
+            `bnpl.repayment_status.payment_term_1`
+          ),
           labelStatus: PL_LABEL_STATUS.IN_REPAYMENT,
         };
       }

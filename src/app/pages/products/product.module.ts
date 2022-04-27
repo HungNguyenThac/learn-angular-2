@@ -23,6 +23,7 @@ import { BnplDetailInfoComponent } from './bnpl/components/bnpl-detail-info/bnpl
 import { BnplRepaymentTransactionComponent } from './bnpl/components/bnpl-repayment-transaction/bnpl-repayment-transaction.component';
 import { BnplContractComponent } from './bnpl/components/bnpl-contract/bnpl-contract.component';
 import { BnplNoteComponent } from './bnpl/components/bnpl-note/bnpl-note.component';
+import { BnplPaymentDialogComponent } from './bnpl/components/bnpl-payment-dialog/bnpl-payment-dialog.component';
 
 @NgModule({
   declarations: [
@@ -43,6 +44,7 @@ import { BnplNoteComponent } from './bnpl/components/bnpl-note/bnpl-note.compone
     BnplRepaymentTransactionComponent,
     BnplContractComponent,
     BnplNoteComponent,
+    BnplPaymentDialogComponent,
   ],
   imports: [
     CommonModule,

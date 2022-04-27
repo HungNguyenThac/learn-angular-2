@@ -58,6 +58,7 @@ import * as moment from 'moment';
 })
 export class MerchantListComponent implements OnInit {
   bdList: any[] = [];
+  managerList: any[] = [];
   merchantParentList: any[] = [];
   allMerchant: any[] = [];
 
@@ -574,7 +575,7 @@ export class MerchantListComponent implements OnInit {
   private _getBDList() {
     this.subManager.add(
       this.merchantListService
-        .getBDList()
+        .getUserList()
         .subscribe(
           (
             response: ApiResponseSearchAndPaginationResponseAdminAccountEntity
@@ -585,12 +586,16 @@ export class MerchantListComponent implements OnInit {
                 response?.errorCode
               );
             }
-            let bdStaffOptions = response?.result?.data.map((bd) => {
+            this.managerList = response?.result?.data.map((bd) => {
               return {
                 ...bd,
                 title: bd.username,
                 value: bd.id,
               };
+            });
+
+            let bdStaffOptions = this.managerList.filter((value) => {
+              return value.position == 'BD';
             });
 
             this.filterOptions.forEach((filterOption: FilterOptionModel) => {
@@ -753,6 +758,7 @@ export class MerchantListComponent implements OnInit {
         data: {
           merchantInfo: this.merchantInfo,
           bdStaffOptions: this.bdList,
+          managerOptions: this.managerList,
           isCreateMode: true,
           allMerchant: this.allMerchant,
         },
@@ -805,7 +811,6 @@ export class MerchantListComponent implements OnInit {
 
   private _bindingDialogData(data): CreateMerchantRequestDto {
     return {
-      code: data?.code || null,
       name: data?.name || null,
       address: data?.address || null,
       ward: data?.ward || null,

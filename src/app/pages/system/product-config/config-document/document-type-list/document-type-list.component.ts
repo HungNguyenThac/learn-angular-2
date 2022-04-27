@@ -37,9 +37,8 @@ import * as _ from 'lodash';
 import { DocumentTypeSaveDialogComponent } from '../components/document-type-save-dialog/document-type-save-dialog.component';
 import { NgxPermissionsService } from 'ngx-permissions';
 import { GlobalConstants } from '../../../../../core/common/global-constants';
-import { RequiredDocumentGroup } from '../../../../../../../open-api-modules/dashboard-api-docs';
 import {
-  CreateDocumentTypeDto,
+  CreateDocumentTypeDto, RequiredDocumentGroupEntity,
   UpdateDocumentTypeDto,
 } from '../../../../../../../open-api-modules/monexcore-api-docs';
 
@@ -117,8 +116,8 @@ export class DocumentTypeListComponent implements OnInit, OnDestroy {
     },
   ];
 
-  documentTypeList: RequiredDocumentGroup[];
-  expandedElementApplicationDocumentType: RequiredDocumentGroup;
+  documentTypeList: RequiredDocumentGroupEntity[];
+  expandedElementApplicationDocumentType: RequiredDocumentGroupEntity;
   totalItems: number = 0;
   filterForm: FormGroup;
   dataSource: MatTableDataSource<any> = new MatTableDataSource([]);
@@ -517,7 +516,7 @@ export class DocumentTypeListComponent implements OnInit, OnDestroy {
     );
   }
 
-  openUpdateDocumentTypeDialog(element: RequiredDocumentGroup) {
+  openUpdateDocumentTypeDialog(element: RequiredDocumentGroupEntity) {
     const addGroupDialogRef = this.dialog.open(
       DocumentTypeSaveDialogComponent,
       {

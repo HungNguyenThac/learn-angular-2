@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { ContractTemplateControllerService as DashboardContractTemplateControllerService } from '../../../../../../../open-api-modules/dashboard-api-docs';
 import { QUERY_CONDITION_TYPE } from '../../../../../core/common/enum/operator';
 import * as _ from 'lodash';
 import {
@@ -16,7 +15,6 @@ import {
 })
 export class ConfigContractListService {
   constructor(
-    private dashboardContractTemplateControllerService: DashboardContractTemplateControllerService,
     private monexCoreContractTemplateControllerService: ContractTemplatesService,
     private contractPropertyService: V1ContractPropertyService,
     private loanProductsService: LoanProductsService,

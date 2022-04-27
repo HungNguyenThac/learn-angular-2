@@ -403,7 +403,7 @@ paths:
                 $ref: "#/components/schemas/ApiResponse"
       tags:
         - "cde"
-  /v1/loan-products/pagination/loan-product:
+  /v1/loan-products/pagination:
     get:
       operationId: "LoanProductController_searchPagination"
       parameters:
@@ -444,16 +444,19 @@ paths:
         - name: "code"
           required: false
           in: "query"
+          description: "Mã sản phẩm"
           schema:
             type: "string"
         - name: "name"
           required: false
           in: "query"
+          description: "Tên sản phẩm"
           schema:
             type: "string"
         - name: "mifosProductId"
           required: false
           in: "query"
+          description: "Id sản phẩm của Core"
           schema:
             type: "number"
       responses:
@@ -520,16 +523,19 @@ paths:
         - name: "code"
           required: false
           in: "query"
+          description: "Mã sản phẩm"
           schema:
             type: "string"
         - name: "name"
           required: false
           in: "query"
+          description: "Tên sản phẩm"
           schema:
             type: "string"
         - name: "mifosProductId"
           required: false
           in: "query"
+          description: "Id sản phẩm của Core"
           schema:
             type: "number"
       responses:
@@ -1225,7 +1231,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ApiResponseDelete"
+                $ref: "#/components/schemas/ApiResponseContractProperty"
       tags:
         - "v1/contract-property"
   /v1/contract-property:
@@ -1545,6 +1551,71 @@ paths:
       responses:
         200:
           description: ""
+  /v1/merchants/{coreOfficeId}:
+    get:
+      operationId: "MerchantController_getMerchantById"
+      parameters:
+        - name: "coreOfficeId"
+          required: true
+          in: "path"
+          schema:
+            type: "number"
+      responses:
+        200:
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiResponse"
+  /v1/merchants:
+    get:
+      operationId: "MerchantController_getListStatus"
+      parameters: []
+      responses:
+        200:
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiResponse"
+    post:
+      operationId: "MerchantController_createStatus"
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateMerchantDto"
+      responses:
+        200:
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiResponse"
+  /v1/merchants/{id}:
+    put:
+      operationId: "MerchantController_updateStatus"
+      parameters:
+        - name: "id"
+          required: true
+          in: "path"
+          schema:
+            type: "string"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateMerchantDto"
+      responses:
+        200:
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiResponse"
 info:
   title: "MonexcoreService"
   description: ""
@@ -1557,7 +1628,9 @@ components:
     bearer:
       scheme: "bearer"
       bearerFormat: "JWT"
-      type: "http"
+      type: "apiKey"
+      in: "header"
+      name: "Authorization"
   schemas:
     ApiResponse:
       type: "object"
@@ -1710,18 +1783,24 @@ components:
       properties:
         code:
           type: "string"
+          description: "Mã sản phẩm"
         name:
           type: "string"
+          description: "Tên sản phẩm"
         statusGroupId:
           type: "string"
+          description: "Id nhóm trạng thái"
         pdModelIds:
+          description: "Ids Model CDE"
           type: "array"
           items:
             type: "number"
         mifosProductId:
           type: "number"
+          description: "Id sản phẩm của Core"
         description:
           type: "string"
+          description: "Mô tả sản phẩm"
       required:
         - "code"
         - "name"
@@ -1730,24 +1809,327 @@ components:
       properties:
         code:
           type: "string"
+          description: "Mã sản phẩm"
         name:
           type: "string"
+          description: "Tên sản phẩm"
         description:
           type: "string"
+          description: "Mô tả sản phẩm"
         statusGroupId:
           type: "string"
+          description: "Id nhóm trạng thái"
         pdModelIds:
+          description: "Chuỗi Id Model CDE"
           type: "array"
           items:
             type: "number"
         mifosProductId:
           type: "number"
+          description: "Id sản phẩm của Core"
     DeleteLoanProductDto:
       type: "object"
       properties: {}
+    PdQuestion:
+      type: "object"
+      properties:
+        id:
+          type: "string"
+        code:
+          type: "string"
+        content:
+          type: "string"
+        isMandatory:
+          type: "boolean"
+        variableName:
+          type: "string"
+        description:
+          type: "string"
+        answerType:
+          type: "string"
+        placeHolder:
+          type: "string"
+        createdAt:
+          type: "string"
+        createdBy:
+          type: "string"
+        updatedAt:
+          type: "string"
+        updatedBy:
+          type: "string"
+        answers:
+          type: "array"
+          items:
+            type: "string"
+        pdGroupQuestions:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/PdGroupMapQuestion"
+      required:
+        - "id"
+        - "code"
+        - "content"
+        - "isMandatory"
+        - "variableName"
+        - "description"
+        - "answerType"
+        - "placeHolder"
+        - "createdAt"
+        - "createdBy"
+        - "updatedAt"
+        - "updatedBy"
+        - "answers"
+        - "pdGroupQuestions"
+    PdGroupMapQuestion:
+      type: "object"
+      properties:
+        pdGroup:
+          $ref: "#/components/schemas/PdGroup"
+        pdQuestion:
+          $ref: "#/components/schemas/PdQuestion"
+      required:
+        - "pdGroup"
+        - "pdQuestion"
+    PdGroup:
+      type: "object"
+      properties:
+        id:
+          type: "string"
+        pdModelGroups:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/PdModelMapGroup"
+        pdGroupQuestions:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/PdGroupMapQuestion"
+        code:
+          type: "string"
+        content:
+          type: "string"
+        description:
+          type: "string"
+        status:
+          type: "string"
+        createdAt:
+          type: "string"
+        createdBy:
+          type: "string"
+        updatedAt:
+          type: "string"
+        updatedBy:
+          type: "string"
+      required:
+        - "id"
+        - "pdModelGroups"
+        - "pdGroupQuestions"
+        - "code"
+        - "content"
+        - "description"
+        - "status"
+        - "createdAt"
+        - "createdBy"
+        - "updatedAt"
+        - "updatedBy"
+    PdModelMapGroup:
+      type: "object"
+      properties:
+        pdModel:
+          $ref: "#/components/schemas/PdModel"
+        pdGroup:
+          $ref: "#/components/schemas/PdGroup"
+      required:
+        - "pdModel"
+        - "pdGroup"
+    PdModel:
+      type: "object"
+      properties:
+        id:
+          type: "string"
+        pdModelGroups:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/PdModelMapGroup"
+        loanProduct:
+          $ref: "#/components/schemas/LoanProduct"
+        code:
+          type: "string"
+        content:
+          type: "string"
+        description:
+          type: "string"
+        status:
+          type: "string"
+        createdAt:
+          type: "string"
+        createdBy:
+          type: "string"
+        updatedAt:
+          type: "string"
+        updatedBy:
+          type: "string"
+      required:
+        - "id"
+        - "pdModelGroups"
+        - "loanProduct"
+        - "code"
+        - "content"
+        - "description"
+        - "status"
+        - "createdAt"
+        - "createdBy"
+        - "updatedAt"
+        - "updatedBy"
+    LoanStatus:
+      type: "object"
+      properties:
+        id:
+          type: "string"
+        code:
+          type: "string"
+        name:
+          type: "string"
+        description:
+          type: "string"
+        createdAt:
+          type: "string"
+        createdBy:
+          type: "string"
+        statusFlows:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/StatusFlow"
+        updatedAt:
+          type: "string"
+        updatedBy:
+          type: "string"
+      required:
+        - "id"
+        - "code"
+        - "name"
+        - "description"
+        - "createdAt"
+        - "createdBy"
+        - "statusFlows"
+        - "updatedAt"
+        - "updatedBy"
+    StatusFlow:
+      type: "object"
+      properties:
+        id:
+          type: "string"
+        statusGroupId:
+          type: "string"
+        loanStatusId:
+          type: "string"
+        order:
+          type: "number"
+        loanStatus:
+          $ref: "#/components/schemas/LoanStatus"
+        statusGroup:
+          $ref: "#/components/schemas/StatusGroup"
+        contractTemplates:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/ContractTemplate"
+      required:
+        - "id"
+        - "statusGroupId"
+        - "loanStatusId"
+        - "order"
+        - "loanStatus"
+        - "statusGroup"
+        - "contractTemplates"
+    StatusGroup:
+      type: "object"
+      properties:
+        id:
+          type: "string"
+        code:
+          type: "string"
+        name:
+          type: "string"
+        description:
+          type: "string"
+        createdAt:
+          type: "string"
+        createdBy:
+          type: "string"
+        statusFlows:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/StatusFlow"
+        updatedAt:
+          type: "string"
+        updatedBy:
+          type: "string"
+      required:
+        - "id"
+        - "code"
+        - "name"
+        - "description"
+        - "createdAt"
+        - "createdBy"
+        - "statusFlows"
+        - "updatedAt"
+        - "updatedBy"
+    LoanProduct:
+      type: "object"
+      properties:
+        id:
+          type: "string"
+        code:
+          type: "string"
+        name:
+          type: "string"
+        description:
+          type: "string"
+        mifosProductId:
+          type: "number"
+        createdAt:
+          type: "string"
+        createdBy:
+          type: "string"
+        updatedAt:
+          type: "string"
+        updatedBy:
+          type: "string"
+        pdModels:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/PdModel"
+        contractTemplates:
+          $ref: "#/components/schemas/ContractTemplate"
+        statusGroup:
+          $ref: "#/components/schemas/StatusGroup"
+      required:
+        - "id"
+        - "code"
+        - "name"
+        - "description"
+        - "mifosProductId"
+        - "createdAt"
+        - "createdBy"
+        - "updatedAt"
+        - "updatedBy"
+        - "pdModels"
+        - "contractTemplates"
+        - "statusGroup"
     ContractTemplate:
       type: "object"
       properties:
+        id:
+          type: "string"
+        content:
+          type: "string"
+        name:
+          type: "string"
+        isActive:
+          type: "boolean"
+        product:
+          $ref: "#/components/schemas/LoanProduct"
+        statusFlow:
+          $ref: "#/components/schemas/StatusFlow"
         createdBy:
           type: "string"
         updatedBy:
@@ -1756,6 +2138,17 @@ components:
           type: "string"
         updatedAt:
           type: "string"
+      required:
+        - "id"
+        - "content"
+        - "name"
+        - "isActive"
+        - "product"
+        - "statusFlow"
+        - "createdBy"
+        - "updatedBy"
+        - "createdAt"
+        - "updatedAt"
     ApiResponseContractTemplates:
       type: "object"
       properties:
@@ -1794,31 +2187,43 @@ components:
       properties:
         content:
           type: "string"
+          description: "Nội dung hợp đồng"
         isActive:
           type: "boolean"
+          description: "Trạng thái"
         name:
           type: "string"
+          description: "Tên hợp đồng"
         statusFlowId:
           type: "string"
+          description: "Id Trạng thái trong luồng sản phẩm"
         productId:
           type: "string"
+          description: "Id sản phẩm"
       required:
         - "content"
         - "isActive"
         - "name"
+        - "statusFlowId"
+        - "productId"
     UpdateContractDto:
       type: "object"
       properties:
         content:
           type: "string"
+          description: "Nội dung hợp đồng"
         name:
           type: "string"
+          description: "Tên hợp đồng"
         isActive:
           type: "boolean"
+          description: "Trạng thái"
         statusFlowId:
           type: "string"
+          description: "Id Trạng thái trong luồng sản phẩm"
         productId:
           type: "string"
+          description: "Id sản phẩm"
     ApiResponseDelete:
       type: "object"
       properties:
@@ -1831,7 +2236,6 @@ components:
         responseCode:
           type: "number"
       required:
-        - "result"
         - "errorCode"
         - "message"
         - "responseCode"
@@ -1987,12 +2391,16 @@ components:
       properties:
         code:
           type: "string"
+          description: "Mã thuộc tính"
         variableName:
           type: "string"
+          description: "Tên biến"
         description:
           type: "string"
+          description: "Mô tả thuộc tính"
         name:
           type: "string"
+          description: "Tên thuộc tính"
       required:
         - "code"
         - "variableName"
@@ -2001,12 +2409,16 @@ components:
       properties:
         code:
           type: "string"
+          description: "Mã thuộc tính"
         variableName:
           type: "string"
+          description: "Tên biến"
         description:
           type: "string"
+          description: "Mô tả thuộc tính"
         name:
           type: "string"
+          description: "Tên thuộc tính"
     RequiredDocumentEntity:
       type: "object"
       properties:
@@ -2053,11 +2465,37 @@ components:
     RequiredDocumentGroupEntity:
       type: "object"
       properties:
+        id:
+          type: "string"
+        name:
+          type: "string"
         description:
           type: "string"
           nullable: true
+        codeName:
+          type: "string"
+        createdBy:
+          type: "string"
+        updatedBy:
+          type: "string"
+        createdAt:
+          type: "string"
+        updatedAt:
+          type: "string"
+        documents:
+          type: "array"
+          items:
+            type: "string"
       required:
+        - "id"
+        - "name"
         - "description"
+        - "codeName"
+        - "createdBy"
+        - "updatedBy"
+        - "createdAt"
+        - "updatedAt"
+        - "documents"
     ApiResponseRequiredDocumentGroup:
       type: "object"
       properties:
@@ -2167,3 +2605,34 @@ components:
     UpdateCustomerRequestDto:
       type: "object"
       properties: {}
+    CreateMerchantDto:
+      type: "object"
+      properties:
+        id:
+          type: "string"
+          description: "Id đối tác trên hệ thống Monex"
+        name:
+          type: "string"
+          description: "Tên đối tác"
+        parentId:
+          type: "number"
+          description: "Id công ty cha trên hệ thống Core"
+      required:
+        - "id"
+        - "name"
+    UpdateMerchantDto:
+      type: "object"
+      properties:
+        officeId:
+          type: "number"
+          description: "Id đối tác trên hệ thống Core"
+        name:
+          type: "string"
+          description: "Tên đối tác"
+        parentId:
+          type: "number"
+          description: "Id công ty cha trên hệ thống Core"
+      required:
+        - "officeId"
+        - "name"
+        - "parentId"

@@ -488,12 +488,16 @@ components:
       properties:
         id:
           type: string
+        loanCode:
+          type: string
         customerId:
           type: string
         cdeDataId:
           type: string
         merchant:
           $ref: '#/components/schemas/Merchant'
+        merchantManagerId:
+          type: string
         loanAmount:
           format: int32
           type: integer
@@ -510,8 +514,6 @@ components:
           format: int32
           type: integer
         contract:
-          type: string
-        sellType:
           type: string
         note:
           type: string
@@ -715,9 +717,6 @@ components:
     CreateAgentInformationDto:
       required:
       - name
-      - position
-      - mobile
-      - email
       type: object
       properties:
         name:
@@ -727,18 +726,12 @@ components:
           nullable: false
         position:
           maxLength: 256
-          pattern: \S
           type: string
-          nullable: false
         mobile:
-          pattern: \S
           type: string
-          nullable: false
         email:
           maxLength: 256
-          pattern: \S
           type: string
-          nullable: false
     CreateLoanRequestDto:
       required:
       - merchantId
@@ -752,6 +745,8 @@ components:
           pattern: \S
           type: string
           nullable: false
+        merchantManagerId:
+          type: string
         loanAmount:
           format: int32
           type: integer
@@ -768,17 +763,12 @@ components:
           format: int32
           type: integer
           nullable: false
-        CdeDataId:
-          type: string
         note:
           type: string
         staffId:
           type: string
-        cdeDataId:
-          type: string
     CreateMerchantRequestDto:
       required:
-      - code
       - name
       - address
       - bdStaffId
@@ -794,10 +784,6 @@ components:
       - createAgentInformationDto
       type: object
       properties:
-        code:
-          pattern: \S
-          type: string
-          nullable: false
         name:
           pattern: \S
           type: string
@@ -934,6 +920,8 @@ components:
       properties:
         id:
           type: string
+        loanCode:
+          type: string
         customerId:
           type: string
         cdeDataId:
@@ -953,8 +941,6 @@ components:
           type: string
         coreLoanDetail:
           $ref: '#/components/schemas/CoreLoanDetailDto'
-        sellType:
-          type: string
         note:
           type: string
         staffId:
@@ -1307,6 +1293,8 @@ components:
         cdeDataId:
           type: string
         merchantId:
+          type: string
+        merchantManagerId:
           type: string
         loanAmount:
           format: int32

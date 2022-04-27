@@ -56,6 +56,7 @@ export class MerchantElementComponent implements OnInit, OnDestroy {
 
   @Input() allMerchant: any[];
   @Input() bdStaffOptions: any[];
+  @Input() managerOptions: any[];
 
   @Output() triggerUpdateElementInfo = new EventEmitter();
 
@@ -283,6 +284,7 @@ export class MerchantElementComponent implements OnInit, OnDestroy {
         tabIndex: tabIndex,
         allMerchant: this.allMerchant,
         bdStaffOptions: this.bdStaffOptions,
+        managerOptions: this.managerOptions,
       },
     });
     this.subManager.add(
