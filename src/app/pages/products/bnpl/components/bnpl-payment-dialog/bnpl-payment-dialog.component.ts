@@ -231,6 +231,6 @@ export class BnplPaymentDialogComponent implements OnInit {
   }
 
   calcRemainingAmountOfPeriod(periodTime: PeriodTime) {
-    return periodTime.totalInstallmentAmountForPeriod;
+    return periodTime.complete ? 0 : periodTime.totalInstallmentAmountForPeriod;
   }
 }
