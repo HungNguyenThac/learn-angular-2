@@ -840,7 +840,6 @@ export class MerchantListComponent implements OnInit {
       description: data?.description || null,
       descriptionImg: data?.descriptionImg || null,
       createAgentInformationDto: {
-        name: data?.managerName,
         position: data?.managerPosition,
         mobile: data?.managerMobile,
         email: data?.managerEmail,

@@ -93,7 +93,6 @@ export class UploadDocumentAreaComponent implements OnInit, AfterViewInit {
     ) as HTMLElement;
     if (!manualUploadInput) return;
     manualUploadInput.click();
-    console.log(this.currentDocumentBtnType)
   }
 
   triggerClickResetInput(): void {
@@ -107,7 +106,6 @@ export class UploadDocumentAreaComponent implements OnInit, AfterViewInit {
   onFileChange(e): void {
     let files = e.target.files || e.dataTransfer.files;
     if (!files.length) return;
-    console.log(this.currentDocumentBtnType)
     this.createImage(files[0]);
   }
 

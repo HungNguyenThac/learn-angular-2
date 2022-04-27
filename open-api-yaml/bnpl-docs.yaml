@@ -713,15 +713,8 @@ components:
         dateFormat:
           type: string
     CreateAgentInformationDto:
-      required:
-      - name
       type: object
       properties:
-        name:
-          maxLength: 256
-          pattern: \S
-          type: string
-          nullable: false
         position:
           maxLength: 256
           type: string
@@ -1275,8 +1268,6 @@ components:
     UpdateAgentInformationDto:
       type: object
       properties:
-        name:
-          type: string
         position:
           type: string
         mobile:
