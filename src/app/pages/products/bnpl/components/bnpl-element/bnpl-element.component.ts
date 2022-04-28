@@ -14,7 +14,6 @@ import {
 import { NotificationService } from '../../../../../core/services/notification.service';
 import { MatDialog } from '@angular/material/dialog';
 import { BnplPaymentDialogComponent } from '../bnpl-payment-dialog/bnpl-payment-dialog.component';
-import { BNPL_PAYMENT_TYPE } from '../../../../../core/common/enum/bnpl';
 
 @Component({
   selector: 'app-bnpl-element',
@@ -51,6 +50,7 @@ export class BnplElementComponent implements OnInit {
               response?.errorCode
             );
           }
+          this.loanDetailTriggerUpdateStatus.emit(response?.result);
         })
     );
   }
@@ -91,15 +91,15 @@ export class BnplElementComponent implements OnInit {
                   result?.errorCode
                 );
               }
-              if (result.responseCode === 200) {
-                setTimeout(() => {
-                  this.notifier.success(
-                    this.multiLanguageService.instant(
-                      'bnpl.loan_info.change_status_success'
-                    )
-                  );
-                }, 3000);
-              }
+
+              this.getBnplById();
+              setTimeout(() => {
+                this.notifier.success(
+                  this.multiLanguageService.instant(
+                    'bnpl.loan_info.change_status_success'
+                  )
+                );
+              }, 3000);
             })
         );
       }
@@ -132,22 +132,37 @@ export class BnplElementComponent implements OnInit {
     this.subManager.add(
       this.bnplListService
         .repaymentBnplApplication(id, transactionAmount)
-        .subscribe((result) => {
-          if (!result || result.responseCode !== RESPONSE_CODE.SUCCESS) {
+        .subscribe((response) => {
+          if (!response || response.responseCode !== RESPONSE_CODE.SUCCESS) {
             return this.notifier.error(
-              JSON.stringify(result?.message),
-              result?.errorCode
+              JSON.stringify(response?.message),
+              response?.errorCode
             );
           }
-          if (result.responseCode === 200) {
-            setTimeout(() => {
-              this.notifier.success(
-                this.multiLanguageService.instant(
-                  'bnpl.loan_info.repayment_success'
-                )
-              );
-            }, 1000);
+          this.getBnplById();
+          setTimeout(() => {
+            this.notifier.success(
+              this.multiLanguageService.instant(
+                'bnpl.loan_info.repayment_success'
+              )
+            );
+          }, 1000);
+        })
+    );
+  }
+
+  public getBnplById() {
+    this.subManager.add(
+      this.bnplListService
+        .getBnplById(this.loanDetail?.id)
+        .subscribe((response) => {
+          if (!response || response.responseCode !== RESPONSE_CODE.SUCCESS) {
+            return this.notifier.error(
+              JSON.stringify(response?.message),
+              response?.errorCode
+            );
           }
+          this.loanDetailTriggerUpdateStatus.emit(response?.result);
         })
     );
   }
