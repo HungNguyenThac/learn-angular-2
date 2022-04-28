@@ -178,6 +178,10 @@ export class BnplListService {
     );
   }
 
+  public getBnplById(id) {
+    return this.dashboardBnplApplicationControllerService.getBnplApplicationById(id);
+  }
+
   public convertBlobType(data: any, type: string) {
     let blob = new Blob([data], { type: type });
     let url = window.URL.createObjectURL(blob);
