@@ -38,6 +38,7 @@ import pdfmake from 'pdfmake/build/pdfmake';
 // @ts-ignore
 import pdfFonts from '../../../../../../public/vfs_fonts/vfs_custom_fonts';
 import { ContractTemplate } from '../../../../../../../../open-api-modules/monexcore-api-docs';
+import { DomSanitizer } from '@angular/platform-browser';
 
 pdfmake.vfs = pdfFonts.pdfMake.vfs;
 
@@ -77,12 +78,14 @@ pdfmake.fonts = {
 })
 export class ConfigContractSaveDialogComponent implements OnInit, OnDestroy {
   @ViewChild(MatTable, { read: ElementRef }) private matTableRef: ElementRef;
+  @ViewChild('layout') canvasRef;
   contractTemplateForm: FormGroup;
   title: string;
   contractTemplate: ContractTemplate;
   action: TABLE_ACTION_TYPE;
   workflowStatuses: any[];
   loanProducts: any[];
+  loanContractView: any;
 
   dataSource: MatTableDataSource<any> = new MatTableDataSource([]);
   pageSize: number = 20;
@@ -189,7 +192,8 @@ export class ConfigContractSaveDialogComponent implements OnInit, OnDestroy {
     private multiLanguageService: MultiLanguageService,
     private configContractListService: ConfigContractListService,
     private store: Store<fromStore.State>,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private domSanitizer: DomSanitizer
   ) {
     this._getPropertiesContract();
     this._getListLoanProducts();
@@ -256,6 +260,16 @@ export class ConfigContractSaveDialogComponent implements OnInit, OnDestroy {
       statusFlowId: [''],
       productId: [''],
       isActive: [''],
+      customerPositionPage: ['', [Validators.min(1), Validators.required]],
+      monexPositionPage: ['', [Validators.min(1), Validators.required]],
+      customerWidth: ['', [Validators.min(1), Validators.required]],
+      customerHeight: ['', [Validators.min(1), Validators.required]],
+      customerPositionX: ['', [Validators.required, Validators.min(0)]],
+      customerPositionY: ['', [Validators.required, Validators.min(0)]],
+      monexWidth: ['', [Validators.min(0), Validators.required]],
+      monexHeight: ['', [Validators.min(0), Validators.required]],
+      monexPositionX: ['', [Validators.required, Validators.min(0)]],
+      monexPositionY: ['', [Validators.required, Validators.min(0)]],
     });
   }
 
@@ -273,9 +287,20 @@ export class ConfigContractSaveDialogComponent implements OnInit, OnDestroy {
       statusFlowId: this.contractTemplate?.statusFlow?.id,
       productId: this.contractTemplate?.product?.id,
       isActive: this.contractTemplate?.isActive,
+      customerPositionPage: 1,
+      monexPositionPage: 1,
+      customerWidth: 200,
+      customerHeight: 60,
+      customerPositionX: 0,
+      customerPositionY: 0,
+      monexWidth: 200,
+      monexHeight: 60,
+      monexPositionX: 0,
+      monexPositionY: 0,
     });
 
-    this.convertHtmlToPdf(this.contractTemplate?.content || '');
+    // this.convertHtmlToPdf(this.contractTemplate?.content || '');
+    this.previewContract();
   }
 
   submitForm() {
@@ -443,7 +468,6 @@ export class ConfigContractSaveDialogComponent implements OnInit, OnDestroy {
     // });
 
     this.docPdf = this.pdfMakeHtmlToPdf(data);
-
     setTimeout(() => {
       if (typeof this.docPdf !== 'undefined')
         try {
@@ -485,10 +509,10 @@ export class ConfigContractSaveDialogComponent implements OnInit, OnDestroy {
    * @param data
    */
   onCkeditorChange(data) {
-    if (this.timeout) clearTimeout(this.timeout);
-    this.timeout = setTimeout(() => {
-      this.convertHtmlToPdf(data);
-    }, 3000);
+    // if (this.timeout) clearTimeout(this.timeout);
+    // this.timeout = setTimeout(() => {
+    //   this.convertHtmlToPdf(data);
+    // }, 3000);
   }
 
   onChangeProduct(productId) {
@@ -515,6 +539,62 @@ export class ConfigContractSaveDialogComponent implements OnInit, OnDestroy {
   }
 
   openPdfPreviewNewTab() {
-    this.docPdf.open();
+    // this.docPdf.open();
+    this.previewContract();
+  }
+
+  previewContract() {
+    if (!this.contractTemplateForm.controls.content.value) {
+      return;
+    }
+    this.subManager.add(
+      this.configContractListService
+        .previewContract({
+          content: this.contractTemplateForm.controls.content.value,
+          customerSigningPosition: {
+            pageIndex:
+              this.contractTemplateForm.controls.customerPositionPage.value > 0
+                ? this.contractTemplateForm.controls.customerPositionPage
+                    .value - 1
+                : 0,
+            positionX:
+              this.contractTemplateForm.controls.customerPositionX.value || 0,
+            positionY:
+              this.contractTemplateForm.controls.customerPositionY.value || 0,
+            width:
+              this.contractTemplateForm.controls.customerWidth.value || 200,
+            height:
+              this.contractTemplateForm.controls.customerHeight.value || 60,
+          },
+          monexSigningPosition: {
+            pageIndex:
+              this.contractTemplateForm.controls.monexPositionPage.value > 0
+                ? this.contractTemplateForm.controls.monexPositionPage.value - 1
+                : 0,
+            positionX:
+              this.contractTemplateForm.controls.monexPositionX.value || 0,
+            positionY:
+              this.contractTemplateForm.controls.monexPositionY.value || 0,
+            width: this.contractTemplateForm.controls.monexWidth.value || 200,
+            height: this.contractTemplateForm.controls.monexHeight.value || 60,
+          },
+        })
+        .subscribe((data) => {
+          this.pdfView(data);
+        })
+    );
+  }
+
+  pdfView(pdfurl: string) {
+    pdfurl += '#toolbar=1&navpanes=0&scrollbar=0&zoom=90';
+    this.loanContractView = this.domSanitizer.bypassSecurityTrustHtml(
+      "<iframe  src='" +
+        pdfurl +
+        "' type='application/pdf' style='width:100%; height: 70vh; background-color:white;'>" +
+        'Object ' +
+        pdfurl +
+        ' failed' +
+        '</iframe>'
+    );
   }
 }

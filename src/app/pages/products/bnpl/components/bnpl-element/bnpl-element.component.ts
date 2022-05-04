@@ -64,13 +64,13 @@ export class BnplElementComponent implements OnInit {
       `bnpl.status.${event.status.toLowerCase()}`
     );
 
-    const confirmDeleteRef = this.notificationService.openPrompt({
+    const confirmChangeStatusRef = this.notificationService.openPrompt({
       imgUrl: 'assets/img/payday-loan/warning-prompt-icon.png',
       title: this.multiLanguageService.instant('common.are_you_sure'),
       content: this.multiLanguageService.instant(
         'bnpl.loan_info.confirm_change_status_description',
         {
-          loan_code: this.loanDetail?.coreLoanId,
+          loan_code: this.loanDetail?.loanCode,
           current_loan_status: currentLoanStatusDisplay,
           new_loan_status: newStatusDisplay,
         }
@@ -79,7 +79,7 @@ export class BnplElementComponent implements OnInit {
       primaryBtnClass: 'btn-accent',
       secondaryBtnText: this.multiLanguageService.instant('common.skip'),
     });
-    confirmDeleteRef.afterClosed().subscribe((result) => {
+    confirmChangeStatusRef.afterClosed().subscribe((result) => {
       if (result === BUTTON_TYPE.PRIMARY) {
         this.subManager.add(
           this.bnplListService
@@ -92,13 +92,13 @@ export class BnplElementComponent implements OnInit {
                 );
               }
 
-              this.getBnplById();
               setTimeout(() => {
                 this.notifier.success(
                   this.multiLanguageService.instant(
                     'bnpl.loan_info.change_status_success'
                   )
                 );
+                this.getBnplById();
               }, 3000);
             })
         );
@@ -139,14 +139,14 @@ export class BnplElementComponent implements OnInit {
               response?.errorCode
             );
           }
-          this.getBnplById();
           setTimeout(() => {
             this.notifier.success(
               this.multiLanguageService.instant(
                 'bnpl.loan_info.repayment_success'
               )
             );
-          }, 1000);
+            this.getBnplById();
+          }, 3000);
         })
     );
   }

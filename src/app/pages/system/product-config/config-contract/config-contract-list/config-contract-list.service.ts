@@ -9,6 +9,11 @@ import {
   UpdateContractDto,
   V1ContractPropertyService,
 } from '../../../../../../../open-api-modules/monexcore-api-docs';
+import {
+  ContractControllerService,
+  PreviewContractRequest,
+} from '../../../../../../../open-api-modules/com-api-docs';
+import {catchError, map} from "rxjs/operators";
 
 @Injectable({
   providedIn: 'root',
@@ -18,6 +23,7 @@ export class ConfigContractListService {
     private monexCoreContractTemplateControllerService: ContractTemplatesService,
     private contractPropertyService: V1ContractPropertyService,
     private loanProductsService: LoanProductsService,
+    private contractControllerService: ContractControllerService,
     private loanStatusService: LoanStatusService
   ) {}
 
@@ -104,5 +110,24 @@ export class ConfigContractListService {
     return this.loanStatusService.loanStatusControllerGetStatusGroupById(
       groupId
     );
+  }
+
+  public previewContract(previewContractRequest: PreviewContractRequest) {
+    return this.contractControllerService
+      .previewContract(previewContractRequest)
+      .pipe(
+        map((results) => {
+          return this.convertBlobType(results, 'application/pdf');
+        }),
+
+        catchError((err) => {
+          throw err;
+        })
+      );
+  }
+
+  public convertBlobType(data: any, type: string) {
+    let blob = new Blob([data], { type: type });
+    return window.URL.createObjectURL(blob);
   }
 }

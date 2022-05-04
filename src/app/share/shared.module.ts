@@ -13,6 +13,7 @@ import { NgxViewerModule } from 'ngx-viewer';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { CKEditorModule } from 'ckeditor4-angular';
+import { DEFAULT_TIMEOUT } from './intercepters';
 
 @NgModule({
   declarations: [
@@ -46,6 +47,7 @@ import { CKEditorModule } from 'ckeditor4-angular';
   providers: [
     { provide: MAT_DIALOG_DATA, useValue: {} },
     { provide: MatDialogRef, useValue: {} },
+    { provide: DEFAULT_TIMEOUT, useValue: 60000 },
   ],
 })
 export class SharedModule {}

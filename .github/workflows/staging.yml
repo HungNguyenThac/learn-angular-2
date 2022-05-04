@@ -12,29 +12,19 @@ jobs:
       version:  ${{ steps.setVersion.outputs.version }}
     env:
       SVC_NAME: operator-svc
-      ACR_NAME: epayprodregistry.azurecr.io
+      ACR_NAME: ${{ secrets.CONTAINER_REGISTRY_HOST }}
       ENV_TYPE: staging
     steps:
       - uses: AutoModality/action-clean@v1
 
       - uses: actions/checkout@v2
 
-      - uses: Azure/login@v1
+      - name: Login to Container Registry
+        uses: azure/docker-login@v1
         with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
-      - uses: Azure/get-keyvault-secrets@v1.2
-        with:
-          keyvault: "monex-kv"
-          secrets: 'ACR-USERNAME, ACR-PASSWORD'
-        id: getAzSecret
-
-      - name: Azure Container Registry Login
-        uses: Azure/docker-login@v1
-        with:
-          login-server: epayprodregistry.azurecr.io
-          username: ${{ steps.getAzSecret.outputs.ACR-USERNAME }}
-          password: ${{ steps.getAzSecret.outputs.ACR-PASSWORD }}
-
+         login-server: ${{ secrets.CONTAINER_REGISTRY_HOST }}
+         username: ${{ secrets.CONTAINER_REGISTRY_USERNAME }}
+         password: ${{ secrets.CONTAINER_REGISTRY_PASSWORD }}
       - name: Bump version
         uses: anothrNick/github-tag-action@1.26.0
         env:

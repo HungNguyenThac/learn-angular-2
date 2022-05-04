@@ -65,7 +65,7 @@ export class BnplContractComponent implements OnInit {
   }
 
   pdfView(pdfurl: string) {
-    pdfurl += '#toolbar=0&navpanes=0&scrollbar=0&zoom=90';
+    pdfurl += '#toolbar=1&navpanes=0&scrollbar=0&zoom=90';
     this.loanContractView = this.domSanitizer.bypassSecurityTrustHtml(
       "<iframe  src='" +
         pdfurl +

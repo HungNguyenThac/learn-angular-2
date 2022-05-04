@@ -159,6 +159,374 @@
             </div>
           </section>
 
+          <section class="col-12 my-4">
+            <!--   Monex signing -->
+            <article
+              class="row row-cols-lg-6 row-cols-md-3 row-cols-sm-1 row-cols-1"
+            >
+              <div class="col align-self-center mb-2">
+                <p class="position-singing">
+                  {{
+                    "system.system_config.contract_template.monex_signing"
+                      | translate
+                  }}
+                </p>
+              </div>
+              <!--   position page -->
+              <div class="col">
+                <mat-form-field
+                  appearance="outline"
+                  class="w-100"
+                  floatLabel="never"
+                >
+                  <mat-label>{{
+                    "system.system_config.contract_template.signing_page"
+                      | translate
+                  }}</mat-label>
+                  <input
+                    [placeholder]="
+                      'system.system_config.contract_template.signing_page'
+                        | translate
+                    "
+                    formControlName="monexPositionPage"
+                    required
+                    matInput
+                    min="1"
+                    appNumberOnly
+                    type="text"
+                    [disabled]="action === 'VIEW'"
+                  />
+                  <show-errors
+                    [control]="
+                      contractTemplateForm.controls['monexPositionPage']
+                    "
+                    [controlLabel]="
+                      'system.system_config.contract_template.signing_page'
+                        | translate
+                    "
+                    [hasIconPrefix]="false"
+                  >
+                  </show-errors>
+                </mat-form-field>
+              </div>
+              <!--   Width -->
+              <div class="col">
+                <mat-form-field
+                  appearance="outline"
+                  class="w-100"
+                  floatLabel="never"
+                >
+                  <mat-label>{{
+                    "system.system_config.contract_template.width" | translate
+                  }}</mat-label>
+                  <input
+                    [placeholder]="
+                      'system.system_config.contract_template.width' | translate
+                    "
+                    formControlName="monexWidth"
+                    required
+                    matInput
+                    min="1"
+                    type="number"
+                    [disabled]="action === 'VIEW'"
+                  />
+                  <show-errors
+                    [control]="contractTemplateForm.controls['monexWidth']"
+                    [controlLabel]="
+                      'system.system_config.contract_template.width' | translate
+                    "
+                    [hasIconPrefix]="false"
+                  >
+                  </show-errors>
+                </mat-form-field>
+              </div>
+              <!--   Height -->
+              <div class="col">
+                <mat-form-field
+                  appearance="outline"
+                  class="w-100"
+                  floatLabel="never"
+                >
+                  <mat-label>{{
+                    "system.system_config.contract_template.height" | translate
+                  }}</mat-label>
+                  <input
+                    [placeholder]="
+                      'system.system_config.contract_template.height'
+                        | translate
+                    "
+                    formControlName="monexHeight"
+                    required
+                    matInput
+                    min="1"
+                    type="number"
+                    [disabled]="action === 'VIEW'"
+                  />
+                  <show-errors
+                    [control]="contractTemplateForm.controls['monexHeight']"
+                    [controlLabel]="
+                      'system.system_config.contract_template.height'
+                        | translate
+                    "
+                    [hasIconPrefix]="false"
+                  >
+                  </show-errors>
+                </mat-form-field>
+              </div>
+              <!--   position X -->
+              <div class="col">
+                <mat-form-field
+                  appearance="outline"
+                  class="w-100"
+                  floatLabel="never"
+                >
+                  <mat-label>{{
+                    "system.system_config.contract_template.position_x"
+                      | translate
+                  }}</mat-label>
+                  <input
+                    [placeholder]="
+                      'system.system_config.contract_template.position_x'
+                        | translate
+                    "
+                    formControlName="monexPositionX"
+                    required
+                    matInput
+                    type="number"
+                    [disabled]="action === 'VIEW'"
+                  />
+                  <show-errors
+                    [control]="contractTemplateForm.controls['monexPositionX']"
+                    [controlLabel]="
+                      'system.system_config.contract_template.position_x'
+                        | translate
+                    "
+                    [hasIconPrefix]="false"
+                  >
+                  </show-errors>
+                </mat-form-field>
+              </div>
+              <!--   position Y -->
+              <div class="col">
+                <mat-form-field
+                  appearance="outline"
+                  class="w-100"
+                  floatLabel="never"
+                >
+                  <mat-label>{{
+                    "system.system_config.contract_template.position_y"
+                      | translate
+                  }}</mat-label>
+                  <input
+                    [placeholder]="
+                      'system.system_config.contract_template.position_y'
+                        | translate
+                    "
+                    formControlName="monexPositionY"
+                    required
+                    matInput
+                    type="number"
+                    [disabled]="action === 'VIEW'"
+                  />
+                  <show-errors
+                    [control]="contractTemplateForm.controls['monexPositionY']"
+                    [controlLabel]="
+                      'system.system_config.contract_template.position_y'
+                        | translate
+                    "
+                    [hasIconPrefix]="false"
+                  >
+                  </show-errors>
+                </mat-form-field>
+              </div>
+            </article>
+
+            <!--   Customer signing  -->
+            <article
+              class="row row-cols-lg-6 row-cols-md-3 row-cols-sm-1 row-cols-1"
+            >
+              <div class="col align-self-center mb-2">
+                <p class="position-singing">
+                  {{
+                    "system.system_config.contract_template.customer_signing"
+                      | translate
+                  }}
+                </p>
+              </div>
+              <!--   position page -->
+              <div class="col">
+                <mat-form-field
+                  appearance="outline"
+                  class="w-100"
+                  floatLabel="never"
+                >
+                  <mat-label>{{
+                    "system.system_config.contract_template.signing_page"
+                      | translate
+                  }}</mat-label>
+                  <input
+                    [placeholder]="
+                      'system.system_config.contract_template.signing_page'
+                        | translate
+                    "
+                    formControlName="customerPositionPage"
+                    required
+                    matInput
+                    appNumberOnly
+                    min="1"
+                    type="text"
+                    [disabled]="action === 'VIEW'"
+                  />
+                  <show-errors
+                    [control]="
+                      contractTemplateForm.controls['customerPositionPage']
+                    "
+                    [controlLabel]="
+                      'system.system_config.contract_template.signing_page'
+                        | translate
+                    "
+                    [hasIconPrefix]="false"
+                  >
+                  </show-errors>
+                </mat-form-field>
+              </div>
+              <!--   Width -->
+              <div class="col">
+                <mat-form-field
+                  appearance="outline"
+                  class="w-100"
+                  floatLabel="never"
+                >
+                  <mat-label>{{
+                    "system.system_config.contract_template.width" | translate
+                  }}</mat-label>
+                  <input
+                    [placeholder]="
+                      'system.system_config.contract_template.width' | translate
+                    "
+                    formControlName="customerWidth"
+                    required
+                    matInput
+                    type="number"
+                    min="1"
+                    [disabled]="action === 'VIEW'"
+                  />
+                  <show-errors
+                    [control]="contractTemplateForm.controls['customerWidth']"
+                    [controlLabel]="
+                      'system.system_config.contract_template.width' | translate
+                    "
+                    [hasIconPrefix]="false"
+                  >
+                  </show-errors>
+                </mat-form-field>
+              </div>
+              <!--   Height -->
+              <div class="col">
+                <mat-form-field
+                  appearance="outline"
+                  class="w-100"
+                  floatLabel="never"
+                >
+                  <mat-label>{{
+                    "system.system_config.contract_template.height" | translate
+                  }}</mat-label>
+                  <input
+                    [placeholder]="
+                      'system.system_config.contract_template.height'
+                        | translate
+                    "
+                    formControlName="customerHeight"
+                    required
+                    matInput
+                    min="1"
+                    type="number"
+                    [disabled]="action === 'VIEW'"
+                  />
+                  <show-errors
+                    [control]="contractTemplateForm.controls['customerHeight']"
+                    [controlLabel]="
+                      'system.system_config.contract_template.height'
+                        | translate
+                    "
+                    [hasIconPrefix]="false"
+                  >
+                  </show-errors>
+                </mat-form-field>
+              </div>
+              <!--   position X -->
+              <div class="col">
+                <mat-form-field
+                  appearance="outline"
+                  class="w-100"
+                  floatLabel="never"
+                >
+                  <mat-label>{{
+                    "system.system_config.contract_template.position_x"
+                      | translate
+                  }}</mat-label>
+                  <input
+                    [placeholder]="
+                      'system.system_config.contract_template.position_x'
+                        | translate
+                    "
+                    formControlName="customerPositionX"
+                    required
+                    matInput
+                    type="number"
+                    [disabled]="action === 'VIEW'"
+                  />
+                  <show-errors
+                    [control]="
+                      contractTemplateForm.controls['customerPositionX']
+                    "
+                    [controlLabel]="
+                      'system.system_config.contract_template.position_x'
+                        | translate
+                    "
+                    [hasIconPrefix]="false"
+                  >
+                  </show-errors>
+                </mat-form-field>
+              </div>
+              <!--   position Y -->
+              <div class="col">
+                <mat-form-field
+                  appearance="outline"
+                  class="w-100"
+                  floatLabel="never"
+                >
+                  <mat-label>{{
+                    "system.system_config.contract_template.position_y"
+                      | translate
+                  }}</mat-label>
+                  <input
+                    [placeholder]="
+                      'system.system_config.contract_template.position_y'
+                        | translate
+                    "
+                    formControlName="customerPositionY"
+                    required
+                    matInput
+                    type="number"
+                    [disabled]="action === 'VIEW'"
+                  />
+                  <show-errors
+                    [control]="
+                      contractTemplateForm.controls['customerPositionY']
+                    "
+                    [controlLabel]="
+                      'system.system_config.contract_template.position_y'
+                        | translate
+                    "
+                    [hasIconPrefix]="false"
+                  >
+                  </show-errors>
+                </mat-form-field>
+              </div>
+            </article>
+          </section>
+
           <section class="col-12 mb-4">
             <mat-accordion>
               <mat-expansion-panel>
@@ -194,7 +562,11 @@
             <div class="row">
               <div class="col-12 col-sm-12 col-md-6 col-lg-6">
                 <!--  Content  -->
-                <div class="content-contract-pdf my-3">Nội dung hợp đồng</div>
+                <div class="content-contract-pdf my-3">
+                  {{
+                    "system.system_config.contract_template.content" | translate
+                  }}
+                </div>
                 <ckeditor
                   [formControlName]="'content'"
                   [config]="ckeditorConfig"
@@ -214,7 +586,10 @@
                 </show-errors>
               </div>
               <div class="col-12 col-sm-12 col-md-6 col-lg-6">
-                <div id="preview-frame">
+                <div
+                  id="preview-frame"
+                  *ngxPermissionsOnly="['contracts:previewContract']"
+                >
                   <button
                     (click)="openPdfPreviewNewTab()"
                     type="button"
@@ -226,9 +601,14 @@
                         | translate
                     }}
                   </button>
+                  <!--                  <div-->
+                  <!--                    id="preview-pane"-->
+                  <!--                    class="preview-pane-pdfoject mt-2"-->
+                  <!--                  ></div>-->
                   <div
-                    id="preview-pane"
-                    class="preview-pane-pdfoject mt-2"
+                    *ngIf="loanContractView"
+                    [innerHTML]="loanContractView"
+                    class="pdfView mt-2"
                   ></div>
                 </div>
               </div>
