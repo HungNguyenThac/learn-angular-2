@@ -424,6 +424,33 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiResponseCreateDocumentResponse'
+  /v1/contracts/preview-contract:
+    post:
+      tags:
+      - contract-controller
+      summary: Xem trước hợp đồng
+      operationId: previewContract
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PreviewContractRequest'
+        required: true
+      responses:
+        "200":
+          description: Trả về hợp đồng dưới dạng byte array
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+                format: binary
+        "400":
+          description: Error preview contract
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+                format: binary
   /v1/contracts/getTokenOnSign:
     post:
       tags:
@@ -1068,6 +1095,43 @@ components:
           type: string
           description: Đường dẫn đến tài liệu hợp đồng
       description: Thông tin khi hoàn thành tạo hợp đồng
+    ContractSigningPosition:
+      required:
+      - height
+      - pageIndex
+      - positionX
+      - positionY
+      - width
+      type: object
+      properties:
+        pageIndex:
+          type: integer
+          format: int32
+        positionX:
+          type: number
+          format: float
+        positionY:
+          type: number
+          format: float
+        width:
+          type: number
+          format: float
+        height:
+          type: number
+          format: float
+    PreviewContractRequest:
+      required:
+      - content
+      - customerSigningPosition
+      - monexSigningPosition
+      type: object
+      properties:
+        content:
+          type: string
+        customerSigningPosition:
+          $ref: '#/components/schemas/ContractSigningPosition'
+        monexSigningPosition:
+          $ref: '#/components/schemas/ContractSigningPosition'
     ApiResponseCreateTokenResponse:
       type: object
       properties:

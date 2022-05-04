@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       SVC_NAME: operator-svc
-      ACR_NAME: epayprodregistry.azurecr.io
+      ACR_NAME: ${{ secrets.CONTAINER_REGISTRY_HOST }}
       ENV_TYPE: production
 
     steps:
@@ -18,21 +18,12 @@ jobs:
 
       - uses: actions/checkout@v2
 
-      - uses: Azure/login@v1
+      - name: Login to Container Registry
+        uses: azure/docker-login@v1
         with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
-      - uses: Azure/get-keyvault-secrets@v1.2
-        with:
-          keyvault: "monex-kv"
-          secrets: 'ACR-USERNAME, ACR-PASSWORD'
-        id: getAzSecret
-
-      - name: Azure Container Registry Login
-        uses: Azure/docker-login@v1
-        with:
-          login-server: epayprodregistry.azurecr.io
-          username: ${{ steps.getAzSecret.outputs.ACR-USERNAME }}
-          password: ${{ steps.getAzSecret.outputs.ACR-PASSWORD }}
+          login-server: ${{ secrets.CONTAINER_REGISTRY_HOST }}
+         username: ${{ secrets.CONTAINER_REGISTRY_USERNAME }}
+         password: ${{ secrets.CONTAINER_REGISTRY_PASSWORD }}
 
       - name: Build Container image
         run: docker build --build-arg ENV_TYPE=${ENV_TYPE} -t ${ACR_NAME}/${SVC_NAME}:product1.0 .
