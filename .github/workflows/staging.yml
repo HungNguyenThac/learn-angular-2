@@ -18,6 +18,8 @@ jobs:
       - uses: AutoModality/action-clean@v1
 
       - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
 
       - name: Login to Container Registry
         uses: azure/docker-login@v1
