@@ -118,11 +118,17 @@ export class BnplDetailInfoComponent implements OnInit {
         format: null,
       },
       {
-        title: this.multiLanguageService.instant('bnpl.loan_info.status'),
+        title: this.multiLanguageService.instant('bnpl.loan_info.bnpl_status'),
         value: this.loanDetail?.status,
         externalValue: this.loanDetail?.periodTimes,
         type: DATA_CELL_TYPE.STATUS,
         format: DATA_STATUS_TYPE.BNPL_STATUS,
+      },
+      {
+        title: this.multiLanguageService.instant('bnpl.loan_info.debt_status'),
+        value: this.loanDetail?.isBadDebt,
+        type: DATA_CELL_TYPE.STATUS,
+        format: DATA_STATUS_TYPE.PL_DEBT_STATUS,
       },
     ];
   }
