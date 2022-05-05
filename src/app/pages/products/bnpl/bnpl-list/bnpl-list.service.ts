@@ -52,6 +52,9 @@ export class BnplListService {
 
     switch (params.status) {
       case REPAYMENT_STATUS.BADDEBT:
+        requestBody['isBadDebt' + QUERY_CONDITION_TYPE.EQUAL] = true;
+        requestBody['status'] = BNPL_STATUS.DISBURSE;
+        delete requestBody['status__in'];
         break;
       case REPAYMENT_STATUS.PAYMENT_TERM_1:
         let now = new Date();
