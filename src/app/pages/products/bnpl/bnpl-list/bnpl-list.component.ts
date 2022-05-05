@@ -3,7 +3,6 @@ import {
   ApiResponseSearchAndPaginationResponseBnplApplication,
   ApiResponseSearchAndPaginationResponseMerchant,
   Merchant,
-  PaydayLoanHmg,
   SearchAndPaginationResponseBnplApplication,
 } from '../../../../../../open-api-modules/dashboard-api-docs';
 import { Observable, Subscription } from 'rxjs';
@@ -314,8 +313,8 @@ export class BnplListComponent implements OnInit, OnDestroy {
 
   listPermission = {
     getListBnpl: PermissionConstants.DASHBOARD_PERMISSION.GET_LIST_BNPL,
-    getByIdBnpl: PermissionConstants.DASHBOARD_PERMISSION.GET_BY_ID_BNPL
-  }
+    getByIdBnpl: PermissionConstants.DASHBOARD_PERMISSION.GET_BY_ID_BNPL,
+  };
 
   userHasPermissions = {
     bnplViewStatus: {

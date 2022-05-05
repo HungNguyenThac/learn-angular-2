@@ -681,7 +681,6 @@ export class PlStatusElementComponent implements OnInit, AfterViewInit {
       }
 
       if (
-        periods.periodTime1?.complete &&
         !periods.periodTime2?.complete &&
         !periods.periodTime3?.complete &&
         !periods.periodTime4?.complete
