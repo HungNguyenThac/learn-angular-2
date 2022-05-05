@@ -126,6 +126,9 @@ export class AddNewPdDialogComponent implements OnInit {
 
   submitForm() {
     this.giveOrders();
+    for (const c in this.addPdForm.controls) {
+      this.addPdForm.controls[c].markAsTouched()
+    }
     if (this.addPdForm.invalid) {
       return;
     }

@@ -41,6 +41,10 @@ export class BnplPaymentDialogComponent implements OnInit {
   }
 
   submitForm() {
+    for (const c in this.bnplPaymentForm.controls) {
+      this.bnplPaymentForm.controls[c].markAsTouched()
+    }
+
     if (this.bnplPaymentForm.invalid) {
       return;
     }

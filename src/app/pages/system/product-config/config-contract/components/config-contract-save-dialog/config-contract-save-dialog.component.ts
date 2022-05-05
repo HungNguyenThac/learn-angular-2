@@ -304,6 +304,10 @@ export class ConfigContractSaveDialogComponent implements OnInit, OnDestroy {
   }
 
   submitForm() {
+    for (const c in this.contractTemplateForm.controls) {
+      this.contractTemplateForm.controls[c].markAsTouched()
+    }
+
     if (this.contractTemplateForm.invalid) {
       return;
     }

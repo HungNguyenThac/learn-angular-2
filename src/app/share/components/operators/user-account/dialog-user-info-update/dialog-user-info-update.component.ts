@@ -138,6 +138,10 @@ export class DialogUserInfoUpdateComponent implements OnInit {
   }
 
   submitForm() {
+    for (const c in this.accountInfoForm.controls) {
+      this.accountInfoForm.controls[c].markAsTouched()
+    }
+
     if (this.accountInfoForm.invalid) {
       return;
     }

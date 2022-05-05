@@ -243,6 +243,11 @@ export class CustomerDetailUpdateDialogComponent implements OnInit {
   }
 
   submitForm() {
+
+    for (const c in this.customerIndividualForm.controls) {
+      this.customerIndividualForm.controls[c].markAsTouched()
+    }
+
     if (this.customerIndividualForm.invalid) {
       return;
     }

@@ -53,6 +53,10 @@ export class ProductStatusDialogComponent implements OnInit {
     //     status: 'ACTIVE',
     //   });
     // }
+    for (const c in this.form.controls) {
+      this.form.controls[c].markAsTouched()
+    }
+
     if (this.form.invalid) {
       return;
     }

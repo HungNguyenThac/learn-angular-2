@@ -182,7 +182,13 @@ export class AddNewQuestionComponent implements OnInit {
         isMandatory: true,
       });
     }
+
     this.getAnswersList();
+
+    for (const c in this.addPdForm.controls) {
+      this.addPdForm.controls[c].markAsTouched()
+    }
+
     if (this.addPdForm.invalid) {
       return;
     }

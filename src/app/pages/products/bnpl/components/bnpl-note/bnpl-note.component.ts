@@ -37,6 +37,10 @@ export class BnplNoteComponent implements OnInit {
   }
 
   submitForm() {
+    for (const c in this.loanInfoForm.controls) {
+      this.loanInfoForm.controls[c].markAsTouched()
+    }
+
     if (this.loanInfoForm.invalid) return;
     this.triggerUpdateLoanInfo.emit({
       id: this.loanDetail?.id,

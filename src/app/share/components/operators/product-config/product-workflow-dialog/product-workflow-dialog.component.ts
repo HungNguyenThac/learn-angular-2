@@ -108,6 +108,10 @@ export class ProductWorkflowDialogComponent implements OnInit {
   }
 
   submitForm() {
+    for (const c in this.form.controls) {
+      this.form.controls[c].markAsTouched()
+    }
+
     if (this.form.invalid) {
       return;
     }
