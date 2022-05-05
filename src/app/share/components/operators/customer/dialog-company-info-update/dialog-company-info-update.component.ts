@@ -131,6 +131,10 @@ export class DialogCompanyInfoUpdateComponent implements OnInit {
   }
 
   submitForm() {
+    for (const c in this.companyInfoForm.controls) {
+      this.companyInfoForm.controls[c].markAsTouched()
+    }
+
     if (this.companyInfoForm.invalid) {
       return;
     }

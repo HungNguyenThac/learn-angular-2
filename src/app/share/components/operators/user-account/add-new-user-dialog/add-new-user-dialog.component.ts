@@ -84,6 +84,10 @@ export class AddNewUserDialogComponent implements OnInit {
   }
 
   submitForm() {
+    for (const c in this.addAccountForm.controls) {
+      this.addAccountForm.controls[c].markAsTouched()
+    }
+
     if (this.addAccountForm.invalid) {
       return;
     }

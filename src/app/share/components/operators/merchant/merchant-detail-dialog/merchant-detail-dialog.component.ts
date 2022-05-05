@@ -262,6 +262,9 @@ export class MerchantDetailDialogComponent implements OnInit, AfterViewChecked {
   }
 
   submitForm() {
+    for (const c in this.merchantInfoForm.controls) {
+        this.merchantInfoForm.controls[c].markAsTouched()
+    }
     if (this.merchantInfoForm.invalid) {
       return;
     }
