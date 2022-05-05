@@ -113,6 +113,7 @@ export class BnplElementComponent implements OnInit {
       width: '90%',
       data: {
         type: type,
+        loanInfo: this.loanDetail,
         periodTimes: {
           periodTime1: this.loanDetail?.periodTime1,
           periodTime2: this.loanDetail?.periodTime2,
@@ -122,6 +123,7 @@ export class BnplElementComponent implements OnInit {
       },
     });
     confirmRepaymentRef.afterClosed().subscribe((result) => {
+      if (!result) return;
       if (result.type === BUTTON_TYPE.PRIMARY) {
         this.updatePaymentOrder({ id, transactionAmount: result.data.amount });
       }

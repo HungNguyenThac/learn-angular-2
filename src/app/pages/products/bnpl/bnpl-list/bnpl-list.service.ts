@@ -19,7 +19,6 @@ import {
   AdminControllerService,
   BnplControllerService,
   ChangeLoanStatusRequest,
-  CorePaymentRequest,
   UpdateLoanRequestDto,
 } from '../../../../../../open-api-modules/bnpl-api-docs';
 import { ContractControllerService } from '../../../../../../open-api-modules/com-api-docs';
@@ -54,20 +53,8 @@ export class BnplListService {
     switch (params.status) {
       case REPAYMENT_STATUS.BADDEBT:
         break;
-      case BNPL_STATUS.DISBURSE:
-        requestBody['periodTime1.complete' + QUERY_CONDITION_TYPE.NOT_EQUAL] =
-          true;
-        requestBody['periodTime2.complete' + QUERY_CONDITION_TYPE.NOT_EQUAL] =
-          true;
-        requestBody['periodTime3.complete' + QUERY_CONDITION_TYPE.NOT_EQUAL] =
-          true;
-        requestBody['periodTime4.complete' + QUERY_CONDITION_TYPE.NOT_EQUAL] =
-          true;
-        requestBody['status'] = BNPL_STATUS.DISBURSE;
-        break;
       case REPAYMENT_STATUS.PAYMENT_TERM_1:
         let now = new Date();
-        requestBody['periodTime1.complete' + QUERY_CONDITION_TYPE.EQUAL] = true;
         requestBody[
           'periodTime2.convertedDueDate' + QUERY_CONDITION_TYPE.GREATER_THAN
         ] = now;
@@ -179,7 +166,9 @@ export class BnplListService {
   }
 
   public getBnplById(id) {
-    return this.dashboardBnplApplicationControllerService.getBnplApplicationById(id);
+    return this.dashboardBnplApplicationControllerService.getBnplApplicationById(
+      id
+    );
   }
 
   public convertBlobType(data: any, type: string) {

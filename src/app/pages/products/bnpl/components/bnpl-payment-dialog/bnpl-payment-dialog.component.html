@@ -38,6 +38,7 @@
                     "bnpl.loan_info.payment.amount" | translate
                   }}</mat-label>
                   <input
+                    #amount
                     (focusin)="convertAnnualIncomeInputWithoutSeparator()"
                     (focusout)="formatAnnualIncomeInputWithSeparator()"
                     [placeholder]="'bnpl.loan_info.payment.amount' | translate"

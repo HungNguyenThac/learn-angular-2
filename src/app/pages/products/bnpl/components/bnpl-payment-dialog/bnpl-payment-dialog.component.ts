@@ -1,4 +1,10 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  Inject,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MultiLanguageService } from '../../../../../share/translate/multiLanguageService';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -6,9 +12,13 @@ import { BUTTON_TYPE } from '../../../../../core/common/enum/operator';
 import {
   BNPL_PAYMENT_TYPE,
   BNPL_PERIOD,
+  BNPL_STATUS,
 } from '../../../../../core/common/enum/bnpl';
 import { PeriodTimesModel } from '../../../../../public/models/external/periodTimes.model';
-import { PeriodTime } from '../../../../../../../open-api-modules/dashboard-api-docs';
+import {
+  BnplApplication,
+  PeriodTime,
+} from '../../../../../../../open-api-modules/dashboard-api-docs';
 
 @Component({
   selector: 'app-bnpl-payment-dialog',
@@ -19,7 +29,9 @@ export class BnplPaymentDialogComponent implements OnInit {
   bnplPaymentForm: FormGroup;
   periodOptions: any[] = [];
   periodTimes: PeriodTimesModel;
+  loanInfo: BnplApplication;
   dialogTitle: string;
+  @ViewChild('amount') amountInputRef: ElementRef<HTMLInputElement>;
 
   constructor(
     private dialogRef: MatDialogRef<BnplPaymentDialogComponent>,
@@ -42,7 +54,7 @@ export class BnplPaymentDialogComponent implements OnInit {
 
   submitForm() {
     for (const c in this.bnplPaymentForm.controls) {
-      this.bnplPaymentForm.controls[c].markAsTouched()
+      this.bnplPaymentForm.controls[c].markAsTouched();
     }
 
     if (this.bnplPaymentForm.invalid) {
@@ -66,11 +78,12 @@ export class BnplPaymentDialogComponent implements OnInit {
 
   initDialogData(data: any) {
     this.periodTimes = data.periodTimes;
+    this.loanInfo = data.loanInfo;
     this.initPeriodOptions();
 
     if (data.type === BNPL_PAYMENT_TYPE.ALL_PERIOD) {
-      this.changePeriod(BNPL_PERIOD.PERIOD_TIME_4);
       this.bnplPaymentForm.controls.period.setValue(BNPL_PERIOD.PERIOD_TIME_4);
+      this.changePeriod(BNPL_PERIOD.PERIOD_TIME_4);
     } else {
       this.initFormData();
     }
@@ -88,7 +101,7 @@ export class BnplPaymentDialogComponent implements OnInit {
   private initPeriodOptions() {
     this.periodOptions = [];
 
-    if (!this.periodTimes?.periodTime1?.complete) {
+    if (this.loanInfo?.status !== BNPL_STATUS.DISBURSE) {
       this.periodOptions.push({
         value: BNPL_PERIOD.PERIOD_TIME_1,
         name: this.multiLanguageService.instant(
@@ -130,7 +143,7 @@ export class BnplPaymentDialogComponent implements OnInit {
       !this.periodTimes?.periodTime4?.complete &&
       this.periodTimes?.periodTime3?.complete &&
       this.periodTimes?.periodTime2?.complete &&
-      this.periodTimes?.periodTime1?.complete
+      this.loanInfo?.status == BNPL_STATUS.DISBURSE
     ) {
       this.changePeriod(BNPL_PERIOD.PERIOD_TIME_4);
       this.bnplPaymentForm.controls.period.setValue(BNPL_PERIOD.PERIOD_TIME_4);
@@ -140,7 +153,7 @@ export class BnplPaymentDialogComponent implements OnInit {
     if (
       !this.periodTimes?.periodTime3?.complete &&
       this.periodTimes?.periodTime2?.complete &&
-      this.periodTimes?.periodTime1?.complete
+      this.loanInfo?.status == BNPL_STATUS.DISBURSE
     ) {
       this.changePeriod(BNPL_PERIOD.PERIOD_TIME_3);
       this.bnplPaymentForm.controls.period.setValue(BNPL_PERIOD.PERIOD_TIME_3);
@@ -149,14 +162,14 @@ export class BnplPaymentDialogComponent implements OnInit {
 
     if (
       !this.periodTimes?.periodTime2?.complete &&
-      this.periodTimes?.periodTime1?.complete
+      this.loanInfo?.status == BNPL_STATUS.DISBURSE
     ) {
       this.changePeriod(BNPL_PERIOD.PERIOD_TIME_2);
       this.bnplPaymentForm.controls.period.setValue(BNPL_PERIOD.PERIOD_TIME_2);
       return;
     }
 
-    if (!this.periodTimes?.periodTime1?.complete) {
+    if (this.loanInfo?.status !== BNPL_STATUS.DISBURSE) {
       this.changePeriod(BNPL_PERIOD.PERIOD_TIME_1);
       this.bnplPaymentForm.controls.period.setValue(BNPL_PERIOD.PERIOD_TIME_1);
       return;
@@ -167,7 +180,6 @@ export class BnplPaymentDialogComponent implements OnInit {
     if (!this.bnplPaymentForm.controls.amount.value) {
       return null;
     }
-
     let numberValWithSeparator = parseInt(
       this.bnplPaymentForm.controls.amount.value
     ).toLocaleString('de-de');
@@ -175,7 +187,10 @@ export class BnplPaymentDialogComponent implements OnInit {
   }
 
   convertAnnualIncomeInputWithoutSeparator() {
-    if (!this.bnplPaymentForm.controls.amount.value) {
+    if (
+      !this.bnplPaymentForm.controls.amount.value ||
+      typeof this.bnplPaymentForm.controls.amount.value !== 'string'
+    ) {
       return null;
     }
 
@@ -232,9 +247,19 @@ export class BnplPaymentDialogComponent implements OnInit {
       default:
         break;
     }
+    if (this.amountInputRef) {
+      this.amountInputRef.nativeElement.focus();
+    }
   }
 
   calcRemainingAmountOfPeriod(periodTime: PeriodTime) {
+    if (!periodTime) return null;
+    // DISBURSE is completed periodTime1
+    if (!periodTime.period) {
+      return this.loanInfo?.status === BNPL_STATUS.DISBURSE
+        ? 0
+        : periodTime.totalOriginalDueForPeriod;
+    }
     return periodTime.complete ? 0 : periodTime.totalInstallmentAmountForPeriod;
   }
 }
