@@ -1,13 +1,29 @@
+import { map } from 'rxjs/operators';
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { PageEvent } from '@angular/material/paginator/public-api';
+import { Sort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
+import { Title } from '@angular/platform-browser';
+import { ActivatedRoute, Params, Router } from '@angular/router';
+import { Store } from '@ngrx/store';
+import * as _ from 'lodash';
+import { NgxPermissionsService } from 'ngx-permissions';
+import { ToastrService } from 'ngx-toastr';
+import { Observable, Subscription } from 'rxjs';
+import { BnplApplication } from '../../../../../../open-api-modules/bnpl-api-docs';
+
 import {
   ApiResponseSearchAndPaginationResponseBnplApplication,
   ApiResponseSearchAndPaginationResponseMerchant,
   Merchant,
   SearchAndPaginationResponseBnplApplication,
 } from '../../../../../../open-api-modules/dashboard-api-docs';
-import { Observable, Subscription } from 'rxjs';
-import { BreadcrumbOptionsModel } from '../../../../public/models/external/breadcrumb-options.model';
-import { FilterOptionModel } from '../../../../public/models/filter/filter-option.model';
+import { PermissionConstants } from '../../../../core/common/constants/permission-constants';
+import {
+  BNPL_STATUS,
+  REPAYMENT_STATUS,
+} from '../../../../core/common/enum/bnpl';
 import {
   DATA_CELL_TYPE,
   DATA_STATUS_TYPE,
@@ -18,34 +34,20 @@ import {
   RESPONSE_CODE,
 } from '../../../../core/common/enum/operator';
 import { ACCOUNT_CLASSIFICATION } from '../../../../core/common/enum/payday-loan';
-import { FilterItemModel } from '../../../../public/models/filter/filter-item.model';
-import { DisplayedFieldsModel } from '../../../../public/models/filter/displayed-fields.model';
-import { MatTableDataSource } from '@angular/material/table';
-import { FormBuilder, FormGroup } from '@angular/forms';
-import { ActivatedRoute, Params, Router } from '@angular/router';
-import { OverviewItemModel } from '../../../../public/models/external/overview-item.model';
-import { Title } from '@angular/platform-browser';
-import { Store } from '@ngrx/store';
-import { MultiLanguageService } from '../../../../share/translate/multiLanguageService';
-import { CustomerListService } from '../../../customer/customer-list/customer-list.service';
-import { ToastrService } from 'ngx-toastr';
-import { NgxPermissionsService } from 'ngx-permissions';
 import * as fromActions from '../../../../core/store';
 import * as fromStore from '../../../../core/store';
 import * as fromSelectors from '../../../../core/store/selectors';
-import { PageEvent } from '@angular/material/paginator/public-api';
-import { Sort } from '@angular/material/sort';
-import { FilterEventModel } from '../../../../public/models/filter/filter-event.model';
+import { BreadcrumbOptionsModel } from '../../../../public/models/external/breadcrumb-options.model';
+import { OverviewItemModel } from '../../../../public/models/external/overview-item.model';
+import { DisplayedFieldsModel } from '../../../../public/models/filter/displayed-fields.model';
 import { FilterActionEventModel } from '../../../../public/models/filter/filter-action-event.model';
-import { PermissionConstants } from '../../../../core/common/constants/permission-constants';
-import { BnplListService } from './bnpl-list.service';
-import * as _ from 'lodash';
+import { FilterEventModel } from '../../../../public/models/filter/filter-event.model';
+import { FilterItemModel } from '../../../../public/models/filter/filter-item.model';
+import { FilterOptionModel } from '../../../../public/models/filter/filter-option.model';
+import { MultiLanguageService } from '../../../../share/translate/multiLanguageService';
+import { CustomerListService } from '../../../customer/customer-list/customer-list.service';
 import { MerchantListService } from '../../../system/merchant/merchant-list/merchant-list.service';
-import {
-  BNPL_STATUS,
-  REPAYMENT_STATUS,
-} from '../../../../core/common/enum/bnpl';
-import { BnplApplication } from '../../../../../../open-api-modules/bnpl-api-docs';
+import { BnplListService } from './bnpl-list.service';
 
 @Component({
   selector: 'app-bnpl-list',
@@ -415,8 +417,9 @@ export class BnplListComponent implements OnInit, OnDestroy {
         break;
       case FILTER_TYPE.SEARCH_SELECT:
         if (event.controlName === 'merchant.id') {
+          const pacMerchantIds = this._getAllIdMerchant(event.value);
           this.filterForm.controls['merchant.id'].setValue(
-            event.value ? event.value.join(',') : ''
+            pacMerchantIds ? pacMerchantIds.join(',') : ''
           );
         }
         break;
@@ -425,6 +428,18 @@ export class BnplListComponent implements OnInit, OnDestroy {
     }
 
     this._onFilterChange();
+  }
+
+  private _getAllIdMerchant(params: string[]) {
+    let arrayId = [];
+    for (const id of params) {
+      const merchantSelected = this.merchantList.filter((x) => x.id === id);
+      arrayId.push(merchantSelected[0].id);
+      if (merchantSelected[0].childMerchantIds) {
+        arrayId = arrayId.concat(merchantSelected[0].childMerchantIds);
+      }
+    }
+    return arrayId;
   }
 
   public onFilterActionTrigger(event: FilterActionEventModel) {
@@ -827,6 +842,8 @@ export class BnplListComponent implements OnInit, OnDestroy {
           filterOption.options = merchantOptions;
 
           this.merchantList = merchantOptions;
+          this.filterOptions[1].hidden =
+            this.merchantList.length < 2 ? true : false;
         });
 
         this.filterOptions = JSON.parse(JSON.stringify(this.filterOptions));
