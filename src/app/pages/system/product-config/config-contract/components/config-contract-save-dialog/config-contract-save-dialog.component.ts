@@ -287,16 +287,20 @@ export class ConfigContractSaveDialogComponent implements OnInit, OnDestroy {
       statusFlowId: this.contractTemplate?.statusFlow?.id,
       productId: this.contractTemplate?.product?.id,
       isActive: this.contractTemplate?.isActive,
-      customerPositionPage: 1,
-      monexPositionPage: 1,
-      customerWidth: 200,
-      customerHeight: 60,
-      customerPositionX: 0,
-      customerPositionY: 0,
-      monexWidth: 200,
-      monexHeight: 60,
-      monexPositionX: 0,
-      monexPositionY: 0,
+      customerPositionPage: this.contractTemplate?.pageIndexCustomer
+        ? this.contractTemplate?.pageIndexCustomer + 1
+        : 1,
+      monexPositionPage: this.contractTemplate?.pageIndexMonex
+        ? this.contractTemplate?.pageIndexMonex + 1
+        : 1,
+      customerWidth: this.contractTemplate?.widthCustomer || 200,
+      customerHeight: this.contractTemplate?.heightCustomer || 60,
+      customerPositionX: this.contractTemplate?.positionXMonex || 0,
+      customerPositionY: this.contractTemplate?.positionYMonex || 0,
+      monexWidth: this.contractTemplate?.widthMonex || 200,
+      monexHeight: this.contractTemplate?.heightMonex || 60,
+      monexPositionX: this.contractTemplate?.positionXMonex || 0,
+      monexPositionY: this.contractTemplate?.positionYMonex || 0,
     });
 
     // this.convertHtmlToPdf(this.contractTemplate?.content || '');
@@ -305,7 +309,7 @@ export class ConfigContractSaveDialogComponent implements OnInit, OnDestroy {
 
   submitForm() {
     for (const c in this.contractTemplateForm.controls) {
-      this.contractTemplateForm.controls[c].markAsTouched()
+      this.contractTemplateForm.controls[c].markAsTouched();
     }
 
     if (this.contractTemplateForm.invalid) {
@@ -458,55 +462,55 @@ export class ConfigContractSaveDialogComponent implements OnInit, OnDestroy {
     );
   }
 
-  convertHtmlToPdf(data) {
-    // let doc = new jsPDF('p', 'pt', 'a4');
-    // const specialElementHandlers = {
-    //   '#editor': function (element, renderer) {
-    //     return true;
-    //   },
-    // };
-    //
-    // doc.fromHTML('<p>đạt</p>', 15, 15, {
-    //   width: 190,
-    //   elementHandlers: specialElementHandlers,
-    // });
-
-    this.docPdf = this.pdfMakeHtmlToPdf(data);
-    setTimeout(() => {
-      if (typeof this.docPdf !== 'undefined')
-        try {
-          if (
-            navigator.appVersion.indexOf('MSIE') !== -1 ||
-            navigator.appVersion.indexOf('Edge') !== -1 ||
-            navigator.appVersion.indexOf('Trident') !== -1
-          ) {
-            let options = {
-              pdfOpenParams: {
-                navpanes: 0,
-                toolbar: 0,
-                statusbar: 0,
-                view: 'FitV',
-              },
-              forcePDFJS: true,
-              PDFJS_URL: 'examples/PDF.js/web/viewer.html',
-            };
-
-            this.docPdf.getBlob(function (dataURL) {
-              PDFObject.embed(dataURL, '#preview-pane', options);
-            });
-            // PDFObject.embed(doc.output("bloburl"), "#preview-pane", options);
-          } else {
-            this.docPdf.getDataUrl(function (dataURL) {
-              PDFObject.embed(dataURL, '#preview-pane');
-            });
-
-            // PDFObject.embed(doc.output("datauristring"), "#preview-pane");
-          }
-        } catch (e) {
-          alert('Error ' + e);
-        }
-    }, 0);
-  }
+  // convertHtmlToPdf(data) {
+  //   let doc = new jsPDF('p', 'pt', 'a4');
+  //   const specialElementHandlers = {
+  //     '#editor': function (element, renderer) {
+  //       return true;
+  //     },
+  //   };
+  //
+  //   doc.fromHTML('<p>đạt</p>', 15, 15, {
+  //     width: 190,
+  //     elementHandlers: specialElementHandlers,
+  //   });
+  //
+  //   this.docPdf = this.pdfMakeHtmlToPdf(data);
+  //   setTimeout(() => {
+  //     if (typeof this.docPdf !== 'undefined')
+  //       try {
+  //         if (
+  //           navigator.appVersion.indexOf('MSIE') !== -1 ||
+  //           navigator.appVersion.indexOf('Edge') !== -1 ||
+  //           navigator.appVersion.indexOf('Trident') !== -1
+  //         ) {
+  //           let options = {
+  //             pdfOpenParams: {
+  //               navpanes: 0,
+  //               toolbar: 0,
+  //               statusbar: 0,
+  //               view: 'FitV',
+  //             },
+  //             forcePDFJS: true,
+  //             PDFJS_URL: 'examples/PDF.js/web/viewer.html',
+  //           };
+  //
+  //           this.docPdf.getBlob(function (dataURL) {
+  //             PDFObject.embed(dataURL, '#preview-pane', options);
+  //           });
+  //           // PDFObject.embed(doc.output("bloburl"), "#preview-pane", options);
+  //         } else {
+  //           this.docPdf.getDataUrl(function (dataURL) {
+  //             PDFObject.embed(dataURL, '#preview-pane');
+  //           });
+  //
+  //           // PDFObject.embed(doc.output("datauristring"), "#preview-pane");
+  //         }
+  //       } catch (e) {
+  //         alert('Error ' + e);
+  //       }
+  //   }, 0);
+  // }
 
   /**
    * Sync preview after 3s ckeditor changed

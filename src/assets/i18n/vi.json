@@ -1158,6 +1158,8 @@
       "confirm_change_status_description": "Bạn có chắc chuyển trạng thái đơn hàng BNPL {{loan_code}} từ {{current_loan_status}} → {{new_loan_status}}",
       "change_status_success": "Chuyển trạng thái khoản trả chậm thành công!",
       "repayment_success": "Thanh toán thành công!",
+      "debt_status": "Trạng thái nợ",
+      "bnpl_status": "Trạng thái đơn BNPL",
       "payment": {
         "all_period": "Tất toán khoản trả chậm",
         "repayment_period": "Thanh toán khoản trả chậm",

@@ -4105,6 +4105,8 @@ components:
           $ref: '#/components/schemas/PeriodTime'
         periodTime4:
           $ref: '#/components/schemas/PeriodTime'
+        isBadDebt:
+          type: boolean
     Period:
       type: object
       properties:

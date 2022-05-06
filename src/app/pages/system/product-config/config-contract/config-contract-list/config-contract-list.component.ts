@@ -382,6 +382,50 @@ export class ConfigContractListComponent implements OnInit, OnDestroy {
             updateContractDto.isActive = result?.data?.isActive;
           }
 
+          // Customer signing postion
+          let customerPageIndex =
+            result?.data?.customerPositionPage > 0
+              ? result?.data?.customerPositionPage - 1
+              : 0;
+          if (customerPageIndex != info?.pageIndexCustomer) {
+            updateContractDto.pageIndexCustomer = customerPageIndex;
+          }
+          if (result?.data?.customerPositionX != info?.positionXCustomer) {
+            updateContractDto.positionXCustomer =
+              result?.data?.customerPositionX;
+          }
+          if (result?.data?.customerPositionY != info?.positionYCustomer) {
+            updateContractDto.positionYCustomer =
+              result?.data?.customerPositionY;
+          }
+          if (result?.data?.customerWidth != info?.widthCustomer) {
+            updateContractDto.widthCustomer = result?.data?.customerWidth;
+          }
+          if (result?.data?.customerHeight != info?.heightCustomer) {
+            updateContractDto.heightCustomer = result?.data?.customerHeight;
+          }
+
+          // Monex signing postion
+          let monexPageIndex =
+            result?.data?.monexPositionPage > 0
+              ? result?.data?.monexPositionPage - 1
+              : 0;
+          if (monexPageIndex != info?.pageIndexMonex) {
+            updateContractDto.pageIndexMonex = monexPageIndex;
+          }
+          if (result?.data?.monexPositionX != info?.positionXMonex) {
+            updateContractDto.positionXMonex = result?.data?.monexPositionX;
+          }
+          if (result?.data?.monexPositionY != info?.positionYMonex) {
+            updateContractDto.positionYMonex = result?.data?.monexPositionY;
+          }
+          if (result?.data?.monexWidth != info?.widthMonex) {
+            updateContractDto.widthMonex = result?.data?.monexWidth;
+          }
+          if (result?.data?.monexHeight != info?.heightMonex) {
+            updateContractDto.heightMonex = result?.data?.monexHeight;
+          }
+
           this._updateContractTemplate(info.id, updateContractDto, info);
         }
       })
@@ -411,6 +455,22 @@ export class ConfigContractListComponent implements OnInit, OnDestroy {
             content: result?.data?.content,
             name: result?.data?.name,
             statusFlowId: result.data?.statusFlowId,
+            pageIndexCustomer:
+              result.data?.customerPositionPage > 0
+                ? result.data?.customerPositionPage - 1
+                : 0,
+            positionXCustomer: result.data?.customerPositionX,
+            positionYCustomer: result.data?.customerPositionY,
+            widthCustomer: result.data?.customerWidth,
+            heightCustomer: result.data?.customerHeight,
+            pageIndexMonex:
+              result.data?.monexPositionPage > 0
+                ? result.data?.monexPositionPage - 1
+                : 0,
+            positionXMonex: result.data?.monexPositionX,
+            positionYMonex: result.data?.monexPositionY,
+            widthMonex: result.data?.monexWidth,
+            heightMonex: result.data?.monexHeight,
           };
           this._createContractTemplate(createContractDto);
         }
