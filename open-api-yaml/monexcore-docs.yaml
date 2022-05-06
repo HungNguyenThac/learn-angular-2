@@ -2130,6 +2130,26 @@ components:
           $ref: "#/components/schemas/LoanProduct"
         statusFlow:
           $ref: "#/components/schemas/StatusFlow"
+        pageIndexCustomer:
+          type: "number"
+        positionXCustomer:
+          type: "number"
+        positionYCustomer:
+          type: "number"
+        widthCustomer:
+          type: "number"
+        heightCustomer:
+          type: "number"
+        pageIndexMonex:
+          type: "number"
+        positionXMonex:
+          type: "number"
+        positionYMonex:
+          type: "number"
+        widthMonex:
+          type: "number"
+        heightMonex:
+          type: "number"
         createdBy:
           type: "string"
         updatedBy:
@@ -2145,6 +2165,16 @@ components:
         - "isActive"
         - "product"
         - "statusFlow"
+        - "pageIndexCustomer"
+        - "positionXCustomer"
+        - "positionYCustomer"
+        - "widthCustomer"
+        - "heightCustomer"
+        - "pageIndexMonex"
+        - "positionXMonex"
+        - "positionYMonex"
+        - "widthMonex"
+        - "heightMonex"
         - "createdBy"
         - "updatedBy"
         - "createdAt"
@@ -2200,12 +2230,52 @@ components:
         productId:
           type: "string"
           description: "Id sản phẩm"
+        pageIndexCustomer:
+          type: "number"
+          description: "Trang đặt chữ ký khách hàng"
+        positionXCustomer:
+          type: "number"
+          description: "Vị trí x của chữ ký khách hàng"
+        positionYCustomer:
+          type: "number"
+          description: "Vị trí y của chữ ký khách hàng"
+        widthCustomer:
+          type: "number"
+          description: "Chiều rộng chữ ký khách hàng"
+        heightCustomer:
+          type: "number"
+          description: "Chiều cao chữ ký khách hàng"
+        pageIndexMonex:
+          type: "number"
+          description: "Trang đặt chữ ký monex"
+        positionXMonex:
+          type: "number"
+          description: "Vị trí x của chữ ký monex"
+        positionYMonex:
+          type: "number"
+          description: "Vị trí y của chữ ký monex"
+        widthMonex:
+          type: "number"
+          description: "Chiều rộng chữ ký monex"
+        heightMonex:
+          type: "number"
+          description: "Chiều cao chữ ký monex"
       required:
         - "content"
         - "isActive"
         - "name"
         - "statusFlowId"
         - "productId"
+        - "pageIndexCustomer"
+        - "positionXCustomer"
+        - "positionYCustomer"
+        - "widthCustomer"
+        - "heightCustomer"
+        - "pageIndexMonex"
+        - "positionXMonex"
+        - "positionYMonex"
+        - "widthMonex"
+        - "heightMonex"
     UpdateContractDto:
       type: "object"
       properties:
@@ -2224,6 +2294,36 @@ components:
         productId:
           type: "string"
           description: "Id sản phẩm"
+        pageIndexCustomer:
+          type: "number"
+          description: "Trang đặt chữ ký khách hàng"
+        positionXCustomer:
+          type: "number"
+          description: "Vị trí x của chữ ký khách hàng"
+        positionYCustomer:
+          type: "number"
+          description: "Vị trí y của chữ ký khách hàng"
+        widthCustomer:
+          type: "number"
+          description: "Chiều rộng chữ ký khách hàng"
+        heightCustomer:
+          type: "number"
+          description: "Chiều cao chữ ký khách hàng"
+        pageIndexMonex:
+          type: "number"
+          description: "Trang đặt chữ ký monex"
+        positionXMonex:
+          type: "number"
+          description: "Vị trí x của chữ ký monex"
+        positionYMonex:
+          type: "number"
+          description: "Vị trí y của chữ ký monex"
+        widthMonex:
+          type: "number"
+          description: "Chiều rộng chữ ký monex"
+        heightMonex:
+          type: "number"
+          description: "Chiều cao chữ ký monex"
     ApiResponseDelete:
       type: "object"
       properties:
@@ -2310,7 +2410,7 @@ components:
         loanAmount:
           type: "number"
         productId:
-          type: "number"
+          type: "string"
         loanTerm:
           type: "number"
         numberOfRepayments:
@@ -2319,6 +2419,10 @@ components:
           type: "number"
         isPaymentNow:
           type: "boolean"
+        charges:
+          type: "array"
+          items:
+            type: "string"
       required:
         - "merchantId"
         - "customerId"
@@ -2347,7 +2451,7 @@ components:
         coreLoanId:
           type: "number"
         productId:
-          type: "number"
+          type: "string"
       required:
         - "newStatus"
         - "currentStatus"
