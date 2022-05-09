@@ -131,6 +131,7 @@ export class BnplElementComponent implements OnInit {
   }
 
   public updatePaymentOrder({ id, transactionAmount }) {
+    console.log('134', id, transactionAmount);
     this.subManager.add(
       this.bnplListService
         .repaymentBnplApplication(id, transactionAmount)

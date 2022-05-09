@@ -96,9 +96,10 @@ export class PermissionConstants {
     GET_LIST_ADMIN_ACCOUNT: 'dashboardAdminAccounts:getAdminAccounts',
     GET_BY_ID_ADMIN_ACCOUNT: 'dashboardAdminAccounts:getAdminAccountById',
     GET_EKYC_INFO: 'dashboardEkyc:getEkycInfo',
-    GET_LIST_EKYC_INFO_BY_CUSTOMER_ID: 'dashboardCustomers:getEkycInfoByCustomerId',
+    GET_LIST_EKYC_INFO_BY_CUSTOMER_ID:
+      'dashboardCustomers:getEkycInfoByCustomerId',
     GET_LIST_GROUP: 'dashboardGroups:getGroups',
-  }
+  };
 
   public static VIEW_BNPL_STATUS_PERMISSION: any = {
     PENDING: 'dashboardApplications:findPendingBnplLoan',
@@ -110,5 +111,9 @@ export class PermissionConstants {
     CONTRACT_AWAITING: 'dashboardApplications:findContractAwaitingBnplLoan',
     WITHDRAW: 'dashboardApplications:findWithdrawBnplLoan',
     COMPLETED: 'dashboardApplications:findCompletedBnplLoan',
+  };
+
+  public static OPERATOR_PERMISSION: any = {
+    GET_BNPL_USER_STATUS: 'operatorBnpl:getByUserStatus',
   };
 }

@@ -13,7 +13,7 @@ import {
   ContractControllerService,
   PreviewContractRequest,
 } from '../../../../../../../open-api-modules/com-api-docs';
-import {catchError, map} from "rxjs/operators";
+import { catchError, map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
@@ -29,7 +29,6 @@ export class ConfigContractListService {
 
   public getData(params) {
     let requestBody = this._buildRequestBodyGetList(params);
-
     return this.monexCoreContractTemplateControllerService.contractTemplateControllerSearchPagination(
       params.sortDirection === 'desc',
       parseInt(params.pageIndex) + 1,

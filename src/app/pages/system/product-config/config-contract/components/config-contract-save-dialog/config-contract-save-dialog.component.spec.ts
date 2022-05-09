@@ -8,9 +8,8 @@ describe('ConfigContractSaveDialogComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ConfigContractSaveDialogComponent ]
-    })
-    .compileComponents();
+      declarations: [ConfigContractSaveDialogComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

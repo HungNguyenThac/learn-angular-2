@@ -319,6 +319,9 @@ export class BnplListComponent implements OnInit, OnDestroy {
   };
 
   userHasPermissions = {
+    filterViews: {
+      getbnplByUserStatus: false,
+    },
     bnplViewStatus: {
       pending: false,
       undoapproval: false,
@@ -417,7 +420,10 @@ export class BnplListComponent implements OnInit, OnDestroy {
         break;
       case FILTER_TYPE.SEARCH_SELECT:
         if (event.controlName === 'merchant.id') {
-          const pacMerchantIds = this._getAllIdMerchant(event.value);
+          const pacMerchantIds = this.getAllMerchantIds(
+            event.value,
+            this.merchantList
+          );
           this.filterForm.controls['merchant.id'].setValue(
             pacMerchantIds ? pacMerchantIds.join(',') : ''
           );
@@ -430,16 +436,23 @@ export class BnplListComponent implements OnInit, OnDestroy {
     this._onFilterChange();
   }
 
-  private _getAllIdMerchant(params: string[]) {
-    let arrayId = [];
-    for (const id of params) {
-      const merchantSelected = this.merchantList.filter((x) => x.id === id);
-      arrayId.push(merchantSelected[0].id);
-      if (merchantSelected[0].childMerchantIds) {
-        arrayId = arrayId.concat(merchantSelected[0].childMerchantIds);
+  private getAllMerchantIds(arrayMerchantIdSelected, merchantList) {
+    const arrayMerchantIds = [];
+    function loop(paramIds) {
+      for (const id of paramIds) {
+        const merchant = merchantList.find((merchant) => merchant.id === id);
+        if (merchant?.id) {
+          arrayMerchantIds.push(merchant.id);
+        } else {
+          arrayMerchantIds.push(id);
+        }
+        if (merchant?.childMerchantIds) {
+          loop(merchant.childMerchantIds);
+        }
       }
     }
-    return arrayId;
+    loop(arrayMerchantIdSelected);
+    return arrayMerchantIds;
   }
 
   public onFilterActionTrigger(event: FilterActionEventModel) {
@@ -735,6 +748,7 @@ export class BnplListComponent implements OnInit, OnDestroy {
   private async _checkUserPermissions() {
     await this._checkPermission();
     this._displayStatusFilterOptions();
+    this.changeHiddenFilterOptionByPermission();
   }
 
   private async _checkPermission() {
@@ -773,6 +787,10 @@ export class BnplListComponent implements OnInit, OnDestroy {
     this.userHasPermissions.bnplViewStatus.completed =
       await this.permissionsService.hasPermission(
         PermissionConstants.VIEW_BNPL_STATUS_PERMISSION.COMPLETED
+      );
+    this.userHasPermissions.filterViews.getbnplByUserStatus =
+      await this.permissionsService.hasPermission(
+        PermissionConstants.OPERATOR_PERMISSION.GET_BNPL_USER_STATUS
       );
   }
 
@@ -816,6 +834,15 @@ export class BnplListComponent implements OnInit, OnDestroy {
     });
   }
 
+  private changeHiddenFilterOptionByPermission() {
+    this.filterOptions.forEach((option) => {
+      if (option.controlName === 'accountClassification') {
+        option.hidden =
+          !this.userHasPermissions.filterViews.getbnplByUserStatus;
+      }
+    });
+  }
+
   private _getMerchantList() {
     this.merchantListService
       .getAllMerchant()
@@ -842,8 +869,8 @@ export class BnplListComponent implements OnInit, OnDestroy {
           filterOption.options = merchantOptions;
 
           this.merchantList = merchantOptions;
-          this.filterOptions[1].hidden =
-            this.merchantList.length < 2 ? true : false;
+
+          filterOption.hidden = this.merchantList.length < 2 ? true : false;
         });
 
         this.filterOptions = JSON.parse(JSON.stringify(this.filterOptions));
