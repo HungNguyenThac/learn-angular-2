@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import {
   CompanyControllerService,
   GroupControllerService,
@@ -53,7 +53,7 @@ import {
   templateUrl: './product-status-list.component.html',
   styleUrls: ['./product-status-list.component.scss'],
 })
-export class ProductStatusListComponent implements OnInit, OnDestroy{
+export class ProductStatusListComponent implements OnInit, OnDestroy {
   //Mock data
   roleList: Array<GroupEntity>;
 

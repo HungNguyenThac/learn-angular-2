@@ -417,7 +417,11 @@ export class BnplListComponent implements OnInit, OnDestroy {
         break;
       case FILTER_TYPE.SEARCH_SELECT:
         if (event.controlName === 'merchant.id') {
-          const pacMerchantIds = this._getAllIdMerchant(event.value);
+          const pacMerchantIds = this.getAllMerchantIds(
+            event.value,
+            this.merchantList
+          );
+          console.log('pacMerchantIds', pacMerchantIds);
           this.filterForm.controls['merchant.id'].setValue(
             pacMerchantIds ? pacMerchantIds.join(',') : ''
           );
@@ -430,16 +434,23 @@ export class BnplListComponent implements OnInit, OnDestroy {
     this._onFilterChange();
   }
 
-  private _getAllIdMerchant(params: string[]) {
-    let arrayId = [];
-    for (const id of params) {
-      const merchantSelected = this.merchantList.filter((x) => x.id === id);
-      arrayId.push(merchantSelected[0].id);
-      if (merchantSelected[0].childMerchantIds) {
-        arrayId = arrayId.concat(merchantSelected[0].childMerchantIds);
+  private getAllMerchantIds(arrayMerchantIdSelected, merchantList) {
+    const arrayMerchantIds = [];
+    function loop(paramIds) {
+      for (const id of paramIds) {
+        const merchant = merchantList.find((merchant) => merchant.id === id);
+        if (merchant?.id) {
+          arrayMerchantIds.push(merchant.id);
+        } else {
+          arrayMerchantIds.push(id);
+        }
+        if (merchant?.childMerchantIds) {
+          loop(merchant.childMerchantIds);
+        }
       }
     }
-    return arrayId;
+    loop(arrayMerchantIdSelected);
+    return arrayMerchantIds;
   }
 
   public onFilterActionTrigger(event: FilterActionEventModel) {

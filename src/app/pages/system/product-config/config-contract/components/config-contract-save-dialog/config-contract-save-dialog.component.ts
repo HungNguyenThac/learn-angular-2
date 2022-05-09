@@ -12,33 +12,34 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { PageEvent } from '@angular/material/paginator/public-api';
+import { MatTable, MatTableDataSource } from '@angular/material/table';
+import { Store } from '@ngrx/store';
+import * as htmlToPdfmake from 'html-to-pdfmake';
+import pdfmake from 'pdfmake/build/pdfmake';
+import { Observable, Subject, Subscription } from 'rxjs';
+import { map, takeUntil, tap } from 'rxjs/operators';
+import { environment } from '../../../../../../../environments/environment';
 import {
   BUTTON_TYPE,
   DATA_CELL_TYPE,
   RESPONSE_CODE,
   TABLE_ACTION_TYPE,
 } from '../../../../../../core/common/enum/operator';
+import { NotificationService } from '../../../../../../core/services/notification.service';
+import * as fromStore from '../../../../../../core/store';
+import * as fromSelectors from '../../../../../../core/store/selectors';
 import { DisplayedFieldsModel } from '../../../../../../public/models/filter/displayed-fields.model';
 import { MultiLanguageService } from '../../../../../../share/translate/multiLanguageService';
-import { PageEvent } from '@angular/material/paginator/public-api';
-import { MatTable, MatTableDataSource } from '@angular/material/table';
-import { Observable, Subject, Subscription } from 'rxjs';
 import { ConfigContractListService } from '../../config-contract-list/config-contract-list.service';
-import { environment } from '../../../../../../../environments/environment';
-import * as fromSelectors from '../../../../../../core/store/selectors';
-import { Store } from '@ngrx/store';
-import * as fromStore from '../../../../../../core/store';
-import { takeUntil } from 'rxjs/operators';
-import { NotificationService } from '../../../../../../core/services/notification.service';
-import * as PDFObject from 'pdfobject';
-import * as htmlToPdfmake from 'html-to-pdfmake';
-import pdfmake from 'pdfmake/build/pdfmake';
+import { ContractTemplatesService } from './../../../../../../../../open-api-modules/monexcore-api-docs/api/contractTemplates.service';
+import { BnplListService } from './../../../../../products/bnpl/bnpl-list/bnpl-list.service';
 // import pdfFonts from 'pdfmake/build/vfs_fonts';
 // @ts-ignore
 import pdfFonts from '../../../../../../public/vfs_fonts/vfs_custom_fonts';
-import { ContractTemplate } from '../../../../../../../../open-api-modules/monexcore-api-docs';
 import { DomSanitizer } from '@angular/platform-browser';
+import { ContractTemplate } from '../../../../../../../../open-api-modules/monexcore-api-docs';
 
 pdfmake.vfs = pdfFonts.pdfMake.vfs;
 
@@ -193,7 +194,9 @@ export class ConfigContractSaveDialogComponent implements OnInit, OnDestroy {
     private configContractListService: ConfigContractListService,
     private store: Store<fromStore.State>,
     private notificationService: NotificationService,
-    private domSanitizer: DomSanitizer
+    private domSanitizer: DomSanitizer,
+    private bnplServive: BnplListService,
+    private monexCoreContractTemplateControllerService: ContractTemplatesService
   ) {
     this._getPropertiesContract();
     this._getListLoanProducts();
@@ -228,6 +231,7 @@ export class ConfigContractSaveDialogComponent implements OnInit, OnDestroy {
 
   filterProducts() {
     let search = this.productFilterCtrl.value;
+
     if (!search) {
       this.filteredProducts = this.loanProducts;
       return;
@@ -241,6 +245,7 @@ export class ConfigContractSaveDialogComponent implements OnInit, OnDestroy {
 
   filterWorkflowStatuses() {
     let search = this.productStatusFilterCtrl.value;
+    console.log(this.productStatusFilterCtrl.value);
     if (!search) {
       this.filteredWorkflowStatuses = this.workflowStatuses;
       return;
@@ -311,14 +316,12 @@ export class ConfigContractSaveDialogComponent implements OnInit, OnDestroy {
     for (const c in this.contractTemplateForm.controls) {
       this.contractTemplateForm.controls[c].markAsTouched();
     }
-
     if (this.contractTemplateForm.invalid) {
       return;
     }
     let selectedProduct = this.loanProducts.find((value) => {
       return value.id === this.contractTemplateForm.controls.productId.value;
     });
-
     if (selectedProduct.contractTemplates) {
       let existContractTemplateActive = false;
       if (this.action === TABLE_ACTION_TYPE.EDIT) {
@@ -331,11 +334,24 @@ export class ConfigContractSaveDialogComponent implements OnInit, OnDestroy {
           }
         );
       } else if (this.action === TABLE_ACTION_TYPE.CREATE) {
-        existContractTemplateActive = selectedProduct.contractTemplates.find(
-          (contractTemplate) => {
-            return contractTemplate.isActive;
-          }
-        );
+        const valueForm = this.contractTemplateForm.value;
+        if (valueForm.isActive) {
+          let contractTeamplate;
+          const { statusFlowId, productId, isActive } = valueForm;
+
+          const responseContractTemplates = this.getContractTemplateList({
+            statusFlowId,
+            productId,
+            isActive,
+          });
+          responseContractTemplates.subscribe(
+            (result) => (contractTeamplate = result.result)
+          );
+
+          contractTeamplate?.items.length > 0
+            ? (existContractTemplateActive = true)
+            : (existContractTemplateActive = false);
+        }
       }
 
       if (!existContractTemplateActive) {
@@ -374,6 +390,20 @@ export class ConfigContractSaveDialogComponent implements OnInit, OnDestroy {
     });
   }
 
+  private getContractTemplateList(params) {
+    const queryMap = {};
+    queryMap['isActive'] = true;
+    queryMap['product.id'] = params.productId;
+    queryMap['statusFlow.id'] = params.statusFlowId;
+    return this.monexCoreContractTemplateControllerService.contractTemplateControllerSearchPagination(
+      true,
+      1,
+      1,
+      'createdAt',
+      JSON.stringify(queryMap)
+    );
+  }
+
   public onReadyCkEditor(editor) {
     // editor.plugins.get('FileRepository').createUploadAdapter = (loader) => {
     //   return new CkEditorAdapters(loader, editor.config);
@@ -395,7 +425,6 @@ export class ConfigContractSaveDialogComponent implements OnInit, OnDestroy {
 
   public fileUploadResponse(e) {
     e.stop();
-
     const genericErrorText = `Couldn't upload file`;
     let response = JSON.parse(e.data.fileLoader.xhr.responseText);
     console.log('response', response);
