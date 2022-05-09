@@ -347,10 +347,7 @@ export class ConfigContractSaveDialogComponent implements OnInit, OnDestroy {
           responseContractTemplates.subscribe(
             (result) => (contractTeamplate = result.result)
           );
-
-          contractTeamplate?.items.length > 0
-            ? (existContractTemplateActive = true)
-            : (existContractTemplateActive = false);
+          existContractTemplateActive = contractTeamplate?.items.length > 0;
         }
       }
 

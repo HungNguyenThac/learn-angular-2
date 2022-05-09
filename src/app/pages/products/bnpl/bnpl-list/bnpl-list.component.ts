@@ -421,7 +421,6 @@ export class BnplListComponent implements OnInit, OnDestroy {
             event.value,
             this.merchantList
           );
-          console.log('pacMerchantIds', pacMerchantIds);
           this.filterForm.controls['merchant.id'].setValue(
             pacMerchantIds ? pacMerchantIds.join(',') : ''
           );
