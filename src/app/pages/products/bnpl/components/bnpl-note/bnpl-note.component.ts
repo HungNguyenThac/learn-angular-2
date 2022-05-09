@@ -1,6 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-bnpl-note',
@@ -37,9 +36,7 @@ export class BnplNoteComponent implements OnInit {
   }
 
   submitForm() {
-    for (const c in this.loanInfoForm.controls) {
-      this.loanInfoForm.controls[c].markAsTouched()
-    }
+    this.loanInfoForm.markAllAsTouched();
 
     if (this.loanInfoForm.invalid) return;
     this.triggerUpdateLoanInfo.emit({

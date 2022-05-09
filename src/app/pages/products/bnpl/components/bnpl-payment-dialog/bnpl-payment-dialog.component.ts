@@ -7,7 +7,7 @@ import {
 } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MultiLanguageService } from '../../../../../share/translate/multiLanguageService';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { BUTTON_TYPE } from '../../../../../core/common/enum/operator';
 import {
   BNPL_PAYMENT_TYPE,
@@ -53,9 +53,7 @@ export class BnplPaymentDialogComponent implements OnInit {
   }
 
   submitForm() {
-    for (const c in this.bnplPaymentForm.controls) {
-      this.bnplPaymentForm.controls[c].markAsTouched();
-    }
+    this.bnplPaymentForm.markAllAsTouched();
 
     if (this.bnplPaymentForm.invalid) {
       return;

@@ -11,14 +11,9 @@ import { Component, Inject, OnInit } from '@angular/core';
 import * as moment from 'moment';
 import { VirtualAccount } from '../../../../../../open-api-modules/payment-api-docs';
 import { Bank } from 'open-api-modules/dashboard-api-docs';
-import {
-  BUTTON_TYPE,
-  RESPONSE_CODE,
-} from '../../../../core/common/enum/operator';
+import { BUTTON_TYPE } from '../../../../core/common/enum/operator';
 import { Subject, Subscription } from 'rxjs';
 import {
-  ApiResponseListCity,
-  ApiResponseListDistrict,
   CityControllerService,
   DistrictControllerService,
 } from '../../../../../../open-api-modules/customer-api-docs';
@@ -243,10 +238,7 @@ export class CustomerDetailUpdateDialogComponent implements OnInit {
   }
 
   submitForm() {
-
-    for (const c in this.customerIndividualForm.controls) {
-      this.customerIndividualForm.controls[c].markAsTouched()
-    }
+    this.customerIndividualForm.markAllAsTouched();
 
     if (this.customerIndividualForm.invalid) {
       return;
@@ -381,7 +373,7 @@ export class CustomerDetailUpdateDialogComponent implements OnInit {
     } else {
       search = search.toLowerCase();
     }
-    this.filteredBanks =  this.bankOptions.filter(
+    this.filteredBanks = this.bankOptions.filter(
       (bank) =>
         bank.bankCode.toLowerCase().indexOf(search) > -1 ||
         bank.bankName.toLowerCase().indexOf(search) > -1

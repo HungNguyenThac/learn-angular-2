@@ -17,9 +17,7 @@ import {
 import { Subscription } from 'rxjs';
 import { NgxPermissionsService } from 'ngx-permissions';
 import { ToastrService } from 'ngx-toastr';
-import { AddNewUserDialogComponent } from '../add-new-user-dialog/add-new-user-dialog.component';
 import { MultiLanguageService } from '../../../../translate/multiLanguageService';
-import { ChangeUserPasswordDialogComponent } from '../change-user-password-dialog/change-user-password-dialog.component';
 import {
   AdminAccountControllerService,
   ApiResponseObject,
@@ -138,9 +136,7 @@ export class DialogUserInfoUpdateComponent implements OnInit {
   }
 
   submitForm() {
-    for (const c in this.accountInfoForm.controls) {
-      this.accountInfoForm.controls[c].markAsTouched()
-    }
+    this.accountInfoForm.markAllAsTouched();
 
     if (this.accountInfoForm.invalid) {
       return;

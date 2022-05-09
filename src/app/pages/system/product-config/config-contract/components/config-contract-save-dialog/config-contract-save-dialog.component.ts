@@ -12,14 +12,14 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { PageEvent } from '@angular/material/paginator/public-api';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { Store } from '@ngrx/store';
 import * as htmlToPdfmake from 'html-to-pdfmake';
 import pdfmake from 'pdfmake/build/pdfmake';
 import { Observable, Subject, Subscription } from 'rxjs';
-import { map, takeUntil, tap } from 'rxjs/operators';
+import { takeUntil } from 'rxjs/operators';
 import { environment } from '../../../../../../../environments/environment';
 import {
   BUTTON_TYPE,
@@ -313,9 +313,8 @@ export class ConfigContractSaveDialogComponent implements OnInit, OnDestroy {
   }
 
   submitForm() {
-    for (const c in this.contractTemplateForm.controls) {
-      this.contractTemplateForm.controls[c].markAsTouched();
-    }
+    this.contractTemplateForm.markAllAsTouched();
+
     if (this.contractTemplateForm.invalid) {
       return;
     }

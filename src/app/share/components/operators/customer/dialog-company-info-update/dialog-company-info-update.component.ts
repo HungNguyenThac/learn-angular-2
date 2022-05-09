@@ -1,20 +1,25 @@
-import { MultiLanguageService } from "../../../../translate/multiLanguageService";
-import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
-import { Component, Inject, Input, OnInit } from "@angular/core";
-import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
+import { MultiLanguageService } from '../../../../translate/multiLanguageService';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { Component, Inject, OnInit } from '@angular/core';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import {
   Bank,
   CompanyInfo,
-  CustomerInfo
-} from "../../../../../../../open-api-modules/dashboard-api-docs";
-import { BUTTON_TYPE } from "../../../../../core/common/enum/operator";
-import { takeUntil } from "rxjs/operators";
-import { Subject } from "rxjs";
+  CustomerInfo,
+} from '../../../../../../../open-api-modules/dashboard-api-docs';
+import { BUTTON_TYPE } from '../../../../../core/common/enum/operator';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 
 @Component({
-  selector: "app-dialog-company-info-update",
-  templateUrl: "./dialog-company-info-update.component.html",
-  styleUrls: ["./dialog-company-info-update.component.scss"]
+  selector: 'app-dialog-company-info-update',
+  templateUrl: './dialog-company-info-update.component.html',
+  styleUrls: ['./dialog-company-info-update.component.scss'],
 })
 export class DialogCompanyInfoUpdateComponent implements OnInit {
   disabledColumns: string[];
@@ -27,14 +32,14 @@ export class DialogCompanyInfoUpdateComponent implements OnInit {
   customerId: string;
   _onDestroy = new Subject<void>();
 
-  bankNA = { bankCode: "", bankName: "N/A" };
+  bankNA = { bankCode: '', bankName: 'N/A' };
 
   workingTimeOptions: any[] = [
-    "Dưới 6 tháng",
-    "6 tháng đến dưới 1 năm",
-    "1 năm đến dưới 2 năm",
-    "2 năm đến 3 năm",
-    "Trên 3 năm"
+    'Dưới 6 tháng',
+    '6 tháng đến dưới 1 năm',
+    '1 năm đến dưới 2 năm',
+    '2 năm đến 3 năm',
+    'Trên 3 năm',
   ];
 
   companyInfoForm: FormGroup;
@@ -62,19 +67,19 @@ export class DialogCompanyInfoUpdateComponent implements OnInit {
 
   buildCompanyInfoForm() {
     this.companyInfoForm = this.formBuilder.group({
-      companyId: [""],
-      employeeCode: ["", [Validators.maxLength(50)]],
-      borrowerEmploymentHistoryTextVariable1: [""],
-      firstName: ["", [Validators.maxLength(256)]],
-      tngFirstName: ["", [Validators.maxLength(256)]],
-      tngLastName: ["", [Validators.maxLength(256)]],
-      officeCode: ["", [Validators.maxLength(50)]],
-      officeName: ["", [Validators.maxLength(50)]],
-      annualIncome: ["", [Validators.max(1000000000)]],
-      workingDay: ["", [Validators.maxLength(30)]],
-      accountNumber: [""],
-      bankCode: ["", [Validators.maxLength(50)]],
-      bankName: ["", [Validators.maxLength(256)]]
+      companyId: [''],
+      employeeCode: ['', [Validators.maxLength(50)]],
+      borrowerEmploymentHistoryTextVariable1: [''],
+      firstName: ['', [Validators.maxLength(256)]],
+      tngFirstName: ['', [Validators.maxLength(256)]],
+      tngLastName: ['', [Validators.maxLength(256)]],
+      officeCode: ['', [Validators.maxLength(50)]],
+      officeName: ['', [Validators.maxLength(50)]],
+      annualIncome: ['', [Validators.max(1000000000)]],
+      workingDay: ['', [Validators.maxLength(30)]],
+      accountNumber: [''],
+      bankCode: ['', [Validators.maxLength(50)]],
+      bankName: ['', [Validators.maxLength(256)]],
     });
   }
 
@@ -90,7 +95,8 @@ export class DialogCompanyInfoUpdateComponent implements OnInit {
     this.companyInfoForm.patchValue({
       companyId: this.customerInfo.companyId,
       employeeCode: this.customerInfo.organizationName,
-      borrowerEmploymentHistoryTextVariable1: this.customerInfo?.borrowerEmploymentHistoryTextVariable1 || "",
+      borrowerEmploymentHistoryTextVariable1:
+        this.customerInfo?.borrowerEmploymentHistoryTextVariable1 || '',
       firstName: this.customerInfo.firstName,
       tngFirstName: this.customerInfo.tngData?.ten,
       tngLastName: this.customerInfo.tngData?.hoDem,
@@ -99,8 +105,8 @@ export class DialogCompanyInfoUpdateComponent implements OnInit {
       annualIncome: this.customerInfo.annualIncome,
       workingDay: this.customerInfo.workingDay,
       accountNumber: this.customerInfo.accountNumber,
-      bankCode: this.customerInfo?.bankCode || "",
-      bankName: this.customerInfo?.bankName || ""
+      bankCode: this.customerInfo?.bankCode || '',
+      bankName: this.customerInfo?.bankName || '',
     });
   }
 
@@ -123,7 +129,7 @@ export class DialogCompanyInfoUpdateComponent implements OnInit {
     } else {
       search = search.toLowerCase();
     }
-    this.filteredBanks =  this.bankOptions.filter(
+    this.filteredBanks = this.bankOptions.filter(
       (bank) =>
         bank.bankCode.toLowerCase().indexOf(search) > -1 ||
         bank.bankName.toLowerCase().indexOf(search) > -1
@@ -131,9 +137,7 @@ export class DialogCompanyInfoUpdateComponent implements OnInit {
   }
 
   submitForm() {
-    for (const c in this.companyInfoForm.controls) {
-      this.companyInfoForm.controls[c].markAsTouched()
-    }
+    this.companyInfoForm.markAllAsTouched();
 
     if (this.companyInfoForm.invalid) {
       return;
@@ -143,7 +147,7 @@ export class DialogCompanyInfoUpdateComponent implements OnInit {
     }
     this.dialogRef.close({
       type: BUTTON_TYPE.PRIMARY,
-      data: this.companyInfoForm.getRawValue()
+      data: this.companyInfoForm.getRawValue(),
     });
   }
 
@@ -154,7 +158,7 @@ export class DialogCompanyInfoUpdateComponent implements OnInit {
 
     let numberValWithSeparator = parseInt(
       this.companyInfoForm.controls.annualIncome.value
-    ).toLocaleString("de-de");
+    ).toLocaleString('de-de');
     this.companyInfoForm.controls.annualIncome.setValue(numberValWithSeparator);
   }
 
@@ -165,7 +169,7 @@ export class DialogCompanyInfoUpdateComponent implements OnInit {
 
     let numberVal = this.companyInfoForm.controls.annualIncome.value.replace(
       /\D/g,
-      ""
+      ''
     );
     this.companyInfoForm.controls.annualIncome.setValue(numberVal);
   }
