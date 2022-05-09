@@ -319,6 +319,9 @@ export class BnplListComponent implements OnInit, OnDestroy {
   };
 
   userHasPermissions = {
+    filterViews: {
+      getbnplByUserStatus: false,
+    },
     bnplViewStatus: {
       pending: false,
       undoapproval: false,
@@ -745,6 +748,7 @@ export class BnplListComponent implements OnInit, OnDestroy {
   private async _checkUserPermissions() {
     await this._checkPermission();
     this._displayStatusFilterOptions();
+    this.changeHiddenFilterOptionByPermission();
   }
 
   private async _checkPermission() {
@@ -783,6 +787,10 @@ export class BnplListComponent implements OnInit, OnDestroy {
     this.userHasPermissions.bnplViewStatus.completed =
       await this.permissionsService.hasPermission(
         PermissionConstants.VIEW_BNPL_STATUS_PERMISSION.COMPLETED
+      );
+    this.userHasPermissions.filterViews.getbnplByUserStatus =
+      await this.permissionsService.hasPermission(
+        PermissionConstants.OPERATOR_PERMISSION.GET_BNPL_USER_STATUS
       );
   }
 
@@ -826,6 +834,15 @@ export class BnplListComponent implements OnInit, OnDestroy {
     });
   }
 
+  private changeHiddenFilterOptionByPermission() {
+    this.filterOptions.forEach((option) => {
+      if (option.controlName === 'accountClassification') {
+        option.hidden =
+          !this.userHasPermissions.filterViews.getbnplByUserStatus;
+      }
+    });
+  }
+
   private _getMerchantList() {
     this.merchantListService
       .getAllMerchant()
@@ -852,8 +869,8 @@ export class BnplListComponent implements OnInit, OnDestroy {
           filterOption.options = merchantOptions;
 
           this.merchantList = merchantOptions;
-          this.filterOptions[1].hidden =
-            this.merchantList.length < 2 ? true : false;
+
+          filterOption.hidden = this.merchantList.length < 2 ? true : false;
         });
 
         this.filterOptions = JSON.parse(JSON.stringify(this.filterOptions));
