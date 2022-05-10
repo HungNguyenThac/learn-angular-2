@@ -387,22 +387,22 @@ export class ConfigContractListComponent implements OnInit, OnDestroy {
             result?.data?.customerPositionPage > 0
               ? result?.data?.customerPositionPage - 1
               : 0;
-          if (customerPageIndex != info?.pageIndexCustomer) {
-            updateContractDto.pageIndexCustomer = customerPageIndex;
+          if (customerPageIndex != info?.customerPageIndex) {
+            updateContractDto.customerPageIndex = customerPageIndex;
           }
-          if (result?.data?.customerPositionX != info?.positionXCustomer) {
-            updateContractDto.positionXCustomer =
+          if (result?.data?.customerPositionX != info?.customerPositionX) {
+            updateContractDto.customerPageIndex =
               result?.data?.customerPositionX;
           }
-          if (result?.data?.customerPositionY != info?.positionYCustomer) {
-            updateContractDto.positionYCustomer =
+          if (result?.data?.customerPositionY != info?.customerPositionY) {
+            updateContractDto.customerPositionY =
               result?.data?.customerPositionY;
           }
-          if (result?.data?.customerWidth != info?.widthCustomer) {
-            updateContractDto.widthCustomer = result?.data?.customerWidth;
+          if (result?.data?.customerWidth != info?.customerWidth) {
+            updateContractDto.customerWidth = result?.data?.customerWidth;
           }
-          if (result?.data?.customerHeight != info?.heightCustomer) {
-            updateContractDto.heightCustomer = result?.data?.customerHeight;
+          if (result?.data?.customerHeight != info?.customerHeight) {
+            updateContractDto.customerHeight = result?.data?.customerHeight;
           }
 
           // Monex signing postion
@@ -410,20 +410,20 @@ export class ConfigContractListComponent implements OnInit, OnDestroy {
             result?.data?.monexPositionPage > 0
               ? result?.data?.monexPositionPage - 1
               : 0;
-          if (monexPageIndex != info?.pageIndexMonex) {
-            updateContractDto.pageIndexMonex = monexPageIndex;
+          if (monexPageIndex != info?.monexPageIndex) {
+            updateContractDto.monexPageIndex = monexPageIndex;
           }
-          if (result?.data?.monexPositionX != info?.positionXMonex) {
-            updateContractDto.positionXMonex = result?.data?.monexPositionX;
+          if (result?.data?.monexPositionX != info?.monexPositionX) {
+            updateContractDto.monexPositionX = result?.data?.monexPositionX;
           }
-          if (result?.data?.monexPositionY != info?.positionYMonex) {
-            updateContractDto.positionYMonex = result?.data?.monexPositionY;
+          if (result?.data?.monexPositionY != info?.monexPositionY) {
+            updateContractDto.monexPositionY = result?.data?.monexPositionY;
           }
-          if (result?.data?.monexWidth != info?.widthMonex) {
-            updateContractDto.widthMonex = result?.data?.monexWidth;
+          if (result?.data?.monexWidth != info?.monexWidth) {
+            updateContractDto.monexWidth = result?.data?.monexWidth;
           }
-          if (result?.data?.monexHeight != info?.heightMonex) {
-            updateContractDto.heightMonex = result?.data?.monexHeight;
+          if (result?.data?.monexHeight != info?.monexHeight) {
+            updateContractDto.monexHeight = result?.data?.monexHeight;
           }
 
           this._updateContractTemplate(info.id, updateContractDto, info);
@@ -455,22 +455,22 @@ export class ConfigContractListComponent implements OnInit, OnDestroy {
             content: result?.data?.content,
             name: result?.data?.name,
             statusFlowId: result.data?.statusFlowId,
-            pageIndexCustomer:
+            customerPageIndex:
               result.data?.customerPositionPage > 0
                 ? result.data?.customerPositionPage - 1
                 : 0,
-            positionXCustomer: result.data?.customerPositionX,
-            positionYCustomer: result.data?.customerPositionY,
-            widthCustomer: result.data?.customerWidth,
-            heightCustomer: result.data?.customerHeight,
-            pageIndexMonex:
+            customerPositionX: result.data?.customerPositionX,
+            customerPositionY: result.data?.customerPositionY,
+            customerWidth: result.data?.customerWidth,
+            customerHeight: result.data?.customerHeight,
+            monexPageIndex:
               result.data?.monexPositionPage > 0
                 ? result.data?.monexPositionPage - 1
                 : 0,
-            positionXMonex: result.data?.monexPositionX,
-            positionYMonex: result.data?.monexPositionY,
-            widthMonex: result.data?.monexWidth,
-            heightMonex: result.data?.monexHeight,
+            monexPositionX: result.data?.monexPositionX,
+            monexPositionY: result.data?.monexPositionY,
+            monexWidth: result.data?.monexWidth,
+            monexHeight: result.data?.monexHeight,
           };
           this._createContractTemplate(createContractDto);
         }

@@ -292,20 +292,20 @@ export class ConfigContractSaveDialogComponent implements OnInit, OnDestroy {
       statusFlowId: this.contractTemplate?.statusFlow?.id,
       productId: this.contractTemplate?.product?.id,
       isActive: this.contractTemplate?.isActive,
-      customerPositionPage: this.contractTemplate?.pageIndexCustomer
-        ? this.contractTemplate?.pageIndexCustomer + 1
+      customerPositionPage: this.contractTemplate?.customerPageIndex
+        ? this.contractTemplate?.customerPageIndex + 1
         : 1,
-      monexPositionPage: this.contractTemplate?.pageIndexMonex
-        ? this.contractTemplate?.pageIndexMonex + 1
+      monexPositionPage: this.contractTemplate?.monexPageIndex
+        ? this.contractTemplate?.monexPageIndex + 1
         : 1,
-      customerWidth: this.contractTemplate?.widthCustomer || 200,
-      customerHeight: this.contractTemplate?.heightCustomer || 60,
-      customerPositionX: this.contractTemplate?.positionXMonex || 0,
-      customerPositionY: this.contractTemplate?.positionYMonex || 0,
-      monexWidth: this.contractTemplate?.widthMonex || 200,
-      monexHeight: this.contractTemplate?.heightMonex || 60,
-      monexPositionX: this.contractTemplate?.positionXMonex || 0,
-      monexPositionY: this.contractTemplate?.positionYMonex || 0,
+      customerWidth: this.contractTemplate?.customerWidth || 200,
+      customerHeight: this.contractTemplate?.customerHeight || 60,
+      customerPositionX: this.contractTemplate?.customerPositionX || 0,
+      customerPositionY: this.contractTemplate?.customerPositionY || 0,
+      monexWidth: this.contractTemplate?.monexWidth || 200,
+      monexHeight: this.contractTemplate?.monexHeight || 60,
+      monexPositionX: this.contractTemplate?.monexPositionX || 0,
+      monexPositionY: this.contractTemplate?.monexPositionY || 0,
     });
 
     // this.convertHtmlToPdf(this.contractTemplate?.content || '');
