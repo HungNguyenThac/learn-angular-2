@@ -8,9 +8,8 @@ describe('BnplElementComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ BnplElementComponent ]
-    })
-    .compileComponents();
+      declarations: [BnplElementComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {
