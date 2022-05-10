@@ -448,6 +448,7 @@ export class ConfigContractListComponent implements OnInit, OnDestroy {
     );
     this.subManager.add(
       contractSaveDialogRef.afterClosed().subscribe((result: any) => {
+        console.log('result', result);
         if (result && result.type === BUTTON_TYPE.PRIMARY) {
           let createContractDto: CreateContractDto = {
             isActive: result?.data?.isActive,

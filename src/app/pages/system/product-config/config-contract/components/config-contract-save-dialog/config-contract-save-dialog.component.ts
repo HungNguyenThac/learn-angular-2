@@ -40,6 +40,7 @@ import { BnplListService } from './../../../../../products/bnpl/bnpl-list/bnpl-l
 import pdfFonts from '../../../../../../public/vfs_fonts/vfs_custom_fonts';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ContractTemplate } from '../../../../../../../../open-api-modules/monexcore-api-docs';
+import { ToastrService } from 'ngx-toastr';
 
 pdfmake.vfs = pdfFonts.pdfMake.vfs;
 
@@ -195,6 +196,7 @@ export class ConfigContractSaveDialogComponent implements OnInit, OnDestroy {
     private store: Store<fromStore.State>,
     private notificationService: NotificationService,
     private domSanitizer: DomSanitizer,
+    private notifier: ToastrService,
     private bnplServive: BnplListService,
     private monexCoreContractTemplateControllerService: ContractTemplatesService
   ) {
@@ -322,44 +324,55 @@ export class ConfigContractSaveDialogComponent implements OnInit, OnDestroy {
       return value.id === this.contractTemplateForm.controls.productId.value;
     });
     if (selectedProduct.contractTemplates) {
-      let existContractTemplateActive = false;
       if (this.action === TABLE_ACTION_TYPE.EDIT) {
-        existContractTemplateActive = selectedProduct.contractTemplates.find(
-          (contractTemplate) => {
+        const existContractTemplateActive =
+          selectedProduct.contractTemplates.find((contractTemplate) => {
             return (
               contractTemplate.isActive &&
               contractTemplate.id != this.contractTemplate?.id
             );
-          }
-        );
+          });
+        if (!existContractTemplateActive) {
+          this.closeDialogAndEmitValueForm();
+        } else {
+          this._confirmChangeContract();
+        }
       } else if (this.action === TABLE_ACTION_TYPE.CREATE) {
         const valueForm = this.contractTemplateForm.value;
         if (valueForm.isActive) {
-          let contractTeamplate;
           const { statusFlowId, productId, isActive } = valueForm;
 
-          const responseContractTemplates = this.getContractTemplateList({
+          this.getContractTemplateList({
             statusFlowId,
             productId,
             isActive,
+          }).subscribe((response) => {
+            if (!response || response.responseCode !== RESPONSE_CODE.SUCCESS) {
+              return this.notifier.error(
+                JSON.stringify(response?.message),
+                response?.errorCode
+              );
+            }
+            let contractTemplate;
+            contractTemplate = response.result;
+            if (!(contractTemplate.items.length > 0)) {
+              this.closeDialogAndEmitValueForm();
+            } else {
+              this._confirmChangeContract();
+            }
           });
-          responseContractTemplates.subscribe(
-            (result) => (contractTeamplate = result.result)
-          );
-          existContractTemplateActive = contractTeamplate?.items.length > 0;
+        } else {
+          this.closeDialogAndEmitValueForm();
         }
       }
-
-      if (!existContractTemplateActive) {
-        this.dialogRef.close({
-          type: BUTTON_TYPE.PRIMARY,
-          data: this.contractTemplateForm.getRawValue(),
-        });
-        return;
-      }
     }
+  }
 
-    this._confirmChangeContract();
+  private closeDialogAndEmitValueForm() {
+    this.dialogRef.close({
+      type: BUTTON_TYPE.PRIMARY,
+      data: this.contractTemplateForm.getRawValue(),
+    });
   }
 
   private _confirmChangeContract() {
