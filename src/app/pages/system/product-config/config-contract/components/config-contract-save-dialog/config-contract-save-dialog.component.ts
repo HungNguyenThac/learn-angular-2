@@ -338,12 +338,12 @@ export class ConfigContractSaveDialogComponent implements OnInit, OnDestroy {
               response?.errorCode
             );
           }
-          let objectContractTemplate;
-          objectContractTemplate = response.result;
+          let objectResponse;
+          objectResponse = response.result;
           if (this.action === TABLE_ACTION_TYPE.CREATE) {
-            this.checkWarningWhenCreate(objectContractTemplate);
+            this.checkWarningWhenCreate(objectResponse);
           } else if (this.action === TABLE_ACTION_TYPE.EDIT) {
-            this.checkWarningWhenEdit(objectContractTemplate);
+            this.checkWarningWhenEdit(objectResponse);
           }
         });
       } else {
