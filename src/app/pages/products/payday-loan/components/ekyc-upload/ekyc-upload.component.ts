@@ -165,6 +165,7 @@ export class EkycUploadComponent implements OnInit, AfterViewInit {
               !ekycResponse.result ||
               ekycResponse.responseCode !== RESPONSE_CODE.SUCCESS
             ) {
+              this.notificationService.hideLoading();
               return this.handleEkycError(ekycResponse);
             }
 

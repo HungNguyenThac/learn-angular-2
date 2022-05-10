@@ -203,6 +203,7 @@ export class LoanDetailComponent implements OnInit, OnDestroy {
         .subscribe(
           (result) => {
             if (result?.responseCode !== RESPONSE_CODE.SUCCESS) {
+              this.notificationService.hideLoading();
               this.notifier.error(
                 JSON.stringify(result?.message),
                 result?.errorCode

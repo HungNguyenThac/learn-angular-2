@@ -27,7 +27,7 @@ import {
   CityControllerService,
   DistrictControllerService,
 } from '../../../../../../open-api-modules/customer-api-docs';
-import {PermissionConstants} from "../../../../core/common/constants/permission-constants";
+import { PermissionConstants } from '../../../../core/common/constants/permission-constants';
 
 @Component({
   selector: 'app-customer-detail-element',
@@ -60,8 +60,10 @@ export class CustomerDetailElementComponent implements OnInit, OnDestroy {
 
   listPermission = {
     getEKYCInfo: PermissionConstants.DASHBOARD_PERMISSION.GET_EKYC_INFO,
-    getEkycInfoByCustomerId: PermissionConstants.DASHBOARD_PERMISSION.GET_LIST_EKYC_INFO_BY_CUSTOMER_ID
-  }
+    getEkycInfoByCustomerId:
+      PermissionConstants.DASHBOARD_PERMISSION
+        .GET_LIST_EKYC_INFO_BY_CUSTOMER_ID,
+  };
 
   constructor(
     private customerDetailService: CustomerDetailService,
@@ -135,6 +137,7 @@ export class CustomerDetailElementComponent implements OnInit, OnDestroy {
         .subscribe(
           (result) => {
             if (result?.responseCode !== RESPONSE_CODE.SUCCESS) {
+              this.notificationService.hideLoading();
               this.notifier.error(
                 JSON.stringify(result?.message),
                 result?.errorCode

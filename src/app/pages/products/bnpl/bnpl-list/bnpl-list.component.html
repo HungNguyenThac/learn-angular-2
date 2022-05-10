@@ -32,6 +32,7 @@
       listPermission.getByIdBnpl
     ]"
     (loanDetailTriggerUpdateStatus)="updateElementInfo($event)"
+    (onRefreshTrigger)="onRefreshTrigger($event)"
     [loanDetail]="expandedElementLoanDetail"
     [userInfo]="expandedElementLoanDetail.customerInfo"
     class="w-100"

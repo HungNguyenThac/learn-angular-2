@@ -503,6 +503,7 @@ export class InfoVerificationComponent implements OnInit, AfterViewInit {
         .subscribe(
           (result) => {
             if (result?.responseCode !== RESPONSE_CODE.SUCCESS) {
+              this.notificationService.hideLoading();
               this.notifier.error(
                 JSON.stringify(result?.message),
                 result?.errorCode
@@ -600,6 +601,7 @@ export class InfoVerificationComponent implements OnInit, AfterViewInit {
         .subscribe(
           (result) => {
             if (result?.responseCode !== RESPONSE_CODE.SUCCESS) {
+              this.notificationService.hideLoading();
               this.notifier.error(
                 JSON.stringify(result?.message),
                 result?.errorCode
@@ -804,7 +806,7 @@ export class InfoVerificationComponent implements OnInit, AfterViewInit {
     } else {
       search = search.toLowerCase();
     }
-    this.filteredBanks =  this.bankOptions.filter(
+    this.filteredBanks = this.bankOptions.filter(
       (bank) =>
         bank.bankCode.toLowerCase().indexOf(search) > -1 ||
         bank.bankName.toLowerCase().indexOf(search) > -1

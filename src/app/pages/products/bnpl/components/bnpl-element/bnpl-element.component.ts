@@ -24,6 +24,7 @@ export class BnplElementComponent implements OnInit {
   @Input() loanDetail: BnplApplication;
   @Input() userInfo: CustomerInfo;
   @Output() loanDetailTriggerUpdateStatus = new EventEmitter<any>();
+  @Output() onRefreshTrigger = new EventEmitter<any>();
   subManager = new Subscription();
   constructor(
     private multiLanguageService: MultiLanguageService,
@@ -91,7 +92,6 @@ export class BnplElementComponent implements OnInit {
                   result?.errorCode
                 );
               }
-
               setTimeout(() => {
                 this.notifier.success(
                   this.multiLanguageService.instant(
@@ -131,26 +131,34 @@ export class BnplElementComponent implements OnInit {
   }
 
   public updatePaymentOrder({ id, transactionAmount }) {
-    console.log('134', id, transactionAmount);
+    this.notificationService.showLoading({ showContent: true });
     this.subManager.add(
       this.bnplListService
-        .repaymentBnplApplication(id, transactionAmount)
-        .subscribe((response) => {
-          if (!response || response.responseCode !== RESPONSE_CODE.SUCCESS) {
-            return this.notifier.error(
-              JSON.stringify(response?.message),
-              response?.errorCode
-            );
+        .repaymentBnplApplication(id, transactionAmount, null, true)
+        .subscribe(
+          (response) => {
+            if (!response || response.responseCode !== RESPONSE_CODE.SUCCESS) {
+              this.notificationService.hideLoading();
+              return this.notifier.error(
+                JSON.stringify(response?.message),
+                response?.errorCode
+              );
+            }
+            setTimeout(() => {
+              this.notifier.success(
+                this.multiLanguageService.instant(
+                  'bnpl.loan_info.repayment_success'
+                )
+              );
+              this.notificationService.hideLoading();
+              this.onRefreshTrigger.emit();
+            }, 5000);
+          },
+          (error) => {
+            this.notifier.error(JSON.stringify(error));
+            this.notificationService.hideLoading();
           }
-          setTimeout(() => {
-            this.notifier.success(
-              this.multiLanguageService.instant(
-                'bnpl.loan_info.repayment_success'
-              )
-            );
-            this.getBnplById();
-          }, 3000);
-        })
+        )
     );
   }
 
