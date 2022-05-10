@@ -356,6 +356,7 @@ export class CustomerDocumentInfoComponent implements OnInit {
         .subscribe(
           (result) => {
             if (result?.responseCode !== RESPONSE_CODE.SUCCESS) {
+              this.notificationService.hideLoading();
               this.notifier.error(
                 JSON.stringify(result?.message),
                 result?.errorCode
@@ -417,6 +418,7 @@ export class CustomerDocumentInfoComponent implements OnInit {
         .subscribe(
           (result) => {
             if (result?.responseCode !== RESPONSE_CODE.SUCCESS) {
+              this.notificationService.hideLoading();
               this.notifier.error(
                 JSON.stringify(result?.message),
                 result?.errorCode

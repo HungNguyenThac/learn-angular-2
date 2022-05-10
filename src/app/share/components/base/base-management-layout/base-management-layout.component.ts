@@ -17,11 +17,11 @@ import { Sort } from '@angular/material/sort';
 import { PageEvent } from '@angular/material/paginator/public-api';
 import { TableSelectActionModel } from '../../../../public/models/external/table-select-action.model';
 import { BaseExpandedTableComponent } from '../base-expanded-table/base-expanded-table.component';
-import { DisplayedFieldsModel } from '../../../../public/models/filter/displayed-fields.model';
 import { OverviewItemModel } from 'src/app/public/models/external/overview-item.model';
 import { TableActionButtonModel } from '../../../../public/models/external/table-action-button.model';
 import { TableActionEventModel } from '../../../../public/models/external/table-action-event.model';
 import { MultipleElementActionEventModel } from '../../../../public/models/filter/multiple-element-action-event.model';
+import { DisplayedFieldsModel } from '../../../../public/models/filter/displayed-fields.model';
 
 @Component({
   selector: 'app-base-management-layout',
@@ -38,8 +38,8 @@ export class BaseManagementLayoutComponent implements OnInit {
    * List of columns can display in mat-table
    */
   @Input() allColumns: DisplayedFieldsModel[] = [];
-
   /**
+   *
    * Table title
    */
   @Input() tableTitle: string;

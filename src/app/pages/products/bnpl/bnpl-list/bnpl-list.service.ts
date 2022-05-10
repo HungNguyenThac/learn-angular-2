@@ -105,6 +105,8 @@ export class BnplListService {
       requestBody[
         'customerInfo.firstName' + QUERY_CONDITION_TYPE.LIKE_KEYWORD
       ] = params.keyword;
+      requestBody['loanCode' + QUERY_CONDITION_TYPE.LIKE_KEYWORD] =
+        params.keyword;
       requestBody[
         'customerInfo.mobileNumber' + QUERY_CONDITION_TYPE.LIKE_KEYWORD
       ] = params.keyword;
@@ -200,13 +202,22 @@ export class BnplListService {
     );
   }
 
-  public repaymentBnplApplication(id: string, transactionAmount: any) {
-    return this.repaymentControllerService.updateRepaymentTransaction({
-      amount: transactionAmount,
-      applicationId: id,
-      applicationType: APPLICATION_TYPE.BNPL,
-      provider: PAYMENT_METHOD.IN_CASH,
-    });
+  public repaymentBnplApplication(
+    id: string,
+    transactionAmount: any,
+    observe?: any,
+    reportProgress?: boolean
+  ) {
+    return this.repaymentControllerService.updateRepaymentTransaction(
+      {
+        amount: transactionAmount,
+        applicationId: id,
+        applicationType: APPLICATION_TYPE.BNPL,
+        provider: PAYMENT_METHOD.IN_CASH,
+      },
+      observe,
+      reportProgress
+    );
   }
 
   public downloadBlobFile(src, loanId) {

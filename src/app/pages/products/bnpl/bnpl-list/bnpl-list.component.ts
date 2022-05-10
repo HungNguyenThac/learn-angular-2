@@ -1,4 +1,3 @@
-import { map } from 'rxjs/operators';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { PageEvent } from '@angular/material/paginator/public-api';
@@ -386,6 +385,7 @@ export class BnplListComponent implements OnInit, OnDestroy {
   }
 
   public updateElementInfo(updatedLoan: BnplApplication) {
+    console.log('updatedLoan', updatedLoan);
     this.dataSource.data.map((item) => {
       if (item.id === updatedLoan.id) {
         this.allColumns.forEach((column) => {
