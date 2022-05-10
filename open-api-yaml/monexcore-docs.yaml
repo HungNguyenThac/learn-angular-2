@@ -2130,25 +2130,25 @@ components:
           $ref: "#/components/schemas/LoanProduct"
         statusFlow:
           $ref: "#/components/schemas/StatusFlow"
-        pageIndexCustomer:
+        customerPageIndex:
           type: "number"
-        positionXCustomer:
+        customerPositionX:
           type: "number"
-        positionYCustomer:
+        customerPositionY:
           type: "number"
-        widthCustomer:
+        customerWidth:
           type: "number"
-        heightCustomer:
+        customerHeight:
           type: "number"
-        pageIndexMonex:
+        monexPageIndex:
           type: "number"
-        positionXMonex:
+        monexPositionX:
           type: "number"
-        positionYMonex:
+        monexPositionY:
           type: "number"
-        widthMonex:
+        monexWidth:
           type: "number"
-        heightMonex:
+        monexHeight:
           type: "number"
         createdBy:
           type: "string"
@@ -2165,16 +2165,16 @@ components:
         - "isActive"
         - "product"
         - "statusFlow"
-        - "pageIndexCustomer"
-        - "positionXCustomer"
-        - "positionYCustomer"
-        - "widthCustomer"
-        - "heightCustomer"
-        - "pageIndexMonex"
-        - "positionXMonex"
-        - "positionYMonex"
-        - "widthMonex"
-        - "heightMonex"
+        - "customerPageIndex"
+        - "customerPositionX"
+        - "customerPositionY"
+        - "customerWidth"
+        - "customerHeight"
+        - "monexPageIndex"
+        - "monexPositionX"
+        - "monexPositionY"
+        - "monexWidth"
+        - "monexHeight"
         - "createdBy"
         - "updatedBy"
         - "createdAt"
@@ -2230,34 +2230,34 @@ components:
         productId:
           type: "string"
           description: "Id sản phẩm"
-        pageIndexCustomer:
+        customerPageIndex:
           type: "number"
           description: "Trang đặt chữ ký khách hàng"
-        positionXCustomer:
+        customerPositionX:
           type: "number"
           description: "Vị trí x của chữ ký khách hàng"
-        positionYCustomer:
+        customerPositionY:
           type: "number"
           description: "Vị trí y của chữ ký khách hàng"
-        widthCustomer:
+        customerWidth:
           type: "number"
           description: "Chiều rộng chữ ký khách hàng"
-        heightCustomer:
+        customerHeight:
           type: "number"
           description: "Chiều cao chữ ký khách hàng"
-        pageIndexMonex:
+        monexPageIndex:
           type: "number"
           description: "Trang đặt chữ ký monex"
-        positionXMonex:
+        monexPositionX:
           type: "number"
           description: "Vị trí x của chữ ký monex"
-        positionYMonex:
+        monexPositionY:
           type: "number"
           description: "Vị trí y của chữ ký monex"
-        widthMonex:
+        monexWidth:
           type: "number"
           description: "Chiều rộng chữ ký monex"
-        heightMonex:
+        monexHeight:
           type: "number"
           description: "Chiều cao chữ ký monex"
       required:
@@ -2266,16 +2266,16 @@ components:
         - "name"
         - "statusFlowId"
         - "productId"
-        - "pageIndexCustomer"
-        - "positionXCustomer"
-        - "positionYCustomer"
-        - "widthCustomer"
-        - "heightCustomer"
-        - "pageIndexMonex"
-        - "positionXMonex"
-        - "positionYMonex"
-        - "widthMonex"
-        - "heightMonex"
+        - "customerPageIndex"
+        - "customerPositionX"
+        - "customerPositionY"
+        - "customerWidth"
+        - "customerHeight"
+        - "monexPageIndex"
+        - "monexPositionX"
+        - "monexPositionY"
+        - "monexWidth"
+        - "monexHeight"
     UpdateContractDto:
       type: "object"
       properties:
@@ -2294,34 +2294,34 @@ components:
         productId:
           type: "string"
           description: "Id sản phẩm"
-        pageIndexCustomer:
+        customerPageIndex:
           type: "number"
           description: "Trang đặt chữ ký khách hàng"
-        positionXCustomer:
+        customerPositionX:
           type: "number"
           description: "Vị trí x của chữ ký khách hàng"
-        positionYCustomer:
+        customerPositionY:
           type: "number"
           description: "Vị trí y của chữ ký khách hàng"
-        widthCustomer:
+        customerWidth:
           type: "number"
           description: "Chiều rộng chữ ký khách hàng"
-        heightCustomer:
+        customerHeight:
           type: "number"
           description: "Chiều cao chữ ký khách hàng"
-        pageIndexMonex:
+        monexPageIndex:
           type: "number"
           description: "Trang đặt chữ ký monex"
-        positionXMonex:
+        monexPositionX:
           type: "number"
           description: "Vị trí x của chữ ký monex"
-        positionYMonex:
+        monexPositionY:
           type: "number"
           description: "Vị trí y của chữ ký monex"
-        widthMonex:
+        monexWidth:
           type: "number"
           description: "Chiều rộng chữ ký monex"
-        heightMonex:
+        monexHeight:
           type: "number"
           description: "Chiều cao chữ ký monex"
     ApiResponseDelete:

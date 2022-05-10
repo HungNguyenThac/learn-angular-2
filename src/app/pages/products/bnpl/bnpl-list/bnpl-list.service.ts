@@ -135,11 +135,6 @@ export class BnplListService {
             QUERY_OPERATOR_TYPE.OR +
             QUERY_CONDITION_TYPE.EQUAL
         ] = environment.IDENTITY_NUMBER_ONE_TEST;
-        requestBody[
-          'customerInfo.organizationName' +
-            QUERY_OPERATOR_TYPE.OR +
-            QUERY_CONDITION_TYPE.IN
-        ] = environment.ORGANIZATION_NAME_TEST;
         break;
       case ACCOUNT_CLASSIFICATION.REAL:
       default:
@@ -149,9 +144,6 @@ export class BnplListService {
         requestBody[
           'customerInfo.identityNumberOne' + QUERY_CONDITION_TYPE.NOT_EQUAL
         ] = environment.IDENTITY_NUMBER_ONE_TEST;
-        requestBody[
-          'customerInfo.organizationName' + QUERY_CONDITION_TYPE.NOT_IN
-        ] = environment.ORGANIZATION_NAME_TEST;
         break;
     }
     console.log('requestBody--------------------------------', requestBody);
