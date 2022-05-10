@@ -324,47 +324,51 @@ export class ConfigContractSaveDialogComponent implements OnInit, OnDestroy {
       return value.id === this.contractTemplateForm.controls.productId.value;
     });
     if (selectedProduct.contractTemplates) {
-      if (this.action === TABLE_ACTION_TYPE.EDIT) {
-        const existContractTemplateActive =
-          selectedProduct.contractTemplates.find((contractTemplate) => {
-            return (
-              contractTemplate.isActive &&
-              contractTemplate.id != this.contractTemplate?.id
+      const valueForm = this.contractTemplateForm.value;
+      if (valueForm.isActive) {
+        const { statusFlowId, productId, isActive } = valueForm;
+        this.getContractTemplateList({
+          statusFlowId,
+          productId,
+          isActive,
+        }).subscribe((response) => {
+          if (!response || response.responseCode !== RESPONSE_CODE.SUCCESS) {
+            return this.notifier.error(
+              JSON.stringify(response?.message),
+              response?.errorCode
             );
-          });
-        if (!existContractTemplateActive) {
-          this.closeDialogAndEmitValueForm();
-        } else {
-          this._confirmChangeContract();
-        }
-      } else if (this.action === TABLE_ACTION_TYPE.CREATE) {
-        const valueForm = this.contractTemplateForm.value;
-        if (valueForm.isActive) {
-          const { statusFlowId, productId, isActive } = valueForm;
-
-          this.getContractTemplateList({
-            statusFlowId,
-            productId,
-            isActive,
-          }).subscribe((response) => {
-            if (!response || response.responseCode !== RESPONSE_CODE.SUCCESS) {
-              return this.notifier.error(
-                JSON.stringify(response?.message),
-                response?.errorCode
-              );
-            }
-            let contractTemplate;
-            contractTemplate = response.result;
-            if (!(contractTemplate.items.length > 0)) {
-              this.closeDialogAndEmitValueForm();
-            } else {
-              this._confirmChangeContract();
-            }
-          });
-        } else {
-          this.closeDialogAndEmitValueForm();
-        }
+          }
+          let objectContractTemplate;
+          objectContractTemplate = response.result;
+          if (this.action === TABLE_ACTION_TYPE.CREATE) {
+            this.checkWarningWhenCreate(objectContractTemplate);
+          } else if (this.action === TABLE_ACTION_TYPE.EDIT) {
+            this.checkWarningWhenEdit(objectContractTemplate);
+          }
+        });
+      } else {
+        this.closeDialogAndEmitValueForm();
       }
+    }
+  }
+
+  private checkWarningWhenEdit(objectContractTemplate) {
+    if (objectContractTemplate?.items.length > 0) {
+      if (objectContractTemplate?.items[0].id != this.contractTemplate.id) {
+        this._confirmChangeContract();
+      } else {
+        this.closeDialogAndEmitValueForm();
+      }
+    } else {
+      this.closeDialogAndEmitValueForm();
+    }
+  }
+
+  private checkWarningWhenCreate(objectContractTemplate) {
+    if (objectContractTemplate?.items.length > 0) {
+      this._confirmChangeContract();
+    } else {
+      this.closeDialogAndEmitValueForm();
     }
   }
 
