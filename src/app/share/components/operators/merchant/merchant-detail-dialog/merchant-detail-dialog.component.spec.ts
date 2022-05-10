@@ -8,9 +8,8 @@ describe('MerchantDetailDialogComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ MerchantDetailDialogComponent ]
-    })
-    .compileComponents();
+      declarations: [MerchantDetailDialogComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

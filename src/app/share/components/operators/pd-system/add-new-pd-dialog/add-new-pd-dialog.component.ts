@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { BUTTON_TYPE } from '../../../../../core/common/enum/operator';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
@@ -126,9 +126,9 @@ export class AddNewPdDialogComponent implements OnInit {
 
   submitForm() {
     this.giveOrders();
-    for (const c in this.addPdForm.controls) {
-      this.addPdForm.controls[c].markAsTouched()
-    }
+
+    this.addPdForm.markAllAsTouched();
+
     if (this.addPdForm.invalid) {
       return;
     }

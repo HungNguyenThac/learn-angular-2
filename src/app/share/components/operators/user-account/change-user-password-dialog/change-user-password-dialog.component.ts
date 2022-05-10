@@ -36,9 +36,7 @@ export class ChangeUserPasswordDialogComponent implements OnInit {
   }
 
   submitForm() {
-    for (const c in this.changePassForm.controls) {
-      this.changePassForm.controls[c].markAsTouched()
-    }
+    this.changePassForm.markAllAsTouched();
 
     if (this.changePassForm.invalid) {
       return;

@@ -128,9 +128,7 @@ export class ApplicationDocumentSaveDialogComponent implements OnInit {
   }
 
   submitForm() {
-    for (const c in this.applicationDocumentForm.controls) {
-      this.applicationDocumentForm.controls[c].markAsTouched();
-    }
+    this.applicationDocumentForm.markAllAsTouched();
 
     if (this.applicationDocumentForm.invalid) {
       return;

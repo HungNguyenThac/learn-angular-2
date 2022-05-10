@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { BUTTON_TYPE } from '../../../../../core/common/enum/operator';
 
@@ -53,9 +53,7 @@ export class ProductStatusDialogComponent implements OnInit {
     //     status: 'ACTIVE',
     //   });
     // }
-    for (const c in this.form.controls) {
-      this.form.controls[c].markAsTouched()
-    }
+    this.form.markAllAsTouched();
 
     if (this.form.invalid) {
       return;

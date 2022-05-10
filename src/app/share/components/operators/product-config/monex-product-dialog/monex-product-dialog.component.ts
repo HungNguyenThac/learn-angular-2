@@ -114,9 +114,7 @@ export class MonexProductDialogComponent implements OnInit {
         status: 'INACTIVE',
       });
     }
-    for (const c in this.form.controls) {
-      this.form.controls[c].markAsTouched()
-    }
+    this.form.markAllAsTouched();
 
     if (this.form.invalid) {
       return;

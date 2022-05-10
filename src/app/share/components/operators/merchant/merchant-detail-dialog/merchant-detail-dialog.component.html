@@ -13,8 +13,8 @@
       (ngSubmit)="submitForm()"
       autocomplete="off"
     >
-      <mat-tab-group [selectedIndex]="tabIndex" class="op-tab-dialog">
-        <mat-tab [label]="'merchant.merchant_detail.info' | translate">
+      <mat-tab-group [selectedIndex]="tabIndex" (selectedTabChange)="this.tabIndex = $event.index" dynamicHeight  class="op-tab-dialog">
+        <mat-tab [label]="'merchant.merchant_detail.info' | translate" >
           <ng-template matTabContent>
             <div class="card-body no-padding-bot limit-height">
               <div class="row">
@@ -683,8 +683,8 @@
           </ng-template>
         </mat-tab>
 
-        <mat-tab [label]="'merchant.merchant_image.title' | translate">
-          <ng-template matTabContent>
+        <mat-tab [label]="'merchant.merchant_image.title' | translate" >
+          <ng-template matTabContent >
             <div class="card-body no-padding-bot">
               <div class="row">
                 <section class="col-12">
