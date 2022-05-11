@@ -39,6 +39,15 @@
   padding-left: 16px;
 }
 
+.flex-center-center{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+img {
+  image-rendering: pixelated;
+}
+
 .op-text-area-label {
   font-family: $sfPro;
   font-style: normal;

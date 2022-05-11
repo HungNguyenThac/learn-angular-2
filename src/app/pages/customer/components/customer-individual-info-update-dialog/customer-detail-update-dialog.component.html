@@ -601,18 +601,25 @@
                         *ngFor="let bankNameOption of filteredBanks"
                         [value]="bankNameOption.bankCode"
                         [matTooltip]="
-                          bankNameOption.bankName +
+                          bankNameOption?.bankName +
                           ' (' +
-                          bankNameOption.bankCode +
+                          bankNameOption?.bankCode +
                           ')'
                         "
                       >
-                        {{
-                          bankNameOption.bankName +
+                        <div class="flex-center-center">
+                          <div class="w-25 flex-center-center">
+                            <img [src]="bankNameOption?.avatar">
+                          </div>
+                          <div class="w-75">
+                            {{
+                            bankNameOption?.bankName +
                             " (" +
-                            bankNameOption.bankCode +
+                            bankNameOption?.bankCode +
                             ")"
-                        }}
+                            }}
+                          </div>
+                        </div>
                       </mat-option>
                     </mat-select>
                     <show-errors
