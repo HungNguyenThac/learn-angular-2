@@ -29,6 +29,16 @@
   }
 }
 
+.flex-center-center{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+img{
+  image-rendering: pixelated;
+}
+
 .note-form {
   ::ng-deep .mat-form-field-infix {
     padding-left: 16px;

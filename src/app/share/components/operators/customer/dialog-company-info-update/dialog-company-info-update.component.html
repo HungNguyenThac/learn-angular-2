@@ -20,7 +20,7 @@
                       "customer.company_info.company_name" | translate
                       }}</mat-label>
                     <mat-select
-                      [disabled]="disabledColumns.includes('companyId') || customerInfo.companyInfo.groupName === 'TNG'"
+                      [disabled]="disabledColumns.includes('companyId') || customerInfo?.companyInfo?.groupName === 'TNG'"
                       formControlName="companyId"
                     >
                       <mat-option
@@ -340,19 +340,26 @@
                       <mat-option
                         *ngFor="let bankNameOption of filteredBanks"
                         [matTooltip]="
-                          bankNameOption.bankName +
+                          bankNameOption?.bankName +
                           ' (' +
-                          bankNameOption.bankCode +
+                          bankNameOption?.bankCode +
                           ')'
                         "
-                        [value]="bankNameOption.bankCode"
+                        [value]="bankNameOption?.bankCode"
                       >
-                        {{
-                        bankNameOption.bankName +
-                        " (" +
-                        bankNameOption.bankCode +
-                        ")"
-                        }}
+                        <div class="flex-center-center">
+                          <div class="w-25 flex-center-center">
+                            <img [src]="bankNameOption?.avatar">
+                          </div>
+                          <div class="w-75">
+                            {{
+                            bankNameOption?.bankName +
+                            " (" +
+                            bankNameOption?.bankCode +
+                            ")"
+                            }}
+                          </div>
+                        </div>
                       </mat-option>
                     </mat-select>
                     <show-errors
