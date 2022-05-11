@@ -286,7 +286,7 @@ export class ConfigContractSaveDialogComponent implements OnInit, OnDestroy {
     this.action = data?.action || TABLE_ACTION_TYPE.CREATE;
     if (this.action === TABLE_ACTION_TYPE.VIEW) {
       this.ckeditorConfig.readOnly = true;
-      this.contractTemplateForm.controls.name.disable();
+      this.contractTemplateForm.disable();
     }
     this.contractTemplateForm.patchValue({
       name: this.contractTemplate?.name,
