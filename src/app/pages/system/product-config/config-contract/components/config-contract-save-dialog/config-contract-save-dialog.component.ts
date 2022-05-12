@@ -16,8 +16,8 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { PageEvent } from '@angular/material/paginator/public-api';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { Store } from '@ngrx/store';
-import * as htmlToPdfmake from 'html-to-pdfmake';
-import pdfmake from 'pdfmake/build/pdfmake';
+// import * as htmlToPdfmake from 'html-to-pdfmake';
+// import pdfmake from 'pdfmake/build/pdfmake';
 import { Observable, Subject, Subscription } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { environment } from '../../../../../../../environments/environment';
@@ -37,41 +37,41 @@ import { ContractTemplatesService } from './../../../../../../../../open-api-mod
 import { BnplListService } from './../../../../../products/bnpl/bnpl-list/bnpl-list.service';
 // import pdfFonts from 'pdfmake/build/vfs_fonts';
 // @ts-ignore
-import pdfFonts from '../../../../../../public/vfs_fonts/vfs_custom_fonts';
+// import pdfFonts from '../../../../../../public/vfs_fonts/vfs_custom_fonts';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ContractTemplate } from '../../../../../../../../open-api-modules/monexcore-api-docs';
 import { ToastrService } from 'ngx-toastr';
 
-pdfmake.vfs = pdfFonts.pdfMake.vfs;
-
-pdfmake.fonts = {
-  // Default font should still be available
-  Roboto: {
-    normal: 'Roboto-Regular.ttf',
-    bold: 'Roboto-Bold.ttf',
-    italics: 'Roboto-Italic.ttf',
-    bolditalics: 'Roboto-BoldItalic.ttf',
-  },
-  // Make sure you define all 4 components - normal, bold, italics, bolditalics - (even if they all point to the same font file)
-  Arial: {
-    normal: 'arial.ttf',
-    bold: 'arialbd.ttf',
-    italics: 'ariali.ttf',
-    bolditalics: 'arialbi.ttf',
-  },
-  TimesNewRoman: {
-    normal: 'times.ttf',
-    bold: 'timesbd.ttf',
-    italics: 'timesi.ttf',
-    bolditalics: 'timesbi.ttf',
-  },
-  Calibri: {
-    normal: 'calibri.ttf',
-    bold: 'calibrib.ttf',
-    italics: 'calibrii.ttf',
-    bolditalics: 'calibriz.ttf',
-  },
-};
+// pdfmake.vfs = pdfFonts.pdfMake.vfs;
+//
+// pdfmake.fonts = {
+//   // Default font should still be available
+//   Roboto: {
+//     normal: 'Roboto-Regular.ttf',
+//     bold: 'Roboto-Bold.ttf',
+//     italics: 'Roboto-Italic.ttf',
+//     bolditalics: 'Roboto-BoldItalic.ttf',
+//   },
+//   // Make sure you define all 4 components - normal, bold, italics, bolditalics - (even if they all point to the same font file)
+//   Arial: {
+//     normal: 'arial.ttf',
+//     bold: 'arialbd.ttf',
+//     italics: 'ariali.ttf',
+//     bolditalics: 'arialbi.ttf',
+//   },
+//   TimesNewRoman: {
+//     normal: 'times.ttf',
+//     bold: 'timesbd.ttf',
+//     italics: 'timesi.ttf',
+//     bolditalics: 'timesbi.ttf',
+//   },
+//   Calibri: {
+//     normal: 'calibri.ttf',
+//     bold: 'calibrib.ttf',
+//     italics: 'calibrii.ttf',
+//     bolditalics: 'calibriz.ttf',
+//   },
+// };
 
 @Component({
   selector: 'app-config-contract-save-dialog',
@@ -582,11 +582,11 @@ export class ConfigContractSaveDialogComponent implements OnInit, OnDestroy {
     this.workflowStatuses = selectedProduct.statusGroup?.statusFlows || [];
   }
 
-  pdfMakeHtmlToPdf(data) {
-    let val = htmlToPdfmake(data);
-    let pdfData = { content: val };
-    return pdfmake.createPdf(pdfData);
-  }
+  // pdfMakeHtmlToPdf(data) {
+  //   let val = htmlToPdfmake(data);
+  //   let pdfData = { content: val };
+  //   return pdfmake.createPdf(pdfData);
+  // }
 
   openPdfPreviewNewTab() {
     // this.docPdf.open();
