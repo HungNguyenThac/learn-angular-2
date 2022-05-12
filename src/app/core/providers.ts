@@ -4,20 +4,28 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import * as fromInterceptors from './interceptors';
 import { APP_INITIALIZER, Injector } from '@angular/core';
 import { appInitializerFactory } from '../share/translate/appInitializerFactory';
-import {MatPaginatorIntl} from "@angular/material/paginator";
-import {CustomMatPaginatorIntl} from "./common/providers/mat-paginator-custom";
-import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from "@angular/material/core";
-import {MAT_MOMENT_DATE_FORMATS, MomentDateAdapter} from "@angular/material-moment-adapter";
-import {MAT_CHIPS_DEFAULT_OPTIONS} from "@angular/material/chips";
-import {COMMA, ENTER} from "@angular/cdk/keycodes";
-import {DEFAULT_TIMEOUT} from "./interceptors";
+import { MatPaginatorIntl } from '@angular/material/paginator';
+import { CustomMatPaginatorIntl } from './common/providers/mat-paginator-custom';
+import {
+  DateAdapter,
+  MAT_DATE_FORMATS,
+  MAT_DATE_LOCALE,
+} from '@angular/material/core';
+import {
+  MAT_MOMENT_DATE_FORMATS,
+  MomentDateAdapter,
+} from '@angular/material-moment-adapter';
+import { MAT_CHIPS_DEFAULT_OPTIONS } from '@angular/material/chips';
+import { COMMA, ENTER } from '@angular/cdk/keycodes';
+import { DEFAULT_TIMEOUT } from './interceptors';
+import { environment } from '../../environments/environment';
 
 export const _providers = [
   CookieService,
   MultiLanguageService,
   {
     provide: MatPaginatorIntl,
-    useClass: CustomMatPaginatorIntl
+    useClass: CustomMatPaginatorIntl,
   },
   {
     provide: APP_INITIALIZER,
@@ -40,6 +48,11 @@ export const _providers = [
     useClass: fromInterceptors.LoadingInterceptor,
     multi: true,
   },
+  {
+    provide: HTTP_INTERCEPTORS,
+    useClass: fromInterceptors.TimeoutInterceptor,
+    multi: true,
+  },
   { provide: MAT_DATE_LOCALE, useValue: 'vi-VN' },
   {
     provide: DateAdapter,
@@ -50,8 +63,8 @@ export const _providers = [
   {
     provide: MAT_CHIPS_DEFAULT_OPTIONS,
     useValue: {
-      separatorKeyCodes: [ENTER, COMMA]
-    }
+      separatorKeyCodes: [ENTER, COMMA],
+    },
   },
-  { provide: DEFAULT_TIMEOUT, useValue: 60000 },
+  { provide: DEFAULT_TIMEOUT, useValue: environment.DEFAULT_TIMEOUT },
 ];
