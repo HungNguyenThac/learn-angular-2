@@ -18,9 +18,12 @@
                   <mat-form-field appearance="outline" class="w-100">
                     <mat-label>{{
                       "customer.company_info.company_name" | translate
-                      }}</mat-label>
+                    }}</mat-label>
                     <mat-select
-                      [disabled]="disabledColumns.includes('companyId') || customerInfo?.companyInfo?.groupName === 'TNG'"
+                      [disabled]="
+                        disabledColumns.includes('companyId') ||
+                        customerInfo?.companyInfo?.groupName === 'TNG'
+                      "
                       formControlName="companyId"
                     >
                       <mat-option
@@ -32,9 +35,13 @@
                         [value]="companyOption.id"
                       >
                         <div class="d-flex align-items-center">
-                          <img [src]="companyOption.avatar" alt="" class="company-avatar">
+                          <img
+                            [src]="companyOption.avatar"
+                            alt=""
+                            class="company-avatar"
+                          />
                           {{
-                          companyOption.name + " (" + companyOption.code + ")"
+                            companyOption.name + " (" + companyOption.code + ")"
                           }}
                         </div>
                       </mat-option>
@@ -54,7 +61,7 @@
                   <mat-form-field appearance="outline" class="w-100">
                     <mat-label>{{
                       "customer.company_info.employee_code" | translate
-                      }}</mat-label>
+                    }}</mat-label>
                     <input
                       [disabled]="disabledColumns.includes('employeeCode')"
                       [placeholder]="
@@ -78,17 +85,19 @@
                   <mat-form-field appearance="outline" class="w-100">
                     <mat-label>{{
                       "customer.company_info.working_time" | translate
-                      }}</mat-label>
+                    }}</mat-label>
                     <mat-select
                       [disabled]="disabledColumns.includes('employeeCode')"
                       [placeholder]="
                         'customer.company_info.working_time' | translate
                       "
                       formControlName="borrowerEmploymentHistoryTextVariable1"
-
                     >
                       <div>
-                        <mat-option [value]="bankNA.bankCode" [matTooltip]="bankNA.bankName">
+                        <mat-option
+                          [value]="bankNA.bankCode"
+                          [matTooltip]="bankNA.bankName"
+                        >
                           N/A
                         </mat-option>
                       </div>
@@ -118,7 +127,7 @@
                   <mat-form-field appearance="outline" class="w-100">
                     <mat-label>{{
                       "customer.company_info.full_name" | translate
-                      }}</mat-label>
+                    }}</mat-label>
                     <input
                       [disabled]="disabledColumns.includes('firstName')"
                       [placeholder]="
@@ -126,7 +135,6 @@
                       "
                       formControlName="firstName"
                       matInput
-
                     />
                     <show-errors
                       [controlLabel]="
@@ -143,7 +151,7 @@
                   <mat-form-field appearance="outline" class="w-100">
                     <mat-label>{{
                       "customer.company_info.last_name" | translate
-                      }}</mat-label>
+                    }}</mat-label>
                     <input
                       [disabled]="disabledColumns.includes('tngLastName')"
                       [placeholder]="
@@ -167,7 +175,7 @@
                   <mat-form-field appearance="outline" class="w-100">
                     <mat-label>{{
                       "customer.company_info.first_name" | translate
-                      }}</mat-label>
+                    }}</mat-label>
                     <input
                       [disabled]="disabledColumns.includes('tngFirstName')"
                       [placeholder]="
@@ -191,7 +199,7 @@
                   <mat-form-field appearance="outline" class="w-100">
                     <mat-label>{{
                       "customer.company_info.office_code" | translate
-                      }}</mat-label>
+                    }}</mat-label>
                     <input
                       [disabled]="disabledColumns.includes('officeCode')"
                       [placeholder]="
@@ -215,7 +223,7 @@
                   <mat-form-field appearance="outline" class="w-100">
                     <mat-label>{{
                       "customer.company_info.office_name" | translate
-                      }}</mat-label>
+                    }}</mat-label>
                     <input
                       [disabled]="disabledColumns.includes('officeName')"
                       [placeholder]="
@@ -242,7 +250,7 @@
                   <mat-form-field appearance="outline" class="w-100">
                     <mat-label>{{
                       "customer.company_info.annual_income" | translate
-                      }}</mat-label>
+                    }}</mat-label>
                     <input
                       (focusin)="convertAnnualIncomeInputWithoutSeparator()"
                       (focusout)="formatAnnualIncomeInputWithSeparator()"
@@ -270,7 +278,7 @@
                   <mat-form-field appearance="outline" class="w-100">
                     <mat-label>{{
                       "customer.company_info.working_days" | translate
-                      }}</mat-label>
+                    }}</mat-label>
                     <input
                       [disabled]="disabledColumns.includes('workingDay')"
                       [placeholder]="
@@ -295,7 +303,7 @@
                   <mat-form-field appearance="outline" class="w-100">
                     <mat-label>{{
                       "customer.company_info.account_number" | translate
-                      }}</mat-label>
+                    }}</mat-label>
                     <input
                       [disabled]="disabledColumns.includes('accountNumber')"
                       [placeholder]="
@@ -320,23 +328,22 @@
                   <mat-form-field appearance="outline" class="w-100">
                     <mat-label>{{
                       "customer.individual_info.bank_name" | translate
-                      }}</mat-label>
+                    }}</mat-label>
                     <mat-select
                       (selectionChange)="changeBank($event)"
                       [disabled]="disabledColumns.includes('bankCode')"
                       formControlName="bankCode"
                     >
                       <mat-option>
-                        <ngx-mat-select-search [formControl]="banksFilterCtrl"
-                                               placeholderLabel="Tìm Ngân Hàng"
-                                               noEntriesFoundLabel="Ngân Hàng không tồn tại"
+                        <ngx-mat-select-search
+                          [formControl]="banksFilterCtrl"
+                          placeholderLabel="Tìm Ngân Hàng"
+                          noEntriesFoundLabel="Ngân Hàng không tồn tại"
                         ></ngx-mat-select-search>
-
-
                       </mat-option>
-<!--                      <mat-option [value]="bankNA.bankCode" [matTooltip]="bankNA.bankName">-->
-<!--                        N/A-->
-<!--                      </mat-option>-->
+                      <!--                      <mat-option [value]="bankNA.bankCode" [matTooltip]="bankNA.bankName">-->
+                      <!--                        N/A-->
+                      <!--                      </mat-option>-->
                       <mat-option
                         *ngFor="let bankNameOption of filteredBanks"
                         [matTooltip]="
@@ -347,18 +354,21 @@
                         "
                         [value]="bankNameOption?.bankCode"
                       >
-                        <div class="flex-center-center">
-                          <div class="w-25 flex-center-center">
-                            <img [src]="bankNameOption?.avatar">
+                        <div class="d-flex">
+                          <div class="d-inline-flex">
+                            <img
+                              class="bank-logo"
+                              [src]="bankNameOption?.avatar"
+                            />
                           </div>
-                          <div class="w-75">
+                          <p>
                             {{
-                            bankNameOption?.bankName +
-                            " (" +
-                            bankNameOption?.bankCode +
-                            ")"
+                              bankNameOption?.bankName +
+                                " (" +
+                                bankNameOption?.bankCode +
+                                ")"
                             }}
-                          </div>
+                          </p>
                         </div>
                       </mat-option>
                     </mat-select>
@@ -377,7 +387,7 @@
                   <mat-form-field appearance="outline" class="w-100">
                     <mat-label>{{
                       "customer.company_info.bank_code" | translate
-                      }}</mat-label>
+                    }}</mat-label>
                     <input
                       [disabled]="disabledColumns.includes('bankCode')"
                       [placeholder]="
@@ -418,5 +428,3 @@
     </div>
   </div>
 </div>
-
-
