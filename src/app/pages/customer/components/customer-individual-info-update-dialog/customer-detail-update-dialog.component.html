@@ -591,12 +591,12 @@
                           noEntriesFoundLabel="Ngân Hàng không tồn tại"
                         ></ngx-mat-select-search>
                       </mat-option>
-<!--                      <mat-option-->
-<!--                        [value]="bankNA.bankCode"-->
-<!--                        [matTooltip]="bankNA.bankName"-->
-<!--                      >-->
-<!--                        N/A-->
-<!--                      </mat-option>-->
+                      <!--                      <mat-option-->
+                      <!--                        [value]="bankNA.bankCode"-->
+                      <!--                        [matTooltip]="bankNA.bankName"-->
+                      <!--                      >-->
+                      <!--                        N/A-->
+                      <!--                      </mat-option>-->
                       <mat-option
                         *ngFor="let bankNameOption of filteredBanks"
                         [value]="bankNameOption.bankCode"
@@ -607,18 +607,18 @@
                           ')'
                         "
                       >
-                        <div class="flex-center-center">
-                          <div class="w-25 flex-center-center">
-                            <img [src]="bankNameOption?.avatar">
+                        <div class="d-flex">
+                          <div class="d-inline-flex">
+                            <img class="bank-logo" [src]="bankNameOption?.avatar" />
                           </div>
-                          <div class="w-75">
+                          <p>
                             {{
-                            bankNameOption?.bankName +
-                            " (" +
-                            bankNameOption?.bankCode +
-                            ")"
+                              bankNameOption?.bankName +
+                                " (" +
+                                bankNameOption?.bankCode +
+                                ")"
                             }}
-                          </div>
+                          </p>
                         </div>
                       </mat-option>
                     </mat-select>
