@@ -12,11 +12,11 @@ import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 import { tap } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
-import * as fromSelectors from '../../core/store/selectors';
-import * as fromActions from '../../core/store';
+import * as fromSelectors from '../store/selectors';
+import * as fromActions from '../store';
 import { environment } from '../../../environments/environment';
-import { NotificationService } from '../../core/services/notification.service';
-import { MultiLanguageService } from '../translate/multiLanguageService';
+import { NotificationService } from '../services/notification.service';
+import { MultiLanguageService } from '../../share/translate/multiLanguageService';
 import { ToastrService } from 'ngx-toastr';
 
 const RESPONSE_CODE_401_CHANGE_PASSWORD_REQUIRED = 'change_password_required';
