@@ -39,7 +39,7 @@
   padding-left: 16px;
 }
 
-.flex-center-center{
+.flex-center-center {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -122,6 +122,12 @@ img {
   position: absolute;
   right: 0;
   top: 0;
+}
+
+.bank-logo {
+  width: 32px;
+  height: 32px;
+  margin: auto 8px auto 0;
 }
 
 @media (max-width: 768px) {
