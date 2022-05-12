@@ -9,7 +9,7 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/do';
 import { MatDialog } from '@angular/material/dialog';
 import { finalize } from 'rxjs/operators';
-import { NotificationService } from '../../core/services/notification.service';
+import { NotificationService } from '../services/notification.service';
 
 @Injectable()
 export class LoadingInterceptor implements HttpInterceptor {
