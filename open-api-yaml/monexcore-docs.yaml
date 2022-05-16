@@ -1,5 +1,43 @@
 openapi: "3.0.0"
 paths:
+  /v1/cde/pagination/pdQuestionPagination:
+    get:
+      operationId: "CdeController_searchPdQuestionPagination"
+      parameters:
+        - name: "descending"
+          required: true
+          in: "query"
+          schema:
+            type: "boolean"
+        - name: "page"
+          required: true
+          in: "query"
+          schema:
+            type: "number"
+        - name: "limit"
+          required: true
+          in: "query"
+          schema:
+            type: "number"
+        - name: "orderBy"
+          required: true
+          in: "query"
+          schema:
+            type: "string"
+        - name: "queryMap"
+          required: true
+          in: "query"
+          schema:
+            type: "string"
+      responses:
+        200:
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiResponsePdQuestion"
+      tags:
+        - "cde"
   /v1/cde/questions/{id}:
     get:
       operationId: "CdeController_getPdQuestionById"
@@ -113,6 +151,82 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ApiResponse"
+      tags:
+        - "cde"
+  /v1/cde/pagination/pdGroupPagination:
+    get:
+      operationId: "CdeController_searchPdGroupPagination"
+      parameters:
+        - name: "descending"
+          required: true
+          in: "query"
+          schema:
+            type: "boolean"
+        - name: "page"
+          required: true
+          in: "query"
+          schema:
+            type: "number"
+        - name: "limit"
+          required: true
+          in: "query"
+          schema:
+            type: "number"
+        - name: "orderBy"
+          required: true
+          in: "query"
+          schema:
+            type: "string"
+        - name: "queryMap"
+          required: true
+          in: "query"
+          schema:
+            type: "string"
+      responses:
+        200:
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiResponsePdGroup"
+      tags:
+        - "cde"
+  /v1/cde/pagination/pdModelPagination:
+    get:
+      operationId: "CdeController_searchPdModelPagination"
+      parameters:
+        - name: "descending"
+          required: true
+          in: "query"
+          schema:
+            type: "boolean"
+        - name: "page"
+          required: true
+          in: "query"
+          schema:
+            type: "number"
+        - name: "limit"
+          required: true
+          in: "query"
+          schema:
+            type: "number"
+        - name: "orderBy"
+          required: true
+          in: "query"
+          schema:
+            type: "string"
+        - name: "queryMap"
+          required: true
+          in: "query"
+          schema:
+            type: "string"
+      responses:
+        200:
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiResponsePdModel"
       tags:
         - "cde"
   /v1/cde/groups/{id}:
@@ -1632,6 +1746,371 @@ components:
       in: "header"
       name: "Authorization"
   schemas:
+    LoanStatus:
+      type: "object"
+      properties:
+        id:
+          type: "string"
+        code:
+          type: "string"
+        name:
+          type: "string"
+        description:
+          type: "string"
+        createdAt:
+          type: "string"
+        createdBy:
+          type: "string"
+        statusFlows:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/StatusFlow"
+        updatedAt:
+          type: "string"
+        updatedBy:
+          type: "string"
+      required:
+        - "id"
+        - "code"
+        - "name"
+        - "description"
+        - "createdAt"
+        - "createdBy"
+        - "statusFlows"
+        - "updatedAt"
+        - "updatedBy"
+    StatusGroup:
+      type: "object"
+      properties:
+        id:
+          type: "string"
+        code:
+          type: "string"
+        name:
+          type: "string"
+        description:
+          type: "string"
+        createdAt:
+          type: "string"
+        createdBy:
+          type: "string"
+        statusFlows:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/StatusFlow"
+        updatedAt:
+          type: "string"
+        updatedBy:
+          type: "string"
+      required:
+        - "id"
+        - "code"
+        - "name"
+        - "description"
+        - "createdAt"
+        - "createdBy"
+        - "statusFlows"
+        - "updatedAt"
+        - "updatedBy"
+    StatusFlow:
+      type: "object"
+      properties:
+        id:
+          type: "string"
+        statusGroupId:
+          type: "string"
+        loanStatusId:
+          type: "string"
+        order:
+          type: "number"
+        loanStatus:
+          $ref: "#/components/schemas/LoanStatus"
+        statusGroup:
+          $ref: "#/components/schemas/StatusGroup"
+        contractTemplates:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/ContractTemplate"
+      required:
+        - "id"
+        - "statusGroupId"
+        - "loanStatusId"
+        - "order"
+        - "loanStatus"
+        - "statusGroup"
+        - "contractTemplates"
+    ContractTemplate:
+      type: "object"
+      properties:
+        id:
+          type: "string"
+        content:
+          type: "string"
+        name:
+          type: "string"
+        isActive:
+          type: "boolean"
+        product:
+          $ref: "#/components/schemas/LoanProduct"
+        statusFlow:
+          $ref: "#/components/schemas/StatusFlow"
+        customerPageIndex:
+          type: "number"
+        customerPositionX:
+          type: "number"
+        customerPositionY:
+          type: "number"
+        customerWidth:
+          type: "number"
+        customerHeight:
+          type: "number"
+        monexPageIndex:
+          type: "number"
+        monexPositionX:
+          type: "number"
+        monexPositionY:
+          type: "number"
+        monexWidth:
+          type: "number"
+        monexHeight:
+          type: "number"
+        createdBy:
+          type: "string"
+        updatedBy:
+          type: "string"
+        createdAt:
+          type: "string"
+        updatedAt:
+          type: "string"
+      required:
+        - "id"
+        - "content"
+        - "name"
+        - "isActive"
+        - "product"
+        - "statusFlow"
+        - "customerPageIndex"
+        - "customerPositionX"
+        - "customerPositionY"
+        - "customerWidth"
+        - "customerHeight"
+        - "monexPageIndex"
+        - "monexPositionX"
+        - "monexPositionY"
+        - "monexWidth"
+        - "monexHeight"
+        - "createdBy"
+        - "updatedBy"
+        - "createdAt"
+        - "updatedAt"
+    LoanProduct:
+      type: "object"
+      properties:
+        id:
+          type: "string"
+        code:
+          type: "string"
+        name:
+          type: "string"
+        description:
+          type: "string"
+        mifosProductId:
+          type: "number"
+        createdAt:
+          type: "string"
+        createdBy:
+          type: "string"
+        updatedAt:
+          type: "string"
+        updatedBy:
+          type: "string"
+        pdModels:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/PdModel"
+        contractTemplates:
+          $ref: "#/components/schemas/ContractTemplate"
+        statusGroup:
+          $ref: "#/components/schemas/StatusGroup"
+      required:
+        - "id"
+        - "code"
+        - "name"
+        - "description"
+        - "mifosProductId"
+        - "createdAt"
+        - "createdBy"
+        - "updatedAt"
+        - "updatedBy"
+        - "pdModels"
+        - "contractTemplates"
+        - "statusGroup"
+    PdModel:
+      type: "object"
+      properties:
+        id:
+          type: "string"
+        pdModelGroups:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/PdModelMapGroup"
+        loanProduct:
+          $ref: "#/components/schemas/LoanProduct"
+        code:
+          type: "string"
+        content:
+          type: "string"
+        description:
+          type: "string"
+        status:
+          type: "string"
+        createdAt:
+          type: "string"
+        createdBy:
+          type: "string"
+        updatedAt:
+          type: "string"
+        updatedBy:
+          type: "string"
+      required:
+        - "id"
+        - "pdModelGroups"
+        - "loanProduct"
+        - "code"
+        - "content"
+        - "description"
+        - "status"
+        - "createdAt"
+        - "createdBy"
+        - "updatedAt"
+        - "updatedBy"
+    PdModelMapGroup:
+      type: "object"
+      properties:
+        pdModel:
+          $ref: "#/components/schemas/PdModel"
+        pdGroup:
+          $ref: "#/components/schemas/PdGroup"
+      required:
+        - "pdModel"
+        - "pdGroup"
+    PdGroup:
+      type: "object"
+      properties:
+        id:
+          type: "string"
+        pdModelGroups:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/PdModelMapGroup"
+        pdGroupQuestions:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/PdGroupMapQuestion"
+        code:
+          type: "string"
+        content:
+          type: "string"
+        description:
+          type: "string"
+        status:
+          type: "string"
+        createdAt:
+          type: "string"
+        createdBy:
+          type: "string"
+        updatedAt:
+          type: "string"
+        updatedBy:
+          type: "string"
+      required:
+        - "id"
+        - "pdModelGroups"
+        - "pdGroupQuestions"
+        - "code"
+        - "content"
+        - "description"
+        - "status"
+        - "createdAt"
+        - "createdBy"
+        - "updatedAt"
+        - "updatedBy"
+    PdGroupMapQuestion:
+      type: "object"
+      properties:
+        pdGroup:
+          $ref: "#/components/schemas/PdGroup"
+        pdQuestion:
+          $ref: "#/components/schemas/PdQuestion"
+      required:
+        - "pdGroup"
+        - "pdQuestion"
+    PdQuestion:
+      type: "object"
+      properties:
+        id:
+          type: "string"
+        code:
+          type: "string"
+        content:
+          type: "string"
+        isMandatory:
+          type: "boolean"
+        variableName:
+          type: "string"
+        description:
+          type: "string"
+        answerType:
+          type: "string"
+        placeHolder:
+          type: "string"
+        createdAt:
+          type: "string"
+        createdBy:
+          type: "string"
+        updatedAt:
+          type: "string"
+        updatedBy:
+          type: "string"
+        answers:
+          type: "array"
+          items:
+            type: "string"
+        pdGroupQuestions:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/PdGroupMapQuestion"
+      required:
+        - "id"
+        - "code"
+        - "content"
+        - "isMandatory"
+        - "variableName"
+        - "description"
+        - "answerType"
+        - "placeHolder"
+        - "createdAt"
+        - "createdBy"
+        - "updatedAt"
+        - "updatedBy"
+        - "answers"
+        - "pdGroupQuestions"
+    ApiResponsePdQuestion:
+      type: "object"
+      properties:
+        result:
+          $ref: "#/components/schemas/PdQuestion"
+        errorCode:
+          type: "string"
+        message:
+          type: "object"
+        responseCode:
+          type: "number"
+      required:
+        - "result"
+        - "errorCode"
+        - "message"
+        - "responseCode"
     ApiResponse:
       type: "object"
       properties:
@@ -1699,6 +2178,38 @@ components:
     DeletePdQuestionRequestDto:
       type: "object"
       properties: {}
+    ApiResponsePdGroup:
+      type: "object"
+      properties:
+        result:
+          $ref: "#/components/schemas/PdGroup"
+        errorCode:
+          type: "string"
+        message:
+          type: "object"
+        responseCode:
+          type: "number"
+      required:
+        - "result"
+        - "errorCode"
+        - "message"
+        - "responseCode"
+    ApiResponsePdModel:
+      type: "object"
+      properties:
+        result:
+          $ref: "#/components/schemas/PdModel"
+        errorCode:
+          type: "string"
+        message:
+          type: "object"
+        responseCode:
+          type: "number"
+      required:
+        - "result"
+        - "errorCode"
+        - "message"
+        - "responseCode"
     CreatePdGroupRequestDto:
       type: "object"
       properties:
@@ -1830,355 +2341,6 @@ components:
     DeleteLoanProductDto:
       type: "object"
       properties: {}
-    PdQuestion:
-      type: "object"
-      properties:
-        id:
-          type: "string"
-        code:
-          type: "string"
-        content:
-          type: "string"
-        isMandatory:
-          type: "boolean"
-        variableName:
-          type: "string"
-        description:
-          type: "string"
-        answerType:
-          type: "string"
-        placeHolder:
-          type: "string"
-        createdAt:
-          type: "string"
-        createdBy:
-          type: "string"
-        updatedAt:
-          type: "string"
-        updatedBy:
-          type: "string"
-        answers:
-          type: "array"
-          items:
-            type: "string"
-        pdGroupQuestions:
-          type: "array"
-          items:
-            $ref: "#/components/schemas/PdGroupMapQuestion"
-      required:
-        - "id"
-        - "code"
-        - "content"
-        - "isMandatory"
-        - "variableName"
-        - "description"
-        - "answerType"
-        - "placeHolder"
-        - "createdAt"
-        - "createdBy"
-        - "updatedAt"
-        - "updatedBy"
-        - "answers"
-        - "pdGroupQuestions"
-    PdGroupMapQuestion:
-      type: "object"
-      properties:
-        pdGroup:
-          $ref: "#/components/schemas/PdGroup"
-        pdQuestion:
-          $ref: "#/components/schemas/PdQuestion"
-      required:
-        - "pdGroup"
-        - "pdQuestion"
-    PdGroup:
-      type: "object"
-      properties:
-        id:
-          type: "string"
-        pdModelGroups:
-          type: "array"
-          items:
-            $ref: "#/components/schemas/PdModelMapGroup"
-        pdGroupQuestions:
-          type: "array"
-          items:
-            $ref: "#/components/schemas/PdGroupMapQuestion"
-        code:
-          type: "string"
-        content:
-          type: "string"
-        description:
-          type: "string"
-        status:
-          type: "string"
-        createdAt:
-          type: "string"
-        createdBy:
-          type: "string"
-        updatedAt:
-          type: "string"
-        updatedBy:
-          type: "string"
-      required:
-        - "id"
-        - "pdModelGroups"
-        - "pdGroupQuestions"
-        - "code"
-        - "content"
-        - "description"
-        - "status"
-        - "createdAt"
-        - "createdBy"
-        - "updatedAt"
-        - "updatedBy"
-    PdModelMapGroup:
-      type: "object"
-      properties:
-        pdModel:
-          $ref: "#/components/schemas/PdModel"
-        pdGroup:
-          $ref: "#/components/schemas/PdGroup"
-      required:
-        - "pdModel"
-        - "pdGroup"
-    PdModel:
-      type: "object"
-      properties:
-        id:
-          type: "string"
-        pdModelGroups:
-          type: "array"
-          items:
-            $ref: "#/components/schemas/PdModelMapGroup"
-        loanProduct:
-          $ref: "#/components/schemas/LoanProduct"
-        code:
-          type: "string"
-        content:
-          type: "string"
-        description:
-          type: "string"
-        status:
-          type: "string"
-        createdAt:
-          type: "string"
-        createdBy:
-          type: "string"
-        updatedAt:
-          type: "string"
-        updatedBy:
-          type: "string"
-      required:
-        - "id"
-        - "pdModelGroups"
-        - "loanProduct"
-        - "code"
-        - "content"
-        - "description"
-        - "status"
-        - "createdAt"
-        - "createdBy"
-        - "updatedAt"
-        - "updatedBy"
-    LoanStatus:
-      type: "object"
-      properties:
-        id:
-          type: "string"
-        code:
-          type: "string"
-        name:
-          type: "string"
-        description:
-          type: "string"
-        createdAt:
-          type: "string"
-        createdBy:
-          type: "string"
-        statusFlows:
-          type: "array"
-          items:
-            $ref: "#/components/schemas/StatusFlow"
-        updatedAt:
-          type: "string"
-        updatedBy:
-          type: "string"
-      required:
-        - "id"
-        - "code"
-        - "name"
-        - "description"
-        - "createdAt"
-        - "createdBy"
-        - "statusFlows"
-        - "updatedAt"
-        - "updatedBy"
-    StatusFlow:
-      type: "object"
-      properties:
-        id:
-          type: "string"
-        statusGroupId:
-          type: "string"
-        loanStatusId:
-          type: "string"
-        order:
-          type: "number"
-        loanStatus:
-          $ref: "#/components/schemas/LoanStatus"
-        statusGroup:
-          $ref: "#/components/schemas/StatusGroup"
-        contractTemplates:
-          type: "array"
-          items:
-            $ref: "#/components/schemas/ContractTemplate"
-      required:
-        - "id"
-        - "statusGroupId"
-        - "loanStatusId"
-        - "order"
-        - "loanStatus"
-        - "statusGroup"
-        - "contractTemplates"
-    StatusGroup:
-      type: "object"
-      properties:
-        id:
-          type: "string"
-        code:
-          type: "string"
-        name:
-          type: "string"
-        description:
-          type: "string"
-        createdAt:
-          type: "string"
-        createdBy:
-          type: "string"
-        statusFlows:
-          type: "array"
-          items:
-            $ref: "#/components/schemas/StatusFlow"
-        updatedAt:
-          type: "string"
-        updatedBy:
-          type: "string"
-      required:
-        - "id"
-        - "code"
-        - "name"
-        - "description"
-        - "createdAt"
-        - "createdBy"
-        - "statusFlows"
-        - "updatedAt"
-        - "updatedBy"
-    LoanProduct:
-      type: "object"
-      properties:
-        id:
-          type: "string"
-        code:
-          type: "string"
-        name:
-          type: "string"
-        description:
-          type: "string"
-        mifosProductId:
-          type: "number"
-        createdAt:
-          type: "string"
-        createdBy:
-          type: "string"
-        updatedAt:
-          type: "string"
-        updatedBy:
-          type: "string"
-        pdModels:
-          type: "array"
-          items:
-            $ref: "#/components/schemas/PdModel"
-        contractTemplates:
-          $ref: "#/components/schemas/ContractTemplate"
-        statusGroup:
-          $ref: "#/components/schemas/StatusGroup"
-      required:
-        - "id"
-        - "code"
-        - "name"
-        - "description"
-        - "mifosProductId"
-        - "createdAt"
-        - "createdBy"
-        - "updatedAt"
-        - "updatedBy"
-        - "pdModels"
-        - "contractTemplates"
-        - "statusGroup"
-    ContractTemplate:
-      type: "object"
-      properties:
-        id:
-          type: "string"
-        content:
-          type: "string"
-        name:
-          type: "string"
-        isActive:
-          type: "boolean"
-        product:
-          $ref: "#/components/schemas/LoanProduct"
-        statusFlow:
-          $ref: "#/components/schemas/StatusFlow"
-        customerPageIndex:
-          type: "number"
-        customerPositionX:
-          type: "number"
-        customerPositionY:
-          type: "number"
-        customerWidth:
-          type: "number"
-        customerHeight:
-          type: "number"
-        monexPageIndex:
-          type: "number"
-        monexPositionX:
-          type: "number"
-        monexPositionY:
-          type: "number"
-        monexWidth:
-          type: "number"
-        monexHeight:
-          type: "number"
-        createdBy:
-          type: "string"
-        updatedBy:
-          type: "string"
-        createdAt:
-          type: "string"
-        updatedAt:
-          type: "string"
-      required:
-        - "id"
-        - "content"
-        - "name"
-        - "isActive"
-        - "product"
-        - "statusFlow"
-        - "customerPageIndex"
-        - "customerPositionX"
-        - "customerPositionY"
-        - "customerWidth"
-        - "customerHeight"
-        - "monexPageIndex"
-        - "monexPositionX"
-        - "monexPositionY"
-        - "monexWidth"
-        - "monexHeight"
-        - "createdBy"
-        - "updatedBy"
-        - "createdAt"
-        - "updatedAt"
     ApiResponseContractTemplates:
       type: "object"
       properties:

@@ -28,11 +28,11 @@ import {
   MerchantGroupDialogComponent,
 } from '../../../../../share/components';
 import { AddNewQuestionComponent } from '../../../../../share/components/operators/pd-system/add-new-question/add-new-question.component';
-import { ApiResponseSearchAndPaginationResponseQuestion } from '../../../../../../../open-api-modules/dashboard-api-docs';
 import { Observable, Subscription } from 'rxjs';
 import { PdQuestionsListService } from './pd-questions-list.service';
 import {
   ApiResponse,
+  ApiResponsePdQuestion,
   CdeService,
 } from '../../../../../../../open-api-modules/monexcore-api-docs';
 import * as fromStore from '../../../../../core/store';
@@ -226,9 +226,9 @@ export class PdQuestionsListComponent implements OnInit, OnDestroy {
     const params = this._buildParams();
     this.pdQuestionsListService
       .getData(params)
-      .subscribe((data: ApiResponseSearchAndPaginationResponseQuestion) => {
+      .subscribe((data: ApiResponsePdQuestion) => {
         this._parseData(data?.result);
-        let list = data?.result?.data.map((item) => {
+        let list = data?.result['items'].map((item) => {
           return {
             ...item,
             code: item.code + '-' + item.objectId,
@@ -355,8 +355,8 @@ export class PdQuestionsListComponent implements OnInit, OnDestroy {
   }
 
   private _parseData(rawData) {
-    this.pageLength = rawData?.pagination?.maxPage || 0;
-    this.totalItems = rawData?.pagination?.total || 0;
+    this.pageLength = rawData?.meta.totalPages || 0;
+    this.totalItems = rawData?.meta.totalItems || 0;
     this.dataSource.data = rawData?.data || [];
   }
 
@@ -591,10 +591,7 @@ export class PdQuestionsListComponent implements OnInit, OnDestroy {
   public sendUpdateRequest(updateRequest) {
     this.subManager.add(
       this.cdeService
-        .cdeControllerUpdatePdQuestion(
-          this.questionInfo.objectId,
-          updateRequest
-        )
+        .cdeControllerUpdatePdQuestion(this.questionInfo.id, updateRequest)
         .subscribe(
           (result: ApiResponse) => {
             if (!result || result.responseCode !== RESPONSE_CODE.SUCCESS) {

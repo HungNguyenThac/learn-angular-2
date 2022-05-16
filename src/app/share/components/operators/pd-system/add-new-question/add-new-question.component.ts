@@ -111,7 +111,7 @@ export class AddNewQuestionComponent implements OnInit {
         this.oneAnswer = true;
       } else {
         this.manyAnswers = true;
-        this.numAnswers = this.questionInfo.answers.map((answer) => {
+        this.numAnswers = this.questionInfo?.answers?.map((answer) => {
           return {
             value: answer,
           };
@@ -166,7 +166,7 @@ export class AddNewQuestionComponent implements OnInit {
     } else if (answerType === 'String' || answerType === 'DateTime') {
       answers = answers;
     } else {
-      for (let i = 0; i < this.numAnswers.length; i++) {
+      for (let i = 0; i < this.numAnswers?.length; i++) {
         answers.push(this.numAnswers[i].value);
       }
     }
