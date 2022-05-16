@@ -33,14 +33,12 @@ import { PdModelListService } from './pd-model-list.service';
 import { Observable, Subscription } from 'rxjs';
 import {
   ApiResponse,
+  ApiResponsePdGroup,
+  ApiResponsePdModel,
   CdeService,
 } from '../../../../../../../open-api-modules/monexcore-api-docs';
 import { CustomApiResponse, PDModel } from '../../pd-interface';
-import {
-  ApiResponseSearchAndPaginationResponseGroup,
-  ApiResponseSearchAndPaginationResponseModel,
-  CdeControllerService,
-} from '../../../../../../../open-api-modules/dashboard-api-docs';
+
 import * as fromStore from '../../../../../core/store';
 import * as fromSelectors from '../../../../../core/store/selectors';
 import { Store } from '@ngrx/store';
@@ -123,12 +121,13 @@ export class PdModelListComponent implements OnInit, OnDestroy {
   dataSource: MatTableDataSource<any> = new MatTableDataSource([]);
   pages: Array<number>;
   pageSize: number = 10;
-  pageIndex: number = 0;
+  pageIndex: number = 1;
   pageLength: number = 0;
   pageSizeOptions: number[] = [10, 20, 50];
   expandedElementId: number;
 
   subManager = new Subscription();
+
   breadcrumbOptions: BreadcrumbOptionsModel = {
     title: this.multiLanguageService.instant('breadcrumb.pd_model'),
     iconImgSrc: 'assets/img/icon/group-7/svg/setting-green.svg',
@@ -214,7 +213,7 @@ export class PdModelListComponent implements OnInit, OnDestroy {
     private titleService: Title,
     private activatedRoute: ActivatedRoute,
     private pdModelListService: PdModelListService,
-    private cdeControllerService: CdeControllerService,
+    private cdeControllerService: CdeService,
     private cdeService: CdeService,
     private store: Store<fromStore.State>
   ) {
@@ -239,9 +238,15 @@ export class PdModelListComponent implements OnInit, OnDestroy {
   public _getGroupList() {
     this.subManager.add(
       this.cdeControllerService
-        .getGroups1(100, 0, {})
-        .subscribe((data: ApiResponseSearchAndPaginationResponseGroup) => {
-          this.groupList = data.result.data;
+        .cdeControllerSearchPdGroupPagination(
+          true,
+          1,
+          100,
+          'createdAt',
+          JSON.stringify({})
+        )
+        .subscribe((data: ApiResponsePdGroup) => {
+          this.groupList = data.result['items'];
           this.groupList = this.groupList.map((item) => {
             return {
               id: item.objectId,
@@ -256,9 +261,9 @@ export class PdModelListComponent implements OnInit, OnDestroy {
     const params = this._buildParams();
     this.pdModelListService
       .getData(params)
-      .subscribe((data: ApiResponseSearchAndPaginationResponseModel) => {
+      .subscribe((data: ApiResponsePdModel) => {
         this._parseData(data?.result);
-        this.dataSource.data = data?.result?.data;
+        this.dataSource.data = data?.result['items'];
       });
     // this.subManager.add(
     //   this.cdeService.cdeControllerGetPdModel().subscribe((data) => {
@@ -282,7 +287,7 @@ export class PdModelListComponent implements OnInit, OnDestroy {
 
   public onSubmitSearchForm(event) {
     this.filterForm.controls.keyword.setValue(event.keyword);
-    this.pageIndex = 0;
+    this.pageIndex = 1;
     this._onFilterChange();
   }
 
@@ -363,7 +368,7 @@ export class PdModelListComponent implements OnInit, OnDestroy {
       }
     });
     this.breadcrumbOptions.keyword = params.keyword;
-    this.pageIndex = params.pageIndex || 0;
+    this.pageIndex = params.pageIndex || 1;
     this.pageSize = params.pageSize || 20;
   }
 
@@ -376,8 +381,8 @@ export class PdModelListComponent implements OnInit, OnDestroy {
   }
 
   private _parseData(rawData) {
-    this.pageLength = rawData?.pagination?.maxPage || 0;
-    this.totalItems = rawData?.pagination?.total || 0;
+    this.pageLength = rawData?.meta.totalPages || 0;
+    this.totalItems = rawData?.meta.totalItems || 0;
     this.dataSource.data = rawData?.data || [];
   }
 
@@ -639,7 +644,7 @@ export class PdModelListComponent implements OnInit, OnDestroy {
             result.data.removeArr
           );
           this.sendUpdateRequest(
-            info.objectId,
+            info.id,
             createRequest,
             addQuestionsRequest,
             updateQuestionsRequest,
