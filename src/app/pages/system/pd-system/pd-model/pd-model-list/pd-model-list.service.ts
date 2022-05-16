@@ -14,7 +14,7 @@ export class PdModelListService {
 
     return this.cdeControllerService.cdeControllerSearchPdModelPagination(
       params.sortDirection === 'desc',
-      params.pageIndex,
+      parseInt(params.pageIndex) + 1,
       params.limit,
       params.orderBy,
       JSON.stringify(requestBody)

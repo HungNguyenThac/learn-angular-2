@@ -120,7 +120,7 @@ export class PdQuestionsListComponent implements OnInit, OnDestroy {
   dataSource: MatTableDataSource<any> = new MatTableDataSource([]);
   pages: Array<number>;
   pageSize: number = 10;
-  pageIndex: number = 1;
+  pageIndex: number = 0;
   pageLength: number = 0;
   pageSizeOptions: number[] = [10, 20, 50];
   expandedElementId: number;
@@ -261,7 +261,7 @@ export class PdQuestionsListComponent implements OnInit, OnDestroy {
 
   public onSubmitSearchForm(event) {
     this.filterForm.controls.keyword.setValue(event.keyword);
-    this.pageIndex = 1;
+    this.pageIndex = 0;
     this._onFilterChange();
   }
 
@@ -342,7 +342,7 @@ export class PdQuestionsListComponent implements OnInit, OnDestroy {
       }
     });
     this.breadcrumbOptions.keyword = params.keyword;
-    this.pageIndex = params.pageIndex || 1;
+    this.pageIndex = params.pageIndex || 0;
     this.pageSize = params.pageSize || 20;
   }
 

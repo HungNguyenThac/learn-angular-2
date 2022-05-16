@@ -14,7 +14,7 @@ export class PdGroupListService {
 
     return this.cdeControllerService.cdeControllerSearchPdGroupPagination(
       params.sortDirection === 'desc',
-      params.pageIndex,
+      parseInt(params.pageIndex) + 1,
       params.limit,
       params.orderBy,
       JSON.stringify(requestBody)

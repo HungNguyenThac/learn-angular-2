@@ -14,7 +14,7 @@ export class PdQuestionsListService {
 
     return this.cdeControllerService.cdeControllerSearchPdQuestionPagination(
       params.sortDirection === 'desc',
-      params.pageIndex,
+      parseInt(params.pageIndex) + 1,
       params.limit,
       params.orderBy,
       JSON.stringify(requestBody)
