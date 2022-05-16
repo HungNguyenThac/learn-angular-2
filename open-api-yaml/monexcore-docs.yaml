@@ -35,7 +35,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ApiResponsePdQuestion"
+                $ref: "#/components/schemas/ApiResponsePaginationPdQuestions"
       tags:
         - "cde"
   /v1/cde/questions/{id}:
@@ -188,7 +188,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ApiResponsePdGroup"
+                $ref: "#/components/schemas/ApiResponsePaginationPdGroups"
       tags:
         - "cde"
   /v1/cde/pagination/pdModelPagination:
@@ -226,7 +226,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ApiResponsePdModel"
+                $ref: "#/components/schemas/ApiResponsePaginationPdModels"
       tags:
         - "cde"
   /v1/cde/groups/{id}:
@@ -726,7 +726,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ApiResponseContractTemplates"
+                $ref: "#/components/schemas/ApiResponsePaginationContractTemplates"
       tags:
         - "contract-templates"
   /v1/contract-templates/{id}:
@@ -1288,6 +1288,10 @@ paths:
       responses:
         200:
           description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiResponsePaginationContractProperties"
       tags:
         - "v1/contract-property"
   /v1/contract-property/{id}:
@@ -1414,7 +1418,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ApiResponseRequiredDocument"
+                $ref: "#/components/schemas/ApiResponsePaginationRequiredDocuments"
       tags:
         - "applicationDocuments"
   /v1/applicationDocuments/pagination/requiredDocumentType:
@@ -1452,7 +1456,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ApiResponseRequiredDocumentGroup"
+                $ref: "#/components/schemas/ApiResponsePaginationRequiredDocumentGroups"
       tags:
         - "applicationDocuments"
   /v1/applicationDocuments:
@@ -2095,7 +2099,7 @@ components:
         - "updatedBy"
         - "answers"
         - "pdGroupQuestions"
-    ApiResponsePdQuestion:
+    ApiResponsePaginationPdQuestions:
       type: "object"
       properties:
         result:
@@ -2178,11 +2182,38 @@ components:
     DeletePdQuestionRequestDto:
       type: "object"
       properties: {}
-    ApiResponsePdGroup:
+    MetaPagination:
+      type: "object"
+      properties:
+        totalItems:
+          type: "number"
+          description: "Tổng số bản ghi"
+        itemCount:
+          type: "number"
+          description: "Số bản ghi trả về"
+        itemsPerPage:
+          type: "number"
+          description: "Số bản ghi trên trang"
+        totalPages:
+          type: "number"
+          description: "Tổng số trang"
+        currentPage:
+          type: "number"
+          description: "Trang hiện tại"
+    PaginationPdGroups:
+      type: "object"
+      properties:
+        items:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/PdGroup"
+        meta:
+          $ref: "#/components/schemas/MetaPagination"
+    ApiResponsePaginationPdGroups:
       type: "object"
       properties:
         result:
-          $ref: "#/components/schemas/PdGroup"
+          $ref: "#/components/schemas/PaginationPdGroups"
         errorCode:
           type: "string"
         message:
@@ -2194,11 +2225,20 @@ components:
         - "errorCode"
         - "message"
         - "responseCode"
-    ApiResponsePdModel:
+    PaginationPdModels:
+      type: "object"
+      properties:
+        items:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/PdModel"
+        meta:
+          $ref: "#/components/schemas/MetaPagination"
+    ApiResponsePaginationPdModels:
       type: "object"
       properties:
         result:
-          $ref: "#/components/schemas/PdModel"
+          $ref: "#/components/schemas/PaginationPdModels"
         errorCode:
           type: "string"
         message:
@@ -2341,13 +2381,20 @@ components:
     DeleteLoanProductDto:
       type: "object"
       properties: {}
-    ApiResponseContractTemplates:
+    PaginationContractTemplates:
       type: "object"
       properties:
-        result:
+        items:
           type: "array"
           items:
             $ref: "#/components/schemas/ContractTemplate"
+        meta:
+          $ref: "#/components/schemas/MetaPagination"
+    ApiResponsePaginationContractTemplates:
+      type: "object"
+      properties:
+        result:
+          $ref: "#/components/schemas/PaginationContractTemplates"
         errorCode:
           type: "string"
         message:
@@ -2355,6 +2402,7 @@ components:
         responseCode:
           type: "number"
       required:
+        - "result"
         - "errorCode"
         - "message"
         - "responseCode"
@@ -2371,6 +2419,23 @@ components:
           type: "number"
       required:
         - "result"
+        - "errorCode"
+        - "message"
+        - "responseCode"
+    ApiResponseContractTemplates:
+      type: "object"
+      properties:
+        result:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/ContractTemplate"
+        errorCode:
+          type: "string"
+        message:
+          type: "object"
+        responseCode:
+          type: "number"
+      required:
         - "errorCode"
         - "message"
         - "responseCode"
@@ -2619,6 +2684,22 @@ components:
         - "currentStatus"
         - "coreLoanId"
         - "productId"
+    ApiResponsePaginationContractProperties:
+      type: "object"
+      properties:
+        result:
+          $ref: "#/components/schemas/PaginationContractTemplates"
+        errorCode:
+          type: "string"
+        message:
+          type: "object"
+        responseCode:
+          type: "number"
+      required:
+        - "result"
+        - "errorCode"
+        - "message"
+        - "responseCode"
     ApiResponseContractProperty:
       type: "object"
       properties:
@@ -2712,11 +2793,20 @@ components:
           type: "string"
       required:
         - "fileType"
-    ApiResponseRequiredDocument:
+    PaginationRequiredDocuments:
+      type: "object"
+      properties:
+        items:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/RequiredDocumentEntity"
+        meta:
+          $ref: "#/components/schemas/MetaPagination"
+    ApiResponsePaginationRequiredDocuments:
       type: "object"
       properties:
         result:
-          $ref: "#/components/schemas/RequiredDocumentEntity"
+          $ref: "#/components/schemas/PaginationRequiredDocuments"
         errorCode:
           type: "string"
         message:
@@ -2762,11 +2852,20 @@ components:
         - "createdAt"
         - "updatedAt"
         - "documents"
-    ApiResponseRequiredDocumentGroup:
+    PaginationRequiredDocumentGroups:
+      type: "object"
+      properties:
+        items:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/RequiredDocumentGroupEntity"
+        meta:
+          $ref: "#/components/schemas/MetaPagination"
+    ApiResponsePaginationRequiredDocumentGroups:
       type: "object"
       properties:
         result:
-          $ref: "#/components/schemas/RequiredDocumentGroupEntity"
+          $ref: "#/components/schemas/PaginationRequiredDocumentGroups"
         errorCode:
           type: "string"
         message:
@@ -2804,6 +2903,22 @@ components:
         - "isDisplayed"
         - "isMandatory"
         - "requiredDocumentGroupId"
+    ApiResponseRequiredDocument:
+      type: "object"
+      properties:
+        result:
+          $ref: "#/components/schemas/RequiredDocumentEntity"
+        errorCode:
+          type: "string"
+        message:
+          type: "object"
+        responseCode:
+          type: "number"
+      required:
+        - "result"
+        - "errorCode"
+        - "message"
+        - "responseCode"
     CreateDocumentTypeDto:
       type: "object"
       properties:
@@ -2819,6 +2934,22 @@ components:
         - "name"
         - "description"
         - "codeName"
+    ApiResponseRequiredDocumentGroup:
+      type: "object"
+      properties:
+        result:
+          $ref: "#/components/schemas/RequiredDocumentGroupEntity"
+        errorCode:
+          type: "string"
+        message:
+          type: "object"
+        responseCode:
+          type: "number"
+      required:
+        - "result"
+        - "errorCode"
+        - "message"
+        - "responseCode"
     UpdateDocumentDto:
       type: "object"
       properties:

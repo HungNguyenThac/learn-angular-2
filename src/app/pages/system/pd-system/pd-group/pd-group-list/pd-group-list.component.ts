@@ -32,7 +32,7 @@ import {
 import { PdGroupListService } from './pd-group-list.service';
 import { Observable, Subscription } from 'rxjs';
 import {
-  ApiResponsePdQuestion,
+  ApiResponsePaginationPdQuestions,
   CdeService,
 } from '../../../../../../../open-api-modules/monexcore-api-docs';
 import { CustomApiResponse, PDGroup } from '../../pd-interface';
@@ -240,7 +240,7 @@ export class PdGroupListComponent implements OnInit, OnDestroy {
           'createdAt',
           JSON.stringify({})
         )
-        .subscribe((data: ApiResponsePdQuestion) => {
+        .subscribe((data: ApiResponsePaginationPdQuestions) => {
           this.questionList = data?.result['items'];
           this.questionList = this.questionList.map((item) => {
             return {

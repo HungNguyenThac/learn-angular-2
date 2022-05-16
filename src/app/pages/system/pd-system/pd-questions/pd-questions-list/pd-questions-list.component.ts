@@ -32,7 +32,7 @@ import { Observable, Subscription } from 'rxjs';
 import { PdQuestionsListService } from './pd-questions-list.service';
 import {
   ApiResponse,
-  ApiResponsePdQuestion,
+  ApiResponsePaginationPdQuestions,
   CdeService,
 } from '../../../../../../../open-api-modules/monexcore-api-docs';
 import * as fromStore from '../../../../../core/store';
@@ -226,7 +226,7 @@ export class PdQuestionsListComponent implements OnInit, OnDestroy {
     const params = this._buildParams();
     this.pdQuestionsListService
       .getData(params)
-      .subscribe((data: ApiResponsePdQuestion) => {
+      .subscribe((data: ApiResponsePaginationPdQuestions) => {
         this._parseData(data?.result);
         let list = data?.result['items'].map((item) => {
           return {
