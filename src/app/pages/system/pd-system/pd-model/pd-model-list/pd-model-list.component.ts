@@ -33,8 +33,8 @@ import { PdModelListService } from './pd-model-list.service';
 import { Observable, Subscription } from 'rxjs';
 import {
   ApiResponse,
-  ApiResponsePdGroup,
-  ApiResponsePdModel,
+  ApiResponsePaginationPdGroups,
+  ApiResponsePaginationPdModels,
   CdeService,
 } from '../../../../../../../open-api-modules/monexcore-api-docs';
 import { CustomApiResponse, PDModel } from '../../pd-interface';
@@ -245,11 +245,11 @@ export class PdModelListComponent implements OnInit, OnDestroy {
           'createdAt',
           JSON.stringify({})
         )
-        .subscribe((data: ApiResponsePdGroup) => {
-          this.groupList = data.result['items'];
-          this.groupList = this.groupList.map((item) => {
+        .subscribe((data: ApiResponsePaginationPdGroups) => {
+          this.groupList = data.result;
+          this.groupList = data.result?.items.map((item) => {
             return {
-              id: item.objectId,
+              id: item.id,
               content: item.content,
             };
           });
@@ -261,9 +261,9 @@ export class PdModelListComponent implements OnInit, OnDestroy {
     const params = this._buildParams();
     this.pdModelListService
       .getData(params)
-      .subscribe((data: ApiResponsePdModel) => {
+      .subscribe((data: ApiResponsePaginationPdModels) => {
         this._parseData(data?.result);
-        this.dataSource.data = data?.result['items'];
+        this.dataSource.data = data?.result.items;
       });
     // this.subManager.add(
     //   this.cdeService.cdeControllerGetPdModel().subscribe((data) => {
