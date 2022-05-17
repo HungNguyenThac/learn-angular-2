@@ -66,21 +66,21 @@ export class PermissionConstants {
   };
 
   public static APPLICATION_DOCUMENT_TYPE_PERMISSION: any = {
-    GET_LIST: 'dashboardApplicationDocuments:getApplicationDocumentTypes',
-    CREATE: 'applicationDocuments:createApplicationDocumentType',
-    UPDATE: 'applicationDocuments:updateApplicationDocumentType',
-    DELETE: 'applicationDocuments:deleteApplicationDocumentType',
+    GET_LIST: 'monexCore:searchPaginationRequiredDocumentType',
+    CREATE: 'monexCore:createApplicationDocumentType',
+    UPDATE: 'monexCore:updateApplicationDocumentType',
+    DELETE: 'monexCore:deleteApplicationDocumentType',
   };
 
   public static APPLICATION_DOCUMENT_PERMISSION: any = {
-    GET_LIST: 'dashboardApplicationDocuments:getApplicationDocuments',
-    CREATE: 'applicationDocuments:createApplicationDocument',
-    UPDATE: 'applicationDocuments:updateApplicationDocument',
-    DELETE: 'applicationDocuments:deleteApplicationDocument',
+    GET_LIST: 'monexCore:searchRequiredDocumentPagination',
+    CREATE: 'monexCore:createApplicationDocument',
+    UPDATE: 'monexCore:updateApplicationDocument',
+    DELETE: 'monexCore:deleteApplicationDocument',
   };
 
   public static CONTRACT_TEMPLATE_PERMISSION: any = {
-    GET_LIST: 'dashboardContractTemplates:getContractTemplates',
+    GET_LIST: 'monexCore:searchPaginationContractTemplate'
   };
 
   public static DASHBOARD_PERMISSION: any = {

@@ -305,15 +305,14 @@ paths:
           type: string
       requestBody:
         content:
-          application/json:
+          multipart/form-data:
             schema:
               $ref: '#/components/schemas/UpdateBankRequest'
-        required: true
       responses:
         "200":
           description: OK
           content:
-            '*/*':
+            application/json:
               schema:
                 $ref: '#/components/schemas/ApiResponseBank'
     delete:
@@ -526,47 +525,6 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ApiResponseRating'
-  /v1/notifications/{customerId}/notifyInRepaymentLoan:
-    post:
-      tags:
-      - notification-controller
-      operationId: notifyCustomerHasInRepaymentLoan
-      parameters:
-      - name: customerId
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: loanCode
-        in: query
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          description: OK
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/ApiResponseBoolean'
-  /v1/notifications/notifyInRepaymentLoanByTemplate:
-    post:
-      tags:
-      - notification-controller
-      operationId: notifyCustomerHasInRepaymentLoanByTemplate
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/TemplateRequest'
-        required: true
-      responses:
-        "200":
-          description: OK
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/ApiResponseBoolean'
   /v1/newsletters:
     post:
       tags:
@@ -585,6 +543,18 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ApiResponseNewsletterInfo'
+  /v1/kalapas/idCard/plus/appendOldCustomerAddress:
+    post:
+      tags:
+      - kalapa-controller
+      operationId: extractInfoOldCustomer
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseString'
   /v1/kalapas/idCard/plus:
     post:
       tags:
@@ -921,15 +891,14 @@ paths:
       operationId: createBank
       requestBody:
         content:
-          application/json:
+          multipart/form-data:
             schema:
               $ref: '#/components/schemas/CreateBankRequest'
-        required: true
       responses:
         "200":
           description: OK
           content:
-            '*/*':
+            application/json:
               schema:
                 $ref: '#/components/schemas/ApiResponseBank'
   /v1/admin/kalapas/{customerId}/idCard/plus:
@@ -1347,6 +1316,8 @@ components:
         payday:
           type: integer
           format: int32
+        isActive:
+          type: boolean
     ApiResponseCompanyInfo:
       type: object
       properties:
@@ -1394,6 +1365,8 @@ components:
           type: string
         updatedAt:
           type: string
+        isActive:
+          type: boolean
     UpdateCommuneRequest:
       type: object
       properties:
@@ -1487,15 +1460,15 @@ components:
         code:
           type: string
     UpdateBankRequest:
-      required:
-      - bankCode
-      - bankName
       type: object
       properties:
         bankName:
           type: string
         bankCode:
           type: string
+        avatar:
+          type: string
+          format: binary
     ApiResponseBank:
       type: object
       properties:
@@ -1517,17 +1490,25 @@ components:
           type: string
         bankCode:
           type: string
+        avatar:
+          type: string
+        createdBy:
+          type: string
+        updatedBy:
+          type: string
+        createdAt:
+          type: string
+        updatedAt:
+          type: string
     ConfirmInformationV2Request:
       required:
       - addressOneLine1
       - addressTwoLine1
       - dateOfBirth
-      - emailAddress
       - firstName
       - gender
       - idIssuePlace
       - identityNumberOne
-      - identityNumberSix
       type: object
       properties:
         firstName:
@@ -1536,19 +1517,19 @@ components:
           type: string
         gender:
           type: string
-        identityNumberSix:
-          type: string
         identityNumberOne:
           type: string
         addressTwoLine1:
-          type: string
-        emailAddress:
           type: string
         idIssuePlace:
           type: string
         addressOneLine1:
           type: string
         coreUserId:
+          type: string
+        identityNumberSix:
+          type: string
+        emailAddress:
           type: string
     AdditionalInformationV2Request:
       required:
@@ -1586,6 +1567,12 @@ components:
         jobType:
           type: string
         contractExpiration:
+          type: string
+        bankName:
+          type: string
+        bankCode:
+          type: string
+        accountNumber:
           type: string
     ApiResponseCheckIsPaydayByCustomerIdResponse:
       type: object
@@ -1791,41 +1778,6 @@ components:
           type: string
         applicationType:
           type: string
-    ApiResponseBoolean:
-      type: object
-      properties:
-        result:
-          type: boolean
-        errorCode:
-          type: string
-        message:
-          type: object
-        responseCode:
-          type: integer
-          format: int32
-    TemplateRequest:
-      required:
-      - customerId
-      - email
-      - fullName
-      - mobile
-      - templateName
-      type: object
-      properties:
-        templateName:
-          type: string
-        customerId:
-          type: string
-        email:
-          type: string
-        mobile:
-          type: string
-        fullName:
-          type: string
-        amount:
-          type: string
-        loanCode:
-          type: string
     NewsLetterRequest:
       required:
       - email
@@ -1862,6 +1814,18 @@ components:
             type: string
         created_at:
           type: string
+    ApiResponseString:
+      type: object
+      properties:
+        result:
+          type: string
+        errorCode:
+          type: string
+        message:
+          type: object
+        responseCode:
+          type: integer
+          format: int32
     KalapaRequest:
       required:
       - image
@@ -1956,18 +1920,6 @@ components:
         matchingScore:
           type: integer
           format: int32
-    ApiResponseString:
-      type: object
-      properties:
-        result:
-          type: string
-        errorCode:
-          type: string
-        message:
-          type: object
-        responseCode:
-          type: integer
-          format: int32
     ConfirmInformationRequest:
       required:
       - addressOneLine1
@@ -2022,31 +1974,32 @@ components:
           format: binary
     UpdateFinanceDataRequest:
       required:
-      - companyType
-      - contractType
-      - monthlyIncome
-      - presentWorkTime
-      - salaryPaymentForm
-      - secondaryJobType
+      - contractExpiration
+      - creditCardDuration
+      - educationType
+      - employmentDuration
+      - hasCreditCard
+      - livingArrangement
+      - numberOfDependent
+      - ownershipOfTransport
       type: object
       properties:
-        contractType:
+        contractExpiration:
           type: string
-        companyType:
+        hasCreditCard:
           type: string
-        secondaryJobType:
+        creditCardDuration:
           type: string
-        salaryPaymentForm:
+        employmentDuration:
           type: string
-        presentWorkTime:
+        numberOfDependent:
           type: string
-        previousWorkTime:
+        livingArrangement:
+          type: string
+        ownershipOfTransport:
           type: string
         educationType:
           type: string
-        monthlyIncome:
-          type: number
-          format: float
     GetTngDataRequest:
       required:
       - documentPath
@@ -2170,6 +2123,8 @@ components:
           type: string
         code:
           type: string
+        isActive:
+          type: boolean
     CreateCommuneRequest:
       type: object
       properties:
@@ -2218,6 +2173,9 @@ components:
           type: string
         bankCode:
           type: string
+        avatar:
+          type: string
+          format: binary
     ApiResponseListRating:
       type: object
       properties:
@@ -2268,6 +2226,8 @@ components:
           type: string
         startWorkingDay:
           type: string
+        contractType:
+          type: string
         job:
           type: string
         address:
@@ -2294,6 +2254,18 @@ components:
           type: string
         contractExpiration:
           type: string
+        hasCreditCard:
+          type: string
+        creditCardDuration:
+          type: string
+        employmentDuration:
+          type: string
+        numberOfDependent:
+          type: string
+        livingArrangement:
+          type: string
+        ownershipOfTransport:
+          type: string
     FinancialData:
       type: object
       properties:
@@ -2302,8 +2274,6 @@ components:
         bankCode:
           type: string
         accountNumber:
-          type: string
-        contractType:
           type: string
         companyType:
           type: string

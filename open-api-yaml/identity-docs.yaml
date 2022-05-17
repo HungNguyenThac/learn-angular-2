@@ -199,6 +199,144 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ApiResponseUpdateFullInfoAdminAccountResponse'
+  /v2/signOn/signOut:
+    post:
+      tags:
+      - sign-on-mifos-controller
+      operationId: signOutMifos
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseString'
+  /v2/signOn/resetPassword:
+    post:
+      tags:
+      - sign-on-mifos-controller
+      operationId: resetPasswordByMobileOtpMifos
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ResetPasswordRequest'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseResetPasswordResponse'
+  /v2/signOn/resetPasswordVerifiedOtp:
+    post:
+      tags:
+      - sign-on-mifos-controller
+      operationId: resetPasswordVerifiedOtpMifos
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ResetVerifiedPasswordOtpRequest'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseString'
+  /v2/signOn/resetPasswordOtp:
+    post:
+      tags:
+      - sign-on-mifos-controller
+      operationId: resetPasswordByOtpMifos
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ResetPasswordVerifiedAccountRequest'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseString'
+  /v2/signOn/mobileLogin:
+    post:
+      tags:
+      - sign-on-mifos-controller
+      operationId: mobileLoginMifos
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MobileLoginRequest'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseLoginResponse'
+  /v2/signOn/createVerifiedCustomerAccount:
+    post:
+      tags:
+      - sign-on-mifos-controller
+      operationId: createVerifiedCustomerAccountMifos
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateVerifiedAccountRequest'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseString'
+  /v2/signOn/createCustomerAccount:
+    post:
+      tags:
+      - sign-on-mifos-controller
+      operationId: createCustomerAccountMifos
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateCustomerAccountRequest'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseCreateCustomerAccountResponse'
+  /v2/customersPassword/changePassword:
+    post:
+      tags:
+      - customer-password-mifos-controller
+      operationId: changePasswordCustomer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomerChangePasswordRequest'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseString'
   /v1/signOn/signOut:
     post:
       tags:
@@ -500,7 +638,7 @@ paths:
     post:
       tags:
       - customer-password-controller
-      operationId: changePasswordCustomer
+      operationId: changePasswordCustomer_1
       requestBody:
         content:
           application/json:
@@ -689,6 +827,23 @@ paths:
               schema:
                 $ref: '#/components/schemas/ApiResponseGroupEntity'
   /v1/credentials/{accountId}:
+    get:
+      tags:
+      - admin-account-controller
+      operationId: getAdminAccountById
+      parameters:
+      - name: accountId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseAdminAccountEntity'
     delete:
       tags:
       - admin-account-controller
@@ -1134,6 +1289,25 @@ components:
           enum:
           - Zalo
           - CMC
+    CustomerChangePasswordRequest:
+      required:
+      - confirmPassword
+      - currentPassword
+      - newPassword
+      type: object
+      properties:
+        newPassword:
+          maxLength: 2147483647
+          minLength: 6
+          type: string
+        confirmPassword:
+          maxLength: 2147483647
+          minLength: 6
+          type: string
+        currentPassword:
+          maxLength: 2147483647
+          minLength: 6
+          type: string
     CreatePermissionRequest:
       required:
       - code
@@ -1227,25 +1401,6 @@ components:
           items:
             type: string
         groupId:
-          type: string
-    CustomerChangePasswordRequest:
-      required:
-      - confirmPassword
-      - currentPassword
-      - newPassword
-      type: object
-      properties:
-        newPassword:
-          maxLength: 2147483647
-          minLength: 6
-          type: string
-        confirmPassword:
-          maxLength: 2147483647
-          minLength: 6
-          type: string
-        currentPassword:
-          maxLength: 2147483647
-          minLength: 6
           type: string
     ApiResponseCustomerAccountEntity:
       type: object
