@@ -313,7 +313,7 @@ export class MerchantDetailDialogComponent implements OnInit, AfterViewChecked {
       name: this.merchantInfo?.name,
       address: this.merchantInfo?.address,
       bdStaffId: this.merchantInfo?.bdStaffId,
-      merchantSellType: this.merchantInfo?.merchantSellType || [],
+      merchantSellType: this.merchantInfo?.merchantSellType || null,
       mobile: this.merchantInfo?.mobile,
       email: this.merchantInfo?.email,
       website: this.merchantInfo?.website,
