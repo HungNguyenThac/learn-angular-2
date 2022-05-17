@@ -391,7 +391,7 @@ export class ConfigContractListComponent implements OnInit, OnDestroy {
             updateContractDto.customerPageIndex = customerPageIndex;
           }
           if (result?.data?.customerPositionX != info?.customerPositionX) {
-            updateContractDto.customerPageIndex =
+            updateContractDto.customerPositionX =
               result?.data?.customerPositionX;
           }
           if (result?.data?.customerPositionY != info?.customerPositionY) {
