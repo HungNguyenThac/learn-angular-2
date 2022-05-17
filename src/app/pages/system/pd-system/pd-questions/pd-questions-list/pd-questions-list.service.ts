@@ -1,23 +1,23 @@
 import { Injectable } from '@angular/core';
 import * as _ from 'lodash';
 import { QUERY_CONDITION_TYPE } from '../../../../../core/common/enum/operator';
-import { CdeControllerService } from '../../../../../../../open-api-modules/dashboard-api-docs';
+import { CdeService } from '../../../../../../../open-api-modules/monexcore-api-docs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class PdQuestionsListService {
-  constructor(private cdeControllerService: CdeControllerService) {}
+  constructor(private cdeControllerService: CdeService) {}
 
   public getData(params) {
     let requestBody = this._buildRequestBodyGetList(params);
 
-    return this.cdeControllerService.getQuestions(
+    return this.cdeControllerService.cdeControllerSearchPdQuestionPagination(
+      params.sortDirection === 'desc',
+      parseInt(params.pageIndex) + 1,
       params.limit,
-      params.pageIndex,
-      requestBody,
       params.orderBy,
-      params.sortDirection === 'desc'
+      JSON.stringify(requestBody)
     );
   }
 

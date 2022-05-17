@@ -33,14 +33,12 @@ import { PdModelListService } from './pd-model-list.service';
 import { Observable, Subscription } from 'rxjs';
 import {
   ApiResponse,
+  ApiResponsePaginationPdGroups,
+  ApiResponsePaginationPdModels,
   CdeService,
 } from '../../../../../../../open-api-modules/monexcore-api-docs';
 import { CustomApiResponse, PDModel } from '../../pd-interface';
-import {
-  ApiResponseSearchAndPaginationResponseGroup,
-  ApiResponseSearchAndPaginationResponseModel,
-  CdeControllerService,
-} from '../../../../../../../open-api-modules/dashboard-api-docs';
+
 import * as fromStore from '../../../../../core/store';
 import * as fromSelectors from '../../../../../core/store/selectors';
 import { Store } from '@ngrx/store';
@@ -129,6 +127,7 @@ export class PdModelListComponent implements OnInit, OnDestroy {
   expandedElementId: number;
 
   subManager = new Subscription();
+
   breadcrumbOptions: BreadcrumbOptionsModel = {
     title: this.multiLanguageService.instant('breadcrumb.pd_model'),
     iconImgSrc: 'assets/img/icon/group-7/svg/setting-green.svg',
@@ -214,7 +213,7 @@ export class PdModelListComponent implements OnInit, OnDestroy {
     private titleService: Title,
     private activatedRoute: ActivatedRoute,
     private pdModelListService: PdModelListService,
-    private cdeControllerService: CdeControllerService,
+    private cdeControllerService: CdeService,
     private cdeService: CdeService,
     private store: Store<fromStore.State>
   ) {
@@ -239,12 +238,18 @@ export class PdModelListComponent implements OnInit, OnDestroy {
   public _getGroupList() {
     this.subManager.add(
       this.cdeControllerService
-        .getGroups1(100, 0, {})
-        .subscribe((data: ApiResponseSearchAndPaginationResponseGroup) => {
-          this.groupList = data.result.data;
-          this.groupList = this.groupList.map((item) => {
+        .cdeControllerSearchPdGroupPagination(
+          true,
+          1,
+          100,
+          'createdAt',
+          JSON.stringify({})
+        )
+        .subscribe((data: ApiResponsePaginationPdGroups) => {
+          this.groupList = data.result;
+          this.groupList = data.result?.items.map((item) => {
             return {
-              id: item.objectId,
+              id: item.id,
               content: item.content,
             };
           });
@@ -256,9 +261,9 @@ export class PdModelListComponent implements OnInit, OnDestroy {
     const params = this._buildParams();
     this.pdModelListService
       .getData(params)
-      .subscribe((data: ApiResponseSearchAndPaginationResponseModel) => {
+      .subscribe((data: ApiResponsePaginationPdModels) => {
         this._parseData(data?.result);
-        this.dataSource.data = data?.result?.data;
+        this.dataSource.data = data?.result.items;
       });
     // this.subManager.add(
     //   this.cdeService.cdeControllerGetPdModel().subscribe((data) => {
@@ -376,8 +381,8 @@ export class PdModelListComponent implements OnInit, OnDestroy {
   }
 
   private _parseData(rawData) {
-    this.pageLength = rawData?.pagination?.maxPage || 0;
-    this.totalItems = rawData?.pagination?.total || 0;
+    this.pageLength = rawData?.meta.totalPages || 0;
+    this.totalItems = rawData?.meta.totalItems || 0;
     this.dataSource.data = rawData?.data || [];
   }
 
@@ -639,7 +644,7 @@ export class PdModelListComponent implements OnInit, OnDestroy {
             result.data.removeArr
           );
           this.sendUpdateRequest(
-            info.objectId,
+            info.id,
             createRequest,
             addQuestionsRequest,
             updateQuestionsRequest,

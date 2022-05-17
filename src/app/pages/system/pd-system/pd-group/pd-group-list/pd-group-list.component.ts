@@ -2,8 +2,10 @@ import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import {
   BUTTON_TYPE,
   DATA_CELL_TYPE,
-  DATA_STATUS_TYPE, FILTER_ACTION_TYPE,
-  FILTER_TYPE, MULTIPLE_ELEMENT_ACTION_TYPE,
+  DATA_STATUS_TYPE,
+  FILTER_ACTION_TYPE,
+  FILTER_TYPE,
+  MULTIPLE_ELEMENT_ACTION_TYPE,
   QUERY_CONDITION_TYPE,
   RESPONSE_CODE,
 } from '../../../../../core/common/enum/operator';
@@ -18,29 +20,23 @@ import { ToastrService } from 'ngx-toastr';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { Title } from '@angular/platform-browser';
-import { PermissionConstants } from '../../../../../core/common/constants/permission-constants';
 import { Sort } from '@angular/material/sort';
 import { FilterEventModel } from '../../../../../public/models/filter/filter-event.model';
 import { PageEvent } from '@angular/material/paginator/public-api';
 import { FilterActionEventModel } from '../../../../../public/models/filter/filter-action-event.model';
 import {
+  AddNewPdDialogComponent,
   BaseManagementLayoutComponent,
   MerchantGroupDialogComponent,
 } from '../../../../../share/components';
-import { AddNewPdDialogComponent } from '../../../../../share/components';
 import { PdGroupListService } from './pd-group-list.service';
 import { Observable, Subscription } from 'rxjs';
-import { CdeService } from '../../../../../../../open-api-modules/monexcore-api-docs';
 import {
-  CustomApiResponse,
-  PdQuestion,
-  PdGroupQuestions,
-  PDGroup,
-} from '../../pd-interface';
-import {
-  ApiResponseSearchAndPaginationResponseQuestion,
-  CdeControllerService,
-} from '../../../../../../../open-api-modules/dashboard-api-docs';
+  ApiResponsePaginationPdQuestions,
+  CdeService,
+} from '../../../../../../../open-api-modules/monexcore-api-docs';
+import { CustomApiResponse, PDGroup } from '../../pd-interface';
+
 import * as fromStore from '../../../../../core/store';
 import * as fromSelectors from '../../../../../core/store/selectors';
 import { Store } from '@ngrx/store';
@@ -213,7 +209,6 @@ export class PdGroupListComponent implements OnInit, OnDestroy {
     private titleService: Title,
     private activatedRoute: ActivatedRoute,
     private pdGroupListService: PdGroupListService,
-    private cdeControllerService: CdeControllerService,
     private cdeService: CdeService,
     private store: Store<fromStore.State>
   ) {
@@ -237,10 +232,16 @@ export class PdGroupListComponent implements OnInit, OnDestroy {
 
   public _getQuestionList() {
     this.subManager.add(
-      this.cdeControllerService
-        .getQuestions(100, 0, {})
-        .subscribe((data: ApiResponseSearchAndPaginationResponseQuestion) => {
-          this.questionList = data.result.data;
+      this.cdeService
+        .cdeControllerSearchPdQuestionPagination(
+          true,
+          1,
+          100,
+          'createdAt',
+          JSON.stringify({})
+        )
+        .subscribe((data: ApiResponsePaginationPdQuestions) => {
+          this.questionList = data?.result['items'];
           this.questionList = this.questionList.map((item) => {
             return {
               id: item.objectId,
@@ -268,7 +269,7 @@ export class PdGroupListComponent implements OnInit, OnDestroy {
     const params = this._buildParams();
     this.pdGroupListService.getData(params).subscribe((data) => {
       this._parseData(data?.result);
-      let list = data?.result?.data.map((item) => {
+      let list = data?.result['items'].map((item: any) => {
         return {
           ...item,
           code: item.code + '-' + item.objectId,
@@ -386,9 +387,9 @@ export class PdGroupListComponent implements OnInit, OnDestroy {
   }
 
   private _parseData(rawData) {
-    this.pageLength = rawData?.pagination?.maxPage || 0;
-    this.totalItems = rawData?.pagination?.total || 0;
-    this.dataSource.data = rawData?.data || [];
+    this.pageLength = rawData?.meta?.totalPages || 0;
+    this.totalItems = rawData?.meta?.totalItems || 0;
+    this.dataSource.data = rawData?.items || [];
   }
 
   private _onFilterChange() {
@@ -642,7 +643,7 @@ export class PdGroupListComponent implements OnInit, OnDestroy {
             result.data.removeArr
           );
           this.sendUpdateRequest(
-            info.objectId,
+            info.id,
             updateRequest,
             addQuestionsRequest,
             updateQuestionsRequest,
@@ -802,6 +803,6 @@ export class PdGroupListComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.subManager.unsubscribe()
+    this.subManager.unsubscribe();
   }
 }
