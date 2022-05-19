@@ -11,13 +11,15 @@ export interface RouterStateUrl {
   params: Params;
 }
 
-export const ROUTER_INITIAL_STATE: RouterStateUrl= {
-  "url":"/",
-  "queryParams":{},
-  "params":{}
+export const ROUTER_INITIAL_STATE: RouterStateUrl = {
+  url: '/',
+  queryParams: {},
+  params: {},
 };
 
-export class CustomSerializer implements fromRouter.RouterStateSerializer<RouterStateUrl> {
+export class CustomSerializer
+  implements fromRouter.RouterStateSerializer<RouterStateUrl>
+{
   serialize(routerState: RouterStateSnapshot): RouterStateUrl {
     const { url } = routerState;
     const { queryParams } = routerState.root;

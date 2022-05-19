@@ -320,6 +320,7 @@ export class BnplListComponent implements OnInit, OnDestroy {
   userHasPermissions = {
     filterViews: {
       getbnplByUserStatus: false,
+      getListMerchant: false,
     },
     bnplViewStatus: {
       pending: false,
@@ -353,7 +354,6 @@ export class BnplListComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.store.dispatch(new fromActions.SetOperatorInfo(NAV_ITEM.BNPL));
-    this._getMerchantList();
     this._initSubscription();
   }
 
@@ -589,8 +589,12 @@ export class BnplListComponent implements OnInit, OnDestroy {
   private _initSubscription() {
     this.subManager.add(
       this.routeAllState$.subscribe((params) => {
-        this._parseQueryParams(params?.queryParams);
-        this._getLoanList();
+        if (params?.url.includes(window.location.pathname)) {
+          this._parseQueryParams(params?.queryParams);
+          this._getLoanList();
+        } else {
+          this.dataSource.data = [];
+        }
       })
     );
 
@@ -747,6 +751,9 @@ export class BnplListComponent implements OnInit, OnDestroy {
 
   private async _checkUserPermissions() {
     await this._checkPermission();
+    if (this.userHasPermissions.filterViews.getListMerchant) {
+      this._getMerchantList();
+    }
     this._displayStatusFilterOptions();
     this.changeHiddenFilterOptionByPermission();
   }
@@ -791,6 +798,10 @@ export class BnplListComponent implements OnInit, OnDestroy {
     this.userHasPermissions.filterViews.getbnplByUserStatus =
       await this.permissionsService.hasPermission(
         PermissionConstants.OPERATOR_PERMISSION.GET_BNPL_USER_STATUS
+      );
+    this.userHasPermissions.filterViews.getListMerchant =
+      await this.permissionsService.hasPermission(
+        PermissionConstants.DASHBOARD_PERMISSION.GET_LIST_MERCHANT
       );
   }
 
@@ -839,6 +850,9 @@ export class BnplListComponent implements OnInit, OnDestroy {
       if (option.controlName === 'accountClassification') {
         option.hidden =
           !this.userHasPermissions.filterViews.getbnplByUserStatus;
+      }
+      if (option.controlName === 'merchant.id') {
+        option.hidden = !this.userHasPermissions.filterViews.getListMerchant;
       }
     });
   }

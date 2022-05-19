@@ -554,7 +554,11 @@ export class MonexProductListComponent implements OnInit, OnDestroy {
   private _initSubscription() {
     this.subManager.add(
       this.routeAllState$.subscribe((params) => {
-        this._parseQueryParams(params?.queryParams);
+        if (params?.url.includes(window.location.pathname)) {
+          this._parseQueryParams(params?.queryParams);
+        } else {
+          this.dataSource.data = [];
+        }
       })
     );
 

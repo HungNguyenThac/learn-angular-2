@@ -37,7 +37,9 @@ import { TableActionButtonModel } from '../../../../../public/models/external/ta
 import { TableActionEventModel } from '../../../../../public/models/external/table-action-event.model';
 import { ApplicationDocumentSaveDialogComponent } from '../components/application-document-save-dialog/application-document-save-dialog.component';
 import {
-  CreateDocumentDto, RequiredDocumentEntity, RequiredDocumentGroupEntity,
+  CreateDocumentDto,
+  RequiredDocumentEntity,
+  RequiredDocumentGroupEntity,
   UpdateDocumentDto,
 } from '../../../../../../../open-api-modules/monexcore-api-docs';
 import { PermissionConstants } from '../../../../../core/common/constants/permission-constants';
@@ -247,8 +249,12 @@ export class ConfigDocumentListComponent implements OnInit, OnDestroy {
   private _initSubscription() {
     this.subManager.add(
       this.routeAllState$.subscribe((params) => {
-        this._parseQueryParams(params?.queryParams);
-        this._getApplicationDocumentList();
+        if (params?.url.includes(window.location.pathname)) {
+          this._parseQueryParams(params?.queryParams);
+          this._getApplicationDocumentList();
+        } else {
+          this.dataSource.data = [];
+        }
       })
     );
     this.subManager.add(

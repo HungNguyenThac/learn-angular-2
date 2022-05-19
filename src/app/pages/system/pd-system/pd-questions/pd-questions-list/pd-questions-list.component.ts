@@ -247,8 +247,12 @@ export class PdQuestionsListComponent implements OnInit, OnDestroy {
   private _initSubscription() {
     this.subManager.add(
       this.routeAllState$.subscribe((params) => {
-        this._parseQueryParams(params?.queryParams);
-        this._getQuestionsList();
+        if (params?.url.includes(window.location.pathname)) {
+          this._parseQueryParams(params?.queryParams);
+          this._getQuestionsList();
+        } else {
+          this.dataSource.data = [];
+        }
       })
     );
   }

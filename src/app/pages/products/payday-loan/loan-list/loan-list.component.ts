@@ -807,8 +807,12 @@ export class LoanListComponent implements OnInit, OnDestroy {
         ) {
           this.changeCompanyGroupName(params?.queryParams.groupName);
         }
-        this._parseQueryParams(params?.queryParams);
-        this._getLoanList();
+        if (params?.url.includes(window.location.pathname)) {
+          this._parseQueryParams(params?.queryParams);
+          this._getLoanList();
+        } else {
+          this.dataSource.data = [];
+        }
       })
     );
 
@@ -1102,7 +1106,8 @@ export class LoanListComponent implements OnInit, OnDestroy {
       );
     this.userHasPermissions.loanTngViewStatus.documentation_complete =
       await this.permissionsService.hasPermission(
-        PermissionConstants.VIEW_LOAN_TNG_STATUS_PERMISSION.DOCUMENTATION_COMPLETE
+        PermissionConstants.VIEW_LOAN_TNG_STATUS_PERMISSION
+          .DOCUMENTATION_COMPLETE
       );
     this.userHasPermissions.loanTngViewStatus.funded =
       await this.permissionsService.hasPermission(
@@ -1114,7 +1119,8 @@ export class LoanListComponent implements OnInit, OnDestroy {
       );
     this.userHasPermissions.loanTngViewStatus.awaiting_disbursement =
       await this.permissionsService.hasPermission(
-        PermissionConstants.VIEW_LOAN_TNG_STATUS_PERMISSION.AWAITING_DISBURSEMENT
+        PermissionConstants.VIEW_LOAN_TNG_STATUS_PERMISSION
+          .AWAITING_DISBURSEMENT
       );
     this.userHasPermissions.loanTngViewStatus.disbursed =
       await this.permissionsService.hasPermission(
@@ -1157,7 +1163,8 @@ export class LoanListComponent implements OnInit, OnDestroy {
       );
     this.userHasPermissions.loanVacViewStatus.documentation_complete =
       await this.permissionsService.hasPermission(
-        PermissionConstants.VIEW_LOAN_VAC_STATUS_PERMISSION.DOCUMENTATION_COMPLETE
+        PermissionConstants.VIEW_LOAN_VAC_STATUS_PERMISSION
+          .DOCUMENTATION_COMPLETE
       );
     this.userHasPermissions.loanVacViewStatus.funded =
       await this.permissionsService.hasPermission(
@@ -1169,7 +1176,8 @@ export class LoanListComponent implements OnInit, OnDestroy {
       );
     this.userHasPermissions.loanVacViewStatus.awaiting_disbursement =
       await this.permissionsService.hasPermission(
-        PermissionConstants.VIEW_LOAN_VAC_STATUS_PERMISSION.AWAITING_DISBURSEMENT
+        PermissionConstants.VIEW_LOAN_VAC_STATUS_PERMISSION
+          .AWAITING_DISBURSEMENT
       );
     this.userHasPermissions.loanVacViewStatus.disbursed =
       await this.permissionsService.hasPermission(

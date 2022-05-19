@@ -1,5 +1,22 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { BaseManagementLayoutComponent } from '../../../../../share/components';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
+import { PageEvent } from '@angular/material/paginator/public-api';
+import { Sort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
+import { Title } from '@angular/platform-browser';
+import { ActivatedRoute, Params, Router } from '@angular/router';
+import { Store } from '@ngrx/store';
+import * as _ from 'lodash';
+import { NgxPermissionsService } from 'ngx-permissions';
+import { ToastrService } from 'ngx-toastr';
+import { Observable, Subscription } from 'rxjs';
+import {
+  CreateDocumentTypeDto,
+  RequiredDocumentGroupEntity,
+  UpdateDocumentTypeDto,
+} from '../../../../../../../open-api-modules/monexcore-api-docs';
+import { PermissionConstants } from '../../../../../core/common/constants/permission-constants';
 import {
   BUTTON_TYPE,
   DATA_CELL_TYPE,
@@ -9,38 +26,22 @@ import {
   RESPONSE_CODE,
   TABLE_ACTION_TYPE,
 } from '../../../../../core/common/enum/operator';
-import { TableSelectActionModel } from '../../../../../public/models/external/table-select-action.model';
-import { FormBuilder, FormGroup } from '@angular/forms';
-import { MatTableDataSource } from '@angular/material/table';
-import { Observable, Subscription } from 'rxjs';
+import { NotificationService } from '../../../../../core/services/notification.service';
+import * as fromActions from '../../../../../core/store';
+import * as fromStore from '../../../../../core/store';
+import * as fromSelectors from '../../../../../core/store/selectors';
 import { BreadcrumbOptionsModel } from '../../../../../public/models/external/breadcrumb-options.model';
-import { FilterOptionModel } from '../../../../../public/models/filter/filter-option.model';
 import { OverviewItemModel } from '../../../../../public/models/external/overview-item.model';
 import { TableActionButtonModel } from '../../../../../public/models/external/table-action-button.model';
-import { ActivatedRoute, Params, Router } from '@angular/router';
-import { MultiLanguageService } from '../../../../../share/translate/multiLanguageService';
-import { NotificationService } from '../../../../../core/services/notification.service';
-import { ToastrService } from 'ngx-toastr';
-import { MatDialog } from '@angular/material/dialog';
-import { Title } from '@angular/platform-browser';
-import { ConfigDocumentListService } from '../config-document-list/config-document-list.service';
-import { Store } from '@ngrx/store';
-import * as fromStore from '../../../../../core/store';
-import * as fromActions from '../../../../../core/store';
-import * as fromSelectors from '../../../../../core/store/selectors';
-import { FilterActionEventModel } from '../../../../../public/models/filter/filter-action-event.model';
-import { PageEvent } from '@angular/material/paginator/public-api';
-import { Sort } from '@angular/material/sort';
-import { FilterEventModel } from '../../../../../public/models/filter/filter-event.model';
 import { TableActionEventModel } from '../../../../../public/models/external/table-action-event.model';
-import * as _ from 'lodash';
+import { TableSelectActionModel } from '../../../../../public/models/external/table-select-action.model';
+import { FilterActionEventModel } from '../../../../../public/models/filter/filter-action-event.model';
+import { FilterEventModel } from '../../../../../public/models/filter/filter-event.model';
+import { FilterOptionModel } from '../../../../../public/models/filter/filter-option.model';
+import { BaseManagementLayoutComponent } from '../../../../../share/components';
+import { MultiLanguageService } from '../../../../../share/translate/multiLanguageService';
 import { DocumentTypeSaveDialogComponent } from '../components/document-type-save-dialog/document-type-save-dialog.component';
-import { NgxPermissionsService } from 'ngx-permissions';
-import { PermissionConstants } from '../../../../../core/common/constants/permission-constants';
-import {
-  CreateDocumentTypeDto, RequiredDocumentGroupEntity,
-  UpdateDocumentTypeDto,
-} from '../../../../../../../open-api-modules/monexcore-api-docs';
+import { ConfigDocumentListService } from '../config-document-list/config-document-list.service';
 
 @Component({
   selector: 'app-document-type-list',
@@ -210,8 +211,12 @@ export class DocumentTypeListComponent implements OnInit, OnDestroy {
   private _initSubscription() {
     this.subManager.add(
       this.routeAllState$.subscribe((params) => {
-        this._parseQueryParams(params?.queryParams);
-        this._getApplicationDocumentTypeList();
+        if (params?.url.includes(window.location.pathname)) {
+          this._parseQueryParams(params?.queryParams);
+          this._getApplicationDocumentTypeList();
+        } else {
+          this.dataSource.data = [];
+        }
       })
     );
     this.subManager.add(

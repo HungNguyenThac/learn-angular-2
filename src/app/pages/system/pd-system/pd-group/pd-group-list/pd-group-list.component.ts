@@ -223,9 +223,13 @@ export class PdGroupListComponent implements OnInit, OnDestroy {
   private _initSubscription() {
     this.subManager.add(
       this.routeAllState$.subscribe((params) => {
-        this._parseQueryParams(params?.queryParams);
-        this._getGroupList();
-        this._getQuestionList();
+        if (params?.url.includes(window.location.pathname)) {
+          this._parseQueryParams(params?.queryParams);
+          this._getGroupList();
+          this._getQuestionList();
+        } else {
+          this.dataSource.data = [];
+        }
       })
     );
   }

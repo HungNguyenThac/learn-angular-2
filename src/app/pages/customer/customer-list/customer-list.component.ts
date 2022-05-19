@@ -340,9 +340,10 @@ export class CustomerListComponent implements OnInit, OnDestroy {
   ];
   private readonly routeAllState$: Observable<Params>;
 
-  listPermission= {
-    getCustomerById: PermissionConstants.DASHBOARD_PERMISSION.GET_BY_ID_CUSTOMER
-  }
+  listPermission = {
+    getCustomerById:
+      PermissionConstants.DASHBOARD_PERMISSION.GET_BY_ID_CUSTOMER,
+  };
 
   constructor(
     private titleService: Title,
@@ -490,8 +491,12 @@ export class CustomerListComponent implements OnInit, OnDestroy {
   private _initSubscription() {
     this.subManager.add(
       this.routeAllState$.subscribe((params) => {
-        this._parseQueryParams(params?.queryParams);
-        this._getCustomerList();
+        if (params?.url.includes(window.location.pathname)) {
+          this._parseQueryParams(params?.queryParams);
+          this._getCustomerList();
+        } else {
+          this.dataSource.data = [];
+        }
       })
     );
   }

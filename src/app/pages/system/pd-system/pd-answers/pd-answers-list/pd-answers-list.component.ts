@@ -1,8 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import {
   BUTTON_TYPE,
-  DATA_CELL_TYPE, FILTER_ACTION_TYPE,
-  FILTER_TYPE, MULTIPLE_ELEMENT_ACTION_TYPE,
+  DATA_CELL_TYPE,
+  FILTER_ACTION_TYPE,
+  FILTER_TYPE,
+  MULTIPLE_ELEMENT_ACTION_TYPE,
   QUERY_CONDITION_TYPE,
 } from '../../../../../core/common/enum/operator';
 import { TableSelectActionModel } from '../../../../../public/models/external/table-select-action.model';
@@ -25,7 +27,7 @@ import {
   MerchantDetailDialogComponent,
   MerchantGroupDialogComponent,
 } from '../../../../../share/components';
-import {environment} from "../../../../../../environments/environment";
+import { environment } from '../../../../../../environments/environment';
 import { Observable, Subscription } from 'rxjs';
 import * as fromStore from '../../../../../core/store';
 import * as fromSelectors from '../../../../../core/store/selectors';
@@ -236,7 +238,11 @@ export class PdAnswersListComponent implements OnInit, OnDestroy {
   private _initSubscription() {
     this.subManager.add(
       this.routeAllState$.subscribe((params) => {
-        this._parseQueryParams(params?.queryParams);
+        if (params?.url.includes(window.location.pathname)) {
+          this._parseQueryParams(params?.queryParams);
+        } else {
+          this.dataSource.data = [];
+        }
       })
     );
   }

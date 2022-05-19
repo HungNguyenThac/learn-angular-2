@@ -186,8 +186,12 @@ export class ConfigContractListComponent implements OnInit, OnDestroy {
   private _initSubscription() {
     this.subManager.add(
       this.routeAllState$.subscribe((params) => {
-        this._parseQueryParams(params?.queryParams);
-        this._getContractTemplateList();
+        if (params?.url.includes(window.location.pathname)) {
+          this._parseQueryParams(params?.queryParams);
+          this._getContractTemplateList();
+        } else {
+          this.dataSource.data = [];
+        }
       })
     );
   }

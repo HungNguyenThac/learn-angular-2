@@ -1,15 +1,30 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { Store } from '@ngrx/store';
-import * as fromActions from '../../../../core/store';
-import * as fromStore from '../../../../core/store';
-import { TableSelectActionModel } from '../../../../public/models/external/table-select-action.model';
-import { MultiLanguageService } from '../../../../share/translate/multiLanguageService';
-import { NotificationService } from '../../../../core/services/notification.service';
-import { ToastrService } from 'ngx-toastr';
+import { PermissionConstants } from 'src/app/core/common/constants/permission-constants';
+import { NgxPermissionsService } from 'ngx-permissions';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
+import { PageEvent } from '@angular/material/paginator/public-api';
 import { Sort } from '@angular/material/sort';
-import { FilterEventModel } from '../../../../public/models/filter/filter-event.model';
+import { MatTableDataSource } from '@angular/material/table';
+import { Title } from '@angular/platform-browser';
+import { ActivatedRoute, Params, Router } from '@angular/router';
+import { Store } from '@ngrx/store';
 import * as _ from 'lodash';
+import * as moment from 'moment';
+import { ToastrService } from 'ngx-toastr';
+import { Observable, Subscription } from 'rxjs';
+import {
+  AdminControllerService,
+  ApiResponseMerchant,
+  ApiResponseString,
+  CreateMerchantRequestDto,
+  MerchantStatus,
+} from '../../../../../../open-api-modules/bnpl-api-docs';
+import {
+  ApiResponseSearchAndPaginationResponseAdminAccountEntity,
+  ApiResponseSearchAndPaginationResponseMerchant,
+  Merchant,
+} from '../../../../../../open-api-modules/dashboard-api-docs';
 import {
   BUTTON_TYPE,
   DATA_CELL_TYPE,
@@ -20,47 +35,37 @@ import {
   QUERY_CONDITION_TYPE,
   RESPONSE_CODE,
 } from '../../../../core/common/enum/operator';
-import { ActivatedRoute, Params, Router } from '@angular/router';
-import { FilterOptionModel } from '../../../../public/models/filter/filter-option.model';
+import { NotificationService } from '../../../../core/services/notification.service';
+import * as fromActions from '../../../../core/store';
+import * as fromStore from '../../../../core/store';
+import * as fromSelectors from '../../../../core/store/selectors';
 import { BreadcrumbOptionsModel } from '../../../../public/models/external/breadcrumb-options.model';
-import { MatTableDataSource } from '@angular/material/table';
-import { PageEvent } from '@angular/material/paginator/public-api';
+import { OverviewItemModel } from '../../../../public/models/external/overview-item.model';
+import { TableSelectActionModel } from '../../../../public/models/external/table-select-action.model';
+import { DisplayedFieldsModel } from '../../../../public/models/filter/displayed-fields.model';
 import { FilterActionEventModel } from '../../../../public/models/filter/filter-action-event.model';
+import { FilterEventModel } from '../../../../public/models/filter/filter-event.model';
+import { FilterOptionModel } from '../../../../public/models/filter/filter-option.model';
 import {
   BaseManagementLayoutComponent,
   MerchantDetailDialogComponent,
 } from '../../../../share/components';
-import { MatDialog } from '@angular/material/dialog';
-import { Title } from '@angular/platform-browser';
-import { DisplayedFieldsModel } from '../../../../public/models/filter/displayed-fields.model';
-import {
-  ApiResponseSearchAndPaginationResponseAdminAccountEntity,
-  ApiResponseSearchAndPaginationResponseMerchant,
-  Merchant,
-} from '../../../../../../open-api-modules/dashboard-api-docs';
-import {
-  AdminControllerService,
-  ApiResponseMerchant,
-  ApiResponseString,
-  CreateMerchantRequestDto,
-  MerchantStatus,
-} from '../../../../../../open-api-modules/bnpl-api-docs';
-import { Observable, Subscription } from 'rxjs';
+import { MultiLanguageService } from '../../../../share/translate/multiLanguageService';
 import { MerchantListService } from './merchant-list.service';
-import * as fromSelectors from '../../../../core/store/selectors';
-import { OverviewItemModel } from '../../../../public/models/external/overview-item.model';
-import * as moment from 'moment';
 
 @Component({
   selector: 'app-merchant-list',
   templateUrl: './merchant-list.component.html',
   styleUrls: ['./merchant-list.component.scss'],
 })
-export class MerchantListComponent implements OnInit {
+export class MerchantListComponent implements OnInit, OnDestroy {
   bdList: any[] = [];
   managerList: any[] = [];
   merchantParentList: any[] = [];
   allMerchant: any[] = [];
+  userHasPermissions = {
+    bdStaffOptions: false,
+  };
 
   allColumns: DisplayedFieldsModel[] = [
     {
@@ -216,6 +221,7 @@ export class MerchantListComponent implements OnInit {
   expandedElementMerchant: Merchant;
   forceElementMerchant: Merchant;
   merchantInfo: any;
+  subscription = new Subscription();
   subManager = new Subscription();
   breadcrumbOptions: BreadcrumbOptionsModel = {
     title: this.multiLanguageService.instant('breadcrumb.merchant'),
@@ -256,6 +262,7 @@ export class MerchantListComponent implements OnInit {
       controlName: 'bdStaffId',
       value: null,
       options: [],
+      hidden: true,
       multiple: true,
       searchPlaceholder: this.multiLanguageService.instant(
         'merchant.merchant_list.search_bd_staff'
@@ -301,7 +308,8 @@ export class MerchantListComponent implements OnInit {
     private titleService: Title,
     private activatedRoute: ActivatedRoute,
     private adminControllerService: AdminControllerService,
-    private merchantListService: MerchantListService
+    private merchantListService: MerchantListService,
+    private permissionsService: NgxPermissionsService
   ) {
     this.routeAllState$ = store.select(fromSelectors.getRouterAllState);
     this._initFilterForm();
@@ -311,6 +319,9 @@ export class MerchantListComponent implements OnInit {
     this.store.dispatch(new fromActions.SetOperatorInfo(NAV_ITEM.MERCHANT));
     this._initOptions();
     this._initSubscription();
+  }
+  ngOnDestroy(): void {
+    this.subManager.unsubscribe();
   }
 
   private _getMerchantList() {
@@ -420,10 +431,41 @@ export class MerchantListComponent implements OnInit {
   private _initSubscription() {
     this.subManager.add(
       this.routeAllState$.subscribe((params) => {
-        this._parseQueryParams(params?.queryParams);
-        this._getMerchantList();
+        if (params?.url.includes(window.location.pathname)) {
+          this._parseQueryParams(params?.queryParams);
+          this._getMerchantList();
+        } else {
+          this.dataSource.data = [];
+        }
       })
     );
+
+    this.subManager.add(
+      this.permissionsService.permissions$.subscribe((permissions) => {
+        if (permissions) {
+          this._checkUserPermisstion();
+        }
+      })
+    );
+  }
+
+  private async _checkUserPermisstion() {
+    await this._checkPermissions();
+    if (this.userHasPermissions.bdStaffOptions) {
+      this._getBDList();
+      this.filterOptions.forEach((option) => {
+        if (option.controlName === 'bdStaffId') {
+          option.hidden = false;
+        }
+      });
+    }
+  }
+
+  private async _checkPermissions() {
+    this.userHasPermissions.bdStaffOptions =
+      await this.permissionsService.hasPermission(
+        PermissionConstants.DASHBOARD_PERMISSION.GET_LIST_ADMIN_ACCOUNT
+      );
   }
 
   private _parseQueryParams(params) {
@@ -568,7 +610,6 @@ export class MerchantListComponent implements OnInit {
   }
 
   private _initOptions() {
-    this._getBDList();
     this._getAllMerchant();
   }
 
@@ -586,6 +627,7 @@ export class MerchantListComponent implements OnInit {
                 response?.errorCode
               );
             }
+
             this.managerList = response?.result?.data.map((bd) => {
               return {
                 ...bd,
@@ -604,7 +646,6 @@ export class MerchantListComponent implements OnInit {
               }
 
               filterOption.options = bdStaffOptions;
-
               this.bdList = bdStaffOptions;
             });
 
@@ -866,37 +907,42 @@ export class MerchantListComponent implements OnInit {
   }
 
   private _getAllMerchant() {
-    this.merchantListService
-      .getAllMerchant()
-      .subscribe((response: ApiResponseSearchAndPaginationResponseMerchant) => {
-        this.allMerchant = response?.result?.data.map((merchant) => {
-          return {
-            ...merchant,
-            title: merchant.name + ' (' + merchant.code + ')',
-            value: merchant.id,
-          };
-        });
+    this.subManager.add(
+      this.merchantListService
+        .getAllMerchant()
+        .subscribe(
+          (response: ApiResponseSearchAndPaginationResponseMerchant) => {
+            this.allMerchant = response?.result?.data.map((merchant) => {
+              return {
+                ...merchant,
+                title: merchant.name + ' (' + merchant.code + ')',
+                value: merchant.id,
+              };
+            });
 
-        if (!this.allMerchant) return;
+            if (!this.allMerchant) return;
 
-        let parentMerchant = this.allMerchant.filter((merchant) => {
-          return (
-            merchant.childMerchantIds && merchant.childMerchantIds.length > 0
-          );
-        });
+            let parentMerchant = this.allMerchant.filter((merchant) => {
+              return (
+                merchant.childMerchantIds &&
+                merchant.childMerchantIds.length > 0
+              );
+            });
 
-        this.filterOptions.forEach((filterOption: FilterOptionModel) => {
-          if (filterOption.controlName !== 'merchantParentId') {
-            return;
+            this.filterOptions.forEach((filterOption: FilterOptionModel) => {
+              if (filterOption.controlName !== 'merchantParentId') {
+                return;
+              }
+
+              filterOption.options = parentMerchant;
+
+              this.merchantParentList = parentMerchant;
+            });
+
+            this.filterOptions = JSON.parse(JSON.stringify(this.filterOptions));
           }
-
-          filterOption.options = parentMerchant;
-
-          this.merchantParentList = parentMerchant;
-        });
-
-        this.filterOptions = JSON.parse(JSON.stringify(this.filterOptions));
-      });
+        )
+    );
   }
 
   formatTime(time) {
