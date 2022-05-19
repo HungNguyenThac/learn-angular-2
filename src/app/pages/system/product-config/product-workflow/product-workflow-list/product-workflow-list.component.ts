@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import {
   CompanyControllerService,
   GroupControllerService,
@@ -147,14 +147,14 @@ export class ProductWorkflowListComponent implements OnInit, OnDestroy {
       key: 'createdAt',
       title: this.multiLanguageService.instant('product_workflow.created_at'),
       type: DATA_CELL_TYPE.DATETIME,
-      format: 'dd/mm/yyyy hh:mm',
+      format: 'dd/MM/yyyy hh:mm',
       showed: true,
     },
     {
       key: 'updatedAt',
       title: this.multiLanguageService.instant('product_workflow.updated_at'),
       type: DATA_CELL_TYPE.DATETIME,
-      format: 'dd/mm/yyyy hh:mm',
+      format: 'dd/MM/yyyy hh:mm',
       showed: true,
     },
     {
