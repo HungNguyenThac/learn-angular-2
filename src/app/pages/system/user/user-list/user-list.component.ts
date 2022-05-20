@@ -73,7 +73,7 @@ export class UserListComponent implements OnInit, OnDestroy {
       content: this.multiLanguageService.instant(
         'customer.individual_info.delete'
       ),
-      imageSrc: 'assets/img/icon/group-5/svg/trash.svg',
+      classImgSrc: 'sprite-group-5-update-trash',
       style: 'background-color: #dc3545;',
     },
     {
@@ -83,7 +83,7 @@ export class UserListComponent implements OnInit, OnDestroy {
       content: this.multiLanguageService.instant(
         'customer.individual_info.lock'
       ),
-      imageSrc: 'assets/img/icon/group-5/svg/lock-white.svg',
+      classImgSrc: 'sprite-group-5-update-lock-white',
       style: 'background-color: #dc3545;',
     },
   ];
@@ -94,7 +94,7 @@ export class UserListComponent implements OnInit, OnDestroy {
   );
   breadcrumbOptions: BreadcrumbOptionsModel = {
     title: this.multiLanguageService.instant('breadcrumb.manage_user'),
-    iconImgSrc: 'assets/img/icon/group-5/svg/person-roll.svg',
+    iconClass: 'sprite-group-5-update-person-roll',
     searchPlaceholder: this.multiLanguageService.instant(
       'breadcrumb.search_field.user_list'
     ),
@@ -401,7 +401,7 @@ export class UserListComponent implements OnInit, OnDestroy {
 
   public lockMultiplePrompt(userIds) {
     const confirmLockRef = this.notificationService.openPrompt({
-      imgUrl: '../../../../../assets/img/icon/group-5/svg/Alert.svg',
+      imgGroupUrl: 'sprite-group-5-update-Alert',
       title: this.multiLanguageService.instant(
         'system.user_detail.lock_user.title'
       ),
@@ -449,7 +449,7 @@ export class UserListComponent implements OnInit, OnDestroy {
 
   public deleteMultiplePrompt(userIds) {
     const confirmDeleteRef = this.notificationService.openPrompt({
-      imgUrl: '../../../../../assets/img/icon/group-5/svg/delete-dialog.svg',
+      imgGroupUrl: 'sprite-group-5-update-delete-dialog',
       title: this.multiLanguageService.instant(
         'system.user_detail.delete_user.title'
       ),

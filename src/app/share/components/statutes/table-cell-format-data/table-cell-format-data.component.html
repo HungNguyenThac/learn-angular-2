@@ -11,17 +11,11 @@
 
 <span *ngIf="type === 'BOOLEAN'">
   <div *ngIf="value; else booleanFalse" class="d-flex">
-    <img
-      src="assets/img/icon/group-6-op/svg/Checkbox/Checked.svg"
-      alt="checked"
-    />
+    <span class="sprite-group-6-update-Checked"></span>
   </div>
   <ng-template #booleanFalse>
     <div class="d-flex">
-      <img
-        src="assets/img/icon/group-6-op/svg/Checkbox/Unchecked.svg"
-        alt="unchecked"
-      />
+      <span class="sprite-group-6-update-Unchecked"></span>
     </div>
   </ng-template>
 </span>

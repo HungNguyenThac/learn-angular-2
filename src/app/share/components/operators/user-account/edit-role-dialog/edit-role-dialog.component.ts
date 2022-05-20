@@ -15,11 +15,12 @@ import {
   RESPONSE_CODE,
 } from '../../../../../core/common/enum/operator';
 import { PermissionTreeComponent } from '../permission-tree/permission-tree.component';
-import { ApiResponseListString } from '../../../../../../../open-api-modules/dashboard-api-docs';
+import {
+  ApiResponseListString,
+  GroupControllerService as DashboardGroupControllerService,
+} from '../../../../../../../open-api-modules/dashboard-api-docs';
 import { Subscription } from 'rxjs';
-import { GroupControllerService as DashboardGroupControllerService } from '../../../../../../../open-api-modules/dashboard-api-docs';
 import { ToastrService } from 'ngx-toastr';
-import * as moment from 'moment';
 
 @Component({
   selector: 'app-edit-role-dialog',
@@ -118,7 +119,7 @@ export class EditRoleDialogComponent implements OnInit, OnDestroy {
 
   deleteGroup() {
     const confirmDeleteRef = this.notificationService.openPrompt({
-      imgUrl: '../../../../../assets/img/icon/group-5/svg/delete-dialog.svg',
+      imgGroupUrl: 'sprite-group-5-update-delete-dialog',
       title: this.multiLanguageService.instant(
         'system.user_role.delete_role.title'
       ),

@@ -65,7 +65,7 @@ export class MonexProductListComponent implements OnInit, OnDestroy {
       action: MULTIPLE_ELEMENT_ACTION_TYPE.DELETE,
       color: 'accent',
       content: this.multiLanguageService.instant('monex_product.delete'),
-      imageSrc: 'assets/img/icon/group-5/svg/trash.svg',
+      classImgSrc: 'sprite-group-5-update-trash',
       style: 'background-color: rgba(255, 255, 255, 0.1);',
     },
     {
@@ -75,7 +75,7 @@ export class MonexProductListComponent implements OnInit, OnDestroy {
       content: this.multiLanguageService.instant(
         'customer.individual_info.lock'
       ),
-      imageSrc: 'assets/img/icon/group-5/svg/lock-white.svg',
+      classImgSrc: 'sprite-group-5-update-lock-white',
       style: 'background-color: rgba(255, 255, 255, 0.1);',
     },
   ];
@@ -84,7 +84,7 @@ export class MonexProductListComponent implements OnInit, OnDestroy {
   tableTitle: string = this.multiLanguageService.instant('monex_product.list');
   breadcrumbOptions: BreadcrumbOptionsModel = {
     title: this.multiLanguageService.instant('breadcrumb.monex_product'),
-    iconImgSrc: 'assets/img/icon/group-7/svg/setting-green.svg',
+    iconClass: 'sprite-group-7-update-setting-green',
     searchPlaceholder: this.multiLanguageService.instant(
       'breadcrumb.search_field.user_list'
     ),
@@ -442,7 +442,7 @@ export class MonexProductListComponent implements OnInit, OnDestroy {
 
   public lockMultiplePrompt(ids) {
     const confirmLockRef = this.notificationService.openPrompt({
-      imgUrl: '../../../../../assets/img/icon/group-5/svg/Alert.svg',
+      imgGroupUrl: 'sprite-group-5-update-Alert',
       title: this.multiLanguageService.instant(
         'system.user_detail.lock_user.title'
       ),
@@ -491,7 +491,7 @@ export class MonexProductListComponent implements OnInit, OnDestroy {
 
   public deleteMultiplePrompt(ids) {
     const confirmDeleteRef = this.notificationService.openPrompt({
-      imgUrl: '../../../../../assets/img/icon/group-5/svg/delete-dialog.svg',
+      imgGroupUrl: 'sprite-group-5-update-delete-dialog',
       title: this.multiLanguageService.instant('monex_product.delete'),
       content: this.multiLanguageService.instant(
         'monex_product.delete_content'

@@ -18,7 +18,6 @@ import { ToastrService } from 'ngx-toastr';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { Title } from '@angular/platform-browser';
-import { PermissionConstants } from '../../../../../core/common/constants/permission-constants';
 import { Sort } from '@angular/material/sort';
 import { FilterEventModel } from '../../../../../public/models/filter/filter-event.model';
 import { PageEvent } from '@angular/material/paginator/public-api';
@@ -27,7 +26,6 @@ import {
   MerchantDetailDialogComponent,
   MerchantGroupDialogComponent,
 } from '../../../../../share/components';
-import { environment } from '../../../../../../environments/environment';
 import { Observable, Subscription } from 'rxjs';
 import * as fromStore from '../../../../../core/store';
 import * as fromSelectors from '../../../../../core/store/selectors';
@@ -135,7 +133,7 @@ export class PdAnswersListComponent implements OnInit, OnDestroy {
   merchantInfo: any;
   breadcrumbOptions: BreadcrumbOptionsModel = {
     title: this.multiLanguageService.instant('breadcrumb.pd_answers'),
-    iconImgSrc: 'assets/img/icon/group-7/svg/setting-green.svg',
+    iconClass: 'sprite-group-7-update-setting-green',
     searchPlaceholder: 'Mã câu trả lời, câu hỏi, nội dung câu trả lời',
     searchable: true,
     showBtnAdd: true,
@@ -403,7 +401,7 @@ export class PdAnswersListComponent implements OnInit, OnDestroy {
   // @ts-ignore
   public lockPrompt(): boolean {
     const confirmLockRef = this.notificationService.openPrompt({
-      imgUrl: '../../../../../assets/img/icon/group-5/svg/Alert.svg',
+      imgGroupUrl: 'sprite-group-5-update-Alert',
       title: this.multiLanguageService.instant(
         'system.user_detail.lock_user.title'
       ),
@@ -419,7 +417,7 @@ export class PdAnswersListComponent implements OnInit, OnDestroy {
 
   public deletePrompt() {
     const confirmDeleteRef = this.notificationService.openPrompt({
-      imgUrl: '../../../../../assets/img/icon/group-5/svg/delete-dialog.svg',
+      imgGroupUrl: 'sprite-group-5-update-delete-dialog',
       title: this.multiLanguageService.instant(
         'system.user_detail.delete_user.title'
       ),

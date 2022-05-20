@@ -106,7 +106,7 @@ export class ConfigContractListComponent implements OnInit, OnDestroy {
   hasActions: boolean = true;
   breadcrumbOptions: BreadcrumbOptionsModel = {
     title: this.multiLanguageService.instant('breadcrumb.contract_template'),
-    iconImgSrc: 'assets/img/icon/group-7/svg/setting-green.svg',
+    iconClass: 'sprite-group-7-update-setting-green',
     searchable: false,
     showBtnAdd: true,
     btnAddText: this.multiLanguageService.instant(
@@ -129,7 +129,7 @@ export class ConfigContractListComponent implements OnInit, OnDestroy {
       action: TABLE_ACTION_TYPE.VIEW,
       color: 'accent',
       tooltip: this.multiLanguageService.instant('common.view'),
-      imageSrc: 'assets/img/icon/group-5/svg/eye.svg',
+      classImgSrc: 'sprite-group-5-update-eye',
       style: 'background-color: rgba(255, 255, 255, 0.1);',
     },
     {
@@ -137,7 +137,7 @@ export class ConfigContractListComponent implements OnInit, OnDestroy {
       action: TABLE_ACTION_TYPE.EDIT,
       color: 'accent',
       tooltip: this.multiLanguageService.instant('common.edit'),
-      imageSrc: 'assets/img/icon/group-5/svg/edit-small.svg',
+      classImgSrc: 'sprite-group-5-update-edit-small',
       style: 'background-color: rgba(255, 255, 255, 0.1);',
     },
     {
@@ -145,7 +145,7 @@ export class ConfigContractListComponent implements OnInit, OnDestroy {
       action: TABLE_ACTION_TYPE.DELETE,
       color: 'accent',
       tooltip: this.multiLanguageService.instant('common.delete'),
-      imageSrc: 'assets/img/icon/group-5/svg/trash-red.svg',
+      classImgSrc: 'sprite-group-5-update-trash-red',
       style: 'background-color: rgba(255, 255, 255, 0.1);',
     },
   ];
@@ -485,7 +485,7 @@ export class ConfigContractListComponent implements OnInit, OnDestroy {
 
   public openDeleteContractTemplateDialog(element) {
     const confirmDeleteRef = this.notificationService.openPrompt({
-      imgUrl: '../../../../../assets/img/icon/group-5/svg/delete-dialog.svg',
+      imgGroupUrl: 'sprite-group-5-update-delete-dialog',
       title: this.multiLanguageService.instant(
         'system.system_config.contract_template.delete_prompt.title'
       ),

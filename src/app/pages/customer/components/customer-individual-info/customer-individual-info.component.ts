@@ -1,55 +1,50 @@
-import { MatDialog } from "@angular/material/dialog";
+import { MatDialog } from '@angular/material/dialog';
 import {
   Component,
   EventEmitter,
   Input,
   OnDestroy,
   OnInit,
-  Output
-} from "@angular/core";
-import { MultiLanguageService } from "../../../../share/translate/multiLanguageService";
+  Output,
+} from '@angular/core';
+import { MultiLanguageService } from '../../../../share/translate/multiLanguageService';
 import {
-  ApiResponseCity,
-  ApiResponseCommune,
-  ApiResponseDistrict,
   Bank,
   CityControllerService,
   CommuneControllerService,
   CustomerInfo,
   DistrictControllerService,
-  KalapaResponse
-} from "../../../../../../open-api-modules/dashboard-api-docs";
-import {
-  CustomerDetailUpdateDialogComponent
-} from "../customer-individual-info-update-dialog/customer-detail-update-dialog.component";
-import { Subscription } from "rxjs";
-import { CustomerDetailService } from "../customer-detail-element/customer-detail.service";
+  KalapaResponse,
+} from '../../../../../../open-api-modules/dashboard-api-docs';
+import { CustomerDetailUpdateDialogComponent } from '../customer-individual-info-update-dialog/customer-detail-update-dialog.component';
+import { Subscription } from 'rxjs';
+import { CustomerDetailService } from '../customer-detail-element/customer-detail.service';
 import {
   BUTTON_TYPE,
   DATA_CELL_TYPE,
   LOCK_TIME_OPTIONS,
   LOCK_TIME_TEXT_OPTIONS,
   LOCK_TITLES,
-  RESPONSE_CODE
-} from "../../../../core/common/enum/operator";
-import { ToastrService } from "ngx-toastr";
-import { FormBuilder, FormGroup } from "@angular/forms";
-import { VirtualAccount } from "../../../../../../open-api-modules/payment-api-docs";
-import * as moment from "moment";
-import { NotificationService } from "../../../../core/services/notification.service";
+  RESPONSE_CODE,
+} from '../../../../core/common/enum/operator';
+import { ToastrService } from 'ngx-toastr';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { VirtualAccount } from '../../../../../../open-api-modules/payment-api-docs';
+import * as moment from 'moment';
+import { NotificationService } from '../../../../core/services/notification.service';
 import {
   ApiResponseString,
-  InfoControllerService
-} from "../../../../../../open-api-modules/customer-api-docs";
+  InfoControllerService,
+} from '../../../../../../open-api-modules/customer-api-docs';
 import {
   ApiResponseCustomerAccountEntity,
-  CustomerControllerService
-} from "../../../../../../open-api-modules/identity-api-docs";
+  CustomerControllerService,
+} from '../../../../../../open-api-modules/identity-api-docs';
 
 @Component({
-  selector: "app-customer-individual-info",
-  templateUrl: "./customer-individual-info.component.html",
-  styleUrls: ["./customer-individual-info.component.scss"]
+  selector: 'app-customer-individual-info',
+  templateUrl: './customer-individual-info.component.html',
+  styleUrls: ['./customer-individual-info.component.scss'],
 })
 export class CustomerIndividualInfoComponent implements OnInit, OnDestroy {
   customerIndividualForm: FormGroup;
@@ -69,27 +64,27 @@ export class CustomerIndividualInfoComponent implements OnInit, OnDestroy {
           title: this.multiLanguageService.instant(
             LOCK_TIME_TEXT_OPTIONS.ONE_HOUR
           ),
-          value: LOCK_TIME_OPTIONS.ONE_HOUR
+          value: LOCK_TIME_OPTIONS.ONE_HOUR,
         },
         {
           title: this.multiLanguageService.instant(
             LOCK_TIME_TEXT_OPTIONS.TWO_HOUR
           ),
-          value: LOCK_TIME_OPTIONS.TWO_HOUR
+          value: LOCK_TIME_OPTIONS.TWO_HOUR,
         },
         {
           title: this.multiLanguageService.instant(
             LOCK_TIME_TEXT_OPTIONS.FOUR_HOUR
           ),
-          value: LOCK_TIME_OPTIONS.FOUR_HOUR
+          value: LOCK_TIME_OPTIONS.FOUR_HOUR,
         },
         {
           title: this.multiLanguageService.instant(
             LOCK_TIME_TEXT_OPTIONS.EIGHT_HOUR
           ),
-          value: LOCK_TIME_OPTIONS.EIGHT_HOUR
-        }
-      ]
+          value: LOCK_TIME_OPTIONS.EIGHT_HOUR,
+        },
+      ],
     },
     {
       mainTitle: this.multiLanguageService.instant(LOCK_TITLES.BY_DAY),
@@ -98,21 +93,21 @@ export class CustomerIndividualInfoComponent implements OnInit, OnDestroy {
           title: this.multiLanguageService.instant(
             LOCK_TIME_TEXT_OPTIONS.ONE_DAY
           ),
-          value: LOCK_TIME_OPTIONS.ONE_DAY
+          value: LOCK_TIME_OPTIONS.ONE_DAY,
         },
         {
           title: this.multiLanguageService.instant(
             LOCK_TIME_TEXT_OPTIONS.SEVEN_DAY
           ),
-          value: LOCK_TIME_OPTIONS.SEVEN_DAY
+          value: LOCK_TIME_OPTIONS.SEVEN_DAY,
         },
         {
           title: this.multiLanguageService.instant(
             LOCK_TIME_TEXT_OPTIONS.THIRTY_DAY
           ),
-          value: LOCK_TIME_OPTIONS.THIRTY_DAY
-        }
-      ]
+          value: LOCK_TIME_OPTIONS.THIRTY_DAY,
+        },
+      ],
     },
     {
       mainTitle: this.multiLanguageService.instant(LOCK_TITLES.PERMANENT),
@@ -121,10 +116,10 @@ export class CustomerIndividualInfoComponent implements OnInit, OnDestroy {
           title: this.multiLanguageService.instant(
             LOCK_TIME_TEXT_OPTIONS.PERMANENT
           ),
-          value: LOCK_TIME_OPTIONS.PERMANENT
-        }
-      ]
-    }
+          value: LOCK_TIME_OPTIONS.PERMANENT,
+        },
+      ],
+    },
   ];
   @Output() triggerUpdateInfo = new EventEmitter<any>();
   leftIndividualInfos: any[] = [];
@@ -144,7 +139,7 @@ export class CustomerIndividualInfoComponent implements OnInit, OnDestroy {
     private customerControllerService: CustomerControllerService
   ) {
     this.customerIndividualForm = this.formBuilder.group({
-      note: [""]
+      note: [''],
     });
   }
 
@@ -192,19 +187,18 @@ export class CustomerIndividualInfoComponent implements OnInit, OnDestroy {
     this._bankOptions = value;
   }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   verifyInfo() {
     const confirmVerifyRef = this.notificationService.openPrompt({
-      imgUrl: "../../../../../assets/img/icon/group-5/svg/unlock-dialog.svg",
+      imgGroupUrl: 'sprite-group-5-update-unlock-dialog',
       title: this.multiLanguageService.instant(
-        "customer.individual_info.verify_customer.dialog_title"
+        'customer.individual_info.verify_customer.dialog_title'
       ),
-      content: "",
-      primaryBtnText: this.multiLanguageService.instant("common.allow"),
-      primaryBtnClass: "btn-primary",
-      secondaryBtnText: this.multiLanguageService.instant("common.skip")
+      content: '',
+      primaryBtnText: this.multiLanguageService.instant('common.allow'),
+      primaryBtnClass: 'btn-primary',
+      secondaryBtnText: this.multiLanguageService.instant('common.skip'),
     });
     confirmVerifyRef.afterClosed().subscribe((result) => {
       if (result === BUTTON_TYPE.PRIMARY) {
@@ -228,16 +222,16 @@ export class CustomerIndividualInfoComponent implements OnInit, OnDestroy {
     const updateDialogRef = this.dialog.open(
       CustomerDetailUpdateDialogComponent,
       {
-        panelClass: "custom-info-dialog-container",
-        maxWidth: "1200px",
-        width: "90%",
+        panelClass: 'custom-info-dialog-container',
+        maxWidth: '1200px',
+        width: '90%',
         data: {
           customerInfo: this.customerInfo,
           customerId: this.customerId,
           virtualAccount: this.virtualAccount,
           bankOptions: this.bankOptions,
-          selfieSrc: this.selfieSrc
-        }
+          selfieSrc: this.selfieSrc,
+        },
       }
     );
     this.subManager.add(
@@ -253,35 +247,35 @@ export class CustomerIndividualInfoComponent implements OnInit, OnDestroy {
   }
 
   public displayDisableOption() {
-    const disableForm = document.getElementById("disableMethod");
-    if (window.getComputedStyle(disableForm, null).display === "none") {
-      disableForm.setAttribute("style", "display:block");
+    const disableForm = document.getElementById('disableMethod');
+    if (window.getComputedStyle(disableForm, null).display === 'none') {
+      disableForm.setAttribute('style', 'display:block');
     } else {
-      disableForm.setAttribute("style", "display:none");
+      disableForm.setAttribute('style', 'display:none');
     }
   }
 
   public chooseDisableTime(title, value, element) {
-    element.style.display = "none";
+    element.style.display = 'none';
     const confirmDisableRef = this.notificationService.openPrompt({
-      imgUrl: "../../../../../assets/img/icon/group-5/svg/Alert.svg",
+      imgGroupUrl: 'sprite-group-5-update-Alert',
       title:
         value === LOCK_TIME_OPTIONS.PERMANENT
           ? this.multiLanguageService.instant(
-            "customer.individual_info.disable_customer.dialog_title_permanent"
-          )
+              'customer.individual_info.disable_customer.dialog_title_permanent'
+            )
           : this.multiLanguageService.instant(
-            "customer.individual_info.disable_customer.dialog_title",
-            {
-              time: title
-            }
-          ),
+              'customer.individual_info.disable_customer.dialog_title',
+              {
+                time: title,
+              }
+            ),
       content: this.multiLanguageService.instant(
-        "customer.individual_info.disable_customer.dialog_content"
+        'customer.individual_info.disable_customer.dialog_content'
       ),
-      primaryBtnText: this.multiLanguageService.instant("common.lock"),
-      primaryBtnClass: "btn-error",
-      secondaryBtnText: this.multiLanguageService.instant("common.skip")
+      primaryBtnText: this.multiLanguageService.instant('common.lock'),
+      primaryBtnClass: 'btn-error',
+      secondaryBtnText: this.multiLanguageService.instant('common.skip'),
     });
     confirmDisableRef.afterClosed().subscribe((result) => {
       if (result === BUTTON_TYPE.PRIMARY) {
@@ -291,7 +285,7 @@ export class CustomerIndividualInfoComponent implements OnInit, OnDestroy {
           this.customerControllerService
             .lockAccountCustomer({
               accountId: this.customerId,
-              unLockTime: this.formatTimeSecond(unlockTime)
+              unLockTime: this.formatTimeSecond(unlockTime),
             })
             .subscribe((result: ApiResponseCustomerAccountEntity) => {
               if (!result || result.responseCode !== RESPONSE_CODE.SUCCESS) {
@@ -303,7 +297,7 @@ export class CustomerIndividualInfoComponent implements OnInit, OnDestroy {
 
               setTimeout(() => {
                 this.notifier.success(
-                  this.multiLanguageService.instant("common.lock_success")
+                  this.multiLanguageService.instant('common.lock_success')
                 );
                 this.triggerUpdateInfo.emit();
               }, 2000);
@@ -315,14 +309,14 @@ export class CustomerIndividualInfoComponent implements OnInit, OnDestroy {
 
   public displayEnableOption() {
     const confirmEnableRef = this.notificationService.openPrompt({
-      imgUrl: "../../../../../assets/img/icon/group-5/svg/unlock-dialog.svg",
+      imgGroupUrl: 'sprite-group-5-update-unlock-dialog',
       title: this.multiLanguageService.instant(
-        "customer.individual_info.enable_customer.dialog_title"
+        'customer.individual_info.enable_customer.dialog_title'
       ),
-      content: "",
-      primaryBtnText: this.multiLanguageService.instant("common.allow"),
-      primaryBtnClass: "btn-primary",
-      secondaryBtnText: this.multiLanguageService.instant("common.skip")
+      content: '',
+      primaryBtnText: this.multiLanguageService.instant('common.allow'),
+      primaryBtnClass: 'btn-primary',
+      secondaryBtnText: this.multiLanguageService.instant('common.skip'),
     });
     confirmEnableRef.afterClosed().subscribe((result) => {
       if (result === BUTTON_TYPE.PRIMARY) {
@@ -339,7 +333,7 @@ export class CustomerIndividualInfoComponent implements OnInit, OnDestroy {
 
               setTimeout(() => {
                 this.notifier.success(
-                  this.multiLanguageService.instant("common.unlock_success")
+                  this.multiLanguageService.instant('common.unlock_success')
                 );
                 this.triggerUpdateInfo.emit();
               }, 2000);
@@ -352,21 +346,21 @@ export class CustomerIndividualInfoComponent implements OnInit, OnDestroy {
   submitForm() {
     const data = this.customerIndividualForm.getRawValue();
     this.triggerUpdateInfo.emit({
-      "personalData.note": data.note
+      'personalData.note': data.note,
     });
   }
 
   formatTime(timeInput) {
     if (!timeInput) return;
-    return moment(new Date(timeInput), "YYYY-MM-DD HH:mm:ss").format(
-      "DD/MM/YYYY"
+    return moment(new Date(timeInput), 'YYYY-MM-DD HH:mm:ss').format(
+      'DD/MM/YYYY'
     );
   }
 
   formatTimeSecond(timeInput) {
     if (!timeInput) return;
-    return moment(new Date(timeInput), "YYYY-MM-DD HH:mm:ss").format(
-      "DD/MM/YYYY HH:mm:ss"
+    return moment(new Date(timeInput), 'YYYY-MM-DD HH:mm:ss').format(
+      'DD/MM/YYYY HH:mm:ss'
     );
   }
 
@@ -381,67 +375,67 @@ export class CustomerIndividualInfoComponent implements OnInit, OnDestroy {
   private _initLeftIndividualInfos() {
     return [
       {
-        title: this.multiLanguageService.instant("customer.individual_info.id"),
+        title: this.multiLanguageService.instant('customer.individual_info.id'),
         value: this.customerId,
         type: DATA_CELL_TYPE.TEXT,
-        format: null
+        format: null,
       },
       {
         title: this.multiLanguageService.instant(
-          "customer.individual_info.fullname"
+          'customer.individual_info.fullname'
         ),
         value: this.customerInfo?.firstName,
         type: DATA_CELL_TYPE.TEXT,
-        format: null
+        format: null,
       },
       {
         title: this.multiLanguageService.instant(
-          "customer.individual_info.phone_number"
+          'customer.individual_info.phone_number'
         ),
         value: this.customerInfo?.mobileNumber,
         type: DATA_CELL_TYPE.TEXT,
-        format: null
+        format: null,
       },
       {
         title: this.multiLanguageService.instant(
-          "customer.individual_info.date_of_birth"
+          'customer.individual_info.date_of_birth'
         ),
         value: this.customerInfo?.dateOfBirth,
         type: DATA_CELL_TYPE.TEXT,
-        format: null
+        format: null,
       },
       {
         title: this.multiLanguageService.instant(
-          "customer.individual_info.email"
+          'customer.individual_info.email'
         ),
         value: this.customerInfo?.emailAddress,
         type: DATA_CELL_TYPE.TEXT,
-        format: null
+        format: null,
       },
       {
         title: this.multiLanguageService.instant(
-          "customer.individual_info.cmnd"
+          'customer.individual_info.cmnd'
         ),
         value: this.customerInfo?.identityNumberOne,
         type: DATA_CELL_TYPE.TEXT,
-        format: null
+        format: null,
       },
       {
         title: this.multiLanguageService.instant(
-          "customer.individual_info.permanent_address"
+          'customer.individual_info.permanent_address'
         ),
         value: this.customerInfo?.addressTwoLine1,
         type: DATA_CELL_TYPE.TEXT,
-        format: null
+        format: null,
       },
       {
         title: this.multiLanguageService.instant(
-          "customer.individual_info.current_residence"
+          'customer.individual_info.current_residence'
         ),
         value: this.customerInfo?.addressOneLine1,
         type: DATA_CELL_TYPE.TEXT,
-        format: null
-      }
+        format: null,
+      },
       // {
       //   title: this.multiLanguageService.instant(
       //     'customer.individual_info.city'
@@ -484,77 +478,77 @@ export class CustomerIndividualInfoComponent implements OnInit, OnDestroy {
     return [
       {
         title: this.multiLanguageService.instant(
-          "customer.individual_info.number_of_dependents"
+          'customer.individual_info.number_of_dependents'
         ),
         value: this.customerInfo?.borrowerDetailTextVariable1,
         type: DATA_CELL_TYPE.TEXT,
-        format: null
+        format: null,
       },
       {
         title: this.multiLanguageService.instant(
-          "customer.individual_info.marital_status"
+          'customer.individual_info.marital_status'
         ),
         value: this.customerInfo?.maritalStatus,
         type: DATA_CELL_TYPE.TEXT,
-        format: null
+        format: null,
       },
       {
         title: this.multiLanguageService.instant(
-          "customer.individual_info.bank_account_number"
+          'customer.individual_info.bank_account_number'
         ),
         value: this.customerInfo?.accountNumber,
         type: DATA_CELL_TYPE.TEXT,
-        format: null
+        format: null,
       },
       {
         title: this.multiLanguageService.instant(
-          "customer.individual_info.bank_name"
+          'customer.individual_info.bank_name'
         ),
         value:
           this.customerInfo?.bankName || this.customerInfo?.bankCode
             ? `${this.customerInfo?.bankName} ( ${this.customerInfo?.bankCode} )`
             : null,
         type: DATA_CELL_TYPE.TEXT,
-        format: null
+        format: null,
       },
       {
         title: this.multiLanguageService.instant(
-          "customer.individual_info.va_account_number"
+          'customer.individual_info.va_account_number'
         ),
         value: this.virtualAccount?.accountNumber,
         type: DATA_CELL_TYPE.TEXT,
-        format: null
+        format: null,
       },
       {
         title: this.multiLanguageService.instant(
-          "customer.individual_info.created_at"
+          'customer.individual_info.created_at'
         ),
         value: this.customerInfo?.createdAt,
         type: DATA_CELL_TYPE.DATETIME,
-        format: "dd/MM/yyyy HH:mm"
+        format: 'dd/MM/yyyy HH:mm',
       },
       {
         title: this.multiLanguageService.instant(
-          "customer.individual_info.updated_at"
+          'customer.individual_info.updated_at'
         ),
         value: this.customerInfo?.updatedAt,
         type: DATA_CELL_TYPE.DATETIME,
-        format: "dd/MM/yyyy HH:mm"
+        format: 'dd/MM/yyyy HH:mm',
       },
       {
         title: this.multiLanguageService.instant(
-          "customer.individual_info.updated_by"
+          'customer.individual_info.updated_by'
         ),
         value: this.customerInfo?.updatedBy,
         type: DATA_CELL_TYPE.TEXT,
-        format: null
-      }
+        format: null,
+      },
     ];
   }
 
   private _initIndividualFormData(customerId, customerInfo) {
     this.customerIndividualForm.patchValue({
-      note: customerInfo?.note
+      note: customerInfo?.note,
     });
   }
 
@@ -572,31 +566,31 @@ export class CustomerIndividualInfoComponent implements OnInit, OnDestroy {
   }
 
   private _bindingDialogIndividualData(data) {
-    if (data.bankCode == "") {
-      data.bankName = "";
+    if (data.bankCode == '') {
+      data.bankName = '';
     }
     return {
-      "financialData.accountNumber": data?.accountNumber || null,
-      "financialData.bankCode": data?.bankCode || null,
-      "financialData.bankName": data?.bankName || null,
-      "personalData.addressOneLine1": data?.addressOneLine1,
-      "personalData.dateOfBirth": data?.dateOfBirth
+      'financialData.accountNumber': data?.accountNumber || null,
+      'financialData.bankCode': data?.bankCode || null,
+      'financialData.bankName': data?.bankName || null,
+      'personalData.addressOneLine1': data?.addressOneLine1,
+      'personalData.dateOfBirth': data?.dateOfBirth
         ? this.formatTime(data?.dateOfBirth)
         : null,
-      "personalData.emailAddress": data?.email,
-      "personalData.identityNumberSix": data?.email,
-      "personalData.firstName": data?.firstName,
-      "personalData.gender": data?.gender,
-      "personalData.idOrigin": data?.idOrigin,
-      "personalData.identityNumberOne": data?.identityNumberOne,
-      "personalData.maritalStatus": data?.maritalStatus,
-      "personalData.borrowerDetailTextVariable1": data?.numberOfDependents,
-      "personalData.addressTwoLine1": data?.addressTwoLine1,
+      'personalData.emailAddress': data?.email,
+      'personalData.identityNumberSix': data?.email,
+      'personalData.firstName': data?.firstName,
+      'personalData.gender': data?.gender,
+      'personalData.idOrigin': data?.idOrigin,
+      'personalData.identityNumberOne': data?.identityNumberOne,
+      'personalData.maritalStatus': data?.maritalStatus,
+      'personalData.borrowerDetailTextVariable1': data?.numberOfDependents,
+      'personalData.addressTwoLine1': data?.addressTwoLine1,
       // 'personalData.city': data?.city,
       // 'personalData.district': data?.district,
       // 'personalData.commune': data?.commune,
       // 'personalData.apartmentNumber': data?.apartmentNumber,
-      "personalData.mobileNumber": data?.mobileNumber
+      'personalData.mobileNumber': data?.mobileNumber,
     };
   }
 

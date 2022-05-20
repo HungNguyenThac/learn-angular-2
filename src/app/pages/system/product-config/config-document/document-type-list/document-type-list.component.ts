@@ -112,7 +112,7 @@ export class DocumentTypeListComponent implements OnInit, OnDestroy {
       content: this.multiLanguageService.instant(
         'system.system_config.document_type.delete'
       ),
-      imageSrc: 'assets/img/icon/group-5/svg/trash.svg',
+      classImgSrc: 'sprite-group-5-update-trash',
       style: 'background-color: #dc3545;',
     },
   ];
@@ -131,7 +131,7 @@ export class DocumentTypeListComponent implements OnInit, OnDestroy {
   subManager = new Subscription();
   breadcrumbOptions: BreadcrumbOptionsModel = {
     title: this.multiLanguageService.instant('breadcrumb.config_document_type'),
-    iconImgSrc: 'assets/img/icon/group-7/svg/setting-green.svg',
+    iconClass: 'sprite-group-7-update-setting-green',
     searchPlaceholder: this.multiLanguageService.instant(
       'breadcrumb.search_field.config_document_type'
     ),
@@ -188,7 +188,7 @@ export class DocumentTypeListComponent implements OnInit, OnDestroy {
       action: TABLE_ACTION_TYPE.EDIT,
       color: 'accent',
       tooltip: this.multiLanguageService.instant('common.edit'),
-      imageSrc: 'assets/img/icon/group-5/svg/edit-small.svg',
+      classImgSrc: 'sprite-group-5-update-edit-small',
       style: 'background-color: rgba(255, 255, 255, 0.1);',
     },
     {
@@ -196,7 +196,7 @@ export class DocumentTypeListComponent implements OnInit, OnDestroy {
       action: TABLE_ACTION_TYPE.DELETE,
       color: 'accent',
       tooltip: this.multiLanguageService.instant('common.delete'),
-      imageSrc: 'assets/img/icon/group-5/svg/trash-red.svg',
+      classImgSrc: 'sprite-group-5-update-trash-red',
       style: 'background-color: rgba(255, 255, 255, 0.1);',
     },
   ];
@@ -454,7 +454,7 @@ export class DocumentTypeListComponent implements OnInit, OnDestroy {
 
   public deleteMultiplePrompt(ids) {
     const confirmDeleteRef = this.notificationService.openPrompt({
-      imgUrl: '../../../../../assets/img/icon/group-5/svg/delete-dialog.svg',
+      imgGroupUrl: 'sprite-group-5-update-delete-dialog',
       title: this.multiLanguageService.instant(
         'system.system_config.document_type.delete_prompt.title'
       ),
@@ -599,7 +599,7 @@ export class DocumentTypeListComponent implements OnInit, OnDestroy {
 
   public openDeleteDocumentTypeDialog(element) {
     const confirmDeleteRef = this.notificationService.openPrompt({
-      imgUrl: '../../../../../assets/img/icon/group-5/svg/delete-dialog.svg',
+      imgGroupUrl: 'sprite-group-5-update-delete-dialog',
       title: this.multiLanguageService.instant(
         'system.system_config.document_type.delete_prompt.title'
       ),

@@ -194,7 +194,7 @@ export class MerchantListComponent implements OnInit, OnDestroy {
       content: this.multiLanguageService.instant(
         'merchant.merchant_list.delete_merchant'
       ),
-      imageSrc: 'assets/img/icon/group-5/svg/trash.svg',
+      classImgSrc: 'sprite-group-5-update-trash',
       style: 'background-color: #dc3545;',
     },
     {
@@ -204,7 +204,7 @@ export class MerchantListComponent implements OnInit, OnDestroy {
       content: this.multiLanguageService.instant(
         'customer.individual_info.lock'
       ),
-      imageSrc: 'assets/img/icon/group-5/svg/lock-white.svg',
+      classImgSrc: 'sprite-group-5-update-lock-white',
       style: 'background-color: #dc3545;',
     },
   ];
@@ -225,7 +225,7 @@ export class MerchantListComponent implements OnInit, OnDestroy {
   subManager = new Subscription();
   breadcrumbOptions: BreadcrumbOptionsModel = {
     title: this.multiLanguageService.instant('breadcrumb.merchant'),
-    iconImgSrc: 'assets/img/icon/group-7/svg/merchant.svg',
+    iconClass: 'sprite-group-7-update-merchant',
     searchPlaceholder:
       'Tên merchant, Số điện thoại, Email, Mã merchant, Tên Admin, Ngành hàng…',
     searchable: true,
@@ -320,6 +320,7 @@ export class MerchantListComponent implements OnInit, OnDestroy {
     this._initOptions();
     this._initSubscription();
   }
+
   ngOnDestroy(): void {
     this.subManager.unsubscribe();
   }
@@ -657,7 +658,7 @@ export class MerchantListComponent implements OnInit, OnDestroy {
 
   public lockMultiplePrompt(ids) {
     const confirmLockRef = this.notificationService.openPrompt({
-      imgUrl: '../../../../../assets/img/icon/group-5/svg/Alert.svg',
+      imgGroupUrl: 'sprite-group-5-update-Alert',
       title: this.multiLanguageService.instant(
         'system.user_detail.lock_user.title'
       ),
@@ -723,7 +724,7 @@ export class MerchantListComponent implements OnInit, OnDestroy {
 
   public deleteMultiplePrompt(ids) {
     const confirmDeleteRef = this.notificationService.openPrompt({
-      imgUrl: '../../../../../assets/img/icon/group-5/svg/delete-dialog.svg',
+      imgGroupUrl: 'sprite-group-5-update-delete-dialog',
       title: this.multiLanguageService.instant(
         'merchant.merchant_detail.delete_merchant.title'
       ),
